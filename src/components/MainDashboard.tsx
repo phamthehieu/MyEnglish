@@ -47,6 +47,7 @@ const WritingTab = lazy(() => import("./dashboard/WritingTab"));
 const ForgottenTab = lazy(() => import("./dashboard/ForgottenTab"));
 const KnownTab = lazy(() => import("./dashboard/KnownTab"));
 const PronunciationTab = lazy(() => import("./dashboard/PronunciationTab"));
+const TalkTab = lazy(() => import("./talk/TalkTab"));
 const TodayTab = lazy(() => import("./dashboard/TodayTab"));
 const LeaderboardTab = lazy(() => import("./dashboard/LeaderboardTab"));
 const AccountTab = lazy(() => import("./dashboard/AccountTab"));
@@ -1457,6 +1458,9 @@ export default function MainDashboard({
 
         {/* PRONUNCIATION: final sounds, -s/-ed endings, th, stress, IT words */}
         {activeTab === "pronunciation" && <PronunciationTab resetKey={tabResetKey} />}
+
+        {/* TALK: scripted conversations for everyday situations */}
+        {activeTab === "talk" && <TalkTab resetKey={tabResetKey} />}
 
         {/* TAB 6: GRAMMAR HUB (A1 - C1 ROADMAP & DIAGNOSTIC PRACTICE) */}
         {activeTab === "grammar" && <GrammarHub key={grammarLessonToOpen ?? "hub"} initialLessonId={grammarLessonToOpen} resetKey={tabResetKey} />}

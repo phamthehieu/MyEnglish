@@ -295,6 +295,45 @@ score is an integer 0-100 (a number, not text). corrections is [] when there is 
     )
 }
 
+/// A scripted conversation for the speaking tab ("Hội thoại"). The model only writes the content; the app
+/// checks it (src/services/talk/validate.ts) before the learner ever sees it.
+fn build_situation_prompt(topic: &str, level: &str, group: &str, foundation: bool, avoid: &[String]) -> String {
+    let max_words = if foundation { 5 } else { 10 };
+    let setting = if group == "work" { "a workplace" } else { "an everyday-life" };
+    let avoid_json = serde_json::to_string(avoid).unwrap_or_else(|_| "[]".to_string());
+    format!(
+        "Write a short scripted conversation for a Vietnamese learner to practice speaking English. \
+Setting: {setting} situation, topic: \"{topic}\". Learner level {guide}.{foundation_rule}\n\
+The other person (partner) speaks first. The learner answers at every turn.\n\
+Rules:\n\
+- 4 to 6 turns (dialogue nodes n1, n2, ...). At each turn the learner has 1-3 possible answers (lines). \
+Each reply has \"next\": the id of a LATER node, or null when the conversation ends. Never point back to an earlier node. \
+Every node must be reachable from n1, and every learner line must be used in at least one turn. The last node's replies all end with null.\n\
+- Every learner line: 2 to {max_words} words, one natural spoken sentence a real person says. Use only English letters, spaces and the marks , . ? ! ' (no digits, no hyphens, no symbols: write numbers as words).\n\
+- accept: 1-3 other natural ways to say the same line (same character rules); none may equal another line or another accept.\n\
+- Partner sentences: max {partner_words} words, vocabulary within {level}.\n\
+- Vietnamese must be natural and short. title_vi max 8 words. goal_vi: one sentence saying what the learner can do afterwards.\n\
+- partner_emoji: exactly one emoji. note: optional short Vietnamese tip (max 20 words), else empty string.\n\
+- The situation must be clearly different from these existing ones (JSON list of titles): {avoid}\n\
+Return ONLY minified JSON:\n\
+{{\"title_vi\":\"\",\"title_en\":\"\",\"goal_vi\":\"\",\"partner_vi\":\"\",\"partner_emoji\":\"\",\
+\"lines\":[{{\"key\":\"l1\",\"en\":\"\",\"vi\":\"\",\"accept\":[\"\"],\"note\":\"\"}}],\
+\"dialogue\":[{{\"id\":\"n1\",\"npc_en\":\"\",\"npc_vi\":\"\",\"replies\":[{{\"line\":\"l1\",\"next\":\"n2\"}}]}}]}}",
+        setting = setting,
+        topic = topic,
+        guide = cefr_guide(level),
+        level = level,
+        max_words = max_words,
+        partner_words = max_words + 4,
+        avoid = avoid_json,
+        foundation_rule = if foundation {
+            " The learner is an absolute beginner: only the most common words, very short sentences."
+        } else {
+            ""
+        },
+    )
+}
+
 /// A word the learner keeps forgetting (a leech) needs new memory hooks, not a harder exercise:
 /// three new example situations, one memory tip and the word it is usually confused with.
 fn build_memory_aid_prompt(word: &str, meaning_vn: &str, level: &str) -> String {
@@ -1916,6 +1955,57 @@ async fn correct_writing_ai(text: String, level: Option<String>, custom_path: Op
     .map_err(|e| format!("Task execution failed: {}", e))?
 }
 
+/// A new scripted conversation for the speaking tab. `avoid` lists the titles of the conversations the learner
+/// already has, so the model writes something different. Returns the model's JSON for the app to check.
+#[tauri::command]
+async fn generate_situation_ai(
+    topic: String,
+    level: Option<String>,
+    group: Option<String>,
+    foundation: Option<bool>,
+    avoid: Option<Vec<String>>,
+    custom_path: Option<String>,
+) -> Result<String, String> {
+    let clean_topic = sanitize_prompt_field(&topic, 120);
+    if clean_topic.is_empty() {
+        return Err("Chủ đề không được để trống.".to_string());
+    }
+    let user_level = normalize_cefr_level(&level.unwrap_or_default());
+    let group = if group.as_deref() == Some("work") { "work" } else { "daily" };
+    let foundation = foundation.unwrap_or(false);
+    let avoid: Vec<String> = avoid
+        .unwrap_or_default()
+        .iter()
+        .map(|t| sanitize_prompt_field(t, 80))
+        .filter(|t| !t.is_empty())
+        .take(60)
+        .collect();
+
+    tauri::async_runtime::spawn_blocking(move || {
+        let (bin_path, _) = get_cli_bin_path(custom_path.as_deref());
+        println!("[MyEnglish AI] Tạo hội thoại '{}' ({}, {})", clean_topic, user_level, group);
+        let prompt = build_situation_prompt(&clean_topic, &user_level, group, foundation, &avoid);
+
+        let output = run_ai_cli(&bin_path, &prompt)?;
+        if !output.status.success() {
+            let err_msg = truncate_for_log(&String::from_utf8_lossy(&output.stderr), 300);
+            return Err(format!("AI CLI exited with error: {}", err_msg));
+        }
+
+        let raw_stdout = String::from_utf8_lossy(&output.stdout);
+        let cleaned = clean_json_string(&raw_stdout);
+        let parsed: serde_json::Value = serde_json::from_str(&cleaned).map_err(|e| {
+            format!("Failed to parse conversation as JSON: {}. Raw: {}", e, truncate_for_log(&cleaned, 300))
+        })?;
+        if !parsed.is_object() {
+            return Err(format!("Unexpected conversation output: {}", truncate_for_log(&cleaned, 300)));
+        }
+        serde_json::to_string(&parsed).map_err(|e| e.to_string())
+    })
+    .await
+    .map_err(|e| format!("Task execution failed: {}", e))?
+}
+
 /// New example sentences + a memory tip for a word the learner keeps forgetting. Returns the model's JSON.
 #[tauri::command]
 async fn generate_memory_aid_ai(
@@ -2405,6 +2495,7 @@ pub fn run() {
             export_backup,
             grade_sentence_ai,
             correct_writing_ai,
+            generate_situation_ai,
             generate_memory_aid_ai,
             compute_fsrs_parameters,
             get_ai_api_key_status,

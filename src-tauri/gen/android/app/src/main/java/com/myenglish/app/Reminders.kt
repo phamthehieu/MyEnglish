@@ -111,6 +111,7 @@ class RemindersBridge(private val context: Context) {
       val intent = Intent(context, ReminderReceiver::class.java).apply {
         action = "com.myenglish.app.REMINDER"
         putExtra("id", 9998)
+        putExtra("test", true)
         putExtra("at", at)
         putExtra("title", title)
         putExtra("body", body)
@@ -590,6 +591,14 @@ class ReminderReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     val at = intent.getLongExtra("at", 0L)
     if (at > 0L) ReminderScheduler.markDelivered(context, at)
+
+    // The learner is in the app: no card over it and no notification, they would only repeat what is on the
+    // screen. The slot still counts as delivered (so it is not sent again as overdue) and the plan goes on.
+    // (The test button of Settings sets "test": it is shown wherever the learner is.)
+    if (MainActivity.inForeground && !intent.getBooleanExtra("test", false)) {
+      ReminderScheduler.topUp(context)
+      return
+    }
 
     val id = intent.getIntExtra("id", 0)
     val title = intent.getStringExtra("title") ?: "MyEnglish • Đến giờ ôn từ 🦉"

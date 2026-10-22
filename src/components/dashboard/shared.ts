@@ -14,6 +14,7 @@ export type DashboardTab =
   | "guide"
   | "grammar"
   | "pronunciation"
+  | "talk"
   | "leaderboard"
   | "account";
 export type ViewMode = "gallery" | "table";
@@ -42,7 +43,7 @@ export interface LibraryStats {
  * while one of its tabs is shown the header has a small bar to switch between them. Tab ids are unchanged
  * (other screens call setActiveTab("…")); every tab belongs to exactly one entry.
  */
-export type NavGroupId = "today" | "vocab" | "grammar" | "practice" | "quick" | "settings" | "account";
+export type NavGroupId = "today" | "vocab" | "grammar" | "talk" | "practice" | "quick" | "settings" | "account";
 export interface NavGroup {
   id: NavGroupId;
   label: string;
@@ -68,6 +69,7 @@ export const SIMPLE_NAV_GROUPS: NavGroup[] = [
     ],
   },
   { id: "grammar", label: "Ngữ pháp", tabs: [{ tab: "grammar", label: "Ngữ pháp" }] },
+  { id: "talk", label: "Hội thoại", tabs: [{ tab: "talk", label: "Hội thoại" }] },
   {
     id: "practice",
     label: "Luyện thêm",

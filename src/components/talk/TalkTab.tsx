@@ -1,0 +1,245 @@
+import { useEffect, useState } from "react";
+import { Loader2, MessageCircle, PlayCircle, Sparkles, Trash2 } from "lucide-react";
+import { allSituations, getSituation } from "@/data/situations";
+import type { Situation, SituationGroup } from "@/types/situation";
+import { summarize, TALK_UPDATED_EVENT, type SituationStatus } from "@/services/talk/progress";
+import { removeGenerated, TALK_GENERATED_EVENT } from "@/services/talk/custom";
+import { aiReady, generateSituation } from "@/services/talk/generateAi";
+import { getActiveCefrLevel } from "@/services/pipeline";
+import { isFoundationMode } from "@/services/learnerProfile";
+import { PAGE_CONTAINER } from "../dashboard/shared";
+import Conversation from "./Conversation";
+import WarmUp from "./WarmUp";
+
+type View = { kind: "list" } | { kind: "warmup"; id: string } | { kind: "chat"; id: string };
+
+const GROUPS: Array<{ id: SituationGroup; label: string }> = [
+  { id: "daily", label: "Đời thường" },
+  { id: "work", label: "Công việc" },
+];
+
+const STATUS_LABEL: Record<SituationStatus, string> = { new: "Mới", learning: "Đang học", done: "Đã nói được" };
+const STATUS_TONE: Record<SituationStatus, string> = {
+  new: "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300",
+  learning: "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300",
+  done: "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300",
+};
+
+function SituationCard({
+  situation,
+  onWarmUp,
+  onChat,
+}: {
+  situation: Situation;
+  onWarmUp: () => void;
+  onChat: () => void;
+}) {
+  const s = summarize(situation);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  return (
+    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0">
+          <h3 className="font-bold text-slate-900 dark:text-white">{situation.title_vi}</h3>
+          <p className="text-xs text-slate-500 dark:text-zinc-400">
+            {situation.title_en} · {situation.cefr}
+            {situation.ai && (
+              <span className="ml-1.5 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 font-semibold">
+                <Sparkles className="w-3 h-3" /> AI
+              </span>
+            )}
+          </p>
+        </div>
+        <span className={`shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full ${STATUS_TONE[s.status]}`}>
+          {STATUS_LABEL[s.status]}
+        </span>
+      </div>
+      <p className="text-sm text-slate-700 dark:text-zinc-300">Mục tiêu: {situation.goal_vi}</p>
+      <p className="text-xs text-slate-500 dark:text-zinc-400">
+        Đã nói được {s.linesSaid}/{s.totalLines} câu · đã trò chuyện {s.runs} lần
+      </p>
+      <div className="flex gap-2">
+        <button
+          onClick={onWarmUp}
+          className="flex-1 py-2.5 rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 text-sm font-semibold inline-flex items-center justify-center gap-2"
+        >
+          <PlayCircle className="w-4 h-4" /> Khởi động
+        </button>
+        <button
+          onClick={onChat}
+          className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
+        >
+          <MessageCircle className="w-4 h-4" /> Trò chuyện
+        </button>
+      </div>
+      {situation.ai && (
+        <div className="flex justify-end">
+          {confirmDelete ? (
+            <span className="text-xs text-slate-600 dark:text-zinc-400">
+              Xóa hội thoại này?{" "}
+              <button onClick={() => removeGenerated(situation.id)} className="font-semibold text-rose-600 dark:text-rose-400 underline underline-offset-2">
+                Xóa
+              </button>{" "}
+              ·{" "}
+              <button onClick={() => setConfirmDelete(false)} className="font-semibold underline underline-offset-2">
+                Giữ lại
+              </button>
+            </span>
+          ) : (
+            <button
+              onClick={() => setConfirmDelete(true)}
+              className="text-xs text-slate-500 dark:text-zinc-400 inline-flex items-center gap-1"
+            >
+              <Trash2 className="w-3.5 h-3.5" /> Xóa
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** The learner's own choice to have the AI write a new conversation (never automatic) */
+function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
+  const [ready, setReady] = useState<boolean | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [made, setMade] = useState<string | null>(null);
+  const [levelText, setLevelText] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    aiReady().then((ok) => !cancelled && setReady(ok));
+    getActiveCefrLevel()
+      .then((level) => !cancelled && setLevelText(isFoundationMode() ? "A0 (mới bắt đầu)" : level))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const create = async () => {
+    setBusy(true);
+    setError(null);
+    setMade(null);
+    try {
+      const s = await generateSituation();
+      setMade(s.title_vi);
+      onCreated(s);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="rounded-2xl border border-dashed border-violet-300 dark:border-violet-800 bg-violet-50/60 dark:bg-violet-950/20 p-4 space-y-2">
+      <p className="font-bold text-slate-900 dark:text-white inline-flex items-center gap-2">
+        <Sparkles className="w-4 h-4 text-violet-500" /> Tạo hội thoại mới bằng AI
+      </p>
+      <p className="text-xs text-slate-600 dark:text-zinc-400">
+        Mỗi lần bấm là một tình huống mới{levelText ? `, hợp trình độ ${levelText}` : ""}, không trùng với các hội thoại bạn đang
+        có. Chỉ tạo khi bạn bấm.
+      </p>
+      <button
+        onClick={create}
+        disabled={busy || ready !== true}
+        className="w-full py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
+      >
+        {busy ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" /> Đang tạo (khoảng nửa phút)…
+          </>
+        ) : (
+          <>
+            <Sparkles className="w-4 h-4" /> Tạo hội thoại mới
+          </>
+        )}
+      </button>
+      {ready === false && (
+        <p className="text-xs text-amber-700 dark:text-amber-300">
+          Chưa có AI. Vào Cài đặt để nhập khóa Gemini (hoặc cài AI CLI), rồi quay lại đây.
+        </p>
+      )}
+      {made && <p className="text-xs text-emerald-700 dark:text-emerald-300">Đã tạo: {made}. Xem ở nhóm bên dưới.</p>}
+      {error && <p className="text-xs text-rose-600 dark:text-rose-400">{error}</p>}
+    </div>
+  );
+}
+
+/** Trò chuyện tình huống: learn the sentences of a situation, then talk it through with a scripted partner */
+export default function TalkTab({ resetKey }: { resetKey?: number }) {
+  const [view, setView] = useState<View>({ kind: "list" });
+  const [, setTick] = useState(0);
+
+  // Tapping the tab again returns to the list
+  useEffect(() => {
+    setView({ kind: "list" });
+  }, [resetKey]);
+
+  useEffect(() => {
+    const refresh = () => setTick((t) => t + 1);
+    window.addEventListener(TALK_UPDATED_EVENT, refresh);
+    window.addEventListener(TALK_GENERATED_EVENT, refresh);
+    return () => {
+      window.removeEventListener(TALK_UPDATED_EVENT, refresh);
+      window.removeEventListener(TALK_GENERATED_EVENT, refresh);
+    };
+  }, []);
+
+  const situation = view.kind === "list" ? undefined : getSituation(view.id);
+
+  // The chat fills the screen and keeps its answer box at the bottom; the other screens scroll as pages
+  if (view.kind === "chat" && situation) {
+    return (
+      <div className="flex-1 min-h-0 flex flex-col max-w-2xl mx-auto w-full">
+        <Conversation key={situation.id} situation={situation} onBack={() => setView({ kind: "list" })} />
+      </div>
+    );
+  }
+
+  const all = allSituations();
+  return (
+    <div className={PAGE_CONTAINER}>
+      {view.kind === "warmup" && situation ? (
+        <WarmUp
+          key={situation.id}
+          situation={situation}
+          onBack={() => setView({ kind: "list" })}
+          onChat={() => setView({ kind: "chat", id: situation.id })}
+        />
+      ) : (
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Trò chuyện tình huống</h2>
+            <p className="text-sm text-slate-600 dark:text-zinc-400">
+              Học vài câu cần dùng, rồi trò chuyện thử như ngoài đời. Chọn câu hoặc tự nói, máy sẽ nghe và báo lại.
+            </p>
+          </div>
+          <GenerateCard onCreated={() => setTick((t) => t + 1)} />
+          {GROUPS.map((g) => {
+            // The ones the AI wrote for the learner first (newest on top), then the ones that come with the app
+            const made = all.filter((s) => s.group === g.id && s.ai).sort((a, b) => b.ai!.createdAt - a.ai!.createdAt);
+            const builtIn = all.filter((s) => s.group === g.id && !s.ai);
+            const list = [...made, ...builtIn];
+            if (list.length === 0) return null;
+            return (
+              <section key={g.id} className="space-y-3">
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">{g.label}</h3>
+                {list.map((s) => (
+                  <SituationCard
+                    key={s.id}
+                    situation={s}
+                    onWarmUp={() => setView({ kind: "warmup", id: s.id })}
+                    onChat={() => setView({ kind: "chat", id: s.id })}
+                  />
+                ))}
+              </section>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}

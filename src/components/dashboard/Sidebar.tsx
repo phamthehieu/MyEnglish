@@ -21,6 +21,7 @@ import {
   NotebookPen,
   Sunrise,
   AudioLines,
+  MessageCircle,
   Layers,
   Dumbbell,
   Trophy,
@@ -171,6 +172,7 @@ export default function Sidebar({
     // Words marked "Đã biết", still waiting for their one check
     { tab: "known", label: "Đã biết", icon: BadgeCheck, iconClass: "text-emerald-500", badge: countBadge(knownWaitingCount) },
     { tab: "grammar", label: "Ngữ pháp", icon: GraduationCap, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
+    { tab: "talk", label: "Hội thoại", icon: MessageCircle, iconClass: "text-emerald-500" },
     { tab: "pronunciation", label: "Phát âm", icon: AudioLines, iconClass: "text-violet-500" },
     { tab: "reading", label: "Đọc", icon: BookOpenText },
     { tab: "writing", label: "Viết & sổ lỗi", icon: NotebookPen },
@@ -193,6 +195,7 @@ export default function Sidebar({
     today: { icon: Sunrise, iconClass: "text-amber-500" },
     vocab: { icon: BookOpen, iconClass: "text-orange-400", badge: countBadge(dueCount, true) },
     grammar: { icon: GraduationCap, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
+    talk: { icon: MessageCircle, iconClass: "text-emerald-500" },
     practice: { icon: Dumbbell, iconClass: "text-violet-500" },
     quick: { icon: Zap, iconClass: "text-amber-500" },
     settings: { icon: Terminal, iconClass: "text-cyan-500" },

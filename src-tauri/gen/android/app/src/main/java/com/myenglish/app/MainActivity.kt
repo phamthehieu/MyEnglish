@@ -8,6 +8,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : TauriActivity() {
+  companion object {
+    /**
+     * True while the app is on the screen in front of the learner. A planned reminder that fires then
+     * (ReminderReceiver) shows nothing: its card and notification would only repeat what they are looking at.
+     */
+    @Volatile
+    var inForeground: Boolean = false
+  }
+
   private var tts: TtsBridge? = null
   private var asr: AsrBridge? = null
   private var appWebView: WebView? = null
@@ -24,6 +33,16 @@ class MainActivity : TauriActivity() {
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
     handleIncomingIntent(intent)
+  }
+
+  override fun onResume() {
+    super.onResume()
+    inForeground = true
+  }
+
+  override fun onPause() {
+    inForeground = false
+    super.onPause()
   }
 
   override fun onNewIntent(intent: Intent) {
@@ -89,6 +108,7 @@ class MainActivity : TauriActivity() {
   }
 
   override fun onDestroy() {
+    inForeground = false
     appWebView = null
     tts?.shutdown()
     tts = null

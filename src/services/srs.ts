@@ -689,7 +689,7 @@ import {
   FullscreenExitTracker,
   type ReminderMoment,
 } from "./reminderMoments";
-import { isMainSessionActive, isPopupSessionActive } from "./activeSession";
+import { isAppInForeground, isMainSessionActive, isPopupSessionActive } from "./activeSession";
 
 /**
  * Background worker manager that periodically inspects due reviews
@@ -916,6 +916,9 @@ class SRSBackgroundWorker {
         if (isSnoozed()) return idle();
         // The main window or popup is studying: the same card would be graded twice
         if (isMainSessionActive() || isPopupSessionActive()) return idle();
+        // The learner is in the app (any screen of it): a reminder card would only repeat what they are looking at.
+        // The reminders are for when they are somewhere else; the next tick after they leave shows it.
+        if (isAppInForeground()) return idle();
         // Night, today's goal done, or enough reminders for one day: wait until tomorrow.
         // The goal counts only once no review is due any more (S5)
         const goalMet = (getActivityLogs()[getLocalDateString()] || 0) >= getDailyGoal();
