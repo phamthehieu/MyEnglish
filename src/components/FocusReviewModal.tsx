@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { isMobilePlatform } from "@/lib/platform";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import {
@@ -151,7 +152,7 @@ export function getPosLabel(pos?: string | null): string | null {
 }
 
 /** Shown after an answer: the user reads the feedback and moves on themselves */
-const NEXT_HINT = "Nhấn Enter hoặc Tiếp tục để sang câu sau.";
+const NEXT_HINT = isMobilePlatform() ? "Bấm Tiếp tục để sang câu sau." : "Nhấn Enter hoặc Tiếp tục để sang câu sau.";
 
 /**
  * Correct answer(s) for display, with equivalent contracted/full forms,
@@ -1651,7 +1652,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 <div className="space-y-3 pt-1">
                   <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-zinc-400">
                     <span>{wordPrompt ? "Chọn nghĩa đúng:" : "Chọn từ tiếng Anh chính xác:"}</span>
-                    <span className="text-[11px] font-mono text-slate-400">Nhấn phím 1 - 4</span>
+                    <span className="desktop-only text-[11px] font-mono text-slate-400">Nhấn phím 1 - 4</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -1786,7 +1787,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                         disabled={!typedInput.trim()}
                         className="flex-1 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white text-xs font-bold transition-all shadow-sm shadow-cyan-600/20"
                       >
-                        Kiểm tra đáp án (Enter)
+                        Kiểm tra đáp án
                       </button>
                       {currentItem.kind === "word" && (
                         <button
@@ -1967,7 +1968,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                   <div className="space-y-3 pt-1">
                     <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-zinc-400">
                       <span>Chọn đáp án ngữ pháp chính xác:</span>
-                      <span className="text-[11px] font-mono text-slate-400">Nhấn phím 1 - 4</span>
+                      <span className="desktop-only text-[11px] font-mono text-slate-400">Nhấn phím 1 - 4</span>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -2179,7 +2180,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
         </div>
 
         {/* Bottom Keyboard Hint Bar */}
-        <div className="px-6 py-3 bg-slate-50/60 dark:bg-zinc-950/40 border-t border-slate-200/60 dark:border-zinc-800/60 flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 font-medium">
+        <div className="desktop-only px-6 py-3 bg-slate-50/60 dark:bg-zinc-950/40 border-t border-slate-200/60 dark:border-zinc-800/60 flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 font-medium">
           <div className="flex items-center gap-3">
             {isAnswered ? (
               <span className="flex items-center gap-1.5 text-slate-800 dark:text-zinc-200 font-semibold">

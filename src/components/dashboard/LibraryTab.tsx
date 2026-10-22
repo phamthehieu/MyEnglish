@@ -1,11 +1,10 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
-import { BookOpen, Sparkles, Plus, X } from "lucide-react";
+import { useState, type Dispatch, type SetStateAction, type RefObject } from "react";
+import { BookOpen, Sparkles, Plus, X, Search, LayoutGrid, List } from "lucide-react";
 import type { WordDetail } from "@/types/database";
 import { useWordsStore } from "@/stores/wordsStore";
 import WordTableView from "../WordTableView";
 import WordCard, { type WordCardMeta } from "./WordCard";
-import TopicFilters from "./TopicFilters";
-import ReviewTimeFilterBar from "./ReviewTimeFilterBar";
+import LibraryFilterToolbar from "./LibraryFilterToolbar";
 import ReviewTrajectoryModal from "../review/ReviewTrajectoryModal";
 import type { ReviewTimeBucket } from "@/utils/reviewSchedule";
 import {
@@ -25,7 +24,10 @@ interface LibraryTabProps {
   setVisibleCount: Dispatch<SetStateAction<number>>;
   cardMeta: Map<string, WordCardMeta>;
   viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
   searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  searchInputRef?: RefObject<HTMLInputElement>;
   selectedTopic: string;
   setSelectedTopic: (topic: string) => void;
   availableTopics: string[];
@@ -47,7 +49,10 @@ export default function LibraryTab({
   setVisibleCount,
   cardMeta,
   viewMode,
+  setViewMode,
   searchQuery,
+  setSearchQuery,
+  searchInputRef,
   selectedTopic,
   setSelectedTopic,
   availableTopics,
@@ -64,7 +69,7 @@ export default function LibraryTab({
   const [trajectoryWord, setTrajectoryWord] = useState<WordDetail | null>(null);
 
   return (
-    <div className={`${PAGE_CONTAINER} space-y-5`}>
+    <div className={`${PAGE_CONTAINER} space-y-3 sm:space-y-4`}>
       {/* Notification alert if any */}
       {message && (
         <div className="p-3 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-800 dark:bg-cyan-950/40 dark:border-cyan-800 dark:text-cyan-300 text-xs flex items-center justify-between">
@@ -82,26 +87,90 @@ export default function LibraryTab({
         </div>
       )}
 
-      {/* Filter Bars Section */}
-      <div className="space-y-2 p-3 rounded-2xl bg-slate-50/60 dark:bg-zinc-900/40 border border-slate-200/80 dark:border-zinc-800/80">
-        {/* Topic Filter & Organization Bar */}
-        <TopicFilters
-          selectedTopic={selectedTopic}
-          setSelectedTopic={setSelectedTopic}
-          availableTopics={availableTopics}
-          topicStats={topicStats}
-          handleStartReview={handleStartReview}
-        />
-
-        {/* Review Time Schedule Filter Bar */}
-        <div className="pt-1 border-t border-slate-200/60 dark:border-zinc-800/60">
-          <ReviewTimeFilterBar
-            selectedBucket={reviewTimeFilter}
-            onSelectBucket={setReviewTimeFilter}
-            bucketCounts={reviewBucketCounts}
+      {/* Row 1: Search Input & View Mode Toggle (Grid vs Table) */}
+      <div className="flex items-center gap-2">
+        <div className="flex-1 relative">
+          <Search className="w-4 h-4 text-slate-400 dark:text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <input
+            ref={searchInputRef}
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Tìm từ hoặc nghĩa... (nhấn / để tìm)"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            data-gramm="false"
+            data-enable-grammarly="false"
+            data-lpignore="true"
+            data-1p-ignore="true"
+            data-form-type="other"
+            className="w-full bg-white dark:bg-zinc-900/90 border border-slate-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 sm:pr-14 py-2 text-xs text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500/50 transition-colors shadow-sm"
           />
+          {searchQuery ? (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 p-1"
+              aria-label="Xóa tìm kiếm"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          ) : (
+            <div className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-1 text-[10px] font-mono text-slate-400 dark:text-zinc-500 pointer-events-none">
+              <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-500 dark:text-zinc-400">/</kbd>
+            </div>
+          )}
+        </div>
+
+        {/* View Mode Toggle: Grid / Table */}
+        <div
+          role="group"
+          aria-label="Chế độ hiển thị danh sách từ"
+          className="inline-flex items-center gap-0.5 bg-slate-100/90 dark:bg-zinc-900 p-1 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm shrink-0"
+        >
+          <button
+            type="button"
+            onClick={() => setViewMode("gallery")}
+            title="Dạng lưới thẻ"
+            aria-label="Xem dạng lưới"
+            className={`p-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
+              viewMode === "gallery"
+                ? "bg-white dark:bg-zinc-800 text-cyan-600 dark:text-cyan-400 shadow-sm font-semibold border border-slate-200/80 dark:border-transparent"
+                : "text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
+            }`}
+          >
+            <LayoutGrid className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Lưới</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode("table")}
+            title="Dạng bảng chi tiết"
+            aria-label="Xem dạng bảng"
+            className={`p-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
+              viewMode === "table"
+                ? "bg-white dark:bg-zinc-800 text-cyan-600 dark:text-cyan-400 shadow-sm font-semibold border border-slate-200/80 dark:border-transparent"
+                : "text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
+            }`}
+          >
+            <List className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Bảng</span>
+          </button>
         </div>
       </div>
+
+      {/* Row 2: Unified Compact Filter Toolbar */}
+      <LibraryFilterToolbar
+        selectedTopic={selectedTopic}
+        setSelectedTopic={setSelectedTopic}
+        availableTopics={availableTopics}
+        topicStats={topicStats}
+        handleStartReview={handleStartReview}
+        selectedBucket={reviewTimeFilter}
+        onSelectBucket={setReviewTimeFilter}
+        bucketCounts={reviewBucketCounts}
+      />
 
       {/* Words Grid or Table View */}
       {filteredWords.length > 0 ? (

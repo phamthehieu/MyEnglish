@@ -129,7 +129,7 @@ export default function ListeningDictationExercise({
             <Snail className="w-3.5 h-3.5 text-amber-500" />
             <span>Nghe chậm</span>
           </button>
-          <span className="text-[11px] text-slate-400 dark:text-zinc-500">Phím R: nghe lại · S: nghe chậm · 1–4: chọn</span>
+          <span className="desktop-only text-[11px] text-slate-400 dark:text-zinc-500">Phím R: nghe lại · S: nghe chậm · 1–4: chọn</span>
         </div>
 
         <div className="min-h-[28px] text-sm">

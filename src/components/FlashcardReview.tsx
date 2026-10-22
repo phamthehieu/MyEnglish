@@ -369,7 +369,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: MULTIPLE CHOICE ----------------- */}
         {effectiveExerciseType === "multiple_choice" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <MultipleChoiceExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -384,7 +384,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: LETTER TILES (first step of typed recall) ----------------- */}
         {effectiveExerciseType === "letter_tiles" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <LetterTilesExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -398,7 +398,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: SENTENCE BUILDER ----------------- */}
         {effectiveExerciseType === "sentence_builder" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <SentenceBuilderExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -413,7 +413,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: CONTEXT MATCH ----------------- */}
         {effectiveExerciseType === "context_match" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <ContextMatchExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -430,7 +430,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: MEANING MATCH (MINI-GAME) ----------------- */}
         {effectiveExerciseType === "meaning_match" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <MeaningMatchExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -447,7 +447,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: LISTENING DICTATION ----------------- */}
         {effectiveExerciseType === "listening" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <ListeningDictationExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -462,7 +462,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: FREE WRITING (AI-graded own sentence) ----------------- */}
         {effectiveExerciseType === "free_writing" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <FreeWritingExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -478,7 +478,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: REVERSE CLOZE ----------------- */}
         {effectiveExerciseType === "reverse_cloze" && (
-          <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
             <ReverseClozeExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -495,15 +495,17 @@ export default function FlashcardReview({
         {/* ----------------- MODE 1: STANDARD FLIP ----------------- */}
         {effectiveExerciseType === "flip" &&
           (isPretestCard && pretest ? (
-            <div className="flex-1 min-h-[160px] flex flex-col justify-center py-2 overflow-y-auto">
+            <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
               <PretestCard question={pretest} phonetic={currentWord.phonetic} onDone={handlePretestDone} />
             </div>
           ) : (
             <FlipCard
               currentWord={currentWord}
               synonyms={synonyms}
-              isFlipped={isFlipped}
+              // Introduction cards always show the answer side, even if a card reset un-flipped it
+              isFlipped={isFlipped || isIntroCard}
               setIsFlipped={setIsFlipped}
+              isIntro={isIntroCard}
             />
           ))}
 

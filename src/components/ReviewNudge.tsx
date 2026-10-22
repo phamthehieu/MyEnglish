@@ -24,6 +24,8 @@ import { playSound } from "@/services/sound";
 interface ReviewNudgeProps {
   /** Browser preview only: called after an action instead of hiding a native window */
   onDone?: () => void;
+  inApp?: boolean;
+  initialPayload?: ReviewNudgePayload;
 }
 
 // Each tick asks Rust whether the cursor is over the card: twice a second is enough to pause the countdown
@@ -32,8 +34,8 @@ const QUIZ_COUNTDOWN_SECONDS = 30;
 /** After a wrong quick answer the card stays up to show the right one, then closes by itself (N13) */
 const WRONG_ANSWER_CLOSE_MS = 60 * 1000;
 
-export default function ReviewNudge({ onDone }: ReviewNudgeProps) {
-  const [payload, setPayload] = useState<ReviewNudgePayload>(() => buildNudgePayload(0));
+export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNudgeProps) {
+  const [payload, setPayload] = useState<ReviewNudgePayload>(() => initialPayload || buildNudgePayload(0));
   const [mode, setMode] = useState<"nudge" | "quiz">("nudge");
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
   // Length of the countdown that is running (the nudge and the quiz wait different times)
@@ -135,6 +137,7 @@ export default function ReviewNudge({ onDone }: ReviewNudgeProps) {
         await startFocusFromReminder(getFocusSettings().minutes);
       } else {
         resetIgnoredNudges();
+        await hideReviewNudge();
         await triggerReviewPopup();
       }
       onDone?.();
@@ -255,13 +258,17 @@ export default function ReviewNudge({ onDone }: ReviewNudgeProps) {
         .catch(() => {});
     }
 
-    if (!("__TAURI_INTERNALS__" in window)) begin(buildNudgePayload(5));
+    if (!("__TAURI_INTERNALS__" in window) && !initialPayload) begin(buildNudgePayload(5));
 
     return () => {
       cancelled = true;
       unlisten?.();
     };
-  }, [begin]);
+  }, [begin, initialPayload]);
+
+  useEffect(() => {
+    if (initialPayload) begin(initialPayload);
+  }, [initialPayload, begin]);
 
   const running = secondsLeft !== null;
   useEffect(() => {
@@ -330,7 +337,7 @@ export default function ReviewNudge({ onDone }: ReviewNudgeProps) {
       : `Ôn nhanh ${payload.sessionSize} câu · ~${payload.estimatedMinutes} phút`);
 
   return (
-    <div className="w-screen h-screen flex items-start justify-end p-1.5 bg-transparent select-none font-sans">
+    <div className={inApp ? "w-full select-none font-sans" : "w-screen h-screen flex items-start justify-end p-1.5 bg-transparent select-none font-sans"}>
       <div
         key={animationKey}
         className="nudge-enter w-full rounded-2xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden flex flex-col justify-between"
@@ -346,11 +353,24 @@ export default function ReviewNudge({ onDone }: ReviewNudgeProps) {
             <div className="flex items-start gap-2.5">
               {renderMascot()}
               <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center justify-between gap-1.5">
                   <span className="text-[13px] font-bold text-slate-900 dark:text-white truncate">
                     {title}
                   </span>
-
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {secondsLeft !== null && (
+                      <span className="text-[10.5px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60 tabular-nums">
+                        {secondsLeft}s
+                      </span>
+                    )}
+                    <button
+                      onClick={() => finish("snooze")}
+                      className="text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 p-0.5 rounded transition-colors"
+                      aria-label="Đóng"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
                 <div className="text-[11.5px] text-slate-600 dark:text-zinc-300 line-clamp-2 mt-0.5 leading-snug">
                   {message}
@@ -415,11 +435,20 @@ export default function ReviewNudge({ onDone }: ReviewNudgeProps) {
                   {payload.microQuiz?.direction === "production" ? "Nhớ từ tiếng Anh" : "Chọn nghĩa đúng"}
                 </span>
               </div>
-              {secondsLeft !== null && (
-                <span className="text-[10px] text-slate-400 dark:text-zinc-500 tabular-nums font-mono">
-                  {secondsLeft}s
-                </span>
-              )}
+              <div className="flex items-center gap-1.5">
+                {secondsLeft !== null && (
+                  <span className="text-[10px] text-slate-400 dark:text-zinc-500 tabular-nums font-mono">
+                    {secondsLeft}s
+                  </span>
+                )}
+                <button
+                  onClick={() => finish("quiz-done")}
+                  className="text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 p-0.5 rounded transition-colors"
+                  aria-label="Đóng"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
             {/* Target Word Display */}
@@ -528,11 +557,11 @@ export default function ReviewNudge({ onDone }: ReviewNudgeProps) {
         )}
 
         {/* Bottom Countdown bar */}
-        <div className="h-1 bg-slate-100 dark:bg-zinc-800 w-full overflow-hidden">
+        <div className="h-1.5 bg-slate-200 dark:bg-zinc-800 w-full overflow-hidden">
           <div
             className={`h-full ${
               mode === "quiz" ? "bg-indigo-500" : "bg-emerald-500"
-            } ${freshBar ? "" : "transition-[width] duration-1000 ease-linear"}`}
+            } ${freshBar ? "" : "transition-[width] duration-500 ease-linear"}`}
             style={{ width: `${progress * 100}%` }}
           />
         </div>

@@ -1,5 +1,6 @@
 package com.myenglish.app
 
+import android.app.ActivityOptions
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,8 +8,11 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.webkit.JavascriptInterface
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -23,21 +27,7 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Study reminders that fire with the app closed, exposed to the page as `window.AndroidReminders`.
- *
- * A page that is in the background is frozen by Android, so it cannot count down to anything. When the
- * learner leaves the app, the page hands over, in ONE call:
- *  - the plan for the next days: [{ at, title, body }] (epoch ms), worked out with what the page knows
- *    (goal reached today, words due, pause);
- *  - the rule behind it: { gapMin, startHour, endHour, cap, anchors, title, bodies }.
- *
- * Two independent ways make sure a reminder is not lost; being late is acceptable, being silent is not:
- *  1. Alarms (AlarmManager) fire each reminder on time, exact when Android allows it. Every time one fires the
- *     plan is topped up from the rule, so it never runs out even if the app is not opened for weeks.
- *  2. A periodic job (WorkManager, every 15 minutes, held by the system's job scheduler rather than by
- *     alarms) looks for a reminder that was due but never delivered (alarm dropped, delayed, cleared by the
- *     phone maker's cleaner) and delivers it late, within CATCH_UP_WINDOW. It also sets the alarms again.
- * Plan, rule and what was already delivered live in SharedPreferences; alarms are set again after a reboot,
- * an app update, and a change of the clock or the time zone (Android drops them then).
+ * Supports both rich floating popups over external apps (SYSTEM_ALERT_WINDOW) and interactive notifications.
  */
 class RemindersBridge(private val context: Context) {
   @JavascriptInterface
@@ -51,9 +41,104 @@ class RemindersBridge(private val context: Context) {
   @JavascriptInterface
   fun clear() = ReminderScheduler.clear(context)
 
-  /** Notifications are allowed for the app (Android 13+ asks; the switch in the system settings counts too) */
+  /** Notifications are allowed for the app */
   @JavascriptInterface
   fun canNotify(): Boolean = NotificationManagerCompat.from(context).areNotificationsEnabled()
+
+  /** Whether the app has permission to display floating popups over other apps */
+  @JavascriptInterface
+  fun canDrawOverlays(): Boolean =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Settings.canDrawOverlays(context) else true
+
+  /** Opens the system setting so user can enable "Display over other apps" */
+  @JavascriptInterface
+  fun requestOverlayPermission(): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
+      try {
+        val intent = Intent(
+          Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+          Uri.parse("package:" + context.packageName)
+        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+        true
+      } catch (_: Exception) {
+        try {
+          val fallback = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+          context.startActivity(fallback)
+          true
+        } catch (_: Exception) {
+          try {
+            val appDetails = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+              .setData(Uri.parse("package:" + context.packageName))
+              .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(appDetails)
+            true
+          } catch (_: Exception) {
+            false
+          }
+        }
+      }
+    } else {
+      false
+    }
+  }
+
+  /** Trigger floating nudge dialog immediately for testing */
+  @JavascriptInterface
+  fun testFloatingNudge(title: String, body: String, dueCount: Int, quizJson: String): Boolean {
+    return try {
+      val intent = Intent(context, FloatingNudgeActivity::class.java).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+        putExtra("title", title)
+        putExtra("body", body)
+        putExtra("dueCount", dueCount)
+        putExtra("quiz", quizJson)
+      }
+      context.startActivity(intent)
+      true
+    } catch (e: Exception) {
+      false
+    }
+  }
+
+  /** Trigger floating nudge dialog after N seconds so user can switch away to home screen or other apps to test */
+  @JavascriptInterface
+  fun testFloatingNudgeIn(seconds: Int, title: String, body: String, dueCount: Int, quizJson: String): Boolean {
+    return try {
+      val alarms = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+      val at = System.currentTimeMillis() + (if (seconds > 0) seconds else 5) * 1000L
+      val intent = Intent(context, ReminderReceiver::class.java).apply {
+        action = "com.myenglish.app.REMINDER"
+        putExtra("id", 9998)
+        putExtra("at", at)
+        putExtra("title", title)
+        putExtra("body", body)
+        putExtra("dueCount", dueCount)
+        putExtra("quiz", quizJson)
+      }
+      val pi = PendingIntent.getBroadcast(
+        context,
+        ReminderScheduler.REQUEST_BASE + 9998,
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      )
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pi)
+      } else {
+        alarms.setExact(AlarmManager.RTC_WAKEUP, at, pi)
+      }
+      true
+    } catch (e: Exception) {
+      false
+    }
+  }
+
+  @JavascriptInterface
+  fun getPendingQuizAnswers(): String = ReminderScheduler.getPendingQuizAnswers(context)
+
+  @JavascriptInterface
+  fun clearPendingQuizAnswers() = ReminderScheduler.clearPendingQuizAnswers(context)
 }
 
 object ReminderScheduler {
@@ -61,18 +146,16 @@ object ReminderScheduler {
   private const val KEY_PLAN = "plan"
   private const val KEY_RULE = "rule"
   private const val KEY_DELIVERED = "deliveredUpTo"
+  private const val KEY_PENDING_QUIZ = "pending_quiz_results"
   const val CHANNEL_ID = "myenglish-study"
+  const val CHANNEL_ID_STATUS = "myenglish-study-status"
   private const val WATCHDOG = "myenglish-reminder-watchdog"
-  private const val REQUEST_BASE = 710_000
+  const val REQUEST_BASE = 710_000
   private const val MAX_ENTRIES = 60
-  /** Fewer future reminders than this: plan more from the rule */
   private const val MIN_AHEAD = 8
   private const val HORIZON_DAYS = 3
-  /** Two reminders closer than this are one too many */
-  private const val MIN_SPACING_MS = 20 * 60_000L
-  /** A reminder this overdue and still undelivered is delivered late by the watchdog */
+  private const val MIN_SPACING_MS = 3 * 60_000L
   private const val OVERDUE_AFTER_MS = 5 * 60_000L
-  /** ...but not when it is older than this: by then it would only be noise */
   private const val CATCH_UP_WINDOW_MS = 3 * 60 * 60_000L
 
   private fun prefs(context: Context) = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
@@ -96,13 +179,23 @@ object ReminderScheduler {
     return Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarms.canScheduleExactAlarms()
   }
 
-  private fun intentFor(context: Context, index: Int, at: Long, title: String, body: String): PendingIntent {
+  private fun intentFor(
+    context: Context,
+    index: Int,
+    at: Long,
+    title: String,
+    body: String,
+    dueCount: Int = 0,
+    quiz: String = ""
+  ): PendingIntent {
     val intent = Intent(context, ReminderReceiver::class.java)
       .setAction("com.myenglish.app.REMINDER")
       .putExtra("id", index)
       .putExtra("at", at)
       .putExtra("title", title)
       .putExtra("body", body)
+      .putExtra("dueCount", dueCount)
+      .putExtra("quiz", quiz)
     return PendingIntent.getBroadcast(
       context,
       REQUEST_BASE + index,
@@ -111,13 +204,22 @@ object ReminderScheduler {
     )
   }
 
-  /** Cancel the alarms of the stored plan */
   private fun cancelAlarms(context: Context) {
     val alarms = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     val stored = plan(context)
     for (i in 0 until stored.length()) {
       val entry = stored.optJSONObject(i) ?: continue
-      alarms.cancel(intentFor(context, i, entry.optLong("at"), entry.optString("title"), entry.optString("body")))
+      alarms.cancel(
+        intentFor(
+          context,
+          i,
+          entry.optLong("at"),
+          entry.optString("title"),
+          entry.optString("body"),
+          entry.optInt("dueCount", 0),
+          entry.optString("quiz", "")
+        )
+      )
     }
   }
 
@@ -127,14 +229,12 @@ object ReminderScheduler {
     WorkManager.getInstance(context).cancelUniqueWork(WATCHDOG)
   }
 
-  /** Store a plan and its rule (from the page), then set the alarms */
   fun replace(context: Context, planJson: String, ruleJson: String) {
     cancelAlarms(context)
     prefs(context).edit().putString(KEY_PLAN, JSONArray(planJson).toString()).putString(KEY_RULE, ruleJson).apply()
     topUp(context)
   }
 
-  /** Make sure the periodic job that delivers a missed reminder late is queued (the system keeps it across reboots) */
   private fun ensureWatchdog(context: Context) {
     try {
       WorkManager.getInstance(context).enqueueUniquePeriodicWork(
@@ -142,15 +242,9 @@ object ReminderScheduler {
         ExistingPeriodicWorkPolicy.KEEP,
         PeriodicWorkRequestBuilder<ReminderCatchUpWorker>(15, TimeUnit.MINUTES).build()
       )
-    } catch (e: Exception) {
-      // The alarms still work without it
-    }
+    } catch (_: Exception) {}
   }
 
-  /**
-   * Drop what is delivered or too old, plan more from the rule when few reminders are left, and set the alarms.
-   * A reminder only minutes overdue and not yet delivered is kept: its alarm fires at once.
-   */
   fun topUp(context: Context) {
     cancelAlarms(context)
     val now = System.currentTimeMillis()
@@ -170,7 +264,7 @@ object ReminderScheduler {
         keep.add(
           JSONObject()
             .put("at", at)
-            .put("title", rule.optString("title", "MyEnglish"))
+            .put("title", rule.optString("title", "MyEnglish • Đến giờ ôn từ 🦉"))
             .put("body", pickBody(rule, keep.size))
         )
       }
@@ -182,18 +276,12 @@ object ReminderScheduler {
     if (keep.isNotEmpty()) ensureWatchdog(context)
   }
 
-  /** The clock or the time zone changed: "7:00" is another moment now, so plan again from the rule */
   fun rebuild(context: Context) {
     cancelAlarms(context)
     prefs(context).edit().putString(KEY_PLAN, "[]").apply()
     topUp(context)
   }
 
-  /**
-   * The safety net. A reminder that was due more than OVERDUE_AFTER_MS ago and was never delivered (its alarm was
-   * dropped or never ran) is delivered now, late. Only the latest one: a missed morning is not worth five
-   * notifications. Then the alarms are set again.
-   */
   fun catchUp(context: Context) {
     val now = System.currentTimeMillis()
     val delivered = prefs(context).getLong(KEY_DELIVERED, 0L)
@@ -208,7 +296,13 @@ object ReminderScheduler {
     }
     if (latest != null) {
       markDelivered(context, latest.optLong("at"))
-      showNotification(context, REQUEST_BASE, latest.optString("title"), latest.optString("body"))
+      showNotification(
+        context,
+        REQUEST_BASE,
+        latest.optString("title"),
+        latest.optString("body"),
+        latest.optString("quiz", "")
+      )
     }
     topUp(context)
   }
@@ -225,8 +319,7 @@ object ReminderScheduler {
       } else {
         alarms.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pending)
       }
-    } catch (e: SecurityException) {
-      // The exact-alarm permission was withdrawn meanwhile
+    } catch (_: SecurityException) {
       alarms.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, at, pending)
     }
   }
@@ -236,36 +329,193 @@ object ReminderScheduler {
     val exact = canScheduleExact(context)
     for ((i, entry) in entries.withIndex()) {
       val at = entry.optLong("at")
-      setAlarm(alarms, exact, at, intentFor(context, i, at, entry.optString("title"), entry.optString("body")))
+      setAlarm(
+        alarms,
+        exact,
+        at,
+        intentFor(
+          context,
+          i,
+          at,
+          entry.optString("title"),
+          entry.optString("body"),
+          entry.optInt("dueCount", 0),
+          entry.optString("quiz", "")
+        )
+      )
     }
   }
 
-  fun showNotification(context: Context, id: Int, title: String, body: String) {
+  fun snooze(context: Context, minutes: Int = 10) {
+    val now = System.currentTimeMillis()
+    val snoozeAt = now + minutes * 60_000L
+    val alarms = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val exact = canScheduleExact(context)
+    val snoozePending = intentFor(
+      context,
+      9999,
+      snoozeAt,
+      "MyEnglish • Nhắc lại 🦉",
+      "Đã hết thời gian hoãn. Cùng ôn nhanh vài câu nào!"
+    )
+    setAlarm(alarms, exact, snoozeAt, snoozePending)
+  }
+
+  fun showNotification(
+    context: Context,
+    id: Int,
+    title: String,
+    body: String,
+    quizJson: String? = null,
+    dueCount: Int = 0
+  ) {
     val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    val hasOverlay = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)
+    val channelId = if (hasOverlay) CHANNEL_ID_STATUS else CHANNEL_ID
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      manager.createNotificationChannel(
-        NotificationChannel(CHANNEL_ID, "Nhắc học", NotificationManager.IMPORTANCE_DEFAULT).apply {
-          description = "Nhắc bạn ôn từ vựng đúng giờ"
+      if (hasOverlay) {
+        // Quiet status-bar channel: shows icon on status bar and notification in drawer,
+        // but DOES NOT drop down heads-up banner since floating popup is already visible
+        val quietChannel = NotificationChannel(
+          CHANNEL_ID_STATUS,
+          "Nhắc học (Thanh trạng thái)",
+          NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+          description = "Hiển thị trên thanh trạng thái khi thẻ popup nổi xuất hiện"
+          enableVibration(false)
+          lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
         }
-      )
+        manager.createNotificationChannel(quietChannel)
+      } else {
+        val alertChannel = NotificationChannel(
+          CHANNEL_ID,
+          "Nhắc học",
+          NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+          description = "Nhắc bạn ôn từ vựng đúng giờ"
+          enableVibration(true)
+          enableLights(true)
+          lockscreenVisibility = NotificationCompat.VISIBILITY_PUBLIC
+        }
+        manager.createNotificationChannel(alertChannel)
+      }
     }
     if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) return
-    val open = Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-    val tap = PendingIntent.getActivity(context, 0, open, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-    val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+
+    // 1. Floating Flash-Quiz Intent: shown directly over external apps without launching the full webview app
+    val floatingQuizIntent = Intent(context, FloatingNudgeActivity::class.java).apply {
+      addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+      putExtra("id", id)
+      putExtra("title", title)
+      putExtra("body", body)
+      putExtra("dueCount", dueCount)
+      putExtra("quiz", quizJson)
+    }
+    val floatingQuizPending = PendingIntent.getActivity(
+      context,
+      REQUEST_BASE + 2,
+      floatingQuizIntent,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    // Full-screen heads-up pending intent: forces Android to pop up over whatever app is running
+    val fullScreenPending = PendingIntent.getActivity(
+      context,
+      REQUEST_BASE + 10,
+      floatingQuizIntent,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    // 2. Open full app intent (MainActivity)
+    val open = Intent(context, MainActivity::class.java).apply {
+      addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+      putExtra("action", "start_review")
+      putExtra("openReview", true)
+    }
+    val openAppPending = PendingIntent.getActivity(
+      context,
+      0,
+      open,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val learnNowPending = PendingIntent.getActivity(
+      context,
+      REQUEST_BASE + 1,
+      open,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    // 3. Snooze 10m intent
+    val snoozeIntent = Intent(context, ReminderActionReceiver::class.java).apply {
+      action = "com.myenglish.app.SNOOZE_10"
+      putExtra("id", id)
+    }
+    val snoozePending = PendingIntent.getBroadcast(
+      context,
+      REQUEST_BASE + 3,
+      snoozeIntent,
+      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
+
+    val notifBuilder = NotificationCompat.Builder(context, channelId)
       .setSmallIcon(context.applicationInfo.icon)
-      .setContentTitle(title.ifEmpty { "MyEnglish" })
+      .setContentTitle(title.ifEmpty { "MyEnglish • Đến giờ ôn từ 🦉" })
       .setContentText(body)
       .setStyle(NotificationCompat.BigTextStyle().bigText(body))
-      .setContentIntent(tap)
+      // If user has overlay permission & quiz is ready, tap directly opens floating quiz without loading full app!
+      .setContentIntent(if (hasOverlay && !quizJson.isNullOrBlank()) floatingQuizPending else openAppPending)
       .setAutoCancel(true)
-      .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-      .build()
-    try {
-      manager.notify(id, notification)
-    } catch (e: SecurityException) {
-      // Notifications turned off between the check and here: nothing to show
+      .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+    if (hasOverlay) {
+      // When popup is displayed, do NOT drop down heads-up notification.
+      // Only keep notification in status bar so user can tap it if they missed the popup.
+      notifBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+      notifBuilder.setCategory(NotificationCompat.CATEGORY_REMINDER)
+      notifBuilder.addAction(0, "⚡ Flash-Quiz", floatingQuizPending)
+    } else {
+      // Fallback: when popup is disabled / not granted, drop down heads-up banner
+      notifBuilder.setPriority(NotificationCompat.PRIORITY_MAX)
+      notifBuilder.setCategory(NotificationCompat.CATEGORY_ALARM)
+      notifBuilder.setDefaults(NotificationCompat.DEFAULT_ALL)
+      notifBuilder.setFullScreenIntent(fullScreenPending, true)
+      notifBuilder.addAction(0, "⚡ 1 câu", openAppPending)
     }
+    notifBuilder.addAction(0, "▶ Học ngay", learnNowPending)
+    notifBuilder.addAction(0, "⏱ Hoãn 10p", snoozePending)
+
+    try {
+      manager.notify(id, notifBuilder.build())
+    } catch (_: SecurityException) {}
+  }
+
+  fun savePendingQuizAnswer(
+    context: Context,
+    wordId: String,
+    isCorrect: Boolean,
+    responseTimeMs: Long
+  ) {
+    try {
+      val p = prefs(context)
+      val existing = JSONArray(p.getString(KEY_PENDING_QUIZ, "[]"))
+      val item = JSONObject().apply {
+        put("wordId", wordId)
+        put("isCorrect", isCorrect)
+        put("responseTimeMs", responseTimeMs)
+        put("answeredAt", System.currentTimeMillis())
+      }
+      existing.put(item)
+      p.edit().putString(KEY_PENDING_QUIZ, existing.toString()).apply()
+    } catch (_: Exception) {}
+  }
+
+  fun getPendingQuizAnswers(context: Context): String =
+    prefs(context).getString(KEY_PENDING_QUIZ, "[]") ?: "[]"
+
+  fun clearPendingQuizAnswers(context: Context) {
+    prefs(context).edit().remove(KEY_PENDING_QUIZ).apply()
   }
 
   private fun pickBody(rule: JSONObject, n: Int): String {
@@ -273,11 +523,6 @@ object ReminderScheduler {
     return if (bodies == null || bodies.length() == 0) "" else bodies.optString(n % bodies.length())
   }
 
-  /**
-   * Reminder times after `after` for the next days, the same way the page plans them (see planReminders in
-   * mobileReminders.ts) but without what only the page knows: the daily limit counts the entries already
-   * planned for the same day.
-   */
   private fun expand(rule: JSONObject, after: Long, existing: List<JSONObject>): List<Long> {
     val gapMs = rule.optLong("gapMin", 0L) * 60_000L
     val startHour = rule.optInt("startHour", 7)
@@ -345,14 +590,76 @@ class ReminderReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     val at = intent.getLongExtra("at", 0L)
     if (at > 0L) ReminderScheduler.markDelivered(context, at)
-    ReminderScheduler.showNotification(
-      context,
-      intent.getIntExtra("id", 0),
-      intent.getStringExtra("title") ?: "MyEnglish",
-      intent.getStringExtra("body") ?: ""
-    )
+
+    val id = intent.getIntExtra("id", 0)
+    val title = intent.getStringExtra("title") ?: "MyEnglish • Đến giờ ôn từ 🦉"
+    val body = intent.getStringExtra("body") ?: ""
+    val quizJson = intent.getStringExtra("quiz")
+    val dueCount = intent.getIntExtra("dueCount", 0)
+
+    // 1. If overlay permission is granted, pop up the floating dialog card over other apps!
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context)) {
+      try {
+        val popupIntent = Intent(context, FloatingNudgeActivity::class.java).apply {
+          addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+          putExtra("id", id)
+          putExtra("title", title)
+          putExtra("body", body)
+          putExtra("dueCount", dueCount)
+          putExtra("quiz", quizJson)
+        }
+
+        // On Android 14+ (API 34+), Background Activity Launch (BAL) requires opt-in via PendingIntent
+        val pi = PendingIntent.getActivity(
+          context,
+          ReminderScheduler.REQUEST_BASE + 99,
+          popupIntent,
+          PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val bundle = if (Build.VERSION.SDK_INT >= 34) {
+          try {
+            val opts = ActivityOptions.makeBasic()
+            val method = ActivityOptions::class.java.getMethod(
+              "setPendingIntentBackgroundActivityStartMode",
+              Int::class.javaPrimitiveType
+            )
+            method.invoke(opts, 1 /* MODE_BACKGROUND_ACTIVITY_START_ALLOWED */)
+            opts.toBundle()
+          } catch (_: Exception) {
+            null
+          }
+        } else {
+          null
+        }
+
+        if (bundle != null) {
+          pi.send(context, 0, null, null, null, null, bundle)
+        } else {
+          context.startActivity(popupIntent)
+        }
+      } catch (e: Exception) {
+        android.util.Log.e("MyEnglish", "Failed to start FloatingNudgeActivity from receiver", e)
+      }
+    }
+
+    // 2. Also show interactive notification in the shade
+    ReminderScheduler.showNotification(context, id, title, body, quizJson, dueCount)
+
     // Whatever happened above, keep the chain going: this is what makes the plan last without the app
     ReminderScheduler.topUp(context)
+  }
+}
+
+/** Broadcast receiver for notification quick action "⏱ Hoãn 10p" */
+class ReminderActionReceiver : BroadcastReceiver() {
+  override fun onReceive(context: Context, intent: Intent) {
+    if (intent.action == "com.myenglish.app.SNOOZE_10") {
+      ReminderScheduler.snooze(context, 10)
+      val notifId = intent.getIntExtra("id", ReminderScheduler.REQUEST_BASE)
+      val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+      manager.cancel(notifId)
+      Toast.makeText(context, "Đã hoãn nhắc ôn tập 10 phút", Toast.LENGTH_SHORT).show()
+    }
   }
 }
 

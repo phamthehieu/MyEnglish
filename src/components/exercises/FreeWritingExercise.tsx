@@ -144,7 +144,7 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
               className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold disabled:opacity-40 inline-flex items-center gap-1.5"
             >
               {grading ? <Sparkles className="w-3.5 h-3.5 animate-spin" /> : null}
-              {grading ? "AI đang chấm..." : "Chấm câu (Enter)"}
+              {grading ? "AI đang chấm..." : "Chấm câu"}
             </button>
           </div>
         </div>

@@ -114,7 +114,7 @@ export default function GradingBar({
                 {intervalPreviews[Rating.Again]}
               </span>
             </div>
-            <span className="text-[10px] text-rose-600 dark:text-rose-400/80 font-mono">{simple ? "phím 1" : "Again (1)"}</span>
+            <span className="desktop-only text-[10px] text-rose-600 dark:text-rose-400/80 font-mono">{simple ? "phím 1" : "Again (1)"}</span>
           </button>
 
           {/* Hard: Rating.Hard (2) */}
@@ -130,7 +130,7 @@ export default function GradingBar({
                 {intervalPreviews[Rating.Hard]}
               </span>
             </div>
-            <span className="text-[10px] text-amber-700 dark:text-amber-400/80 font-mono">{simple ? "phím 2" : "Hard (2)"}</span>
+            <span className="desktop-only text-[10px] text-amber-700 dark:text-amber-400/80 font-mono">{simple ? "phím 2" : "Hard (2)"}</span>
           </button>
 
           {/* Good: Rating.Good (3) */}
@@ -150,7 +150,7 @@ export default function GradingBar({
                 {intervalPreviews[Rating.Good]}
               </span>
             </div>
-            <span className="text-[10px] text-blue-700 dark:text-blue-400/80 font-mono">{simple ? "phím 3" : "Good (3)"}</span>
+            <span className="desktop-only text-[10px] text-blue-700 dark:text-blue-400/80 font-mono">{simple ? "phím 3" : "Good (3)"}</span>
           </button>
 
           {/* Easy: Rating.Easy (4) */}
@@ -168,7 +168,7 @@ export default function GradingBar({
                 {intervalPreviews[Rating.Easy]}
               </span>
             </div>
-            <span className="text-[10px] text-emerald-700 dark:text-emerald-400/80 font-mono">{simple ? "phím 4" : "Easy (4)"}</span>
+            <span className="desktop-only text-[10px] text-emerald-700 dark:text-emerald-400/80 font-mono">{simple ? "phím 4" : "Easy (4)"}</span>
           </button>
         </div>
       ) : effectiveExerciseType === "flip" ? (

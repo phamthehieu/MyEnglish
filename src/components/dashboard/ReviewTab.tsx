@@ -127,7 +127,7 @@ export default function ReviewTab({
                   onClick={() => handleStartReview(true)}
                   disabled={words.length === 0}
                   autoFocus
-                  className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 !text-white text-sm font-bold shadow-lg shadow-orange-500/20 transition-all disabled:opacity-40"
+                  className="basis-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 !text-white text-sm font-bold shadow-lg shadow-orange-500/20 transition-all disabled:opacity-40"
                 >
                   {dueCount > 0 ? <Play className="w-4 h-4 fill-white" /> : isCapped ? <RotateCcw className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
                   {startLabel}
@@ -138,7 +138,7 @@ export default function ReviewTab({
                     onClick={() => onStartFocus(focusMinutes)}
                     disabled={words.length === 0}
                     title="Phiên tập trung: ẩn mọi thứ khác, tắt nhắc nhở"
-                    className="inline-flex items-center gap-1.5 py-3 px-4 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold shadow-sm shadow-violet-600/30 disabled:opacity-40"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold shadow-sm shadow-violet-600/30 disabled:opacity-40"
                   >
                     <Crosshair className="w-4 h-4" /> Tập trung {focusMinutes}′
                   </button>
@@ -147,7 +147,7 @@ export default function ReviewTab({
                   onClick={() => handleStartReview(false)}
                   disabled={words.length === 0}
                   title="Luyện thêm mọi từ, không ảnh hưởng lịch ôn"
-                  className="inline-flex items-center gap-1.5 py-3 px-4 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white/70 dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-medium disabled:opacity-40"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white/70 dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-medium disabled:opacity-40"
                 >
                   <Dumbbell className="w-4 h-4" /> Luyện tất cả
                 </button>

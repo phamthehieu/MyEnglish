@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { emit } from "@tauri-apps/api/event";
+import { isMobilePlatform } from "@/lib/platform";
 
 export type ReminderInterval = 0 | 15 | 30 | 45 | 60 | 120; // 0 = disabled, others in minutes
 export type ReminderTrigger = "due_only" | "due_then_random" | "all_words";
@@ -479,6 +480,11 @@ export async function triggerReviewNudge(
   try {
     // false = not shown (the review popup is already open)
     const payload = buildNudgePayload(dueCount, settings, extraPayload);
+    if (isMobilePlatform()) {
+      window.dispatchEvent(new CustomEvent("open-review-nudge-in-app", { detail: payload }));
+      countNudgeShown();
+      return true;
+    }
     const shown = await invoke<boolean>("show_review_nudge", {
       payload,
       preferPrimary: settings.preferPrimaryMonitor,
@@ -510,6 +516,7 @@ export async function startFocusFromReminder(minutes: number): Promise<void> {
 }
 
 export async function hideReviewNudge(): Promise<void> {
+  window.dispatchEvent(new CustomEvent("close-review-nudge-in-app"));
   try {
     await invoke("hide_review_nudge");
   } catch (err) {

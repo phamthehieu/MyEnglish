@@ -74,7 +74,16 @@ import {
 } from "@/services/reminderSettings";
 import { PAGE_CONTAINER } from "./dashboard/shared";
 import { isMobilePlatform } from "@/lib/platform";
-import { nextPlannedReminder, reminderGapMinutes } from "@/services/mobileReminders";
+import {
+  nextPlannedReminder,
+  reminderGapMinutes,
+  canDrawOverlays,
+  requestOverlayPermission,
+  testMobileFloatingNudge,
+  testMobileFloatingNudgeIn,
+  scheduleForBackground,
+} from "@/services/mobileReminders";
+import { triggerReviewNudge } from "@/services/reminderSettings";
 
 const IS_MOBILE = isMobilePlatform();
 const IS_MAC = typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
@@ -140,6 +149,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
   // Phones: the next notification Android was given (re-read at every render, which the 5 s refresh below triggers)
   const phoneNextMs = IS_MOBILE ? nextPlannedReminder() : 0;
+  const [hasOverlayPermission, setHasOverlayPermission] = useState<boolean>(() => (IS_MOBILE ? canDrawOverlays() : true));
+  const [testingNudge, setTestingNudge] = useState(false);
 
   const formatDisplayTime = (ms: number) => {
     if (!ms || ms <= 0) return "Chưa từng hiển thị";
@@ -257,6 +268,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       setLastDisplayMs(getLastPopupDisplayTime());
       setNextReminderMs(getNextReminderTime());
       setGoalMet(isDailyGoalMet());
+      if (IS_MOBILE) setHasOverlayPermission(canDrawOverlays());
     };
     syncSettings();
 
@@ -313,6 +325,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     setReminderSettings(updated);
     setNextReminderMs(getNextReminderTime());
     srsWorker.restart();
+    if (IS_MOBILE) {
+      scheduleForBackground();
+    }
     setNotifFeedback("Đã lưu thiết lập nhắc học và cập nhật bộ đếm thời gian!");
   };
 
@@ -328,6 +343,64 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       setNotifFeedback(`Lỗi khi mở pop-up: ${e}`);
     } finally {
       setTestingPopup(false);
+    }
+  };
+
+  const handleTestNudge = async () => {
+    setTestingNudge(true);
+    setNotifFeedback(null);
+    try {
+      if (IS_MOBILE) {
+        if (!canDrawOverlays()) {
+          requestOverlayPermission();
+          setNotifFeedback("Bạn chưa cấp quyền 'Xuất hiện trên cùng'. Đang mở Cài đặt...");
+          return;
+        }
+        const ok = await testMobileFloatingNudge();
+        if (ok) {
+          setNotifFeedback("Đã hiển thị Flash-Quiz nổi trên màn hình!");
+          return;
+        }
+      }
+      await triggerReviewNudge(5);
+      setNotifFeedback("Đã mở thẻ nhắc ôn tập (Nudge)!");
+    } catch (e) {
+      setNotifFeedback(`Lỗi khi mở popup nhắc: ${e}`);
+    } finally {
+      setTestingNudge(false);
+    }
+  };
+
+  const handleTestNudgeIn = async (seconds: number = 5) => {
+    setTestingNudge(true);
+    setNotifFeedback(null);
+    try {
+      if (IS_MOBILE) {
+        if (!canDrawOverlays()) {
+          requestOverlayPermission();
+          setNotifFeedback("Bạn chưa cấp quyền 'Xuất hiện trên cùng'. Đang mở Cài đặt...");
+          return;
+        }
+        const ok = await testMobileFloatingNudgeIn(seconds);
+        if (ok) {
+          setNotifFeedback(`Đã lên lịch popup sau ${seconds}s! Hãy bấm nút Home thoát ra màn hình chính ngay.`);
+          return;
+        }
+      }
+      setNotifFeedback("Tính năng hẹn giờ thử chỉ áp dụng trên điện thoại.");
+    } catch (e) {
+      setNotifFeedback(`Lỗi: ${e}`);
+    } finally {
+      setTestingNudge(false);
+    }
+  };
+
+  const handleRequestOverlay = () => {
+    const opened = requestOverlayPermission();
+    if (opened) {
+      setNotifFeedback("Đang mở Cài đặt hệ thống để cấp quyền 'Xuất hiện trên cùng'...");
+    } else {
+      setNotifFeedback("Thiết bị đã được cấp quyền hoặc không hỗ trợ.");
     }
   };
 
@@ -741,14 +814,70 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
                 </div>
 
+                <div className="flex items-center gap-2 shrink-0 flex-wrap">
+                  <button
+                    onClick={handleTestNudge}
+                    disabled={testingNudge}
+                    className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
+                    title="Mở popup nhắc nhỏ có kèm 1 câu quiz"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{testingNudge ? "Đang mở..." : "Thử Popup nổi"}</span>
+                  </button>
+                  <button
+                    onClick={handleTestPopupQuiz}
+                    disabled={testingPopup}
+                    className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-semibold transition-all border border-slate-300 dark:border-zinc-700 flex items-center gap-1.5 shrink-0"
+                  >
+                    <span>{testingPopup ? "Đang mở..." : "Toàn màn hình"}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Android: Floating Overlay Permission Banner */}
+            {IS_MOBILE && !hasOverlayPermission && (
+              <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3 flex-wrap">
+                <div className="flex items-center gap-2.5 text-xs">
+                  <span className="text-xl shrink-0">🦉</span>
+                  <div>
+                    <div className="font-bold text-slate-900 dark:text-white">Quyền hiển thị trên ứng dụng khác chưa bật</div>
+                    <div className="text-[11px] text-slate-600 dark:text-zinc-400">
+                      Bật quyền để thẻ nhắc ôn tập & 1 câu quiz có thể xuất hiện nổi trên màn hình khi bạn đang mở app khác.
+                    </div>
+                  </div>
+                </div>
                 <button
-                  onClick={handleTestPopupQuiz}
-                  disabled={testingPopup}
-                  className="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
+                  onClick={handleRequestOverlay}
+                  className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors whitespace-nowrap shrink-0"
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>{testingPopup ? "Đang mở..." : "Hiển thị ngay"}</span>
+                  Cấp quyền hiển thị nổi
                 </button>
+              </div>
+            )}
+
+            {IS_MOBILE && hasOverlayPermission && (
+              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between gap-2 text-xs">
+                <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
+                  <span className="text-sm">✓</span>
+                  <span>Đã bật quyền hiển thị thẻ nhắc nổi trên các ứng dụng khác</span>
+                </div>
+                <div className="flex items-center gap-1.5 shrink-0 flex-wrap">
+                  <button
+                    onClick={() => handleTestNudgeIn(5)}
+                    disabled={testingNudge}
+                    className="px-2.5 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white font-semibold text-[11px] transition-colors whitespace-nowrap shadow-sm"
+                  >
+                    Thử sau 5s (thoát app)
+                  </button>
+                  <button
+                    onClick={handleTestNudge}
+                    disabled={testingNudge}
+                    className="px-2.5 py-1 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-700 dark:text-emerald-300 font-semibold text-[11px] transition-colors whitespace-nowrap"
+                  >
+                    {testingNudge ? "Đang mở..." : "Thử popup ngay"}
+                  </button>
+                </div>
               </div>
             )}
 

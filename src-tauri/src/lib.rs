@@ -26,7 +26,6 @@ fn create_hidden_command<S: AsRef<std::ffi::OsStr>>(program: S) -> std::process:
     let mut cmd = std::process::Command::new(program);
     #[cfg(target_os = "windows")]
     {
-        // 0x08000000 = CREATE_NO_WINDOW: suppresses Windows console/cmd window creation
         cmd.creation_flags(0x08000000);
     }
     cmd

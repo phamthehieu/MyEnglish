@@ -5,6 +5,7 @@ import { isLeech } from "@/services/smartReview";
 import { getCatalogEntries, type CatalogEntry } from "@/services/vocabCatalog";
 import { highlightWord } from "./highlightWord";
 import MnemonicPanel from "./MnemonicPanel";
+import { isMobilePlatform } from "@/lib/platform";
 
 /**
  * Subcomponent to render revealed word details (Vietnamese meaning, code examples & grammar analysis)
@@ -66,19 +67,17 @@ export default function RevealedWordContent({
           </div>
 
           <div className="flex items-center gap-2">
-            {!compact && (
+            {!compact && onFlipBack && (
               <button
                 onClick={(e) => {
-                  if (onFlipBack) {
-                    e.stopPropagation();
-                    onFlipBack();
-                  }
+                  e.stopPropagation();
+                  onFlipBack();
                 }}
                 className="text-[11px] font-mono text-cyan-700 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300 flex items-center gap-1.5 bg-cyan-50 hover:bg-cyan-100 dark:bg-cyan-950/60 dark:hover:bg-cyan-900/60 px-2.5 py-1 rounded-lg border border-cyan-200/60 dark:border-cyan-800/40 transition-colors"
                 title="Lật thẻ về mặt trước"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Click thẻ để lật lại</span>
+                <span>{isMobilePlatform() ? "Chạm thẻ để lật lại" : "Click thẻ để lật lại"}</span>
               </button>
             )}
           </div>

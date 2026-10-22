@@ -85,8 +85,32 @@ try {
 $apk = Get-ChildItem $apkDir -Recurse -Filter "*.apk" | Select-Object -First 1
 if (-not $apk) { throw "Gradle did not produce an APK" }
 if ($Release -and $apk.Name -match "unsigned") { throw "The release APK is unsigned: check keystore.properties" }
-New-Item -ItemType Directory -Force $OutDir | Out-Null
-$name = if ($Release) { "MyEnglish.apk" } else { "MyEnglish-debug.apk" }
+$version = $null
+$pkgJson = Join-Path $root "package.json"
+if (Test-Path $pkgJson) {
+  try {
+    $version = (Get-Content $pkgJson -Raw | ConvertFrom-Json).version
+  } catch {}
+}
+if (-not $version) {
+  $tauriConf = Join-Path $root "src-tauri\tauri.conf.json"
+  if (Test-Path $tauriConf) {
+    try {
+      $version = (Get-Content $tauriConf -Raw | ConvertFrom-Json).version
+    } catch {}
+  }
+}
+$verSuffix = if ($version) { "-v$version" } else { "" }
+
+$name = if ($Release) { "MyEnglish$verSuffix.apk" } else { "MyEnglish$verSuffix-debug.apk" }
 $out = Join-Path (Resolve-Path $OutDir) $name
 Copy-Item $apk.FullName $out -Force
+
+$aliasName = if ($Release) { "MyEnglish.apk" } else { "MyEnglish-debug.apk" }
+$aliasOut = Join-Path (Resolve-Path $OutDir) $aliasName
+Copy-Item $apk.FullName $aliasOut -Force
+
 Write-Host "==> Done: $out ($([math]::Round((Get-Item $out).Length / 1MB, 1)) MB)"
+if ($aliasName -ne $name) {
+  Write-Host "==> Alias: $aliasOut"
+}

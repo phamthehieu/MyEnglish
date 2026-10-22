@@ -120,9 +120,9 @@ export default function MultipleChoiceExercise({
   }, [isAnswered, questionData.options, handleSelectOption]);
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-6 animate-in fade-in duration-200">
-      {/* Question Card */}
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-6 md:p-8 text-center space-y-3 shadow-sm relative overflow-hidden">
+    <div className="w-full max-w-xl mx-auto space-y-3 md:space-y-6 animate-in fade-in duration-200">
+      {/* Question Card: on a phone it drops its own frame (a card inside the card ate the space) */}
+      <div className="rounded-2xl md:border border-slate-200 dark:border-zinc-800 md:bg-white md:dark:bg-zinc-900/80 py-1 md:p-8 text-center space-y-1.5 md:space-y-3 md:shadow-sm relative overflow-hidden">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-400 border border-cyan-200/50 dark:border-cyan-800/40">
           <Sparkles className="w-3 h-3" />
           <span>{questionData.subPrompt}</span>
@@ -159,7 +159,7 @@ export default function MultipleChoiceExercise({
       </div>
 
       {/* 4 Choices Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
         {questionData.options.map((opt, idx) => {
           const isSelected = selectedId === opt.id;
           const isShake = shakeIdx === idx;
@@ -167,7 +167,7 @@ export default function MultipleChoiceExercise({
           const showFail = isSelected && !opt.isCorrect;
 
           let btnClasses =
-            "rounded-xl border p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
+            "rounded-xl border p-3 md:p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
           if (showSuccess) {
             btnClasses +=
               "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30";
@@ -219,8 +219,8 @@ export default function MultipleChoiceExercise({
       </div>
 
       {/* Helpful Hint - fixed height h-7 so it NEVER jumps */}
-      <div className="flex items-center justify-between gap-3 text-xs text-slate-400 dark:text-zinc-500 px-2 min-h-[28px]">
-        <span className="flex items-center gap-1">
+      <div className="flex items-center justify-between gap-3 text-xs text-slate-400 dark:text-zinc-500 px-2 min-h-[20px] md:min-h-[28px]">
+        <span className="desktop-only flex items-center gap-1">
           <HelpCircle className="w-3.5 h-3.5" />
           Phím tắt: bấm <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[10px] font-mono">1</kbd> - <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[10px] font-mono">4</kbd>
         </span>

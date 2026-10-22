@@ -766,8 +766,8 @@ function Quiz({
           </div>
         )}
       </div>
-      <p className="text-xs text-center text-slate-500 dark:text-zinc-400">
-        Phím tắt: <Kbd>1</Kbd>–<Kbd>{q.options.length}</Kbd> chọn · <Kbd>Space</Kbd> nghe lại · <Kbd>S</Kbd> nghe chậm · <Kbd>Enter</Kbd> câu tiếp. Đúng{" "}
+      <p className="desktop-only text-xs text-center text-slate-500 dark:text-zinc-400">
+        Phím tắt:<Kbd>1</Kbd>–<Kbd>{q.options.length}</Kbd> chọn · <Kbd>Space</Kbd> nghe lại · <Kbd>S</Kbd> nghe chậm · <Kbd>Enter</Kbd> câu tiếp. Đúng{" "}
         {passMark(total)}/{total} câu là xong bài.
       </p>
     </div>

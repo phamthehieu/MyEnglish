@@ -540,7 +540,7 @@ export default function ReflexChallengeModal({
               className="flex-2 py-3.5 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black flex items-center justify-center gap-2 shadow-lg shadow-amber-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98]"
             >
               <Zap className="w-5 h-5 fill-slate-950" />
-              BẮT ĐẦU NGAY (Space)
+              BẮT ĐẦU NGAY
             </button>
           </div>
         </div>
@@ -841,7 +841,7 @@ export default function ReflexChallengeModal({
             onClick={handleStartNextTier}
             className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-black text-base flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/30 transition-transform transform active:scale-95"
           >
-            <span>VÀO CHẶNG {tiersCleared + 1} (Nhấn Space)</span>
+            <span>VÀO CHẶNG {tiersCleared + 1}</span>
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>

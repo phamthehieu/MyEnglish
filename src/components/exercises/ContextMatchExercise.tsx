@@ -337,15 +337,15 @@ export default function ContextMatchExercise({
             <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
             <span className="font-semibold">
               {byElimination
-                ? `Đúng hết, nhưng "${word.word}" là cặp cuối còn lại nên chưa tính là nhớ chắc. Nhấn Enter hoặc Tiếp tục.`
-                : "Tuyệt vời! Bạn đã ghép đúng toàn bộ ngữ cảnh. Nhấn Enter hoặc Tiếp tục."}
+                ? `Đúng hết, nhưng "${word.word}" là cặp cuối còn lại nên chưa tính là nhớ chắc. Bấm Tiếp tục.`
+                : "Tuyệt vời! Bạn đã ghép đúng toàn bộ ngữ cảnh. Bấm Tiếp tục."}
             </span>
           </div>
         ) : isAnswered && isCorrect === false ? (
           <div className="w-full h-full px-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-xs flex items-center gap-2 shadow-xs animate-in fade-in duration-150">
             <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
             <span className="font-semibold">
-              Đã hiển thị các cặp ghép đúng. Từ "{word.word}" sẽ được ôn lại sớm. Nhấn Enter hoặc Tiếp tục.
+              Đã hiển thị các cặp ghép đúng. Từ "{word.word}" sẽ được ôn lại sớm. Bấm Tiếp tục.
             </span>
           </div>
         ) : isCorrect === false && !isAnswered ? (

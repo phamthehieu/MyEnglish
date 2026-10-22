@@ -1,24 +1,20 @@
-import { useState, type RefObject } from "react";
-import { Sparkles, Search, RefreshCw, Plus, X, Flame, LayoutGrid, List, Target, Loader2, Zap, Crosshair, BellOff, Menu } from "lucide-react";
+import { useState } from "react";
+import { Sparkles, RefreshCw, Plus, X, Flame, Target, Loader2, Zap, Crosshair, BellOff, Menu } from "lucide-react";
 import type { calculateStreakAndGoal } from "@/services/streak";
 import { triggerAutoReplenish } from "@/services/autoReplenish";
 import { useWordsStore } from "@/stores/wordsStore";
 import type { GlobalToastData } from "./DashboardBanners";
-import { navGroupOf, type DashboardTab, type ViewMode } from "./shared";
+import { navGroupOf, type DashboardTab } from "./shared";
 import { AI_VOCAB_ENABLED } from "@/services/features";
 import type { TodayWork } from "@/services/smartReview";
 import { vocabDetail } from "./todayPlan";
 import { useReminderSnooze } from "@/hooks/useReminderSnooze";
 import { snoozeEndText } from "@/services/reminderSettings";
+import { canDrawOverlays, requestOverlayPermission } from "@/services/mobileReminders";
 
 interface DashboardHeaderProps {
-  searchInputRef: RefObject<HTMLInputElement>;
-  searchQuery: string;
-  setSearchQuery: (q: string) => void;
   activeTab: DashboardTab;
   setActiveTab: (tab: DashboardTab) => void;
-  viewMode: ViewMode;
-  setViewMode: (mode: ViewMode) => void;
   streakStats: ReturnType<typeof calculateStreakAndGoal>;
   dueCount: number;
   todayWork?: TodayWork;
@@ -38,13 +34,8 @@ interface DashboardHeaderProps {
 
 /** Top App Bar: search, reminder snooze chip, streak indicator, view toggle, refresh, auto-replenish, focus, review, add word */
 export default function DashboardHeader({
-  searchInputRef,
-  searchQuery,
-  setSearchQuery,
   activeTab,
   setActiveTab,
-  viewMode,
-  setViewMode,
   streakStats,
   dueCount,
   todayWork,
@@ -61,6 +52,8 @@ export default function DashboardHeader({
   const refreshWords = useWordsStore((s) => s.refreshWords);
   const [isQuickReplenishing, setIsQuickReplenishing] = useState(false);
   const snooze = useReminderSnooze();
+  const isMobile = typeof window !== "undefined" && !!(window as any).AndroidReminders;
+  const [showOverlayPrompt, setShowOverlayPrompt] = useState(() => isMobile && !canDrawOverlays());
 
   const handleQuickReplenish = async () => {
     if (isQuickReplenishing) return;
@@ -89,32 +82,6 @@ export default function DashboardHeader({
   const group = simpleMode ? navGroupOf(activeTab) : null;
   const subTabs = group && group.tabs.length > 1 && !(isReviewing && activeTab === "review") ? group.tabs : null;
 
-  // Word library: cards or table
-  const viewToggle = (
-    <div className="flex items-center bg-slate-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-slate-200 dark:border-zinc-800">
-      <button
-        onClick={() => setViewMode("gallery")}
-        title="Dạng thẻ" aria-label="Xem dạng thẻ"
-        className={`p-1.5 rounded-md transition-colors ${viewMode === "gallery"
-          ? "bg-white dark:bg-zinc-800 text-cyan-700 dark:text-cyan-400 shadow-sm border border-slate-200 dark:border-transparent"
-          : "text-slate-500 dark:text-zinc-500 hover:text-slate-800 dark:hover:text-zinc-200"
-          }`}
-      >
-        <LayoutGrid className="w-3.5 h-3.5" />
-      </button>
-      <button
-        onClick={() => setViewMode("table")}
-        title="Dạng bảng" aria-label="Xem dạng bảng"
-        className={`p-1.5 rounded-md transition-colors ${viewMode === "table"
-          ? "bg-white dark:bg-zinc-800 text-cyan-700 dark:text-cyan-400 shadow-sm border border-slate-200 dark:border-transparent"
-          : "text-slate-500 dark:text-zinc-500 hover:text-slate-800 dark:hover:text-zinc-200"
-          }`}
-      >
-        <List className="w-3.5 h-3.5" />
-      </button>
-    </div>
-  );
-
   return (
     <>
     <header className="min-h-14 py-2 pt-[calc(env(safe-area-inset-top)+0.5rem)] md:pt-2 border-b border-slate-200 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/40 px-3 md:px-6 flex items-center justify-between gap-3 shrink-0 backdrop-blur-md">
@@ -127,52 +94,39 @@ export default function DashboardHeader({
       >
         <Menu className="w-5 h-5" />
       </button>
-      {/* Search Bar: it only filters the word library, so it is only shown there */}
-      {activeTab !== "library" ? (
-        <div className="flex-1" />
-      ) : (
-      <div className="flex-1 min-w-[120px] max-w-md relative">
-        <Search className="w-4 h-4 text-slate-400 dark:text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
-        <input
-          ref={searchInputRef}
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Tìm từ hoặc nghĩa... (nhấn / để tìm)"
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck={false}
-          data-gramm="false"
-          data-enable-grammarly="false"
-          data-lpignore="true"
-          data-1p-ignore="true"
-          data-form-type="other"
-          className="w-full bg-slate-100/80 dark:bg-zinc-900/80 border border-slate-200 dark:border-zinc-800 rounded-lg pl-9 pr-14 py-1.5 text-xs text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
-        />
-        {searchQuery ? (
-          <button
-            onClick={() => setSearchQuery("")}
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        ) : (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[10px] font-mono text-slate-400 dark:text-zinc-500 pointer-events-none">
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-400">/</kbd>
-          </div>
-        )}
-      </div>
-      )}
 
-      {/* Right Header Controls: wrap onto a second row in a narrow window instead of being cut off */}
-      <div className="min-w-0 flex flex-wrap items-center justify-end gap-2">
+      {/* Center: Streak & Daily Goal Indicator */}
+      <div className="flex-1 min-w-0 flex items-center">
+        <button
+          onClick={() => setActiveTab("analytics")}
+          title={`Chuỗi: ${streakStats.currentStreak} ngày • Hôm nay: ${streakStats.todayCount}/${streakStats.dailyGoal} câu (bấm để xem tiến độ)`}
+          className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700 text-xs transition-colors shadow-sm shrink-0"
+        >
+          <div className="flex items-center gap-1 font-mono font-bold text-orange-600 dark:text-orange-400">
+            <Flame className="w-3.5 h-3.5" />
+            <span>{streakStats.currentStreak}</span>
+          </div>
+          <div className="w-[1px] h-3 bg-slate-200 dark:bg-zinc-800" />
+          <div className="flex items-center gap-1.5 font-mono text-slate-700 dark:text-zinc-300">
+            <Target className="w-3 h-3 text-cyan-600 dark:text-cyan-400" />
+            <span>
+              {streakStats.todayCount}/{streakStats.dailyGoal}
+            </span>
+            {streakStats.goalReached && (
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            )}
+          </div>
+        </button>
+      </div>
+
+      {/* Right Header Controls: strictly 1 row on mobile and desktop without staircase wrapping */}
+      <div className="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
         {/* Reminders snoozed (corner reminder, popup or tray): until when, and undo in one click */}
         {snooze.snoozedUntil && (
           <div
             role="status"
             title={`Nhắc học đang hoãn đến ${snoozeEndText(snooze.snoozedUntil)} (còn ${Math.max(1, Math.ceil((snooze.snoozedUntil - Date.now()) / 60_000))} phút)`}
-            className="inline-flex items-center rounded-lg border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-950/40 text-xs text-amber-800 dark:text-amber-300 shadow-sm"
+            className="inline-flex items-center rounded-lg border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-950/40 text-xs text-amber-800 dark:text-amber-300 shadow-sm shrink-0"
           >
             <span className="inline-flex items-center gap-1.5 pl-2.5 pr-2 py-1">
               <BellOff className="w-3.5 h-3.5 shrink-0" />
@@ -192,40 +146,13 @@ export default function DashboardHeader({
           </div>
         )}
 
-        {/* Streak & Daily Goal Quick Indicator (the word library needs the room; the sidebar shows both too) */}
-        {activeTab !== "library" && (
-        <button
-          onClick={() => setActiveTab("analytics")}
-          title={`Chuỗi: ${streakStats.currentStreak} ngày • Hôm nay: ${streakStats.todayCount}/${streakStats.dailyGoal} câu (bấm để xem tiến độ)`}
-          className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700 text-xs transition-colors shadow-sm"
-        >
-          <div className="flex items-center gap-1 font-mono font-bold text-orange-600 dark:text-orange-400">
-            <Flame className="w-3.5 h-3.5" />
-            <span>{streakStats.currentStreak}</span>
-          </div>
-          <div className="w-[1px] h-3 bg-slate-200 dark:bg-zinc-800" />
-          <div className="flex items-center gap-1.5 font-mono text-slate-700 dark:text-zinc-300">
-            <Target className="w-3 h-3 text-cyan-600 dark:text-cyan-400" />
-            <span>
-              {streakStats.todayCount}/{streakStats.dailyGoal}
-            </span>
-            {streakStats.goalReached && (
-              // Static: a pulse under the header's backdrop blur re-composited the blur on every frame
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            )}
-          </div>
-        </button>
-        )}
-        {/* View mode of the word library: here only when there is no tab bar below (it sits on that bar otherwise) */}
-        {activeTab === "library" && !subTabs && viewToggle}
-
         {/* Refresh: only over the word list (words refresh on their own; it gives its room up in a narrow window) */}
         {activeTab === "library" && (
         <button
           onClick={() => refreshWords({ showLoading: true })}
           disabled={loading}
           title="Tải lại danh sách từ"
-          className={`hidden xl:inline-flex p-1.5 rounded-lg border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shadow-sm`}
+          className={`hidden xl:inline-flex p-1.5 rounded-lg border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shadow-sm shrink-0`}
         >
           <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-cyan-600 dark:text-cyan-400" : ""}`} />
         </button>
@@ -237,17 +164,17 @@ export default function DashboardHeader({
           onClick={handleQuickReplenish}
           disabled={isQuickReplenishing}
           title={`Tự động sinh 3 từ vựng & bài tập ngữ pháp chuẩn cấp độ ${effectiveLevel}`}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white text-xs font-semibold shadow-sm transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-white text-xs font-semibold shadow-sm transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shrink-0"
         >
           {isQuickReplenishing ? (
             <>
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              <span>Đang sinh...</span>
+              <span className="hidden sm:inline">Đang sinh...</span>
             </>
           ) : (
             <>
               <Sparkles className="w-3.5 h-3.5 text-yellow-200" />
-              <span>Gợi ý 3 từ (AI)</span>
+              <span className="hidden sm:inline">Gợi ý 3 từ (AI)</span>
             </>
           )}
         </button>
@@ -258,10 +185,10 @@ export default function DashboardHeader({
           <button
             onClick={onStartFocus}
             title="Phiên tập trung: học trọn vài phút, ẩn mọi thứ khác và tắt nhắc nhở"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-sm shadow-violet-600/30 transition-all active:scale-95"
+            className="inline-flex items-center justify-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-sm shadow-violet-600/30 transition-all active:scale-95 shrink-0"
           >
             <Crosshair className="w-3.5 h-3.5" />
-            <span>Tập trung</span>
+            <span className="hidden md:inline">Tập trung</span>
           </button>
         )}
 
@@ -279,12 +206,12 @@ export default function DashboardHeader({
                     : `Học nhanh ${dueCount} thẻ`
                   : "Bắt đầu buổi ôn tập nhanh (Flashcards & Bài tập)"
             }
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold shadow-sm transition-all active:scale-95"
+            className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 sm:px-3 rounded-lg bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold shadow-sm transition-all active:scale-95 shrink-0"
           >
             <Zap className="w-3.5 h-3.5 fill-white text-white" />
-            <span>{isReviewing ? "Tiếp tục ôn" : "Ôn tập ngay"}</span>
+            <span className="hidden sm:inline">{isReviewing ? "Tiếp tục ôn" : "Ôn tập ngay"}</span>
             {isReviewing ? null : dueCount > 0 ? (
-              <span className="text-[10px] bg-black/25 text-white px-1.5 py-0.2 rounded font-mono font-bold">
+              <span className="text-[10px] bg-black/25 text-white px-1.5 py-0.5 rounded font-mono font-bold leading-none">
                 {dueCount}
               </span>
             ) : (
@@ -298,22 +225,54 @@ export default function DashboardHeader({
         <button
           onClick={() => setActiveTab("capture")}
           title={AI_VOCAB_ENABLED ? "Thêm từ mới" : "Tìm một từ trong bộ Oxford để học sớm"}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-semibold shadow-sm transition-all"
+          className="inline-flex items-center justify-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-semibold shadow-sm transition-all shrink-0 active:scale-95"
         >
           <Plus className="w-3.5 h-3.5" />
-          <span>{AI_VOCAB_ENABLED ? "Thêm từ" : "Từ Oxford"}</span>
+          <span className="hidden sm:inline">{AI_VOCAB_ENABLED ? "Thêm từ" : "Từ Oxford"}</span>
         </button>
         )}
       </div>
     </header>
+ 
+    {/* Android: Notice if Display over other apps permission is not yet granted */}
+    {showOverlayPrompt && (
+      <div className="bg-amber-500/10 border-b border-amber-500/25 px-3 md:px-6 py-2 flex items-center justify-between gap-3 text-xs shrink-0 animate-in fade-in slide-in-from-top-1 duration-200">
+        <div className="flex items-center gap-2 text-amber-800 dark:text-amber-200 min-w-0">
+          <span className="text-base shrink-0">🦉</span>
+          <span className="truncate">
+            Cần quyền <b>Xuất hiện trên cùng</b> để nhận popup nhắc khi dùng app khác
+          </span>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={() => {
+              requestOverlayPermission();
+              setTimeout(() => setShowOverlayPrompt(!canDrawOverlays()), 1500);
+            }}
+            className="px-2.5 py-1 rounded-lg bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-medium text-[11px] transition whitespace-nowrap shadow-sm"
+          >
+            Cấp quyền
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowOverlayPrompt(false)}
+            aria-label="Đóng thông báo"
+            className="p-1 rounded text-amber-700 dark:text-amber-400 hover:bg-amber-500/20 transition"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+    )}
 
     {/* Simple mode: the tabs of the current sidebar entry (e.g. Ôn tập · Từ đã học · Lộ trình từ vựng) */}
     {group && subTabs && (
-      <div className="h-10 shrink-0 border-b border-slate-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/30 px-3 md:px-6 flex items-center overflow-x-auto">
+      <div className="h-10 shrink-0 border-b border-slate-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/30 px-3 md:px-6 flex items-center overflow-x-auto scrollbar-none gap-2">
         <div
           role="tablist"
           aria-label={group.label}
-          className="inline-flex items-center gap-0.5 bg-slate-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-slate-200 dark:border-zinc-800"
+          className="inline-flex items-center gap-0.5 bg-slate-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-slate-200 dark:border-zinc-800 shrink-0"
         >
           {subTabs.map((t) => {
             const selected = t.tab === activeTab;
@@ -350,7 +309,6 @@ export default function DashboardHeader({
             );
           })}
         </div>
-        {activeTab === "library" && <div className="ml-auto">{viewToggle}</div>}
       </div>
     )}
     </>

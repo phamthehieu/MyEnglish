@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Keyboard hints (key badges, "Phím tắt…" lines) mean nothing on a touch screen */
+@media (hover: none) and (pointer: coarse) {
+  kbd,
+  .desktop-only {
+    display: none !important;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -119,35 +127,16 @@
    CLEAN NATIVE SCROLLBARS (LIGHT & DARK)
    ========================================================= */
 
+/* Scrollbars are hidden everywhere; scrolling itself still works */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-html.light ::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-html.light ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
-}
-
-html.light ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-html.dark ::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-html.dark ::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 9999px;
-}
-
-html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* Utilities */

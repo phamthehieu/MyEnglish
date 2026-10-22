@@ -151,7 +151,7 @@ export default function DisplaySettings() {
             <Volume2 className="w-3.5 h-3.5" /> Nghe thử
           </button>
         </div>
-        <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+        <p className="desktop-only text-[11px] text-slate-500 dark:text-zinc-400">
           Giọng "Enhanced"/"Premium" trên macOS nghe tự nhiên hơn (tải thêm trong Cài đặt hệ thống → Trợ năng → Nội dung được đọc).
         </p>
       </div>

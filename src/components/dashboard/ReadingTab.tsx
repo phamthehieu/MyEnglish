@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { isMobilePlatform } from "@/lib/platform";
 import { BookOpenText, Check, Pencil, Plus, Quote, Sparkles, X } from "lucide-react";
 import { useWordsStore } from "@/stores/wordsStore";
 import { analyzeText, logEncounters, type BankStatus, type ReadingAnalysis } from "@/services/reading";
@@ -196,7 +197,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder={`Dán văn bản tiếng Anh vào đây (${PASTE_KEYS})…`}
+          placeholder={isMobilePlatform() ? "Dán văn bản tiếng Anh vào đây…" : `Dán văn bản tiếng Anh vào đây (${PASTE_KEYS})…`}
           rows={14}
           autoComplete="off"
           autoCorrect="off"

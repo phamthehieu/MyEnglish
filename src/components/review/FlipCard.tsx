@@ -2,16 +2,19 @@ import { Volume2, Eye } from "lucide-react";
 import type { ReviewCard, TermWithMeaning } from "@/types/database";
 import RevealedWordContent from "./RevealedWordContent";
 import { handleSpeak } from "./speech";
+import { isMobilePlatform } from "@/lib/platform";
 
 interface FlipCardProps {
   currentWord: ReviewCard;
   synonyms: TermWithMeaning[];
   isFlipped: boolean;
   setIsFlipped: (value: boolean) => void;
+  /** Introduction cards stay on the answer side: no way back to the front */
+  isIntro?: boolean;
 }
 
 /** MODE 1: STANDARD FLIP */
-export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlipped }: FlipCardProps) {
+export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlipped, isIntro }: FlipCardProps) {
   return (
     <div className="flex-1 min-h-0 flex flex-col justify-between">
       {!isFlipped ? (
@@ -54,14 +57,14 @@ export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlippe
 
           <div className="pt-8 text-xs text-slate-500 dark:text-zinc-400 flex items-center gap-1.5 animate-pulse">
             <Eye className="w-4 h-4" />
-            <span>Nhấn Space hoặc click vào thẻ để xem định nghĩa</span>
+            <span>{isMobilePlatform() ? "Chạm vào thẻ để xem định nghĩa" : "Nhấn Space hoặc click vào thẻ để xem định nghĩa"}</span>
           </div>
         </div>
       ) : (
         <RevealedWordContent
           currentWord={currentWord}
           handleSpeak={handleSpeak}
-          onFlipBack={() => setIsFlipped(false)}
+          onFlipBack={isIntro ? undefined : () => setIsFlipped(false)}
         />
       )}
     </div>

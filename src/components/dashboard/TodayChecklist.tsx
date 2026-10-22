@@ -134,7 +134,7 @@ export default function TodayChecklist({
         <button
           onClick={() => onRun(primary)}
           autoFocus
-          className="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 active:scale-[0.98] text-white text-sm font-bold shadow-md shadow-cyan-600/30 inline-flex items-center justify-center gap-2 transition-all"
+          className="basis-full px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 active:scale-[0.98] text-white text-sm font-bold shadow-md shadow-cyan-600/30 inline-flex items-center justify-center gap-2 transition-all"
         >
           <Play className="w-4 h-4 fill-white" />
           {primaryLabel(primary, firstIndex === 0)}
@@ -143,7 +143,7 @@ export default function TodayChecklist({
           <button
             onClick={onFocus}
             title="Học các thẻ này trong một phiên có hẹn giờ: ẩn mọi thứ khác, tắt nhắc nhở"
-            className="px-3.5 py-2.5 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-600/30 transition active:scale-[0.98]"
+            className="flex-1 justify-center px-3.5 py-2.5 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-600/30 transition active:scale-[0.98]"
           >
             <Crosshair className="w-4 h-4" /> Tập trung {focusMinutes ?? 10}′
           </button>
@@ -152,7 +152,7 @@ export default function TodayChecklist({
           <button
             onClick={onQuickStart}
             title="3 thẻ ôn nhanh, đủ để giữ chuỗi ngày học"
-            className={`px-3.5 py-2.5 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 border transition ${
+            className={`flex-1 justify-center px-3.5 py-2.5 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 border transition ${
               quickMode === "urgent"
                 ? "border-amber-400 dark:border-amber-500/60 bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-500/20"
                 : "border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"

@@ -7,6 +7,10 @@
     <!-- Reminders on time: granted at install on Android 13+ (USE_EXACT_ALARM), pre-granted on 12 (SCHEDULE_EXACT_ALARM) -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32" />
+    <!-- Floating popup quiz / reminder card over other apps -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
 
     <!-- AndroidTV support -->
@@ -38,8 +42,24 @@
             </intent-filter>
         </activity>
 
+        <!-- Floating popup quiz / reminder card shown over other apps -->
+        <activity
+            android:name=".FloatingNudgeActivity"
+            android:theme="@style/Theme.FloatingNudge"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:exported="true"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true" />
+
         <!-- Study reminders: alarms fire the receiver with the app closed; the boot receiver sets them again -->
         <receiver android:name=".ReminderReceiver" android:exported="false" />
+        <receiver android:name=".ReminderActionReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="com.myenglish.app.SNOOZE_10" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".ReminderBootReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

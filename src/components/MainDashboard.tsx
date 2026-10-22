@@ -54,6 +54,8 @@ const VocabTab = lazy(() => import("./dashboard/VocabTab"));
 const VocabSetupScreen = lazy(() => import("./VocabSetupScreen"));
 const GrammarTenseSetupModal = lazy(() => import("./grammar/GrammarTenseSetupModal"));
 const ReflexChallengeModal = lazy(() => import("./reflex/ReflexChallengeModal"));
+const ReviewNudge = lazy(() => import("@/components/ReviewNudge"));
+import type { ReviewNudgePayload } from "@/services/reminderSettings";
 
 function TabFallback() {
   return (
@@ -122,6 +124,8 @@ export default function MainDashboard({
   const refreshWordsByIds = useWordsStore((s) => s.refreshWordsByIds);
 
   const [showReviewModalPreview, setShowReviewModalPreview] = useState(false);
+  const [showReviewNudgeInApp, setShowReviewNudgeInApp] = useState(false);
+  const [nudgePayloadInApp, setNudgePayloadInApp] = useState<ReviewNudgePayload | null>(null);
   const [pipelineQueue, setPipelineQueue] = useState<PipelineItem[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [reviewTimeFilter, setReviewTimeFilter] = useState<ReviewTimeBucket>("all");
@@ -614,6 +618,23 @@ export default function MainDashboard({
     window.addEventListener("open-review-popup-preview", handleOpenPreview);
     window.addEventListener("close-review-popup-preview", handleClosePreview);
 
+    const handleOpenNudge = (e: Event) => {
+      const payload = (e as CustomEvent<ReviewNudgePayload>).detail;
+      setNudgePayloadInApp(payload);
+      setShowReviewNudgeInApp(true);
+    };
+    const handleCloseNudge = () => setShowReviewNudgeInApp(false);
+    const handleOpenQuickQuiz = () => {
+      if (onOpenReviewPopupPreview) {
+        onOpenReviewPopupPreview();
+      } else {
+        setShowReviewModalPreview(true);
+      }
+    };
+    window.addEventListener("open-review-nudge-in-app", handleOpenNudge);
+    window.addEventListener("close-review-nudge-in-app", handleCloseNudge);
+    window.addEventListener("open-quick-quiz", handleOpenQuickQuiz);
+
     // Reviews recorded in the popup / other windows
     let unlistenWordsChangedFn: (() => void) | null = null;
     const handleWordsChanged = (e: Event) => {
@@ -678,6 +699,9 @@ export default function MainDashboard({
       window.removeEventListener("words-changed", handleWordsChanged);
       window.removeEventListener("open-review-popup-preview", handleOpenPreview);
       window.removeEventListener("close-review-popup-preview", handleClosePreview);
+      window.removeEventListener("open-review-nudge-in-app", handleOpenNudge);
+      window.removeEventListener("close-review-nudge-in-app", handleCloseNudge);
+      window.removeEventListener("open-quick-quiz", handleOpenQuickQuiz);
       window.removeEventListener("focus", handleFocus);
       document.removeEventListener("visibilitychange", handleVisible);
       if (unlistenWordsChangedFn) unlistenWordsChangedFn();
@@ -1256,13 +1280,8 @@ export default function MainDashboard({
         {/* Top App Bar */}
         {!focusing && (
         <DashboardHeader
-          searchInputRef={searchInputRef}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
           activeTab={activeTab}
           setActiveTab={handleSelectTab}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
           streakStats={streakStats}
           dueCount={dueCount}
           todayWork={todayWork}
@@ -1307,7 +1326,10 @@ export default function MainDashboard({
             setVisibleCount={setVisibleCount}
             cardMeta={cardMeta}
             viewMode={viewMode}
+            setViewMode={setViewMode}
             searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            searchInputRef={searchInputRef}
             selectedTopic={selectedTopic}
             setSelectedTopic={setSelectedTopic}
             availableTopics={availableTopics}
@@ -1525,6 +1547,19 @@ export default function MainDashboard({
           setIsDeleting={setIsDeleting}
           setMessage={setMessage}
         />
+      )}
+
+      {/* FLOATING IN-APP REVIEW NUDGE CARD */}
+      {showReviewNudgeInApp && nudgePayloadInApp && (
+        <div className="fixed top-2 left-2 right-2 sm:left-auto sm:right-4 sm:w-[380px] z-[9999] pointer-events-auto">
+          <Suspense fallback={null}>
+            <ReviewNudge
+              inApp={true}
+              initialPayload={nudgePayloadInApp}
+              onDone={() => setShowReviewNudgeInApp(false)}
+            />
+          </Suspense>
+        </div>
       )}
 
       {/* FOCUS REVIEW POP-UP MODAL (PREVIEW OR IN-APP MODE) */}
