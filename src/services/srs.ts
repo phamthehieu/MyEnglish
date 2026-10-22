@@ -1,0 +1,1058 @@
+import { isPermissionGranted, requestPermission, sendNotification } from "@tauri-apps/plugin-notification";
+import { invoke } from "@tauri-apps/api/core";
+import {
+  fsrs,
+  generatorParameters,
+  createEmptyCard,
+  Rating,
+  State,
+  StrategyMode,
+  GenSeedStrategyWithCardId,
+  BasicLearningStepsStrategy,
+  type Card,
+} from "ts-fsrs";
+import { getDatabase, getDueWordsFromDb, getDueWordsLite, getWordsLite, SRS_COLUMNS } from "./db";
+import { isWordDue, nextLocalDayStart } from "./cards";
+import type { WordDetail, SRSReview, FSRSState, CardDirection } from "@/types/database";
+import { getStoredWeights } from "./fsrsOptimizer";
+import { persistKeyNow } from "./storageBackup";
+import { countTodayWork } from "./todayWork";
+
+export { Rating, State };
+
+const SRS_TABLE: Record<CardDirection, string> = {
+  recognition: "srs_reviews",
+  production: "srs_production",
+};
+
+export interface FSRSResult {
+  direction: CardDirection; // card that was actually updated
+  stability: number;
+  difficulty: number;
+  elapsed_days: number;
+  scheduled_days: number;
+  reps: number;
+  lapses: number;
+  state: number;
+  learningSteps: number;
+  lastReview?: string;
+  nextReviewDate: string;
+  // Backward compatibility fields with SM-2
+  easeFactor: number;
+  interval: number;
+  repetitions: number;
+}
+
+const FSRS_RETENTION_KEY = "myenglish_fsrs_request_retention";
+const FSRS_MAX_INTERVAL_KEY = "myenglish_fsrs_max_interval";
+const STUDY_LIMITS_KEY = "myenglish_study_limits_v1";
+
+/** A word's recall card is created once its recognition card reaches this stability (days); 7 in
+ * foundation mode (learnerProfile.productionUnlockDays), where recognition needs to settle first */
+export const PRODUCTION_UNLOCK_STABILITY_DAYS = 3;
+
+export interface StudyLimits {
+  newCardsPerDay: number; // Max never-reviewed words introduced per day
+  maxSessionSize: number; // Max cards in one flashcard session
+}
+
+export const DEFAULT_STUDY_LIMITS: StudyLimits = {
+  newCardsPerDay: 10,
+  maxSessionSize: 30,
+};
+
+export function getStudyLimits(): StudyLimits {
+  try {
+    const raw = localStorage.getItem(STUDY_LIMITS_KEY);
+    if (!raw) return { ...DEFAULT_STUDY_LIMITS };
+    return { ...DEFAULT_STUDY_LIMITS, ...JSON.parse(raw) };
+  } catch {
+    return { ...DEFAULT_STUDY_LIMITS };
+  }
+}
+
+export function saveStudyLimits(limits: Partial<StudyLimits>): void {
+  try {
+    localStorage.setItem(STUDY_LIMITS_KEY, JSON.stringify({ ...getStudyLimits(), ...limits }));
+    persistKeyNow(STUDY_LIMITS_KEY);
+  } catch {}
+}
+
+export interface FSRSSettings {
+  requestRetention: number; // e.g. 0.9 (90%)
+  maximumInterval: number; // e.g. 365 (days)
+}
+
+const DEFAULT_FSRS_SETTINGS: FSRSSettings = { requestRetention: 0.9, maximumInterval: 365 };
+
+/**
+ * Retrieve user's configured FSRS parameters from storage. A stored value that is not a sane number falls
+ * back to the default: NaN would make every review throw (an invalid due date).
+ */
+export function getFSRSSettings(): FSRSSettings {
+  try {
+    const retention = parseFloat(localStorage.getItem(FSRS_RETENTION_KEY) ?? "");
+    const maxInterval = parseInt(localStorage.getItem(FSRS_MAX_INTERVAL_KEY) ?? "", 10);
+    return {
+      requestRetention:
+        Number.isFinite(retention) && retention >= 0.5 && retention <= 0.99 ? retention : DEFAULT_FSRS_SETTINGS.requestRetention,
+      maximumInterval:
+        Number.isFinite(maxInterval) && maxInterval >= 1 && maxInterval <= 36500
+          ? maxInterval
+          : DEFAULT_FSRS_SETTINGS.maximumInterval,
+    };
+  } catch {
+    return { ...DEFAULT_FSRS_SETTINGS };
+  }
+}
+
+/**
+ * Update user's FSRS parameters
+ */
+export function saveFSRSSettings(settings: Partial<FSRSSettings>): void {
+  try {
+    if (settings.requestRetention !== undefined) {
+      localStorage.setItem(FSRS_RETENTION_KEY, settings.requestRetention.toString());
+      persistKeyNow(FSRS_RETENTION_KEY);
+    }
+    if (settings.maximumInterval !== undefined) {
+      localStorage.setItem(FSRS_MAX_INTERVAL_KEY, settings.maximumInterval.toString());
+      persistKeyNow(FSRS_MAX_INTERVAL_KEY);
+    }
+  } catch {}
+}
+
+/**
+ * Instantiate configured FSRS scheduler instance
+ */
+let cachedScheduler: { key: string; scheduler: ReturnType<typeof fsrs> } | null = null;
+let cachedGrammarScheduler: { key: string; scheduler: ReturnType<typeof fsrs> } | null = null;
+
+/**
+ * Scheduler for grammar lessons: same retention target, but no minute-level learning steps.
+ * A lesson is a concept reviewed over days, so every grade schedules whole days and several
+ * questions of one lesson in a single session count as one review.
+ */
+export function getGrammarScheduler() {
+  const { requestRetention, maximumInterval } = getFSRSSettings();
+  const key = `${requestRetention}|${maximumInterval}`;
+  if (cachedGrammarScheduler?.key === key) return cachedGrammarScheduler.scheduler;
+  const scheduler = fsrs(
+    generatorParameters({
+      request_retention: requestRetention,
+      maximum_interval: maximumInterval,
+      enable_fuzz: true,
+      enable_short_term: false,
+    })
+  ).useStrategy(StrategyMode.SEED, grammarSeedStrategy);
+  cachedGrammarScheduler = { key, scheduler };
+  return scheduler;
+}
+
+const grammarSeedStrategy = GenSeedStrategyWithCardId("card_id");
+
+export function getFSRSScheduler(customSettings?: Partial<FSRSSettings>) {
+  const current = getFSRSSettings();
+  const request_retention = customSettings?.requestRetention ?? current.requestRetention;
+  const maximum_interval = customSettings?.maximumInterval ?? current.maximumInterval;
+
+  // Personal weights from the optimizer, when the learner applied them
+  const personal = getStoredWeights();
+  const key = `${request_retention}|${maximum_interval}|${personal?.computedAt ?? "default"}`;
+  if (cachedScheduler?.key === key) return cachedScheduler.scheduler;
+
+  const params = generatorParameters({
+    ...(personal ? { w: personal.w } : {}),
+    request_retention,
+    maximum_interval,
+    // Fuzz spreads out cards added on the same day so reviews don't pile up on one date
+    enable_fuzz: true,
+    enable_short_term: true,
+  });
+
+  // Fuzz seeded per card + rep count (not the review time), so the interval shown on a grade
+  // button is exactly what the card gets when that button is pressed a few seconds later
+  const scheduler = fsrs(params)
+    .useStrategy(StrategyMode.SEED, GenSeedStrategyWithCardId("card_id"))
+    .useStrategy(StrategyMode.LEARNING_STEPS, hardAdvancesLearningSteps);
+  cachedScheduler = { key, scheduler };
+  return scheduler;
+}
+
+/**
+ * ts-fsrs keeps a Learning / Relearning card on the same step on Hard. Here a card is graded once per
+ * session (the in-session retry is practice), so the next graded answer is a later session and a card
+ * answered Hard every time (slow typist, a one-letter typo, the hint) would never graduate. Hard moves on
+ * like Good: to the next step, or out of learning on the last one. Hard still lowers stability and raises
+ * difficulty as usual; only the step changes.
+ */
+const hardAdvancesLearningSteps: typeof BasicLearningStepsStrategy = (params, state, curStep) => {
+  const steps = BasicLearningStepsStrategy(params, state, curStep);
+  if (state === State.Review || !steps[Rating.Hard]) return steps;
+  const next = { ...steps };
+  // No Good entry on the last step means graduation; without a Hard entry Hard graduates too
+  if (steps[Rating.Good]) next[Rating.Hard] = steps[Rating.Good];
+  else delete next[Rating.Hard];
+  return next;
+};
+
+/**
+ * Convert SQLite SRSReview row into a ts-fsrs Card object
+ */
+export function srsRowToCard(row?: Partial<SRSReview>): Card {
+  const empty = createEmptyCard();
+  if (!row) return empty;
+
+  const dueDate = row.next_review_date ? new Date(row.next_review_date) : empty.due;
+  const isLegacy =
+    (row.stability === undefined || row.stability === 0) &&
+    row.repetitions !== undefined &&
+    row.repetitions > 0;
+
+  return {
+    due: dueDate,
+    stability:
+      row.stability && row.stability > 0
+        ? row.stability
+        : isLegacy
+        ? Math.max(1, row.interval || 1)
+        : 0,
+    difficulty:
+      row.difficulty && row.difficulty > 0
+        ? row.difficulty
+        : isLegacy
+        ? 5.0
+        : 0,
+    elapsed_days: row.elapsed_days ?? 0,
+    scheduled_days: row.scheduled_days ?? row.interval ?? 0,
+    reps: row.reps ?? row.repetitions ?? 0,
+    lapses: row.lapses ?? 0,
+    state: (row.state !== undefined && row.state !== null
+      ? row.state
+      : isLegacy
+      ? State.Review
+      : State.New) as State,
+    last_review: row.last_review ? new Date(row.last_review) : undefined,
+    learning_steps: row.learning_steps ?? 0,
+    // Used by the fuzz seed strategy (see getFSRSScheduler)
+    card_id: row.word_id ?? "",
+  } as Card;
+}
+
+/**
+ * Memory retrievability R ∈ [0, 1] computed by the same FSRS model that schedules the card.
+ */
+export function getCardRetrievability(row: Partial<SRSReview>, now: Date = new Date()): number {
+  if (!row.stability || row.stability <= 0) return 0;
+  // Legacy rows without last_review: estimate it from the scheduled interval
+  const card = srsRowToCard(row);
+  if (!card.last_review) {
+    const scheduled = row.scheduled_days ?? row.interval ?? 0;
+    card.last_review = new Date(card.due.getTime() - scheduled * 24 * 60 * 60 * 1000);
+  }
+  if (card.last_review.getTime() > now.getTime()) return 1;
+  try {
+    const r = getFSRSScheduler().get_retrievability(card, now, false);
+    return Number.isFinite(r) ? Math.max(0, Math.min(1, r)) : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * When the card comes back, in Vietnamese ("1 phút", "10 phút", "2 giờ", "3 ngày", "2 tháng", "1,5 năm").
+ * Short English units ("1m") were read as "1 month" by learners.
+ */
+export function formatIntervalPreview(due: Date, now: Date = new Date()): string {
+  const diffMs = due.getTime() - now.getTime();
+  if (diffMs <= 60 * 1000) return "1 phút";
+  const mins = Math.round(diffMs / (60 * 1000));
+  if (mins < 60) return `${mins} phút`;
+  const hours = Math.round(diffMs / (60 * 60 * 1000));
+  if (hours < 24) return `${hours} giờ`;
+  const days = Math.round(diffMs / (24 * 60 * 60 * 1000));
+  if (days < 30) return `${days} ngày`;
+  const months = Math.round(days / 30);
+  if (months < 12) return `${months} tháng`;
+  return `${(days / 365).toFixed(1).replace(".", ",")} năm`;
+}
+
+export interface IntervalPreviews {
+  [Rating.Again]: string;
+  [Rating.Hard]: string;
+  [Rating.Good]: string;
+  [Rating.Easy]: string;
+}
+
+/**
+ * Calculate expected next interval for all 4 grading choices
+ */
+export function getNextIntervalPreviews(
+  srsRow?: Partial<SRSReview>,
+  now: Date = new Date()
+): IntervalPreviews {
+  try {
+    const scheduler = getFSRSScheduler();
+    const card = srsRowToCard(srsRow);
+    const repeatResult = scheduler.repeat(card, now);
+    return {
+      [Rating.Again]: formatIntervalPreview(repeatResult[Rating.Again].card.due, now),
+      [Rating.Hard]: formatIntervalPreview(repeatResult[Rating.Hard].card.due, now),
+      [Rating.Good]: formatIntervalPreview(repeatResult[Rating.Good].card.due, now),
+      [Rating.Easy]: formatIntervalPreview(repeatResult[Rating.Easy].card.due, now),
+    };
+  } catch (err) {
+    console.warn("Failed to calculate FSRS interval previews:", err);
+    return {
+      [Rating.Again]: "1 phút",
+      [Rating.Hard]: "1 ngày",
+      [Rating.Good]: "3 ngày",
+      [Rating.Easy]: "7 ngày",
+    };
+  }
+}
+
+/**
+ * Fetch all words with a card due now (see cards.isDueSrs: a review card is due for its whole due day)
+ */
+export async function getDueWords(now: Date = new Date()): Promise<WordDetail[]> {
+  const words = await getDueWordsFromDb(new Date(nextLocalDayStart(now) - 1));
+  return words.filter((w) => isWordDue(w, now));
+}
+
+/**
+ * Record a user review session for a word, updating its SRS metadata in SQLite using FSRS.
+ */
+export async function recordReview(
+  wordId: string,
+  rating: Rating,
+  requestedDirection: CardDirection = "recognition",
+  options: { unlockProduction?: boolean } = {}
+): Promise<FSRSResult> {
+  const db = await getDatabase();
+  const now = new Date();
+
+  // 1. Fetch existing SRS data for the card. A production exercise on a word that has no
+  //    production card yet (still learning by recognition) is recorded on the recognition card.
+  let direction = requestedDirection;
+  let srsRows = await db.select<SRSReview[]>(
+    `SELECT ${SRS_COLUMNS} FROM ${SRS_TABLE[direction]} WHERE word_id = $1 LIMIT 1;`,
+    [wordId]
+  );
+  if (direction === "production" && srsRows.length === 0) {
+    direction = "recognition";
+    srsRows = await db.select<SRSReview[]>(`SELECT ${SRS_COLUMNS} FROM srs_reviews WHERE word_id = $1 LIMIT 1;`, [wordId]);
+  }
+  const current = srsRows[0] || {
+    word_id: wordId,
+    ease_factor: 2.5,
+    interval: 0,
+    repetitions: 0,
+    next_review_date: now.toISOString(),
+    stability: 0,
+    difficulty: 0,
+    elapsed_days: 0,
+    scheduled_days: 0,
+    reps: 0,
+    lapses: 0,
+    state: 0 as FSRSState,
+    last_review: null,
+    learning_steps: 0,
+  };
+
+  // 2. Normalize input to a valid FSRS grade
+  const fsrsRating: Rating =
+    rating === Rating.Easy || rating === Rating.Good || rating === Rating.Hard ? rating : Rating.Again;
+
+  // 3. Compute new FSRS values
+  const scheduler = getFSRSScheduler();
+  const card = srsRowToCard(current);
+  const result = scheduler.next(card, now, fsrsRating);
+
+  const updatedCard = result.card;
+
+  // Lapses are counted by ts-fsrs only when a Review card is forgotten (Review -> Relearning),
+  // so failing repeatedly inside one learning session does not turn a word into a leech.
+
+  const nextReviewDateStr = updatedCard.due.toISOString();
+  const lastReviewStr = now.toISOString();
+
+  // 4. Persist back into SQLite (updating both FSRS & legacy compatibility fields)
+  await db.execute(
+    `INSERT INTO ${SRS_TABLE[direction]} (
+       word_id, ease_factor, interval, repetitions, next_review_date,
+       stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review, learning_steps
+     )
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+     ON CONFLICT(word_id) DO UPDATE SET
+       ease_factor = excluded.ease_factor,
+       interval = excluded.interval,
+       repetitions = excluded.repetitions,
+       next_review_date = excluded.next_review_date,
+       stability = excluded.stability,
+       difficulty = excluded.difficulty,
+       elapsed_days = excluded.elapsed_days,
+       scheduled_days = excluded.scheduled_days,
+       reps = excluded.reps,
+       lapses = excluded.lapses,
+       state = excluded.state,
+       last_review = excluded.last_review,
+       learning_steps = excluded.learning_steps;`,
+    [
+      wordId,
+      2.5, // ease_factor legacy default
+      updatedCard.scheduled_days, // interval
+      updatedCard.reps, // repetitions
+      nextReviewDateStr,
+      Number(updatedCard.stability.toFixed(4)),
+      Number(updatedCard.difficulty.toFixed(4)),
+      updatedCard.elapsed_days,
+      updatedCard.scheduled_days,
+      updatedCard.reps,
+      updatedCard.lapses,
+      updatedCard.state,
+      lastReviewStr,
+      updatedCard.learning_steps ?? 0,
+    ]
+  );
+
+  // Once a word is known by recognition, start training recall with its own production card.
+  // "Known" = in Review with at least PRODUCTION_UNLOCK_STABILITY_DAYS of stability: typing the word from
+  // its meaning right after one quiz is too hard for a beginner (lots of Again, rising difficulty), so
+  // recall starts after the word has survived a real review (in practice, the second successful one).
+  // It becomes due tomorrow so both directions are not drilled in the same session. It starts as a New
+  // card: FSRS sets its initial stability from the first recall grade, which is the real evidence of how
+  // well the word can be produced (copying the recognition stability would overstate it, and a non-new
+  // card would also bypass the daily limit of new cards).
+  // A word marked "already known" (options.unlockProduction false) waits for a real review first.
+  if (
+    options.unlockProduction !== false &&
+    direction === "recognition" &&
+    updatedCard.state === State.Review &&
+    updatedCard.stability >= productionUnlockDays()
+  ) {
+    const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString();
+    await db.execute(
+      `INSERT OR IGNORE INTO srs_production (word_id, next_review_date, state, reps, lapses, stability, difficulty, learning_steps)
+       VALUES ($1, $2, 0, 0, 0, 0, 0, 0)`,
+      [wordId, tomorrow]
+    );
+  }
+
+  return {
+    direction,
+    stability: Number(updatedCard.stability.toFixed(4)),
+    difficulty: Number(updatedCard.difficulty.toFixed(4)),
+    elapsed_days: updatedCard.elapsed_days,
+    scheduled_days: updatedCard.scheduled_days,
+    reps: updatedCard.reps,
+    lapses: updatedCard.lapses,
+    state: updatedCard.state,
+    learningSteps: updatedCard.learning_steps ?? 0,
+    lastReview: lastReviewStr,
+    nextReviewDate: nextReviewDateStr,
+    interval: updatedCard.scheduled_days,
+    repetitions: updatedCard.reps,
+    easeFactor: 2.5,
+  };
+}
+
+
+/**
+ * Reliable system notification sender.
+ * Uses native Rust command with macOS osascript + Tauri notification builder,
+ * guaranteeing delivery on macOS without being blocked by WebKit WKWebView permission limitations.
+ */
+export async function triggerDesktopNotification(title: string, body: string): Promise<boolean> {
+  // 1. Try native Rust command (osascript + notification plugin)
+  try {
+    await invoke("send_desktop_notification", { title, body });
+    return true;
+  } catch (err) {
+    console.warn("invoke send_desktop_notification failed, trying fallback:", err);
+  }
+
+  // 2. Fallback to @tauri-apps/plugin-notification
+  try {
+    let permission = await isPermissionGranted();
+    if (!permission) {
+      const status = await requestPermission();
+      permission = status === "granted";
+    }
+    if (permission) {
+      sendNotification({ title, body });
+      return true;
+    }
+  } catch (err) {
+    console.warn("sendNotification fallback failed:", err);
+  }
+
+  return false;
+}
+
+/**
+ * Words that may have a card due today, with both schedules but no examples: enough to count today's work
+ * with the same rules as a session (summarizeTodayWork), cheaply enough for the tray's refresh.
+ */
+export async function loadTodaySchedules(now: Date = new Date()): Promise<WordDetail[]> {
+  const db = await getDatabase();
+  const cols = SRS_COLUMNS.split(", ");
+  const pick = (alias: string, prefix: string) => cols.map((c) => `${alias}.${c} AS ${prefix}${c}`).join(", ");
+  const rows = await db.select<Array<Record<string, unknown>>>(
+    `SELECT w.id, w.word, w.meaning_vn, w.topic, w.created_at, w.suspended, ${pick("s", "r_")}, ${pick("p", "p_")}
+     FROM words w
+     LEFT JOIN srs_reviews s ON s.word_id = w.id
+     LEFT JOIN srs_production p ON p.word_id = w.id
+     WHERE COALESCE(w.suspended, 0) = 0
+       AND (s.word_id IS NULL OR s.next_review_date < $1 OR p.next_review_date < $1
+            OR (COALESCE(s.state, 0) = 0 AND COALESCE(s.reps, 0) = 0 AND s.last_review IS NOT NULL))`,
+    [new Date(nextLocalDayStart(now)).toISOString()]
+  );
+  const srsOf = (r: Record<string, unknown>, prefix: string): SRSReview | null => {
+    if (r[`${prefix}word_id`] == null) return null;
+    return Object.fromEntries(cols.map((c) => [c, r[`${prefix}${c}`]])) as unknown as SRSReview;
+  };
+  return rows.map((r) => {
+    const id = String(r.id);
+    const createdAt = String(r.created_at ?? now.toISOString());
+    return {
+      id,
+      word: String(r.word ?? ""),
+      meaning_vn: String(r.meaning_vn ?? ""),
+      topic: (r.topic as string | null) ?? undefined,
+      created_at: createdAt,
+      suspended: Number(r.suspended ?? 0),
+      image_url: null,
+      synonyms: "[]",
+      antonyms: "[]",
+      examples: [],
+      // A word without a schedule row is a new word, due since it was added (as in getAllWords)
+      srs: srsOf(r, "r_") ?? { word_id: id, ease_factor: 2.5, interval: 0, repetitions: 0, next_review_date: createdAt, state: 0, reps: 0 },
+      srsProduction: srsOf(r, "p_"),
+    } as WordDetail;
+  });
+}
+
+/** Grammar lessons due for review (on the learner's path); loaded lazily (grammarService imports this module) */
+async function countDueGrammarLessons(): Promise<number> {
+  try {
+    const { getDueGrammarLessons } = await import("./grammarService");
+    return getDueGrammarLessons().length;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * Trigger an OS notification if reviews are due
+ */
+export async function checkAndNotifyDueReviews(sendIfZero: boolean = false): Promise<number> {
+  try {
+    const dueCount = (await countTodayWork()).total;
+    if (dueCount === 0) {
+      if (sendIfZero) {
+        await triggerDesktopNotification(
+          "MyEnglish • Ôn tập từ vựng",
+          "Hiện tại không có từ vựng nào quá hạn. Nhấp để vào màn hình ôn tập luyện tập thêm!"
+        );
+      }
+      return 0;
+    }
+
+    await triggerDesktopNotification(
+      "MyEnglish • Ôn tập từ vựng!",
+      `Còn ${dueCount} thẻ cần học hôm nay (~${Math.max(1, Math.round(dueCount * 0.2))} phút).`
+    );
+
+    return dueCount;
+  } catch (err) {
+    console.warn("Could not send system notification:", err);
+    return 0;
+  }
+}
+
+/**
+ * Send an immediate test system notification to macOS Notification Center
+ */
+export async function sendTestNotification(): Promise<{ success: boolean; message: string }> {
+  try {
+    const sent = await triggerDesktopNotification(
+      "MyEnglish • Nhắc nhở ôn tập",
+      "Đã đến giờ ôn tập từ vựng Spaced Repetition (FSRS)! Nhấp vào thông báo để mở màn hình ôn tập ngay 🚀"
+    );
+
+    if (sent) {
+      return {
+        success: true,
+        message: "Đã gửi thông báo hệ thống macOS kèm chuông báo 'Glass'! Hãy kiểm tra góc phải màn hình hoặc mở Trung tâm thông báo macOS.",
+      };
+    } else {
+      return {
+        success: false,
+        message: "Không thể gửi thông báo. Hãy kiểm tra cài đặt thông báo của macOS.",
+      };
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message: `Lỗi gửi thông báo: ${err}`,
+    };
+  }
+}
+
+/**
+ * Get current system notification permission status
+ */
+export async function getNotificationPermissionStatus(): Promise<"granted" | "denied" | "default"> {
+  try {
+    // In macOS native mode via osascript and Tauri Rust backend, notifications are always available
+    return "granted";
+  } catch {
+    return "granted";
+  }
+}
+
+/**
+ * Request notification permission from macOS
+ */
+export async function requestNotificationPermission(): Promise<boolean> {
+  try {
+    return await triggerDesktopNotification(
+      "MyEnglish • Quyền thông báo",
+      "Đã kích hoạt dịch vụ thông báo native trên macOS thành công!"
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * For testing purposes: mark a word due immediately in SQLite so the user can test real due card notifications
+ */
+export async function markWordDueImmediately(wordId?: string): Promise<string | null> {
+  const db = await getDatabase();
+  const pastDate = new Date(Date.now() - 3600 * 1000).toISOString(); // 1 hour ago
+
+  let targetId = wordId;
+  let targetWord = "";
+  if (!targetId) {
+    const all = await getWordsLite();
+    if (all.length === 0) return null;
+    targetId = all[0].id;
+    targetWord = all[0].word;
+  }
+
+  await db.execute(
+    `UPDATE srs_reviews SET next_review_date = $1 WHERE word_id = $2;`,
+    [pastDate, targetId]
+  );
+
+  // Trigger check and notify immediately
+  await checkAndNotifyDueReviews();
+  window.dispatchEvent(new CustomEvent("myenglish-activity-updated"));
+
+  return targetWord || targetId;
+}
+
+import { listen, type EventCallback } from "@tauri-apps/api/event";
+import {
+  getReminderSettings,
+  isSnoozed,
+  applyTrayReminderAction,
+  TRAY_REMINDER_EVENT,
+  triggerReviewPopup,
+  triggerReviewNudge,
+  getLastPopupDisplayTime,
+  recordPopupDisplayed,
+  getNextReminderTime,
+  reminderPause,
+  getNudgesShownToday,
+} from "./reminderSettings";
+import { productionUnlockDays } from "./learnerProfile";
+import {
+  evaluateMotivationState,
+  selectMicroQuizQuestion,
+  getConsecutiveSkipCount,
+  sendDuoDesktopNotification,
+} from "./duoMotivation";
+import { computeStreak, getActivityLogs, getDailyGoal, getLocalDateString } from "./streak";
+import {
+  detectMoment,
+  dueAnchor,
+  markAnchorFired,
+  ANCHOR_TIMES,
+  type ReminderAnchor,
+  getQuietHours,
+  refreshQuietHours,
+  MIN_GAP_AFTER_REMINDER_MS,
+  MOMENT_WINDOW_MS,
+  FullscreenExitTracker,
+  type ReminderMoment,
+} from "./reminderMoments";
+import { isMainSessionActive, isPopupSessionActive } from "./activeSession";
+
+/**
+ * Background worker manager that periodically inspects due reviews
+ * and triggers the interactive full-screen Focus Review Modal.
+ * Listens to native Rust background heartbeat (every 30s) to bypass
+ * browser timer throttling when minimized or closed to tray.
+ */
+export interface PopupBlockers {
+  fullscreen_app: string | null;
+  screen_sharing_app: string | null;
+  focus_mode: boolean | null;
+  idle_seconds: number | null; // null where input idle time can't be measured
+}
+
+/** Away from the computer for this long: hold the popup until the user is back */
+export const IDLE_POSTPONE_SECONDS = 5 * 60;
+/** Wait for a natural pause: no keyboard/mouse input for this long */
+export const NATURAL_BREAK_SECONDS = 15;
+/** ...but never wait for a pause longer than this once the reminder is due */
+export const MAX_WAIT_FOR_BREAK_MS = 10 * 60 * 1000;
+/** A full-screen app postpones the reminder at most this long (a maximized window with an
+ *  auto-hidden menu bar looks full screen and would otherwise block reminders forever) */
+export const MAX_WAIT_FOR_FULLSCREEN_MS = 30 * 60 * 1000;
+
+/**
+ * Why the reminder should wait right now (null = show it). `waitedMs` is how long the reminder
+ * has already been waiting for a natural pause in the user's activity.
+ */
+export function popupBlockReasonFrom(b: PopupBlockers | null | undefined, waitedMs: number): string | null {
+  if (!b) return null;
+  if (b.screen_sharing_app) return `Đang chia sẻ màn hình (${b.screen_sharing_app})`;
+  if (b.fullscreen_app && waitedMs < MAX_WAIT_FOR_FULLSCREEN_MS) {
+    return `Đang dùng ${b.fullscreen_app} ở chế độ toàn màn hình`;
+  }
+  if (b.focus_mode) return "Đang bật Focus / Không làm phiền";
+  if (b.idle_seconds == null) return null;
+  if (b.idle_seconds >= IDLE_POSTPONE_SECONDS) return "Bạn đang không dùng máy";
+  if (b.idle_seconds < NATURAL_BREAK_SECONDS && waitedMs < MAX_WAIT_FOR_BREAK_MS) {
+    return "Bạn đang thao tác, chờ lúc tạm dừng";
+  }
+  return null;
+}
+
+/**
+ * Why the review reminder should wait right now, or null when it is fine to show it.
+ * Detection is done natively (macOS); on other platforms or on error nothing blocks.
+ */
+export async function getPopupBlockReason(waitedMs: number = 0): Promise<string | null> {
+  try {
+    return popupBlockReasonFrom(await invoke<PopupBlockers>("get_popup_blockers"), waitedMs);
+  } catch {
+    return null;
+  }
+}
+
+class SRSBackgroundWorker {
+  private timerId: number | null = null;
+  private unlistenHeartbeat: (() => void) | null = null;
+  private unlistenPopupOpened: (() => void) | null = null;
+  private unlistenTrayAction: (() => void) | null = null;
+  /** Bumped by stop(): a start() still awaiting its listeners gives up once a newer start()/stop() ran (N17) */
+  private generation = 0;
+  private isTicking = false;
+  private lastBlockReason: string | null = null;
+  /** When the reminder first became due and started waiting for a good moment */
+  private readySince: number | null = null;
+
+  /** Attach a native event listener; null (and removed again) if this start() was superseded meanwhile */
+  private async attach<T>(event: string, handler: EventCallback<T>, gen: number): Promise<(() => void) | null> {
+    try {
+      const unlisten = await listen<T>(event, handler);
+      if (gen !== this.generation) {
+        unlisten();
+        return null;
+      }
+      return unlisten;
+    } catch (err) {
+      console.warn(`Could not attach ${event} listener in srsWorker:`, err);
+      return null;
+    }
+  }
+
+  public async start() {
+    this.stop();
+    const gen = this.generation;
+
+    // Listen to native review-popup-opened event so worker syncs anytime popup is opened
+    const popupOpened = await this.attach("review-popup-opened", () => recordPopupDisplayed(Date.now()), gen);
+    if (gen !== this.generation) return;
+    this.unlistenPopupOpened = popupOpened;
+
+    // 1. Lắng nghe heartbeat từ Rust (bắn mỗi 30s)
+    const heartbeat = await this.attach("srs-heartbeat", () => this.tick(), gen);
+    if (gen !== this.generation) return;
+    this.unlistenHeartbeat = heartbeat;
+
+    // Pause / resume picked from the tray menu (N9)
+    const trayAction = await this.attach<{ action?: string }>(
+      TRAY_REMINDER_EVENT,
+      (e) => this.onTrayAction(e.payload?.action),
+      gen
+    );
+    if (gen !== this.generation) return;
+    this.unlistenTrayAction = trayAction;
+
+    // 2. A local timer only when the heartbeat could not be attached: running both woke the worker every
+    // 10-15 s, and a hidden webview's timers are throttled anyway
+    if (!heartbeat) this.timerId = window.setInterval(() => this.tick(), 15000);
+  }
+
+  public restart() {
+    this.start();
+  }
+
+  public stop() {
+    this.generation++;
+    if (this.timerId) {
+      window.clearInterval(this.timerId);
+      this.timerId = null;
+    }
+    if (this.unlistenHeartbeat) {
+      this.unlistenHeartbeat();
+      this.unlistenHeartbeat = null;
+    }
+    if (this.unlistenPopupOpened) {
+      this.unlistenPopupOpened();
+      this.unlistenPopupOpened = null;
+    }
+    if (this.unlistenTrayAction) {
+      this.unlistenTrayAction();
+      this.unlistenTrayAction = null;
+    }
+  }
+
+  /** A reminder action from the tray menu: apply it and show the new state on the tray at once */
+  private onTrayAction(action: unknown) {
+    if (!applyTrayReminderAction(action)) return;
+    this.lastTrayRefresh = Date.now();
+    countTodayWork().catch(() => {});
+  }
+
+  private lastTrayRefresh = 0;
+  /** Today's work from the last tray refresh, reused by the goal check for a minute */
+  private recentWork: { at: number; work: Awaited<ReturnType<typeof countTodayWork>> } | null = null;
+  private lastQuietRefresh = 0;
+  /** Previous reading of the computer's state, to notice transitions */
+  private lastObservation: { at: number; blockers: PopupBlockers | null } | null = null;
+  /** The last transition seen, usable for MOMENT_WINDOW_MS */
+  private pendingMoment: { kind: ReminderMoment; at: number } | null = null;
+  /** The moment this tick's reminder is shown for (null = by the clock) */
+  private activeMoment: ReminderMoment | null = null;
+  private activeAnchor: ReminderAnchor | null = null;
+  /** Created on first use: srs.ts and reminderMoments.ts are in an import cycle (through db -> smartReview) */
+  private fullscreenExit: FullscreenExitTracker | null = null;
+
+  /** Read the computer's state (at most every 10 s) and remember the latest transition */
+  private async observeMoment(now: number): Promise<ReminderMoment | null> {
+    const prev = this.lastObservation;
+    if (!prev || now - prev.at >= 10_000) {
+      const blockers = await invoke<PopupBlockers>("get_popup_blockers").catch(() => null);
+      this.lastObservation = { at: now, blockers };
+      // Leaving full screen counts only after a long stretch, for good, at most hourly (N11)
+      this.fullscreenExit ??= new FullscreenExitTracker();
+      const leftFullscreen = this.fullscreenExit.observe(blockers, now);
+      const today = getLocalDateString(new Date(now));
+      let kind = detectMoment(prev?.blockers ?? null, blockers, prev ? now - prev.at : 0, {
+        hour: new Date(now).getHours(),
+        studiedToday: (getActivityLogs()[today] || 0) > 0,
+        // The first reading of the day (launch / autostart, or past midnight) can be the morning one (N12)
+        firstToday: !prev || getLocalDateString(new Date(prev.at)) !== today,
+      });
+      if (kind === "after_fullscreen") kind = null;
+      if (!kind && leftFullscreen) kind = "after_fullscreen";
+      if (kind) this.pendingMoment = { kind, at: now };
+    }
+    if (this.pendingMoment && now - this.pendingMoment.at > MOMENT_WINDOW_MS) this.pendingMoment = null;
+    return this.pendingMoment?.kind ?? null;
+  }
+
+  public async tick(forceTrigger: boolean = false) {
+    if (this.isTicking && !forceTrigger) return;
+    // Only a normal tick owns the guard: a forced one running beside it must not clear it in its `finally`,
+    // or the next heartbeat would start a second normal tick while this one is still awaiting
+    const ownsGuard = !forceTrigger;
+    if (ownsGuard) this.isTicking = true;
+
+    try {
+      // Keep the menu-bar / tray count fresh (once a minute), whatever the reminder settings
+      if (Date.now() - this.lastTrayRefresh > 60 * 1000) {
+        const at = Date.now();
+        this.lastTrayRefresh = at;
+        countTodayWork()
+          .then((work) => (this.recentWork = { at, work }))
+          .catch(() => {});
+      }
+      const settings = getReminderSettings();
+      this.activeMoment = null;
+      // N1: the wait for a quiet moment survives only a tick that is blocked by the focus checks below.
+      // Any other outcome of this tick (not due, paused, nothing to show...) starts the wait over.
+      const waitingSince = this.readySince;
+      this.readySince = null;
+      // Today's due work, counted at most once per tick (the goal check and the trigger check share it)
+      let work: Awaited<ReturnType<typeof countTodayWork>> | null = null;
+      if (!forceTrigger) {
+        if (!settings.enabled) return;
+
+        const now = Date.now();
+        // Natural transitions (back at the computer, screen share over...) may bring the reminder forward
+        // A study time the learner chose ("after lunch") counts as a moment too
+        const anchor = dueAnchor(new Date(now), settings.anchors ?? []);
+        // Interval 0 turns off the automatic reminders, not the study times the learner chose (N10)
+        const automaticOff = settings.intervalMinutes === 0;
+        if (automaticOff && !anchor) return;
+        if (settings.avoidQuietHours && now - this.lastQuietRefresh > 60 * 60 * 1000) {
+          this.lastQuietRefresh = now;
+          refreshQuietHours().catch(() => {});
+        }
+        // Paused, studying in the main window, at night, goal done or enough reminders today: nothing can
+        // show, so the computer's state is not read either (each reading is native window-list queries)
+        const idle = () => {
+          this.lastObservation = null;
+          this.pendingMoment = null;
+        };
+        if (isSnoozed()) return idle();
+        // The main window or popup is studying: the same card would be graded twice
+        if (isMainSessionActive() || isPopupSessionActive()) return idle();
+        // Night, today's goal done, or enough reminders for one day: wait until tomorrow.
+        // The goal counts only once no review is due any more (S5)
+        const goalMet = (getActivityLogs()[getLocalDateString()] || 0) >= getDailyGoal();
+        let grammarDue = 0;
+        let goalWork: Awaited<ReturnType<typeof countTodayWork>> | null = null;
+        if (goalMet && settings.stopAfterGoal) {
+          // Counted by the tray refresh less than a minute ago: reuse it rather than query on every tick
+          // (only for this check: a reminder about to show counts afresh below)
+          const recent = this.recentWork && now - this.recentWork.at < 60 * 1000 ? this.recentWork.work : null;
+          goalWork = recent ?? (work = await countTodayWork());
+          grammarDue = await countDueGrammarLessons();
+        }
+        const pause = reminderPause(settings, {
+          hour: new Date(now).getHours(),
+          goalReached: goalMet && goalWork?.reviews === 0 && grammarDue === 0,
+          shownToday: getNudgesShownToday(),
+        });
+        // A study time the learner chose is not cut by the daily cap (N4)
+        if (pause && !(pause === "daily_cap" && anchor)) return idle();
+        // Read after the pauses: the first reading after one compares with nothing, as at launch
+        const moment = anchor ? ANCHOR_TIMES[anchor].moment : settings.contextMoments ? await this.observeMoment(now) : null;
+
+        const lastDisplay = getLastPopupDisplayTime();
+
+        // Nếu chưa từng hiển thị lần nào (hoặc lần đầu mở app),
+        // mốc đếm bắt đầu từ lúc này -> popup sẽ hiển thị sau đúng 1 chu kỳ cài đặt
+        if (lastDisplay === 0) {
+          recordPopupDisplayed(now);
+          return;
+        }
+
+        // ĐIỀU KIỆN CỐT LÕI: Thời gian lần tiếp theo hiển thị phải tính từ lần cuối cùng popup hiển thị!
+        // A transition moment can come earlier, but never right after the previous reminder.
+        const momentReady = !!moment && now - lastDisplay >= MIN_GAP_AFTER_REMINDER_MS;
+        const nextTime = getNextReminderTime(); // 0 when automatic reminders are off: only the anchor counts
+        if ((automaticOff || now < nextTime) && !momentReady) {
+          return; // Chưa đến giờ hiển thị tiếp theo
+        }
+        // A clock reminder in an hour where reminders are almost always ignored waits for a better hour
+        if (!momentReady && settings.avoidQuietHours && getQuietHours().includes(new Date(now).getHours())) {
+          return;
+        }
+        this.activeMoment = momentReady ? moment : null;
+        this.activeAnchor = momentReady ? anchor : null;
+      }
+
+      if (!forceTrigger) {
+        work = work ?? (await countTodayWork());
+        if (settings.triggerCondition === "due_only") {
+          // Grammar lessons due count too: the popup fills with grammar when no word is due
+          if (work.total === 0 && (await countDueGrammarLessons()) === 0) return;
+        } else {
+          const db = await getDatabase();
+          const rows = await db.select<{ cnt: number }[]>(`SELECT COUNT(*) as cnt FROM words;`);
+          if ((rows[0]?.cnt ?? 0) === 0) return;
+        }
+
+        // Don't cover the screen while presenting, sharing, in Focus mode or away from the computer.
+        // The popup stays pending and is retried on the next tick (every 15-30s).
+        if (settings.respectFocus) {
+          const now = Date.now();
+          this.readySince = waitingSince ?? now;
+          const reason = await getPopupBlockReason(now - this.readySince);
+          if (reason) {
+            if (reason !== this.lastBlockReason) console.info(`[SRS] Hoãn popup ôn tập: ${reason}`);
+            this.lastBlockReason = reason;
+            return;
+          }
+        }
+        this.lastBlockReason = null;
+        this.readySince = null;
+      }
+
+      if (forceTrigger) {
+        // Manual trigger (tray / test button): open the full review directly
+        await triggerReviewPopup();
+        return;
+      }
+
+      // Gentle start: a small corner card that doesn't take focus; the user opens the review from it,
+      // otherwise it snoozes itself after a countdown (triggerReviewNudge records the display time)
+      const { total: dueCount, comeback } = work ?? (await countTodayWork());
+      let motivation = undefined;
+      let microQuiz = undefined;
+
+      try {
+        const activityLogs = getActivityLogs();
+        const streakRes = computeStreak(Object.keys(activityLogs));
+        const todayStr = getLocalDateString();
+        const todayCount = activityLogs[todayStr] || 0;
+        const dailyGoal = getDailyGoal();
+        const consecutiveSkips = getConsecutiveSkipCount();
+
+        motivation = evaluateMotivationState({
+          dueCount,
+          consecutiveSkips,
+          streak: streakRes.current,
+          todayCount,
+          dailyGoal,
+          hour: new Date().getHours(),
+          comeback,
+          moment: this.activeMoment,
+          freezes: streakRes.freezes,
+        });
+
+        // The question needs schedules and meanings only: the whole collection without examples or stats
+        if (dueCount > 0) {
+          const [dueWords, allWords] = await Promise.all([getDueWordsLite(), getWordsLite()]);
+          microQuiz = selectMicroQuizQuestion(dueWords, allWords);
+        }
+
+      } catch (err) {
+        console.warn("Error preparing Duo motivation payload:", err);
+      }
+
+      const shown = await triggerReviewNudge(dueCount, { motivation, microQuiz, moment: this.activeMoment });
+      // An OS notification only when the streak is at risk late in the day, at most once a day, and never
+      // together with a corner card that just appeared (it already carries the same message, N20).
+      // Snoozing / skipping is the learner's choice and is never escalated into more notifications.
+      if (!shown && motivation?.tone === "level_3_streak_fomo") {
+        const todayKey = `myenglish_streak_notice_${getLocalDateString()}`;
+        try {
+          if (!localStorage.getItem(todayKey)) {
+            localStorage.setItem(todayKey, "1");
+            sendDuoDesktopNotification(motivation, dueCount).catch(() => {});
+          }
+        } catch {}
+      }
+      if (this.activeAnchor) markAnchorFired(this.activeAnchor);
+      // The moment was used: the next one has to be a new transition
+      this.pendingMoment = null;
+    } catch (err) {
+      console.warn("SRS worker tick failed:", err);
+    } finally {
+      if (ownsGuard) this.isTicking = false;
+    }
+  }
+}
+
+export const srsWorker = new SRSBackgroundWorker();

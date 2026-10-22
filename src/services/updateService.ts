@@ -1,0 +1,192 @@
+import { create } from "zustand";
+import { check, Update, DownloadEvent } from "@tauri-apps/plugin-updater";
+import { relaunch } from "@tauri-apps/plugin-process";
+import { invoke } from "@tauri-apps/api/core";
+import { isMobilePlatform } from "@/lib/platform";
+
+export const GITHUB_REPO = "dev-truonglx/MyEnglish";
+
+// Read dynamically injected version from build configuration
+export const CURRENT_VERSION: string =
+  typeof __APP_VERSION__ !== "undefined" ? __APP_VERSION__ : "0.1.0";
+
+export type UpdateStatus =
+  | "idle"
+  | "checking"
+  | "up-to-date"
+  | "available"
+  | "downloading"
+  | "downloaded"
+  | "error";
+
+interface UpdateStoreState {
+  status: UpdateStatus;
+  update: Update | null;
+  newVersion: string | null;
+  currentVersion: string;
+  releaseNotes: string | null;
+  downloadProgress: number; // 0 - 100
+  errorMessage: string | null;
+  dismissed: boolean;
+
+  checkForUpdates: (manual?: boolean) => Promise<boolean>;
+  downloadAndInstall: () => Promise<void>;
+  restartApp: () => Promise<void>;
+  dismiss: () => void;
+  reset: () => void;
+}
+
+let resetTimer: ReturnType<typeof setTimeout> | null = null;
+
+function clearAutoReset() {
+  if (resetTimer) {
+    clearTimeout(resetTimer);
+    resetTimer = null;
+  }
+}
+
+function isTauriEnvironment(): boolean {
+  return typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
+}
+
+export const useUpdateStore = create<UpdateStoreState>((set, get) => ({
+  status: "idle",
+  update: null,
+  newVersion: null,
+  currentVersion: CURRENT_VERSION,
+  releaseNotes: null,
+  downloadProgress: 0,
+  errorMessage: null,
+  dismissed: false,
+
+  checkForUpdates: async (manual = false) => {
+    clearAutoReset();
+
+    // Phones update through the app store: there is no in-app updater
+    if (isMobilePlatform()) return false;
+
+    if (!isTauriEnvironment()) {
+      console.debug("Not in Tauri environment, skipping auto-updater");
+      if (manual) {
+        set({ status: "checking", errorMessage: null });
+        await new Promise((r) => setTimeout(r, 600));
+        set({ status: "up-to-date", errorMessage: null });
+        resetTimer = setTimeout(() => {
+          if (get().status === "up-to-date") {
+            set({ status: "idle" });
+          }
+        }, 3500);
+      }
+      return false;
+    }
+
+    set({ status: "checking", errorMessage: null });
+    try {
+      const update = await check();
+      if (update && update.available) {
+        set({
+          status: "available",
+          update,
+          newVersion: update.version,
+          currentVersion: update.currentVersion || CURRENT_VERSION,
+          releaseNotes: update.body || null,
+          dismissed: false,
+        });
+        return true;
+      } else {
+        if (manual) {
+          set({ status: "up-to-date", update: null, newVersion: null, errorMessage: null });
+          resetTimer = setTimeout(() => {
+            if (get().status === "up-to-date") {
+              set({ status: "idle" });
+            }
+          }, 3500);
+        } else {
+          set({ status: "idle", update: null, newVersion: null });
+        }
+        return false;
+      }
+    } catch (err: any) {
+      console.error("Update check failed:", err);
+      if (manual) {
+        set({ status: "error", errorMessage: err?.message || String(err) });
+        resetTimer = setTimeout(() => {
+          if (get().status === "error") {
+            set({ status: "idle" });
+          }
+        }, 4000);
+      } else {
+        set({ status: "idle" });
+      }
+      return false;
+    }
+  },
+
+  downloadAndInstall: async () => {
+    const { update, status } = get();
+    // Ignore double clicks while a download is already running
+    if (!update || status === "downloading") return;
+
+    set({ status: "downloading", downloadProgress: 0, errorMessage: null });
+    try {
+      // On Windows the installer quits the app during install, so the close-to-tray guard must be off.
+      // It is restored in the catch below if the download/install fails.
+      try {
+        await invoke("prepare_update_exit");
+      } catch (_) {}
+      let contentLength = 0;
+      let downloaded = 0;
+
+      await update.downloadAndInstall((event: DownloadEvent) => {
+        switch (event.event) {
+          case "Started":
+            contentLength = event.data.contentLength || 0;
+            break;
+          case "Progress":
+            downloaded += event.data.chunkLength;
+            if (contentLength > 0) {
+              const percent = Math.min(100, Math.round((downloaded / contentLength) * 100));
+              set({ downloadProgress: percent });
+            }
+            break;
+          case "Finished":
+            set({ downloadProgress: 100 });
+            break;
+        }
+      });
+
+      set({ status: "downloaded", downloadProgress: 100 });
+    } catch (err: any) {
+      console.error("Failed to download and install update:", err);
+      try {
+        await invoke("cancel_update_exit");
+      } catch (_) {}
+      set({ status: "error", errorMessage: err?.message || String(err) });
+    }
+  },
+
+  restartApp: async () => {
+    try {
+      // Signal Rust to allow process exit (bypasses close-to-tray guard)
+      await invoke("prepare_update_exit");
+      await relaunch();
+    } catch (err) {
+      console.error("Failed to relaunch application:", err);
+      try {
+        await invoke("cancel_update_exit");
+      } catch (_) {}
+    }
+  },
+
+  dismiss: () => set({ dismissed: true }),
+
+  reset: () =>
+    set({
+      status: "idle",
+      update: null,
+      newVersion: null,
+      downloadProgress: 0,
+      errorMessage: null,
+      dismissed: false,
+    }),
+}));

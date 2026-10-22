@@ -1,0 +1,289 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --card: 224 71% 7%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 224 71% 6%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 210 100% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 222 47% 16%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 223 47% 14%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 33% 20%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 213 94% 68%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  /* Full height through #root, so the main window fills the window with h-full (not 100vh, which the
+     interface scale's zoom on <html> makes taller than the window). The frame is not selectable; text worth
+     copying (meanings, examples, messages) opts back in with select-text. */
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html.light {
+    color-scheme: light;
+  }
+
+  html.light body {
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html.dark body {
+    background-color: #09090b;
+    color: #f4f4f5;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+  }
+
+  html.transparent-window,
+  html.transparent-window body,
+  body.transparent-window {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+}
+
+/* =========================================================
+   CLEAN NATIVE SCROLLBARS (LIGHT & DARK)
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Utilities */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Code monospace font */
+pre code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Shake animation for incorrect inputs */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20%, 60% {
+    transform: translateX(-6px);
+  }
+  40%, 80% {
+    transform: translateX(6px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+/* Leaderboard refreshing: an indeterminate bar sliding across the top of the board */
+@keyframes leaderboard-progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[leaderboard-progress_1\.2s_ease-in-out_infinite\] {
+    animation: none;
+  }
+}
+
+/* Review reminder: corner card slides in, the full review fades/scales in instead of popping */
+@keyframes nudge-enter {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes backdrop-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.nudge-enter {
+  animation: nudge-enter 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.popup-backdrop-enter {
+  animation: backdrop-enter 0.25s ease-out;
+}
+.popup-card-enter {
+  animation: card-enter 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nudge-enter,
+  .popup-backdrop-enter,
+  .popup-card-enter {
+    animation: none;
+  }
+}
+
+/* tailwindcss-animate utilities (animate-in, fade-in, zoom-in...) respect reduced motion too */
+@media (prefers-reduced-motion: reduce) {
+  .animate-in,
+  .animate-out {
+    animation: none !important;
+  }
+}
+
+/* =========================================================
+   DISABLE AUTOFILL / CONTACTS / CREDENTIALS DECORATIONS
+   ========================================================= */
+input::-webkit-credentials-auto-fill-button,
+input::-webkit-contacts-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  transition: background-color 50000s ease-in-out 0s;
+}
+
+/* =========================================================
+   PHONES: the layouts were drawn for a wide window, so the big paddings, gaps and radii eat the screen.
+   Tightened below 768px (the md breakpoint) for the whole app; md: and larger rules are untouched.
+   ========================================================= */
+@media (max-width: 767px) {
+  .p-10 { padding: 1rem; }
+  .p-8, .p-7 { padding: 0.875rem; }
+  .p-6, .p-5 { padding: 0.75rem; }
+  .px-8, .px-7, .px-6, .px-5 { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .py-12 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+  .py-10, .py-8 { padding-top: 1rem; padding-bottom: 1rem; }
+  .pl-5 { padding-left: 1rem; }
+  .gap-8, .gap-6 { gap: 0.875rem; }
+  .space-y-8 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.25rem; }
+  .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+  .space-y-5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.875rem; }
+  .rounded-3xl { border-radius: 1rem; }
+}

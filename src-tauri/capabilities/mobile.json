@@ -1,0 +1,46 @@
+{
+  "identifier": "mobile",
+  "description": "Capability for the main window on Android and iOS: no updater, autostart or tray, and the desktop window commands answer 'nothing shown'",
+  "platforms": [
+    "android",
+    "iOS"
+  ],
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "sql:default",
+    "sql:allow-execute",
+    "notification:default",
+    "process:default",
+    "allow-show-main-window",
+    "allow-enrich-word-with-gemini",
+    "allow-generate-grammar-exercises-ai",
+    "allow-generate-vocabulary-recommendations-ai",
+    "allow-check-cli-status",
+    "allow-send-desktop-notification",
+    "allow-trigger-review-navigation",
+    "allow-show-review-popup",
+    "allow-hide-review-popup",
+    "allow-show-review-nudge",
+    "allow-hide-review-nudge",
+    "allow-is-cursor-over-nudge",
+    "allow-take-review-nudge-payload",
+    "allow-prepare-update-exit",
+    "allow-cancel-update-exit",
+    "allow-get-popup-blockers",
+    "allow-log-debug",
+    "allow-set-tray-due-count",
+    "allow-export-backup",
+    "allow-grade-sentence-ai",
+    "allow-correct-writing-ai",
+    "allow-generate-memory-aid-ai",
+    "allow-compute-fsrs-parameters",
+    "allow-get-ai-api-key-status",
+    "allow-save-ai-api-key",
+    "allow-clear-ai-api-key",
+    "allow-set-ai-model"
+  ]
+}

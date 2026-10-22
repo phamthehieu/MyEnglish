@@ -1,0 +1,83 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "MyEnglish",
+  "version": "0.3.4",
+  "identifier": "com.myenglish.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "MyEnglish Dashboard",
+        "width": 1080,
+        "height": 720,
+        "minWidth": 800,
+        "minHeight": 600,
+        "visible": true,
+        "center": true,
+        "decorations": true,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "script-src": "'self'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data: blob: https:",
+        "font-src": "'self' data:",
+        "media-src": "'self' data: blob: https:",
+        "connect-src": "'self' ipc: http://ipc.localhost https://*.supabase.co",
+        "object-src": "'none'",
+        "base-uri": "'self'",
+        "form-action": "'self'"
+      },
+      "devCsp": {
+        "default-src": "'self'",
+        "script-src": "'self' 'unsafe-inline'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data: blob: https:",
+        "font-src": "'self' data:",
+        "media-src": "'self' data: blob: https:",
+        "connect-src": "'self' ipc: http://ipc.localhost ws://localhost:* http://localhost:* https://*.supabase.co",
+        "object-src": "'none'",
+        "base-uri": "'self'"
+      },
+      "dangerousDisableAssetCspModification": [
+        "style-src"
+      ]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "createUpdaterArtifacts": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "installerHooks": "installer-hooks.nsh"
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDIxMjE1MURGNUE3OEY0NzAKUldSdzlIaGEzMUVoSVUxSGxic3pZMDEyNzRpajJqQ0JSYkZPbHdJSHFVS2hhMGViOGl0RHlhUUMK",
+      "endpoints": [
+        "https://github.com/dev-truonglx/MyEnglish/releases/latest/download/latest.json"
+      ]
+    }
+  }
+}

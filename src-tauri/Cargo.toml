@@ -1,0 +1,65 @@
+[package]
+name = "tauri-app"
+version = "0.3.4"
+description = "A Tauri App"
+authors = ["you"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "tauri_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["macos-private-api", "tray-icon", "image-png"] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri-plugin-sql = { version = "2.5.0", features = ["sqlite"] }
+tauri-plugin-notification = "2.5.0"
+tauri-plugin-process = "2"
+# FSRS parameter optimizer (fsrs-rs, the engine Anki uses). 6.x = FSRS-6 with 21 parameters,
+# matching ts-fsrs 5.x on the frontend. Pure Rust (ndarray/rayon), no burn/libtorch at runtime.
+fsrs = "6.6"
+
+# Direct Gemini API calls (blocking, rustls) when the learner saves an API key instead of installing a CLI.
+ureq = { version = "2", features = ["json"] }
+
+# API key storage in the OS credential store (see src/ai_api.rs); other platforms fall back to the CLI.
+[target.'cfg(target_os = "windows")'.dependencies]
+keyring = { version = "3", features = ["windows-native"] }
+
+[target.'cfg(target_os = "macos")'.dependencies.keyring]
+version = "3"
+features = ["apple-native"]
+
+# mac-notification-sys pulls in objc2 which only compiles on Apple platforms.
+# Must be guarded so Windows cross-build (Linux Docker) doesn't try to compile it.
+[target.'cfg(target_os = "macos")'.dependencies]
+mac-notification-sys = "0.6"
+
+
+# Read the optimization guideline for more details: https://tauri.app/concept/size/#cargo-configuration
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "unwind"
+strip = true
+
+# Don't strip proc-macros/build scripts to avoid mis-aligned LINKEDIT string pool bug on macOS
+[profile.release.build-override]
+strip = false
+
+# Desktop-only plugins: single window instance, self-update and start at login have no mobile version.
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"
+tauri-plugin-autostart = "2.7.0"
+tauri-plugin-single-instance = "2"
