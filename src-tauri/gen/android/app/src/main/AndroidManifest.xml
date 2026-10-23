@@ -4,6 +4,10 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Writing conversations with the AI while the app is in the background: a foreground service keeps it alive -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- Reminders on time: granted at install on Android 13+ (USE_EXACT_ALARM), pre-granted on 12 (SCHEDULE_EXACT_ALARM) -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32" />
@@ -52,6 +56,8 @@
             android:exported="true"
             android:showWhenLocked="true"
             android:turnScreenOn="true" />
+
+        <service android:name=".SituationBatchService" android:exported="false" android:foregroundServiceType="dataSync" />
 
         <!-- Study reminders: alarms fire the receiver with the app closed; the boot receiver sets them again -->
         <receiver android:name=".ReminderReceiver" android:exported="false" />

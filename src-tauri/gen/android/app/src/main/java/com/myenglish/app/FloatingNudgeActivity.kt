@@ -334,7 +334,7 @@ class FloatingNudgeActivity : Activity() {
       background = primaryBg
       layoutParams = LinearLayout.LayoutParams(0, dpToPx(38), 1f)
       setOnClickListener {
-        startQuizSession(maxQuestions = 3)
+        startQuizSession(maxQuestions = 10)
       }
     }
     actionsRow.addView(playBtn)
@@ -350,7 +350,7 @@ class FloatingNudgeActivity : Activity() {
       null
     )
     val quizBtn = TextView(this).apply {
-      text = "⚡ 1 câu"
+      text = "⚡ 10 câu"
       setTextColor(Color.parseColor("#a5b4fc"))
       textSize = 12f
       setTypeface(typeface, Typeface.BOLD)
@@ -360,7 +360,7 @@ class FloatingNudgeActivity : Activity() {
         marginStart = dpToPx(8)
       }
       setOnClickListener {
-        startQuizSession(maxQuestions = 1)
+        startQuizSession(maxQuestions = 10)
       }
     }
     actionsRow.addView(quizBtn)
@@ -434,12 +434,18 @@ class FloatingNudgeActivity : Activity() {
     }
 
     if (sessionQuizList.isEmpty()) {
-      val singleRaw = quizJsonStr ?: intent.getStringExtra("quiz")
+      // "quiz" is one question (object) or a whole session of today's / forgotten words (array)
+      val singleRaw = (quizJsonStr ?: intent.getStringExtra("quiz"))?.trim()
       if (!singleRaw.isNullOrBlank()) {
         try {
-          val obj = JSONObject(singleRaw)
-          if ((obj.optJSONArray("options")?.length() ?: 0) > 0) {
-            sessionQuizList.add(obj)
+          val items = if (singleRaw.startsWith("[")) {
+            val arr = JSONArray(singleRaw)
+            (0 until arr.length()).mapNotNull { arr.optJSONObject(it) }
+          } else {
+            listOf(JSONObject(singleRaw))
+          }
+          for (obj in items) {
+            if ((obj.optJSONArray("options")?.length() ?: 0) > 0) sessionQuizList.add(obj)
           }
         } catch (_: Exception) {}
       }

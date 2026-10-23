@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-build-situation-prompt-ai"
+description = "Enables the build_situation_prompt_ai command without any pre-configured scope."
+commands.allow = ["build_situation_prompt_ai"]
+
+[[permission]]
+identifier = "deny-build-situation-prompt-ai"
+description = "Denies the build_situation_prompt_ai command without any pre-configured scope."
+commands.deny = ["build_situation_prompt_ai"]

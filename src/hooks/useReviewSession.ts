@@ -359,6 +359,16 @@ export function useReviewSession({
     !introducedAtRef.current.has(currentKey) &&
     (needsIntro(currentWord) || needsRelearnIntro(currentWord));
 
+  // An introduction can only be finished after the learner said the word aloud (SayAloudPrompt): keyed by card,
+  // so the next introduction starts locked. The ref is for the keyboard handler, which can hold an older render.
+  const [sayPassedKey, setSayPassedKey] = useState<string | null>(null);
+  const sayPassedRef = useRef<string | null>(null);
+  const introSayPassed = sayPassedKey === currentKey;
+  const markIntroSaid = () => {
+    sayPassedRef.current = currentKey;
+    setSayPassedKey(currentKey);
+  };
+
   // Brand-new word: guess its meaning from a sentence before the introduction (practice, never graded)
   const [pretestResults, setPretestResults] = useState<Map<string, PretestResult>>(() => new Map());
   const pretest = useMemo(
@@ -499,7 +509,7 @@ export function useReviewSession({
 
   /** The introduction was read: log it and bring the card back for its first quiz a few cards later */
   const handleIntroDone = () => {
-    if (!currentWord || gradingLockRef.current) return;
+    if (!currentWord || gradingLockRef.current || sayPassedRef.current !== currentKey) return;
     gradingLockRef.current = true;
     introducedAtRef.current.set(currentKey, Date.now());
     currentWord.srs = {
@@ -1102,6 +1112,8 @@ export function useReviewSession({
     effectiveExerciseType,
     isIntroCard,
     handleIntroDone,
+    introSayPassed,
+    markIntroSaid,
     canMarkKnown,
     handleIntroKnown,
     pretest,

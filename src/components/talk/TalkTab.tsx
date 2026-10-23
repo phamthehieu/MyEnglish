@@ -5,6 +5,7 @@ import type { Situation, SituationGroup } from "@/types/situation";
 import { summarize, TALK_UPDATED_EVENT, type SituationStatus } from "@/services/talk/progress";
 import { removeGenerated, TALK_GENERATED_EVENT } from "@/services/talk/custom";
 import { aiReady, generateSituation } from "@/services/talk/generateAi";
+import { batchAvailable, batchStatus, cancelBatch, importPending, startBatch, topUpBatch, type BatchStatus } from "@/services/talk/situationBatch";
 import { getActiveCefrLevel } from "@/services/pipeline";
 import { isFoundationMode } from "@/services/learnerProfile";
 import { PAGE_CONTAINER } from "../dashboard/shared";
@@ -12,6 +13,8 @@ import Conversation from "./Conversation";
 import WarmUp from "./WarmUp";
 
 type View = { kind: "list" } | { kind: "warmup"; id: string } | { kind: "chat"; id: string };
+
+const LEVELS: Array<Situation["cefr"]> = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
 const GROUPS: Array<{ id: SituationGroup; label: string }> = [
   { id: "daily", label: "Đời thường" },
@@ -118,17 +121,89 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
     };
   }, []);
 
-  const create = async () => {
+  const [count, setCount] = useState(3);
+  const [progress, setProgress] = useState(0);
+  const [retrying, setRetrying] = useState(false);
+
+  // Android: the phone writes them in the background (even with the app closed) and these are added when they
+  // are there. Look when the card opens, while it is open, and when the app comes back to the front.
+  const background = batchAvailable();
+  const [background_status, setBackgroundStatus] = useState<BatchStatus | null>(null);
+  useEffect(() => {
+    if (!background) return;
+    const look = () => {
+      const status = batchStatus();
+      setBackgroundStatus(status);
+      const added = importPending();
+      if (added.length > 0) {
+        setMade((prev) => [...(prev ? prev.split(", ") : []), ...added.map((s) => s.title_vi)].join(", "));
+        added.forEach(onCreated);
+      }
+      if (status && !status.running && status.total > 0 && status.done === 0 && status.error) setError(status.error);
+      void topUpBatch(status);
+    };
+    look();
+    const timer = window.setInterval(look, 2500);
+    document.addEventListener("visibilitychange", look);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", look);
+    };
+  }, [background, onCreated]);
+  const writing = background && background_status?.running === true;
+
+  const createInBackground = async () => {
     setBusy(true);
     setError(null);
     setMade(null);
     try {
-      const s = await generateSituation();
-      setMade(s.title_vi);
-      onCreated(s);
+      if (!(await startBatch(count))) setError("Không bắt đầu được việc tạo trong nền. Thử lại nhé.");
+      else setBackgroundStatus(batchStatus());
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
+      setBusy(false);
+    }
+  };
+
+  // One after another (each takes a topic the next one skips); a failure keeps the ones already made
+  const create = async () => {
+    if (background) return createInBackground();
+    setBusy(true);
+    setError(null);
+    setMade(null);
+    setProgress(0);
+    setRetrying(false);
+    const titles: string[] = [];
+    // A weak network or an overloaded model (503) is retried, waiting longer each time, until the number the learner
+    // chose is reached. A key the API refuses cannot be fixed by trying again, and too many failures in a row stop it.
+    let wait = 4000;
+    let failures = 0;
+    try {
+      while (titles.length < count) {
+        try {
+          const s = await generateSituation();
+          titles.push(s.title_vi);
+          setProgress(titles.length);
+          setRetrying(false);
+          onCreated(s);
+          failures = 0;
+          wait = 4000;
+        } catch (err) {
+          const message = err instanceof Error ? err.message : String(err);
+          failures++;
+          if (/API key|khóa/i.test(message) || failures >= 8) {
+            setError(titles.length < count ? `${message} (đã tạo ${titles.length}/${count} bài)` : message);
+            break;
+          }
+          setRetrying(true);
+          await new Promise((resolve) => setTimeout(resolve, wait));
+          wait = Math.min(wait * 2, 30000);
+        }
+      }
+    } finally {
+      if (titles.length > 0) setMade(titles.join(", "));
+      setRetrying(false);
       setBusy(false);
     }
   };
@@ -139,30 +214,59 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
         <Sparkles className="w-4 h-4 text-violet-500" /> Tạo hội thoại mới bằng AI
       </p>
       <p className="text-xs text-slate-600 dark:text-zinc-400">
-        Mỗi lần bấm là một tình huống mới{levelText ? `, hợp trình độ ${levelText}` : ""}, không trùng với các hội thoại bạn đang
-        có. Chỉ tạo khi bạn bấm.
+        Tình huống mới{levelText ? `, hợp trình độ ${levelText}` : ""}, không trùng với các hội thoại bạn đang có. Chỉ tạo khi
+        bạn bấm.
       </p>
+      <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-zinc-400">
+        <span>Số bài:</span>
+        {[1, 3, 5, 10].map((n) => (
+          <button
+            key={n}
+            onClick={() => setCount(n)}
+            disabled={busy || writing}
+            className={`px-3 py-1 rounded-lg border font-semibold ${count === n ? "border-violet-500 bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300" : "border-slate-200 dark:border-zinc-700"}`}
+          >
+            {n}
+          </button>
+        ))}
+      </div>
       <button
         onClick={create}
-        disabled={busy || ready !== true}
+        disabled={busy || writing || ready !== true}
         className="w-full py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
       >
-        {busy ? (
+        {writing && background_status ? (
           <>
-            <Loader2 className="w-4 h-4 animate-spin" /> Đang tạo (khoảng nửa phút)…
+            <Loader2 className="w-4 h-4 animate-spin" />
+            {background_status.error
+              ? ` Mạng yếu hoặc AI bận, đang thử lại (${background_status.done}/${background_status.total})…`
+              : ` Đang tạo trong nền ${background_status.done}/${background_status.total}…`}
+          </>
+        ) : busy ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            {retrying ? ` Mạng yếu hoặc AI bận, đang thử lại (${progress}/${count})…` : ` Đang tạo ${progress + 1}/${count} (khoảng nửa phút mỗi bài)…`}
           </>
         ) : (
           <>
-            <Sparkles className="w-4 h-4" /> Tạo hội thoại mới
+            <Sparkles className="w-4 h-4" /> Tạo {count} hội thoại mới
           </>
         )}
       </button>
+      {writing && (
+        <div className="flex items-center justify-between gap-2 text-xs text-slate-600 dark:text-zinc-400">
+          <span>Bạn có thể thoát app, máy vẫn tạo tiếp và báo khi xong.</span>
+          <button onClick={cancelBatch} className="font-semibold underline underline-offset-2 shrink-0">
+            Dừng
+          </button>
+        </div>
+      )}
       {ready === false && (
         <p className="text-xs text-amber-700 dark:text-amber-300">
           Chưa có AI. Vào Cài đặt để nhập khóa Gemini (hoặc cài AI CLI), rồi quay lại đây.
         </p>
       )}
-      {made && <p className="text-xs text-emerald-700 dark:text-emerald-300">Đã tạo: {made}. Xem ở nhóm bên dưới.</p>}
+      {made && <p className="text-xs text-emerald-700 dark:text-emerald-300">Đã tạo {made.split(", ").length} bài: {made}. Xem ở nhóm bên dưới.</p>}
       {error && <p className="text-xs text-rose-600 dark:text-rose-400">{error}</p>}
     </div>
   );
@@ -172,6 +276,7 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
 export default function TalkTab({ resetKey }: { resetKey?: number }) {
   const [view, setView] = useState<View>({ kind: "list" });
   const [, setTick] = useState(0);
+  const [level, setLevel] = useState<"all" | Situation["cefr"]>("all");
 
   // Tapping the tab again returns to the list
   useEffect(() => {
@@ -200,6 +305,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
   }
 
   const all = allSituations();
+  const inLevel = (s: Situation) => level === "all" || s.cefr === level;
   return (
     <div className={PAGE_CONTAINER}>
       {view.kind === "warmup" && situation ? (
@@ -218,10 +324,36 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
             </p>
           </div>
           <GenerateCard onCreated={() => setTick((t) => t + 1)} />
+          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
+            {(["all", ...LEVELS] as const).map((l) => {
+              const count = l === "all" ? all.length : all.filter((s) => s.cefr === l).length;
+              // A level with nothing in it yet is not offered
+              if (l !== "all" && count === 0) return null;
+              return (
+                <button
+                  key={l}
+                  role="tab"
+                  aria-selected={level === l}
+                  onClick={() => setLevel(l)}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+                    level === l
+                      ? "bg-emerald-600 border-emerald-600 text-white"
+                      : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:border-emerald-400"
+                  }`}
+                >
+                  {l === "all" ? "Tất cả" : l}
+                  <span className={`ml-1.5 text-xs font-normal ${level === l ? "text-emerald-100" : "text-slate-400 dark:text-zinc-500"}`}>{count}</span>
+                </button>
+              );
+            })}
+          </div>
           {GROUPS.map((g) => {
-            // The ones the AI wrote for the learner first (newest on top), then the ones that come with the app
-            const made = all.filter((s) => s.group === g.id && s.ai).sort((a, b) => b.ai!.createdAt - a.ai!.createdAt);
-            const builtIn = all.filter((s) => s.group === g.id && !s.ai);
+            // The ones the AI wrote for the learner first (newest on top), then the ones that come with the app,
+            // easiest level first
+            const made = all.filter((s) => s.group === g.id && s.ai && inLevel(s)).sort((a, b) => b.ai!.createdAt - a.ai!.createdAt);
+            const builtIn = all
+              .filter((s) => s.group === g.id && !s.ai && inLevel(s))
+              .sort((a, b) => LEVELS.indexOf(a.cefr) - LEVELS.indexOf(b.cefr));
             const list = [...made, ...builtIn];
             if (list.length === 0) return null;
             return (

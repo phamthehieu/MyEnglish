@@ -6,6 +6,7 @@ import { getActivityLogs, getDailyGoal, getLocalDateString } from "./streak";
 import { countTodayWork } from "./todayWork";
 import { getDueWordsLite, getWordsLite } from "./db";
 import { selectMicroQuizQuestion, type MicroQuizQuestion } from "./duoMotivation";
+import { buildFlashQuizSession } from "./flashQuizSession";
 
 const DAYS_AHEAD = 3;
 const MAX_ENTRIES = 60;
@@ -138,11 +139,15 @@ export function reminderWindow(settings: Pick<ReminderSettings, "nightQuiet">): 
 }
 
 /**
- * Minutes between two planned reminders, or 0 when the automatic reminders are off.
+ * Minutes between two planned reminders, or 0 when the automatic reminders are off. The learner's interval,
+ * but never so short that the daily limit would be used up in the first hours of the morning: the limit is
+ * spread over the day.
  */
 export function reminderGapMinutes(settings: ReminderSettings): number {
   if (!settings.enabled || settings.intervalMinutes === 0) return 0;
-  return settings.intervalMinutes;
+  const { startHour, endHour } = reminderWindow(settings);
+  const spread = settings.maxNudgesPerDay > 0 ? Math.ceil(((endHour - startHour) * 60) / settings.maxNudgesPerDay) : 0;
+  return Math.max(settings.intervalMinutes, spread);
 }
 
 export interface PlannedReminder {
@@ -151,14 +156,15 @@ export interface PlannedReminder {
 }
 
 /**
- * Reminders for the next days: pure, so it can be tested.
+ * Reminders for the next days: pure, so it can be tested. Today's start counting from `now` (the learner has
+ * just left the app, like the countdown on the desktop), the other days from the morning.
  */
 export function planReminders(
   now: Date,
   settings: ReminderSettings,
   opts: { goalMetToday: boolean; dueToday: number }
 ): PlannedReminder[] {
-  if (!settings.enabled || settings.intervalMinutes === 0) return [];
+  if (!settings.enabled) return [];
   const gapMs = reminderGapMinutes(settings) * 60_000;
   const { startHour, endHour } = reminderWindow(settings);
   const cap = settings.maxNudgesPerDay > 0 ? settings.maxNudgesPerDay : Infinity;
@@ -176,14 +182,18 @@ export function planReminders(
         times.push(t);
       }
     }
+    // The study times the learner chose ("after lunch") are reminded too
     for (const anchor of settings.anchors) {
       const a = ANCHOR_TIMES[anchor];
       if (a) times.push(at(a.hour, a.minute));
     }
-    times = times.filter((t) => t >= dayStart && t < dayEnd && t > now.getTime() + 15_000).sort((x, y) => x - y);
+    times = times.filter((t) => t >= dayStart && t < dayEnd && t > now.getTime() + 60_000).sort((x, y) => x - y);
     times = times.filter((t, i) => i === 0 || t - times[i - 1] >= MIN_SPACING_MS);
     times = times.slice(0, cap);
 
+    // Nothing to do today: no reminder for the rest of today (the other days are planned as usual)
+    if (day === 0 && settings.stopAfterGoal && opts.goalMetToday) times = [];
+    if (day === 0 && settings.triggerCondition === "due_only" && opts.dueToday === 0) times = [];
     if (settings.snoozedUntil) times = times.filter((t) => t >= settings.snoozedUntil!);
 
     for (const t of times) {
@@ -222,11 +232,23 @@ export async function ensureNotificationPermission(): Promise<boolean> {
 // Pre-cached data for handoff to Android background alarms
 let dueToday = 0;
 let cachedQuizzes: MicroQuizQuestion[] = [];
+/** Today's words + forgotten words: a whole Flash-Quiz session, sent as a JSON array in the "quiz" field */
+let sessionQuizzes: MicroQuizQuestion[] = [];
+
+/** The quiz of the reminder at `idx`: the session (rotated, so each reminder starts on another word) or one due word */
+function quizFor(idx: number): string {
+  if (sessionQuizzes.length > 0) {
+    const start = idx % sessionQuizzes.length;
+    return JSON.stringify([...sessionQuizzes.slice(start), ...sessionQuizzes.slice(0, start)]);
+  }
+  return cachedQuizzes.length > 0 ? JSON.stringify(cachedQuizzes[idx % cachedQuizzes.length]) : "";
+}
 
 async function refreshDue(): Promise<void> {
   try {
     dueToday = (await countTodayWork()).total;
     const [dueWords, allWords] = await Promise.all([getDueWordsLite(), getWordsLite()]);
+    sessionQuizzes = await buildFlashQuizSession(allWords).catch(() => []);
     const sourceWords = dueWords.length > 0 ? dueWords : allWords;
     if (sourceWords.length > 0) {
       cachedQuizzes = [];
@@ -259,7 +281,7 @@ export function scheduleForBackground(now: Date = new Date()): void {
         title: TITLE,
         body: p.body,
         dueCount: dueToday,
-        quiz: cachedQuizzes.length > 0 ? JSON.stringify(cachedQuizzes[idx % cachedQuizzes.length]) : "",
+        quiz: quizFor(idx),
       }))
     ),
     JSON.stringify(reminderRule(settings))
@@ -269,13 +291,15 @@ export function scheduleForBackground(now: Date = new Date()): void {
 
 /** The app came to the front right after a reminder was due */
 function openReviewIfFromReminder(): void {
+  // Do not pop up unsolicited review modals when learner opens or resumes the app.
+  // The learner is already in the app and can start reviewing whenever they choose from Today/Review tabs.
   const now = Date.now();
   const times = readJson<number[]>(PLAN_KEY, []);
   const handled = readJson<number>(HANDLED_KEY, 0);
   const hit = times.filter((t) => t <= now && now - t <= OPEN_WINDOW_MS && t > handled).sort((a, b) => b - a)[0];
-  if (hit === undefined) return;
-  writeJson(HANDLED_KEY, hit);
-  window.dispatchEvent(new CustomEvent("open-review-popup-preview"));
+  if (hit !== undefined) {
+    writeJson(HANDLED_KEY, hit);
+  }
 }
 
 /** Sync any micro-quiz answers completed while on the floating overlay outside the app */

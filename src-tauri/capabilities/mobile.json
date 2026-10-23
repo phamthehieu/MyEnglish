@@ -36,6 +36,8 @@
     "allow-export-backup",
     "allow-grade-sentence-ai",
     "allow-correct-writing-ai",
+    "allow-generate-situation-ai",
+    "allow-build-situation-prompt-ai",
     "allow-generate-memory-aid-ai",
     "allow-compute-fsrs-parameters",
     "allow-get-ai-api-key-status",

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { logLearningEvent } from "@/services/learningEvents";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { Clock, Play, Zap, Flame, Check, X, Sparkles, Crosshair } from "lucide-react";
+import { Clock, Play, Zap, Flame, Check, X, Sparkles, Crosshair, Ear, Volume2 } from "lucide-react";
 import { getFocusSettings } from "@/services/focusSettings";
 import {
   buildNudgePayload,
@@ -20,6 +20,8 @@ import {
   type MicroQuizEvaluationResult,
 } from "@/services/duoMotivation";
 import { playSound } from "@/services/sound";
+import { selectMicroPhonemeQuiz, type MicroPhonemeQuizQuestion } from "@/services/phonemeMatcher";
+import { handleSpeak } from "./review/speech";
 
 interface ReviewNudgeProps {
   /** Browser preview only: called after an action instead of hiding a native window */
@@ -36,7 +38,7 @@ const WRONG_ANSWER_CLOSE_MS = 60 * 1000;
 
 export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNudgeProps) {
   const [payload, setPayload] = useState<ReviewNudgePayload>(() => initialPayload || buildNudgePayload(0));
-  const [mode, setMode] = useState<"nudge" | "quiz">("nudge");
+  const [mode, setMode] = useState<"nudge" | "quiz" | "phoneme">("nudge");
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null);
   // Length of the countdown that is running (the nudge and the quiz wait different times)
   const [countdownTotal, setCountdownTotal] = useState(NUDGE_AUTO_OPEN_SECONDS);
@@ -46,6 +48,11 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [quizResult, setQuizResult] = useState<MicroQuizEvaluationResult | null>(null);
   const quizStartTimeRef = useRef(0);
+
+  // Phoneme Discrimination Quiz state
+  const [phonemeQuiz, setPhonemeQuiz] = useState<MicroPhonemeQuizQuestion | null>(null);
+  const [selectedPhonemeOptId, setSelectedPhonemeOptId] = useState<string | null>(null);
+  const [phonemeResult, setPhonemeResult] = useState<{ isCorrect: boolean } | null>(null);
 
   // Browser-preview fallback only: > 0 while the pointer is over the card
   const hoverAtRef = useRef(0);
@@ -87,6 +94,10 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
     // Reset quiz state
     setSelectedOptionId(null);
     setQuizResult(null);
+
+    // Reset phoneme state
+    setSelectedPhonemeOptId(null);
+    setPhonemeResult(null);
 
     // If algorithm prefers micro-quiz and question exists, switch directly to quiz
     if (next.microQuiz && next.motivation?.isMicroQuizPreferred) {
@@ -144,6 +155,47 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
     },
     [onDone]
   );
+
+  // Load phoneme challenge in background
+  useEffect(() => {
+    selectMicroPhonemeQuiz()
+      .then((q) => {
+        if (q) setPhonemeQuiz(q);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Switch to phoneme quiz mode
+  const switchToPhoneme = () => {
+    if (actedRef.current || !phonemeQuiz) return;
+    setMode("phoneme");
+    setSecondsLeft(QUIZ_COUNTDOWN_SECONDS);
+    setCountdownTotal(QUIZ_COUNTDOWN_SECONDS);
+    deadlineRef.current = Date.now() + QUIZ_COUNTDOWN_SECONDS * 1000;
+    setSelectedPhonemeOptId(null);
+    setPhonemeResult(null);
+    handleSpeak(phonemeQuiz.spokenWord);
+  };
+
+  const handleAnswerPhoneme = (optId: string, isCorrect: boolean) => {
+    if (!phonemeQuiz || selectedPhonemeOptId !== null) return;
+    setSelectedPhonemeOptId(optId);
+    setSecondsLeft(null);
+    setPhonemeResult({ isCorrect });
+    playSound(isCorrect ? "correct" : "wrong");
+
+    logLearningEvent("nudge_quiz", {
+      meta: { pairId: phonemeQuiz.pairId, word: phonemeQuiz.spokenWord, isCorrect, phoneme: true },
+    });
+
+    if (isCorrect) {
+      clearCloseTimer();
+      closeTimerRef.current = setTimeout(() => {
+        closeTimerRef.current = null;
+        finish("quiz-done");
+      }, 1800);
+    }
+  };
 
   // Switch to quiz mode manually
   const switchToQuiz = () => {
@@ -223,6 +275,16 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
         } else if (e.key === "3" && payload.microQuiz.options[2]) {
           handleAnswerQuiz(payload.microQuiz.options[2].id);
         }
+      } else if (mode === "phoneme" && phonemeQuiz && selectedPhonemeOptId === null) {
+        if (e.key === "1" && phonemeQuiz.options[0]) {
+          handleAnswerPhoneme(phonemeQuiz.options[0].id, phonemeQuiz.options[0].isCorrect);
+        } else if (e.key === "2" && phonemeQuiz.options[1]) {
+          handleAnswerPhoneme(phonemeQuiz.options[1].id, phonemeQuiz.options[1].isCorrect);
+        } else if (e.key === " ") {
+          handleSpeak(phonemeQuiz.spokenWord);
+        }
+      } else if (mode === "phoneme" && phonemeResult && !phonemeResult.isCorrect) {
+        if (e.key === "Enter" || e.key === "Escape") finish("quiz-done");
       } else if (mode === "nudge") {
         if (e.key === "Enter") {
           finish("start");
@@ -400,6 +462,17 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                   1 câu
                 </button>
               ) : null}
+              {phonemeQuiz ? (
+                <button
+                  onClick={switchToPhoneme}
+                  aria-label="Luyện phân biệt âm"
+                  title="Luyện phân biệt âm thanh nhanh ngay tại đây"
+                  className="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/50 hover:bg-purple-100 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 text-[12px] font-semibold whitespace-nowrap transition-all active:scale-[0.98]"
+                >
+                  <Ear className="w-3.5 h-3.5 text-purple-500 shrink-0" />
+                  Luyện âm
+                </button>
+              ) : null}
             </div>
             <div className="flex items-center justify-between gap-2 -mt-0.5 text-[11px] whitespace-nowrap">
               <button
@@ -422,7 +495,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
               </button>
             </div>
           </div>
-        ) : (
+        ) : mode === "quiz" ? (
           /* ─── MODE 2: INSTANT MICRO-QUIZ ─── */
           <div className="p-3.5 flex flex-col gap-2">
             <div className="flex items-center justify-between">
@@ -554,13 +627,138 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
               </div>
             )}
           </div>
+        ) : (
+          /* ─── MODE 3: RAPID PHONEME DISCRIMINATION ─── */
+          <div className="p-3.5 flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                  <Ear className="w-3 h-3 text-purple-500" />
+                  Luyện phân biệt âm
+                </span>
+                <span className="text-[11px] text-slate-500 dark:text-zinc-400 truncate">
+                  {phonemeQuiz?.title}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {secondsLeft !== null && (
+                  <span className="text-[10px] text-slate-400 dark:text-zinc-500 tabular-nums font-mono">
+                    {secondsLeft}s
+                  </span>
+                )}
+                <button
+                  onClick={() => finish("quiz-done")}
+                  className="text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 p-0.5 rounded transition-colors"
+                  aria-label="Đóng"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Target Spoken Word */}
+            {phonemeQuiz && (
+              <div className="flex items-center justify-between p-2 rounded-xl bg-purple-50/60 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900/40">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleSpeak(phonemeQuiz.spokenWord)}
+                    className="w-8 h-8 rounded-lg bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center shrink-0 shadow-sm"
+                    title="Bấm để nghe lại"
+                  >
+                    <Volume2 className="w-4 h-4" />
+                  </button>
+                  <div className="min-w-0">
+                    <span className="text-[11.5px] font-bold text-slate-800 dark:text-white block">
+                      Nghe từ: "{phonemeQuiz.spokenWord}"
+                    </span>
+                    <span className="text-[10px] text-slate-500 dark:text-zinc-400">
+                      Bạn nghe thấy âm nào dưới đây?
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 2 Options */}
+            <div className="flex flex-col gap-1.5">
+              {phonemeQuiz?.options.map((opt) => {
+                const isSelected = selectedPhonemeOptId === opt.id;
+                const isAnswered = selectedPhonemeOptId !== null;
+                const isCorrect = opt.isCorrect;
+
+                let btnStyle =
+                  "border-slate-200 dark:border-zinc-700/80 bg-slate-50/80 dark:bg-zinc-800/60 hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-800 dark:text-zinc-200";
+
+                if (isAnswered) {
+                  if (isCorrect) {
+                    btnStyle =
+                      "border-emerald-500 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-bold";
+                  } else if (isSelected && !isCorrect) {
+                    btnStyle =
+                      "border-rose-500 bg-rose-500/15 text-rose-700 dark:text-rose-300 line-through opacity-90";
+                  } else {
+                    btnStyle = "border-transparent opacity-40 text-slate-400 dark:text-zinc-600";
+                  }
+                }
+
+                return (
+                  <button
+                    key={opt.id}
+                    disabled={isAnswered}
+                    onClick={() => handleAnswerPhoneme(opt.id, opt.isCorrect)}
+                    className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-[11.5px] transition-all text-left ${btnStyle} active:scale-98`}
+                  >
+                    <span className="truncate">{opt.text}</span>
+                    {isAnswered && isCorrect && (
+                      <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    )}
+                    {isAnswered && isSelected && !isCorrect && (
+                      <X className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 shrink-0" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Result banner */}
+            {phonemeResult && (
+              <div
+                className={`mt-0.5 px-2.5 py-1 rounded-md text-[11px] font-semibold flex items-center justify-between animate-fade-in ${
+                  phonemeResult.isCorrect
+                    ? "bg-emerald-100/90 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300"
+                    : "bg-amber-100/90 dark:bg-amber-950/70 text-amber-900 dark:text-amber-200"
+                }`}
+              >
+                <div className="flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  <span>
+                    {phonemeResult.isCorrect
+                      ? "Chính xác! Tai bạn nghe rất tốt +10 XP 🎯"
+                      : phonemeQuiz?.explanation}
+                  </span>
+                </div>
+                {!phonemeResult.isCorrect && (
+                  <button
+                    onClick={() => finish("quiz-done")}
+                    className="shrink-0 ml-2 px-2 py-0.5 rounded bg-white/70 dark:bg-zinc-800/80 text-[10px] font-semibold hover:bg-white dark:hover:bg-zinc-700"
+                  >
+                    Đóng
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         )}
 
         {/* Bottom Countdown bar */}
         <div className="h-1.5 bg-slate-200 dark:bg-zinc-800 w-full overflow-hidden">
           <div
             className={`h-full ${
-              mode === "quiz" ? "bg-indigo-500" : "bg-emerald-500"
+              mode === "quiz"
+                ? "bg-indigo-500"
+                : mode === "phoneme"
+                ? "bg-purple-500"
+                : "bg-emerald-500"
             } ${freshBar ? "" : "transition-[width] duration-500 ease-linear"}`}
             style={{ width: `${progress * 100}%` }}
           />

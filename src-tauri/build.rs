@@ -25,6 +25,8 @@ const APP_COMMANDS: &[&str] = &[
     "export_backup",
     "grade_sentence_ai",
     "correct_writing_ai",
+    "generate_situation_ai",
+    "build_situation_prompt_ai",
     "generate_memory_aid_ai",
     "compute_fsrs_parameters",
     "get_ai_api_key_status",

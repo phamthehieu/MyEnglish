@@ -13,6 +13,7 @@
 # Needs: JDK 17+, Android SDK + NDK, and `rustup target add aarch64-linux-android armv7-linux-androideabi`.
 param(
   [switch]$Release,
+  [switch]$Install,
   [string]$OutDir = (Join-Path (Split-Path $PSScriptRoot -Parent) "..\MyEnglish-android")
 )
 $ErrorActionPreference = "Stop"
@@ -113,4 +114,13 @@ Copy-Item $apk.FullName $aliasOut -Force
 Write-Host "==> Done: $out ($([math]::Round((Get-Item $out).Length / 1MB, 1)) MB)"
 if ($aliasName -ne $name) {
   Write-Host "==> Alias: $aliasOut"
+}
+
+if ($Install) {
+  Write-Host "==> Installing on connected device via adb..."
+  adb install -r $out
+  if ($LASTEXITCODE -eq 0) {
+    Write-Host "==> Launching app on device..."
+    adb shell am start -n com.myenglish.app/.MainActivity
+  }
 }

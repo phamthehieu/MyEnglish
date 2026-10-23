@@ -35,14 +35,23 @@ class MainActivity : TauriActivity() {
     handleIncomingIntent(intent)
   }
 
+  override fun onStart() {
+    super.onStart()
+    inForeground = true
+  }
+
   override fun onResume() {
     super.onResume()
     inForeground = true
   }
 
   override fun onPause() {
-    inForeground = false
     super.onPause()
+  }
+
+  override fun onStop() {
+    inForeground = false
+    super.onStop()
   }
 
   override fun onNewIntent(intent: Intent) {
@@ -91,6 +100,7 @@ class MainActivity : TauriActivity() {
     webView.addJavascriptInterface(listener, "AndroidASR")
 
     webView.addJavascriptInterface(RemindersBridge(this), "AndroidReminders")
+    webView.addJavascriptInterface(SituationsBridge(this), "AndroidSituations")
 
     // Deliver any action pending from activity cold start
     val act = pendingAction

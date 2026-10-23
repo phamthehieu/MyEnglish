@@ -6,10 +6,12 @@
  * the streak, and the day of the last practice is kept so Today can tick "1 bài phát âm" off.
  */
 import type { PronunciationLesson } from "@/types/pronunciation";
+import type { PhonemeChartGroup } from "@/data/phonemes";
 import { logLearningEvent } from "./learningEvents";
 import { persistKeyNow } from "./storageBackup";
 import { checkAndUnlockAchievements } from "./achievements";
 import { getLocalDateString, recordDailyActivity } from "./streak";
+import { recordMasteryAnswers, recordMasteryWords } from "./pronunciationMastery";
 
 const PROGRESS_KEY = "myenglish_pronunciation_v1";
 /** Local day (YYYY-MM-DD) the learner last practised pronunciation */
@@ -31,6 +33,12 @@ export type PronunciationProgress = Record<string, PronunciationLessonProgress>;
 export async function loadPronunciationLessons(): Promise<PronunciationLesson[]> {
   const { PRONUNCIATION_LESSONS } = await import("@/data/pronunciation");
   return [...PRONUNCIATION_LESSONS].sort((a, b) => a.order - b.order);
+}
+
+/** The 44 sound lessons of the IPA chart (src/data/phonemes.ts), in chart order, with the chart itself */
+export async function loadPhonemeLessons(): Promise<{ lessons: PronunciationLesson[]; chart: PhonemeChartGroup[] }> {
+  const { PHONEME_LESSONS, PHONEME_CHART } = await import("@/data/phonemes");
+  return { lessons: [...PHONEME_LESSONS].sort((a, b) => a.order - b.order), chart: PHONEME_CHART };
 }
 
 export function getPronunciationProgress(): PronunciationProgress {
@@ -83,6 +91,7 @@ export function pronunciationPracticedToday(now: Date = new Date()): boolean {
 /** A word said aloud and self-rated ("Đọc to theo"): logged, never graded, counts as one answer today */
 export function recordSayAloud(lessonId: string, text: string, ok: boolean, now: Date = new Date()): void {
   logLearningEvent("say_aloud", { meta: { lessonId, text, ok } });
+  recordMasteryWords(lessonId, [text]);
   notePractice(1, now);
   try {
     window.dispatchEvent(new CustomEvent("myenglish-pronunciation-updated"));
@@ -94,11 +103,21 @@ export function isLessonPassed(p: PronunciationLessonProgress | undefined): bool
 }
 
 /** Save a finished quiz (the best score is kept) and return whether the lesson is now passed */
-export function recordPronunciationQuiz(lessonId: string, correct: number, total: number, now: Date = new Date()): boolean {
+export function recordPronunciationQuiz(
+  lessonId: string,
+  correct: number,
+  total: number,
+  now: Date = new Date(),
+  /** The words the quiz played, for the words-met part of the mastery */
+  words: string[] = []
+): boolean {
+  recordMasteryAnswers([lessonId], correct, total, words, now);
   const all = getPronunciationProgress();
   const prev = all[lessonId];
+  // The number of questions differs between a classic quiz and a session: compare on the same scale
+  const prevBest = prev && prev.total > 0 ? Math.round((prev.best / prev.total) * total) : 0;
   const next: PronunciationLessonProgress = {
-    best: Math.max(prev?.best ?? 0, correct),
+    best: Math.max(prevBest, correct),
     total,
     attempts: (prev?.attempts ?? 0) + 1,
     passedAt: prev?.passedAt,

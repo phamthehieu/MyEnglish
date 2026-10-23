@@ -10,6 +10,12 @@ import { ONLINE_MEETING } from "./online-meeting";
 import { RESTAURANT } from "./restaurant";
 import { SHOPPING } from "./shopping";
 import { WEEKEND_CHAT } from "./weekend-chat";
+import { B1_SITUATIONS } from "./b1";
+
+/** Conversations written in bulk by scripts/build-situations.ts (one file per level; none when it has not run) */
+const GENERATED: Situation[] = Object.values(
+  import.meta.glob("./generated/*.json", { eager: true, import: "default" }) as Record<string, Situation[]>
+).flat();
 
 /** The conversations that come with the app. Shortest and easiest first inside each group. */
 export const SITUATIONS: Situation[] = [
@@ -23,6 +29,8 @@ export const SITUATIONS: Situation[] = [
   DAILY_STANDUP,
   ASK_COLLEAGUE,
   ONLINE_MEETING,
+  ...B1_SITUATIONS,
+  ...GENERATED,
 ];
 
 /** Built-in conversations and the ones the AI wrote for this learner (newest last) */

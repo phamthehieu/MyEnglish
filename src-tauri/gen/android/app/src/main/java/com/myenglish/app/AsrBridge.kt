@@ -46,7 +46,7 @@ class AsrBridge(
 ) {
   companion object {
     private const val SAMPLE_RATE = 16000
-    private const val MAX_SECONDS = 6
+    private const val MAX_SECONDS = 15
     private const val MODEL_ASSET_DIR = "vosk-model-en"
     private const val MODEL_DIR = "vosk-model-en-0.15"
     private const val READY_MARKER = ".complete"
@@ -237,7 +237,9 @@ class AsrBridge(
     val m = model
     if (m == null) return out.put("ok", false).put("error", "model not loaded")
     return try {
-      Recognizer(m, SAMPLE_RATE.toFloat(), grammarJson).use { rec ->
+      // An empty list means free recognition (a whole sentence); otherwise only the words of the list can be heard
+      val free = grammarJson.isBlank() || grammarJson.trim() == "[]"
+      (if (free) Recognizer(m, SAMPLE_RATE.toFloat()) else Recognizer(m, SAMPLE_RATE.toFloat(), grammarJson)).use { rec ->
         rec.setWords(true)
         var offset = 0
         while (offset < data.size) {

@@ -113,6 +113,8 @@ export default function FlashcardReview({
     canMarkKnown,
     handleIntroKnown,
     handleIntroDone,
+    introSayPassed,
+    markIntroSaid,
     pretest,
     isPretestCard,
     pretestResult,
@@ -338,7 +340,7 @@ export default function FlashcardReview({
             <div className="text-center text-[11px] font-semibold text-cyan-700 dark:text-cyan-300">
               {currentWord.srs.reps ? "🔁 Học lại từ hay quên" : "✨ Từ mới"} — đọc nghĩa, ví dụ và nghe phát âm. Bạn sẽ được hỏi lại sau vài thẻ.
             </div>
-            <SayAloudPrompt key={currentWord.id} word={currentWord.word} wordId={currentWord.id} />
+            <SayAloudPrompt key={currentWord.id} word={currentWord.word} wordId={currentWord.id} onPassed={markIntroSaid} />
             {canMarkKnown && (
               <div className="text-center">
                 <button
@@ -575,6 +577,7 @@ export default function FlashcardReview({
         onContinue={confirmCorrectAnswer}
         introMode={isIntroCard}
         onIntroDone={handleIntroDone}
+        introLocked={isIntroCard && !introSayPassed}
         isPractice={practiceMode}
       />}
 

@@ -24,7 +24,7 @@ function withTimeout<T>(promise: Promise<T>): Promise<T> {
 }
 
 /** The learner's level for the conversation: an absolute beginner ("A0") is written for as A1 with short lines */
-async function conversationLevel(): Promise<{ cefr: Situation["cefr"]; foundation: boolean }> {
+export async function conversationLevel(): Promise<{ cefr: Situation["cefr"]; foundation: boolean }> {
   const foundation = isFoundationMode();
   const level = (await getActiveCefrLevel()) as Situation["cefr"];
   return { cefr: foundation ? "A1" : CEFR.includes(level) ? level : "B1", foundation };

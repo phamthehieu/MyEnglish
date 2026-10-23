@@ -450,19 +450,20 @@ export function getRemainingSecondsToNextReminder(): number {
  * Trigger the native desktop Focus Review Pop-up window
  */
 export async function triggerReviewPopup(): Promise<boolean> {
+  if (isMobilePlatform()) {
+    // On mobile, review is started manually from the dashboard or via notification intent, never unsolicited in-app
+    return false;
+  }
   // Record that the popup is being displayed right now
   recordPopupDisplayed(Date.now());
   try {
-    // false = the popup window does not exist here (a phone has one window): the same quiz opens inside the app
     const shown = await invoke<boolean>("show_review_popup", { preferPrimary: getReminderSettings().preferPrimaryMonitor });
     if (shown === false) {
-      window.dispatchEvent(new CustomEvent("open-review-popup-preview"));
       return false;
     }
     return true;
   } catch (err) {
-    console.warn("invoke show_review_popup failed (fallback to in-app event):", err);
-    window.dispatchEvent(new CustomEvent("open-review-popup-preview"));
+    console.warn("invoke show_review_popup failed:", err);
     return false;
   }
 }
@@ -475,16 +476,16 @@ export async function triggerReviewNudge(
   dueCount: number,
   extraPayload?: Partial<ReviewNudgePayload>
 ): Promise<boolean> {
+  if (isMobilePlatform()) {
+    // Mobile reminders are handled natively by Android AlarmManager when outside the app.
+    // Never show in-app popup nudges while the user is using the app.
+    return false;
+  }
   recordPopupDisplayed(Date.now());
   const settings = getReminderSettings();
   try {
     // false = not shown (the review popup is already open)
     const payload = buildNudgePayload(dueCount, settings, extraPayload);
-    if (isMobilePlatform()) {
-      window.dispatchEvent(new CustomEvent("open-review-nudge-in-app", { detail: payload }));
-      countNudgeShown();
-      return true;
-    }
     const shown = await invoke<boolean>("show_review_nudge", {
       payload,
       preferPrimary: settings.preferPrimaryMonitor,
@@ -493,8 +494,8 @@ export async function triggerReviewNudge(
     if (shown) countNudgeShown();
     return shown;
   } catch (err) {
-    console.warn("invoke show_review_nudge failed, opening the review directly:", err);
-    return triggerReviewPopup();
+    console.warn("invoke show_review_nudge failed:", err);
+    return false;
   }
 }
 

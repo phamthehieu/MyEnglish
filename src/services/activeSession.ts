@@ -14,12 +14,18 @@ export function setMainSessionActive(active: boolean, now: number = Date.now()):
   } catch {}
 }
 
+import { isMobilePlatform } from "@/lib/platform";
+
 /**
  * The learner is looking at the app right now (its window is visible and has the focus). A reminder card
  * then only repeats what is on the screen, so the automatic ones wait until they are somewhere else.
  */
 export function isAppInForeground(): boolean {
   try {
+    if (typeof document === "undefined") return false;
+    if (isMobilePlatform()) {
+      return document.visibilityState === "visible";
+    }
     return document.visibilityState === "visible" && document.hasFocus();
   } catch {
     return false;

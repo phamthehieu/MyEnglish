@@ -25,6 +25,8 @@ interface GradingBarProps {
   /** A new word's introduction card: one "continue" button, nothing is graded */
   introMode?: boolean;
   onIntroDone?: () => void;
+  /** The word has not been said aloud yet: the introduction cannot be finished */
+  introLocked?: boolean;
   /** Practice mode: does not move FSRS schedule */
   isPractice?: boolean;
 }
@@ -47,6 +49,7 @@ export default function GradingBar({
   onContinue,
   introMode = false,
   onIntroDone,
+  introLocked = false,
   isPractice = false,
 }: GradingBarProps) {
   // Simple mode: Vietnamese labels only (no Again/Hard/Good/Easy, no exercise code names)
@@ -56,12 +59,12 @@ export default function GradingBar({
       {introMode ? (
         <button
           onClick={onIntroDone}
-          disabled={isAdvancing}
+          disabled={isAdvancing || introLocked}
           autoFocus
           className="w-full h-full rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white disabled:opacity-40 text-xs font-semibold flex items-center justify-center gap-2 transition-colors shadow-md"
         >
-          <span>Đã đọc kỹ từ mới — học tiếp (sẽ hỏi lại sau vài thẻ)</span>
-          <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>
+          <span>{introLocked ? "🎤 Đọc to từ này để học tiếp" : "Đã đọc to — học tiếp (sẽ hỏi lại sau vài thẻ)"}</span>
+          {!introLocked && <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>}
         </button>
       ) : pendingRating !== null ? (
         <button

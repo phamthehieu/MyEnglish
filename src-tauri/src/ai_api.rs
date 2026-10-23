@@ -12,7 +12,10 @@ const API_BASE: &str = "https://generativelanguage.googleapis.com/v1beta/models"
 /// Public API model. The CLI model name (`gemini-3.6-flash-medium`) is not served by the API.
 /// MYENGLISH_AI_MODEL overrides it (model retirement / testing).
 const API_MODEL: &str = "gemini-3.8-flash";
-const API_TIMEOUT: Duration = Duration::from_secs(60);
+/// Per model, for a real AI feature (some prompts write a whole dialogue)
+const API_TIMEOUT: Duration = Duration::from_secs(40);
+/// Per model, for the one-line check made when a key is saved
+const PROBE_TIMEOUT: Duration = Duration::from_secs(15);
 const MAX_KEY_LEN: usize = 256;
 /// The model the learner picked in Settings lives next to the key (not secret, but it must follow the key).
 const KEYRING_MODEL_USER: &str = "gemini_model";
@@ -188,25 +191,78 @@ fn describe_http_error(code: u16, body: &str) -> String {
     }
 }
 
-/// One text generation. The prompts all ask for JSON, so the API is told to answer in JSON.
-fn generate(key: &str, model: &str, prompt: &str) -> Result<String, String> {
+/// Vietnamese message for a request that never got an HTTP answer. Keeps the library's own detail
+/// (it names the host and the OS error, never the key, which travels in a header) so a failure on a
+/// device can be diagnosed from the screen.
+fn describe_transport_error(t: &ureq::Transport) -> String {
+    use ureq::ErrorKind;
+    let hint = match t.kind() {
+        ErrorKind::Dns => "Không phân giải được tên miền Google (kiểm tra DNS riêng, VPN hoặc app chặn quảng cáo).",
+        ErrorKind::ConnectionFailed => "Không mở được kết nối tới Google (kiểm tra VPN, proxy hoặc mạng bị chặn).",
+        ErrorKind::ProxyConnect | ErrorKind::ProxyUnauthorized => "Proxy từ chối kết nối.",
+        ErrorKind::Io => "Kết nối bị ngắt hoặc quá thời gian chờ (sóng yếu, hoặc giờ máy bị lệch làm lỗi chứng chỉ TLS).",
+        _ => "Không kết nối được tới Gemini (kiểm tra mạng).",
+    };
+    format!("{} [{:?}] {}", hint, t.kind(), t)
+}
+
+/// A failed call, and whether another model could still answer: overload (429, 5xx) and a request that
+/// got no answer in time are the model's or the moment's problem, while a bad key or a missing model is not.
+struct CallError {
+    message: String,
+    retryable: bool,
+}
+
+/// One call to one model. The prompts all ask for JSON, so the API is told to answer in JSON.
+fn generate_once(key: &str, model: &str, prompt: &str, timeout: Duration) -> Result<String, CallError> {
     let url = format!("{}/{}:generateContent", API_BASE, model);
     let body = serde_json::json!({
         "contents": [{ "role": "user", "parts": [{ "text": prompt }] }],
         "generationConfig": { "responseMimeType": "application/json", "temperature": 0.4 }
     });
-    let response = ureq::post(&url)
-        .set("x-goog-api-key", key)
-        .timeout(API_TIMEOUT)
-        .send_json(body);
+    let response = ureq::post(&url).set("x-goog-api-key", key).timeout(timeout).send_json(body);
     match response {
         Ok(resp) => {
-            let json: serde_json::Value = resp.into_json().map_err(|e| format!("Không đọc được phản hồi từ Gemini: {}", e))?;
-            extract_text(&json)
+            let json: serde_json::Value = resp
+                .into_json()
+                .map_err(|e| CallError { message: format!("Không đọc được phản hồi từ Gemini: {}", e), retryable: true })?;
+            extract_text(&json).map_err(|message| CallError { message, retryable: true })
         }
-        Err(ureq::Error::Status(code, resp)) => Err(describe_http_error(code, &resp.into_string().unwrap_or_default())),
-        Err(ureq::Error::Transport(t)) => Err(format!("Không kết nối được tới Gemini (kiểm tra mạng): {}", t.kind())),
+        Err(ureq::Error::Status(code, resp)) => Err(CallError {
+            message: describe_http_error(code, &resp.into_string().unwrap_or_default()),
+            retryable: code == 429 || (500..=599).contains(&code),
+        }),
+        // Gemini sometimes holds the connection open without answering when a model is overloaded
+        Err(ureq::Error::Transport(t)) => Err(CallError {
+            retryable: t.kind() == ureq::ErrorKind::Io,
+            message: describe_transport_error(&t),
+        }),
     }
+}
+
+/// Models tried after the chosen one when it is overloaded or silent, newest first.
+const FALLBACK_MODELS: [&str; 3] = ["gemini-3.6-flash", "gemini-3.5-flash", "gemini-flash-lite-latest"];
+
+/// One text generation. When the chosen model is overloaded or does not answer in time the next model is
+/// tried, so a busy new model does not leave the learner staring at a spinner. The error of the chosen
+/// model is the one reported when none of them answers.
+fn generate_within(key: &str, model: &str, prompt: &str, timeout: Duration) -> Result<String, String> {
+    let mut first_error: Option<String> = None;
+    let candidates = std::iter::once(model).chain(FALLBACK_MODELS.iter().copied().filter(|m| *m != model)).take(3);
+    for candidate in candidates {
+        match generate_once(key, candidate, prompt, timeout) {
+            Ok(text) => return Ok(text),
+            Err(e) if !e.retryable => return Err(first_error.unwrap_or(e.message)),
+            Err(e) => {
+                first_error.get_or_insert(e.message);
+            }
+        }
+    }
+    Err(first_error.unwrap_or_else(|| "Gemini không trả lời.".to_string()))
+}
+
+fn generate(key: &str, model: &str, prompt: &str) -> Result<String, String> {
+    generate_within(key, model, prompt, API_TIMEOUT)
 }
 
 /// Run a prompt against the Gemini API when a key is stored. `None` means "no key, use the CLI".
@@ -286,7 +342,7 @@ pub async fn save_ai_api_key(key: String, model: Option<String>) -> Result<(), S
     let key = normalize_api_key(&key)?;
     let model = normalize_model(&model.unwrap_or_default())?;
     tauri::async_runtime::spawn_blocking(move || {
-        generate(&key, model.as_deref().unwrap_or(API_MODEL), PROBE_PROMPT)?;
+        generate_within(&key, model.as_deref().unwrap_or(API_MODEL), PROBE_PROMPT, PROBE_TIMEOUT)?;
         write_entry(KEYRING_USER, &key)?;
         apply_model(model.as_deref())
     })
@@ -300,7 +356,7 @@ pub async fn set_ai_model(model: String) -> Result<(), String> {
     let model = normalize_model(&model)?;
     tauri::async_runtime::spawn_blocking(move || {
         let key = stored_api_key().ok_or_else(|| "Chưa có API key. Hãy lưu key trước.".to_string())?;
-        generate(&key, model.as_deref().unwrap_or(API_MODEL), PROBE_PROMPT)?;
+        generate_within(&key, model.as_deref().unwrap_or(API_MODEL), PROBE_PROMPT, PROBE_TIMEOUT)?;
         apply_model(model.as_deref())
     })
     .await

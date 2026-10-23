@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-generate-situation-ai"
+description = "Enables the generate_situation_ai command without any pre-configured scope."
+commands.allow = ["generate_situation_ai"]
+
+[[permission]]
+identifier = "deny-generate-situation-ai"
+description = "Denies the generate_situation_ai command without any pre-configured scope."
+commands.deny = ["generate_situation_ai"]

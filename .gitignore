@@ -33,3 +33,4 @@ scratch/
 __pycache__/
 *.pyc
 *.apkg
+scripts/tools/

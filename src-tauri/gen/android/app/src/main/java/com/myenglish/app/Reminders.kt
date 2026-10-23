@@ -592,10 +592,13 @@ class ReminderReceiver : BroadcastReceiver() {
     val at = intent.getLongExtra("at", 0L)
     if (at > 0L) ReminderScheduler.markDelivered(context, at)
 
-    // The learner is in the app: no card over it and no notification, they would only repeat what is on the
-    // screen. The slot still counts as delivered (so it is not sent again as overdue) and the plan goes on.
-    // (The test button of Settings sets "test": it is shown wherever the learner is.)
-    if (MainActivity.inForeground && !intent.getBooleanExtra("test", false)) {
+    val isAppForeground = MainActivity.inForeground || try {
+      androidx.lifecycle.ProcessLifecycleOwner.get().lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)
+    } catch (_: Exception) {
+      MainActivity.inForeground
+    }
+
+    if (isAppForeground && !intent.getBooleanExtra("test", false)) {
       ReminderScheduler.topUp(context)
       return
     }

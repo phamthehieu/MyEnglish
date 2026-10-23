@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,18 +9,26 @@ import {
   ChevronRight,
   Ear,
   Lightbulb,
-  Loader2,
   Mic,
   RotateCcw,
   Snail,
-  Square,
   Volume2,
   X,
 } from "lucide-react";
 import type { PronunciationItem, PronunciationLesson, PronunciationQuizItem } from "@/types/pronunciation";
+import type { PhonemeChartGroup } from "@/data/phonemes";
+import {
+  getMastery,
+  MASTERY_ACCURACY,
+  MASTERY_MIN_DAYS,
+  summarizeMastery,
+  type MasterySummary,
+  type SoundMastery as MasteryEntry,
+} from "@/services/pronunciationMastery";
 import {
   getPronunciationProgress,
   isLessonPassed,
+  loadPhonemeLessons,
   loadPronunciationLessons,
   nextPronunciationLesson,
   recordPronunciationQuiz,
@@ -29,31 +37,13 @@ import {
   type PronunciationLessonProgress,
   type PronunciationProgress,
 } from "@/services/pronunciation";
-import { handleSpeak, stopSpeaking, SLOW_RATE, AUTO_SPEAK_DELAY_MS } from "../review/speech";
-import {
-  asrAvailable,
-  buildGrammar,
-  canCheck,
-  cancelListening,
-  confusablesFor,
-  decoysFor,
-  finishListening,
-  focusLabel,
-  focusMates,
-  getCheckLevel,
-  ipaOf,
-  isCheckableWord,
-  judge,
-  MAX_LISTEN_MS,
-  playRecording,
-  prepareListening,
-  setCheckLevel,
-  startListening,
-  wordsInDictionary,
-  type CheckLevel,
-  type Verdict,
-} from "@/services/pronunciationCheck";
+import { handleSpeak, SLOW_RATE, AUTO_SPEAK_DELAY_MS } from "../review/speech";
 import { PAGE_CONTAINER } from "./shared";
+import { buildPhonemeChallenge, type PhonemeChallengeSession } from "@/services/phonemeMatcher";
+import { getWordsLite } from "@/services/db";
+import { MicCheck } from "./PronunciationMicCheck";
+import SoundSession, { lessonFromPair } from "./SoundSession";
+import SoundIntro from "./SoundIntro";
 
 /** The three steps of a lesson, one on screen at a time so the exercise is never below the theory */
 type Step = "learn" | "say" | "quiz";
@@ -102,6 +92,69 @@ function ProgressBar({ value, tone = "violet" }: { value: number; tone?: "violet
         className={`h-full rounded-full transition-all ${tone === "emerald" ? "bg-emerald-500" : "bg-violet-500"}`}
         style={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }}
       />
+    </div>
+  );
+}
+
+const MASTERY_LABEL: Record<MasterySummary["level"], string> = { new: "Chưa học", learning: "Đang học", mastered: "Thành thạo" };
+const MASTERY_BAR: Record<MasterySummary["level"], string> = { new: "bg-slate-300 dark:bg-zinc-600", learning: "bg-amber-500", mastered: "bg-emerald-500" };
+
+/** Tooltip text of a mastery summary */
+function masteryHint(m: MasterySummary): string {
+  if (m.level === "new") return "Chưa luyện";
+  return `${MASTERY_LABEL[m.level]} ${m.percent}% · ${m.answers} câu gần nhất${m.accuracy !== null ? ` đúng ${Math.round(m.accuracy * 100)}%` : ""} · ${m.goodDays}/${MASTERY_MIN_DAYS} ngày đạt · ${m.wordsMet}/${m.wordsTarget} từ`;
+}
+
+/** The thin bar under a sound on the chart */
+function MasteryBar({ summary }: { summary: MasterySummary }) {
+  return (
+    <div className="mt-1.5 h-1 w-full rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden" aria-label={masteryHint(summary)}>
+      <div className={`h-full rounded-full transition-all ${MASTERY_BAR[summary.level]}`} style={{ width: `${summary.percent}%` }} />
+    </div>
+  );
+}
+
+/** What the mastery of one lesson is made of, so the learner sees what to practise next */
+function MasteryPanel({ summary }: { summary: MasterySummary }) {
+  const rows: Array<{ label: string; value: string; done: boolean }> = [
+    {
+      label: `Đúng ≥ ${Math.round(MASTERY_ACCURACY * 100)}% ở các câu gần nhất`,
+      value: summary.accuracy === null ? "chưa có câu nào" : `${Math.round(summary.accuracy * 100)}% (${summary.answers} câu)`,
+      done: summary.accuracy !== null && summary.accuracy >= MASTERY_ACCURACY && summary.answers >= 10,
+    },
+    {
+      label: `Đạt ở ${MASTERY_MIN_DAYS} ngày khác nhau`,
+      value: `${Math.min(summary.goodDays, MASTERY_MIN_DAYS)}/${MASTERY_MIN_DAYS} ngày`,
+      done: summary.goodDays >= MASTERY_MIN_DAYS,
+    },
+    {
+      label: "Đã nghe hoặc đọc các từ mẫu",
+      value: `${Math.min(summary.wordsMet, summary.wordsTarget)}/${summary.wordsTarget} từ`,
+      done: summary.wordsMet >= summary.wordsTarget,
+    },
+  ];
+  return (
+    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 space-y-2">
+      <div className="flex items-center justify-between text-xs">
+        <span className="font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Độ thành thạo</span>
+        <span className="font-bold text-slate-800 dark:text-zinc-200">
+          {MASTERY_LABEL[summary.level]} · {summary.percent}%
+        </span>
+      </div>
+      <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
+        <div className={`h-full rounded-full transition-all ${MASTERY_BAR[summary.level]}`} style={{ width: `${summary.percent}%` }} />
+      </div>
+      <ul className="space-y-1 text-xs text-slate-600 dark:text-zinc-400">
+        {rows.map((r) => (
+          <li key={r.label} className="flex items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-1.5">
+              <span className={r.done ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400"}>{r.done ? "✓" : "○"}</span>
+              {r.label}
+            </span>
+            <span className="font-medium text-slate-800 dark:text-zinc-200 shrink-0">{r.value}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -232,176 +285,6 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
   );
 }
 
-const VERDICT_TONE: Record<Verdict["kind"], string> = {
-  match: "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300",
-  focus_ok: "border-teal-300 dark:border-teal-800 bg-teal-50 dark:bg-teal-950/30 text-teal-800 dark:text-teal-300",
-  weak: "border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300",
-  confused: "border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-800 dark:text-rose-300",
-  unclear: "border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
-  silent: "border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
-  error: "border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
-};
-
-/**
- * Android only: record the word and let the offline recognizer say what it heard. It is told the word and
- * the words it is mistaken for in this lesson (the minimal pairs), so "heard tree instead of three" is a
- * real answer. Not a score, and it never replaces the learner's own rating below.
- */
-function MicCheck({ lesson, item }: { lesson: PronunciationLesson; item: PronunciationItem }) {
-  const [phase, setPhase] = useState<"idle" | "preparing" | "listening" | "checking">("idle");
-  const [verdict, setVerdict] = useState<Verdict | null>(null);
-  const [problem, setProblem] = useState<string | null>(null);
-  const [level, setLevel] = useState<CheckLevel>(getCheckLevel);
-  const timer = useRef<number | undefined>(undefined);
-  const grammar = useRef<string[]>([]);
-  const target = item.text;
-
-  // Another word: forget the last answer, and stop listening if the learner moved on
-  useEffect(() => {
-    setVerdict(null);
-    setProblem(null);
-    setPhase("idle");
-    return () => {
-      window.clearTimeout(timer.current);
-      cancelListening();
-    };
-  }, [target]);
-
-  // Any single word of the lesson can be tried (see canCheck). What the recognizer chooses between: the target,
-  // what it is mistaken for, the words sharing the sound being learned (a pass at the medium level), and, when
-  // that is too few, other words of the lesson so that it does not accept any sound as the target
-  const confusables = isCheckableWord(target) ? confusablesFor(lesson, target) : [];
-  const mates = isCheckableWord(target) ? focusMates(lesson, target) : [];
-  if (!asrAvailable() || !canCheck(lesson, target)) return null;
-  const decoys = decoysFor(lesson, target, [...confusables, ...mates]);
-
-  const chooseLevel = (next: CheckLevel) => {
-    setLevel(next);
-    setCheckLevel(next);
-    setVerdict(null);
-  };
-
-  const finish = async () => {
-    window.clearTimeout(timer.current);
-    setPhase("checking");
-    const result = await finishListening(grammar.current);
-    setVerdict(
-      judge(target, result, {
-        level,
-        mates,
-        ipaTarget: item.ipa,
-        ipaOf: (w) => ipaOf(lesson, w),
-        focusLabel: focusLabel(lesson, item),
-      })
-    );
-    setPhase("idle");
-  };
-
-  const begin = async () => {
-    setVerdict(null);
-    setProblem(null);
-    stopSpeaking();
-    setPhase("preparing");
-    const failure = await prepareListening();
-    if (failure) {
-      setProblem(
-        failure === "permission"
-          ? "Cần cho phép dùng micro: vào Cài đặt của máy, mục Ứng dụng, MyEnglish, Quyền, bật Micro."
-          : "Chưa chuẩn bị được bộ nhận dạng giọng nói. Thử lại sau ít phút."
-      );
-      setPhase("idle");
-      return;
-    }
-    // A word outside the recognizer's dictionary can never be heard: say so instead of failing every time
-    const list = wordsInDictionary(buildGrammar(target, confusables, [...mates, ...decoys]));
-    if (!list.includes(target.trim().toLowerCase())) {
-      setProblem(`Bộ nhận dạng offline chưa biết từ "${target}", nên không chấm được từ này. Bạn tự chấm bên dưới nhé.`);
-      setPhase("idle");
-      return;
-    }
-    grammar.current = list;
-    if (!startListening()) {
-      setProblem("Không bật được micro (có thể app khác đang dùng). Thử lại nhé.");
-      setPhase("idle");
-      return;
-    }
-    setPhase("listening");
-    timer.current = window.setTimeout(finish, MAX_LISTEN_MS);
-  };
-
-  const levelButton = (id: CheckLevel, label: string) => (
-    <button
-      key={id}
-      type="button"
-      role="radio"
-      aria-checked={level === id}
-      onClick={() => chooseLevel(id)}
-      disabled={phase !== "idle"}
-      className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold transition-colors ${
-        level === id
-          ? "bg-white dark:bg-zinc-900 text-violet-700 dark:text-violet-300 shadow-sm"
-          : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
-      }`}
-    >
-      {label}
-    </button>
-  );
-
-  return (
-    <div className="w-full space-y-2 pt-3">
-      <div className="space-y-1">
-        <div role="radiogroup" aria-label="Mức chấm" className="flex gap-1 p-1 rounded-xl bg-slate-100 dark:bg-zinc-800/70">
-          {levelButton("focus", "Trung bình")}
-          {levelButton("word", "Khó")}
-        </div>
-        <p className="text-[11px] text-center text-slate-500 dark:text-zinc-400">
-          {level === "focus"
-            ? `Trung bình: đúng âm đang học${focusLabel(lesson, item) ? ` (${focusLabel(lesson, item)})` : ""} là đạt.`
-            : "Khó: phải đúng cả từ, và máy nghe thật rõ."}
-        </p>
-      </div>
-      {phase === "listening" ? (
-        <button
-          onClick={finish}
-          className="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2 animate-pulse"
-        >
-          <Square className="w-4 h-4 fill-white" /> Đang nghe… đọc "{target}" rồi bấm để dừng
-        </button>
-      ) : (
-        <button
-          onClick={begin}
-          disabled={phase !== "idle"}
-          className="w-full py-2.5 rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/30 disabled:opacity-60 text-sm font-semibold inline-flex items-center justify-center gap-2"
-        >
-          {phase === "idle" ? (
-            <>
-              <Mic className="w-4 h-4" /> Đọc thử cho máy nghe
-            </>
-          ) : (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              {phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang nghe lại…"}
-            </>
-          )}
-        </button>
-      )}
-      {problem && <p className="text-xs text-rose-600 dark:text-rose-400">{problem}</p>}
-      {verdict && (
-        <div className={`rounded-xl border p-3 text-sm space-y-2 ${VERDICT_TONE[verdict.kind]}`} role="status">
-          {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
-            <p className="text-xs font-bold uppercase tracking-wide">{verdict.ok ? "✓ Đạt" : "Chưa đạt"}</p>
-          )}
-          <p>{verdict.message}</p>
-          {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
-            <button onClick={playRecording} className="text-xs font-semibold underline underline-offset-2 inline-flex items-center gap-1">
-              <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 /** Step 2: listen, say it aloud, rate yourself: never graded, each word logged as a "say_aloud" event */
 function SayAloud({
@@ -581,7 +464,7 @@ function Quiz({
   const next = () => {
     if (!picked) return;
     if (index + 1 >= total) {
-      const passed = recordPronunciationQuiz(lesson.id, correct, total);
+      const passed = recordPronunciationQuiz(lesson.id, correct, total, new Date(), lesson.quiz.map((x) => x.say));
       setResult({ correct, passed, next: passed ? nextLesson() : null });
     } else {
       setIndex((i) => i + 1);
@@ -785,22 +668,31 @@ function LessonView({
   number,
   count,
   progress,
+  masteryEntry,
   initialStep,
   nextLesson,
   onOpen,
   onBack,
+  backLabel,
+  unit,
 }: {
   lesson: PronunciationLesson;
   number: number;
   count: number;
   progress: PronunciationLessonProgress | undefined;
+  masteryEntry: MasteryEntry | undefined;
   initialStep: Step;
   nextLesson: () => PronunciationLesson | null;
   onOpen: (id: string, step: Step) => void;
   onBack: () => void;
+  /** Where "back" goes: "Danh sách bài" or "Bảng 44 âm" */
+  backLabel: string;
+  /** "Bài" or "Âm" */
+  unit: string;
 }) {
   const [step, setStep] = useState<Step>(initialStep);
   const passed = isLessonPassed(progress);
+  const mastery = summarizeMastery(masteryEntry, lesson.examples.length);
   const sayItems = dedupeByText([...lesson.examples, ...(lesson.pairs ?? []).flatMap((p) => [p.a, p.b])]);
   useShortcuts((e) => {
     if (e.key === "Escape") {
@@ -813,10 +705,10 @@ function LessonView({
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-3">
           <button onClick={onBack} className="text-sm text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 inline-flex items-center gap-1">
-            <ArrowLeft className="w-4 h-4" /> Danh sách bài
+            <ArrowLeft className="w-4 h-4" /> {backLabel}
           </button>
           <span className="text-xs text-slate-500 dark:text-zinc-400">
-            Bài {number}/{count}
+            {unit} {number}/{count}
             {passed ? " · đã xong ✓" : progress ? ` · tốt nhất ${progress.best}/${progress.total}` : ""}
           </span>
         </div>
@@ -858,6 +750,7 @@ function LessonView({
         </div>
       </div>
 
+      {step === "learn" && mastery.level !== "new" && <MasteryPanel summary={mastery} />}
       {step === "learn" && <LearnStep lesson={lesson} onNext={() => setStep("say")} onQuiz={() => setStep("quiz")} />}
       {step === "say" && <SayAloud lessonId={lesson.id} lesson={lesson} items={sayItems} onQuiz={() => setStep("quiz")} />}
       {step === "quiz" && (
@@ -879,11 +772,102 @@ function lessonStatus(p: PronunciationLessonProgress | undefined, isNext: boolea
   return { label: isNext ? "Học tiếp bài này" : "Chưa học", tone: isNext ? "next" : "new" };
 }
 
-/** Pronunciation lessons for beginners: sounds Vietnamese speakers miss, endings, stress, IT words */
+/** The IPA chart: the 44 sounds in three groups; a sound opens its practice lesson */
+function IpaChart({
+  chart,
+  progress,
+  mastery,
+  wordCounts,
+  nextSound,
+  onOpen,
+}: {
+  chart: PhonemeChartGroup[];
+  progress: PronunciationProgress;
+  mastery: Record<string, MasteryEntry>;
+  /** Words each sound lesson teaches, by lesson id */
+  wordCounts: Record<string, number>;
+  nextSound: PronunciationLesson | null;
+  onOpen: (id: string) => void;
+}) {
+  return (
+    <div className="space-y-5">
+      {nextSound && (
+        <button
+          onClick={() => onOpen(nextSound.id)}
+          className="w-full text-left rounded-2xl border border-violet-200 dark:border-violet-800/50 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950/40 dark:to-zinc-900 p-4 flex items-center gap-3 hover:border-violet-400"
+        >
+          <span className="w-11 h-11 rounded-xl bg-violet-600 text-white flex items-center justify-center text-lg font-bold font-mono shrink-0">
+            {nextSound.title.match(/\/(.+?)\//)?.[1]}
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-xs font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">Âm tiếp theo</span>
+            <span className="block text-base font-bold text-slate-900 dark:text-white truncate">{nextSound.title}</span>
+          </span>
+          <ArrowRight className="w-5 h-5 text-violet-500 shrink-0" />
+        </button>
+      )}
+      {chart.map((group) => (
+        <div key={group.kind} className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">
+            {group.label} · {group.entries.length}
+          </p>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(84px,1fr))] gap-2">
+            {group.entries.map((e) => {
+              const p = progress[e.lessonId];
+              const done = isLessonPassed(p);
+              const m = summarizeMastery(mastery[e.lessonId], wordCounts[e.lessonId] ?? 6);
+              return (
+                <button
+                  key={e.lessonId}
+                  onClick={() => onOpen(e.lessonId)}
+                  title={`Luyện âm /${e.sym}/ như trong "${e.key}"${done ? " (đã xong)" : p ? ` (tốt nhất ${p.best}/${p.total})` : ""} · ${masteryHint(m)}`}
+                  className={`relative rounded-xl border px-2 py-2.5 text-center transition-colors ${
+                    done
+                      ? "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 hover:border-emerald-500"
+                      : p
+                        ? "border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 hover:border-amber-500"
+                        : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-violet-400 dark:hover:border-violet-600"
+                  }`}
+                >
+                  {done && <Check className="absolute top-1 right-1 w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />}
+                  <span className="block text-2xl font-mono font-bold text-slate-900 dark:text-white leading-tight">{e.sym}</span>
+                  <span className="block text-xs text-slate-500 dark:text-zinc-400 truncate">{e.key}</span>
+                  <MasteryBar summary={m} />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      <p className="text-xs text-slate-500 dark:text-zinc-400">
+        Bảng theo chuẩn 44 âm. Chạm vào một âm để nghe mẫu, đọc to, đọc thử cho máy nghe (Android) và làm bài nghe. Giọng đọc của app là giọng Mỹ nên một vài âm (/ɒ/, /əʊ/, /ɪə/, /eə/, /ʊə/) nghe hơi khác ký hiệu; bài học có ghi chú.
+      </p>
+    </div>
+  );
+}
+
+/** Pronunciation: the 44-sound IPA chart and the topic lessons (sounds Vietnamese speakers miss, endings, stress, IT words) */
 export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
   const [lessons, setLessons] = useState<PronunciationLesson[]>([]);
+  const [phonemes, setPhonemes] = useState<PronunciationLesson[]>([]);
+  const [chart, setChart] = useState<PhonemeChartGroup[]>([]);
+  const [view, setView] = useState<"chart" | "topics">("chart");
   const [progress, setProgress] = useState<PronunciationProgress>(getPronunciationProgress);
-  const [open, setOpen] = useState<{ id: string; step: Step; n: number } | null>(null);
+  const [open, setOpen] = useState<{ id: string; step: Step; n: number; session: boolean; intro?: boolean } | null>(null);
+
+  // Confusable Phoneme discrimination challenge state
+  const [phonemeSession, setPhonemeSession] = useState<PhonemeChallengeSession | null>(null);
+  const [showPhonemeModal, setShowPhonemeModal] = useState(false);
+
+  useEffect(() => {
+    getWordsLite()
+      .then((words) => {
+        // Only offered when a recently learned word has one of the two sounds: with none, the pair would be arbitrary
+        const session = buildPhonemeChallenge(words);
+        setPhonemeSession(session.userWordsA.length + session.userWordsB.length > 0 ? session : null);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setOpen(null);
@@ -891,43 +875,113 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
 
   useEffect(() => {
     loadPronunciationLessons().then(setLessons).catch(() => setLessons([]));
+    loadPhonemeLessons()
+      .then((p) => {
+        setPhonemes(p.lessons);
+        setChart(p.chart);
+      })
+      .catch(() => {
+        setPhonemes([]);
+        setChart([]);
+      });
   }, []);
-  const refresh = useCallback(() => setProgress(getPronunciationProgress()), []);
+  const [mastery, setMastery] = useState(getMastery);
+  const wordCounts = useMemo(() => Object.fromEntries(phonemes.map((l) => [l.id, l.examples.length])), [phonemes]);
+  const refresh = useCallback(() => {
+    setProgress(getPronunciationProgress());
+    setMastery(getMastery());
+  }, []);
   useEffect(() => {
     window.addEventListener("myenglish-pronunciation-updated", refresh);
     return () => window.removeEventListener("myenglish-pronunciation-updated", refresh);
   }, [refresh]);
 
-  const openLesson = useCallback((id: string, step: Step) => setOpen((o) => ({ id, step, n: (o?.n ?? 0) + 1 })), []);
-  const nextLesson = useCallback(() => nextPronunciationLesson(lessons, getPronunciationProgress()), [lessons]);
+  const openLesson = useCallback(
+    (id: string, step: Step, session = false, intro = false) => setOpen((o) => ({ id, step, session, intro, n: (o?.n ?? 0) + 1 })),
+    []
+  );
+  // A lesson belongs to one of two series (the 44 sounds, the topics): "next" and the numbering stay inside it
+  const seriesOf = useCallback((id: string) => (phonemes.some((p) => p.id === id) ? phonemes : lessons), [phonemes, lessons]);
+  const nextLesson = useCallback(
+    () => nextPronunciationLesson(open ? seriesOf(open.id) : lessons, getPronunciationProgress()),
+    [open, seriesOf, lessons]
+  );
   const next = nextPronunciationLesson(lessons, progress);
+  const nextSound = nextPronunciationLesson(phonemes, progress);
   const nextProgress = next ? progress[next.id] : undefined;
-  // Enter on the list starts the lesson shown at the top
+  // Enter on the topic list starts the lesson shown at the top
   useShortcuts((e) => {
-    if (open || !next || e.key !== "Enter") return false;
+    if (open || view !== "topics" || !next || e.key !== "Enter") return false;
     openLesson(next.id, nextProgress ? "quiz" : "learn");
     return true;
   });
 
-  const openIndex = open ? lessons.findIndex((l) => l.id === open.id) : -1;
+  if (showPhonemeModal && phonemeSession) {
+    return (
+      <div className={PAGE_CONTAINER}>
+        <SoundSession
+          key={phonemeSession.pair.id}
+          lesson={lessonFromPair(phonemeSession.pair)}
+          pair={phonemeSession.pair}
+          onBack={() => setShowPhonemeModal(false)}
+        />
+      </div>
+    );
+  }
+
+  const openSeries = open ? seriesOf(open.id) : lessons;
+  const openIndex = open ? openSeries.findIndex((l) => l.id === open.id) : -1;
   if (open && openIndex >= 0) {
-    const lesson = lessons[openIndex];
+    const lesson = openSeries[openIndex];
+    const isSound = openSeries === phonemes;
+    if (isSound && open.intro) {
+      return (
+        <div className={PAGE_CONTAINER}>
+          <SoundIntro
+            key={`${lesson.id}-${open.n}`}
+            lesson={lesson}
+            onPractice={() => openLesson(lesson.id, "learn", true)}
+            onFree={() => openLesson(lesson.id, "learn")}
+            onBack={() => setOpen(null)}
+          />
+        </div>
+      );
+    }
+    if (isSound && open.session) {
+      return (
+        <div className={PAGE_CONTAINER}>
+          <SoundSession
+            key={`${lesson.id}-${open.n}`}
+            lesson={lesson}
+            nextLesson={nextLesson()}
+            onNext={(id) => openLesson(id, "learn", true)}
+            onBack={() => setOpen(null)}
+            onFree={() => openLesson(lesson.id, "learn")}
+          />
+        </div>
+      );
+    }
     return (
       <div className={PAGE_CONTAINER}>
         <LessonView
           key={`${lesson.id}-${open.n}`}
           lesson={lesson}
           number={openIndex + 1}
-          count={lessons.length}
+          count={openSeries.length}
           progress={progress[lesson.id]}
+          masteryEntry={mastery[lesson.id]}
           initialStep={open.step}
           nextLesson={nextLesson}
           onOpen={openLesson}
           onBack={() => setOpen(null)}
+          backLabel={isSound ? "Bảng 44 âm" : "Danh sách bài"}
+          unit={isSound ? "Âm" : "Bài"}
         />
       </div>
     );
   }
+
+  const soundsPassed = phonemes.filter((l) => isLessonPassed(progress[l.id])).length;
 
   const nextIndex = next ? lessons.indexOf(next) : -1;
   const passedCount = lessons.filter((l) => isLessonPassed(progress[l.id])).length;
@@ -942,17 +996,77 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
               Mỗi bài ~5 phút: nghe mẫu → đọc to → bài nghe. Đúng {Math.round(PRONUNCIATION_PASS_RATIO * 100)}% là xong bài.
             </p>
           </div>
-          {lessons.length > 0 && (
+          {(view === "chart" ? phonemes.length : lessons.length) > 0 && (
             <div className="w-40 space-y-1">
               <div className="text-xs min-[1000px]:text-right text-slate-500 dark:text-zinc-400">
-                <span className="font-semibold text-slate-800 dark:text-zinc-200">{passedCount}</span>/{lessons.length} bài xong
+                <span className="font-semibold text-slate-800 dark:text-zinc-200">{view === "chart" ? soundsPassed : passedCount}</span>/
+                {view === "chart" ? phonemes.length : lessons.length} {view === "chart" ? "âm xong" : "bài xong"}
               </div>
-              <ProgressBar value={passedCount / lessons.length} tone="emerald" />
+              <ProgressBar
+                value={view === "chart" ? soundsPassed / phonemes.length : passedCount / lessons.length}
+                tone="emerald"
+              />
             </div>
           )}
         </div>
 
-        {next ? (
+        {/* Dynamic Confusable Phoneme Challenge Card */}
+        {phonemeSession && (
+          <div className="rounded-2xl border border-indigo-200/90 dark:border-indigo-900/60 bg-gradient-to-r from-indigo-50/70 via-purple-50/40 to-white dark:from-indigo-950/40 dark:via-purple-950/20 dark:to-zinc-900 p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+            <div className="flex items-center gap-3.5 min-w-0">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-600 text-white flex items-center justify-center font-bold text-lg shadow-md shrink-0">
+                ⚡
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300">
+                    Cặp âm dễ nhầm
+                  </span>
+                  <span className="text-xs font-mono font-bold text-slate-600 dark:text-zinc-400">
+                    /{phonemeSession.pair.symA}/ vs /{phonemeSession.pair.symB}/
+                  </span>
+                </div>
+                <div className="text-base font-extrabold text-slate-900 dark:text-white truncate mt-0.5">
+                  {phonemeSession.pair.title}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowPhonemeModal(true)}
+              className="shrink-0 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-xs sm:text-sm font-bold shadow-md inline-flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+            >
+              <Ear className="w-4 h-4" />
+              Luyện phân biệt ngay
+            </button>
+          </div>
+        )}
+
+        <div role="tablist" className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-100 dark:bg-zinc-800/70">
+          {(
+            [
+              ["chart", "Bảng 44 âm"],
+              ["topics", "Bài theo chủ đề"],
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              role="tab"
+              aria-selected={view === id}
+              onClick={() => setView(id)}
+              className={`py-2 px-2 rounded-lg text-sm font-semibold transition-colors ${
+                view === id
+                  ? "bg-white dark:bg-zinc-900 text-violet-700 dark:text-violet-300 shadow-sm"
+                  : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {view === "chart" ? (
+          chart.length > 0 && <IpaChart chart={chart} progress={progress} mastery={mastery} wordCounts={wordCounts} nextSound={nextSound} onOpen={(id) => openLesson(id, "learn", false, true)} />
+        ) : next ? (
           <div className="rounded-2xl border border-violet-200 dark:border-violet-800/50 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950/40 dark:to-zinc-900 p-4 shadow-sm space-y-3">
             <div className="flex items-start gap-3">
               <div className="w-11 h-11 rounded-xl bg-violet-600 text-white flex items-center justify-center text-lg font-bold shrink-0">{nextIndex + 1}</div>
@@ -1013,6 +1127,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
           )
         )}
 
+        {view === "topics" && (
         <div className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Tất cả bài</p>
           <div className="grid gap-2 min-[1000px]:grid-cols-2">
@@ -1056,6 +1171,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
             })}
           </div>
         </div>
+        )}
       </div>
     </div>
   );

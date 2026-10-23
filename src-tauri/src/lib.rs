@@ -2006,6 +2006,32 @@ async fn generate_situation_ai(
     .map_err(|e| format!("Task execution failed: {}", e))?
 }
 
+/// The prompt of a conversation, for the Android background service that calls the API itself (the page
+/// cannot be relied on to stay alive while the app is closed).
+#[tauri::command]
+fn build_situation_prompt_ai(
+    topic: String,
+    level: Option<String>,
+    group: Option<String>,
+    foundation: Option<bool>,
+    avoid: Option<Vec<String>>,
+) -> Result<String, String> {
+    let clean_topic = sanitize_prompt_field(&topic, 120);
+    if clean_topic.is_empty() {
+        return Err("Chủ đề không được để trống.".to_string());
+    }
+    let user_level = normalize_cefr_level(&level.unwrap_or_default());
+    let group = if group.as_deref() == Some("work") { "work" } else { "daily" };
+    let avoid: Vec<String> = avoid
+        .unwrap_or_default()
+        .iter()
+        .map(|t| sanitize_prompt_field(t, 80))
+        .filter(|t| !t.is_empty())
+        .take(60)
+        .collect();
+    Ok(build_situation_prompt(&clean_topic, &user_level, group, foundation.unwrap_or(false), &avoid))
+}
+
 /// New example sentences + a memory tip for a word the learner keeps forgetting. Returns the model's JSON.
 #[tauri::command]
 async fn generate_memory_aid_ai(
@@ -2496,6 +2522,7 @@ pub fn run() {
             grade_sentence_ai,
             correct_writing_ai,
             generate_situation_ai,
+            build_situation_prompt_ai,
             generate_memory_aid_ai,
             compute_fsrs_parameters,
             get_ai_api_key_status,

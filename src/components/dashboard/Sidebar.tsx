@@ -21,6 +21,7 @@ import {
   NotebookPen,
   Sunrise,
   AudioLines,
+  Clapperboard,
   MessageCircle,
   Layers,
   Dumbbell,
@@ -174,6 +175,7 @@ export default function Sidebar({
     { tab: "grammar", label: "Ngữ pháp", icon: GraduationCap, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
     { tab: "talk", label: "Hội thoại", icon: MessageCircle, iconClass: "text-emerald-500" },
     { tab: "pronunciation", label: "Phát âm", icon: AudioLines, iconClass: "text-violet-500" },
+    { tab: "shadowing", label: "Shadowing", icon: Clapperboard, iconClass: "text-violet-500" },
     { tab: "reading", label: "Đọc", icon: BookOpenText },
     { tab: "writing", label: "Viết & sổ lỗi", icon: NotebookPen },
     AI_VOCAB_ENABLED
@@ -194,9 +196,10 @@ export default function Sidebar({
   const groupLook: Record<NavGroupId, { icon: typeof BookOpen; iconClass?: string; badge?: ReactNode }> = {
     today: { icon: Sunrise, iconClass: "text-amber-500" },
     vocab: { icon: BookOpen, iconClass: "text-orange-400", badge: countBadge(dueCount, true) },
-    grammar: { icon: GraduationCap, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
     talk: { icon: MessageCircle, iconClass: "text-emerald-500" },
-    practice: { icon: Dumbbell, iconClass: "text-violet-500" },
+    pronunciation: { icon: AudioLines, iconClass: "text-violet-500" },
+    // Grammar lives here now: its due lessons show on the entry
+    practice: { icon: Dumbbell, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
     quick: { icon: Zap, iconClass: "text-amber-500" },
     settings: { icon: Terminal, iconClass: "text-cyan-500" },
     account: { icon: UserRound },
