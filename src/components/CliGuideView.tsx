@@ -138,7 +138,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
   // Autostart state
   const [autostart, setAutostart] = useState<boolean>(() => getSavedAutostartPreference());
   const [togglingAutostart, setTogglingAutostart] = useState(false);
-
+  
   // Reminder settings state
   const [reminderSettings, setReminderSettings] = useState<ReminderSettings>(getReminderSettings());
   const [snoozeMinutesRemaining, setSnoozeMinutesRemaining] = useState<number>(getSnoozeRemainingMinutes());
