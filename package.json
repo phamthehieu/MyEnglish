@@ -15,7 +15,9 @@
     "stats": "bash scripts/install-stats.sh",
     "test": "vitest run",
     "test:watch": "vitest",
-    "gen:situations": "vite-node scripts/build-situations.ts --"
+    "gen:situations": "vite-node scripts/build-situations.ts --",
+    "shadowing:build": "node scripts/build-shadowing.mjs --batch scripts/shadowing-a1.tsv --level A1 --no-vi && node scripts/build-shadowing.mjs --batch scripts/shadowing-a2.tsv --level A2 --no-vi && node scripts/build-shadowing.mjs --batch scripts/shadowing-b1.tsv --level B1 --no-vi && node scripts/build-shadowing.mjs --batch scripts/shadowing-b2.tsv --level B2 --no-vi",
+    "shadowing:vi": "node scripts/build-shadowing.mjs --fill-vi"
   },
   "dependencies": {
     "@fontsource-variable/lexend": "^5.3.0",

@@ -40,6 +40,7 @@ import {
 } from "@/services/pronunciationCheck";
 import { checkSentence, type SentenceCheck } from "@/services/sentenceCheck";
 import { countWords } from "@/services/shadowingPractice";
+import INDEX from "@/data/shadowing/index.json";
 
 /** A video cut into sentences with their times (built by scripts/build-shadowing.mjs) */
 interface ShadowingLesson {
@@ -48,6 +49,8 @@ interface ShadowingLesson {
   title: string;
   channel?: string;
   level: string;
+  /** The topic the video is filed under ("Hội thoại hàng ngày") */
+  group?: string;
   duration: number;
   segments: Array<{
     start: number;
@@ -61,9 +64,28 @@ interface ShadowingLesson {
   }>;
 }
 
-const LESSONS = Object.values(
-  import.meta.glob("../../data/shadowing/*.json", { eager: true, import: "default" }) as Record<string, ShadowingLesson>
-);
+/** One line of the list: what the list screen needs without loading the lesson itself */
+interface ShadowingEntry {
+  id: string;
+  youtubeId: string;
+  title: string;
+  level: string;
+  group?: string | null;
+  duration: number;
+  /** Number of sentences */
+  count: number;
+}
+
+/** The list (built with the lessons by scripts/build-shadowing.mjs) */
+const ENTRIES = INDEX as unknown as ShadowingEntry[];
+/** A lesson is a file of its own, loaded when it is opened */
+const LESSON_FILES = import.meta.glob("../../data/shadowing/lessons/*.json", { import: "default" }) as Record<string, () => Promise<ShadowingLesson>>;
+const OTHER_GROUP = "Bài khác";
+
+function loadLesson(id: string): Promise<ShadowingLesson> {
+  const path = Object.keys(LESSON_FILES).find((p) => p.endsWith(`/${id}.json`));
+  return path ? LESSON_FILES[path]() : Promise.reject(new Error(`No lesson ${id}`));
+}
 
 /** The captions run a little tight: start a hair early, stop a hair late */
 const LEAD = 0.25;
@@ -945,31 +967,125 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
 
 export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
   const [openId, setOpenId] = useState<string | null>(null);
-  useEffect(() => setOpenId(null), [resetKey]);
-  const lesson = LESSONS.find((l) => l.id === openId);
-  if (lesson) return <Lesson key={lesson.id} lesson={lesson} onBack={() => setOpenId(null)} />;
+  const [lesson, setLesson] = useState<ShadowingLesson | null>(null);
+  const [failed, setFailed] = useState(false);
+  const levels = useMemo(() => [...new Set(ENTRIES.map((e) => e.level))].sort(), []);
+  const [level, setLevel] = useState(levels[0] ?? "A1");
+
+  // Tapping the tab again returns to the list
+  useEffect(() => {
+    setOpenId(null);
+  }, [resetKey]);
+
+  // A lesson is only loaded when it is opened: the list needs just the small index
+  useEffect(() => {
+    setLesson(null);
+    setFailed(false);
+    if (!openId) return;
+    let dead = false;
+    loadLesson(openId)
+      .then((l) => !dead && setLesson(l))
+      .catch(() => !dead && setFailed(true));
+    return () => {
+      dead = true;
+    };
+  }, [openId]);
+
+  // The lessons of the level, in the order of their topic: the topics as they first appear, "Bài khác" last
+  const groups = useMemo(() => {
+    const byGroup = new Map<string, ShadowingEntry[]>();
+    for (const e of ENTRIES.filter((x) => x.level === level)) {
+      const name = e.group || OTHER_GROUP;
+      byGroup.set(name, [...(byGroup.get(name) ?? []), e]);
+    }
+    return [...byGroup.entries()].sort(([a], [b]) => Number(a === OTHER_GROUP) - Number(b === OTHER_GROUP));
+  }, [level]);
+
+  if (openId && lesson) return <Lesson key={lesson.id} lesson={lesson} onBack={() => setOpenId(null)} />;
+
+  if (openId) {
+    return (
+      <div className={PAGE_CONTAINER}>
+        <div className="max-w-3xl mx-auto space-y-4">
+          <button onClick={() => setOpenId(null)} className="p-1.5 -ml-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200" aria-label="Danh sách">
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          {failed ? (
+            <p className="text-sm text-rose-600 dark:text-rose-400">Không mở được bài này. Quay lại và thử lại nhé.</p>
+          ) : (
+            <p className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-zinc-400">
+              <Loader2 className="w-4 h-4 animate-spin" /> Đang mở bài…
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={PAGE_CONTAINER}>
-      <div className="max-w-3xl mx-auto space-y-4">
+      <div className="max-w-3xl mx-auto space-y-5">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Shadowing</h2>
           <p className="text-sm text-slate-500 dark:text-zinc-400">Xem video, bấm vào câu nào là video nhảy tới câu đó, nghe rồi nói theo.</p>
         </div>
-        {LESSONS.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có video nào.</p>}
-        <div className="space-y-2">
-          {LESSONS.map((l) => (
-            <button key={l.id} onClick={() => setOpenId(l.id)} className="w-full flex gap-3 items-center text-left p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-violet-400">
-              <img src={`https://i.ytimg.com/vi/${l.youtubeId}/mqdefault.jpg`} alt="" className="w-32 aspect-video rounded-lg object-cover bg-slate-200 dark:bg-zinc-800 shrink-0" />
-              <div className="min-w-0">
-                <div className="font-semibold text-slate-900 dark:text-white line-clamp-2">{l.title}</div>
-                <div className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
-                  {l.level} · {Math.floor(l.duration / 60)} phút · {l.segments.length} câu
+
+        {ENTRIES.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có video nào.</p>}
+
+        {levels.length > 0 && (
+          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
+            {levels.map((l) => {
+              const on = l === level;
+              return (
+                <button
+                  key={l}
+                  role="tab"
+                  aria-selected={on}
+                  onClick={() => setLevel(l)}
+                  className={`shrink-0 px-3.5 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+                    on
+                      ? "bg-violet-600 border-violet-600 text-white"
+                      : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:border-violet-400"
+                  }`}
+                >
+                  {l}
+                  <span className={`ml-1.5 text-xs font-normal ${on ? "text-violet-200" : "text-slate-400 dark:text-zinc-500"}`}>
+                    {ENTRIES.filter((e) => e.level === l).length}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {groups.map(([name, items]) => (
+          <section key={name} className="space-y-2">
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">
+              {name}
+              <span className="ml-2 font-normal normal-case tracking-normal text-slate-400 dark:text-zinc-500">{items.length} bài</span>
+            </h3>
+            {items.map((l) => (
+              <button
+                key={l.id}
+                onClick={() => setOpenId(l.id)}
+                className="w-full flex gap-3 items-center text-left p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-violet-400"
+              >
+                <img
+                  src={`https://i.ytimg.com/vi/${l.youtubeId}/mqdefault.jpg`}
+                  alt=""
+                  loading="lazy"
+                  className="w-32 aspect-video rounded-lg object-cover bg-slate-200 dark:bg-zinc-800 shrink-0"
+                />
+                <div className="min-w-0">
+                  <div className="font-semibold text-slate-900 dark:text-white line-clamp-2">{l.title}</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
+                    {l.level} · {Math.max(1, Math.round(l.duration / 60))} phút · {l.count} câu
+                  </div>
                 </div>
-              </div>
-            </button>
-          ))}
-        </div>
+              </button>
+            ))}
+          </section>
+        ))}
       </div>
     </div>
   );
