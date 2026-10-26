@@ -34,7 +34,7 @@
         "img-src": "'self' data: blob: https:",
         "font-src": "'self' data:",
         "media-src": "'self' data: blob: https:",
-        "connect-src": "'self' ipc: http://ipc.localhost https://*.supabase.co",
+        "connect-src": "'self' ipc: http://ipc.localhost https://*.supabase.co https://raw.githubusercontent.com",
         "object-src": "'none'",
         "base-uri": "'self'",
         "form-action": "'self'"
@@ -47,7 +47,7 @@
         "img-src": "'self' data: blob: https:",
         "font-src": "'self' data:",
         "media-src": "'self' data: blob: https:",
-        "connect-src": "'self' ipc: http://ipc.localhost ws://localhost:* http://localhost:* https://*.supabase.co",
+        "connect-src": "'self' ipc: http://ipc.localhost ws://localhost:* http://localhost:* https://*.supabase.co https://raw.githubusercontent.com",
         "object-src": "'none'",
         "base-uri": "'self'"
       },

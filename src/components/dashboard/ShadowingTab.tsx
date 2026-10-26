@@ -41,6 +41,7 @@ import {
 import { checkSentence, type SentenceCheck } from "@/services/sentenceCheck";
 import { countWords } from "@/services/shadowingPractice";
 import INDEX from "@/data/shadowing/index.json";
+import { FEED_EVENT, getFeedEntries, getFeedLesson } from "@/services/shadowingFeed";
 
 /** A video cut into sentences with their times (built by scripts/build-shadowing.mjs) */
 interface ShadowingLesson {
@@ -84,7 +85,9 @@ const OTHER_GROUP = "Bài khác";
 
 function loadLesson(id: string): Promise<ShadowingLesson> {
   const path = Object.keys(LESSON_FILES).find((p) => p.endsWith(`/${id}.json`));
-  return path ? LESSON_FILES[path]() : Promise.reject(new Error(`No lesson ${id}`));
+  if (path) return LESSON_FILES[path]();
+  // Not in the app: one of the lessons downloaded since (services/shadowingFeed.ts)
+  return getFeedLesson<ShadowingLesson>(id).then((l) => l ?? Promise.reject(new Error(`No lesson ${id}`)));
 }
 
 /** The captions run a little tight: start a hair early, stop a hair late */
@@ -969,7 +972,19 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [lesson, setLesson] = useState<ShadowingLesson | null>(null);
   const [failed, setFailed] = useState(false);
-  const levels = useMemo(() => [...new Set(ENTRIES.map((e) => e.level))].sort(), []);
+  // The lessons in the app plus the ones downloaded since (a few new ones each day)
+  const [downloaded, setDownloaded] = useState<ShadowingEntry[]>([]);
+  useEffect(() => {
+    const load = () => void getFeedEntries().then(setDownloaded);
+    load();
+    window.addEventListener(FEED_EVENT, load);
+    return () => window.removeEventListener(FEED_EVENT, load);
+  }, []);
+  const entries = useMemo(() => {
+    const have = new Set(ENTRIES.map((e) => e.id));
+    return [...ENTRIES, ...downloaded.filter((e) => !have.has(e.id))];
+  }, [downloaded]);
+  const levels = useMemo(() => [...new Set(entries.map((e) => e.level))].sort(), [entries]);
   const [level, setLevel] = useState(levels[0] ?? "A1");
 
   // Tapping the tab again returns to the list
@@ -994,12 +1009,12 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
   // The lessons of the level, in the order of their topic: the topics as they first appear, "Bài khác" last
   const groups = useMemo(() => {
     const byGroup = new Map<string, ShadowingEntry[]>();
-    for (const e of ENTRIES.filter((x) => x.level === level)) {
+    for (const e of entries.filter((x) => x.level === level)) {
       const name = e.group || OTHER_GROUP;
       byGroup.set(name, [...(byGroup.get(name) ?? []), e]);
     }
     return [...byGroup.entries()].sort(([a], [b]) => Number(a === OTHER_GROUP) - Number(b === OTHER_GROUP));
-  }, [level]);
+  }, [level, entries]);
 
   if (openId && lesson) return <Lesson key={lesson.id} lesson={lesson} onBack={() => setOpenId(null)} />;
 
@@ -1030,7 +1045,7 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
           <p className="text-sm text-slate-500 dark:text-zinc-400">Xem video, bấm vào câu nào là video nhảy tới câu đó, nghe rồi nói theo.</p>
         </div>
 
-        {ENTRIES.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có video nào.</p>}
+        {entries.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có video nào.</p>}
 
         {levels.length > 0 && (
           <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
@@ -1050,7 +1065,7 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
                 >
                   {l}
                   <span className={`ml-1.5 text-xs font-normal ${on ? "text-violet-200" : "text-slate-400 dark:text-zinc-500"}`}>
-                    {ENTRIES.filter((e) => e.level === l).length}
+                    {entries.filter((e) => e.level === l).length}
                   </span>
                 </button>
               );

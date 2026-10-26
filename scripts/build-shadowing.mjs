@@ -70,20 +70,46 @@ const flag = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const videoId = (input) => input.match(/(?:v=|embed\/|youtu\.be\/)([\w-]{11})/)?.[1] ?? input;
 
-/** yt-dlp, tried again a few times: YouTube answers "too many requests" when videos come one after another */
+/** SHADOWING_COOKIES=chrome (or edge, firefox) lets yt-dlp use the browser's sign-in, which YouTube limits far less */
+const cookieArgs = process.env.SHADOWING_COOKIES ? ["--cookies-from-browser", process.env.SHADOWING_COOKIES] : [];
+const isBlocked = (err) => /429|too many requests/i.test(String(err?.stderr ?? "") + String(err?.message ?? ""));
+
+/**
+ * yt-dlp. A "too many requests" answer is NOT tried again: asking again keeps the IP blocked longer,
+ * so it is thrown at once (err.blocked) and the batch stops. Other failures are tried again a few times.
+ */
 async function runYtdlp(dir, id, extra) {
   for (let attempt = 1; ; attempt++) {
     try {
-      return execFileSync(ytdlp, ["--js-runtimes", "node", "--skip-download", "-o", join(dir, "%(id)s"), ...extra, `https://www.youtube.com/watch?v=${id}`], {
+      return execFileSync(ytdlp, ["--js-runtimes", "node", "--skip-download", "-o", join(dir, "%(id)s"), ...cookieArgs, ...extra, `https://www.youtube.com/watch?v=${id}`], {
         encoding: "utf8",
         stdio: ["ignore", "pipe", "pipe"],
         maxBuffer: 64 * 1024 * 1024,
       });
     } catch (err) {
+      if (isBlocked(err)) {
+        err.blocked = true;
+        throw err;
+      }
       if (attempt >= 3) throw err;
-      await sleep(attempt * 20_000);
+      await sleep(attempt * 10_000);
     }
   }
+}
+
+/** Videos of a channel or playlist (only the list page is read, no captions are asked for) */
+function listChannel(url) {
+  const target = /\/(videos|playlist|streams)|list=/.test(url) ? url : url.replace(/\/+$/, "") + "/videos";
+  const out = execFileSync(ytdlp, ["--js-runtimes", "node", "--flat-playlist", ...cookieArgs, "--print", "%(id)s\t%(title)s\t%(duration)s", target], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  return out
+    .split(/\r?\n/)
+    .map((l) => l.split("\t"))
+    .filter(([id, , dur]) => /^[\w-]{11}$/.test(id ?? "") && Number(dur) >= 120 && Number(dur) <= 25 * 60)
+    .map(([id, title]) => [title, `https://www.youtube.com/watch?v=${id}`]);
 }
 
 /** Sentences with the time of each word, cut from the words of the captions */
@@ -296,8 +322,18 @@ function saveLesson(lesson) {
 const describe = (l) => `${l.title}: ${l.segments.length} sentences (${l.captions} captions${l.segments[0]?.vi ? ", with Vietnamese" : ", no Vietnamese"})`;
 
 const batchFile = flag("--batch");
-const input = args.find((a, i) => !a.startsWith("--") && !["--level", "--group", "--batch"].includes(args[i - 1]));
+const channelUrl = flag("--channel");
+const input = args.find((a, i) => !a.startsWith("--") && !["--level", "--group", "--batch", "--channel", "--limit"].includes(args[i - 1]));
 const level = flag("--level", "A1");
+/** --level auto: the level is read from the title ("Level B1", "A2+", "beginners"); --level A2 is used when the title says nothing */
+const fallbackLevel = flag("--fallback", "A2");
+const pickLevel = (title) => {
+  if (level !== "auto") return level;
+  const m = title.match(/\b(A1|A2|B1|B2)\b\+?/i);
+  if (m) return m[1].toUpperCase();
+  if (/beginner|basic|cơ bản/i.test(title)) return "A1";
+  return fallbackLevel;
+};
 
 if (args.includes("--fill-vi")) {
   // Adds the Vietnamese to the sentences of the lessons that have none yet (a run that was blocked, or --no-vi)
@@ -325,19 +361,29 @@ if (args.includes("--fill-vi")) {
     console.log(`${lesson.id}: ${got}/${missing.length} sentences translated`);
   }
   console.log(`\nDone: ${filled} sentences translated, ${left} still without Vietnamese.`);
-} else if (batchFile) {
-  // One line per video: "<group>\t<link>". Videos already in lessons/ are skipped (--force builds them again).
-  const rows = readFileSync(batchFile, "utf8")
-    .split(/\r?\n/)
-    .map((l) => l.split("\t").map((c) => c.trim()))
-    .filter((c) => c.length >= 2 && /youtu/.test(c[1]));
+} else if (batchFile || channelUrl) {
+  // One line per video: "<group>\t<link>", or the videos of a channel (--channel). Videos already in lessons/ are skipped (--force builds them again).
+  const rows = channelUrl
+    ? listChannel(channelUrl)
+    : readFileSync(batchFile, "utf8")
+        .split(/\r?\n/)
+        .map((l) => l.split("\t").map((c) => c.trim()))
+        .filter((c) => c.length >= 2 && /youtu/.test(c[1]));
+  // At most --limit new videos per run (default 15): small runs keep YouTube from blocking the IP
+  const limit = Number(flag("--limit", 15));
   const seen = new Set();
   const failed = [];
   let done = 0;
+  let blocked = false;
   for (const [i, [group, link]] of rows.entries()) {
     const id = videoId(link);
     if (seen.has(id)) continue;
     seen.add(id);
+    const level = pickLevel(group);
+    if (done >= limit) {
+      console.log(`Limit of ${limit} new videos reached: run it again later for the rest.`);
+      break;
+    }
     const label = `[${i + 1}/${rows.length}] ${id} (${group})`;
     const existing = join(outDir, `${id}.json`);
     if (!args.includes("--force") && existsSync(existing)) {
@@ -362,10 +408,17 @@ if (args.includes("--fill-vi")) {
     } catch (err) {
       failed.push(`${id} (${group}): ${String(err.message ?? err).split("\n")[0].slice(0, 160)}`);
       console.log(`${label}: FAILED ${failed[failed.length - 1]}`);
+      if (err.blocked) {
+        // Stop here: going on only makes the block last longer. The videos built so far are kept.
+        blocked = true;
+        console.log("YouTube says 'too many requests'. Stopped; wait a few hours and run the same command again (finished videos are skipped).");
+        break;
+      }
     }
-    // A pause between videos: YouTube answers "too many requests" to captions asked for in a hurry
-    await sleep(Number(process.env.SHADOWING_PAUSE_MS) || 8000);
+    // A pause between videos (with some jitter): YouTube answers "too many requests" to captions asked for in a hurry
+    await sleep((Number(process.env.SHADOWING_PAUSE_MS) || 10_000) * (0.8 + Math.random() * 0.6));
   }
+  if (blocked) process.exitCode = 2;
   console.log(`\nDone: ${done} built, ${failed.length} failed, ${writeIndex()} lessons in the list.`);
   if (failed.length) console.log("Failed:\n  " + failed.join("\n  "));
 } else if (input) {
@@ -377,5 +430,7 @@ if (args.includes("--fill-vi")) {
 } else {
   console.error('Usage: node scripts/build-shadowing.mjs <youtube url or id> [--level A1] [--group "name"] [--no-vi]');
   console.error("       node scripts/build-shadowing.mjs --batch scripts/shadowing-a1.tsv --level A1");
+  console.error("       node scripts/build-shadowing.mjs --channel https://www.youtube.com/@name --level A2 [--limit 15]");
+  console.error("       SHADOWING_COOKIES=chrome  uses the browser's sign-in (fewer blocks)");
   process.exit(1);
 }
