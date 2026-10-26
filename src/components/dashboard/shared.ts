@@ -44,7 +44,7 @@ export interface LibraryStats {
  * while one of its tabs is shown the header has a small bar to switch between them. Tab ids are unchanged
  * (other screens call setActiveTab("…")); every tab belongs to exactly one entry.
  */
-export type NavGroupId = "today" | "vocab" | "talk" | "pronunciation" | "practice" | "quick" | "settings" | "account";
+export type NavGroupId = "today" | "vocab" | "talk" | "pronunciation" | "shadowing" | "practice" | "quick" | "settings" | "account";
 export interface NavGroup {
   id: NavGroupId;
   label: string;
@@ -70,7 +70,8 @@ export const SIMPLE_NAV_GROUPS: NavGroup[] = [
     ],
   },
   { id: "talk", label: "Hội thoại", tabs: [{ tab: "talk", label: "Hội thoại" }] },
-  { id: "pronunciation", label: "Phát âm", tabs: [{ tab: "pronunciation", label: "Phát âm" }, { tab: "shadowing", label: "Shadowing" }] },
+  { id: "pronunciation", label: "Phát âm", tabs: [{ tab: "pronunciation", label: "Phát âm" }] },
+  { id: "shadowing", label: "Shadowing", tabs: [{ tab: "shadowing", label: "Shadowing" }] },
   {
     id: "practice",
     label: "Luyện thêm",

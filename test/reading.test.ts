@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { analyzeText, baseCandidates, suggestedBase } from "@/services/reading";
+import { analyzeText, baseCandidates, buildWordIndex, classifyToken, suggestedBase } from "@/services/reading";
+import { COMMON_WORDS } from "@/data/commonWords";
 import { makeWord } from "./helpers";
 
 const words = [
@@ -12,6 +13,27 @@ const words = [
 const TEXT =
   "We deployed the new build yesterday. Two dependencies were outdated, so I'll follow up with the infra team.\n" +
   "The PUT endpoint must be idempotent. Check the JSON payload and the useState hook before retrying.";
+
+describe("classifyToken (one word of a text)", () => {
+  const { formIndex } = buildWordIndex(words);
+  const kind = (raw: string) => classifyToken(raw, formIndex, COMMON_WORDS);
+
+  it("tells a word of the bank from a very common one and from an unfamiliar one", () => {
+    expect(kind("deployed")).toMatchObject({ kind: "bank", status: "mastered" });
+    expect(kind("dependencies")).toMatchObject({ kind: "bank", status: "learning" });
+    expect(kind("idempotent")).toMatchObject({ kind: "bank", status: "new" });
+    expect(kind("the")).toEqual({ kind: "common" });
+    expect(kind("payload")).toMatchObject({ kind: "candidate", base: "payload" });
+  });
+
+  it("agrees with analyzeText on every word of a text", () => {
+    const a = analyzeText(TEXT, words);
+    for (const s of a.segments) {
+      if (!s.token || s.text.includes(" ")) continue; // phrases of the bank are matched as one unit there
+      expect(classifyToken(s.text, formIndex, COMMON_WORDS).kind, s.text).toBe(s.token.kind);
+    }
+  });
+});
 
 describe("reading analysis", () => {
   const a = analyzeText(TEXT, words);

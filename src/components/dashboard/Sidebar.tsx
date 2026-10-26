@@ -198,6 +198,7 @@ export default function Sidebar({
     vocab: { icon: BookOpen, iconClass: "text-orange-400", badge: countBadge(dueCount, true) },
     talk: { icon: MessageCircle, iconClass: "text-emerald-500" },
     pronunciation: { icon: AudioLines, iconClass: "text-violet-500" },
+    shadowing: { icon: Clapperboard, iconClass: "text-violet-500" },
     // Grammar lives here now: its due lessons show on the entry
     practice: { icon: Dumbbell, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
     quick: { icon: Zap, iconClass: "text-amber-500" },
@@ -218,8 +219,9 @@ export default function Sidebar({
         })
       : navItems.map((item) => ({ ...item, key: item.tab, active: activeTab === item.tab, onClick: () => setActiveTab(item.tab) }));
 
-  // Bottom tab bar on phones: the same five entries as the simple mode
-  const bottomItems = SIMPLE_NAV_GROUPS.filter((g) => g.id !== "account" && g.id !== "quick").map((g) => ({
+  // Bottom tab bar on phones: the simple mode's entries without "Luyện thêm" and "Cài đặt", which stay in the ☰ menu
+  const BOTTOM_HIDDEN: NavGroupId[] = ["account", "quick", "practice", "settings"];
+  const bottomItems = SIMPLE_NAV_GROUPS.filter((g) => !BOTTOM_HIDDEN.includes(g.id)).map((g) => ({
     key: g.id,
     label: g.label,
     ...groupLook[g.id],

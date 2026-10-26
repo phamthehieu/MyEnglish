@@ -55,7 +55,7 @@ describe("simple mode's five sidebar entries (U15)", () => {
   ];
 
   it("has six entries in order, and every tab belongs to exactly one", () => {
-    expect(SIMPLE_NAV_GROUPS.map((g) => g.label)).toEqual(["Hôm nay", "Từ vựng", "Hội thoại", "Phát âm", "Luyện thêm", "Truy cập nhanh", "Cài đặt", "Tài khoản"]);
+    expect(SIMPLE_NAV_GROUPS.map((g) => g.label)).toEqual(["Hôm nay", "Từ vựng", "Hội thoại", "Phát âm", "Shadowing", "Luyện thêm", "Truy cập nhanh", "Cài đặt", "Tài khoản"]);
     const tabs = SIMPLE_NAV_GROUPS.flatMap((g) => g.tabs.map((t) => t.tab));
     expect([...tabs].sort()).toEqual([...ALL_TABS].sort());
   });
@@ -68,7 +68,9 @@ describe("simple mode's five sidebar entries (U15)", () => {
     expect(navGroupOf("leaderboard").tabs.map((t) => t.tab)).toEqual(["forgotten", "leaderboard"]);
     expect(navGroupOf("review").tabs[0].tab).toBe("review");
     expect(navGroupOf("writing").tabs.map((t) => t.tab)).toEqual(["grammar", "reading", "writing"]);
-    expect(navGroupOf("pronunciation").tabs.map((t) => t.tab)).toEqual(["pronunciation", "shadowing"]);
+    expect(navGroupOf("pronunciation").tabs.map((t) => t.tab)).toEqual(["pronunciation"]);
+    // Shadowing runs on its own, like Phát âm and Hội thoại
+    expect(navGroupOf("shadowing").tabs.map((t) => t.tab)).toEqual(["shadowing"]);
     expect(navGroupOf("analytics").id).toBe("today");
   });
 });

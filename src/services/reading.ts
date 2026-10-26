@@ -146,6 +146,20 @@ export function buildWordIndex(words: WordDetail[]): WordIndex {
   return { formIndex, phrases };
 }
 
+/**
+ * What one word of a text is to the learner: a word of the word bank (with how far they got), a very common
+ * word, or an unfamiliar one that is possibly worth learning. The same rule as analyzeText, for one word.
+ */
+export function classifyToken(raw: string, formIndex: ReadonlyMap<string, WordDetail>, knownCommon: ReadonlySet<string>): TokenClass {
+  const word = raw.replace(/['’]s$/i, "");
+  const lower = word.toLowerCase();
+  const bank = formIndex.get(lower);
+  if (bank) return { kind: "bank", word: bank, status: bankStatus(bank) };
+  if (/['’]/.test(word) || !looksLikeVocabulary(word) || isCommon(lower, knownCommon)) return { kind: "common" };
+  if (lower.includes("-") && lower.split("-").every((part) => !part || isCommon(part, knownCommon))) return { kind: "common" };
+  return { kind: "candidate", base: suggestedBase(lower) };
+}
+
 // Building the index walks every word: reuse it while the same words array is analysed again (the 7 sample
 // texts of the coverage number, a text re-analysed as the learner types)
 const indexCache = new WeakMap<WordDetail[], WordIndex>();
@@ -215,15 +229,7 @@ export function analyzeText(
     const end = start + m[0].length;
     totalWords++;
     if (covered(start, end)) continue;
-    const raw = m[0].replace(/['’]s$/i, "");
-    const lower = raw.toLowerCase();
-    const bank = formIndex.get(lower);
-    let cls: TokenClass;
-    if (bank) cls = { kind: "bank", word: bank, status: bankStatus(bank) };
-    else if (/['’]/.test(raw) || !looksLikeVocabulary(raw) || isCommon(lower, knownCommon)) cls = { kind: "common" };
-    else if (lower.includes("-") && lower.split("-").every((part) => !part || isCommon(part, knownCommon))) cls = { kind: "common" };
-    else cls = { kind: "candidate", base: suggestedBase(lower) };
-    spans.push({ start, end, cls });
+    spans.push({ start, end, cls: classifyToken(m[0], formIndex, knownCommon) });
   }
   spans.sort((a, b) => a.start - b.start);
 

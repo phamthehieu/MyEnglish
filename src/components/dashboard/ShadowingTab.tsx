@@ -1,6 +1,34 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, ChevronLeft, ChevronRight, ChevronsRight, Gauge, Languages, Loader2, Mic, Pause, Play, Repeat, Square, Volume2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Captions,
+  ChevronsDownUp,
+  ChevronsUpDown,
+  Keyboard,
+  Languages,
+  Loader2,
+  Mic,
+  Play,
+  RefreshCw,
+  Repeat,
+  Square,
+  Subtitles,
+  TextCursorInput,
+  Type,
+  Volume2,
+} from "lucide-react";
+// Round, wide letters with Vietnamese support, bundled with the app (works offline); used for the sentences only
+import "@fontsource-variable/lexend/wght.css";
+import { COMMON_WORDS, FUNCTION_WORDS } from "@/data/commonWords";
+import { getAllWords } from "@/services/db";
+import { isFoundationMode } from "@/services/learnerProfile";
+import { buildWordIndex, classifyToken } from "@/services/reading";
+import type { WordDetail } from "@/types/database";
 import { PAGE_CONTAINER } from "./shared";
+import WordSheet, { cleanWord } from "./WordSheet";
+import { ClozeCard, DictationCard, SkeletonText } from "./ShadowingPractice";
+import { SENTENCE_FONT, WORD_TONE } from "./shadowingStyle";
 import {
   asrAvailable,
   cancelListening,
@@ -10,7 +38,8 @@ import {
   SILENCE_PEAK,
   startListening,
 } from "@/services/pronunciationCheck";
-import { checkSentence, type SentenceCheck, type WordStatus } from "@/services/sentenceCheck";
+import { checkSentence, type SentenceCheck } from "@/services/sentenceCheck";
+import { countWords } from "@/services/shadowingPractice";
 
 /** A video cut into sentences with their times (built by scripts/build-shadowing.mjs) */
 interface ShadowingLesson {
@@ -20,24 +49,26 @@ interface ShadowingLesson {
   channel?: string;
   level: string;
   duration: number;
-  segments: Array<{ start: number; end: number; text: string; vi?: string }>;
+  segments: Array<{
+    start: number;
+    end: number;
+    text: string;
+    vi?: string;
+    /** Each word with the second it starts (lets the sentence light up as it is said) */
+    words?: Array<[string, number]>;
+    /** How the whole sentence is pronounced, "/ðeɪ weɪt/" (the pronunciation line of the Shadowing tab) */
+    ipa?: string;
+  }>;
 }
 
 const LESSONS = Object.values(
   import.meta.glob("../../data/shadowing/*.json", { eager: true, import: "default" }) as Record<string, ShadowingLesson>
 );
 
-/** What happens when a sentence ends */
-type Mode = "continue" | "stop" | "loop";
-const MODES: Array<{ id: Mode; label: string; icon: typeof Play }> = [
-  { id: "continue", label: "Liên tục", icon: ChevronsRight },
-  { id: "stop", label: "Dừng sau câu", icon: Pause },
-  { id: "loop", label: "Lặp câu", icon: Repeat },
-];
-const SPEEDS = [0.5, 0.75, 1, 1.25];
-/** The captions run a little tight: start a hair early, end a hair late */
+/** The captions run a little tight: start a hair early, stop a hair late */
 const LEAD = 0.25;
 const TAIL = 0.3;
+const SPEEDS = [0.5, 0.75, 1, 1.25];
 
 interface YTPlayer {
   seekTo(seconds: number, allowSeekAhead: boolean): void;
@@ -71,20 +102,110 @@ function loadYouTubeApi(): Promise<void> {
   return apiPromise;
 }
 
-const WORD_TONE: Record<WordStatus, string> = {
-  ok: "text-emerald-600 dark:text-emerald-400",
-  shaky: "text-amber-600 dark:text-amber-400",
-  wrong: "text-rose-600 dark:text-rose-400 underline decoration-wavy underline-offset-4",
-  missing: "text-rose-500 dark:text-rose-400 opacity-60 line-through",
-  skip: "text-slate-700 dark:text-zinc-300",
+/** The sentence stays bright and only the word being said is lit: one set of colors for a list row, one for the dark pill on the video */
+const KARAOKE_TONE = {
+  card: {
+    past: "text-slate-900 dark:text-white",
+    now: "text-orange-600 dark:text-orange-300 underline decoration-orange-500 dark:decoration-orange-300 underline-offset-[5px] decoration-2",
+    next: "text-slate-900 dark:text-white",
+    // A harder word (see isHardWord) in a muted gold
+    hard: "text-yellow-700 dark:text-yellow-300/80",
+  },
+  overlay: {
+    past: "text-white",
+    now: "text-orange-300 underline decoration-orange-300 underline-offset-4",
+    next: "text-white",
+    hard: "text-white",
+  },
 };
 
+
+/** Whether a word of a sentence is one the learner has not learned yet (see Lesson) */
+type Unlearned = (word: string) => boolean;
+
+/** A sentence that follows the video word by word. Only this small piece redraws as the time moves. */
+function KaraokeText({
+  words,
+  getTime,
+  tone,
+  unlearned,
+  onWord,
+}: {
+  words: Array<[string, number]>;
+  getTime: () => number;
+  tone: keyof typeof KARAOKE_TONE;
+  unlearned: Unlearned;
+  /** A tap on a word (not on the sentence around it) */
+  onWord?: (word: string) => void;
+}) {
+  const [at, setAt] = useState(-1);
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      const t = getTime();
+      // The last word that has started; a hair early so the light is not behind the voice
+      let now = -1;
+      for (let i = 0; i < words.length && t >= words[i][1] - 0.08; i++) now = i;
+      setAt((prev) => (prev === now ? prev : now));
+    }, 70);
+    return () => window.clearInterval(timer);
+  }, [words, getTime]);
+  const colors = KARAOKE_TONE[tone];
+  return (
+    <>
+      {words.map(([word], i) => (
+        <span
+          key={i}
+          className={`transition-colors duration-100 motion-reduce:transition-none ${
+            i === at ? colors.now : unlearned(word) ? colors.hard : i < at ? colors.past : colors.next
+          }`}
+          onClick={
+            onWord
+              ? (e) => {
+                  e.stopPropagation();
+                  onWord(word);
+                }
+              : undefined
+          }
+        >
+          {word}{" "}
+        </span>
+      ))}
+    </>
+  );
+}
+
+/** A sentence that is not being played: plain, with the words the learner has not learned yet in gold */
+function PlainSentence({ text, unlearned, onWord }: { text: string; unlearned: Unlearned; onWord?: (word: string) => void }) {
+  return (
+    <>
+      {text.split(" ").map((word, i) => (
+        <span
+          key={i}
+          className={unlearned(word) ? KARAOKE_TONE.card.hard : undefined}
+          onClick={
+            onWord
+              ? (e) => {
+                  e.stopPropagation();
+                  onWord(word);
+                }
+              : undefined
+          }
+        >
+          {word}{" "}
+        </span>
+      ))}
+    </>
+  );
+}
+
 /** Android only: read the sentence aloud and see, word by word, what the offline recognizer heard */
-function SentenceReader({ text, seconds, onStart }: { text: string; seconds: number; onStart: () => void }) {
+function SentenceReader({ text, seconds, onStart, trailing }: { text: string; seconds: number; onStart: () => void; trailing?: ReactNode }) {
   const [phase, setPhase] = useState<"idle" | "preparing" | "listening" | "checking">("idle");
   const [result, setResult] = useState<SentenceCheck | null>(null);
   const [problem, setProblem] = useState("");
   const timer = useRef<number | undefined>(undefined);
+  /** Bumped whenever the sentence changes or the row goes away: work started for an earlier one must stop there */
+  const run = useRef(0);
 
   // Another sentence: forget the last answer, and stop listening if the learner moved on
   useEffect(() => {
@@ -92,6 +213,7 @@ function SentenceReader({ text, seconds, onStart }: { text: string; seconds: num
     setProblem("");
     setPhase("idle");
     return () => {
+      run.current++;
       window.clearTimeout(timer.current);
       cancelListening();
     };
@@ -100,9 +222,11 @@ function SentenceReader({ text, seconds, onStart }: { text: string; seconds: num
   if (!asrAvailable()) return null;
 
   const finish = async () => {
+    const mine = run.current;
     window.clearTimeout(timer.current);
     setPhase("checking");
     const heard = await finishListening([]);
+    if (mine !== run.current) return;
     if (!heard.ok) setProblem("Máy chưa nghe được, thử lại nhé.");
     else if ((heard.peak ?? 0) < SILENCE_PEAK) setProblem("Không nghe thấy tiếng. Kiểm tra micro rồi thử lại.");
     else setResult(checkSentence(text, heard.words ?? []));
@@ -113,8 +237,11 @@ function SentenceReader({ text, seconds, onStart }: { text: string; seconds: num
     setResult(null);
     setProblem("");
     onStart();
+    const mine = run.current;
     setPhase("preparing");
     const failure = await prepareListening();
+    // The learner went to another sentence while the microphone was getting ready: do not switch it on
+    if (mine !== run.current) return;
     if (failure) {
       setProblem(
         failure === "permission"
@@ -134,30 +261,33 @@ function SentenceReader({ text, seconds, onStart }: { text: string; seconds: num
     timer.current = window.setTimeout(finish, Math.min(14000, seconds * 1000 + 4000));
   };
 
+  const busy = phase === "preparing" || phase === "checking";
+  const label =
+    phase === "listening" ? "Đang nghe… bấm để dừng" : phase === "preparing" ? "Đang chuẩn bị…" : phase === "checking" ? "Đang chấm…" : result ? "Ghi lại" : "Ghi âm";
+
   return (
-    <div className="space-y-2">
-      {phase === "listening" ? (
-        <button onClick={finish} className="w-full py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2 animate-pulse">
-          <Square className="w-4 h-4 fill-white" /> Đang nghe… đọc xong bấm để dừng
-        </button>
-      ) : (
-        <button
-          onClick={begin}
-          disabled={phase !== "idle"}
-          className="w-full py-2 rounded-lg border-2 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 disabled:opacity-60 text-sm font-semibold inline-flex items-center justify-center gap-2"
-        >
-          {phase === "idle" ? (
-            <>
-              <Mic className="w-4 h-4" /> {result ? "Đọc lại" : "Đọc theo"}
-            </>
-          ) : (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" /> {phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang chấm…"}
-            </>
-          )}
-        </button>
-      )}
-      {problem && <p className="text-xs text-rose-600 dark:text-rose-400">{problem}</p>}
+    <div className="space-y-4">
+      {/* A big round button in the middle, whatever goes next (the "Tiếp" button) at its right */}
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+        <span />
+        <div className="flex flex-col items-center gap-2">
+          <button
+            onClick={phase === "listening" ? finish : begin}
+            disabled={busy}
+            aria-label={label}
+            className={`h-20 w-20 rounded-full ring-8 inline-flex items-center justify-center text-white transition-colors disabled:opacity-70 ${
+              phase === "listening"
+                ? "bg-rose-600 ring-rose-500/25 animate-pulse motion-reduce:animate-none"
+                : "bg-violet-500 ring-violet-500/20"
+            }`}
+          >
+            {busy ? <Loader2 className="w-8 h-8 animate-spin" /> : phase === "listening" ? <Square className="w-7 h-7 fill-white" /> : <Mic className="w-8 h-8" />}
+          </button>
+          <span className="text-sm text-slate-500 dark:text-zinc-400 text-center">{label}</span>
+        </div>
+        <div className="justify-self-end">{trailing}</div>
+      </div>
+      {problem && <p className="text-xs text-center text-rose-600 dark:text-rose-400">{problem}</p>}
       {result && (
         <div className="rounded-lg bg-slate-50 dark:bg-zinc-800/60 p-2.5 space-y-1.5" role="status">
           <p className="text-base font-semibold leading-snug">
@@ -191,6 +321,185 @@ function SentenceReader({ text, seconds, onStart }: { text: string; seconds: num
   );
 }
 
+/**
+ * The Shadowing tab: one sentence at a time. A progress bar, the sentence big and lit word by word as it plays, how it
+ * is pronounced, play / speed / repeat, and the microphone with "Tiếp" (the next sentence) beside it.
+ */
+function ShadowCard({
+  seg,
+  index,
+  total,
+  fontScale,
+  getTime,
+  showIpa,
+  onToggleIpa,
+  speed,
+  onSpeed,
+  loop,
+  onLoop,
+  onPlay,
+  onNext,
+  onStartRecording,
+  onWord,
+}: {
+  seg: ShadowingLesson["segments"][number];
+  index: number;
+  total: number;
+  fontScale: number;
+  getTime: () => number;
+  showIpa: boolean;
+  onToggleIpa: () => void;
+  speed: number;
+  onSpeed: () => void;
+  loop: boolean;
+  onLoop: () => void;
+  onPlay: () => void;
+  onNext: () => void;
+  onStartRecording: () => void;
+  onWord: (word: string) => void;
+}) {
+  const pill = "h-11 rounded-full inline-flex items-center justify-center text-sm font-semibold transition-colors";
+  return (
+    <div className="mb-2 rounded-3xl border border-violet-400/50 dark:border-violet-500/40 bg-white/70 dark:bg-zinc-900/70 p-4 space-y-4">
+      <div
+        className="h-1 rounded-full bg-slate-200 dark:bg-zinc-800"
+        role="progressbar"
+        aria-label="Tiến độ trong bài"
+        aria-valuemin={1}
+        aria-valuemax={total}
+        aria-valuenow={index + 1}
+      >
+        <div className="h-full rounded-full bg-violet-500 transition-[width] motion-reduce:transition-none" style={{ width: `${((index + 1) / total) * 100}%` }} />
+      </div>
+
+      <p className="text-center font-semibold leading-[1.6] text-slate-900 dark:text-white" style={{ ...SENTENCE_FONT, fontSize: 22 * fontScale }}>
+        {seg.words ? <KaraokeText key={index} words={seg.words} getTime={getTime} tone="card" unlearned={() => false} onWord={onWord} /> : seg.text}
+      </p>
+
+      {seg.ipa && (
+        <div className="flex items-start gap-3">
+          {showIpa ? <p className="min-w-0 flex-1 text-center text-[15px] leading-snug text-slate-500 dark:text-zinc-400 break-words">{seg.ipa}</p> : <span className="flex-1" />}
+          <button
+            onClick={onToggleIpa}
+            aria-pressed={showIpa}
+            aria-label={showIpa ? "Ẩn phiên âm" : "Hiện phiên âm"}
+            className={`h-10 shrink-0 rounded-xl border px-3 text-sm font-bold ${
+              showIpa
+                ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
+                : "border-slate-200 dark:border-zinc-700 text-slate-500 dark:text-zinc-400"
+            }`}
+          >
+            IPA
+          </button>
+        </div>
+      )}
+
+      <div className="flex items-center justify-center gap-3">
+        <button
+          onClick={onPlay}
+          className="h-14 w-14 rounded-full border border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-600 dark:text-violet-300 inline-flex items-center justify-center"
+          aria-label="Nghe câu này"
+        >
+          <Play className="w-6 h-6 fill-current" />
+        </button>
+        <button onClick={onSpeed} className={`${pill} min-w-[3.5rem] px-4 bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 tabular-nums`} aria-label={`Tốc độ ${speed} lần. Bấm để đổi`}>
+          {speed}×
+        </button>
+        <button
+          onClick={onLoop}
+          aria-pressed={loop}
+          aria-label={loop ? "Đang lặp lại câu này. Bấm để tắt" : "Lặp lại câu này"}
+          className={`${pill} w-14 ${loop ? "bg-violet-500/20 text-violet-600 dark:text-violet-300 ring-1 ring-violet-400/60" : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400"}`}
+        >
+          <Repeat className="w-5 h-5" />
+        </button>
+      </div>
+
+      <div className="border-t border-slate-200 dark:border-zinc-800" />
+
+      <SentenceReader
+        text={seg.text}
+        seconds={seg.end - seg.start}
+        onStart={onStartRecording}
+        trailing={
+          <button
+            onClick={onNext}
+            disabled={index >= total - 1}
+            className="inline-flex items-center gap-1.5 text-base font-semibold text-violet-600 dark:text-violet-300 disabled:opacity-40"
+          >
+            Tiếp <ArrowRight className="w-5 h-5" />
+          </button>
+        }
+      />
+    </div>
+  );
+}
+
+const FONT_KEY = "myenglish_shadowing_font_v2";
+/** The choices of the "Cỡ chữ" sheet; the sentences are 17px at 100% and the meaning under them 14px */
+const FONT_SCALES = [
+  { label: "Nhỏ", pct: 85 },
+  { label: "Vừa", pct: 100 },
+  { label: "Lớn", pct: 115 },
+  { label: "Rất lớn", pct: 130 },
+];
+const SENTENCE_PX = 16;
+const MEANING_PX = 13.5;
+
+/** Slides up from the bottom to pick the size of the text: a preview line shows what each size looks like */
+function FontSheet({ index, onPick, onClose }: { index: number; onPick: (i: number) => void; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  const pct = FONT_SCALES[index].pct;
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col justify-end" role="dialog" aria-modal="true" aria-label="Cỡ chữ">
+      <button className="absolute inset-0 bg-black/50" onClick={onClose} aria-label="Đóng" />
+      <div className="relative mx-auto w-full max-w-lg rounded-t-3xl bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-4 shadow-2xl">
+        <button onClick={onClose} className="mx-auto block h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" aria-label="Đóng" />
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cỡ chữ</h3>
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 px-4 py-3">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-zinc-500">Xem trước</p>
+          <p className="mt-1 font-medium text-slate-900 dark:text-white" style={{ ...SENTENCE_FONT, fontSize: (SENTENCE_PX * pct) / 100 }}>
+            It's 1780 in Paris
+          </p>
+        </div>
+        <div className="grid grid-cols-4 gap-2" role="radiogroup" aria-label="Cỡ chữ">
+          {FONT_SCALES.map((f, i) => {
+            const on = i === index;
+            return (
+              <button
+                key={f.pct}
+                role="radio"
+                aria-checked={on}
+                onClick={() => onPick(i)}
+                className={`flex flex-col items-center justify-end gap-1 rounded-2xl border px-1 pb-3 pt-2 transition-colors ${
+                  on
+                    ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
+                    : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300"
+                }`}
+              >
+                <span className="font-bold leading-none" style={{ fontSize: (20 * f.pct) / 100 }}>
+                  A
+                </span>
+                <span className="text-sm font-semibold">{f.label}</span>
+                <span className="text-xs opacity-70 tabular-nums">{f.pct}%</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** 00:16 */
+const clock = (seconds: number) => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+
+const SCROLLBAR_HIDDEN = "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden";
+
 function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => void }) {
   const { segments } = lesson;
   const host = useRef<HTMLDivElement>(null);
@@ -198,15 +507,43 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
   const [ready, setReady] = useState(false);
   const [error, setError] = useState("");
   const [index, setIndex] = useState(0);
-  const [mode, setMode] = useState<Mode>("continue");
-  const [speed, setSpeed] = useState(1);
   const [showVi, setShowVi] = useState(true);
+  /** "subtitles": follow the video; "shadow": the same list, and the active sentence can be read aloud to the microphone */
+  const [view, setView] = useState<"subtitles" | "shadow" | "dictation" | "cloze">("subtitles");
+  /** The sentences already answered in each typing exercise: only these show their text in the list */
+  const [doneDictation, setDoneDictation] = useState<Set<number>>(() => new Set());
+  const [doneCloze, setDoneCloze] = useState<Set<number>>(() => new Set());
+  const [follow, setFollow] = useState(true);
+  const [captions, setCaptions] = useState(true);
+  /** The title and the two tabs folded away so the sentences get more room; the video and the tools stay */
+  const [compact, setCompact] = useState(false);
+  const [fontOpen, setFontOpen] = useState(false);
+  const [fontIdx, setFontIdx] = useState(() => {
+    try {
+      const raw = localStorage.getItem(FONT_KEY);
+      const n = raw === null ? 1 : Number(raw);
+      return Number.isInteger(n) && n >= 0 && n < FONT_SCALES.length ? n : 1;
+    } catch {
+      return 1;
+    }
+  });
+  /** Shadowing tab: how fast the sentence plays, whether it plays again and again, and whether its pronunciation shows */
+  const [speed, setSpeed] = useState(1);
+  const [loop, setLoop] = useState(false);
+  const [showIpa, setShowIpa] = useState(true);
   const hasVi = segments.some((s) => s.vi);
+  const canShadow = asrAvailable();
   // The poll below runs outside React: it reads these through refs
-  const modeRef = useRef(mode);
   const indexRef = useRef(0);
-  modeRef.current = mode;
+  const viewRef = useRef(view);
+  const loopRef = useRef(loop);
+  /** After a tap on a sentence the video needs a moment to arrive: until then the clock must not pick another sentence */
+  const manualUntil = useRef(0);
+  /** The sentence the Shadowing tab already paused at the end of, so a tap on the video that plays on is left alone */
+  const stoppedFor = useRef(-1);
   indexRef.current = index;
+  viewRef.current = view;
+  loopRef.current = loop;
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -243,27 +580,37 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
       if (!p || !seg) return;
       setIndex(i);
       indexRef.current = i;
+      manualUntil.current = performance.now() + 500;
+      stoppedFor.current = -1;
       p.seekTo(Math.max(0, seg.start - LEAD), true);
       p.playVideo();
     },
     [segments]
   );
 
-  // Follow the video: move the highlight with the time, and stop or repeat at the end of a sentence
+  // Follow the video: move the highlight with the time. In the practice tabs (Shadowing, Chính tả, Điền từ) one sentence
+  // is practised at a time: it stops at its end (or plays again when the loop is on) and the clock never moves on to
+  // another sentence.
   useEffect(() => {
     if (!ready) return;
     const timer = setInterval(() => {
       const p = player.current;
       if (!p) return;
+      if (performance.now() < manualUntil.current) return;
       const t = p.getCurrentTime();
-      const cur = segments[indexRef.current];
-      if (modeRef.current !== "continue" && cur && t >= cur.end + TAIL) {
-        if (modeRef.current === "loop") p.seekTo(Math.max(0, cur.start - LEAD), true);
-        else p.pauseVideo();
+      if (viewRef.current !== "subtitles") {
+        const cur = segments[indexRef.current];
+        if (cur && t >= cur.end + TAIL) {
+          if (loopRef.current) p.seekTo(Math.max(0, cur.start - LEAD), true);
+          else if (stoppedFor.current !== indexRef.current) {
+            stoppedFor.current = indexRef.current;
+            p.pauseVideo();
+          }
+        }
         return;
       }
       const at = segments.findIndex((s) => t >= s.start - 0.05 && t < s.end + 0.05);
-      if (at >= 0 && at !== indexRef.current && modeRef.current === "continue") {
+      if (at >= 0 && at !== indexRef.current) {
         indexRef.current = at;
         setIndex(at);
       }
@@ -275,113 +622,323 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
     player.current?.setPlaybackRate(speed);
   }, [speed, ready]);
 
-  // Keep the current sentence in view
+  // Keep the current sentence in view, a third of the way down the list (only the list scrolls, never the page).
+  // In the practice tabs the practice card is at the top of the list, so that is where to look.
   useEffect(() => {
-    listRef.current?.querySelector<HTMLElement>(`[data-i="${index}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  }, [index]);
+    const list = listRef.current;
+    if (!list) return;
+    const still = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const behavior = still ? "auto" : "smooth";
+    if (view !== "subtitles") {
+      list.scrollTo({ top: 0, behavior });
+      return;
+    }
+    if (!follow) return;
+    const row = list.querySelector<HTMLElement>(`[data-i="${index}"]`);
+    if (!row) return;
+    list.scrollTo({ top: Math.max(0, row.offsetTop - list.clientHeight / 3), behavior });
+  }, [index, follow, view]);
+
+  // The learner's own words: a word is gold when it is not in their word bank (and not one of the very common words),
+  // or it is in the bank but they have never studied it. The very common words stay plain, as in the Đọc tab.
+  const [bank, setBank] = useState<WordDetail[]>([]);
+  useEffect(() => {
+    let dead = false;
+    getAllWords()
+      .then((words) => !dead && setBank(words))
+      .catch(() => {});
+    return () => {
+      dead = true;
+    };
+  }, []);
+  const unlearned = useMemo<Unlearned>(() => {
+    const { formIndex } = buildWordIndex(bank);
+    const known = isFoundationMode() ? FUNCTION_WORDS : COMMON_WORDS;
+    const memo = new Map<string, boolean>();
+    return (raw) => {
+      // The words of the captions carry their punctuation: "collapses," "confident."
+      const word = raw.replace(/^[^A-Za-z]+|[^A-Za-z'’-]+$/g, "");
+      if (!word) return false;
+      const key = word.toLowerCase();
+      let answer = memo.get(key);
+      if (answer === undefined) {
+        const cls = classifyToken(word, formIndex, known);
+        answer = cls.kind === "candidate" || (cls.kind === "bank" && cls.status === "new");
+        memo.set(key, answer);
+      }
+      return answer;
+    };
+  }, [bank]);
+
+  // The word the learner tapped, with the sentence it is in: shown in a sheet from the bottom
+  const [lookup, setLookup] = useState<{ raw: string; index: number } | null>(null);
+  const openWord = (raw: string, at: number) => {
+    if (!cleanWord(raw)) return;
+    player.current?.pauseVideo();
+    setLookup({ raw, index: at });
+  };
+  const reloadBank = useCallback(() => {
+    getAllWords()
+      .then(setBank)
+      .catch(() => {});
+  }, []);
+  const closeLookup = useCallback(() => setLookup(null), []);
 
   const seg = segments[index];
-  const chip = (on: boolean) =>
-    `py-1.5 px-2 rounded-lg border text-xs font-semibold inline-flex items-center justify-center gap-1.5 ${on ? "border-violet-300 dark:border-violet-700 bg-violet-50 dark:bg-violet-950/40 text-violet-700 dark:text-violet-300" : "border-slate-200 dark:border-zinc-700 text-slate-500 dark:text-zinc-400"}`;
-  const modeInfo = MODES.find((m) => m.id === mode) ?? MODES[0];
-  const ModeIcon = modeInfo.icon;
+  const getTime = useCallback(() => player.current?.getCurrentTime() ?? 0, []);
+  const pickFont = (i: number) => {
+    setFontIdx(i);
+    try {
+      localStorage.setItem(FONT_KEY, String(i));
+    } catch {
+      /* the size is only a convenience */
+    }
+  };
+  const fontScale = FONT_SCALES[fontIdx].pct / 100;
+  const closeFont = useCallback(() => setFontOpen(false), []);
 
-  // One screen, nothing scrolls but the sentence list: the video and its controls stay in view
+  // What the practice cards share: play / speed / repeat, the next sentence (it starts playing), and "this one is done"
+  const practiceBar = {
+    speed,
+    loop,
+    onPlay: () => play(index),
+    onSpeed: () => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]),
+    onLoop: () => setLoop((v) => !v),
+  };
+  const goNext = () => play(Math.min(segments.length - 1, index + 1));
+  const markDone = (kind: "dictation" | "cloze", i: number) =>
+    (kind === "dictation" ? setDoneDictation : setDoneCloze)((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+
+  const tool = (on: boolean) =>
+    `h-9 shrink-0 rounded-xl border inline-flex items-center justify-center gap-1.5 text-xs font-semibold transition-colors ${
+      on
+        ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
+        : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-500 dark:text-zinc-400"
+    }`;
+  const tab = (on: boolean) =>
+    `shrink-0 px-4 py-2 rounded-full border text-sm font-semibold inline-flex items-center gap-2 transition-colors ${
+      on
+        ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
+        : "border-slate-200 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60 text-slate-600 dark:text-zinc-300"
+    }`;
+  const divider = <span className="w-px h-6 shrink-0 bg-slate-200 dark:bg-zinc-700" aria-hidden="true" />;
+
+  // One screen: the video and its tools stay in view, and only the sentence list scrolls
   return (
-    <div className="flex-1 min-h-0 flex flex-col gap-2 p-3 md:p-6 max-w-5xl mx-auto w-full">
-      <div className="flex items-center gap-2 shrink-0">
-        <button onClick={onBack} className="p-1.5 -ml-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 shrink-0" aria-label="Danh sách">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <div className="min-w-0 flex-1">
-          <h2 className="text-sm font-semibold text-slate-900 dark:text-white truncate">{lesson.title}</h2>
-          <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-            {lesson.level} · {Math.floor(lesson.duration / 60)}:{String(lesson.duration % 60).padStart(2, "0")} · {segments.length} câu
-          </p>
-        </div>
-      </div>
-
-      <div className="flex-1 min-h-0 flex flex-col gap-2 lg:grid lg:grid-cols-[3fr_2fr] lg:gap-4">
-        <div className="shrink-0 min-w-0 space-y-2 lg:overflow-y-auto">
-          <div className="relative aspect-video rounded-xl overflow-hidden bg-black">
-            <div className="absolute inset-0 [&_iframe]:w-full [&_iframe]:h-full" ref={host} />
-            {/* Catches every tap meant for YouTube's own buttons (share, watch later, logo): a tap plays or pauses */}
-            <button
-              className="absolute inset-0 w-full cursor-pointer"
-              aria-label="Phát hoặc tạm dừng"
-              onClick={() => {
-                const p = player.current;
-                if (!p) return;
-                if (p.getPlayerState() === 1) p.pauseVideo();
-                else p.playVideo();
-              }}
-            />
-          </div>
-          {error && <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>}
-
-          <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2.5 space-y-2">
-            <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
-              <button onClick={() => play(Math.max(0, index - 1))} disabled={index === 0} className="p-2 rounded-lg border border-slate-200 dark:border-zinc-700 disabled:opacity-40" aria-label="Câu trước">
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button onClick={() => play(index)} className="py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-1.5">
-                <Play className="w-4 h-4" /> Nghe câu
-                <span className="text-xs font-normal text-violet-200 tabular-nums">
-                  {index + 1}/{segments.length}
-                </span>
-              </button>
-              <button onClick={() => play(Math.min(segments.length - 1, index + 1))} disabled={index >= segments.length - 1} className="p-2 rounded-lg border border-slate-200 dark:border-zinc-700 disabled:opacity-40" aria-label="Câu sau">
-                <ChevronRight className="w-4 h-4" />
-              </button>
+    <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-[3fr_2fr] lg:gap-4 max-w-5xl mx-auto w-full md:p-6">
+      <div className="shrink-0 min-w-0 lg:overflow-y-auto">
+        {/* Video: edge to edge on a phone, with the sentence written over it word by word */}
+        {/* The height is capped so that held sideways the sentence list still has room under the video */}
+        <div className="relative aspect-video max-h-[45vh] mx-auto bg-black overflow-hidden md:rounded-2xl">
+          {/* The player frame is taller than what shows: the video stays 16:9 in the middle, and YouTube's own title, share
+              buttons, logo and "more videos", which sit at the top and bottom edge of its frame, fall outside and are cut off */}
+          <div className="absolute left-0 w-full h-[150%] -top-[25%] [&_iframe]:w-full [&_iframe]:h-full" ref={host} />
+          {/* Catches every tap meant for YouTube's own buttons (share, watch later, logo): a tap plays or pauses */}
+          <button
+            className="absolute inset-0 w-full cursor-pointer"
+            aria-label="Phát hoặc tạm dừng"
+            onClick={() => {
+              const p = player.current;
+              if (!p) return;
+              if (p.getPlayerState() === 1) p.pauseVideo();
+              else p.playVideo();
+            }}
+          />
+          {/* Not in the typing exercises: the caption would give the answer away */}
+          {captions && seg && view !== "dictation" && view !== "cloze" && (
+            <div className="absolute bottom-3 inset-x-3 flex justify-center pointer-events-none">
+              <p className="max-w-full rounded-xl bg-black/70 px-3 py-1.5 text-center text-[15px] font-semibold leading-snug text-white">
+                {seg.words ? <KaraokeText key={index} words={seg.words} getTime={getTime} tone="overlay" unlearned={unlearned} /> : seg.text}
+              </p>
             </div>
+          )}
+        </div>
+        {error && <p className="px-3 pt-2 text-sm text-rose-600 dark:text-rose-400">{error}</p>}
 
-            {/* Each setting is one button that cycles through its values */}
-            <div className={`grid gap-2 ${hasVi ? "grid-cols-3" : "grid-cols-2"}`}>
-              <button onClick={() => setMode(MODES[(MODES.findIndex((m) => m.id === mode) + 1) % MODES.length].id)} className={chip(true)} aria-label="Chế độ khi hết câu">
-                <ModeIcon className="w-3.5 h-3.5 shrink-0" />
-                <span className="truncate">{modeInfo.label}</span>
+        <div className="px-3 md:px-0 pt-3 space-y-3">
+          {!compact && (
+            <div className="flex items-center gap-2">
+              <button onClick={onBack} className="p-1.5 -ml-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 shrink-0" aria-label="Danh sách">
+                <ArrowLeft className="w-5 h-5" />
               </button>
-              <button onClick={() => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])} className={chip(true)} aria-label="Tốc độ phát">
-                <Gauge className="w-3.5 h-3.5 shrink-0" />
-                {speed}×
+              <div className="min-w-0 flex-1">
+                <h2 className="text-base font-bold text-slate-900 dark:text-white truncate">{lesson.title}</h2>
+                <p className="text-[11px] text-slate-500 dark:text-zinc-400 tabular-nums">
+                  {lesson.level} · {Math.floor(lesson.duration / 60)}:{String(lesson.duration % 60).padStart(2, "0")} · câu {index + 1}/{segments.length}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {!compact && (
+            <div className={`flex gap-2 overflow-x-auto ${SCROLLBAR_HIDDEN}`} role="tablist" aria-label="Chế độ học">
+              <button role="tab" aria-selected={view === "subtitles"} onClick={() => setView("subtitles")} className={tab(view === "subtitles")}>
+                <Captions className="w-4 h-4" /> Phụ đề
               </button>
-              {hasVi && (
-                <button onClick={() => setShowVi((v) => !v)} className={chip(showVi)} aria-pressed={showVi}>
-                  <Languages className="w-3.5 h-3.5 shrink-0" />
-                  Nghĩa
+              {/* The microphone check only exists on the phone */}
+              {canShadow && (
+                <button role="tab" aria-selected={view === "shadow"} onClick={() => setView("shadow")} className={tab(view === "shadow")}>
+                  <Mic className="w-4 h-4" /> Shadowing
                 </button>
               )}
+              <button role="tab" aria-selected={view === "dictation"} onClick={() => setView("dictation")} className={tab(view === "dictation")}>
+                <Keyboard className="w-4 h-4" /> Chính tả
+              </button>
+              <button role="tab" aria-selected={view === "cloze"} onClick={() => setView("cloze")} className={tab(view === "cloze")}>
+                <TextCursorInput className="w-4 h-4" /> Điền từ
+              </button>
             </div>
+          )}
 
-            {seg && <SentenceReader text={seg.text} seconds={seg.end - seg.start} onStart={() => player.current?.pauseVideo()} />}
-
-            {/* On a phone the highlighted line in the list already shows the sentence */}
-            {seg && (
-              <div className="hidden lg:block pt-2 border-t border-slate-100 dark:border-zinc-800 space-y-1">
-                <p className="text-xl font-bold text-slate-900 dark:text-white leading-snug">{seg.text}</p>
-                {showVi && seg.vi && <p className="text-sm text-slate-500 dark:text-zinc-400">{seg.vi}</p>}
-              </div>
+          {/* Tools: square buttons and a fold button; the row scrolls sideways when the screen is narrow. Only for the
+              subtitles: the practice tabs have their own controls on their card. */}
+          <div className={`${view !== "subtitles" ? "hidden" : "flex"} items-center gap-2 overflow-x-auto pb-0.5 -mx-3 px-3 md:mx-0 md:px-0 ${SCROLLBAR_HIDDEN}`}>
+            <button onClick={() => setFontOpen(true)} className={`${tool(fontOpen)} w-9`} aria-haspopup="dialog" aria-label="Cỡ chữ" title="Cỡ chữ">
+              <Type className="w-4 h-4" />
+            </button>
+            {/* Lit: the list follows the sentence being played. Dim: it stays where the learner scrolls it. */}
+            <button
+              onClick={() => setFollow((v) => !v)}
+              className={`${tool(follow)} w-9`}
+              aria-pressed={follow}
+              aria-label={follow ? "Đang tự cuộn theo câu đang phát. Bấm để cuộn thủ công" : "Đang cuộn thủ công. Bấm để tự cuộn theo câu đang phát"}
+              title={follow ? "Tự cuộn theo câu đang phát" : "Cuộn thủ công"}
+            >
+              <RefreshCw className="w-4 h-4" />
+            </button>
+            {hasVi && (
+              <button onClick={() => setShowVi((v) => !v)} className={`${tool(showVi)} w-9`} aria-pressed={showVi} aria-label="Nghĩa tiếng Việt" title="Nghĩa tiếng Việt">
+                <Languages className="w-4 h-4" />
+              </button>
             )}
+            <button onClick={() => setCaptions((v) => !v)} className={`${tool(captions)} w-9`} aria-pressed={captions} aria-label="Phụ đề trên video" title="Phụ đề trên video">
+              <Subtitles className="w-4 h-4" />
+            </button>
+            {divider}
+            <button
+              onClick={() => setCompact((v) => !v)}
+              className={`${tool(false)} w-9`}
+              aria-pressed={compact}
+              aria-label={compact ? "Hiện tiêu đề và tab" : "Ẩn tiêu đề và tab"}
+              title={compact ? "Hiện tiêu đề và tab" : "Ẩn tiêu đề và tab, giữ video"}
+            >
+              {compact ? <ChevronsUpDown className="w-4 h-4" /> : <ChevronsDownUp className="w-4 h-4" />}
+            </button>
           </div>
         </div>
+      </div>
 
-        <div ref={listRef} className="flex-1 min-h-0 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1.5 overflow-y-auto">
-          {segments.map((s, i) => (
-            <button
+      <div ref={listRef} className="relative flex-1 min-h-0 overflow-y-auto px-2 md:px-0 pt-2 pb-3 space-y-0.5">
+        {view === "shadow" && seg && (
+          <ShadowCard
+            seg={seg}
+            index={index}
+            total={segments.length}
+            fontScale={fontScale}
+            getTime={getTime}
+            showIpa={showIpa}
+            onToggleIpa={() => setShowIpa((v) => !v)}
+            speed={speed}
+            onSpeed={() => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])}
+            loop={loop}
+            onLoop={() => setLoop((v) => !v)}
+            onPlay={() => play(index)}
+            onNext={() => play(Math.min(segments.length - 1, index + 1))}
+            onStartRecording={() => player.current?.pauseVideo()}
+            onWord={(w) => openWord(w, index)}
+          />
+        )}
+        {view === "dictation" && seg && (
+          <DictationCard key={index} sentence={seg} index={index} total={segments.length} bar={practiceBar} onNext={goNext} onDone={() => markDone("dictation", index)} />
+        )}
+        {view === "cloze" && seg && (
+          <ClozeCard
+            key={index}
+            sentence={seg}
+            index={index}
+            total={segments.length}
+            bar={practiceBar}
+            unlearned={unlearned}
+            fontScale={fontScale}
+            onNext={goNext}
+            onDone={() => markDone("cloze", index)}
+          />
+        )}
+        {segments.map((s, i) => {
+          const active = i === index;
+          // In the typing exercises a sentence shows its text only once it has been answered
+          const hidden = (view === "dictation" && !doneDictation.has(i)) || (view === "cloze" && !doneCloze.has(i));
+          return (
+            <div
               key={i}
               data-i={i}
-              onClick={() => play(i)}
-              className={`w-full flex gap-2.5 text-left px-2.5 py-2 rounded-lg text-sm ${i === index ? "bg-violet-600 text-white" : "hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-300"}`}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                // Selecting words to copy ends with a click: that must not restart the sentence
+                if (window.getSelection()?.toString()) return;
+                play(i);
+              }}
+              onKeyDown={(e) => {
+                // Only the row itself: Enter or Space on a button inside it (the microphone) belongs to that button
+                if (e.target !== e.currentTarget) return;
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  play(i);
+                }
+              }}
+              className={`relative flex gap-3 px-3 py-2.5 rounded-2xl border cursor-pointer transition-colors ${
+                active ? "border-violet-400/60 dark:border-violet-500/50 bg-violet-500/10" : "border-transparent hover:bg-slate-100 dark:hover:bg-zinc-800/60 motion-reduce:transition-none"
+              }`}
             >
-              <span className={`w-6 shrink-0 text-xs pt-0.5 ${i === index ? "text-violet-200" : "text-slate-400"}`}>{i + 1}</span>
-              <span className="min-w-0">
-                <span className="block">{s.text}</span>
-                {showVi && s.vi && <span className={`block text-xs mt-0.5 ${i === index ? "text-violet-200" : "text-slate-400 dark:text-zinc-500"}`}>{s.vi}</span>}
+              {active && <span className="absolute left-0 top-2.5 bottom-2.5 w-1 rounded-full bg-violet-500" aria-hidden="true" />}
+              <span
+                className={`w-11 shrink-0 pt-1 text-[13px] tabular-nums ${active ? "font-semibold text-violet-600 dark:text-violet-300" : "text-slate-500 dark:text-zinc-500"}`}
+                style={{ fontFamily: SENTENCE_FONT.fontFamily }}
+              >
+                {clock(s.start)}
               </span>
-            </button>
-          ))}
-        </div>
+              <div className="min-w-0 flex-1">
+                {hidden ? (
+                  <SkeletonText words={countWords(s.text)} seed={i} />
+                ) : (
+                  <>
+                    <p
+                      className={`leading-[1.55] ${active ? "font-medium text-slate-900 dark:text-white" : "font-normal text-slate-700 dark:text-zinc-200"}`}
+                      style={{ ...SENTENCE_FONT, fontSize: SENTENCE_PX * fontScale }}
+                    >
+                      {active && s.words ? (
+                        <KaraokeText key={i} words={s.words} getTime={getTime} tone="card" unlearned={unlearned} onWord={(w) => openWord(w, i)} />
+                      ) : (
+                        <PlainSentence text={s.text} unlearned={unlearned} onWord={(w) => openWord(w, i)} />
+                      )}
+                    </p>
+                    {showVi && s.vi && (
+                      <p
+                        className="mt-1.5 leading-[1.5] font-normal text-slate-500 dark:text-zinc-400"
+                        style={{ ...SENTENCE_FONT, fontSize: MEANING_PX * fontScale }}
+                      >
+                        {s.vi}
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {fontOpen && <FontSheet index={fontIdx} onPick={pickFont} onClose={closeFont} />}
+      {lookup && (
+        <WordSheet
+          raw={lookup.raw}
+          sentence={segments[lookup.index].text}
+          fontFamily={SENTENCE_FONT.fontFamily}
+          onSaved={reloadBank}
+          onClose={closeLookup}
+        />
+      )}
     </div>
   );
 }

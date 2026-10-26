@@ -11,6 +11,55 @@ import { tmpdir } from "node:os";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { dictionary } from "cmu-pronouncing-dictionary";
+
+// ---- Pronunciation of a whole sentence (American English), from the CMU dictionary ----
+const VOWELS = { AA: "ɑ", AE: "æ", AO: "ɔ", AW: "aʊ", AY: "aɪ", EH: "ɛ", EY: "eɪ", IH: "ɪ", IY: "i", OW: "oʊ", OY: "ɔɪ", UH: "ʊ", UW: "u" };
+const CONSONANTS = {
+  B: "b", CH: "tʃ", D: "d", DH: "ð", F: "f", G: "ɡ", HH: "h", JH: "dʒ", K: "k", L: "l", M: "m", N: "n", NG: "ŋ",
+  P: "p", R: "r", S: "s", SH: "ʃ", T: "t", TH: "θ", V: "v", W: "w", Y: "j", Z: "z", ZH: "ʒ",
+};
+/** Two consonants that may begin a syllable (the rest of a cluster belongs to the syllable before) */
+const ONSETS = new Set(["pl", "pr", "bl", "br", "tr", "dr", "kl", "kr", "ɡl", "ɡr", "fl", "fr", "θr", "ʃr", "sp", "st", "sk", "sm", "sn", "sl", "sw", "kw", "tw", "dw"]);
+
+function ipaOfWord(raw) {
+  const key = raw.toLowerCase().replace(/[’‘]/g, "'").replace(/^[^a-z']+|[^a-z']+$/g, "");
+  if (!key) return "";
+  const entry = dictionary[key];
+  if (!entry) return raw.replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9]+$/g, "");
+  const phones = entry.toUpperCase().split(" ").map((p) => {
+    const stress = /\d$/.test(p) ? Number(p.slice(-1)) : -1;
+    const base = p.replace(/\d$/, "");
+    if (stress >= 0) {
+      let ipa = VOWELS[base];
+      if (base === "AH") ipa = stress === 0 ? "ə" : "ʌ";
+      else if (base === "ER") ipa = stress === 0 ? "ər" : "ɝ";
+      return { ipa: ipa ?? base.toLowerCase(), vowel: true, stress };
+    }
+    return { ipa: CONSONANTS[base] ?? base.toLowerCase(), vowel: false, stress: -1 };
+  });
+  const vowelCount = phones.filter((p) => p.vowel).length;
+  const marks = new Map(); // phone index -> stress mark placed before it
+  if (vowelCount > 1) {
+    phones.forEach((p, v) => {
+      if (!p.vowel || (p.stress !== 1 && p.stress !== 2)) return;
+      let start = v;
+      while (start > 0 && !phones[start - 1].vowel) start--;
+      const cluster = phones.slice(start, v).map((c) => c.ipa);
+      let take = Math.min(cluster.length, 1);
+      if (start === 0) take = cluster.length;
+      else if (cluster.length >= 2 && ONSETS.has(cluster.slice(-2).join(""))) take = cluster.length >= 3 && cluster[cluster.length - 3] === "s" ? 3 : 2;
+      marks.set(v - take, p.stress === 1 ? "ˈ" : "ˌ");
+    });
+  }
+  return phones.map((p, i) => (marks.get(i) ?? "") + p.ipa).join("");
+}
+
+function ipaOfSentence(words) {
+  const parts = words.map(ipaOfWord).filter(Boolean);
+  return parts.length > 0 ? `/${parts.join(" ")}/` : "";
+}
+
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ytdlp = join(root, "scripts", "tools", process.platform === "win32" ? "yt-dlp.exe" : "yt-dlp");
 
@@ -66,6 +115,8 @@ const flush = () => {
     start: +(cur[0].start / 1000).toFixed(2),
     end: +(cur[cur.length - 1].end / 1000).toFixed(2),
     text: cur.map((w) => w.text).join(" ").replace(/\s+([,.?!;:])/g, "$1"),
+    // Each word with the second it starts, so the app can light the word being said
+    words: cur.map((w) => [w.text, +(w.start / 1000).toFixed(2)]),
   });
   cur = [];
 };
@@ -84,9 +135,13 @@ for (const s of sentences) {
   const last = segments[segments.length - 1];
   if (last && s.text.split(" ").length < 3 && s.start - last.end < 1) {
     last.text += " " + s.text;
+    last.words = [...last.words, ...s.words];
     last.end = s.end;
   } else segments.push({ ...s });
 }
+
+// How each sentence is said, for the pronunciation line of the Shadowing tab
+for (const s of segments) s.ipa = ipaOfSentence(s.words.map((w) => w[0]));
 
 // Vietnamese meaning, one Gemini call per 60 sentences
 // Free fallback: Google Translate's public web endpoint (no key; fine for a few hundred short sentences)
