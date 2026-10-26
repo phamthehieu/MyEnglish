@@ -138,7 +138,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
   // Autostart state
   const [autostart, setAutostart] = useState<boolean>(() => getSavedAutostartPreference());
   const [togglingAutostart, setTogglingAutostart] = useState(false);
-  
+
   // Reminder settings state
   const [reminderSettings, setReminderSettings] = useState<ReminderSettings>(getReminderSettings());
   const [snoozeMinutesRemaining, setSnoozeMinutesRemaining] = useState<number>(getSnoozeRemainingMinutes());
@@ -153,7 +153,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
   const [testingNudge, setTestingNudge] = useState(false);
 
   const formatDisplayTime = (ms: number) => {
-    if (!ms || ms <= 0) return "ChÆ°a tá»«ng hiá»ƒn thá»‹";
+    if (!ms || ms <= 0) return "Chưa từng hiển thị";
     const d = new Date(ms);
     return d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   };
@@ -206,7 +206,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     try {
       await invoke("save_ai_api_key", { key: apiKeyInput, model: apiModelInput });
       setApiKeyInput("");
-      setApiKeyMessage({ ok: true, text: "ÄÃ£ kiá»ƒm tra vÃ  lÆ°u key. CÃ¡c tÃ­nh nÄƒng AI Ä‘Ã£ sáºµn sÃ ng." });
+      setApiKeyMessage({ ok: true, text: "Đã kiểm tra và lưu key. Các tính năng AI đã sẵn sàng." });
       await Promise.all([refreshApiKeyStatus(), checkCli()]);
     } catch (err) {
       setApiKeyMessage({ ok: false, text: String(err) });
@@ -220,7 +220,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     setApiKeyMessage(null);
     try {
       await invoke("set_ai_model", { model: apiModelInput });
-      setApiKeyMessage({ ok: true, text: "ÄÃ£ kiá»ƒm tra vÃ  Ä‘á»•i model." });
+      setApiKeyMessage({ ok: true, text: "Đã kiểm tra và đổi model." });
       await refreshApiKeyStatus();
     } catch (err) {
       setApiKeyMessage({ ok: false, text: String(err) });
@@ -234,7 +234,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     setApiKeyMessage(null);
     try {
       await invoke("clear_ai_api_key");
-      setApiKeyMessage({ ok: true, text: "ÄÃ£ xÃ³a key. AI sáº½ dÃ¹ng CLI náº¿u báº¡n Ä‘Ã£ cÃ i." });
+      setApiKeyMessage({ ok: true, text: "Đã xóa key. AI sẽ dùng CLI nếu bạn đã cài." });
       await Promise.all([refreshApiKeyStatus(), checkCli()]);
     } catch (err) {
       setApiKeyMessage({ ok: false, text: String(err) });
@@ -312,11 +312,11 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     if (ok) {
       setNotifFeedback(
         checked
-          ? "ÄÃ£ báº­t tá»± khá»Ÿi Ä‘á»™ng cÃ¹ng há»‡ Ä‘iá»u hÃ nh (máº·c Ä‘á»‹nh má»Ÿ khay há»‡ thá»‘ng)."
-          : "ÄÃ£ táº¯t tá»± khá»Ÿi Ä‘á»™ng cÃ¹ng há»‡ Ä‘iá»u hÃ nh."
+          ? "Đã bật tự khởi động cùng hệ điều hành (mặc định mở khay hệ thống)."
+          : "Đã tắt tự khởi động cùng hệ điều hành."
       );
     } else {
-      setNotifFeedback("ÄÃ£ lÆ°u thiáº¿t láº­p vÃ o á»©ng dá»¥ng.");
+      setNotifFeedback("Đã lưu thiết lập vào ứng dụng.");
     }
   };
 
@@ -328,7 +328,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     if (IS_MOBILE) {
       scheduleForBackground();
     }
-    setNotifFeedback("ÄÃ£ lÆ°u thiáº¿t láº­p nháº¯c há»c vÃ  cáº­p nháº­t bá»™ Ä‘áº¿m thá»i gian!");
+    setNotifFeedback("Đã lưu thiết lập nhắc học và cập nhật bộ đếm thời gian!");
   };
 
   const handleTestPopupQuiz = async () => {
@@ -337,10 +337,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     try {
       await triggerReviewPopup();
       setNotifFeedback(
-        "ÄÃ£ kÃ­ch hoáº¡t Pop-up Focus Review toÃ n mÃ n hÃ¬nh! Báº¡n cÃ³ thá»ƒ nháº¥n Esc Ä‘á»ƒ táº¯t nhanh, dÃ¹ng phÃ­m 1-4 Ä‘á»ƒ chá»n Ä‘Ã¡p Ã¡n, hoáº·c báº¥m HoÃ£n (Snooze)."
+        "Đã kích hoạt Pop-up Focus Review toàn màn hình! Bạn có thể nhấn Esc để tắt nhanh, dùng phím 1-4 để chọn đáp án, hoặc bấm Hoãn (Snooze)."
       );
     } catch (e) {
-      setNotifFeedback(`Lá»—i khi má»Ÿ pop-up: ${e}`);
+      setNotifFeedback(`Lỗi khi mở pop-up: ${e}`);
     } finally {
       setTestingPopup(false);
     }
@@ -353,19 +353,19 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       if (IS_MOBILE) {
         if (!canDrawOverlays()) {
           requestOverlayPermission();
-          setNotifFeedback("Báº¡n chÆ°a cáº¥p quyá»n 'Xuáº¥t hiá»‡n trÃªn cÃ¹ng'. Äang má»Ÿ CÃ i Ä‘áº·t...");
+          setNotifFeedback("Bạn chưa cấp quyền 'Xuất hiện trên cùng'. Đang mở Cài đặt...");
           return;
         }
         const ok = await testMobileFloatingNudge();
         if (ok) {
-          setNotifFeedback("ÄÃ£ hiá»ƒn thá»‹ Flash-Quiz ná»•i trÃªn mÃ n hÃ¬nh!");
+          setNotifFeedback("Đã hiển thị Flash-Quiz nổi trên màn hình!");
           return;
         }
       }
       await triggerReviewNudge(5);
-      setNotifFeedback("ÄÃ£ má»Ÿ tháº» nháº¯c Ã´n táº­p (Nudge)!");
+      setNotifFeedback("Đã mở thẻ nhắc ôn tập (Nudge)!");
     } catch (e) {
-      setNotifFeedback(`Lá»—i khi má»Ÿ popup nháº¯c: ${e}`);
+      setNotifFeedback(`Lỗi khi mở popup nhắc: ${e}`);
     } finally {
       setTestingNudge(false);
     }
@@ -378,18 +378,18 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       if (IS_MOBILE) {
         if (!canDrawOverlays()) {
           requestOverlayPermission();
-          setNotifFeedback("Báº¡n chÆ°a cáº¥p quyá»n 'Xuáº¥t hiá»‡n trÃªn cÃ¹ng'. Äang má»Ÿ CÃ i Ä‘áº·t...");
+          setNotifFeedback("Bạn chưa cấp quyền 'Xuất hiện trên cùng'. Đang mở Cài đặt...");
           return;
         }
         const ok = await testMobileFloatingNudgeIn(seconds);
         if (ok) {
-          setNotifFeedback(`ÄÃ£ lÃªn lá»‹ch popup sau ${seconds}s! HÃ£y báº¥m nÃºt Home thoÃ¡t ra mÃ n hÃ¬nh chÃ­nh ngay.`);
+          setNotifFeedback(`Đã lên lịch popup sau ${seconds}s! Hãy bấm nút Home thoát ra màn hình chính ngay.`);
           return;
         }
       }
-      setNotifFeedback("TÃ­nh nÄƒng háº¹n giá» thá»­ chá»‰ Ã¡p dá»¥ng trÃªn Ä‘iá»‡n thoáº¡i.");
+      setNotifFeedback("Tính năng hẹn giờ thử chỉ áp dụng trên điện thoại.");
     } catch (e) {
-      setNotifFeedback(`Lá»—i: ${e}`);
+      setNotifFeedback(`Lỗi: ${e}`);
     } finally {
       setTestingNudge(false);
     }
@@ -398,16 +398,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
   const handleRequestOverlay = () => {
     const opened = requestOverlayPermission();
     if (opened) {
-      setNotifFeedback("Äang má»Ÿ CÃ i Ä‘áº·t há»‡ thá»‘ng Ä‘á»ƒ cáº¥p quyá»n 'Xuáº¥t hiá»‡n trÃªn cÃ¹ng'...");
+      setNotifFeedback("Đang mở Cài đặt hệ thống để cấp quyền 'Xuất hiện trên cùng'...");
     } else {
-      setNotifFeedback("Thiáº¿t bá»‹ Ä‘Ã£ Ä‘Æ°á»£c cáº¥p quyá»n hoáº·c khÃ´ng há»— trá»£.");
+      setNotifFeedback("Thiết bị đã được cấp quyền hoặc không hỗ trợ.");
     }
   };
 
   const handleCancelSnooze = () => {
     cancelSnooze();
     setSnoozeMinutesRemaining(0);
-    setNotifFeedback("ÄÃ£ há»§y tráº¡ng thÃ¡i hoÃ£n. Lá»‹ch nháº¯c há»c hoáº¡t Ä‘á»™ng bÃ¬nh thÆ°á»ng.");
+    setNotifFeedback("Đã hủy trạng thái hoãn. Lịch nhắc học hoạt động bình thường.");
   };
 
   const handleCopy = (text: string, index: string | number) => {
@@ -425,7 +425,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       const res = await sendTestNotification();
       setNotifFeedback(res.message);
     } catch (e) {
-      setNotifFeedback(`Lá»—i: ${e}`);
+      setNotifFeedback(`Lỗi: ${e}`);
     } finally {
       setTestingNotif(false);
     }
@@ -438,13 +438,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       if (word) {
         onRefreshWords?.();
         setNotifFeedback(
-          `ÄÃ£ chuyá»ƒn tá»« "${word}" thÃ nh tráº¡ng thÃ¡i Ä‘áº¿n háº¡n Ã´n táº­p ngay! Báº¡n cÃ³ thá»ƒ nháº¥p vÃ o thÃ´ng bÃ¡o ná»•i bÃªn trÃªn hoáº·c má»Ÿ Daily Review.`
+          `Đã chuyển từ "${word}" thành trạng thái đến hạn ôn tập ngay! Bạn có thể nhấp vào thông báo nổi bên trên hoặc mở Daily Review.`
         );
       } else {
-        setNotifFeedback("ThÆ° viá»‡n hiá»‡n chÆ°a cÃ³ tá»« vá»±ng nÃ o. HÃ£y thÃªm tá»« vá»±ng trÆ°á»›c.");
+        setNotifFeedback("Thư viện hiện chưa có từ vựng nào. Hãy thêm từ vựng trước.");
       }
     } catch (e) {
-      setNotifFeedback(`Lá»—i: ${e}`);
+      setNotifFeedback(`Lỗi: ${e}`);
     } finally {
       setTestingDueWord(false);
     }
@@ -483,24 +483,24 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           <Terminal className="w-5 h-5" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">CÃ i Ä‘áº·t</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Cài đặt</h2>
           <p className="text-xs text-slate-500 dark:text-zinc-400">
-            Pháº§n quan trá»ng cho viá»‡c há»c á»Ÿ trÃªn cÃ¹ng; giao diá»‡n, AI vÃ  pháº§n nÃ¢ng cao Ä‘Æ°á»£c thu gá»n, cáº§n thÃ¬ má»Ÿ ra. Má»—i thay
-            Ä‘á»•i Ä‘Æ°á»£c lÆ°u ngay.
+            Phần quan trọng cho việc học ở trên cùng; giao diện, AI và phần nâng cao được thu gọn, cần thì mở ra. Mỗi thay
+            đổi được lưu ngay.
           </p>
         </div>
       </div>
 
       {/* Jump to a section */}
-      <nav className="-mt-4 flex flex-wrap gap-1.5" aria-label="CÃ¡c má»¥c cÃ i Ä‘áº·t">
+      <nav className="-mt-4 flex flex-wrap gap-1.5" aria-label="Các mục cài đặt">
         {(
           [
-            ["study", "Há»c má»—i ngÃ y"],
-            ["reminders", "Nháº¯c há»c"],
-            ["display", "Giao diá»‡n & Ã¢m thanh"],
+            ["study", "Học mỗi ngày"],
+            ["reminders", "Nhắc học"],
+            ["display", "Giao diện & âm thanh"],
             ["ai", "AI"],
-            ["algorithm", "Thuáº­t toÃ¡n lá»‹ch Ã´n"],
-            ["data", "Dá»¯ liá»‡u"],
+            ["algorithm", "Thuật toán lịch ôn"],
+            ["data", "Dữ liệu"],
           ] as const
         ).map(([id, label]) => (
           <button
@@ -526,19 +526,19 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               className="shrink-0 px-3.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-semibold text-xs transition-colors shadow-sm flex items-center gap-1.5"
             >
               <Flame className="w-3.5 h-3.5" />
-              <span>Má»Ÿ Daily Review ngay â†’</span>
+              <span>Mở Daily Review ngay →</span>
             </button>
           )}
         </div>
       )}
-      {/* 1. Há»ŒC Má»–I NGÃ€Y: what shapes the learning, first and highlighted */}
+      {/* 1. HỌC MỖI NGÀY: what shapes the learning, first and highlighted */}
       <SettingsSection
         id="study"
         tone="primary"
         icon={<GraduationCap className="w-5 h-5" />}
-        title="Há»c má»—i ngÃ y"
-        description="Báº¡n há»c bao nhiÃªu má»—i ngÃ y: má»¥c tiÃªu, sá»‘ tá»« má»›i, Ä‘á»™ dÃ i má»™t phiÃªn."
-        summary={`${dailyGoal} cÃ¢u/ngÃ y Â· ${studyLimits.newCardsPerDay} tháº» má»›i`}
+        title="Học mỗi ngày"
+        description="Bạn học bao nhiêu mỗi ngày: mục tiêu, số từ mới, độ dài một phiên."
+        summary={`${dailyGoal} câu/ngày · ${studyLimits.newCardsPerDay} thẻ mới`}
       >
         <div className="grid gap-3 md:grid-cols-2">
           {/* Daily goal: the answers that count a day as done (streak, Today) */}
@@ -546,9 +546,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <Target className="w-3.5 h-3.5 text-emerald-500" /> Má»¥c tiÃªu má»—i ngÃ y
+                  <Target className="w-3.5 h-3.5 text-emerald-500" /> Mục tiêu mỗi ngày
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400">Sá»‘ cÃ¢u tráº£ lá»i Ä‘á»ƒ tÃ­nh lÃ  Ä‘Ã£ há»c xong hÃ´m nay (giá»¯ chuá»—i ngÃ y há»c).</p>
+                <p className="text-[11px] text-slate-500 dark:text-zinc-400">Số câu trả lời để tính là đã học xong hôm nay (giữ chuỗi ngày học).</p>
               </div>
               <span className="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400">{dailyGoal}</span>
             </div>
@@ -559,7 +559,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   onClick={() => {
                     setDailyGoal(g);
                     setDailyGoalState(g);
-                    setNotifFeedback(`ÄÃ£ Ä‘áº·t má»¥c tiÃªu má»—i ngÃ y: ${g} cÃ¢u.`);
+                    setNotifFeedback(`Đã đặt mục tiêu mỗi ngày: ${g} câu.`);
                   }}
                   className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${dailyGoal === g
                       ? "bg-emerald-600 text-white shadow-sm font-bold"
@@ -572,16 +572,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             </div>
           </div>
 
-          {/* Focus session length: what "Táº­p trung" starts everywhere */}
+          {/* Focus session length: what "Tập trung" starts everywhere */}
           <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                  <Timer className="w-3.5 h-3.5 text-violet-500" /> Äá»™ dÃ i phiÃªn táº­p trung
+                  <Timer className="w-3.5 h-3.5 text-violet-500" /> Độ dài phiên tập trung
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400">Báº¥m "Táº­p trung" á»Ÿ báº¥t ká»³ Ä‘Ã¢u sáº½ há»c trá»n chá»«ng nÃ y phÃºt, táº¯t nháº¯c nhá»Ÿ.</p>
+                <p className="text-[11px] text-slate-500 dark:text-zinc-400">Bấm "Tập trung" ở bất kỳ đâu sẽ học trọn chừng này phút, tắt nhắc nhở.</p>
               </div>
-              <span className="text-sm font-bold font-mono text-violet-600 dark:text-violet-400">{focusMinutes}â€²</span>
+              <span className="text-sm font-bold font-mono text-violet-600 dark:text-violet-400">{focusMinutes}′</span>
             </div>
             <div className="grid grid-cols-4 gap-1.5">
               {FOCUS_DURATIONS.map((m) => (
@@ -596,7 +596,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
                     }`}
                 >
-                  {m} phÃºt
+                  {m} phút
                 </button>
               ))}
             </div>
@@ -608,14 +608,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           {([
             {
               key: "newCardsPerDay" as const,
-              title: "Sá»‘ tháº» má»›i má»—i ngÃ y",
-              desc: "Gá»“m tá»« má»›i vÃ  lÆ°á»£t táº­p gÃµ láº¡i tá»« Ä‘Ã£ nhá»› (tháº» nhá»› láº¡i má»›i). Giá»¯ tháº¥p Ä‘á»ƒ lÆ°á»£ng Ã´n cÃ¡c ngÃ y sau khÃ´ng dá»“n á»©.",
+              title: "Số thẻ mới mỗi ngày",
+              desc: "Gồm từ mới và lượt tập gõ lại từ đã nhớ (thẻ nhớ lại mới). Giữ thấp để lượng ôn các ngày sau không dồn ứ.",
               options: [3, 5, 8, 10, 20],
             },
             {
               key: "maxSessionSize" as const,
-              title: "Sá»‘ tháº» tá»‘i Ä‘a má»—i phiÃªn",
-              desc: "Tá»« Ä‘áº¿n háº¡n Ä‘Æ°á»£c Æ°u tiÃªn trÆ°á»›c, tá»« má»›i xen káº½ Ä‘á»u trong phiÃªn.",
+              title: "Số thẻ tối đa mỗi phiên",
+              desc: "Từ đến hạn được ưu tiên trước, từ mới xen kẽ đều trong phiên.",
               options: [20, 30, 40, 50, 100],
             },
           ]).map((cfg) => (
@@ -636,7 +636,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     onClick={() => {
                       saveStudyLimits({ [cfg.key]: val });
                       setStudyLimits((prev) => ({ ...prev, [cfg.key]: val }));
-                      setNotifFeedback(`ÄÃ£ cáº­p nháº­t "${cfg.title}" thÃ nh ${val}!`);
+                      setNotifFeedback(`Đã cập nhật "${cfg.title}" thành ${val}!`);
                     }}
                     className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${studyLimits[cfg.key] === val
                         ? "bg-cyan-600 text-white shadow-sm font-bold"
@@ -651,9 +651,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           ))}
           <label className="flex items-start justify-between gap-3 pt-2 border-t border-slate-200 dark:border-zinc-800 cursor-pointer">
             <div>
-              <div className="text-xs font-bold text-slate-900 dark:text-white">ÄoÃ¡n nghÄ©a trÆ°á»›c khi há»c tá»« má»›i</div>
+              <div className="text-xs font-bold text-slate-900 dark:text-white">Đoán nghĩa trước khi học từ mới</div>
               <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-                TrÆ°á»›c tháº» giá»›i thiá»‡u, Ä‘oÃ¡n nghÄ©a tá»« trong má»™t cÃ¢u vÃ­ dá»¥ (3 lá»±a chá»n). ÄoÃ¡n trÆ°á»›c, ká»ƒ cáº£ Ä‘oÃ¡n sai, giÃºp nhá»› lÃ¢u hÆ¡n. KhÃ´ng tÃ­nh Ä‘iá»ƒm.
+                Trước thẻ giới thiệu, đoán nghĩa từ trong một câu ví dụ (3 lựa chọn). Đoán trước, kể cả đoán sai, giúp nhớ lâu hơn. Không tính điểm.
               </p>
             </div>
             <input
@@ -669,13 +669,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         </div>
       </SettingsSection>
 
-      {/* 2. NHáº®C Há»ŒC: khi nÃ o app nháº¯c báº¡n */}
+      {/* 2. NHẮC HỌC: khi nào app nhắc bạn */}
       <SettingsSection
         id="reminders"
         icon={<Bell className="w-5 h-5" />}
-        title="Nháº¯c há»c"
-        description="Khi nÃ o app nháº¯c báº¡n Ã´n: má»—i bao lÃ¢u, vÃ o giá» nÃ o, giá» yÃªn tÄ©nh."
-        summary={reminderSettings.enabled ? (reminderSettings.intervalMinutes > 0 ? `Báº­t Â· má»—i ${reminderSettings.intervalMinutes} phÃºt` : "Báº­t Â· theo giá» há»c") : "Äang táº¯t"}
+        title="Nhắc học"
+        description="Khi nào app nhắc bạn ôn: mỗi bao lâu, vào giờ nào, giờ yên tĩnh."
+        summary={reminderSettings.enabled ? (reminderSettings.intervalMinutes > 0 ? `Bật · mỗi ${reminderSettings.intervalMinutes} phút` : "Bật · theo giờ học") : "Đang tắt"}
       >
         <div className="space-y-6">
           {/* SECTION 0: AUTOSTART SYSTEM SETTING (desktop only) */}
@@ -689,14 +689,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-                        Tá»± khá»Ÿi Ä‘á»™ng cÃ¹ng há»‡ Ä‘iá»u hÃ nh
+                        Tự khởi động cùng hệ điều hành
                       </h3>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                        Máº·c Ä‘á»‹nh: Báº­t
+                        Mặc định: Bật
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
-                      Tá»± Ä‘á»™ng má»Ÿ MyEnglish khi khá»Ÿi Ä‘á»™ng mÃ¡y tÃ­nh Ä‘á»ƒ khÃ´ng bá» lá»¡ lá»‹ch nháº¯c tá»« vá»±ng vÃ  phÃ­m táº¯t tra tá»« nhanh
+                      Tự động mở MyEnglish khi khởi động máy tính để không bỏ lỡ lịch nhắc từ vựng và phím tắt tra từ nhanh
                     </p>
                   </div>
                 </div>
@@ -717,10 +717,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   />
                   <span>
                     {togglingAutostart
-                      ? "Äang cáº­p nháº­t..."
+                      ? "Đang cập nhật..."
                       : autostart
-                        ? "Tá»± khá»Ÿi Ä‘á»™ng: Báº­t"
-                        : "Tá»± khá»Ÿi Ä‘á»™ng: Táº¯t"}
+                        ? "Tự khởi động: Bật"
+                        : "Tự khởi động: Tắt"}
                   </span>
                 </button>
               </div>
@@ -736,10 +736,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 </span>
                 <div>
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-                    Cáº¥u hÃ¬nh Lá»‹ch nháº¯c & Pop-up Quiz (Focus Review)
+                    Cấu hình Lịch nhắc & Pop-up Quiz (Focus Review)
                   </h3>
                   <p className="text-xs text-slate-500 dark:text-zinc-400">
-                    TÃ¹y chá»‰nh táº§n suáº¥t nháº¯c nhá»Ÿ, thá»i gian hoÃ£n (Snooze), dáº¡ng cÃ¢u há»i vÃ  hiá»‡u á»©ng má» mÃ n hÃ¬nh
+                    Tùy chỉnh tần suất nhắc nhở, thời gian hoãn (Snooze), dạng câu hỏi và hiệu ứng mờ màn hình
                   </p>
                 </div>
               </div>
@@ -753,7 +753,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   }`}
               >
                 <span className={`w-2 h-2 rounded-full ${reminderSettings.enabled ? "bg-white animate-pulse" : "bg-slate-400"}`} />
-                <span>{reminderSettings.enabled ? "Äang báº­t Pop-up" : "ÄÃ£ táº¡m dá»«ng"}</span>
+                <span>{reminderSettings.enabled ? "Đang bật Pop-up" : "Đã tạm dừng"}</span>
               </button>
             </div>
 
@@ -768,16 +768,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div>
                     {pauseReason ? (
                       <div className="text-xs font-semibold text-amber-700 dark:text-amber-300">
-                        Äang táº¡m dá»«ng: {pauseReason}
+                        Đang tạm dừng: {pauseReason}
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-xs font-bold text-slate-900 dark:text-white">
-                          {IS_MOBILE ? "Nháº¯c káº¿ tiáº¿p:" : "Láº§n hiá»ƒn thá»‹ káº¿ tiáº¿p:"}
+                          {IS_MOBILE ? "Nhắc kế tiếp:" : "Lần hiển thị kế tiếp:"}
                         </span>
                         {IS_MOBILE && phoneNextMs === 0 ? (
                           <span className="text-xs text-slate-500 dark:text-zinc-400">
-                            chÆ°a Ä‘áº·t: thoÃ¡t app ra mÃ n hÃ¬nh chÃ­nh má»™t láº§n Ä‘á»ƒ Ä‘áº·t nháº¯c
+                            chưa đặt: thoát app ra màn hình chính một lần để đặt nhắc
                           </span>
                         ) : (
                           <>
@@ -785,7 +785,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                               {formatDisplayTime(IS_MOBILE ? phoneNextMs : nextReminderMs)}
                             </span>
                             <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">
-                              (CÃ²n láº¡i: <ReminderCountdown nextMs={IS_MOBILE ? phoneNextMs : nextReminderMs} />)
+                              (Còn lại: <ReminderCountdown nextMs={IS_MOBILE ? phoneNextMs : nextReminderMs} />)
                             </span>
                           </>
                         )}
@@ -794,13 +794,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">
                       {IS_MOBILE ? (
                         <span className="text-cyan-600 dark:text-cyan-400 font-medium">
-                          Nháº¯c cÃ¡ch nhau khoáº£ng {reminderGapMinutes(reminderSettings)} phÃºt ban ngÃ y (tá»‘i Ä‘a {reminderSettings.maxNudgesPerDay || "khÃ´ng giá»›i háº¡n"} láº§n/ngÃ y), ká»ƒ cáº£ khi Ä‘Ã£ Ä‘Ã³ng app
+                          Nhắc cách nhau khoảng {reminderGapMinutes(reminderSettings)} phút ban ngày (tối đa {reminderSettings.maxNudgesPerDay || "không giới hạn"} lần/ngày), kể cả khi đã đóng app
                         </span>
                       ) : (
                         <>
-                          Láº§n hiá»ƒn thá»‹ gáº§n nháº¥t: <strong className="text-slate-700 dark:text-zinc-300 font-mono">{formatDisplayTime(lastDisplayMs)}</strong>
+                          Lần hiển thị gần nhất: <strong className="text-slate-700 dark:text-zinc-300 font-mono">{formatDisplayTime(lastDisplayMs)}</strong>
                           <span className="ml-2 text-cyan-600 dark:text-cyan-400 font-medium">
-                            â€¢ Chu ká»³: {reminderSettings.intervalMinutes} phÃºt (tÃ­nh tá»« láº§n cuá»‘i popup hiá»ƒn thá»‹)
+                            • Chu kỳ: {reminderSettings.intervalMinutes} phút (tính từ lần cuối popup hiển thị)
                           </span>
                         </>
                       )}
@@ -813,17 +813,17 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     onClick={handleTestNudge}
                     disabled={testingNudge}
                     className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
-                    title="Má»Ÿ popup nháº¯c nhá» cÃ³ kÃ¨m 1 cÃ¢u quiz"
+                    title="Mở popup nhắc nhỏ có kèm 1 câu quiz"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span>{testingNudge ? "Äang má»Ÿ..." : "Thá»­ Popup ná»•i"}</span>
+                    <span>{testingNudge ? "Đang mở..." : "Thử Popup nổi"}</span>
                   </button>
                   <button
                     onClick={handleTestPopupQuiz}
                     disabled={testingPopup}
                     className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-semibold transition-all border border-slate-300 dark:border-zinc-700 flex items-center gap-1.5 shrink-0"
                   >
-                    <span>{testingPopup ? "Äang má»Ÿ..." : "ToÃ n mÃ n hÃ¬nh"}</span>
+                    <span>{testingPopup ? "Đang mở..." : "Toàn màn hình"}</span>
                   </button>
                 </div>
               </div>
@@ -833,11 +833,11 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             {IS_MOBILE && !hasOverlayPermission && (
               <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3 flex-wrap">
                 <div className="flex items-center gap-2.5 text-xs">
-                  <span className="text-xl shrink-0">ðŸ¦‰</span>
+                  <span className="text-xl shrink-0">🦉</span>
                   <div>
-                    <div className="font-bold text-slate-900 dark:text-white">Quyá»n hiá»ƒn thá»‹ trÃªn á»©ng dá»¥ng khÃ¡c chÆ°a báº­t</div>
+                    <div className="font-bold text-slate-900 dark:text-white">Quyền hiển thị trên ứng dụng khác chưa bật</div>
                     <div className="text-[11px] text-slate-600 dark:text-zinc-400">
-                      Báº­t quyá»n Ä‘á»ƒ tháº» nháº¯c Ã´n táº­p & 1 cÃ¢u quiz cÃ³ thá»ƒ xuáº¥t hiá»‡n ná»•i trÃªn mÃ n hÃ¬nh khi báº¡n Ä‘ang má»Ÿ app khÃ¡c.
+                      Bật quyền để thẻ nhắc ôn tập & 1 câu quiz có thể xuất hiện nổi trên màn hình khi bạn đang mở app khác.
                     </div>
                   </div>
                 </div>
@@ -845,7 +845,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   onClick={handleRequestOverlay}
                   className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors whitespace-nowrap shrink-0"
                 >
-                  Cáº¥p quyá»n hiá»ƒn thá»‹ ná»•i
+                  Cấp quyền hiển thị nổi
                 </button>
               </div>
             )}
@@ -853,8 +853,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             {IS_MOBILE && hasOverlayPermission && (
               <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between gap-2 text-xs">
                 <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
-                  <span className="text-sm">âœ“</span>
-                  <span>ÄÃ£ báº­t quyá»n hiá»ƒn thá»‹ tháº» nháº¯c ná»•i trÃªn cÃ¡c á»©ng dá»¥ng khÃ¡c</span>
+                  <span className="text-sm">✓</span>
+                  <span>Đã bật quyền hiển thị thẻ nhắc nổi trên các ứng dụng khác</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0 flex-wrap">
                   <button
@@ -862,14 +862,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     disabled={testingNudge}
                     className="px-2.5 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white font-semibold text-[11px] transition-colors whitespace-nowrap shadow-sm"
                   >
-                    Thá»­ sau 5s (thoÃ¡t app)
+                    Thử sau 5s (thoát app)
                   </button>
                   <button
                     onClick={handleTestNudge}
                     disabled={testingNudge}
                     className="px-2.5 py-1 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-700 dark:text-emerald-300 font-semibold text-[11px] transition-colors whitespace-nowrap"
                   >
-                    {testingNudge ? "Äang má»Ÿ..." : "Thá»­ popup ngay"}
+                    {testingNudge ? "Đang mở..." : "Thử popup ngay"}
                   </button>
                 </div>
               </div>
@@ -881,15 +881,15 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center gap-2.5 text-amber-800 dark:text-amber-300 text-xs font-semibold">
                   <Hourglass className="w-4 h-4 text-amber-600 dark:text-amber-400 animate-spin-slow shrink-0" />
                   <span>
-                    Äang trong thá»i gian hoÃ£n (Snooze): CÃ²n khoáº£ng{" "}
-                    <strong>{snoozeMinutesRemaining} phÃºt</strong> trÆ°á»›c láº§n nháº¯c káº¿ tiáº¿p.
+                    Đang trong thời gian hoãn (Snooze): Còn khoảng{" "}
+                    <strong>{snoozeMinutesRemaining} phút</strong> trước lần nhắc kế tiếp.
                   </span>
                 </div>
                 <button
                   onClick={handleCancelSnooze}
                   className="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-colors"
                 >
-                  Há»§y hoÃ£n ngay
+                  Hủy hoãn ngay
                 </button>
               </div>
             )}
@@ -901,16 +901,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                    Khoáº£ng thá»i gian nháº¯c há»c:
+                    Khoảng thời gian nhắc học:
                   </span>
                   <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
-                    {reminderSettings.intervalMinutes === 0 ? "Chá»‰ má»Ÿ thá»§ cÃ´ng" : `Má»—i ${reminderSettings.intervalMinutes} phÃºt`}
+                    {reminderSettings.intervalMinutes === 0 ? "Chỉ mở thủ công" : `Mỗi ${reminderSettings.intervalMinutes} phút`}
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-1.5">
                   {([15, 30, 45, 60, 120, 0] as ReminderInterval[]).map((val) => {
                     const isSelected = reminderSettings.intervalMinutes === val;
-                    const label = val === 0 ? "Táº¯t tá»± Ä‘á»™ng" : val >= 60 ? `${val / 60} giá»` : `${val} phÃºt`;
+                    const label = val === 0 ? "Tắt tự động" : val >= 60 ? `${val / 60} giờ` : `${val} phút`;
                     return (
                       <button
                         key={val}
@@ -926,7 +926,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   })}
                 </div>
                 <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight">
-                  KhuyÃªn dÃ¹ng: <strong>30 phÃºt</strong> Ä‘á»ƒ vá»«a táº­p trung lÃ m viá»‡c vá»«a duy trÃ¬ nhá»‹p Ã´n táº­p Ä‘á»u Ä‘áº·n.
+                  Khuyên dùng: <strong>30 phút</strong> để vừa tập trung làm việc vừa duy trì nhịp ôn tập đều đặn.
                 </p>
               </div>
 
@@ -935,10 +935,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Hourglass className="w-3.5 h-3.5 text-amber-500" />
-                    Thá»i gian HoÃ£n há»c (Snooze):
+                    Thời gian Hoãn học (Snooze):
                   </span>
                   <span className="text-[11px] font-mono text-amber-600 dark:text-amber-400 font-semibold">
-                    {reminderSettings.snoozeMinutes} phÃºt
+                    {reminderSettings.snoozeMinutes} phút
                   </span>
                 </div>
                 <div className="grid grid-cols-4 gap-1.5">
@@ -953,13 +953,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                             : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-amber-500"
                           }`}
                       >
-                        {val} phÃºt
+                        {val} phút
                       </button>
                     );
                   })}
                 </div>
                 <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight">
-                  Khi Ä‘ang báº­n, báº¡n chá»‰ cáº§n báº¥m nÃºt <strong>HoÃ£n [S]</strong> trÃªn pop-up Ä‘á»ƒ dá»i thá»i Ä‘iá»ƒm Ã´n.
+                  Khi đang bận, bạn chỉ cần bấm nút <strong>Hoãn [S]</strong> trên pop-up để dời thời điểm ôn.
                 </p>
               </div>
 
@@ -967,10 +967,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                  Giá» há»c cá»‘ Ä‘á»‹nh:
+                  Giờ học cố định:
                 </span>
                 <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-snug">
-                  Nháº¯c Ä‘Ãºng lÃºc báº¡n hay há»c trong ngÃ y, má»—i má»‘c má»™t láº§n má»—i ngÃ y. Má»‘c nÃ y khÃ´ng bá»‹ giá»›i háº¡n sá»‘ láº§n nháº¯c tá»‘i Ä‘a.
+                  Nhắc đúng lúc bạn hay học trong ngày, mỗi mốc một lần mỗi ngày. Mốc này không bị giới hạn số lần nhắc tối đa.
                 </p>
                 <div className="space-y-1.5">
                   {(Object.keys(ANCHOR_TIMES) as ReminderAnchor[]).map((anchor) => {
@@ -1002,7 +1002,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 </div>
                 {!anchorsActive && (
                   <p className="text-[11px] text-amber-700 dark:text-amber-400 leading-snug">
-                    Chá»‰ cÃ³ tÃ¡c dá»¥ng khi báº­t pop-up vÃ  chá»n má»™t khoáº£ng thá»i gian nháº¯c (khÃ´ng pháº£i &quot;Táº¯t tá»± Ä‘á»™ng&quot;).
+                    Chỉ có tác dụng khi bật pop-up và chọn một khoảng thời gian nhắc (không phải &quot;Tắt tự động&quot;).
                   </p>
                 )}
               </div>
@@ -1010,7 +1010,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               {/* Field 3: Trigger Condition */}
               <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                  Äiá»u kiá»‡n kÃ­ch hoáº¡t hiá»ƒn thá»‹:
+                  Điều kiện kích hoạt hiển thị:
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
@@ -1020,8 +1020,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
                       }`}
                   >
-                    <span className="text-xs font-bold">Chá»‰ khi cÃ³ tá»« Ä‘áº¿n háº¡n (FSRS)</span>
-                    <span className="text-[10px] opacity-75">TÃ´n trá»ng chu ká»³ phÃ¢n bá»• khoa há»c</span>
+                    <span className="text-xs font-bold">Chỉ khi có từ đến hạn (FSRS)</span>
+                    <span className="text-[10px] opacity-75">Tôn trọng chu kỳ phân bổ khoa học</span>
                   </button>
 
                   <button
@@ -1031,8 +1031,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
                       }`}
                   >
-                    <span className="text-xs font-bold">Äáº¿n háº¡n â†’ Háº¿t thÃ¬ ngáº«u nhiÃªn</span>
-                    <span className="text-[10px] opacity-75">Æ¯u tiÃªn Ä‘Ãºng háº¡n, háº¿t thÃ¬ Ã´n thÃªm</span>
+                    <span className="text-xs font-bold">Đến hạn → Hết thì ngẫu nhiên</span>
+                    <span className="text-[10px] opacity-75">Ưu tiên đúng hạn, hết thì ôn thêm</span>
                   </button>
 
                   <button
@@ -1042,8 +1042,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
                       }`}
                   >
-                    <span className="text-xs font-bold">LuÃ´n nháº¯c nhá»Ÿ ngáº«u nhiÃªn</span>
-                    <span className="text-[10px] opacity-75">Duy trÃ¬ pháº£n xáº¡ tá»« vá»±ng liÃªn tá»¥c</span>
+                    <span className="text-xs font-bold">Luôn nhắc nhở ngẫu nhiên</span>
+                    <span className="text-[10px] opacity-75">Duy trì phản xạ từ vựng liên tục</span>
                   </button>
                 </div>
               </div>
@@ -1053,17 +1053,17 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <label className="flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                      KhÃ´ng lÃ m phiá»n khi Ä‘ang báº­n
+                      Không làm phiền khi đang bận
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
-                      Tá»± hoÃ£n pop-up khi cÃ³ á»©ng dá»¥ng toÃ n mÃ n hÃ¬nh (trÃ¬nh chiáº¿u, video, há»p), khi Ä‘ang chia sáº» mÃ n
-                      hÃ¬nh Zoom, khi báº­t Focus/KhÃ´ng lÃ m phiá»n (náº¿u macOS cho phÃ©p Ä‘á»c) hoáº·c khi báº¡n rá»i mÃ¡y quÃ¡ 5
-                      phÃºt. Khi Ä‘áº¿n giá», má»™t tháº» nhá» hiá»‡n á»Ÿ gÃ³c mÃ n hÃ¬nh (khÃ´ng chiáº¿m bÃ n phÃ­m) lÃºc báº¡n táº¡m dá»«ng
-                      thao tÃ¡c; bá» qua thÃ¬ tháº» tá»± hoÃ£n sau 20 giÃ¢y, báº¥m Há»c ngay Ä‘á»ƒ má»Ÿ bÃ i Ã´n.
+                      Tự hoãn pop-up khi có ứng dụng toàn màn hình (trình chiếu, video, họp), khi đang chia sẻ màn
+                      hình Zoom, khi bật Focus/Không làm phiền (nếu macOS cho phép đọc) hoặc khi bạn rời máy quá 5
+                      phút. Khi đến giờ, một thẻ nhỏ hiện ở góc màn hình (không chiếm bàn phím) lúc bạn tạm dừng
+                      thao tác; bỏ qua thì thẻ tự hoãn sau 20 giây, bấm Học ngay để mở bài ôn.
                     </span>
                     {!IS_MAC && (
                       <span className="block text-[11px] font-semibold text-amber-700 dark:text-amber-400 pt-1">
-                        Hiá»‡n chá»‰ hoáº¡t Ä‘á»™ng trÃªn macOS.
+                        Hiện chỉ hoạt động trên macOS.
                       </span>
                     )}
                   </span>
@@ -1077,10 +1077,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                      LuÃ´n hiá»‡n trÃªn mÃ n hÃ¬nh chÃ­nh
+                      Luôn hiện trên màn hình chính
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
-                      Máº·c Ä‘á»‹nh nháº¯c nhá»Ÿ hiá»‡n trÃªn mÃ n hÃ¬nh báº¡n Ä‘ang lÃ m viá»‡c (nÆ¡i cÃ³ con trá» chuá»™t).
+                      Mặc định nhắc nhở hiện trên màn hình bạn đang làm việc (nơi có con trỏ chuột).
                     </span>
                   </span>
                   <input
@@ -1093,16 +1093,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                      Nháº¯c vÃ o lÃºc chuyá»ƒn viá»‡c
+                      Nhắc vào lúc chuyển việc
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
-                      NgoÃ i chu ká»³ trÃªn, nháº¯c sá»›m hÆ¡n vÃ o lÃºc báº¡n vá»«a quay láº¡i mÃ¡y (buá»•i sÃ¡ng, sau khi rá»i mÃ¡y hoáº·c
-                      mÃ¡y ngá»§), vá»«a táº¯t chia sáº» mÃ n hÃ¬nh hoáº·c vá»«a thoÃ¡t á»©ng dá»¥ng toÃ n mÃ n hÃ¬nh. Chá»‰ khi cÃ³ tháº» cáº§n Ã´n,
-                      vÃ  cÃ¡ch lá»i nháº¯c trÆ°á»›c Ã­t nháº¥t 20 phÃºt.
+                      Ngoài chu kỳ trên, nhắc sớm hơn vào lúc bạn vừa quay lại máy (buổi sáng, sau khi rời máy hoặc
+                      máy ngủ), vừa tắt chia sẻ màn hình hoặc vừa thoát ứng dụng toàn màn hình. Chỉ khi có thẻ cần ôn,
+                      và cách lời nhắc trước ít nhất 20 phút.
                     </span>
                     {!IS_MAC && (
                       <span className="block text-[11px] font-semibold text-amber-700 dark:text-amber-400 pt-1">
-                        Hiá»‡n chá»‰ hoáº¡t Ä‘á»™ng trÃªn macOS.
+                        Hiện chỉ hoạt động trên macOS.
                       </span>
                     )}
                   </span>
@@ -1116,12 +1116,12 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                      NÃ© giá» báº¡n hay bá» qua lá»i nháº¯c
+                      Né giờ bạn hay bỏ qua lời nhắc
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
-                      Há»c tá»« 30 ngÃ y gáº§n nháº¥t: giá» nÃ o lá»i nháº¯c gáº§n nhÆ° luÃ´n bá»‹ hoÃ£n hoáº·c bá» qua thÃ¬ khÃ´ng nháº¯c theo
-                      chu ká»³ vÃ o giá» Ä‘Ã³ (lá»i nháº¯c lÃºc chuyá»ƒn viá»‡c váº«n hiá»‡n).
-                      {getQuietHours().length > 0 && ` Hiá»‡n Ä‘ang nÃ©: ${getQuietHours().map((h) => `${h}h`).join(", ")}.`}
+                      Học từ 30 ngày gần nhất: giờ nào lời nhắc gần như luôn bị hoãn hoặc bỏ qua thì không nhắc theo
+                      chu kỳ vào giờ đó (lời nhắc lúc chuyển việc vẫn hiện).
+                      {getQuietHours().length > 0 && ` Hiện đang né: ${getQuietHours().map((h) => `${h}h`).join(", ")}.`}
                     </span>
                   </span>
                   <input
@@ -1134,10 +1134,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                      Xong má»¥c tiÃªu ngÃ y thÃ¬ thÃ´i nháº¯c
+                      Xong mục tiêu ngày thì thôi nhắc
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
-                      Äáº¡t má»¥c tiÃªu hÃ´m nay rá»“i thÃ¬ nghá»‰, mai nháº¯c tiáº¿p. Báº¡n váº«n cÃ³ thá»ƒ tá»± má»Ÿ bÃ i Ã´n báº¥t cá»© lÃºc nÃ o.
+                      Đạt mục tiêu hôm nay rồi thì nghỉ, mai nhắc tiếp. Bạn vẫn có thể tự mở bài ôn bất cứ lúc nào.
                     </span>
                   </span>
                   <input
@@ -1150,10 +1150,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                      KhÃ´ng nháº¯c ban Ä‘Ãªm ({NIGHT_QUIET_START}:00â€“{String(NIGHT_QUIET_END).padStart(2, "0")}:00)
+                      Không nhắc ban đêm ({NIGHT_QUIET_START}:00–{String(NIGHT_QUIET_END).padStart(2, "0")}:00)
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
-                      Ngá»§ Ä‘á»§ giÃºp nhá»› tá»« tá»‘t hÆ¡n há»c khuya.
+                      Ngủ đủ giúp nhớ từ tốt hơn học khuya.
                     </span>
                   </span>
                   <input
@@ -1166,10 +1166,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
-                      Tá»‘i Ä‘a sá»‘ láº§n nháº¯c má»—i ngÃ y
+                      Tối đa số lần nhắc mỗi ngày
                     </span>
                     <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
-                      Nháº¯c quÃ¡ nhiá»u dá»… thÃ nh thÃ³i quen báº¥m bá» qua.
+                      Nhắc quá nhiều dễ thành thói quen bấm bỏ qua.
                     </span>
                   </span>
                   <select
@@ -1179,7 +1179,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   >
                     {[4, 6, 8, 12, 0].map((n) => (
                       <option key={n} value={n}>
-                        {n === 0 ? "KhÃ´ng giá»›i háº¡n" : `${n} láº§n`}
+                        {n === 0 ? "Không giới hạn" : `${n} lần`}
                       </option>
                     ))}
                   </select>
@@ -1191,17 +1191,17 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Zap className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                    Sá»‘ lÆ°á»£ng tá»« má»—i láº§n Pop-up:
+                    Số lượng từ mỗi lần Pop-up:
                   </span>
                   <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
-                    {reminderSettings.wordsPerSession} tá»« / phiÃªn
+                    {reminderSettings.wordsPerSession} từ / phiên
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { count: 3, label: "3 tá»«", desc: "~15s nhanh" },
-                    { count: 5, label: "5 tá»«", desc: "~30s chuáº©n" },
-                    { count: 10, label: "10 tá»«", desc: "~1p sÃ¢u" },
+                    { count: 3, label: "3 từ", desc: "~15s nhanh" },
+                    { count: 5, label: "5 từ", desc: "~30s chuẩn" },
+                    { count: 10, label: "10 từ", desc: "~1p sâu" },
                   ].map((item) => {
                     const isSelected = reminderSettings.wordsPerSession === item.count;
                     return (
@@ -1222,7 +1222,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   })}
                 </div>
                 <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight">
-                  CÃ¡c cÃ¢u há»i trong phiÃªn pop-up Ä‘Æ°á»£c tá»± Ä‘á»™ng phÃ¢n bá»• ngáº«u nhiÃªn giá»¯a tráº¯c nghiá»‡m 1-4, gÃµ tá»« vá»±ng vÃ  tá»± Ä‘á»™ng xen káº½ cÃ¡c bÃ i ngá»¯ phÃ¡p Ä‘Ã£ há»c.
+                  Các câu hỏi trong phiên pop-up được tự động phân bổ ngẫu nhiên giữa trắc nghiệm 1-4, gõ từ vựng và tự động xen kẽ các bài ngữ pháp đã học.
                 </p>
               </div>
 
@@ -1231,16 +1231,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Maximize2 className="w-3.5 h-3.5 text-indigo-500" />
-                    Äá»™ má» mÃ n hÃ¬nh (Backdrop Blur):
+                    Độ mờ màn hình (Backdrop Blur):
                   </span>
                   <span className="text-[11px] font-mono text-indigo-600 dark:text-indigo-400 font-semibold">
-                    {reminderSettings.blurOverlay === "light" ? "Má» nháº¹" : reminderSettings.blurOverlay === "heavy" ? "Má» Ä‘áº­m" : "Má» vá»«a"}
+                    {reminderSettings.blurOverlay === "light" ? "Mờ nhẹ" : reminderSettings.blurOverlay === "heavy" ? "Mờ đậm" : "Mờ vừa"}
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {(["light", "medium", "heavy"] as BlurOverlayLevel[]).map((level) => {
                     const isSelected = reminderSettings.blurOverlay === level;
-                    const label = level === "light" ? "Má» nháº¹" : level === "heavy" ? "Má» Ä‘áº­m" : "Má» vá»«a";
+                    const label = level === "light" ? "Mờ nhẹ" : level === "heavy" ? "Mờ đậm" : "Mờ vừa";
                     return (
                       <button
                         key={level}
@@ -1257,7 +1257,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 </div>
                 <div className="flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-400 pt-1">
                   <VolumeX className="w-3.5 h-3.5 shrink-0" />
-                  <span>ÄÃ£ táº¯t Ã¢m thanh tá»± Ä‘á»™ng khi hiá»ƒn thá»‹ tá»« Ä‘á»ƒ khÃ´ng lÃ m phiá»n báº¡n.</span>
+                  <span>Đã tắt âm thanh tự động khi hiển thị từ để không làm phiền bạn.</span>
                 </div>
               </div>
             </div>
@@ -1265,25 +1265,25 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         </div>
       </SettingsSection>
 
-      {/* 3. GIAO DIá»†N: cháº¿ Ä‘á»™, cá»¡ chá»¯, Ã¢m thanh, giá»ng Ä‘á»c */}
+      {/* 3. GIAO DIỆN: chế độ, cỡ chữ, âm thanh, giọng đọc */}
       <SettingsSection
         id="display"
         icon={<Palette className="w-5 h-5" />}
-        title="Giao diá»‡n, Ã¢m thanh & giá»ng Ä‘á»c"
-        description="Cháº¿ Ä‘á»™ Ä‘Æ¡n giáº£n, cháº¿ Ä‘á»™ máº¥t gá»‘c, cá»¡ chá»¯, Ã¢m thanh pháº£n há»“i, giá»ng Ä‘á»c tiáº¿ng Anh."
+        title="Giao diện, âm thanh & giọng đọc"
+        description="Chế độ đơn giản, chế độ mất gốc, cỡ chữ, âm thanh phản hồi, giọng đọc tiếng Anh."
         defaultOpen={false}
       >
         <DisplaySettings />
       </SettingsSection>
 
-      {/* 4. AI: khÃ´ng báº¯t buá»™c Ä‘á»ƒ há»c, thu gá»n */}
+      {/* 4. AI: không bắt buộc để học, thu gọn */}
       <SettingsSection
         id="ai"
         tone="muted"
         icon={<Bot className="w-5 h-5" />}
-        title="AI (khÃ´ng báº¯t buá»™c)"
-        description="Chá»‰ cáº§n cho cÃ¡c tÃ­nh nÄƒng AI nhÆ° Viáº¿t vÃ  sá»­a lá»—i. KhÃ´ng cÃ³ AI báº¡n váº«n há»c bÃ¬nh thÆ°á»ng."
-        summary={!cliStatus ? "Äang kiá»ƒm traâ€¦" : cliStatus.installed ? "â— ÄÃ£ káº¿t ná»‘i" : "â—‹ ChÆ°a káº¿t ná»‘i"}
+        title="AI (không bắt buộc)"
+        description="Chỉ cần cho các tính năng AI như Viết và sửa lỗi. Không có AI bạn vẫn học bình thường."
+        summary={!cliStatus ? "Đang kiểm tra…" : cliStatus.installed ? "● Đã kết nối" : "○ Chưa kết nối"}
         defaultOpen={false}
       >
         <div className="space-y-6">
@@ -1301,7 +1301,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div className="space-y-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-sm font-bold text-slate-900 dark:text-white">
-                    Tráº¡ng thÃ¡i AI (API key hoáº·c CLI):
+                    Trạng thái AI (API key hoặc CLI):
                   </span>
                   <span
                     className={`text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full border ${cliStatus?.installed
@@ -1309,25 +1309,25 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 border-slate-200 dark:border-zinc-700"
                       }`}
                   >
-                    {cliStatus === null ? "â—‹ ÄANG KIá»‚M TRA" : cliStatus.installed ? "â— ÄÃƒ Káº¾T Ná»I" : "â—‹ CHÆ¯A Káº¾T Ná»I"}
+                    {cliStatus === null ? "○ ĐANG KIỂM TRA" : cliStatus.installed ? "● ĐÃ KẾT NỐI" : "○ CHƯA KẾT NỐI"}
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-zinc-400">
                   {cliStatus?.installed
-                    ? "Sáºµn sÃ ng cho cÃ¡c tÃ­nh nÄƒng AI."
-                    : "Báº¡n váº«n há»c bÃ¬nh thÆ°á»ng khi chÆ°a cÃ³. Chá»‰ cÃ¡c tÃ­nh nÄƒng AI (nhÆ° Viáº¿t vÃ  sá»­a lá»—i) cáº§n API key hoáº·c AI CLI."}
+                    ? "Sẵn sàng cho các tính năng AI."
+                    : "Bạn vẫn học bình thường khi chưa có. Chỉ các tính năng AI (như Viết và sửa lỗi) cần API key hoặc AI CLI."}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-zinc-400 font-mono">
-                  ÄÆ°á»ng dáº«n:{" "}
+                  Đường dẫn:{" "}
                   <span className="text-slate-800 dark:text-zinc-200 font-bold">
                     {cliStatus?.path || "~/.gemini/antigravity-cli"}
                   </span>
                 </p>
                 {cliStatus?.details && (
-                  <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">âœ“ {cliStatus.details}</p>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">✓ {cliStatus.details}</p>
                 )}
                 {cliStatus?.error && (
-                  <p className="text-xs text-slate-500 dark:text-zinc-400">Chi tiáº¿t: {cliStatus.error}</p>
+                  <p className="text-xs text-slate-500 dark:text-zinc-400">Chi tiết: {cliStatus.error}</p>
                 )}
               </div>
             </div>
@@ -1338,7 +1338,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors flex items-center justify-center gap-2 shrink-0 shadow-sm"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${checkingCli ? "animate-spin" : ""}`} />
-              <span>Kiá»ƒm tra láº¡i káº¿t ná»‘i</span>
+              <span>Kiểm tra lại kết nối</span>
             </button>
           </div>
 
@@ -1347,25 +1347,25 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider font-mono">
                 <Key className="w-4 h-4" />
-                <span>CÃ¡ch Ä‘Æ¡n giáº£n: dÃ¹ng Gemini API key</span>
+                <span>Cách đơn giản: dùng Gemini API key</span>
               </div>
               {apiKeyStatus?.configured && (
                 <span className="text-xs font-semibold font-mono px-2.5 py-0.5 rounded-full border bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800">
-                  â— ÄÃƒ LÆ¯U (â€¦{apiKeyStatus.hint})
+                  ● ĐÃ LƯU (…{apiKeyStatus.hint})
                 </span>
               )}
             </div>
             <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-              KhÃ´ng cáº§n cÃ i CLI hay Ä‘Äƒng nháº­p Google. DÃ¡n API key miá»…n phÃ­ vÃ o Ä‘Ã¢y, má»i tÃ­nh nÄƒng AI sáº½ gá»i tháº³ng Gemini.
-              Key Ä‘Æ°á»£c lÆ°u {IS_MOBILE ? "trong bá»™ nhá»› riÃªng cá»§a á»©ng dá»¥ng trÃªn Ä‘iá»‡n thoáº¡i" : `trong kho khÃ³a cá»§a há»‡ Ä‘iá»u hÃ nh (${IS_MAC ? "Keychain" : "Windows Credential Manager"})`}, khÃ´ng náº±m trong dá»¯ liá»‡u há»c hay file sao lÆ°u.
-              Khi dÃ¹ng AI, ná»™i dung tá»« vá»±ng vÃ  cÃ¢u báº¡n viáº¿t sáº½ Ä‘Æ°á»£c gá»­i tá»›i Google.
+              Không cần cài CLI hay đăng nhập Google. Dán API key miễn phí vào đây, mọi tính năng AI sẽ gọi thẳng Gemini.
+              Key được lưu {IS_MOBILE ? "trong bộ nhớ riêng của ứng dụng trên điện thoại" : `trong kho khóa của hệ điều hành (${IS_MAC ? "Keychain" : "Windows Credential Manager"})`}, không nằm trong dữ liệu học hay file sao lưu.
+              Khi dùng AI, nội dung từ vựng và câu bạn viết sẽ được gửi tới Google.
             </p>
 
             <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800">
-              <h4 className="text-xs font-bold text-slate-900 dark:text-white">CÃ¡ch láº¥y Gemini API Key:</h4>
+              <h4 className="text-xs font-bold text-slate-900 dark:text-white">Cách lấy Gemini API Key:</h4>
               <ol className="text-xs text-slate-600 dark:text-zinc-400 space-y-1.5 list-decimal pl-5 leading-relaxed">
                 <li>
-                  Truy cáº­p vÃ o trang{" "}
+                  Truy cập vào trang{" "}
                   <a
                     href="https://aistudio.google.com/app/apikey"
                     target="_blank"
@@ -1376,9 +1376,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <ExternalLink className="w-3 h-3" />
                   </a>
                 </li>
-                <li>ÄÄƒng nháº­p báº±ng tÃ i khoáº£n Google (Gmail thÃ´ng thÆ°á»ng miá»…n phÃ­).</li>
-                <li>Báº¥m nÃºt <strong>&quot;Create API key&quot;</strong> vÃ  copy chuá»—i key táº¡o ra.</li>
-                <li>DÃ¡n key vÃ o Ã´ bÃªn dÆ°á»›i rá»“i báº¥m <strong>LÆ°u &amp; Kiá»ƒm tra</strong>.</li>
+                <li>Đăng nhập bằng tài khoản Google (Gmail thông thường miễn phí).</li>
+                <li>Bấm nút <strong>&quot;Create API key&quot;</strong> và copy chuỗi key tạo ra.</li>
+                <li>Dán key vào ô bên dưới rồi bấm <strong>Lưu &amp; Kiểm tra</strong>.</li>
               </ol>
             </div>
 
@@ -1387,7 +1387,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 type={showApiKey ? "text" : "password"}
                 value={apiKeyInput}
                 onChange={(e) => setApiKeyInput(e.target.value)}
-                placeholder={apiKeyStatus?.configured ? "DÃ¡n key má»›i Ä‘á»ƒ thay tháº¿ key Ä‘Ã£ lÆ°u" : "DÃ¡n Gemini API key (báº¯t Ä‘áº§u báº±ng AIzaâ€¦)"}
+                placeholder={apiKeyStatus?.configured ? "Dán key mới để thay thế key đã lưu" : "Dán Gemini API key (bắt đầu bằng AIza…)"}
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
@@ -1402,7 +1402,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 className="w-full sm:w-auto px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors shrink-0"
                 aria-pressed={showApiKey}
               >
-                {showApiKey ? "áº¨n key" : "Hiá»‡n key"}
+                {showApiKey ? "Ẩn key" : "Hiện key"}
               </button>
               <button
                 type="submit"
@@ -1412,10 +1412,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 {savingApiKey ? (
                   <>
                     <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    <span>Äang kiá»ƒm traâ€¦</span>
+                    <span>Đang kiểm tra…</span>
                   </>
                 ) : (
-                  <span>LÆ°u &amp; Kiá»ƒm tra</span>
+                  <span>Lưu &amp; Kiểm tra</span>
                 )}
               </button>
               {apiKeyStatus?.configured && (
@@ -1425,13 +1425,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   disabled={savingApiKey}
                   className="w-full sm:w-auto px-4 py-2 rounded-xl bg-slate-100 hover:bg-red-50 dark:bg-zinc-800 dark:hover:bg-red-950/40 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-700 dark:text-zinc-300 hover:text-red-600 transition-colors shrink-0"
                 >
-                  XÃ³a key
+                  Xóa key
                 </button>
               )}
             </form>
             <div className="flex flex-col sm:flex-row items-center gap-2">
               <label htmlFor="ai-model-input" className="text-xs font-semibold text-slate-700 dark:text-zinc-300 shrink-0">
-                Model (tÃ¹y chá»n)
+                Model (tùy chọn)
               </label>
               <input
                 id="ai-model-input"
@@ -1452,14 +1452,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   disabled={savingApiKey || !!apiKeyStatus.modelFromEnv}
                   className="w-full sm:w-auto px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 disabled:opacity-50 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-700 dark:text-zinc-300 transition-colors shrink-0"
                 >
-                  Äá»•i model
+                  Đổi model
                 </button>
               )}
             </div>
             <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-              Äang dÃ¹ng: <code className="font-mono">{apiKeyStatus?.model ?? "gemini-3.8-flash"}</code>
-              {apiKeyStatus?.modelFromEnv ? " (Ä‘áº·t bá»Ÿi biáº¿n mÃ´i trÆ°á»ng MYENGLISH_AI_MODEL)" : ""}. Äá»ƒ trá»‘ng Ã´ Ä‘á»ƒ dÃ¹ng model máº·c
-              Ä‘á»‹nh. Náº¿u Google ngá»«ng model cÅ© vÃ  bÃ¡o lá»—i 404, hÃ£y nháº­p tÃªn model má»›i (xem táº¡i AI Studio) rá»“i báº¥m Äá»•i model.
+              Đang dùng: <code className="font-mono">{apiKeyStatus?.model ?? "gemini-3.8-flash"}</code>
+              {apiKeyStatus?.modelFromEnv ? " (đặt bởi biến môi trường MYENGLISH_AI_MODEL)" : ""}. Để trống ô để dùng model mặc
+              định. Nếu Google ngừng model cũ và báo lỗi 404, hãy nhập tên model mới (xem tại AI Studio) rồi bấm Đổi model.
             </p>
             {apiKeyMessage && (
               <p
@@ -1471,7 +1471,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               </p>
             )}
             <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-              CÃ³ key thÃ¬ app dÃ¹ng key, khÃ´ng dÃ¹ng CLI. GÃ³i miá»…n phÃ­ cÃ³ giá»›i háº¡n sá»‘ lÆ°á»£t gá»i má»—i phÃºt vÃ  má»—i ngÃ y. {IS_MOBILE ? "" : "Pháº§n cÃ i CLI bÃªn dÆ°á»›i chá»‰ dÃ nh cho ai muá»‘n dÃ¹ng cÃ¡ch Ä‘Äƒng nháº­p Google."}
+              Có key thì app dùng key, không dùng CLI. Gói miễn phí có giới hạn số lượt gọi mỗi phút và mỗi ngày. {IS_MOBILE ? "" : "Phần cài CLI bên dưới chỉ dành cho ai muốn dùng cách đăng nhập Google."}
             </p>
           </div>
 
@@ -1483,7 +1483,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="flex items-center gap-2">
                     <Sliders className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                     <span className="text-xs font-bold text-slate-900 dark:text-white">
-                      ÄÆ°á»ng dáº«n CLI tÃ¹y chá»‰nh (Tá»± Ä‘á»™ng nháº­n diá»‡n hoáº·c chá»‰ Ä‘á»‹nh thá»§ cÃ´ng)
+                      Đường dẫn CLI tùy chỉnh (Tự động nhận diện hoặc chỉ định thủ công)
                     </span>
                   </div>
                   {customCliPath && (
@@ -1492,7 +1492,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       onClick={handleResetCustomPath}
                       className="text-[11px] text-slate-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-colors"
                     >
-                      Äáº·t láº¡i máº·c Ä‘á»‹nh
+                      Đặt lại mặc định
                     </button>
                   )}
                 </div>
@@ -1501,7 +1501,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     type="text"
                     value={customCliPath}
                     onChange={(e) => setCustomCliPath(e.target.value)}
-                    placeholder="VÃ­ dá»¥: C:\Users\<tÃªn báº¡n>\.gemini\antigravity-cli (hoáº·c C:\Users\<tÃªn báº¡n>\.gemini\antigravity-cli\agy.exe)"
+                    placeholder="Ví dụ: C:\Users\<tên bạn>\.gemini\antigravity-cli (hoặc C:\Users\<tên bạn>\.gemini\antigravity-cli\agy.exe)"
                     autoComplete="off"
                     autoCorrect="off"
                     autoCapitalize="off"
@@ -1521,15 +1521,15 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     {customCliSaved ? (
                       <>
                         <Check className="w-3.5 h-3.5 text-emerald-300" />
-                        <span>ÄÃ£ lÆ°u!</span>
+                        <span>Đã lưu!</span>
                       </>
                     ) : (
-                      <span>LÆ°u & Kiá»ƒm tra</span>
+                      <span>Lưu & Kiểm tra</span>
                     )}
                   </button>
                 </form>
                 <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-                  Há»‡ thá»‘ng tá»± Ä‘á»™ng tÃ¬m trong <code className="font-mono text-cyan-600 dark:text-cyan-400">.gemini\antigravity-cli</code>, <code className="font-mono text-cyan-600 dark:text-cyan-400">.gemini\bin</code>, vÃ  biáº¿n mÃ´i trÆ°á»ng PATH. Náº¿u báº¡n cÃ i Ä‘áº·t á»Ÿ Ä‘Æ°á»ng dáº«n riÃªng, hÃ£y dÃ¡n Ä‘Æ°á»ng dáº«n thÆ° má»¥c hoáº·c file <code className="font-mono text-cyan-600 dark:text-cyan-400">agy.exe</code> vÃ o Ã´ trÃªn.
+                  Hệ thống tự động tìm trong <code className="font-mono text-cyan-600 dark:text-cyan-400">.gemini\antigravity-cli</code>, <code className="font-mono text-cyan-600 dark:text-cyan-400">.gemini\bin</code>, và biến môi trường PATH. Nếu bạn cài đặt ở đường dẫn riêng, hãy dán đường dẫn thư mục hoặc file <code className="font-mono text-cyan-600 dark:text-cyan-400">agy.exe</code> vào ô trên.
                 </p>
               </div>
               {/* OS Switcher Tabs */}
@@ -1546,7 +1546,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                       <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.93.04-2.02.63-2.67 1.38-.56.65-.98 1.7-0.85 2.76 1.04.08 2.07-.53 2.6-1.27z" />
                     </svg>
-                    <span>HÆ°á»›ng dáº«n macOS</span>
+                    <span>Hướng dẫn macOS</span>
                   </button>
 
                   <button
@@ -1560,13 +1560,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <svg className="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
                       <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.951-1.801" />
                     </svg>
-                    <span>HÆ°á»›ng dáº«n Windows (10 / 11)</span>
+                    <span>Hướng dẫn Windows (10 / 11)</span>
                   </button>
                 </div>
 
                 <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-200/60 dark:bg-zinc-700/50 text-[11px] font-mono text-slate-600 dark:text-zinc-300">
                   <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
-                  <span>Äang chá»n: {selectedOs === "macos" ? "macOS" : "Windows"}</span>
+                  <span>Đang chọn: {selectedOs === "macos" ? "macOS" : "Windows"}</span>
                 </div>
               </div>
 
@@ -1574,16 +1574,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div className="p-4 rounded-2xl bg-cyan-50/70 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-800/50 space-y-2">
                 <div className="flex items-center gap-2 text-cyan-800 dark:text-cyan-300 font-bold text-xs uppercase tracking-wider font-mono">
                   <ShieldCheck className="w-4 h-4" />
-                  <span>Kháº£ nÄƒng tÆ°Æ¡ng thÃ­ch tÃ i khoáº£n Google (Free vs Plus)</span>
+                  <span>Khả năng tương thích tài khoản Google (Free vs Plus)</span>
                 </div>
                 <ul className="text-xs text-slate-700 dark:text-zinc-300 space-y-1.5 list-disc pl-5 leading-relaxed">
                   <li>
-                    <strong className="text-slate-900 dark:text-white">TÃ i khoáº£n cÃ¡ nhÃ¢n Free (Gmail miá»…n phÃ­):</strong>{" "}
-                    HoÃ n toÃ n sá»­ dá»¥ng Ä‘Æ°á»£c! Báº¡n chá»‰ cáº§n Ä‘Äƒng nháº­p qua trÃ¬nh duyá»‡t khi CLI yÃªu cáº§u. Há»‡ thá»‘ng cáº¥p háº¡n ngáº¡ch (quota) hÃ ng ngÃ y Ä‘á»§ Ä‘á»ƒ báº¡n tra cá»©u vÃ  há»c hÃ ng trÄƒm tá»« vá»±ng má»›i má»—i ngÃ y.
+                    <strong className="text-slate-900 dark:text-white">Tài khoản cá nhân Free (Gmail miễn phí):</strong>{" "}
+                    Hoàn toàn sử dụng được! Bạn chỉ cần đăng nhập qua trình duyệt khi CLI yêu cầu. Hệ thống cấp hạn ngạch (quota) hàng ngày đủ để bạn tra cứu và học hàng trăm từ vựng mới mỗi ngày.
                   </li>
                   <li>
-                    <strong className="text-slate-900 dark:text-white">TÃ i khoáº£n Plus / Advanced (Google One AI Premium / Workspace):</strong>{" "}
-                    ÄÆ°á»£c Æ°u tiÃªn bÄƒng thÃ´ng, tá»‘c Ä‘á»™ sinh tá»« vá»±ng vÃ  cÃ¢u vÃ­ dá»¥ nhanh hÆ¡n vá»›i giá»›i háº¡n request cao hÆ¡n.
+                    <strong className="text-slate-900 dark:text-white">Tài khoản Plus / Advanced (Google One AI Premium / Workspace):</strong>{" "}
+                    Được ưu tiên băng thông, tốc độ sinh từ vựng và câu ví dụ nhanh hơn với giới hạn request cao hơn.
                   </li>
                 </ul>
               </div>
@@ -1600,7 +1600,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.93.04-2.02.63-2.67 1.38-.56.65-.98 1.7-0.85 2.76 1.04.08 2.07-.53 2.6-1.27z" />
                         </svg>
                       </span>
-                      <span>Quy trÃ¬nh cÃ i Ä‘áº·t & Káº¿t ná»‘i Antigravity CLI trÃªn macOS</span>
+                      <span>Quy trình cài đặt & Kết nối Antigravity CLI trên macOS</span>
                     </h3>
                     <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400">
                       Binary: ~/.gemini/bin/agy
@@ -1614,7 +1614,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           1
                         </span>
-                        Táº£i & CÃ i Ä‘áº·t Antigravity CLI
+                        Tải & Cài đặt Antigravity CLI
                       </span>
                       <button
                         onClick={() => handleCopy("curl -fsSL https://antigravity.google/install.sh | bash", "mac-1")}
@@ -1625,15 +1625,15 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
-                        <span>{copiedIndex === "mac-1" ? "ÄÃ£ copy" : "Copy"}</span>
+                        <span>{copiedIndex === "mac-1" ? "Đã copy" : "Copy"}</span>
                       </button>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>curl -fsSL https://antigravity.google/install.sh | bash</code>
                     </div>
                     <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
-                      <p>â€¢ Hoáº·c náº¿u mÃ¡y báº¡n Ä‘Ã£ cÃ³ Node.js / npm, cÃ³ thá»ƒ cháº¡y lá»‡nh: <code className="text-cyan-600 dark:text-cyan-400 font-mono">npm install -g @google/antigravity-cli</code></p>
-                      <p>â€¢ Script sáº½ tá»± Ä‘á»™ng táº£i binary vÃ  Ä‘áº·t vÃ o thÆ° má»¥c ngÆ°á»i dÃ¹ng: <code className="text-cyan-600 dark:text-cyan-400 font-mono">~/.gemini/bin/agy</code></p>
+                      <p>• Hoặc nếu máy bạn đã có Node.js / npm, có thể chạy lệnh: <code className="text-cyan-600 dark:text-cyan-400 font-mono">npm install -g @google/antigravity-cli</code></p>
+                      <p>• Script sẽ tự động tải binary và đặt vào thư mục người dùng: <code className="text-cyan-600 dark:text-cyan-400 font-mono">~/.gemini/bin/agy</code></p>
                     </div>
                   </div>
 
@@ -1644,7 +1644,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           2
                         </span>
-                        Cáº¥p quyá»n thá»±c thi & ÄÆ°a vÃ o biáº¿n mÃ´i trÆ°á»ng PATH
+                        Cấp quyền thực thi & Đưa vào biến môi trường PATH
                       </span>
                       <button
                         onClick={() =>
@@ -1657,14 +1657,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
-                        <span>{copiedIndex === "mac-2" ? "ÄÃ£ copy" : "Copy"}</span>
+                        <span>{copiedIndex === "mac-2" ? "Đã copy" : "Copy"}</span>
                       </button>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>chmod +x ~/.gemini/bin/agy &amp;&amp; echo 'export PATH="$HOME/.gemini/bin:$PATH"' &gt;&gt; ~/.zshrc &amp;&amp; source ~/.zshrc</code>
                     </div>
                     <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-                      Lá»‡nh nÃ y Ä‘áº£m báº£o binary cÃ³ quyá»n cháº¡y trÃªn macOS vÃ  báº¡n cÃ³ thá»ƒ gÃµ trá»±c tiáº¿p lá»‡nh <code className="text-cyan-600 dark:text-cyan-400 font-mono">agy</code> trong má»i cá»­a sá»• Terminal.
+                      Lệnh này đảm bảo binary có quyền chạy trên macOS và bạn có thể gõ trực tiếp lệnh <code className="text-cyan-600 dark:text-cyan-400 font-mono">agy</code> trong mọi cửa sổ Terminal.
                     </p>
                   </div>
 
@@ -1675,7 +1675,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           3
                         </span>
-                        ÄÄƒng nháº­p tÃ i khoáº£n Google (XÃ¡c thá»±c 1 láº§n duy nháº¥t)
+                        Đăng nhập tài khoản Google (Xác thực 1 lần duy nhất)
                       </span>
                       <button
                         onClick={() => handleCopy("~/.gemini/bin/agy auth login", "mac-3")}
@@ -1686,14 +1686,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
-                        <span>{copiedIndex === "mac-3" ? "ÄÃ£ copy" : "Copy"}</span>
+                        <span>{copiedIndex === "mac-3" ? "Đã copy" : "Copy"}</span>
                       </button>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>~/.gemini/bin/agy auth login</code>
                     </div>
                     <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-                      Má»Ÿ Terminal vÃ  dÃ¡n lá»‡nh trÃªn. TrÃ¬nh duyá»‡t Safari/Chrome sáº½ tá»± Ä‘á»™ng má»Ÿ trang xÃ¡c thá»±c cá»§a Google. Báº¡n chá»‰ cáº§n chá»n tÃ i khoáº£n Gmail vÃ  báº¥m <strong>Cho phÃ©p (Allow)</strong>.
+                      Mở Terminal và dán lệnh trên. Trình duyệt Safari/Chrome sẽ tự động mở trang xác thực của Google. Bạn chỉ cần chọn tài khoản Gmail và bấm <strong>Cho phép (Allow)</strong>.
                     </p>
                   </div>
 
@@ -1704,7 +1704,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           4
                         </span>
-                        Kiá»ƒm tra pháº£n há»“i & Káº¿t ná»‘i vá»›i MyEnglish
+                        Kiểm tra phản hồi & Kết nối với MyEnglish
                       </span>
                       <button
                         onClick={() =>
@@ -1717,15 +1717,15 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
-                        <span>{copiedIndex === "mac-4" ? "ÄÃ£ copy" : "Copy"}</span>
+                        <span>{copiedIndex === "mac-4" ? "Đã copy" : "Copy"}</span>
                       </button>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>~/.gemini/bin/agy --dangerously-skip-permissions --model gemini-3.8-flash-low -p "Hello, world!"</code>
                     </div>
                     <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
-                      <p>â€¢ Khi lá»‡nh in ra cÃ¢u chÃ o pháº£n há»“i tá»« Gemini, CLI Ä‘Ã£ hoáº¡t Ä‘á»™ng hoÃ n toÃ n chÃ­nh xÃ¡c.</p>
-                      <p>â€¢ <strong>Trong app MyEnglish</strong>: á»¨ng dá»¥ng tá»± Ä‘á»™ng phÃ¡t hiá»‡n Ä‘Æ°á»ng dáº«n <code className="text-cyan-600 dark:text-cyan-400 font-mono">~/.gemini/bin/agy</code>. Báº¡n chá»‰ cáº§n nháº¥n nÃºt <strong>"Kiá»ƒm tra láº¡i káº¿t ná»‘i"</strong> á»Ÿ banner trÃªn Ä‘á»ƒ tháº¥y tráº¡ng thÃ¡i xanh lÃ¡.</p>
+                      <p>• Khi lệnh in ra câu chào phản hồi từ Gemini, CLI đã hoạt động hoàn toàn chính xác.</p>
+                      <p>• <strong>Trong app MyEnglish</strong>: Ứng dụng tự động phát hiện đường dẫn <code className="text-cyan-600 dark:text-cyan-400 font-mono">~/.gemini/bin/agy</code>. Bạn chỉ cần nhấn nút <strong>"Kiểm tra lại kết nối"</strong> ở banner trên để thấy trạng thái xanh lá.</p>
                     </div>
                   </div>
                 </div>
@@ -1743,7 +1743,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                           <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.951-1.801" />
                         </svg>
                       </span>
-                      <span>Quy trÃ¬nh cÃ i Ä‘áº·t & Káº¿t ná»‘i Antigravity CLI trÃªn Windows (10 / 11)</span>
+                      <span>Quy trình cài đặt & Kết nối Antigravity CLI trên Windows (10 / 11)</span>
                     </h3>
                     <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400">
                       Binary: agy.exe
@@ -1757,7 +1757,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           1
                         </span>
-                        CÃ i Ä‘áº·t Antigravity CLI qua PowerShell (KhuyÃªn dÃ¹ng)
+                        Cài đặt Antigravity CLI qua PowerShell (Khuyên dùng)
                       </span>
                       <button
                         onClick={() => handleCopy("iwr -useb https://antigravity.google/install.ps1 | iex", "win-1")}
@@ -1768,16 +1768,16 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
-                        <span>{copiedIndex === "win-1" ? "ÄÃ£ copy" : "Copy"}</span>
+                        <span>{copiedIndex === "win-1" ? "Đã copy" : "Copy"}</span>
                       </button>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>iwr -useb https://antigravity.google/install.ps1 | iex</code>
                     </div>
                     <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
-                      <p>â€¢ Nháº¥n phÃ­m <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-[10px]">Win</kbd> + <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-[10px]">X</kbd>, chá»n <strong>Terminal</strong> hoáº·c <strong>PowerShell</strong> vÃ  dÃ¡n lá»‡nh trÃªn.</p>
-                      <p>â€¢ Hoáº·c náº¿u mÃ¡y báº¡n Ä‘Ã£ cÃ³ Node.js: <code className="text-cyan-600 dark:text-cyan-400 font-mono">npm install -g @google/antigravity-cli</code></p>
-                      <p>â€¢ ThÆ° má»¥c cÃ i Ä‘áº·t máº·c Ä‘á»‹nh trÃªn Windows: <code className="text-cyan-600 dark:text-cyan-400 font-mono">%USERPROFILE%\.gemini\antigravity-cli\agy.exe</code></p>
+                      <p>• Nhấn phím <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-[10px]">Win</kbd> + <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-[10px]">X</kbd>, chọn <strong>Terminal</strong> hoặc <strong>PowerShell</strong> và dán lệnh trên.</p>
+                      <p>• Hoặc nếu máy bạn đã có Node.js: <code className="text-cyan-600 dark:text-cyan-400 font-mono">npm install -g @google/antigravity-cli</code></p>
+                      <p>• Thư mục cài đặt mặc định trên Windows: <code className="text-cyan-600 dark:text-cyan-400 font-mono">%USERPROFILE%\.gemini\antigravity-cli\agy.exe</code></p>
                     </div>
                   </div>
 
@@ -1788,7 +1788,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           2
                         </span>
-                        ÄÄƒng nháº­p tÃ i khoáº£n Google (OAuth Web Login)
+                        Đăng nhập tài khoản Google (OAuth Web Login)
                       </span>
                       <button
                         onClick={() => handleCopy("agy auth login", "win-2")}
@@ -1799,15 +1799,15 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
-                        <span>{copiedIndex === "win-2" ? "ÄÃ£ copy" : "Copy"}</span>
+                        <span>{copiedIndex === "win-2" ? "Đã copy" : "Copy"}</span>
                       </button>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>agy auth login</code>
                     </div>
                     <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
-                      <p>â€¢ Náº¿u PowerShell bÃ¡o chÆ°a tÃ¬m tháº¥y lá»‡nh, hÃ£y dÃ¹ng Ä‘Æ°á»ng dáº«n Ä‘áº§y Ä‘á»§: <code className="text-cyan-600 dark:text-cyan-400 font-mono">&amp; "$env:USERPROFILE\.gemini\antigravity-cli\agy.exe" auth login</code></p>
-                      <p>â€¢ TrÃ¬nh duyá»‡t Edge/Chrome sáº½ má»Ÿ trang Ä‘Äƒng nháº­p Google Ä‘á»ƒ báº¡n xÃ¡c thá»±c tÃ i khoáº£n Gmail (miá»…n phÃ­ hoáº·c Plus).</p>
+                      <p>• Nếu PowerShell báo chưa tìm thấy lệnh, hãy dùng đường dẫn đầy đủ: <code className="text-cyan-600 dark:text-cyan-400 font-mono">&amp; "$env:USERPROFILE\.gemini\antigravity-cli\agy.exe" auth login</code></p>
+                      <p>• Trình duyệt Edge/Chrome sẽ mở trang đăng nhập Google để bạn xác thực tài khoản Gmail (miễn phí hoặc Plus).</p>
                     </div>
                   </div>
 
@@ -1818,7 +1818,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           3
                         </span>
-                        Cháº¡y thá»­ nghiá»‡m lá»‡nh phÃ¢n tÃ­ch trÃªn PowerShell
+                        Chạy thử nghiệm lệnh phân tích trên PowerShell
                       </span>
                       <button
                         onClick={() =>
@@ -1831,14 +1831,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
-                        <span>{copiedIndex === "win-3" ? "ÄÃ£ copy" : "Copy"}</span>
+                        <span>{copiedIndex === "win-3" ? "Đã copy" : "Copy"}</span>
                       </button>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>agy --dangerously-skip-permissions --model gemini-3.8-flash-low -p "Hello, world!"</code>
                     </div>
                     <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-                      Khi nháº­n Ä‘Æ°á»£c pháº£n há»“i cÃ¢u chÃ o tá»« Gemini, CLI Ä‘Ã£ hoáº¡t Ä‘á»™ng thÃ nh cÃ´ng trÃªn mÃ¡y Windows cá»§a báº¡n.
+                      Khi nhận được phản hồi câu chào từ Gemini, CLI đã hoạt động thành công trên máy Windows của bạn.
                     </p>
                   </div>
 
@@ -1849,30 +1849,30 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
                           4
                         </span>
-                        Cáº¥u hÃ¬nh & Káº¿t ná»‘i trong MyEnglish (Windows)
+                        Cấu hình & Kết nối trong MyEnglish (Windows)
                       </span>
                     </div>
                     <div className="text-xs text-slate-700 dark:text-zinc-300 space-y-2 leading-relaxed">
                       <p>
-                        á»¨ng dá»¥ng MyEnglish tá»± Ä‘á»™ng quÃ©t cÃ¡c vá»‹ trÃ­ cÃ i Ä‘áº·t phá»• biáº¿n trÃªn Windows:
+                        Ứng dụng MyEnglish tự động quét các vị trí cài đặt phổ biến trên Windows:
                       </p>
                       <ul className="list-disc pl-5 space-y-1 font-mono text-[11px] text-cyan-700 dark:text-cyan-400">
                         <li>%USERPROFILE%\.gemini\antigravity-cli\agy.exe</li>
                         <li>%LOCALAPPDATA%\Programs\antigravity\agy.exe</li>
-                        <li>%APPDATA%\npm\agy.cmd (náº¿u cÃ i qua npm)</li>
-                        <li>Biáº¿n mÃ´i trÆ°á»ng PATH há»‡ thá»‘ng (lá»‡nh where agy.exe)</li>
+                        <li>%APPDATA%\npm\agy.cmd (nếu cài qua npm)</li>
+                        <li>Biến môi trường PATH hệ thống (lệnh where agy.exe)</li>
                       </ul>
                       <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700 space-y-1.5 text-[11px]">
                         <p className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
                           <Sliders className="w-3.5 h-3.5 text-cyan-600" />
-                          Náº¿u báº¡n cÃ i Ä‘áº·t á»Ÿ thÆ° má»¥c tÃ¹y chá»‰nh (VÃ­ dá»¥ á»• D:\tools\agy.exe):
+                          Nếu bạn cài đặt ở thư mục tùy chỉnh (Ví dụ ổ D:\tools\agy.exe):
                         </p>
                         <p className="text-slate-600 dark:text-zinc-400">
-                          HÃ£y dÃ¡n Ä‘Æ°á»ng dáº«n file <code className="font-mono text-cyan-600 dark:text-cyan-400">agy.exe</code> vÃ o Ã´ <strong>"ÄÆ°á»ng dáº«n CLI tÃ¹y chá»‰nh"</strong> á»Ÿ trÃªn vÃ  báº¥m <strong>"LÆ°u &amp; Kiá»ƒm tra"</strong>.
+                          Hãy dán đường dẫn file <code className="font-mono text-cyan-600 dark:text-cyan-400">agy.exe</code> vào ô <strong>"Đường dẫn CLI tùy chỉnh"</strong> ở trên và bấm <strong>"Lưu &amp; Kiểm tra"</strong>.
                         </p>
                       </div>
                       <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-                        ðŸ’¡ <em>LÆ°u Ã½: TrÃªn Windows, á»©ng dá»¥ng MyEnglish Ä‘Ã£ Ä‘Æ°á»£c tÃ­ch há»£p cá» <code className="font-mono text-slate-700 dark:text-zinc-300">CREATE_NO_WINDOW</code>, báº£o Ä‘áº£m hoÃ n toÃ n khÃ´ng xuáº¥t hiá»‡n cá»­a sá»• Command Prompt mÃ u Ä‘en nháº¥p nhÃ¡y khi báº¡n tra tá»«.</em>
+                        💡 <em>Lưu ý: Trên Windows, ứng dụng MyEnglish đã được tích hợp cờ <code className="font-mono text-slate-700 dark:text-zinc-300">CREATE_NO_WINDOW</code>, bảo đảm hoàn toàn không xuất hiện cửa sổ Command Prompt màu đen nhấp nháy khi bạn tra từ.</em>
                       </p>
                     </div>
                   </div>
@@ -1884,14 +1884,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         </div>
       </SettingsSection>
 
-      {/* 5. THUáº¬T TOÃN Lá»ŠCH Ã”N: nÃ¢ng cao, Ä‘Ã£ cÃ³ sáºµn cáº¥u hÃ¬nh máº·c Ä‘á»‹nh */}
+      {/* 5. THUẬT TOÁN LỊCH ÔN: nâng cao, đã có sẵn cấu hình mặc định */}
       <SettingsSection
         id="algorithm"
         tone="muted"
         icon={<Brain className="w-5 h-5" />}
-        title="Thuáº­t toÃ¡n lá»‹ch Ã´n (nÃ¢ng cao)"
-        description="Má»¥c tiÃªu ghi nhá»›, tá»« khÃ³, tá»‘i Æ°u tham sá»‘ FSRS. Máº·c Ä‘á»‹nh Ä‘Ã£ tá»‘t, Ã­t khi cáº§n Ä‘á»•i."
-        summary={`Má»¥c tiÃªu ghi nhá»› ${Math.round(fsrsSettings.requestRetention * 100)}%`}
+        title="Thuật toán lịch ôn (nâng cao)"
+        description="Mục tiêu ghi nhớ, từ khó, tối ưu tham số FSRS. Mặc định đã tốt, ít khi cần đổi."
+        summary={`Mục tiêu ghi nhớ ${Math.round(fsrsSettings.requestRetention * 100)}%`}
         defaultOpen={false}
       >
         <div className="space-y-6">
@@ -1900,13 +1900,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider font-mono">
                 <Zap className="w-4 h-4 text-amber-500" />
                 <Jargon
-                  term="Thuáº­t toÃ¡n Spaced Repetition Tháº¿ Há»‡ Má»›i: FSRS"
-                  plain="Thuáº­t toÃ¡n lá»‹ch Ã´n thÃ´ng minh"
-                  hint="FSRS: tÃ­nh ngÃ y Ã´n láº¡i theo Ä‘á»™ khÃ³, Ä‘á»™ bá»n vÃ  kháº£ nÄƒng nhá»› cá»§a tá»«ng tá»«"
+                  term="Thuật toán Spaced Repetition Thế Hệ Mới: FSRS"
+                  plain="Thuật toán lịch ôn thông minh"
+                  hint="FSRS: tính ngày ôn lại theo độ khó, độ bền và khả năng nhớ của từng từ"
                 />
               </div>
               <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-mono font-bold">
-                <Jargon term="FSRS-6 Active (DSR Model)" plain="Äang báº­t" hint="PhiÃªn báº£n FSRS-6 Ä‘ang cháº¡y trong app" />
+                <Jargon term="FSRS-6 Active (DSR Model)" plain="Đang bật" hint="Phiên bản FSRS-6 đang chạy trong app" />
               </span>
             </div>
 
@@ -1915,10 +1915,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white">
-                    Má»¥c tiÃªu ghi nhá»› (Desired Retention)
+                    Mục tiêu ghi nhớ (Desired Retention)
                   </div>
                   <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-                    XÃ¡c suáº¥t báº¡n muá»‘n nhá»› Ä‘Æ°á»£c tá»« khi Ä‘áº¿n ngÃ y háº¹n Ã´n táº­p. Máº·c Ä‘á»‹nh 90% (tá»‘i Æ°u nháº¥t).
+                    Xác suất bạn muốn nhớ được từ khi đến ngày hẹn ôn tập. Mặc định 90% (tối ưu nhất).
                   </p>
                 </div>
                 <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400 font-mono">
@@ -1932,14 +1932,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     onClick={() => {
                       saveFSRSSettings({ requestRetention: val });
                       setFsrsSettings((prev) => ({ ...prev, requestRetention: val }));
-                      setNotifFeedback(`ÄÃ£ cáº­p nháº­t má»¥c tiÃªu ghi nhá»› FSRS thÃ nh ${Math.round(val * 100)}%!`);
+                      setNotifFeedback(`Đã cập nhật mục tiêu ghi nhớ FSRS thành ${Math.round(val * 100)}%!`);
                     }}
                     className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${fsrsSettings.requestRetention === val
                         ? "bg-cyan-600 text-white shadow-sm font-bold"
                         : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
                       }`}
                   >
-                    {Math.round(val * 100)}%{val === 0.9 ? " (Chuáº©n)" : ""}
+                    {Math.round(val * 100)}%{val === 0.9 ? " (Chuẩn)" : ""}
                   </button>
                 ))}
               </div>
@@ -1952,32 +1952,32 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <strong>
                   1.{" "}
                   <Jargon
-                    term='Kháº¯c phá»¥c "Ease Hell" cá»§a SM-2'
-                    plain="KhÃ´ng bá»‹ káº¹t á»Ÿ chu ká»³ ngáº¯n"
-                    hint="SM-2 lÃ  thuáº­t toÃ¡n cÅ©: sau nhiá»u láº§n quÃªn, há»‡ sá»‘ Ã´n bá»‹ háº¡ mÃ£i nÃªn tá»« hiá»‡n quÃ¡ dÃ y"
+                    term='Khắc phục "Ease Hell" của SM-2'
+                    plain="Không bị kẹt ở chu kỳ ngắn"
+                    hint="SM-2 là thuật toán cũ: sau nhiều lần quên, hệ số ôn bị hạ mãi nên từ hiện quá dày"
                   />
                   :
                 </strong>{" "}
-                FSRS khÃ´ng dÃ¹ng há»‡ sá»‘ cá»‘ Ä‘á»‹nh mÃ  mÃ´ hÃ¬nh hÃ³a trÃ­ nhá»› theo 3 biáº¿n sá»‘ <strong>DSR (Äá»™ khÃ³ - Äá»™ bá»n - Kháº£ nÄƒng nhá»› láº¡i)</strong>. Khi báº¡n báº¥m quÃªn má»™t tá»«, thuáº­t toÃ¡n sáº½ tá»± cÃ¢n báº±ng láº¡i chá»© khÃ´ng pháº¡t káº¹t tá»« á»Ÿ chu ká»³ ngáº¯n vÄ©nh viá»…n.
+                FSRS không dùng hệ số cố định mà mô hình hóa trí nhớ theo 3 biến số <strong>DSR (Độ khó - Độ bền - Khả năng nhớ lại)</strong>. Khi bạn bấm quên một từ, thuật toán sẽ tự cân bằng lại chứ không phạt kẹt từ ở chu kỳ ngắn vĩnh viễn.
               </p>
               <p>
-                <strong>2. Giáº£m 20% â€“ 30% sá»‘ lÆ°á»£t Ã´n táº­p:</strong> Khoáº£ng cÃ¡ch Ã´n Ä‘Æ°á»£c tÃ­nh toÃ¡n toÃ¡n há»c chÃ­nh xÃ¡c theo Ä‘Æ°á»ng cong quÃªn Ebbinghaus hiá»‡n Ä‘áº¡i, giÃºp báº¡n nhá»› lÃ¢u hÆ¡n nhÆ°ng tá»‘n Ã­t thá»i gian láº·p láº¡i hÆ¡n.
+                <strong>2. Giảm 20% – 30% số lượt ôn tập:</strong> Khoảng cách ôn được tính toán toán học chính xác theo đường cong quên Ebbinghaus hiện đại, giúp bạn nhớ lâu hơn nhưng tốn ít thời gian lặp lại hơn.
               </p>
               <p>
-                <strong>3. Tiáº¿n trÃ¬nh quÃ©t ngáº§m thÃ´ng minh:</strong> Khi á»©ng dá»¥ng MyEnglish Ä‘ang má»Ÿ (hoáº·c thu nhá» á»Ÿ Dock/Tray), tiáº¿n trÃ¬nh ngáº§m sáº½ tá»± Ä‘á»™ng quÃ©t cÆ¡ sá»Ÿ dá»¯ liá»‡u Ä‘á»‹nh ká»³ theo sá»‘ phÃºt báº¡n cáº¥u hÃ¬nh á»Ÿ trÃªn Ä‘á»ƒ nháº¯c báº¡n Ã´n táº­p ká»‹p thá»i.
+                <strong>3. Tiến trình quét ngầm thông minh:</strong> Khi ứng dụng MyEnglish đang mở (hoặc thu nhỏ ở Dock/Tray), tiến trình ngầm sẽ tự động quét cơ sở dữ liệu định kỳ theo số phút bạn cấu hình ở trên để nhắc bạn ôn tập kịp thời.
               </p>
             </div>
           </div>
         </div>
       </SettingsSection>
 
-      {/* 6. Dá»® LIá»†U & Äáº¶T Láº I */}
+      {/* 6. DỮ LIỆU & ĐẶT LẠI */}
       <SettingsSection
         id="data"
         tone="muted"
         icon={<Database className="w-5 h-5" />}
-        title="Dá»¯ liá»‡u & Ä‘áº·t láº¡i"
-        description="XoÃ¡ toÃ n bá»™ quÃ¡ trÃ¬nh há»c Ä‘á»ƒ báº¯t Ä‘áº§u láº¡i nhÆ° báº£n cÃ i má»›i."
+        title="Dữ liệu & đặt lại"
+        description="Xoá toàn bộ quá trình học để bắt đầu lại như bản cài mới."
         defaultOpen={false}
       >
         <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
@@ -1985,11 +1985,11 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             <div className="space-y-1 max-w-xl">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-rose-500" />
-                <span>Äáº·t láº¡i á»©ng dá»¥ng tá»« Ä‘áº§u (Reset Data)</span>
+                <span>Đặt lại ứng dụng từ đầu (Reset Data)</span>
               </h3>
               <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-                XÃ³a toÃ n bá»™ quÃ¡ trÃ¬nh há»c, lá»‹ch sá»­ Ã´n táº­p FSRS, tá»« vá»±ng cÃ¡ nhÃ¢n, chuá»—i Streak vÃ  Ä‘iá»ƒm XP.
-                á»¨ng dá»¥ng sáº½ tá»± Ä‘á»™ng náº¡p láº¡i trá»n bá»™ 5.000 tá»« vá»±ng Oxford vÃ  31 chÆ°Æ¡ng ngá»¯ phÃ¡p, sau Ä‘Ã³ má»Ÿ láº¡i mÃ n hÃ¬nh kháº£o sÃ¡t ban Ä‘áº§u (chá»n trÃ¬nh Ä‘á»™, thÃ¬ báº¯t Ä‘áº§u há»c, káº¿ hoáº¡ch má»—i ngÃ y).
+                Xóa toàn bộ quá trình học, lịch sử ôn tập FSRS, từ vựng cá nhân, chuỗi Streak và điểm XP.
+                Ứng dụng sẽ tự động nạp lại trọn bộ 5.000 từ vựng Oxford và 31 chương ngữ pháp, sau đó mở lại màn hình khảo sát ban đầu (chọn trình độ, thì bắt đầu học, kế hoạch mỗi ngày).
               </p>
             </div>
             <button
@@ -1997,22 +1997,22 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               className="px-4 py-2.5 rounded-xl border border-rose-300 dark:border-rose-900/60 bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300 text-xs font-bold flex items-center gap-2 shrink-0 transition-all shadow-sm"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Äáº·t láº¡i dá»¯ liá»‡u...</span>
+              <span>Đặt lại dữ liệu...</span>
             </button>
           </div>
         </div>
       </SettingsSection>
 
-      {/* 7. CÃ”NG Cá»¤ CHO NHÃ€ PHÃT TRIá»‚N: thu gá»n, ngÆ°á»i há»c khÃ´ng cáº§n dÃ¹ng */}
+      {/* 7. CÔNG CỤ CHO NHÀ PHÁT TRIỂN: thu gọn, người học không cần dùng */}
       <details className="rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 bg-slate-50/60 dark:bg-zinc-950/40 p-4">
         <summary className="cursor-pointer select-none text-xs font-bold text-slate-600 dark:text-zinc-400">
-          CÃ´ng cá»¥ cho nhÃ  phÃ¡t triá»ƒn (kiá»ƒm thá»­ thÃ´ng bÃ¡o, táº¡o tá»« Ä‘áº¿n háº¡n)
+          Công cụ cho nhà phát triển (kiểm thử thông báo, tạo từ đến hạn)
         </summary>
         <div className="mt-4 space-y-4">
           <div className="p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
             <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <BellRing className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-              <span>Trung tÃ¢m kiá»ƒm tra thá»±c táº¿ (Testing Center)</span>
+              <span>Trung tâm kiểm tra thực tế (Testing Center)</span>
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
@@ -2022,10 +2022,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div>
                     <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                       <Zap className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-                      <span>Test 1: Pop-up Quiz toÃ n mÃ n hÃ¬nh</span>
+                      <span>Test 1: Pop-up Quiz toàn màn hình</span>
                     </div>
                     <p className="text-[11px] text-slate-600 dark:text-zinc-400 leading-snug pt-1">
-                      Báº­t ngay cá»­a sá»• lÃ m má» toÃ n mÃ n hÃ¬nh. Báº¡n cÃ³ thá»ƒ nháº¥n <strong>Esc</strong> Ä‘á»ƒ táº¯t nhanh, dÃ¹ng phÃ­m <strong>1-4</strong> Ä‘á»ƒ chá»n, hoáº·c <strong>S</strong> Ä‘á»ƒ hoÃ£n.
+                      Bật ngay cửa sổ làm mờ toàn màn hình. Bạn có thể nhấn <strong>Esc</strong> để tắt nhanh, dùng phím <strong>1-4</strong> để chọn, hoặc <strong>S</strong> để hoãn.
                     </p>
                   </div>
                   <button
@@ -2034,7 +2034,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     className="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all shadow-cyan-600/20"
                   >
                     <Zap className={`w-3.5 h-3.5 ${testingPopup ? "animate-bounce" : ""}`} />
-                    <span>{testingPopup ? "Äang má»Ÿ..." : "Báº­t thá»­ Pop-up Quiz ngay"}</span>
+                    <span>{testingPopup ? "Đang mở..." : "Bật thử Pop-up Quiz ngay"}</span>
                   </button>
                 </div>
               )}
@@ -2044,10 +2044,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                     <Bell className="w-4 h-4 text-indigo-500" />
-                    <span>Test 2: Gá»­i thÃ´ng bÃ¡o thá»­</span>
+                    <span>Test 2: Gửi thông báo thử</span>
                   </div>
                   <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-snug pt-1">
-                    Gá»­i má»™t thÃ´ng bÃ¡o thá»­ lÃªn mÃ n hÃ¬nh há»‡ thá»‘ng (trÃªn macOS kÃ¨m tiáº¿ng chuÃ´ng "Glass").
+                    Gửi một thông báo thử lên màn hình hệ thống (trên macOS kèm tiếng chuông "Glass").
                   </p>
                 </div>
                 <button
@@ -2056,7 +2056,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all"
                 >
                   <Bell className={`w-3.5 h-3.5 ${testingNotif ? "animate-bounce" : ""}`} />
-                  <span>{testingNotif ? "Äang gá»­i..." : "Gá»­i thÃ´ng bÃ¡o thá»­"}</span>
+                  <span>{testingNotif ? "Đang gửi..." : "Gửi thông báo thử"}</span>
                 </button>
               </div>
 
@@ -2065,10 +2065,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                     <Flame className="w-4 h-4 text-orange-500" />
-                    <span>Test 3: Táº¡o tá»« Ä‘áº¿n háº¡n Ã´n táº­p tháº­t</span>
+                    <span>Test 3: Tạo từ đến hạn ôn tập thật</span>
                   </div>
                   <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-snug pt-1">
-                    Äáº·t 1 tá»« trong SQLite vá» quÃ¡ háº¡n Ä‘á»ƒ kiá»ƒm tra thuáº­t toÃ¡n tá»± Ä‘á»™ng nháº­n diá»‡n tá»« Ä‘áº¿n háº¡n.
+                    Đặt 1 từ trong SQLite về quá hạn để kiểm tra thuật toán tự động nhận diện từ đến hạn.
                   </p>
                 </div>
                 <button
@@ -2077,7 +2077,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   className="w-full py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 disabled:opacity-40 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-sm transition-all"
                 >
                   <Flame className="w-3.5 h-3.5" />
-                  <span>{testingDueWord ? "Äang thiáº¿t láº­p..." : "Äáº·t 1 tá»« thÃ nh 'Cáº§n Ã´n ngay'"}</span>
+                  <span>{testingDueWord ? "Đang thiết lập..." : "Đặt 1 từ thành 'Cần ôn ngay'"}</span>
                 </button>
               </div>
             </div>
@@ -2096,7 +2096,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
 /** Whole seconds to the next reminder, as "12m 05s" */
 function formatCountdown(totalSec: number) {
-  if (totalSec <= 0) return "Äang Ä‘áº¿n giá» hiá»ƒn thá»‹!";
+  if (totalSec <= 0) return "Đang đến giờ hiển thị!";
   const m = Math.floor(totalSec / 60);
   const s = totalSec % 60;
   if (m === 0) return `${s}s`;
@@ -2119,16 +2119,16 @@ function ReminderCountdown({ nextMs }: { nextMs: number }) {
 function getPauseReason(settings: ReminderSettings, goalMet: boolean): string | null {
   if (isSnoozed()) {
     const until = new Date(settings.snoozedUntil ?? 0).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
-    return `Ä‘ang hoÃ£n Ä‘áº¿n ${until}`;
+    return `đang hoãn đến ${until}`;
   }
-  if (isMainSessionActive()) return "báº¡n Ä‘ang Ã´n trong cá»­a sá»• chÃ­nh";
+  if (isMainSessionActive()) return "bạn đang ôn trong cửa sổ chính";
   const pause = reminderPause(settings, {
     hour: new Date().getHours(),
     goalReached: goalMet,
     shownToday: getNudgesShownToday(),
   });
-  if (pause === "night") return `ban Ä‘Ãªm (${NIGHT_QUIET_START}:00â€“${String(NIGHT_QUIET_END).padStart(2, "0")}:00)`;
-  if (pause === "goal_reached") return "Ä‘Ã£ Ä‘áº¡t má»¥c tiÃªu hÃ´m nay";
-  if (pause === "daily_cap") return "Ä‘á»§ sá»‘ láº§n nháº¯c hÃ´m nay";
+  if (pause === "night") return `ban đêm (${NIGHT_QUIET_START}:00–${String(NIGHT_QUIET_END).padStart(2, "0")}:00)`;
+  if (pause === "goal_reached") return "đã đạt mục tiêu hôm nay";
+  if (pause === "daily_cap") return "đủ số lần nhắc hôm nay";
   return null;
 }

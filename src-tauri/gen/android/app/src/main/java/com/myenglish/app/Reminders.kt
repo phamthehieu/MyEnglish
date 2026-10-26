@@ -362,6 +362,22 @@ object ReminderScheduler {
     setAlarm(alarms, exact, snoozeAt, snoozePending)
   }
 
+  /**
+   * Take every study reminder out of the notification shade: the learner did the quiz (or snoozed, or opened the
+   * app), so none of them, including earlier ones that were missed, has anything left to say.
+   */
+  fun dismissAll(context: Context) {
+    val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    try {
+      for (n in manager.activeNotifications) {
+        val channel = n.notification.channelId
+        if (channel == CHANNEL_ID || channel == CHANNEL_ID_STATUS) manager.cancel(n.tag, n.id)
+      }
+    } catch (_: Exception) {
+      manager.cancel(REQUEST_BASE)
+    }
+  }
+
   fun showNotification(
     context: Context,
     id: Int,
@@ -441,12 +457,24 @@ object ReminderScheduler {
       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
-    val learnNowPending = PendingIntent.getActivity(
-      context,
-      REQUEST_BASE + 1,
-      open,
-      PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-    )
+    // "▶ Học ngay" does what the same button of the floating card does: the Flash-Quiz starts right there, on
+    // the card, without opening the app. Only when there is no quiz to run does it open the app.
+    val learnNowPending = if (!quizJson.isNullOrBlank()) {
+      val learnNowIntent = Intent(floatingQuizIntent).apply { putExtra("autoStart", true) }
+      PendingIntent.getActivity(
+        context,
+        REQUEST_BASE + 1,
+        learnNowIntent,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      )
+    } else {
+      PendingIntent.getActivity(
+        context,
+        REQUEST_BASE + 1,
+        open,
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+      )
+    }
 
     // 3. Snooze 10m intent
     val snoozeIntent = Intent(context, ReminderActionReceiver::class.java).apply {
@@ -667,9 +695,7 @@ class ReminderActionReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action == "com.myenglish.app.SNOOZE_10") {
       ReminderScheduler.snooze(context, 10)
-      val notifId = intent.getIntExtra("id", ReminderScheduler.REQUEST_BASE)
-      val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-      manager.cancel(notifId)
+      ReminderScheduler.dismissAll(context)
       Toast.makeText(context, "Đã hoãn nhắc ôn tập 10 phút", Toast.LENGTH_SHORT).show()
     }
   }

@@ -89,6 +89,20 @@ class FloatingNudgeActivity : Activity() {
     initTts()
     buildUi()
     startCountdown(remainingMs)
+    // Opened by the notification's "▶ Học ngay": go straight to the quiz, as that button does on the card
+    if (intent.getBooleanExtra("autoStart", false)) startQuizSession(maxQuestions = 10)
+  }
+
+  /** The card is a single instance: a second launch (the notification's button while the card is up) arrives here */
+  override fun onNewIntent(intent: Intent) {
+    super.onNewIntent(intent)
+    setIntent(intent)
+    // A session already running is left alone; a card still waiting for a tap starts its quiz
+    if (intent.getBooleanExtra("autoStart", false) && sessionQuizList.isEmpty()) {
+      quizJsonStr = intent.getStringExtra("quiz") ?: quizJsonStr
+      quizListJsonStr = intent.getStringExtra("quizList") ?: quizListJsonStr
+      startQuizSession(maxQuestions = 10)
+    }
   }
 
   private fun initTts() {
@@ -401,6 +415,7 @@ class FloatingNudgeActivity : Activity() {
       setTypeface(typeface, Typeface.NORMAL)
       setOnClickListener {
         ReminderScheduler.snooze(this@FloatingNudgeActivity, 10)
+        ReminderScheduler.dismissAll(this@FloatingNudgeActivity)
         Toast.makeText(this@FloatingNudgeActivity, "Đã hoãn nhắc ôn tập 10 phút", Toast.LENGTH_SHORT).show()
         finish()
       }
@@ -811,6 +826,8 @@ class FloatingNudgeActivity : Activity() {
 
   /** Summary view when finishing the Flash-Quiz session */
   private fun renderQuizSummary() {
+    // The quiz is done: the reminder in the notification shade has nothing left to say
+    ReminderScheduler.dismissAll(this)
     contentBox.removeAllViews()
 
     val rootSummary = LinearLayout(this).apply {
@@ -904,6 +921,7 @@ class FloatingNudgeActivity : Activity() {
 
   private fun openMainActivity(action: String, focusMinutes: Int = 10) {
     countdownAnimator?.cancel()
+    ReminderScheduler.dismissAll(this)
     val intent = Intent(this, MainActivity::class.java).apply {
       addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
       putExtra("action", action)
