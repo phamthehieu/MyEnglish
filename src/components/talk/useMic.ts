@@ -21,7 +21,13 @@ export interface MicHandle {
   /** Why the microphone could not start, in Vietnamese */
   problem: string | null;
   /** Record; `onResult` gets the answer when the learner stops or the time is up */
-  begin: (situation: Situation, wanted: SituationLine[], onResult: (result: AsrResult, grammar: Grammar) => void) => Promise<void>;
+  begin: (
+    situation: Situation,
+    wanted: SituationLine[],
+    onResult: (result: AsrResult, grammar: Grammar) => void,
+    /** Stop by itself after this long (hands-free); at most MAX_SPEECH_MS */
+    maxMs?: number
+  ) => Promise<void>;
   stop: () => void;
   cancel: () => void;
 }
@@ -59,7 +65,7 @@ export function useMic(): MicHandle {
   }, []);
 
   const begin = useCallback<MicHandle["begin"]>(
-    async (situation, wanted, onResult) => {
+    async (situation, wanted, onResult, maxMs) => {
       setProblem(null);
       stopSpeaking();
       setPhase("preparing");
@@ -96,7 +102,7 @@ export function useMic(): MicHandle {
         return;
       }
       setPhase("listening");
-      timer.current = window.setTimeout(finish, MAX_SPEECH_MS);
+      timer.current = window.setTimeout(finish, Math.min(maxMs ?? MAX_SPEECH_MS, MAX_SPEECH_MS));
     },
     [finish]
   );

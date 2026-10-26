@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
-import { Loader2, MessageCircle, PlayCircle, Sparkles, Trash2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Loader2, MessageCircle, PlayCircle, RotateCcw, Sparkles, Trash2 } from "lucide-react";
+import { dueLines } from "@/services/talk/review";
+import { getAllWords } from "@/services/db";
+import { bankStatus, buildWordIndex } from "@/services/reading";
+import { getSituationProgress } from "@/services/talk/progress";
+import type { WordDetail } from "@/types/database";
+import LineReview from "./LineReview";
 import { allSituations, getSituation } from "@/data/situations";
 import type { Situation, SituationGroup } from "@/types/situation";
 import { summarize, TALK_UPDATED_EVENT, type SituationStatus } from "@/services/talk/progress";
@@ -12,7 +18,7 @@ import { PAGE_CONTAINER } from "../dashboard/shared";
 import Conversation from "./Conversation";
 import WarmUp from "./WarmUp";
 
-type View = { kind: "list" } | { kind: "warmup"; id: string } | { kind: "chat"; id: string };
+type View = { kind: "list" } | { kind: "warmup"; id: string } | { kind: "chat"; id: string } | { kind: "review" };
 
 const LEVELS: Array<Situation["cefr"]> = ["A1", "A2", "B1", "B2", "C1", "C2"];
 
@@ -28,16 +34,31 @@ const STATUS_TONE: Record<SituationStatus, string> = {
   done: "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300",
 };
 
+/** How many words of a conversation are in the learner's word bank but not remembered long yet */
+function learningWordsIn(situation: Situation, formIndex: ReadonlyMap<string, WordDetail>): number {
+  const text = [...situation.lines.map((l) => l.en), ...situation.dialogue.map((n) => n.npc_en)].join(" ");
+  const seen = new Set<string>();
+  for (const w of text.toLowerCase().match(/[a-z]+(?:'[a-z]+)?/g) ?? []) {
+    const hit = formIndex.get(w);
+    if (hit && bankStatus(hit) !== "mastered") seen.add(hit.id ? String(hit.id) : w);
+  }
+  return seen.size;
+}
+
 function SituationCard({
   situation,
+  learning,
   onWarmUp,
   onChat,
 }: {
   situation: Situation;
+  /** Words of it the learner is still learning */
+  learning: number;
   onWarmUp: () => void;
   onChat: () => void;
 }) {
   const s = summarize(situation);
+  const stars = getSituationProgress(situation.id).bestStars ?? 0;
   const [confirmDelete, setConfirmDelete] = useState(false);
   return (
     <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
@@ -60,7 +81,11 @@ function SituationCard({
       <p className="text-sm text-slate-700 dark:text-zinc-300">Mục tiêu: {situation.goal_vi}</p>
       <p className="text-xs text-slate-500 dark:text-zinc-400">
         Đã nói được {s.linesSaid}/{s.totalLines} câu · đã trò chuyện {s.runs} lần
+        {stars > 0 && <span className="ml-1.5">· Thử thách {"⭐".repeat(stars)}</span>}
       </p>
+      {learning > 0 && (
+        <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">📚 Có {learning} từ bạn đang học trong bài này</p>
+      )}
       <div className="flex gap-2">
         <button
           onClick={onWarmUp}
@@ -277,6 +302,18 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
   const [view, setView] = useState<View>({ kind: "list" });
   const [, setTick] = useState(0);
   const [level, setLevel] = useState<"all" | Situation["cefr"]>("all");
+  // The learner's word bank: conversations that use words they are still learning say so, and come first within a level
+  const [bank, setBank] = useState<WordDetail[]>([]);
+  useEffect(() => {
+    let dead = false;
+    getAllWords()
+      .then((words) => !dead && setBank(words))
+      .catch(() => {});
+    return () => {
+      dead = true;
+    };
+  }, []);
+  const formIndex = useMemo(() => buildWordIndex(bank).formIndex, [bank]);
 
   // Tapping the tab again returns to the list
   useEffect(() => {
@@ -293,7 +330,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
     };
   }, []);
 
-  const situation = view.kind === "list" ? undefined : getSituation(view.id);
+  const situation = view.kind === "warmup" || view.kind === "chat" ? getSituation(view.id) : undefined;
 
   // The chat fills the screen and keeps its answer box at the bottom; the other screens scroll as pages
   if (view.kind === "chat" && situation) {
@@ -306,9 +343,12 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
 
   const all = allSituations();
   const inLevel = (s: Situation) => level === "all" || s.cefr === level;
+  const due = dueLines().length;
   return (
     <div className={PAGE_CONTAINER}>
-      {view.kind === "warmup" && situation ? (
+      {view.kind === "review" ? (
+        <LineReview onBack={() => setView({ kind: "list" })} />
+      ) : view.kind === "warmup" && situation ? (
         <WarmUp
           key={situation.id}
           situation={situation}
@@ -323,6 +363,18 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
               Học vài câu cần dùng, rồi trò chuyện thử như ngoài đời. Chọn câu hoặc tự nói, máy sẽ nghe và báo lại.
             </p>
           </div>
+          {due > 0 && (
+            <button
+              onClick={() => setView({ kind: "review" })}
+              className="w-full text-left rounded-2xl border-2 border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 p-4 flex items-center gap-3"
+            >
+              <RotateCcw className="w-5 h-5 shrink-0 text-amber-700 dark:text-amber-300" />
+              <span className="min-w-0 flex-1">
+                <span className="block font-bold text-amber-900 dark:text-amber-200">Ôn lại hôm nay: {due} câu</span>
+                <span className="block text-xs text-amber-800 dark:text-amber-300">Những câu bạn từng nói sai hoặc phải xem đáp án. Ôn vài phút là nhớ lâu hơn.</span>
+              </span>
+            </button>
+          )}
           <GenerateCard onCreated={() => setTick((t) => t + 1)} />
           <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
             {(["all", ...LEVELS] as const).map((l) => {
@@ -353,7 +405,10 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
             const made = all.filter((s) => s.group === g.id && s.ai && inLevel(s)).sort((a, b) => b.ai!.createdAt - a.ai!.createdAt);
             const builtIn = all
               .filter((s) => s.group === g.id && !s.ai && inLevel(s))
-              .sort((a, b) => LEVELS.indexOf(a.cefr) - LEVELS.indexOf(b.cefr));
+              .sort(
+                (a, b) =>
+                  LEVELS.indexOf(a.cefr) - LEVELS.indexOf(b.cefr) || learningWordsIn(b, formIndex) - learningWordsIn(a, formIndex)
+              );
             const list = [...made, ...builtIn];
             if (list.length === 0) return null;
             return (
@@ -363,6 +418,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
                   <SituationCard
                     key={s.id}
                     situation={s}
+                    learning={learningWordsIn(s, formIndex)}
                     onWarmUp={() => setView({ kind: "warmup", id: s.id })}
                     onChat={() => setView({ kind: "chat", id: s.id })}
                   />

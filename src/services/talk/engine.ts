@@ -1,4 +1,4 @@
-import type { Situation, SituationLine } from "@/types/situation";
+import type { DialogueNode, Situation, SituationLine } from "@/types/situation";
 import type { AsrResult } from "@/services/pronunciationCheck";
 import { SILENCE_PEAK } from "@/services/pronunciationCheck";
 
@@ -139,6 +139,42 @@ export function nextNodeId(situation: Situation, nodeId: string, lineId: string)
   const node = situation.dialogue.find((n) => n.id === nodeId);
   const reply = node?.replies.find((r) => r.lineId === lineId);
   return reply ? reply.next : undefined;
+}
+
+/**
+ * The same conversation with the roles swapped: the learner says what the other person said, and the other
+ * person answers with the learner's lines (spoken to them). One path through the branches is picked at random.
+ * The node ids are "s0", "s1", … whatever the path, so a new path can replace the old one.
+ */
+export function swapRoles(situation: Situation, random: () => number = Math.random): Situation {
+  const lineOf = new Map(situation.lines.map((l) => [l.id, l] as const));
+  const lines: SituationLine[] = [];
+  const dialogue: DialogueNode[] = [];
+  const visited = new Set<string>();
+  let nodeId: string | null = situation.dialogue[0]?.id ?? null;
+  let heard: SituationLine | null = null;
+  while (nodeId && !visited.has(nodeId)) {
+    visited.add(nodeId);
+    const node = situation.dialogue.find((n) => n.id === nodeId);
+    if (!node) break;
+    const mine: SituationLine = { id: `${situation.id}.${node.id}~npc`, en: node.npc_en, vi: node.npc_vi, accept: [] };
+    const options = node.replies.filter((r) => lineOf.has(r.lineId));
+    const pick = options[Math.floor(random() * options.length)];
+    const i = dialogue.length;
+    lines.push(mine);
+    dialogue.push({
+      id: `s${i}`,
+      npc_en: heard?.en ?? "…",
+      npc_vi: heard?.vi ?? "Bạn mở lời trước nhé",
+      replies: [{ lineId: mine.id, next: pick?.next ? `s${i + 1}` : null }],
+    });
+    heard = pick ? (lineOf.get(pick.lineId) ?? null) : null;
+    nodeId = pick?.next ?? null;
+  }
+  // A path cut short (a loop in the data) must not point at a node that does not exist
+  const ids = new Set(dialogue.map((n) => n.id));
+  for (const n of dialogue) for (const r of n.replies) if (r.next && !ids.has(r.next)) r.next = null;
+  return { ...situation, lines, dialogue };
 }
 
 // ---- How the learner answers: word tiles, speaking, or typing ----

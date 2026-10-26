@@ -112,8 +112,10 @@ export function stopSpeaking(): void {
 
 let activeUtterance: SpeechSynthesisUtterance | null = null;
 
-export function handleSpeak(text: string, eOrRate?: React.MouseEvent | number) {
-  const settings = getTtsSettings();
+export function handleSpeak(text: string, eOrRate?: React.MouseEvent | number, voiceOverride?: string) {
+  const settings = { ...getTtsSettings() };
+  // A voice for this one call (the other person in a conversation), instead of the learner's own
+  if (voiceOverride) settings.voiceURI = voiceOverride;
   let rate = settings.rate;
   if (typeof eOrRate === "number") {
     // When slow rate is requested (e.g. SLOW_RATE = 0.45, exactly 50% of default 0.9), scale with

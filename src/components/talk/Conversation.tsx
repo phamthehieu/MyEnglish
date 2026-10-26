@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Eraser, Keyboard, Lightbulb, ListChecks, Mic, Puzzle, RotateCcw, Send, Volume2 } from "lucide-react";
-import type { Situation, SituationLine } from "@/types/situation";
-import { handleSpeak } from "@/components/review/speech";
+import { ArrowLeft, ArrowLeftRight, Eraser, Headphones, Keyboard, Waves, Lightbulb, ListChecks, Mic, Puzzle, RotateCcw, Send, Volume2 } from "lucide-react";
+import type { DialogueNode, Situation, SituationLine } from "@/types/situation";
+import { englishVoices, getTtsSettings, handleSpeak } from "@/components/review/speech";
+import { turnVariants } from "@/data/situations/variants";
+import { fillSlots } from "@/data/situations/templates";
 import { asrAvailable, playRecording } from "@/services/pronunciationCheck";
 import {
   buildChoices,
@@ -9,8 +11,8 @@ import {
   judgeSpoken,
   matchTiles,
   matchTyped,
-  nextNodeId,
   pickMethod,
+  swapRoles,
   type Choice,
   type Level,
   type Method,
@@ -20,23 +22,45 @@ import {
   getTalkLevel,
   recordLineBuilt,
   recordLineTry,
+  getSituationProgress,
   recordRun,
   seenCount,
+  starsFor,
   setTalkLevel,
 } from "@/services/talk/progress";
+import { scheduleMiss } from "@/services/talk/review";
 import MicButton from "./MicButton";
+import TapText, { useWordTap } from "./WordTap";
 import { useMic } from "./useMic";
 
 const LEVEL_LABEL: Record<Level, string> = { auto: "Tự động", choose: "Chọn câu", tiles: "Ghép từ", say: "Nói", type: "Gõ" };
 const METHOD_ICON: Record<Method, typeof Mic> = { choose: ListChecks, tiles: Puzzle, say: Mic, type: Keyboard };
 
 /** The other person is "typing" this long before their message shows */
-const TYPING_MS = 900;
+const TYPING_MS = 450;
+/** The chance that the other person did not catch what was said and asks for it again */
+const SORRY_CHANCE = 0.15;
+const SORRY_LINES = [
+  { en: "Sorry, could you say that again?", vi: "Xin lỗi, bạn nói lại được không?" },
+  { en: "Sorry, I didn't catch that.", vi: "Xin lỗi, mình chưa nghe rõ." },
+  { en: "Pardon? Could you repeat that?", vi: "Sao ạ? Bạn nhắc lại được không?" },
+];
+/** Speech rate of the other person when "slow" is on (the normal rate is the learner's own setting) */
+const PARTNER_SLOW = 0.65;
+const HANDS_KEY = "talk.handsFree";
+const SLOW_KEY = "talk.slowPartner";
+const SURPRISE_KEY = "talk.surprise";
+const CHALLENGE_KEY = "talk.challenge";
+const VOICE_KEY = "talk.voiceMix";
 /** After this many wrong answers in a turn the right one can be shown */
 const SHOW_ANSWER_AFTER = 2;
 
 interface Step {
   nodeId: string;
+  /** Which way of saying the turn is used: 0 is the node's own sentence, k is variant k - 1 */
+  v?: number;
+  /** A turn made up on the spot ("Sorry, could you say that again?"), not part of the situation */
+  node?: DialogueNode;
   /** The answer given at this node; unset while it waits */
   lineId?: string;
 }
@@ -57,18 +81,127 @@ function TypingDots() {
   );
 }
 
-/** Talk with the scripted partner like in a chat app; answer with tiles, your voice, or the keyboard */
+const LISTEN_KEY = "talk.listenOnly";
+const SWAP_KEY = "talk.swapRoles";
+const readFlag = (key: string) => {
+  try {
+    return localStorage.getItem(key) === "1";
+  } catch {
+    return false;
+  }
+};
+const writeFlag = (key: string, on: boolean) => {
+  try {
+    localStorage.setItem(key, on ? "1" : "0");
+  } catch {
+    /* ignore */
+  }
+};
+const readFlagOn = (key: string) => {
+  try {
+    return localStorage.getItem(key) !== "0";
+  } catch {
+    return true;
+  }
+};
+/** About how long the voice takes to say a sentence: the recording of a hands-free turn starts after it */
+const speechMs = (text: string, slow: boolean) => {
+  const rate = slow ? PARTNER_SLOW : getTtsSettings().rate;
+  return 600 + text.trim().split(/\s+/).length * (1000 / (2.4 * rate));
+};
+/** The placeholder of a first message (learner speaks first) has nothing to read aloud */
+const speakable = (text: string) => /[a-z]/i.test(text);
+
+/** The chat, with the "swap roles" choice: switching it starts the talk again from the top */
 export default function Conversation({ situation, onBack }: { situation: Situation; onBack: () => void }) {
+  const [swap, setSwap] = useState(() => readFlag(SWAP_KEY));
+  return (
+    <ConversationChat
+      key={swap ? "swap" : "normal"}
+      original={situation}
+      swap={swap}
+      onSwap={(on) => {
+        writeFlag(SWAP_KEY, on);
+        setSwap(on);
+      }}
+      onBack={onBack}
+    />
+  );
+}
+
+/** Talk with the scripted partner like in a chat app; answer with tiles, your voice, or the keyboard */
+function ConversationChat({
+  original,
+  swap,
+  onSwap,
+  onBack,
+}: {
+  original: Situation;
+  swap: boolean;
+  onSwap: (on: boolean) => void;
+  onBack: () => void;
+}) {
   const canSpeak = asrAvailable();
+  const [round, setRound] = useState(0);
+  // Swapped: the learner plays the other person; a new path through the talk is picked each time it starts over
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // The things that can change in it (the drink, the place, the price…) are picked again each time it starts
+  const filled = useMemo(() => fillSlots(original), [original, round]);
+  const situation = useMemo(() => (swap ? swapRoles(filled.situation) : filled.situation), [filled, swap]);
+  const partnerEmoji = swap ? "🙋" : situation.partner_emoji;
+  const partnerName = swap ? `Bạn đóng vai: ${original.partner_vi}` : situation.partner_vi;
+  // Listening only: the other person's words stay hidden until tapped
+  const [listenOnly, setListenOnly] = useState(() => readFlag(LISTEN_KEY));
+  const [peeked, setPeeked] = useState<string | null>(null);
+  // Hands-free: the microphone opens by itself after the other person speaks
+  const [handsFree, setHandsFree] = useState(() => readFlag(HANDS_KEY));
+  const [slow, setSlow] = useState(() => readFlag(SLOW_KEY));
+  const [surprise, setSurprise] = useState(() => readFlagOn(SURPRISE_KEY));
+  const handsFreeRef = useRef(handsFree);
+  handsFreeRef.current = handsFree;
+  const slowRef = useRef(slow);
+  slowRef.current = slow;
+  const surpriseRef = useRef(surprise);
+  surpriseRef.current = surprise;
+  const autoTimer = useRef<number | undefined>(undefined);
+  const autoTries = useRef(0);
+  const nodeIdRef = useRef("");
+  const sayRef = useRef<(auto: boolean) => void>(() => {});
+  const clearAuto = () => window.clearTimeout(autoTimer.current);
+  useEffect(() => () => window.clearTimeout(autoTimer.current), []);
+  /** The way of saying a turn that is picked when the turn comes (not the same words every time) */
+  const pickVariant = (nodeId: string) => Math.floor(Math.random() * (turnVariants(situation.id, nodeId).length + 1));
   const [level, setLevel] = useState<Level>(() => {
     const saved = getTalkLevel();
     return saved === "say" && !canSpeak ? "auto" : saved;
   });
-  const [steps, setSteps] = useState<Step[]>([{ nodeId: situation.dialogue[0].id }]);
+  const [steps, setSteps] = useState<Step[]>(() => [{ nodeId: situation.dialogue[0].id, v: pickVariant(situation.dialogue[0].id) }]);
   const [finished, setFinished] = useState(false);
   const [pending, setPending] = useState(true);
-  const [round, setRound] = useState(0);
   const [missed, setMissed] = useState<Set<string>>(new Set());
+  // How the talk went: turns right at the first try, and the words the machine was unsure it heard
+  const turnCount = useRef(0);
+  const firstTry = useRef(0);
+  const weakWords = useRef<Set<string>>(new Set());
+  const [summary, setSummary] = useState<{ score: number; first: number; turns: number; prev?: number; stars?: number } | null>(null);
+  // Challenge: no hints, the answer is spoken (or typed), the text of the other person stays hidden, and the run earns stars
+  const [challenge, setChallenge] = useState(() => readFlag(CHALLENGE_KEY));
+  const challengeRef = useRef(challenge);
+  challengeRef.current = challenge;
+  // The other person speaks with a voice other than the learner's own, picked again each time the talk starts
+  const [voiceMix, setVoiceMix] = useState(() => readFlagOn(VOICE_KEY));
+  const partnerVoice = useMemo(() => {
+    if (!voiceMix) return undefined;
+    const voices = englishVoices();
+    if (voices.length < 2) return undefined;
+    const mine = getTtsSettings().voiceURI;
+    const others = voices.filter((v) => v.voiceURI !== mine);
+    const pool = others.length > 0 ? others : voices;
+    return pool[Math.floor(Math.random() * pool.length)].voiceURI;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [voiceMix, round]);
+  const partnerVoiceRef = useRef(partnerVoice);
+  partnerVoiceRef.current = partnerVoice;
 
   // This turn's way of answering
   const [method, setMethod] = useState<Method>("tiles");
@@ -84,14 +217,22 @@ export default function Conversation({ situation, onBack }: { situation: Situati
   const [levelOpen, setLevelOpen] = useState(false);
 
   const mic = useMic();
+  const words = useWordTap();
   const bottom = useRef<HTMLDivElement>(null);
   const levelRef = useRef(level);
   levelRef.current = level;
 
   const lineOf = useMemo(() => new Map(situation.lines.map((l) => [l.id, l] as const)), [situation]);
   const nodeOf = useMemo(() => new Map(situation.dialogue.map((n) => [n.id, n] as const)), [situation]);
+  const nodeFor = (s: Step) => s.node ?? nodeOf.get(s.nodeId)!;
+  const lineFor = (s: Step) => {
+    const n = nodeFor(s);
+    const v = s.v ? turnVariants(situation.id, n.id)[s.v - 1] : undefined;
+    return v ? filled.rewrite(v.en, v.vi) : { en: n.npc_en, vi: n.npc_vi };
+  };
   const current = steps[steps.length - 1];
-  const node = nodeOf.get(current.nodeId)!;
+  const node = nodeFor(current);
+  nodeIdRef.current = node.id;
   const replies = useMemo(() => node.replies.map((r) => lineOf.get(r.lineId)!).filter(Boolean), [node, lineOf]);
   const waiting = !finished && !pending && current.lineId === undefined;
 
@@ -99,7 +240,15 @@ export default function Conversation({ situation, onBack }: { situation: Situati
   const beginTurn = useCallback(
     (forced?: Method) => {
       const seen = Math.max(0, ...replies.map((l) => seenCount(l.id)));
-      const next = forced ?? pickMethod(levelRef.current, seen, canSpeak);
+      const next =
+        forced ??
+        (challengeRef.current
+          ? canSpeak
+            ? "say"
+            : "type"
+          : handsFreeRef.current && canSpeak
+            ? "say"
+            : pickMethod(levelRef.current, seen, canSpeak));
       const pick = replies[Math.floor(Math.random() * replies.length)];
       setMethod(next);
       setTarget(pick);
@@ -121,8 +270,11 @@ export default function Conversation({ situation, onBack }: { situation: Situati
     setPending(true);
     const timer = window.setTimeout(() => {
       setPending(false);
-      handleSpeak(node.npc_en);
+      const said = lineFor(current).en;
+      if (speakable(said)) handleSpeak(said, slowRef.current ? PARTNER_SLOW : undefined, partnerVoiceRef.current);
       beginTurn();
+      autoTries.current = 0;
+      if (handsFreeRef.current && canSpeak) armAuto(speakable(said) ? speechMs(said, slowRef.current) : 300);
     }, TYPING_MS);
     return () => window.clearTimeout(timer);
     // beginTurn depends on the node's replies only: it is stable for this node
@@ -133,15 +285,47 @@ export default function Conversation({ situation, onBack }: { situation: Situati
     bottom.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [steps.length, pending, finished, method, chosen.length, feedback]);
 
-  const send = (lineId: string) => {
+  /** Hands-free: open the microphone after `delay`, if the talk is still at this turn */
+  const armAuto = (delay: number) => {
+    clearAuto();
+    const at = nodeIdRef.current;
+    autoTimer.current = window.setTimeout(() => {
+      if (nodeIdRef.current === at) sayRef.current(true);
+    }, delay);
+  };
+
+  const send = (lineId: string, gaveUp = false) => {
     mic.cancel();
-    const next = nextNodeId(situation, node.id, lineId);
+    clearAuto();
+    // The score counts the turns of the talk itself (not the "say it again" ones), right at the first try
+    if (!node.id.includes("~")) {
+      turnCount.current++;
+      if (fails === 0 && !gaveUp) firstTry.current++;
+    }
+    const next = node.replies.find((r) => r.lineId === lineId)?.next;
+    let follow: Step | undefined;
+    if (next) {
+      // Now and then the other person did not catch it and asks for it again: the same answer is said once more
+      if (surpriseRef.current && !node.id.includes("~") && Math.random() < SORRY_CHANCE) {
+        const sorry = SORRY_LINES[Math.floor(Math.random() * SORRY_LINES.length)];
+        follow = {
+          nodeId: `${node.id}~sorry`,
+          node: { id: `${node.id}~sorry`, npc_en: sorry.en, npc_vi: sorry.vi, replies: [{ lineId, next }] },
+        };
+      } else {
+        follow = { nodeId: next, v: pickVariant(next) };
+      }
+    }
     setSteps((prev) => {
       const done = prev.map((s, i) => (i === prev.length - 1 ? { ...s, lineId } : s));
-      return next ? [...done, { nodeId: next }] : done;
+      return follow ? [...done, follow] : done;
     });
     if (!next) {
-      recordRun(situation.id);
+      const score = turnCount.current > 0 ? firstTry.current / turnCount.current : 0;
+      const before = getSituationProgress(original.id);
+      const stars = challengeRef.current ? starsFor(score) : undefined;
+      recordRun(original.id, new Date(), { score, stars });
+      setSummary({ score, first: firstTry.current, turns: turnCount.current, prev: before.lastScore, stars });
       setFinished(true);
     }
   };
@@ -150,7 +334,11 @@ export default function Conversation({ situation, onBack }: { situation: Situati
     setFails((f) => f + 1);
     setFeedback(message);
     const id = lineId ?? (replies.length === 1 ? replies[0].id : target?.id);
-    if (id) setMissed((m) => new Set(m).add(id));
+    if (id) {
+      setMissed((m) => new Set(m).add(id));
+      // A missed sentence comes back for review (not the made-up lines of "swap roles")
+      if (!id.includes("~")) scheduleMiss(id);
+    }
   };
 
   const pickChoice = (choice: Choice) => {
@@ -183,8 +371,11 @@ export default function Conversation({ situation, onBack }: { situation: Situati
     }
   };
 
-  const say = () =>
-    mic.begin(situation, replies, (result, grammar) => {
+  const say = (auto = false) =>
+    mic.begin(
+      situation,
+      replies,
+      (result, grammar) => {
       const v = judgeSpoken(result, grammar, new Set(replies.map((l) => l.id)));
       console.info(
         "[talk] chat",
@@ -197,22 +388,48 @@ export default function Conversation({ situation, onBack }: { situation: Situati
       );
       // With one possible answer a miss is that line's; with several, only a heard answer counts
       const id = v.lineId ?? (replies.length === 1 ? replies[0].id : undefined);
+      // Words the machine was unsure about: listed in the summary as the ones to say more clearly
+      for (const w of result.words ?? []) if (w.word && w.word !== "[unk]" && w.conf < 0.6) weakWords.current.add(w.word);
       if (id) recordLineTry(id, v.kind === "ok", v.heard);
       if (v.kind === "ok" && v.lineId) {
         send(v.lineId);
         return;
       }
       wrong(v.message, v.lineId && replies.some((l) => l.id === v.lineId) ? v.lineId : undefined);
-    });
+      // Hands-free tries again by itself, twice at most
+      if (handsFreeRef.current && autoTries.current < 2) {
+        autoTries.current++;
+        armAuto(1800);
+      }
+    },
+      // Hands-free stops recording by itself: about as long as the longest answer takes to say
+      auto ? Math.max(2500, 1800 + Math.max(...replies.map((l) => l.en.split(" ").length)) * 600) : undefined
+    );
+  sayRef.current = say;
 
   /** Gave up: the right answer is sent, and counted as missed */
   const showAnswer = () => {
     const line = target ?? replies[0];
     setMissed((m) => new Set(m).add(line.id));
-    send(line.id);
+    if (!line.id.includes("~")) scheduleMiss(line.id);
+    send(line.id, true);
+  };
+
+  const toggleHandsFree = () => {
+    const on = !handsFree;
+    writeFlag(HANDS_KEY, on);
+    setHandsFree(on);
+    handsFreeRef.current = on;
+    mic.cancel();
+    clearAuto();
+    if (on && waiting) {
+      beginTurn("say");
+      armAuto(300);
+    }
   };
 
   const changeMethod = (m: Method) => {
+    clearAuto();
     mic.cancel();
     setFeedback(null);
     setMethod(m);
@@ -229,9 +446,14 @@ export default function Conversation({ situation, onBack }: { situation: Situati
 
   const restart = () => {
     mic.cancel();
-    setSteps([{ nodeId: situation.dialogue[0].id }]);
+    clearAuto();
+    setSteps([{ nodeId: situation.dialogue[0].id, v: pickVariant(situation.dialogue[0].id) }]);
     setFinished(false);
     setMissed(new Set());
+    setSummary(null);
+    turnCount.current = 0;
+    firstTry.current = 0;
+    weakWords.current = new Set();
     setRound((r) => r + 1);
   };
 
@@ -247,12 +469,31 @@ export default function Conversation({ situation, onBack }: { situation: Situati
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-lg">
-          {situation.partner_emoji}
+          {partnerEmoji}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{situation.partner_vi}</p>
+          <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{partnerName}</p>
           <p className="text-[11px] text-slate-500 dark:text-zinc-400 truncate">{situation.title_vi}</p>
         </div>
+        <button
+          onClick={() => {
+            writeFlag(LISTEN_KEY, !listenOnly);
+            setListenOnly(!listenOnly);
+          }}
+          aria-pressed={listenOnly}
+          aria-label="Chỉ nghe, ẩn chữ"
+          className={`p-1.5 rounded-full ${listenOnly ? "bg-violet-600 text-white" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300"}`}
+        >
+          <Headphones className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => onSwap(!swap)}
+          aria-pressed={swap}
+          aria-label="Đổi vai"
+          className={`p-1.5 rounded-full ${swap ? "bg-violet-600 text-white" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300"}`}
+        >
+          <ArrowLeftRight className="w-4 h-4" />
+        </button>
         <button
           onClick={() => setLevelOpen((o) => !o)}
           className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
@@ -262,7 +503,8 @@ export default function Conversation({ situation, onBack }: { situation: Situati
         </button>
       </div>
       {levelOpen && (
-        <div role="radiogroup" aria-label="Cấp độ" className="shrink-0 flex gap-1 p-2 bg-slate-50 dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800">
+        <div className="shrink-0 bg-slate-50 dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800">
+        <div role="radiogroup" aria-label="Cấp độ" className="flex gap-1 p-2">
           {levels.map((l) => (
             <button
               key={l}
@@ -277,37 +519,109 @@ export default function Conversation({ situation, onBack }: { situation: Situati
             </button>
           ))}
         </div>
+        <div className="flex gap-1.5 px-2 pb-2">
+          <button
+            onClick={() => {
+              writeFlag(LISTEN_KEY, !listenOnly);
+              setListenOnly(!listenOnly);
+            }}
+            aria-pressed={listenOnly}
+            className={`flex-1 py-1.5 rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1.5 ${
+              listenOnly ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+            }`}
+          >
+            <Headphones className="w-3.5 h-3.5" /> Chỉ nghe (ẩn chữ)
+          </button>
+          <button
+            onClick={() => onSwap(!swap)}
+            aria-pressed={swap}
+            className={`flex-1 py-1.5 rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1.5 ${
+              swap ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+            }`}
+          >
+            <ArrowLeftRight className="w-3.5 h-3.5" /> Đổi vai
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-1.5 px-2 pb-2">
+          {([
+            [
+              "Thử thách ⭐",
+              challenge,
+              () => {
+                writeFlag(CHALLENGE_KEY, !challenge);
+                setChallenge(!challenge);
+                challengeRef.current = !challenge;
+                // A challenge starts from the top: it is scored on the whole talk
+                restart();
+              },
+            ],
+            ["Nói chậm", slow, () => { writeFlag(SLOW_KEY, !slow); setSlow(!slow); }],
+            ["Hỏi lại bất ngờ", surprise, () => { writeFlag(SURPRISE_KEY, !surprise); setSurprise(!surprise); }],
+            ["Giọng ngẫu nhiên", voiceMix, () => { writeFlag(VOICE_KEY, !voiceMix); setVoiceMix(!voiceMix); }],
+          ] as const).map(([label, on, flip]) => (
+            <button
+              key={label}
+              onClick={flip}
+              aria-pressed={on}
+              className={`flex-1 min-w-[40%] py-1.5 rounded-lg text-xs font-semibold ${
+                on ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        </div>
       )}
 
       {/* Messages */}
       <div className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3">
         {steps.map((s, i) => {
-          const n = nodeOf.get(s.nodeId)!;
+          const spoken = lineFor(s);
           const mine = s.lineId ? lineOf.get(s.lineId) : undefined;
           const isLast = i === steps.length - 1;
           const hidden = isLast && pending; // the other person is still typing
+          const key = `${round}-${i}`;
+          const concealed = (listenOnly || challenge) && isLast && peeked !== key && speakable(spoken.en);
           return (
-            <div key={`${round}-${i}`} className="space-y-3">
+            <div key={key} className="space-y-3">
               {hidden ? (
                 <TypingDots />
               ) : (
                 <div className="flex items-end gap-2">
                   <div className="w-7 h-7 shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-sm">
-                    {situation.partner_emoji}
+                    {partnerEmoji}
                   </div>
                   <button
-                    onClick={() => handleSpeak(n.npc_en)}
-                    className="max-w-[80%] text-left rounded-2xl rounded-bl-sm bg-slate-100 dark:bg-zinc-800 px-4 py-2.5"
+                    onClick={() => {
+                      if (speakable(spoken.en)) handleSpeak(spoken.en, slow ? PARTNER_SLOW : undefined, partnerVoice);
+                    }}
+                    className="max-w-[80%] min-w-0 break-words text-left rounded-2xl rounded-bl-sm bg-slate-100 dark:bg-zinc-800 px-4 py-2.5"
                   >
-                    <span className="block text-[15px] font-medium text-slate-900 dark:text-white">{n.npc_en}</span>
-                    <span className="block text-xs text-slate-500 dark:text-zinc-400">{n.npc_vi}</span>
+                    {concealed ? (
+                      <span className="block text-sm text-slate-600 dark:text-zinc-300">🔊 Nghe rồi trả lời (chạm để nghe lại)</span>
+                    ) : (
+                      <>
+                        <span className="block text-[15px] font-medium text-slate-900 dark:text-white">
+                          <TapText text={spoken.en} unlearned={words.unlearned} onWord={(w) => words.open(w, spoken.en)} tone="light" />
+                        </span>
+                        <span className="block text-xs text-slate-500 dark:text-zinc-400">{spoken.vi}</span>
+                      </>
+                    )}
                   </button>
+                  {concealed && (
+                    <button onClick={() => setPeeked(key)} className="text-xs font-semibold text-violet-700 dark:text-violet-300 pb-2">
+                      Xem chữ
+                    </button>
+                  )}
                 </div>
               )}
               {mine && (
                 <div className="flex justify-end">
-                  <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-violet-600 text-white px-4 py-2.5">
-                    <span className="block text-[15px] font-medium">{mine.en}</span>
+                  <div className="max-w-[80%] min-w-0 break-words rounded-2xl rounded-br-sm bg-violet-600 text-white px-4 py-2.5">
+                    <span className="block text-[15px] font-medium">
+                      <TapText text={mine.en} unlearned={words.unlearned} onWord={(w) => words.open(w, mine.en)} tone="dark" />
+                    </span>
                     <span className="block text-xs text-violet-100">{mine.vi}</span>
                   </div>
                 </div>
@@ -320,14 +634,45 @@ export default function Conversation({ situation, onBack }: { situation: Situati
           <div className="rounded-2xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-4 space-y-3">
             <p className="font-bold text-emerald-800 dark:text-emerald-200">Xong rồi! 🎉</p>
             <p className="text-sm text-emerald-900 dark:text-emerald-100">Mục tiêu: {situation.goal_vi}</p>
+            {summary && summary.turns > 0 && (
+              <div className="rounded-xl bg-white/70 dark:bg-zinc-900/60 p-3 space-y-1 text-sm text-slate-800 dark:text-zinc-200">
+                {summary.stars && <p className="text-lg">{"⭐".repeat(summary.stars)}{"☆".repeat(3 - summary.stars)}</p>}
+                <p>
+                  Đúng ngay lần đầu: <span className="font-semibold">{summary.first}/{summary.turns} lượt</span> ({Math.round(summary.score * 100)}%)
+                </p>
+                {summary.prev !== undefined && (
+                  <p className="text-xs text-slate-600 dark:text-zinc-400">
+                    Lần trước {Math.round(summary.prev * 100)}%{" "}
+                    {summary.score > summary.prev ? "→ bạn tiến bộ rồi 👏" : summary.score < summary.prev ? "→ lần này kém hơn một chút, thử lại nhé" : "→ giữ vững phong độ"}
+                  </p>
+                )}
+              </div>
+            )}
             {missed.size > 0 && (
               <div className="text-sm text-slate-800 dark:text-zinc-200">
-                <p className="font-semibold">Câu cần luyện thêm:</p>
-                <ul className="list-disc pl-5">
+                <p className="font-semibold">Câu cần luyện thêm (sẽ quay lại trong phần ôn):</p>
+                <ul className="mt-1 space-y-1">
                   {[...missed].map((id) => (
-                    <li key={id}>{lineOf.get(id)?.en}</li>
+                    <li key={id} className="flex items-center gap-2">
+                      <button onClick={() => handleSpeak(lineOf.get(id)?.en ?? "")} aria-label="Nghe câu" className="shrink-0 p-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60">
+                        <Volume2 className="w-3.5 h-3.5" />
+                      </button>
+                      <span>{lineOf.get(id)?.en}</span>
+                    </li>
                   ))}
                 </ul>
+              </div>
+            )}
+            {weakWords.current.size > 0 && (
+              <div className="text-sm text-slate-800 dark:text-zinc-200">
+                <p className="font-semibold">Từ máy nghe chưa chắc, hãy nói rõ hơn:</p>
+                <div className="mt-1 flex flex-wrap gap-1.5">
+                  {[...weakWords.current].map((w) => (
+                    <button key={w} onClick={() => handleSpeak(w)} className="px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-200 text-xs font-semibold">
+                      🔊 {w}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
             <div className="flex gap-2">
@@ -348,7 +693,7 @@ export default function Conversation({ situation, onBack }: { situation: Situati
 
       {/* The learner's answer */}
       {waiting && target && (
-        <div className="shrink-0 border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 pt-3 pb-3 space-y-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="shrink-0 max-h-[60%] overflow-y-auto border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 pt-3 pb-3 space-y-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
           {method === "tiles" || method === "choose" ? (
             <p className="text-sm text-slate-700 dark:text-zinc-300">
               Nói: <span className="font-semibold">«{target.vi}»</span>
@@ -366,9 +711,11 @@ export default function Conversation({ situation, onBack }: { situation: Situati
                   ))}
                 </ul>
               ) : (
-                <button onClick={() => setHint(true)} className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-violet-700 dark:text-violet-300">
-                  <Lightbulb className="w-3.5 h-3.5" /> Xem gợi ý
-                </button>
+                !challenge && (
+                  <button onClick={() => setHint(true)} className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-violet-700 dark:text-violet-300">
+                    <Lightbulb className="w-3.5 h-3.5" /> Xem gợi ý
+                  </button>
+                )
               )}
             </div>
           )}
@@ -477,7 +824,7 @@ export default function Conversation({ situation, onBack }: { situation: Situati
 
           {method === "say" && (
             <>
-              <MicButton mic={mic} onStart={say} idleLabel="Bấm để nói" />
+              <MicButton mic={mic} onStart={() => say()} idleLabel="Bấm để nói" />
               {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem}</p>}
             </>
           )}
@@ -518,9 +865,21 @@ export default function Conversation({ situation, onBack }: { situation: Situati
                 </button>
               );
             })}
+            {canSpeak && (
+              <button
+                onClick={toggleHandsFree}
+                aria-pressed={handsFree}
+                className={`px-2.5 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
+                  handsFree ? "bg-emerald-600 text-white" : "text-slate-500 dark:text-zinc-400"
+                }`}
+              >
+                <Waves className="w-3.5 h-3.5" /> Rảnh tay
+              </button>
+            )}
           </div>
         </div>
       )}
+      {words.sheet}
     </div>
   );
 }

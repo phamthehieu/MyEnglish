@@ -24,6 +24,11 @@ export interface SituationProgress {
   /** Conversations finished */
   runs: number;
   lastRunDay?: string;
+  /** Share of the turns answered right at the first try in the last run (0 to 1), and in the run before it */
+  lastScore?: number;
+  prevScore?: number;
+  /** Best stars (1 to 3) earned in challenge mode */
+  bestStars?: number;
 }
 
 interface Store {
@@ -89,11 +94,27 @@ export function seenCount(lineId: string): number {
 }
 
 /** A conversation played to its end */
-export function recordRun(situationId: string, now: Date = new Date()): void {
+export function recordRun(situationId: string, now: Date = new Date(), result?: { score: number; stars?: number }): void {
   const store = load();
   const prev = store.situations[situationId] ?? { runs: 0 };
-  store.situations[situationId] = { runs: prev.runs + 1, lastRunDay: getLocalDateString(now) };
+  store.situations[situationId] = {
+    ...prev,
+    runs: prev.runs + 1,
+    lastRunDay: getLocalDateString(now),
+    ...(result
+      ? {
+          prevScore: prev.lastScore,
+          lastScore: result.score,
+          ...(result.stars ? { bestStars: Math.max(prev.bestStars ?? 0, result.stars) } : {}),
+        }
+      : {}),
+  };
   save(store);
+}
+
+/** Stars for a challenge run by the share of turns answered right at the first try */
+export function starsFor(score: number): 1 | 2 | 3 {
+  return score >= 0.9 ? 3 : score >= 0.6 ? 2 : 1;
 }
 
 export type SituationStatus = "new" | "learning" | "done";

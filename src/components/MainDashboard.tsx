@@ -13,6 +13,8 @@ import { calculateStreakAndGoal } from "@/services/streak";
 import { applyComebackToWork, resolveComeback } from "@/services/comeback";
 import { shouldShowOnboarding } from "@/services/onboarding";
 import { syncDailyFeed } from "@/services/shadowingFeed";
+import { syncDailySituations } from "@/services/talk/situationFeed";
+import { allSituations } from "@/data/situations";
 import { AI_VOCAB_ENABLED } from "@/services/features";
 import { countWaitingWords, getStudyLevels, hasChosenStudyLevels, topUpNewWords, syncWordsWithCatalog } from "@/services/vocabFeed";
 import { ensureCatalogSeeded, loadCatalogDistractors } from "@/services/vocabCatalog";
@@ -139,9 +141,10 @@ export default function MainDashboard({
   useEffect(() => {
     if (activeTab !== "grammar") setGrammarLessonToOpen(null);
   }, [activeTab]);
-  // The first time the app opens each day: new Shadowing lessons (at most five) are fetched in the background
+  // The first time the app opens each day: new Shadowing lessons (at most five) and conversations (at most three) are fetched in the background
   useEffect(() => {
     void syncDailyFeed();
+    void syncDailySituations(new Set(allSituations().map((s) => s.id)));
   }, []);
   // Simple mode (Settings): the sidebar shows five entries and the header the tabs of the current one
   const [simpleMode, setSimpleModeState] = useState(isSimpleMode);

@@ -1,11 +1,12 @@
 // Publishes the Shadowing lessons to the "shadowing-feed" branch of the repo, where the app downloads
-// the new ones from (see src/services/shadowingFeed.ts): index.json + lessons/<id>.json.
+// the new ones from (see src/services/shadowingFeed.ts and src/services/talk/situationFeed.ts):
+// index.json + lessons/<id>.json for Shadowing, situations.json for the Hội thoại tab.
 // The branch holds only these data files, so it never touches the code of the other branches.
 //
 //   node scripts/publish-shadowing-feed.mjs          prepares the commit and shows what would be sent
 //   node scripts/publish-shadowing-feed.mjs --push   sends it
 import { execFileSync } from "node:child_process";
-import { cpSync, mkdtempSync, rmSync } from "node:fs";
+import { cpSync, existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -31,6 +32,14 @@ try {
   }
   cpSync(join(dataDir, "index.json"), join(work, "index.json"));
   cpSync(join(dataDir, "lessons"), join(work, "lessons"), { recursive: true });
+  // The conversations written in bulk (npm run gen:situations): situations.json, which the app reads for its daily new ones
+  const talkDir = join(root, "src", "data", "situations", "generated");
+  const talks = existsSync(talkDir)
+    ? readdirSync(talkDir)
+        .filter((f) => f.endsWith(".json"))
+        .flatMap((f) => JSON.parse(readFileSync(join(talkDir, f), "utf8")))
+    : [];
+  writeFileSync(join(work, "situations.json"), JSON.stringify(talks));
   git(work, "add", "-A");
   const changed = git(work, "status", "--porcelain");
   if (!changed) {

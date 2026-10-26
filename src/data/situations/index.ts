@@ -1,5 +1,6 @@
 import type { Situation, SituationLine } from "@/types/situation";
 import { getGenerated } from "@/services/talk/custom";
+import { getFeedSituations } from "@/services/talk/situationFeed";
 import { ASK_COLLEAGUE } from "./ask-colleague";
 import { ASK_DIRECTION } from "./ask-direction";
 import { ASK_FOR_HELP } from "./ask-for-help";
@@ -33,9 +34,10 @@ export const SITUATIONS: Situation[] = [
   ...GENERATED,
 ];
 
-/** Built-in conversations and the ones the AI wrote for this learner (newest last) */
+/** Built-in conversations, the ones downloaded since (a few each day) and the ones the AI wrote for this learner (newest last) */
 export function allSituations(): Situation[] {
-  return [...SITUATIONS, ...getGenerated()];
+  const have = new Set(SITUATIONS.map((s) => s.id));
+  return [...SITUATIONS, ...getFeedSituations().filter((s) => !have.has(s.id)), ...getGenerated()];
 }
 
 export function getSituation(id: string): Situation | undefined {
