@@ -70,7 +70,15 @@ export const SIMPLE_NAV_GROUPS: NavGroup[] = [
       { tab: "capture", label: AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Lộ trình từ vựng" },
     ],
   },
-  { id: "patterns", label: "Mẫu câu", tabs: [{ tab: "patterns", label: "Mẫu câu" }] },
+  // Grammar sits with the sentence patterns: the grammar behind a sentence is one tab away from it
+  {
+    id: "patterns",
+    label: "Mẫu câu",
+    tabs: [
+      { tab: "patterns", label: "Mẫu câu" },
+      { tab: "grammar", label: "Ngữ pháp" },
+    ],
+  },
   { id: "talk", label: "Hội thoại", tabs: [{ tab: "talk", label: "Hội thoại" }] },
   { id: "pronunciation", label: "Phát âm", tabs: [{ tab: "pronunciation", label: "Phát âm" }] },
   { id: "shadowing", label: "Shadowing", tabs: [{ tab: "shadowing", label: "Shadowing" }] },
@@ -78,7 +86,6 @@ export const SIMPLE_NAV_GROUPS: NavGroup[] = [
     id: "practice",
     label: "Luyện thêm",
     tabs: [
-      { tab: "grammar", label: "Ngữ pháp" },
       { tab: "reading", label: "Đọc" },
       { tab: "writing", label: "Viết" },
     ],

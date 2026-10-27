@@ -60,14 +60,17 @@ describe("simple mode's five sidebar entries (U15)", () => {
     expect([...tabs].sort()).toEqual([...ALL_TABS].sort());
   });
 
-  it("Từ vựng opens Ôn tập first and holds the library and the vocabulary path; Luyện thêm opens Ngữ pháp; Phát âm has its own entry", () => {
+  it("Từ vựng opens Ôn tập first and holds the library and the vocabulary path; Ngữ pháp is a tab of Mẫu câu; Phát âm has its own entry", () => {
     expect(navGroupOf("library").id).toBe("vocab");
     expect(navGroupOf("capture").id).toBe("vocab");
     // Quick access: both tabs one click away, and a bar to switch between them
     expect(navGroupOf("forgotten").id).toBe("quick");
     expect(navGroupOf("leaderboard").tabs.map((t) => t.tab)).toEqual(["forgotten", "leaderboard"]);
     expect(navGroupOf("review").tabs[0].tab).toBe("review");
-    expect(navGroupOf("writing").tabs.map((t) => t.tab)).toEqual(["grammar", "reading", "writing"]);
+    expect(navGroupOf("writing").tabs.map((t) => t.tab)).toEqual(["reading", "writing"]);
+    // Grammar is with the sentence patterns, one tab away
+    expect(navGroupOf("grammar").id).toBe("patterns");
+    expect(navGroupOf("patterns").tabs.map((t) => t.tab)).toEqual(["patterns", "grammar"]);
     expect(navGroupOf("pronunciation").tabs.map((t) => t.tab)).toEqual(["pronunciation"]);
     // Shadowing runs on its own, like Phát âm and Hội thoại
     expect(navGroupOf("shadowing").tabs.map((t) => t.tab)).toEqual(["shadowing"]);

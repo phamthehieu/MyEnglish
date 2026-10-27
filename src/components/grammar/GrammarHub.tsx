@@ -18,6 +18,7 @@ import GrammarLessonView, { type GrammarLessonTab } from "./GrammarLessonView";
 import GrammarImportDialog from "./GrammarImportDialog";
 import GrammarExerciseImportModal from "./GrammarExerciseImportModal";
 import GrammarPlayer from "./GrammarPlayer";
+import SpeakingGrammar from "./SpeakingGrammar";
 import { PAGE_CONTAINER } from "../dashboard/shared";
 
 interface GrammarHubProps {
@@ -272,7 +273,7 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
               <span>Ngữ pháp</span>
             </h1>
             <p className="text-xs text-slate-500 dark:text-zinc-400 sm:text-sm">
-              Học theo sách của bạn: mỗi ngày một bài mới, ôn lại đúng lúc sắp quên.
+              Phần đầu giải thích ngữ pháp của từng chặng nói. Phần sau là sách ngữ pháp đầy đủ: mỗi ngày một bài mới, ôn lại đúng lúc sắp quên.
             </p>
           </div>
 
@@ -286,6 +287,9 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
             <span>Nhập bài tập AI & Lịch sử</span>
           </button>
         </div>
+
+        {/* Grammar for speaking: the first thing here, and it needs no book */}
+        <SpeakingGrammar onOpenLesson={hasBook ? openLesson : undefined} />
 
         {loading && !hasBook ? (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-slate-500 dark:text-zinc-400">

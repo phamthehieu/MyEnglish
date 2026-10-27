@@ -35,6 +35,11 @@ import {
 import TodayChecklist from "./TodayChecklist";
 import DayCloseCard from "./DayCloseCard";
 import TodayRoadmapCard from "./TodayRoadmapCard";
+import StudyLevelBar from "./StudyLevelBar";
+import RoadmapTodayCard from "../roadmap/RoadmapTodayCard";
+import { useRoadmap } from "../roadmap/useRoadmap";
+import { PATTERNS } from "@/data/patterns";
+import { AUTOSTART_KEY } from "../patterns/PatternsTab";
 import FocusStartCard from "./FocusStartCard";
 import DailyQuestsCard from "./DailyQuestsCard";
 import { FOCUS_SETTINGS_EVENT, getFocusSettings, nextReviewPeek } from "@/services/focusSession";
@@ -188,7 +193,25 @@ export default function TodayTab({
   const gain = coverage ? coverageGain(coverage.percent, baseline) : null;
 
   const inComeback = !!comeback && !comeback.caughtUp;
+  // The speaking path is the first thing of the list: where the learner is on it and what is left of today's part
+  const path = useRoadmap();
+  const speaking: TodayTaskInput["speaking"] = !PATTERNS.length
+    ? null
+    : path.road.goal === null
+      ? { title: "Chọn mục tiêu cho lộ trình nói", detail: "Du lịch, đi làm, đời sống hay kết bạn", minutes: 1, done: false }
+      : path.current && path.plan
+        ? {
+            title: `Lộ trình nói: ${path.current.title}`,
+            detail:
+              path.plan.tasks.length > 0
+                ? `Chặng ${path.stages.indexOf(path.current) + 1}/${path.stages.length} · ${path.plan.tasks.length} phần hôm nay`
+                : "Xong phần hôm nay, phần tiếp theo vào ngày mai",
+            minutes: path.plan.tasks.length > 0 ? path.plan.minutes : 0,
+            done: path.plan.tasks.length === 0,
+          }
+        : null;
   const tasks = buildTodayTasks({
+    speaking,
     minutes: chosenDailyMinutes(streakStats.dailyGoal),
     vocab: {
       reviews: todayWork.reviews,
@@ -211,7 +234,15 @@ export default function TodayTab({
   });
 
   const run = (task: TodayTask) => {
-    if (task.id === "vocab") onStart();
+    if (task.id === "speaking") {
+      // With a goal chosen, the day's work starts at once; without one the tab asks for it first
+      try {
+        if (path.road.goal !== null && path.plan && path.plan.tasks.length > 0) sessionStorage.setItem(AUTOSTART_KEY, "1");
+      } catch {
+        /* the learner presses the button in the tab instead */
+      }
+      setActiveTab("patterns");
+    } else if (task.id === "vocab") onStart();
     else if (task.id === "reflex") {
       if (onStartReflex) onStartReflex();
       else setActiveTab("leaderboard");
@@ -295,6 +326,12 @@ export default function TodayTab({
         */}
         <div className={twoColumns ? "grid gap-4 items-start min-[1000px]:grid-cols-[minmax(0,1fr)_320px] min-[1000px]:grid-rows-[auto_1fr]" : "max-w-3xl mx-auto space-y-4"}>
           <div className="min-w-0 space-y-4">
+            {/* The learner's levels, with the way to change them */}
+            {!loading && <StudyLevelBar />}
+
+            {/* The path to speaking: where the learner is on it, and today's work in one button */}
+            {!loading && <RoadmapTodayCard setActiveTab={setActiveTab} showStart={empty} />}
+
             {/* The one thing to do now */}
             {loading ? (
               <div className="h-40 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900/60 animate-pulse" />

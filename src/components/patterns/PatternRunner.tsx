@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Check, Eraser, Keyboard, Send, Volume2, X } from "lucide-react";
+import { ArrowLeft, Check, Eraser, Keyboard, Mic, Send, Volume2, X } from "lucide-react";
 import type { Pattern } from "@/types/pattern";
 import { fillPattern } from "@/types/pattern";
 import { handleSpeak } from "@/components/review/speech";
@@ -10,6 +10,8 @@ import { applySession, type SessionKind, type Task, type TaskResult } from "@/se
 import { STEP_LABELS } from "@/services/patterns/progress";
 import MicButton from "@/components/talk/MicButton";
 import { useMic } from "@/components/talk/useMic";
+import { useKeepVisible } from "./useKeepVisible";
+import { IpaLine, IpaToggle } from "./Ipa";
 
 /** How long a rapid-fire answer may take: speaking is quick, typing is slower */
 const WINDOW_SAY_MS = 8000;
@@ -79,6 +81,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
               <div className="min-w-0">
                 <p className="text-[15px] font-semibold text-slate-900 dark:text-white">{f.en}</p>
                 <p className="text-xs text-slate-500 dark:text-zinc-400">{f.vi}</p>
+                <IpaLine ipa={s.ipa} />
               </div>
             </div>
           );
@@ -89,6 +92,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
             <div className="min-w-0">
               <p className="text-[15px] text-slate-900 dark:text-white">{e.en}</p>
               <p className="text-xs text-slate-500 dark:text-zinc-400">{e.vi}</p>
+              <IpaLine ipa={e.ipa} />
             </div>
           </div>
         ))}
@@ -161,6 +165,7 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
           <p className="text-sm text-emerald-700 dark:text-emerald-300 inline-flex items-center gap-2">
             <Check className="w-4 h-4" /> {item.full} <Speaker text={item.full} />
           </p>
+          <IpaLine ipa={item.answer.ipa} />
           <button onClick={() => onNext({ ok: wrong.size === 0 })} className={BTN_PRIMARY}>
             Tiếp theo
           </button>
@@ -247,6 +252,7 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
           <p className="text-sm text-emerald-700 dark:text-emerald-300 inline-flex items-center gap-2">
             <Check className="w-4 h-4" /> {item.en} <Speaker text={item.en} />
           </p>
+          <IpaLine ipa={item.ipa} />
           <button onClick={() => onNext({ ok: fails === 0 })} className={BTN_PRIMARY}>
             Tiếp theo
           </button>
@@ -260,13 +266,18 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
 function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; onNext: (o: Outcome) => void }) {
   const { item, pattern } = task;
   const canSpeak = asrAvailable();
-  const windowMs = canSpeak ? WINDOW_SAY_MS : WINDOW_TYPE_MS;
+  // The learner answers by voice or on the keyboard, and may switch at any moment; typing gets more time
+  const [mode, setMode] = useState<"say" | "type">(canSpeak ? "say" : "type");
+  const modeRef = useRef(mode);
+  modeRef.current = mode;
+  const windowFor = () => (modeRef.current === "type" ? WINDOW_TYPE_MS : WINDOW_SAY_MS);
   const mic = useMic();
   const line = useMemo(() => lineOfSlot(pattern, item.slot), [pattern, item.slot]);
   const [typed, setTyped] = useState("");
   const [state, setState] = useState<"asking" | "answering" | "done">("asking");
   const [verdict, setVerdict] = useState<{ ok: boolean; ms: number; message: string } | null>(null);
   const [elapsed, setElapsed] = useState(0);
+  const { area, input } = useKeepVisible<HTMLDivElement, HTMLInputElement>();
   const readyAt = useRef(0);
   const settled = useRef(false);
 
@@ -274,7 +285,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
     if (settled.current) return;
     settled.current = true;
     mic.cancel();
-    const ms = Math.min(windowMs, Date.now() - readyAt.current);
+    const ms = Math.min(windowFor(), Date.now() - readyAt.current);
     setVerdict({ ok, ms, message });
     setState("done");
     handleSpeak(item.en);
@@ -299,7 +310,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
     const tick = window.setInterval(() => {
       const e = Date.now() - readyAt.current;
       setElapsed(e);
-      if (e >= windowMs) settle(false, "Hết giờ rồi. Xem câu đúng bên dưới và nói lại nhé.");
+      if (e >= windowFor()) settle(false, "Hết giờ rồi. Xem câu đúng bên dưới và nói lại nhé.");
     }, 100);
     return () => window.clearInterval(tick);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -314,17 +325,26 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
         if (v.kind === "ok") settle(true, "Đúng rồi!");
         else if (!settled.current) settle(false, v.message);
       },
-      windowMs
+      WINDOW_SAY_MS
     );
+
+  const switchTo = (next: "say" | "type") => {
+    if (next === mode || state !== "answering") return;
+    setMode(next);
+    modeRef.current = next;
+    if (next === "type") mic.cancel();
+    else void say();
+  };
 
   const submitTyped = () => {
     if (matchTyped(typed, [line])) settle(true, "Đúng rồi!");
     else settle(false, "Chưa đúng. Xem câu đúng bên dưới.");
   };
 
-  const left = Math.max(0, 1 - elapsed / windowMs);
+  const left = Math.max(0, 1 - elapsed / windowFor());
   return (
-    <div className="space-y-3">
+    // The bottom padding leaves room to scroll the box above the keyboard
+    <div ref={area} className="space-y-3 pb-[45vh]">
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Người ấy hỏi:</p>
         <p className="text-lg font-bold text-slate-900 dark:text-white inline-flex items-center gap-2">
@@ -342,7 +362,23 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
       {state === "asking" && <p className="text-sm text-slate-500 dark:text-zinc-400">Nghe câu hỏi…</p>}
       {state === "answering" && (
         <>
-          {canSpeak ? (
+          {canSpeak && (
+            <div className="flex gap-1.5" role="group" aria-label="Cách trả lời">
+              {(["say", "type"] as const).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => switchTo(m)}
+                  aria-pressed={mode === m}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1.5 border ${
+                    mode === m ? "bg-violet-600 border-violet-600 text-white" : "border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300"
+                  }`}
+                >
+                  {m === "say" ? <Mic className="w-3.5 h-3.5" /> : <Keyboard className="w-3.5 h-3.5" />} {m === "say" ? "Nói" : "Gõ (thêm thời gian)"}
+                </button>
+              ))}
+            </div>
+          )}
+          {mode === "say" ? (
             <>
               <MicButton mic={mic} onStart={() => void say()} idleLabel="Bấm để nói" />
               {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem}</p>}
@@ -356,6 +392,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
               }}
             >
               <input
+                ref={input}
                 autoFocus
                 value={typed}
                 onChange={(e) => setTyped(e.target.value)}
@@ -389,6 +426,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
             <p className="font-semibold inline-flex items-center gap-2">
               {item.en} <Speaker text={item.en} />
             </p>
+            <IpaLine ipa={item.slot.ipa} />
           </div>
           <button onClick={() => onNext({ ok: verdict.ok, ms: verdict.ms })} className={BTN_PRIMARY}>
             Tiếp theo
@@ -407,6 +445,7 @@ export default function PatternRunner({
   step,
   tasks,
   onExit,
+  onDone,
 }: {
   title: string;
   kind: SessionKind;
@@ -416,6 +455,8 @@ export default function PatternRunner({
   step: number;
   tasks: Task[];
   onExit: () => void;
+  /** After the last task, when the learner taps "Xong": for a sitting that is one part of a longer session (otherwise `onExit`) */
+  onDone?: (passed: boolean) => void;
 }) {
   const [index, setIndex] = useState(0);
   const [results, setResults] = useState<TaskResult[]>([]);
@@ -446,6 +487,7 @@ export default function PatternRunner({
             {passed === null && tasks.length > 1 ? ` · ${index + 1}/${tasks.length}` : ""}
           </p>
         </div>
+        <IpaToggle />
       </div>
 
       {passed !== null ? (
@@ -466,8 +508,8 @@ export default function PatternRunner({
             {kind === "ladder" && passed && step < 4 && <p className="text-sm text-slate-700 dark:text-zinc-300">Bước tiếp theo sẽ đến vào ngày mai (hoặc bạn học tiếp ngay).</p>}
             {kind === "ladder" && passed && step >= 4 && <p className="text-sm text-slate-700 dark:text-zinc-300">Bạn đã thuộc mẫu này. App sẽ hỏi lại sau vài ngày để bạn nhớ lâu.</p>}
           </div>
-          <button onClick={onExit} className={BTN_PRIMARY}>
-            Xong
+          <button onClick={() => (onDone ? onDone(passed === true) : onExit())} className={BTN_PRIMARY}>
+            {onDone ? "Tiếp tục" : "Xong"}
           </button>
         </div>
       ) : (

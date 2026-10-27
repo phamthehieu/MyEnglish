@@ -27,7 +27,7 @@ export function chosenDailyMinutes(dailyGoal: number): DailyMinutes {
 
 // ─── Today's list ────────────────────────────────────────────────────────────
 
-export type TodayTaskId = "vocab" | "grammar" | "pronunciation" | "reflex";
+export type TodayTaskId = "speaking" | "vocab" | "grammar" | "pronunciation" | "reflex";
 
 export interface TodayTask {
   id: TodayTaskId;
@@ -60,6 +60,8 @@ export interface TodayTaskInput {
   pronunciation: { doneToday: boolean; lessonTitle: string | null } | null;
   /** null or undefined: reflex challenge not displayed as a task */
   reflex?: { doneToday: boolean } | null;
+  /** The day's work on the speaking path ("Lộ trình nói"): the spine of the list, first on it; null or undefined: no path */
+  speaking?: { title: string; detail: string; minutes: number; done: boolean } | null;
 }
 
 export const GRAMMAR_TASK_MINUTES = 5;
@@ -70,8 +72,8 @@ export function vocabDetail(reviews: number, newToday: number): string {
 }
 
 /**
- * Words first (the core of the day), then one grammar lesson (when a book is imported and there is something
- * to do or it was done today), then one pronunciation lesson. A 5-minute plan keeps 2 things, longer plans 3.
+ * Words first (the core of the day), then one grammar lesson (when there is something to do or it was done today;
+ * a new lesson of the book only when the learner is not on the speaking path), then one pronunciation lesson. A 5-minute plan keeps 2 things, longer plans 3.
  */
 export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
   const v = input.vocab;
@@ -86,7 +88,10 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
   ];
   const extras: TodayTask[] = [];
   const g = input.grammar;
-  if (g && (g.studiedToday || g.due > 0 || g.relearnTitle || g.nextTitle)) {
+  // A learner on the speaking path gets the grammar of each stage inside it, so a new lesson of the book (in the book's
+  // order, often far from what they are saying) is not pushed on them: only reviews, a lesson to redo, or one done today
+  const newLesson = input.speaking ? null : g?.nextTitle;
+  if (g && (g.studiedToday || g.due > 0 || g.relearnTitle || newLesson)) {
     extras.push({
       id: "grammar",
       title: g.studiedToday
@@ -102,7 +107,7 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
           ? `${g.due} bài đến hạn ôn, hôm nay làm 1 bài là đủ`
           : g.due === 1
             ? "1 bài đến hạn ôn, vài phút là xong"
-            : (g.relearnTitle ?? g.nextTitle ?? ""),
+            : (g.relearnTitle ?? newLesson ?? ""),
       minutes: GRAMMAR_TASK_MINUTES,
       done: g.studiedToday,
     });
@@ -128,7 +133,9 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
     });
   }
   const maxExtras = input.minutes >= 10 ? (r ? 3 : 2) : (r ? 2 : 1);
-  return [...tasks, ...extras.slice(0, maxExtras)];
+  // The speaking path comes first: everything else is around it
+  const spine: TodayTask[] = input.speaking ? [{ id: "speaking", ...input.speaking }] : [];
+  return [...spine, ...tasks, ...extras.slice(0, maxExtras)];
 }
 
 /** The main button: the first thing not done yet (null = everything done) */
@@ -138,6 +145,7 @@ export function primaryTask(tasks: readonly TodayTask[]): TodayTask | null {
 
 /** The tab each thing opens (words start a session instead) */
 export const TASK_TAB: Record<Exclude<TodayTaskId, "vocab">, DashboardTab> = {
+  speaking: "patterns",
   grammar: "grammar",
   pronunciation: "pronunciation",
   reflex: "leaderboard",

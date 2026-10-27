@@ -43,6 +43,8 @@ export interface TilesItem {
   vi: string;
   /** The right sentence */
   en: string;
+  /** How it is pronounced */
+  ipa?: string;
   tiles: Tile[];
 }
 
@@ -61,7 +63,7 @@ export function buildTilesItem(pattern: Pattern, slot: PatternSlot, random: () =
   ];
   const decoys = shuffled(pool, random).slice(0, 2);
   const tiles = shuffled([...words, ...decoys], random).map((text, i) => ({ id: `t${i}`, text }));
-  return { vi: filled.vi, en: filled.en, tiles };
+  return { vi: filled.vi, en: filled.en, ipa: slot.ipa, tiles };
 }
 
 /** Do the chosen tiles spell the sentence? (case and punctuation do not count) */

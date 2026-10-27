@@ -197,12 +197,12 @@ export default function Sidebar({
   const groupLook: Record<NavGroupId, { icon: typeof BookOpen; iconClass?: string; badge?: ReactNode }> = {
     today: { icon: Sunrise, iconClass: "text-amber-500" },
     vocab: { icon: BookOpen, iconClass: "text-orange-400", badge: countBadge(dueCount, true) },
-    patterns: { icon: Layers, iconClass: "text-emerald-500" },
+    // Grammar lives here: its due lessons show on the entry
+    patterns: { icon: Layers, iconClass: "text-emerald-500", badge: countBadge(grammarDueCount, true) },
     talk: { icon: MessageCircle, iconClass: "text-emerald-500" },
     pronunciation: { icon: AudioLines, iconClass: "text-violet-500" },
     shadowing: { icon: Clapperboard, iconClass: "text-violet-500" },
-    // Grammar lives here now: its due lessons show on the entry
-    practice: { icon: Dumbbell, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
+    practice: { icon: Dumbbell, iconClass: "text-cyan-500" },
     quick: { icon: Zap, iconClass: "text-amber-500" },
     settings: { icon: Terminal, iconClass: "text-cyan-500" },
     account: { icon: UserRound },
@@ -220,6 +220,29 @@ export default function Sidebar({
           };
         })
       : navItems.map((item) => ({ ...item, key: item.tab, active: activeTab === item.tab, onClick: () => setActiveTab(item.tab) }));
+
+  // While a text box has the focus the keyboard covers the bottom of the screen: the tab bar steps aside to leave room
+  const [typing, setTyping] = useState(false);
+  useEffect(() => {
+    let timer: number | undefined;
+    const isBox = (t: EventTarget | null) => t instanceof HTMLTextAreaElement || (t instanceof HTMLInputElement && !["checkbox", "radio", "button", "submit", "range"].includes(t.type));
+    const onIn = (e: FocusEvent) => {
+      window.clearTimeout(timer);
+      if (isBox(e.target)) setTyping(true);
+    };
+    // A short wait: moving from one box to the next must not bring the bar back for a moment
+    const onOut = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setTyping(false), 150);
+    };
+    document.addEventListener("focusin", onIn);
+    document.addEventListener("focusout", onOut);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("focusin", onIn);
+      document.removeEventListener("focusout", onOut);
+    };
+  }, []);
 
   // Bottom tab bar on phones: the simple mode's entries without "Luyện thêm" and "Cài đặt", which stay in the ☰ menu
   const BOTTOM_HIDDEN: NavGroupId[] = ["account", "quick", "practice", "settings"];
@@ -621,7 +644,7 @@ export default function Sidebar({
     {/* Phones: bottom tab bar */}
     <nav
       aria-label="Điều hướng chính"
-      className="md:hidden fixed bottom-0 inset-x-0 z-30 flex border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 pb-[env(safe-area-inset-bottom)] select-none"
+      className={`md:hidden fixed bottom-0 inset-x-0 z-30 ${typing ? "hidden" : "flex"} border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 pb-[env(safe-area-inset-bottom)] select-none`}
     >
       {bottomItems.map((item) => {
         const Icon = item.icon;

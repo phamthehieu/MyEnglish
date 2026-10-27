@@ -9,11 +9,14 @@ export interface PatternSlot {
   en: string;
   /** The Vietnamese that fits the blank of frame_vi */
   vi: string;
+  /** How the whole sentence made with this slot is pronounced, "/maɪ neɪm ɪz ˈænə/" (scripts/add-pattern-ipa.mjs) */
+  ipa?: string;
 }
 
 export interface PatternExample {
   en: string;
   vi: string;
+  ipa?: string;
 }
 
 export interface PatternAsk {

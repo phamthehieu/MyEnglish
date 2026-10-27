@@ -1460,7 +1460,15 @@ export default function MainDashboard({
 
         {/* TALK: scripted conversations for everyday situations */}
         {activeTab === "talk" && <TalkTab resetKey={tabResetKey} />}
-        {activeTab === "patterns" && <PatternsTab resetKey={tabResetKey} />}
+        {activeTab === "patterns" && (
+          <PatternsTab
+            resetKey={tabResetKey}
+            onOpenGrammarLesson={(id) => {
+              setGrammarLessonToOpen(id);
+              setActiveTab("grammar");
+            }}
+          />
+        )}
 
         {/* TAB 6: GRAMMAR HUB (A1 - C1 ROADMAP & DIAGNOSTIC PRACTICE) */}
         {activeTab === "grammar" && <GrammarHub key={grammarLessonToOpen ?? "hub"} initialLessonId={grammarLessonToOpen} resetKey={tabResetKey} />}

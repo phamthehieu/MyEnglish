@@ -52,6 +52,17 @@ describe("pattern validation", () => {
   });
 });
 
+describe("pronunciation of the patterns that come with the app", () => {
+  it("every slot sentence and every example has its IPA (run scripts/add-pattern-ipa.mjs after importing patterns)", async () => {
+    const { PATTERNS } = await import("@/data/patterns");
+    expect(PATTERNS.length).toBeGreaterThan(0);
+    for (const p of PATTERNS) {
+      for (const s of p.slots) expect(s.ipa, `${p.id} / ${s.en}`).toMatch(/^\/.+\/$/);
+      for (const e of p.examples) expect(e.ipa, `${p.id} / ${e.en}`).toMatch(/^\/.+\/$/);
+    }
+  });
+});
+
 describe("exercise builders", () => {
   it("substitution has the right answer among three different options", () => {
     const item = buildSubstitution(pattern, pattern.slots[0]);

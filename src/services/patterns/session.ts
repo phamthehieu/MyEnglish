@@ -46,6 +46,13 @@ export function sessionPassed(tasks: readonly Task[], results: readonly TaskResu
   return true;
 }
 
+/** Save a round of "Dịch câu": a mastered pattern goes through its review schedule, and the round counts as activity of the day */
+export function applyTranslate(results: ReadonlyArray<{ patternId: string; ok: boolean }>): void {
+  const states = allPatternStates();
+  for (const r of results) if ((states[r.patternId]?.step ?? 0) >= STEPS) recordReview(r.patternId, r.ok);
+  recordDailyActivity(Math.max(1, results.length));
+}
+
 /**
  * Save what happened. A ladder sitting moves its pattern up one step when passed; a rapid mix records the times and
  * sends the mastered patterns through their review schedule. Both count as activity of the day.
