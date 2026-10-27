@@ -8,14 +8,14 @@
 #   scripts/release-all.sh v1.0.0
 #
 # Prerequisites:
-#   • gh auth login (account with push access to dev-truonglx/MyEnglish)
+#   • gh auth login (account with push access to phamthehieu/MyEnglish)
 #   • Docker Desktop running
 #   • Updater key at ~/.tauri/myenglish-updater.key
 # ──────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-RELEASES_REPO="dev-truonglx/MyEnglish"
+RELEASES_REPO="phamthehieu/MyEnglish"
 TAG="${1:?usage: scripts/release-all.sh vX.Y.Z}"
 VERSION="${TAG#v}"
 KEYFILE="$HOME/.tauri/myenglish-updater.key"

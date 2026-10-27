@@ -4,7 +4,7 @@ import { relaunch } from "@tauri-apps/plugin-process";
 import { invoke } from "@tauri-apps/api/core";
 import { isMobilePlatform } from "@/lib/platform";
 
-export const GITHUB_REPO = "dev-truonglx/MyEnglish";
+export const GITHUB_REPO = "phamthehieu/MyEnglish";
 
 // Read dynamically injected version from build configuration
 export const CURRENT_VERSION: string =

@@ -21,7 +21,7 @@ for a in "$@"; do
   esac
 done
 
-REPO="${REPO_ARG:-${RELEASES_REPO:-dev-truonglx/MyEnglish}}"
+REPO="${REPO_ARG:-${RELEASES_REPO:-phamthehieu/MyEnglish}}"
 if [ -z "${GITHUB_TOKEN:-}" ] && command -v gh >/dev/null 2>&1; then
   export GITHUB_TOKEN="$(gh auth token 2>/dev/null || true)"
 fi

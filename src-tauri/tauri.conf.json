@@ -76,9 +76,9 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDIxMjE1MURGNUE3OEY0NzAKUldSdzlIaGEzMUVoSVUxSGxic3pZMDEyNzRpajJqQ0JSYkZPbHdJSHFVS2hhMGViOGl0RHlhUUMK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDlDNDYzMkNFMEY5MTIzNzEKUldSeEk1RVB6akpHbkdIa3VYUC9RU1JsY001d1NNTWltZVJXdDRFNy9yTmh0NW9pekRtZ0pnMWYK",
       "endpoints": [
-        "https://github.com/dev-truonglx/MyEnglish/releases/latest/download/latest.json"
+        "https://github.com/phamthehieu/MyEnglish/releases/latest/download/latest.json"
       ]
     }
   }
