@@ -5,7 +5,7 @@ import fs from "node:fs";
 const catalog = JSON.parse(fs.readFileSync(new URL("../src/data/grammarCatalog.json", import.meta.url), "utf8"));
 const lessonIds = new Set(catalog.files.flatMap((f) => (f.lessons ?? []).map((l) => l.id)));
 const stages = new Set(
-  ["a1", "a2"].flatMap((lv) => JSON.parse(fs.readFileSync(new URL(`../src/data/patterns/${lv}.json`, import.meta.url), "utf8")).map((p) => p.topic))
+  ["a1", "a2", "b1"].flatMap((lv) => JSON.parse(fs.readFileSync(new URL(`../src/data/patterns/${lv}.json`, import.meta.url), "utf8")).map((p) => p.topic))
 );
 
 const problems = [];

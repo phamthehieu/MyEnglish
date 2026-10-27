@@ -53,10 +53,11 @@ describe("stages", () => {
 
   it("starts at the learner's lowest level, or at the highest there is when that level has no sentences", () => {
     const levelsOf = (from?: string) => [...new Set(buildPathStages(PATTERNS, "all", from).map((s) => s.level))];
-    expect(levelsOf("A1")).toEqual(["A1", "A2"]);
-    expect(levelsOf("A2")).toEqual(["A2"]);
-    expect(levelsOf("C1")).toEqual(["A2"]);
-    expect(levelsOf()).toEqual(["A1", "A2"]);
+    expect(levelsOf("A1")).toEqual(["A1", "A2", "B1"]);
+    expect(levelsOf("A2")).toEqual(["A2", "B1"]);
+    expect(levelsOf("B1")).toEqual(["B1"]);
+    expect(levelsOf("C1")).toEqual(["B1"]);
+    expect(levelsOf()).toEqual(["A1", "A2", "B1"]);
   });
 
   it("estimates how long the path takes from the minutes of a day", () => {

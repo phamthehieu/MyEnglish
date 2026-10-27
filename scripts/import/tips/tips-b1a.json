@@ -1,0 +1,254 @@
+[
+  {
+    "stage": "b1-past-stories",
+    "title": "Quá khứ tiếp diễn + quá khứ đơn: kể chuyện",
+    "points": [
+      "Việc đang diễn ra dùng was/were + động từ thêm -ing: I was walking home.",
+      "Việc xen vào giữa chừng dùng quá khứ đơn: ... when the rain started.",
+      "While đi với việc kéo dài (was/were + -ing). When thường đi với việc ngắn, xảy ra bất ngờ.",
+      "Việc xảy ra trước lúc nhận ra dùng had + quá khứ phân từ: I had left my keys at home."
+    ],
+    "examples": [
+      { "en": "I was cooking dinner when the power went out.", "vi": "Tôi đang nấu bữa tối thì mất điện." },
+      { "en": "While I was waiting for the bus, my phone died.", "vi": "Trong lúc tôi đang đợi xe buýt thì điện thoại hết pin." },
+      { "en": "Suddenly I realized I had left my wallet at home.", "vi": "Bỗng nhiên tôi nhận ra mình đã để quên ví ở nhà." }
+    ],
+    "mistake": {
+      "wrong": "I was cook when he called.",
+      "right": "I was cooking when he called.",
+      "why": "Tiếng Việt không đổi dạng động từ, nhưng sau was/were phải dùng động từ thêm -ing."
+    },
+    "lessons": ["ch01-l05", "ch01-l06", "ch01-l07"]
+  },
+  {
+    "stage": "b1-used-to",
+    "title": "Used to và be/get used to: hai nghĩa khác nhau",
+    "points": [
+      "Used to + động từ nguyên mẫu: thói quen cũ, bây giờ không còn. I used to play football.",
+      "Câu phủ định và câu hỏi bỏ d: I didn't use to like fish.",
+      "Be used to + danh từ hoặc -ing nghĩa là quen với: I'm not used to getting up early.",
+      "Get used to + danh từ hoặc -ing nói về quá trình đang quen dần."
+    ],
+    "examples": [
+      { "en": "I used to play football every day as a kid.", "vi": "Hồi nhỏ ngày nào tôi cũng chơi bóng đá." },
+      { "en": "I'm not used to getting up early yet.", "vi": "Tôi vẫn chưa quen với việc dậy sớm." },
+      { "en": "I'm slowly getting used to the weather here.", "vi": "Tôi đang dần quen với thời tiết ở đây." }
+    ],
+    "mistake": {
+      "wrong": "I'm not used to wake up early.",
+      "right": "I'm not used to waking up early.",
+      "why": "Be used to (quen với) đi với danh từ hoặc -ing. Used to + nguyên mẫu mới là thói quen cũ."
+    },
+    "lessons": ["ch20-l14"]
+  },
+  {
+    "stage": "b1-life-changes",
+    "title": "Hiện tại hoàn thành với for và since",
+    "points": [
+      "Việc bắt đầu trong quá khứ và còn liên quan đến bây giờ dùng have/has + quá khứ phân từ.",
+      "For + khoảng thời gian (for a few months). Since + mốc thời gian (since 2020, since March).",
+      "Việc vẫn đang tiếp tục có thể dùng have been + -ing: I've been learning English.",
+      "Have just + quá khứ phân từ nói việc vừa mới xảy ra."
+    ],
+    "examples": [
+      { "en": "I've been learning English for a few months.", "vi": "Tôi học tiếng Anh được vài tháng rồi." },
+      { "en": "I've lived here since 2020.", "vi": "Tôi sống ở đây từ năm 2020." },
+      { "en": "Life has changed a lot since I moved to Hanoi.", "vi": "Cuộc sống đã thay đổi rất nhiều từ khi tôi chuyển ra Hà Nội." }
+    ],
+    "mistake": {
+      "wrong": "I live here since 2020.",
+      "right": "I have lived here since 2020.",
+      "why": "Việc kéo dài từ quá khứ đến nay phải dùng hiện tại hoàn thành, không dùng hiện tại đơn với since."
+    },
+    "lessons": ["ch01-l03", "ch01-l04"]
+  },
+  {
+    "stage": "b1-advice",
+    "title": "Cho lời khuyên: if I were you, had better, why don't you",
+    "points": [
+      "If I were you, I'd + động từ nguyên mẫu. Luôn dùng were, kể cả với I.",
+      "You'd better + động từ nguyên mẫu (không có to): khuyên mạnh, nếu không làm có thể gặp rắc rối.",
+      "Why don't you + động từ nguyên mẫu: lời khuyên thân thiện, nhẹ nhàng.",
+      "It might help to + động từ nguyên mẫu: lời khuyên mềm, không ép người nghe."
+    ],
+    "examples": [
+      { "en": "If I were you, I'd talk to your boss.", "vi": "Nếu tôi là bạn, tôi sẽ nói chuyện với sếp." },
+      { "en": "You'd better leave now, or you'll miss the train.", "vi": "Bạn nên đi ngay, không thì sẽ lỡ chuyến tàu." },
+      { "en": "Why don't you try a different approach?", "vi": "Sao bạn không thử một cách tiếp cận khác?" }
+    ],
+    "mistake": {
+      "wrong": "You'd better to go to the doctor.",
+      "right": "You'd better go to the doctor.",
+      "why": "Sau had better dùng động từ nguyên mẫu không to."
+    },
+    "lessons": ["ch03-l01", "ch20-l18"]
+  },
+  {
+    "stage": "b1-suggestions",
+    "title": "Đề xuất: could, shall we, suggest, what if",
+    "points": [
+      "We could + động từ nguyên mẫu: đưa ra một lựa chọn khác. Instead đứng cuối câu nghĩa là thay vì cách vừa nói.",
+      "Shall we + động từ nguyên mẫu: rủ ai cùng làm gì. Shall chỉ dùng với I và we.",
+      "I suggest we + động từ nguyên mẫu: hơi trang trọng, hợp khi họp hoặc bàn công việc.",
+      "What if we + quá khứ đơn hoặc hiện tại đơn? Dùng để thử một ý mới khi thương lượng."
+    ],
+    "examples": [
+      { "en": "We could take the train instead.", "vi": "Thay vào đó chúng ta có thể đi tàu." },
+      { "en": "Shall we start at nine?", "vi": "Mình bắt đầu lúc chín giờ nhé?" },
+      { "en": "I suggest we ask the manager first.", "vi": "Tôi đề nghị chúng ta hỏi quản lý trước." }
+    ],
+    "mistake": {
+      "wrong": "I suggest to go by taxi.",
+      "right": "I suggest we go by taxi.",
+      "why": "Suggest không đi với to + động từ. Dùng suggest + we + động từ, hoặc suggest + -ing."
+    },
+    "lessons": ["ch20-l17"]
+  },
+  {
+    "stage": "b1-preferences",
+    "title": "Would rather + động từ: nói điều bạn thích hơn",
+    "points": [
+      "I'd rather + động từ nguyên mẫu không to: nói bạn thích làm việc nào hơn.",
+      "Phủ định là I'd rather not. Muốn so sánh thì thêm than: I'd rather walk than drive.",
+      "It depends on + danh từ: chưa trả lời chắc được vì còn phụ thuộc vào điều khác.",
+      "I'd go for + danh từ: tôi sẽ chọn cái đó. I'm more of a ___ person: nói về tính cách, sở thích."
+    ],
+    "examples": [
+      { "en": "I'd rather stay at home tonight.", "vi": "Tối nay tôi muốn ở nhà hơn." },
+      { "en": "It depends on the weather.", "vi": "Còn tùy vào thời tiết." },
+      { "en": "I'm more of a coffee person.", "vi": "Tôi là kiểu người thích cà phê hơn." }
+    ],
+    "mistake": {
+      "wrong": "I'd rather to stay at home.",
+      "right": "I'd rather stay at home.",
+      "why": "Sau would rather dùng động từ nguyên mẫu không to, giống các động từ khuyết thiếu."
+    },
+    "lessons": ["ch20-l15"]
+  },
+  {
+    "stage": "b1-job-interview",
+    "title": "Sau giới từ dùng -ing: good at, experience in",
+    "points": [
+      "Be good at + danh từ hoặc -ing: nói điểm mạnh. I'm good at solving problems.",
+      "Have experience in + danh từ chỉ lĩnh vực. Không cần chia thì sau in.",
+      "My biggest strength is + danh từ hoặc -ing, rồi nói thêm một ví dụ ngắn cho thuyết phục.",
+      "I'd like to + động từ nguyên mẫu: cách nói lịch sự về mong muốn, hợp để trả lời về mục tiêu."
+    ],
+    "examples": [
+      { "en": "I'm good at solving problems under pressure.", "vi": "Tôi giỏi giải quyết vấn đề khi bị áp lực." },
+      { "en": "I have experience in customer service.", "vi": "Tôi có kinh nghiệm trong lĩnh vực chăm sóc khách hàng." },
+      { "en": "In five years, I'd like to lead a small team.", "vi": "Trong năm năm tới, tôi muốn dẫn dắt một nhóm nhỏ." }
+    ],
+    "mistake": {
+      "wrong": "I'm good at solve problems.",
+      "right": "I'm good at solving problems.",
+      "why": "Sau giới từ (at, in, about) dùng danh từ hoặc -ing, không dùng động từ nguyên mẫu."
+    },
+    "lessons": ["ch22-l19", "ch20-l16"]
+  },
+  {
+    "stage": "b1-meetings",
+    "title": "Câu lịch sự khi họp: could you, can we, I'd like to",
+    "points": [
+      "Let's move on to + danh từ: chuyển sang mục tiếp theo. Sau to là danh từ, thường có the.",
+      "Could you + động từ nguyên mẫu: lịch sự hơn can you. Clarify nghĩa là làm rõ.",
+      "I'd like to add + danh từ: chen ý vào một cách nhã nhặn.",
+      "Agree on + danh từ hoặc cụm như who does what: cả nhóm cùng chốt một việc."
+    ],
+    "examples": [
+      { "en": "Let's move on to the budget.", "vi": "Chúng ta chuyển sang phần ngân sách nhé." },
+      { "en": "Could you clarify what you mean by phase two?", "vi": "Bạn có thể làm rõ ý của bạn về giai đoạn hai không?" },
+      { "en": "Can we agree on a deadline today?", "vi": "Hôm nay chúng ta chốt hạn chót được không?" }
+    ],
+    "mistake": {
+      "wrong": "Could you to clarify this point?",
+      "right": "Could you clarify this point?",
+      "why": "Sau could/can dùng động từ nguyên mẫu không to."
+    },
+    "lessons": ["ch20-l16"]
+  },
+  {
+    "stage": "b1-presentations",
+    "title": "Mở bài, chuyển ý và kết bài khi thuyết trình",
+    "points": [
+      "Today I'll talk about + danh từ hoặc how to + động từ: báo trước chủ đề bằng I'll.",
+      "Let me start with + danh từ (a story, a question) để mở đầu.",
+      "As you can see, + câu đầy đủ: dùng khi chỉ vào biểu đồ hoặc hình. Nói ở hiện tại hoặc quá khứ đơn.",
+      "To sum up, + câu đầy đủ: nhắc lại ý chính ở phần kết, nói ngắn và rõ."
+    ],
+    "examples": [
+      { "en": "Today I'll talk about how to save energy at home.", "vi": "Hôm nay tôi sẽ nói về cách tiết kiệm điện ở nhà." },
+      { "en": "As you can see, sales went up in March.", "vi": "Như các bạn thấy, doanh số đã tăng vào tháng Ba." },
+      { "en": "To sum up, we need more time and a bigger budget.", "vi": "Tóm lại, chúng ta cần thêm thời gian và ngân sách lớn hơn." }
+    ],
+    "mistake": {
+      "wrong": "Today I'll talk about to reduce waste.",
+      "right": "Today I'll talk about how to reduce waste.",
+      "why": "Sau about cần danh từ hoặc how to + động từ, không đặt to + động từ ngay sau about."
+    },
+    "lessons": ["ch01-l09"]
+  },
+  {
+    "stage": "b1-reports-updates",
+    "title": "Hiện tại hoàn thành và I'll: báo cáo tiến độ",
+    "points": [
+      "Have been + -ing: việc bắt đầu trước đây và vẫn đang làm. I've been working on the website.",
+      "Have/has + quá khứ phân từ với already: việc đã xong, kết quả còn dùng được bây giờ.",
+      "We're running behind on + danh từ: đang trễ so với kế hoạch. Dùng hiện tại tiếp diễn vì tình trạng đang diễn ra.",
+      "I'll + động từ nguyên mẫu + by tomorrow: hứa gửi chậm nhất là ngày mai."
+    ],
+    "examples": [
+      { "en": "I've been working on the new website since Monday.", "vi": "Tôi làm trang web mới từ thứ Hai đến giờ." },
+      { "en": "We've already finished the first draft.", "vi": "Chúng tôi đã hoàn thành bản nháp đầu tiên rồi." },
+      { "en": "I'll send you the report by tomorrow.", "vi": "Tôi sẽ gửi báo cáo cho bạn chậm nhất là ngày mai." }
+    ],
+    "mistake": {
+      "wrong": "We have finish the design.",
+      "right": "We have finished the design.",
+      "why": "Have/has phải đi với quá khứ phân từ (finished), không dùng động từ nguyên mẫu."
+    },
+    "lessons": ["ch01-l03", "ch01-l04", "ch01-l09"]
+  },
+  {
+    "stage": "b1-deadlines",
+    "title": "Xin đổi thời hạn một cách lịch sự",
+    "points": [
+      "Would it be possible to + động từ nguyên mẫu: cách xin phép rất lịch sự khi muốn đổi kế hoạch.",
+      "I'm afraid I can't + động từ nguyên mẫu: báo tin không vui một cách nhẹ nhàng.",
+      "By Friday nghĩa là chậm nhất là thứ Sáu. Could we extend + danh từ: xin gia hạn.",
+      "I'll do my best to + động từ nguyên mẫu: hứa cố gắng nhưng chưa chắc chắn."
+    ],
+    "examples": [
+      { "en": "Would it be possible to move the meeting to Monday?", "vi": "Có thể dời cuộc họp sang thứ Hai được không?" },
+      { "en": "I'm afraid I can't finish the report by Friday.", "vi": "Tôi e là tôi không thể xong báo cáo trước thứ Sáu." },
+      { "en": "I'll do my best to send it earlier.", "vi": "Tôi sẽ cố gắng gửi sớm hơn." }
+    ],
+    "mistake": {
+      "wrong": "Would it be possible to extending the deadline?",
+      "right": "Would it be possible to extend the deadline?",
+      "why": "Sau to trong possible to dùng động từ nguyên mẫu, không thêm -ing."
+    },
+    "lessons": ["ch20-l17"]
+  },
+  {
+    "stage": "b1-customer-service",
+    "title": "Xin lỗi và phàn nàn: sorry for, complain about",
+    "points": [
+      "I'm sorry for + danh từ hoặc -ing: xin lỗi về điều đã xảy ra. Không dùng nguyên mẫu sau for.",
+      "I'd like to complain about + danh từ: phàn nàn nhưng vẫn nhã nhặn.",
+      "We'll look into + danh từ: nhân viên hứa sẽ xem xét, điều tra vấn đề.",
+      "I understand that + mệnh đề: cho khách thấy bạn thông cảm với họ."
+    ],
+    "examples": [
+      { "en": "I'm sorry for the delay.", "vi": "Tôi xin lỗi vì sự chậm trễ." },
+      { "en": "I'd like to complain about the slow service.", "vi": "Tôi muốn phàn nàn về việc phục vụ chậm." },
+      { "en": "We'll look into the problem right away.", "vi": "Chúng tôi sẽ xem xét vấn đề này ngay." }
+    ],
+    "mistake": {
+      "wrong": "I'd like to complain for the service.",
+      "right": "I'd like to complain about the service.",
+      "why": "Phàn nàn về điều gì dùng complain about, không dùng for."
+    },
+    "lessons": ["ch22-l19"]
+  }
+]

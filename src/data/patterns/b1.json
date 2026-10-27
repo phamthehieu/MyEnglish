@@ -1,0 +1,6612 @@
+[
+  {
+    "level": "B1",
+    "topic": "b1-past-stories",
+    "topic_vi": "Kể chuyện đã xảy ra",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I was ___ when it happened.",
+    "frame_vi": "Lúc chuyện đó xảy ra, tôi đang ___.",
+    "note_vi": "Was + động từ thêm ing (quá khứ tiếp diễn) nói việc đang diễn ra thì có chuyện khác xen vào, chia quá khứ đơn.",
+    "slots": [
+      {
+        "en": "walking home",
+        "vi": "đi bộ về nhà",
+        "ipa": "/aɪ wɑz ˈwɔkɪŋ hoʊm wɛn ɪt ˈhæpənd/"
+      },
+      {
+        "en": "driving to work",
+        "vi": "lái xe đi làm",
+        "ipa": "/aɪ wɑz ˈdraɪvɪŋ tu wɝk wɛn ɪt ˈhæpənd/"
+      },
+      {
+        "en": "cooking dinner",
+        "vi": "nấu bữa tối",
+        "ipa": "/aɪ wɑz ˈkʊkɪŋ ˈdɪnər wɛn ɪt ˈhæpənd/"
+      },
+      {
+        "en": "waiting for a bus",
+        "vi": "chờ xe buýt",
+        "ipa": "/aɪ wɑz ˈweɪtɪŋ fɔr ə bʌs wɛn ɪt ˈhæpənd/"
+      },
+      {
+        "en": "talking on the phone",
+        "vi": "nói chuyện điện thoại",
+        "ipa": "/aɪ wɑz ˈtɔkɪŋ ɑn ðə foʊn wɛn ɪt ˈhæpənd/"
+      },
+      {
+        "en": "having lunch",
+        "vi": "ăn trưa",
+        "ipa": "/aɪ wɑz ˈhævɪŋ lʌntʃ wɛn ɪt ˈhæpənd/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I was crossing the road when it happened.",
+        "vi": "Lúc chuyện đó xảy ra, tôi đang băng qua đường.",
+        "ipa": "/aɪ wɑz ˈkrɔsɪŋ ðə roʊd wɛn ɪt ˈhæpənd/"
+      },
+      {
+        "en": "I was sleeping when it happened.",
+        "vi": "Lúc chuyện đó xảy ra, tôi đang ngủ.",
+        "ipa": "/aɪ wɑz ˈslipɪŋ wɛn ɪt ˈhæpənd/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where were you when it happened?",
+        "vi": "Lúc chuyện đó xảy ra bạn đang ở đâu?"
+      },
+      {
+        "en": "What were you doing at the time?",
+        "vi": "Lúc đó bạn đang làm gì?"
+      }
+    ],
+    "id": "b1.was-doing-when-it-happened"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-past-stories",
+    "topic_vi": "Kể chuyện đã xảy ra",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "While I was ___, my phone died.",
+    "frame_vi": "Trong lúc tôi đang ___, điện thoại tôi hết pin.",
+    "note_vi": "While + was/were + động từ ing diễn tả việc kéo dài trong quá khứ. Sau dấu phẩy là việc xảy ra giữa chừng, chia quá khứ đơn.",
+    "slots": [
+      {
+        "en": "cooking",
+        "vi": "nấu ăn",
+        "ipa": "/waɪl aɪ wɑz ˈkʊkɪŋ maɪ foʊn daɪd/"
+      },
+      {
+        "en": "shopping",
+        "vi": "mua sắm",
+        "ipa": "/waɪl aɪ wɑz ˈʃɑpɪŋ maɪ foʊn daɪd/"
+      },
+      {
+        "en": "walking home",
+        "vi": "đi bộ về nhà",
+        "ipa": "/waɪl aɪ wɑz ˈwɔkɪŋ hoʊm maɪ foʊn daɪd/"
+      },
+      {
+        "en": "driving",
+        "vi": "lái xe",
+        "ipa": "/waɪl aɪ wɑz ˈdraɪvɪŋ maɪ foʊn daɪd/"
+      },
+      {
+        "en": "running",
+        "vi": "chạy bộ",
+        "ipa": "/waɪl aɪ wɑz ˈrʌnɪŋ maɪ foʊn daɪd/"
+      },
+      {
+        "en": "watching a video",
+        "vi": "xem video",
+        "ipa": "/waɪl aɪ wɑz ˈwɑtʃɪŋ ə ˈvɪdioʊ maɪ foʊn daɪd/"
+      },
+      {
+        "en": "waiting in line",
+        "vi": "xếp hàng chờ",
+        "ipa": "/waɪl aɪ wɑz ˈweɪtɪŋ ɪn laɪn maɪ foʊn daɪd/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "While I was studying, my phone died.",
+        "vi": "Trong lúc tôi đang học bài, điện thoại tôi hết pin.",
+        "ipa": "/waɪl aɪ wɑz ˈstʌdiɪŋ maɪ foʊn daɪd/"
+      },
+      {
+        "en": "While I was texting Anna, my phone died.",
+        "vi": "Trong lúc tôi đang nhắn tin cho Anna, điện thoại tôi hết pin.",
+        "ipa": "/waɪl aɪ wɑz ˈtɛkˌstɪŋ ˈænə maɪ foʊn daɪd/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why didn't you answer my call?",
+        "vi": "Sao bạn không nghe máy?"
+      },
+      {
+        "en": "What happened to your phone?",
+        "vi": "Điện thoại của bạn bị sao vậy?"
+      }
+    ],
+    "id": "b1.while-i-was-my-phone-died"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-past-stories",
+    "topic_vi": "Kể chuyện đã xảy ra",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "Suddenly I realized I had ___.",
+    "frame_vi": "Đột nhiên tôi nhận ra mình đã ___.",
+    "note_vi": "Had + quá khứ phân từ (quá khứ hoàn thành) nói việc đã xảy ra trước lúc nhận ra. Suddenly giúp câu chuyện có bất ngờ.",
+    "slots": [
+      {
+        "en": "left my keys",
+        "vi": "để quên chìa khóa",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd lɛft maɪ kiz/"
+      },
+      {
+        "en": "lost my wallet",
+        "vi": "làm mất ví",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd lɔst maɪ ˈwɔlət/"
+      },
+      {
+        "en": "missed the turn",
+        "vi": "đi lố ngã rẽ",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd mɪst ðə tɝn/"
+      },
+      {
+        "en": "forgotten my bag",
+        "vi": "quên mang túi",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd fərˈɡɑtən maɪ bæɡ/"
+      },
+      {
+        "en": "locked myself out",
+        "vi": "tự khóa mình ở ngoài",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd lɑkt ˌmaɪˈsɛlf aʊt/"
+      },
+      {
+        "en": "taken the wrong bus",
+        "vi": "đi nhầm xe buýt",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd ˈteɪkən ðə rɔŋ bʌs/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Suddenly I realized I had missed my stop.",
+        "vi": "Đột nhiên tôi nhận ra mình đã lỡ trạm xuống.",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd mɪst maɪ stɑp/"
+      },
+      {
+        "en": "Suddenly I realized I had left the oven on.",
+        "vi": "Đột nhiên tôi nhận ra mình đã quên tắt lò nướng.",
+        "ipa": "/ˈsʌdənli aɪ ˈriəˌlaɪzd aɪ hæd lɛft ðə ˈʌvən ɑn/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What went wrong?",
+        "vi": "Có chuyện gì không ổn vậy?"
+      },
+      {
+        "en": "Why did you go back home?",
+        "vi": "Sao bạn quay về nhà?"
+      }
+    ],
+    "id": "b1.suddenly-i-realized-i-had"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-past-stories",
+    "topic_vi": "Kể chuyện đã xảy ra",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "In the end, I ___.",
+    "frame_vi": "Cuối cùng tôi ___.",
+    "note_vi": "In the end dùng để kể kết quả của câu chuyện. Sau đó dùng quá khứ đơn: động từ thêm ed hoặc đổi dạng như took, went, gave.",
+    "slots": [
+      {
+        "en": "took a taxi",
+        "vi": "đi taxi",
+        "ipa": "/ɪn ðə ɛnd aɪ tʊk ə ˈtæksi/"
+      },
+      {
+        "en": "gave up",
+        "vi": "bỏ cuộc",
+        "ipa": "/ɪn ðə ɛnd aɪ ɡeɪv ʌp/"
+      },
+      {
+        "en": "called my boss",
+        "vi": "gọi cho sếp",
+        "ipa": "/ɪn ðə ɛnd aɪ kɔld maɪ bɑs/"
+      },
+      {
+        "en": "went home",
+        "vi": "về nhà",
+        "ipa": "/ɪn ðə ɛnd aɪ wɛnt hoʊm/"
+      },
+      {
+        "en": "paid the fine",
+        "vi": "nộp phạt",
+        "ipa": "/ɪn ðə ɛnd aɪ peɪd ðə faɪn/"
+      },
+      {
+        "en": "said sorry",
+        "vi": "xin lỗi",
+        "ipa": "/ɪn ðə ɛnd aɪ sɛd ˈsɑri/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "In the end, I walked home.",
+        "vi": "Cuối cùng tôi đi bộ về nhà.",
+        "ipa": "/ɪn ðə ɛnd aɪ wɔkt hoʊm/"
+      },
+      {
+        "en": "In the end, I asked a stranger.",
+        "vi": "Cuối cùng tôi hỏi một người lạ.",
+        "ipa": "/ɪn ðə ɛnd aɪ æskt ə ˈstreɪndʒər/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "So what did you do?",
+        "vi": "Vậy bạn đã làm gì?"
+      },
+      {
+        "en": "How did it end?",
+        "vi": "Chuyện kết thúc thế nào?"
+      }
+    ],
+    "id": "b1.in-the-end-i"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-used-to",
+    "topic_vi": "Hồi trước và bây giờ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I used to ___ as a kid.",
+    "frame_vi": "Hồi nhỏ tôi từng ___.",
+    "note_vi": "Used to + động từ nguyên mẫu nói về thói quen hoặc việc hay làm trong quá khứ, bây giờ không còn nữa.",
+    "slots": [
+      {
+        "en": "play football",
+        "vi": "chơi bóng đá",
+        "ipa": "/aɪ juzd tu pleɪ ˈfʊtˌbɔl æz ə kɪd/"
+      },
+      {
+        "en": "climb trees",
+        "vi": "leo cây",
+        "ipa": "/aɪ juzd tu klaɪm triz æz ə kɪd/"
+      },
+      {
+        "en": "collect stamps",
+        "vi": "sưu tầm tem",
+        "ipa": "/aɪ juzd tu kəˈlɛkt stæmps æz ə kɪd/"
+      },
+      {
+        "en": "walk to school",
+        "vi": "đi bộ đến trường",
+        "ipa": "/aɪ juzd tu wɔk tu skul æz ə kɪd/"
+      },
+      {
+        "en": "bite my nails",
+        "vi": "cắn móng tay",
+        "ipa": "/aɪ juzd tu baɪt maɪ neɪlz æz ə kɪd/"
+      },
+      {
+        "en": "ride a bike",
+        "vi": "đi xe đạp",
+        "ipa": "/aɪ juzd tu raɪd ə baɪk æz ə kɪd/"
+      },
+      {
+        "en": "fight with my brother",
+        "vi": "đánh nhau với anh trai",
+        "ipa": "/aɪ juzd tu faɪt wɪð maɪ ˈbrʌðər æz ə kɪd/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I used to swim every summer as a kid.",
+        "vi": "Hồi nhỏ mỗi mùa hè tôi đều đi bơi.",
+        "ipa": "/aɪ juzd tu swɪm ˈɛvəri ˈsʌmər æz ə kɪd/"
+      },
+      {
+        "en": "I used to hate vegetables as a kid.",
+        "vi": "Hồi nhỏ tôi từng ghét rau.",
+        "ipa": "/aɪ juzd tu heɪt ˈvɛdʒtəbəlz æz ə kɪd/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What were you like as a child?",
+        "vi": "Hồi nhỏ bạn thế nào?"
+      },
+      {
+        "en": "Did you play sports when you were young?",
+        "vi": "Hồi trẻ bạn có chơi thể thao không?"
+      }
+    ],
+    "id": "b1.used-to-as-a-kid"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-used-to",
+    "topic_vi": "Hồi trước và bây giờ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I didn't use to like ___.",
+    "frame_vi": "Trước đây tôi không thích ___.",
+    "note_vi": "Didn't use to + động từ nguyên mẫu, bỏ d ở use. Câu này nói trước kia không thích, còn bây giờ thì khác rồi.",
+    "slots": [
+      {
+        "en": "coffee",
+        "vi": "cà phê",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk ˈkɑfi/"
+      },
+      {
+        "en": "spicy food",
+        "vi": "đồ ăn cay",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk ˈspaɪsi fud/"
+      },
+      {
+        "en": "seafood",
+        "vi": "hải sản",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk ˈsiˌfud/"
+      },
+      {
+        "en": "cold weather",
+        "vi": "thời tiết lạnh",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk koʊld ˈwɛðər/"
+      },
+      {
+        "en": "big cities",
+        "vi": "thành phố lớn",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk bɪɡ ˈsɪtiz/"
+      },
+      {
+        "en": "my boss",
+        "vi": "sếp của tôi",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk maɪ bɑs/"
+      },
+      {
+        "en": "getting up early",
+        "vi": "dậy sớm",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk ˈɡɛtɪŋ ʌp ˈɝli/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I didn't use to like jazz music.",
+        "vi": "Trước đây tôi không thích nhạc jazz.",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk dʒæz ˈmjuzɪk/"
+      },
+      {
+        "en": "I didn't use to like my job.",
+        "vi": "Trước đây tôi không thích công việc của mình.",
+        "ipa": "/aɪ ˈdɪdənt jus tu laɪk maɪ dʒɑb/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you like spicy food?",
+        "vi": "Bạn có thích đồ ăn cay không?"
+      },
+      {
+        "en": "Have your tastes changed?",
+        "vi": "Khẩu vị của bạn có thay đổi không?"
+      }
+    ],
+    "id": "b1.didnt-use-to-like"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-used-to",
+    "topic_vi": "Hồi trước và bây giờ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I'm not used to ___ yet.",
+    "frame_vi": "Tôi vẫn chưa quen với ___.",
+    "note_vi": "Be used to + danh từ hoặc động từ thêm ing nghĩa là quen với điều gì, khác với used to + động từ nguyên mẫu.",
+    "slots": [
+      {
+        "en": "the weather",
+        "vi": "thời tiết",
+        "ipa": "/aɪm nɑt juzd tu ðə ˈwɛðər jɛt/"
+      },
+      {
+        "en": "the noise",
+        "vi": "tiếng ồn",
+        "ipa": "/aɪm nɑt juzd tu ðə nɔɪz jɛt/"
+      },
+      {
+        "en": "driving here",
+        "vi": "lái xe ở đây",
+        "ipa": "/aɪm nɑt juzd tu ˈdraɪvɪŋ hir jɛt/"
+      },
+      {
+        "en": "working nights",
+        "vi": "làm ca đêm",
+        "ipa": "/aɪm nɑt juzd tu ˈwɝkɪŋ naɪts jɛt/"
+      },
+      {
+        "en": "eating so late",
+        "vi": "ăn tối muộn thế",
+        "ipa": "/aɪm nɑt juzd tu ˈitɪŋ soʊ leɪt jɛt/"
+      },
+      {
+        "en": "the food",
+        "vi": "đồ ăn",
+        "ipa": "/aɪm nɑt juzd tu ðə fud jɛt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm not used to this heat yet.",
+        "vi": "Tôi vẫn chưa quen với cái nóng này.",
+        "ipa": "/aɪm nɑt juzd tu ðɪs hit jɛt/"
+      },
+      {
+        "en": "I'm not used to living alone yet.",
+        "vi": "Tôi vẫn chưa quen sống một mình.",
+        "ipa": "/aɪm nɑt juzd tu ˈlɪvɪŋ əˈloʊn jɛt/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How do you like your new city?",
+        "vi": "Bạn thấy thành phố mới thế nào?"
+      },
+      {
+        "en": "Is everything okay?",
+        "vi": "Mọi thứ ổn chứ?"
+      }
+    ],
+    "id": "b1.not-used-to-yet"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-used-to",
+    "topic_vi": "Hồi trước và bây giờ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I'm slowly getting used to ___.",
+    "frame_vi": "Tôi đang dần quen với ___.",
+    "note_vi": "Get used to + danh từ hoặc động từ thêm ing nói về quá trình đang quen dần. Slowly nghĩa là từ từ.",
+    "slots": [
+      {
+        "en": "the traffic",
+        "vi": "giao thông",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ðə ˈtræfɪk/"
+      },
+      {
+        "en": "my new job",
+        "vi": "công việc mới",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu maɪ nu dʒɑb/"
+      },
+      {
+        "en": "living alone",
+        "vi": "sống một mình",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ˈlɪvɪŋ əˈloʊn/"
+      },
+      {
+        "en": "the food here",
+        "vi": "đồ ăn ở đây",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ðə fud hir/"
+      },
+      {
+        "en": "early mornings",
+        "vi": "những buổi sáng sớm",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ˈɝli ˈmɔrnɪŋz/"
+      },
+      {
+        "en": "the cold",
+        "vi": "cái lạnh",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ðə koʊld/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm slowly getting used to the new schedule.",
+        "vi": "Tôi đang dần quen với lịch làm việc mới.",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ðə nu ˈskɛdʒʊl/"
+      },
+      {
+        "en": "I'm slowly getting used to speaking English.",
+        "vi": "Tôi đang dần quen với việc nói tiếng Anh.",
+        "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ˈspikɪŋ ˈɪŋɡlɪʃ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How's your new life going?",
+        "vi": "Cuộc sống mới của bạn thế nào rồi?"
+      },
+      {
+        "en": "Is it hard living abroad?",
+        "vi": "Sống ở nước ngoài có khó không?"
+      }
+    ],
+    "id": "b1.getting-used-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-life-changes",
+    "topic_vi": "Thay đổi trong cuộc sống",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I've been ___ for a few months.",
+    "frame_vi": "Tôi đã ___ được vài tháng rồi.",
+    "note_vi": "Have been + động từ thêm ing (hiện tại hoàn thành tiếp diễn) nói việc bắt đầu trong quá khứ và vẫn tiếp tục. For + khoảng thời gian.",
+    "slots": [
+      {
+        "en": "learning English",
+        "vi": "học tiếng Anh",
+        "ipa": "/aɪv bɪn ˈlɝnɪŋ ˈɪŋɡlɪʃ fɔr ə fju mʌnθs/"
+      },
+      {
+        "en": "working from home",
+        "vi": "làm việc ở nhà",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ frʌm hoʊm fɔr ə fju mʌnθs/"
+      },
+      {
+        "en": "going to the gym",
+        "vi": "đi tập gym",
+        "ipa": "/aɪv bɪn ˈɡoʊɪŋ tu ðə dʒɪm fɔr ə fju mʌnθs/"
+      },
+      {
+        "en": "living alone",
+        "vi": "sống một mình",
+        "ipa": "/aɪv bɪn ˈlɪvɪŋ əˈloʊn fɔr ə fju mʌnθs/"
+      },
+      {
+        "en": "saving money",
+        "vi": "tiết kiệm tiền",
+        "ipa": "/aɪv bɪn ˈseɪvɪŋ ˈmʌni fɔr ə fju mʌnθs/"
+      },
+      {
+        "en": "cooking more",
+        "vi": "nấu ăn nhiều hơn",
+        "ipa": "/aɪv bɪn ˈkʊkɪŋ mɔr fɔr ə fju mʌnθs/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I've been studying French for a few months.",
+        "vi": "Tôi đã học tiếng Pháp được vài tháng rồi.",
+        "ipa": "/aɪv bɪn ˈstʌdiɪŋ frɛntʃ fɔr ə fju mʌnθs/"
+      },
+      {
+        "en": "I've been taking yoga classes for a few months.",
+        "vi": "Tôi đã đi học yoga được vài tháng rồi.",
+        "ipa": "/aɪv bɪn ˈteɪkɪŋ ˈjoʊɡə ˈklæsəz fɔr ə fju mʌnθs/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What have you been up to?",
+        "vi": "Dạo này bạn làm gì?"
+      },
+      {
+        "en": "How long have you been doing that?",
+        "vi": "Bạn làm việc đó bao lâu rồi?"
+      }
+    ],
+    "id": "b1.been-doing-for-a-few-months"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-life-changes",
+    "topic_vi": "Thay đổi trong cuộc sống",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I've lived here since ___.",
+    "frame_vi": "Tôi sống ở đây từ ___.",
+    "note_vi": "Since + mốc thời gian (since last year, since March) hoặc một mệnh đề quá khứ. Câu chính dùng hiện tại hoàn thành: have lived.",
+    "slots": [
+      {
+        "en": "last year",
+        "vi": "năm ngoái",
+        "ipa": "/aɪv lɪvd hir sɪns læst jɪr/"
+      },
+      {
+        "en": "March",
+        "vi": "tháng Ba",
+        "ipa": "/aɪv lɪvd hir sɪns mɑrtʃ/"
+      },
+      {
+        "en": "high school",
+        "vi": "hồi cấp ba",
+        "ipa": "/aɪv lɪvd hir sɪns haɪ skul/"
+      },
+      {
+        "en": "the summer",
+        "vi": "mùa hè",
+        "ipa": "/aɪv lɪvd hir sɪns ðə ˈsʌmər/"
+      },
+      {
+        "en": "I got married",
+        "vi": "tôi kết hôn",
+        "ipa": "/aɪv lɪvd hir sɪns aɪ ɡɑt ˈmɛrid/"
+      },
+      {
+        "en": "I changed jobs",
+        "vi": "tôi đổi việc",
+        "ipa": "/aɪv lɪvd hir sɪns aɪ tʃeɪndʒd dʒɑbz/"
+      },
+      {
+        "en": "twenty twenty",
+        "vi": "năm hai nghìn không trăm hai mươi",
+        "ipa": "/aɪv lɪvd hir sɪns ˈtwɛnti ˈtwɛnti/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I've lived here since I was ten.",
+        "vi": "Tôi sống ở đây từ năm mười tuổi.",
+        "ipa": "/aɪv lɪvd hir sɪns aɪ wɑz tɛn/"
+      },
+      {
+        "en": "I've lived here since the spring.",
+        "vi": "Tôi sống ở đây từ mùa xuân.",
+        "ipa": "/aɪv lɪvd hir sɪns ðə sprɪŋ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How long have you lived here?",
+        "vi": "Bạn sống ở đây bao lâu rồi?"
+      },
+      {
+        "en": "When did you move here?",
+        "vi": "Bạn chuyển đến đây khi nào?"
+      }
+    ],
+    "id": "b1.lived-here-since"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-life-changes",
+    "topic_vi": "Thay đổi trong cuộc sống",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "Life has changed a lot since ___.",
+    "frame_vi": "Cuộc sống đã thay đổi rất nhiều kể từ ___.",
+    "note_vi": "Has/have changed (hiện tại hoàn thành) nói về thay đổi kéo dài đến bây giờ. A lot nghĩa là nhiều. Since chỉ mốc bắt đầu thay đổi.",
+    "slots": [
+      {
+        "en": "I moved here",
+        "vi": "tôi chuyển đến đây",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns aɪ muvd hir/"
+      },
+      {
+        "en": "the baby came",
+        "vi": "em bé ra đời",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns ðə ˈbeɪbi keɪm/"
+      },
+      {
+        "en": "last year",
+        "vi": "năm ngoái",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns læst jɪr/"
+      },
+      {
+        "en": "I got married",
+        "vi": "tôi kết hôn",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns aɪ ɡɑt ˈmɛrid/"
+      },
+      {
+        "en": "the pandemic",
+        "vi": "đại dịch",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns ðə pænˈdɛmɪk/"
+      },
+      {
+        "en": "I left school",
+        "vi": "tôi nghỉ học",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns aɪ lɛft skul/"
+      },
+      {
+        "en": "my promotion",
+        "vi": "tôi được thăng chức",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns maɪ prəˈmoʊʃən/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Life has changed a lot since I retired.",
+        "vi": "Cuộc sống đã thay đổi rất nhiều kể từ khi tôi nghỉ hưu.",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns aɪ rɪˈtaɪrd/"
+      },
+      {
+        "en": "Life has changed a lot since the move.",
+        "vi": "Cuộc sống đã thay đổi rất nhiều kể từ lần chuyển nhà.",
+        "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns ðə muv/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How have things been?",
+        "vi": "Dạo này mọi thứ thế nào?"
+      },
+      {
+        "en": "Has anything changed for you?",
+        "vi": "Bạn có gì thay đổi không?"
+      }
+    ],
+    "id": "b1.things-have-changed-since"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-life-changes",
+    "topic_vi": "Thay đổi trong cuộc sống",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I've just started ___.",
+    "frame_vi": "Tôi vừa mới bắt đầu ___.",
+    "note_vi": "Have just + quá khứ phân từ nói việc vừa xảy ra. Started đi với danh từ (a new job) hoặc động từ thêm ing (learning guitar).",
+    "slots": [
+      {
+        "en": "a new job",
+        "vi": "một công việc mới",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd ə nu dʒɑb/"
+      },
+      {
+        "en": "learning guitar",
+        "vi": "học guitar",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd ˈlɝnɪŋ ɡɪˈtɑr/"
+      },
+      {
+        "en": "evening classes",
+        "vi": "các lớp buổi tối",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd ˈivnɪŋ ˈklæsəz/"
+      },
+      {
+        "en": "my own business",
+        "vi": "việc kinh doanh riêng",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd maɪ oʊn ˈbɪznəs/"
+      },
+      {
+        "en": "a diet",
+        "vi": "một chế độ ăn kiêng",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd ə ˈdaɪət/"
+      },
+      {
+        "en": "running every morning",
+        "vi": "chạy bộ mỗi sáng",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd ˈrʌnɪŋ ˈɛvəri ˈmɔrnɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I've just started my master's degree.",
+        "vi": "Tôi vừa mới bắt đầu học thạc sĩ.",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd maɪ ˈmæstərz dɪˈɡri/"
+      },
+      {
+        "en": "I've just started going to bed earlier.",
+        "vi": "Tôi vừa mới bắt đầu đi ngủ sớm hơn.",
+        "ipa": "/aɪv dʒʌst ˈstɑrtɪd ˈɡoʊɪŋ tu bɛd ˈɝliər/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What's new with you?",
+        "vi": "Bạn có gì mới không?"
+      },
+      {
+        "en": "Are you busy these days?",
+        "vi": "Dạo này bạn có bận không?"
+      }
+    ],
+    "id": "b1.just-started"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-advice",
+    "topic_vi": "Cho lời khuyên",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "If I were you, I'd ___.",
+    "frame_vi": "Nếu tôi là bạn, tôi sẽ ___.",
+    "note_vi": "If I were you là cách khuyên lịch sự. Sau I'd (I would) dùng động từ nguyên mẫu, và luôn dùng were dù chủ ngữ là I.",
+    "slots": [
+      {
+        "en": "take a break",
+        "vi": "nghỉ một chút",
+        "ipa": "/ɪf aɪ wɝ ju aɪd teɪk ə breɪk/"
+      },
+      {
+        "en": "see a doctor",
+        "vi": "đi khám bác sĩ",
+        "ipa": "/ɪf aɪ wɝ ju aɪd si ə ˈdɑktər/"
+      },
+      {
+        "en": "talk to him",
+        "vi": "nói chuyện với anh ấy",
+        "ipa": "/ɪf aɪ wɝ ju aɪd tɔk tu hɪm/"
+      },
+      {
+        "en": "say sorry",
+        "vi": "xin lỗi",
+        "ipa": "/ɪf aɪ wɝ ju aɪd seɪ ˈsɑri/"
+      },
+      {
+        "en": "save some money",
+        "vi": "để dành chút tiền",
+        "ipa": "/ɪf aɪ wɝ ju aɪd seɪv sʌm ˈmʌni/"
+      },
+      {
+        "en": "ask for help",
+        "vi": "nhờ giúp đỡ",
+        "ipa": "/ɪf aɪ wɝ ju aɪd æsk fɔr hɛlp/"
+      },
+      {
+        "en": "wait a few days",
+        "vi": "đợi vài ngày",
+        "ipa": "/ɪf aɪ wɝ ju aɪd weɪt ə fju deɪz/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "If I were you, I'd call her now.",
+        "vi": "Nếu tôi là bạn, tôi sẽ gọi cho cô ấy ngay.",
+        "ipa": "/ɪf aɪ wɝ ju aɪd kɔl hɝ naʊ/"
+      },
+      {
+        "en": "If I were you, I'd sleep early.",
+        "vi": "Nếu tôi là bạn, tôi sẽ đi ngủ sớm.",
+        "ipa": "/ɪf aɪ wɝ ju aɪd slip ˈɝli/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What should I do?",
+        "vi": "Tôi nên làm gì?"
+      },
+      {
+        "en": "Should I quit my job?",
+        "vi": "Tôi có nên nghỉ việc không?"
+      }
+    ],
+    "id": "b1.if-i-were-you-id"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-advice",
+    "topic_vi": "Cho lời khuyên",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "You'd better ___ soon.",
+    "frame_vi": "Bạn nên ___ sớm thì hơn.",
+    "note_vi": "You'd better (had better) + động từ nguyên mẫu không to, dùng khi việc đó khá gấp và nếu không làm có thể gặp rắc rối.",
+    "slots": [
+      {
+        "en": "hurry up",
+        "vi": "nhanh lên",
+        "ipa": "/jud ˈbɛtər ˈhɝi ʌp sun/"
+      },
+      {
+        "en": "call him",
+        "vi": "gọi cho anh ấy",
+        "ipa": "/jud ˈbɛtər kɔl hɪm sun/"
+      },
+      {
+        "en": "book a ticket",
+        "vi": "đặt vé",
+        "ipa": "/jud ˈbɛtər bʊk ə ˈtɪkət sun/"
+      },
+      {
+        "en": "tell your boss",
+        "vi": "báo sếp của bạn",
+        "ipa": "/jud ˈbɛtər tɛl jɔr bɑs sun/"
+      },
+      {
+        "en": "pay the bill",
+        "vi": "trả hóa đơn",
+        "ipa": "/jud ˈbɛtər peɪ ðə bɪl sun/"
+      },
+      {
+        "en": "leave now",
+        "vi": "đi ngay",
+        "ipa": "/jud ˈbɛtər liv naʊ sun/"
+      },
+      {
+        "en": "fix it",
+        "vi": "sửa nó",
+        "ipa": "/jud ˈbɛtər fɪks ɪt sun/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "You'd better finish it soon.",
+        "vi": "Bạn nên làm xong nó sớm thì hơn.",
+        "ipa": "/jud ˈbɛtər ˈfɪnɪʃ ɪt sun/"
+      },
+      {
+        "en": "You'd better tell her soon.",
+        "vi": "Bạn nên nói với cô ấy sớm thì hơn.",
+        "ipa": "/jud ˈbɛtər tɛl hɝ sun/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Is it urgent?",
+        "vi": "Việc này có gấp không?"
+      },
+      {
+        "en": "What happens if I wait?",
+        "vi": "Nếu tôi đợi thì sao?"
+      }
+    ],
+    "id": "b1.youd-better-soon"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-advice",
+    "topic_vi": "Cho lời khuyên",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "Why don't you ___?",
+    "frame_vi": "Sao bạn không ___?",
+    "note_vi": "Why don't you + động từ nguyên mẫu là cách nhẹ nhàng đưa ra lời khuyên hoặc gợi ý cho người khác, nghe thân thiện hơn should.",
+    "slots": [
+      {
+        "en": "ask your boss",
+        "vi": "hỏi sếp của bạn",
+        "ipa": "/waɪ doʊnt ju æsk jɔr bɑs/"
+      },
+      {
+        "en": "take a day off",
+        "vi": "nghỉ một ngày",
+        "ipa": "/waɪ doʊnt ju teɪk ə deɪ ɔf/"
+      },
+      {
+        "en": "try the new app",
+        "vi": "thử ứng dụng mới",
+        "ipa": "/waɪ doʊnt ju traɪ ðə nu æp/"
+      },
+      {
+        "en": "talk to her",
+        "vi": "nói chuyện với cô ấy",
+        "ipa": "/waɪ doʊnt ju tɔk tu hɝ/"
+      },
+      {
+        "en": "get some rest",
+        "vi": "nghỉ ngơi một chút",
+        "ipa": "/waɪ doʊnt ju ɡɛt sʌm rɛst/"
+      },
+      {
+        "en": "join a gym",
+        "vi": "đăng ký phòng tập",
+        "ipa": "/waɪ doʊnt ju dʒɔɪn ə dʒɪm/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Why don't you call a friend?",
+        "vi": "Sao bạn không gọi cho một người bạn?",
+        "ipa": "/waɪ doʊnt ju kɔl ə frɛnd/"
+      },
+      {
+        "en": "Why don't you go home early?",
+        "vi": "Sao bạn không về nhà sớm?",
+        "ipa": "/waɪ doʊnt ju ɡoʊ hoʊm ˈɝli/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "I can't sleep. Any ideas?",
+        "vi": "Tôi không ngủ được. Có ý gì không?"
+      },
+      {
+        "en": "I feel so stressed.",
+        "vi": "Tôi thấy căng thẳng quá."
+      }
+    ],
+    "id": "b1.why-dont-you"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-advice",
+    "topic_vi": "Cho lời khuyên",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "It might help to ___.",
+    "frame_vi": "Có thể sẽ giúp ích nếu bạn ___.",
+    "note_vi": "It might help to + động từ nguyên mẫu là lời khuyên rất mềm, dùng might để không ép buộc người nghe.",
+    "slots": [
+      {
+        "en": "write it down",
+        "vi": "viết nó ra",
+        "ipa": "/ɪt maɪt hɛlp tu raɪt ɪt daʊn/"
+      },
+      {
+        "en": "go for a walk",
+        "vi": "đi dạo",
+        "ipa": "/ɪt maɪt hɛlp tu ɡoʊ fɔr ə wɔk/"
+      },
+      {
+        "en": "drink more water",
+        "vi": "uống nhiều nước hơn",
+        "ipa": "/ɪt maɪt hɛlp tu drɪŋk mɔr ˈwɔtər/"
+      },
+      {
+        "en": "make a list",
+        "vi": "lập một danh sách",
+        "ipa": "/ɪt maɪt hɛlp tu meɪk ə lɪst/"
+      },
+      {
+        "en": "take a short nap",
+        "vi": "ngủ trưa một chút",
+        "ipa": "/ɪt maɪt hɛlp tu teɪk ə ʃɔrt næp/"
+      },
+      {
+        "en": "turn off your phone",
+        "vi": "tắt điện thoại",
+        "ipa": "/ɪt maɪt hɛlp tu tɝn ɔf jɔr foʊn/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It might help to sit outside.",
+        "vi": "Ngồi ngoài trời có thể sẽ giúp ích.",
+        "ipa": "/ɪt maɪt hɛlp tu sɪt ˈaʊtˈsaɪd/"
+      },
+      {
+        "en": "It might help to ask him.",
+        "vi": "Hỏi anh ấy có thể sẽ giúp ích.",
+        "ipa": "/ɪt maɪt hɛlp tu æsk hɪm/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How can I stop worrying?",
+        "vi": "Làm sao để tôi hết lo lắng?"
+      },
+      {
+        "en": "I can't focus on my work.",
+        "vi": "Tôi không tập trung làm việc được."
+      }
+    ],
+    "id": "b1.it-might-help-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-suggestions",
+    "topic_vi": "Đề xuất và thương lượng",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "We could ___ instead.",
+    "frame_vi": "Thay vào đó chúng ta có thể ___.",
+    "note_vi": "Could + động từ nguyên mẫu để đề xuất một lựa chọn khác. Instead đặt ở cuối câu nghĩa là thay vì phương án vừa nói.",
+    "slots": [
+      {
+        "en": "go tomorrow",
+        "vi": "đi vào ngày mai",
+        "ipa": "/wi kʊd ɡoʊ təˈmɑˌroʊ ˌɪnˈstɛd/"
+      },
+      {
+        "en": "take a taxi",
+        "vi": "đi taxi",
+        "ipa": "/wi kʊd teɪk ə ˈtæksi ˌɪnˈstɛd/"
+      },
+      {
+        "en": "eat at home",
+        "vi": "ăn ở nhà",
+        "ipa": "/wi kʊd it æt hoʊm ˌɪnˈstɛd/"
+      },
+      {
+        "en": "start earlier",
+        "vi": "bắt đầu sớm hơn",
+        "ipa": "/wi kʊd stɑrt ˈɝliər ˌɪnˈstɛd/"
+      },
+      {
+        "en": "wait a bit",
+        "vi": "đợi một chút",
+        "ipa": "/wi kʊd weɪt ə bɪt ˌɪnˈstɛd/"
+      },
+      {
+        "en": "use the app",
+        "vi": "dùng ứng dụng",
+        "ipa": "/wi kʊd jus ðə æp ˌɪnˈstɛd/"
+      },
+      {
+        "en": "meet online",
+        "vi": "họp trực tuyến",
+        "ipa": "/wi kʊd mit ˈɔnˌlaɪn ˌɪnˈstɛd/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "We could walk instead.",
+        "vi": "Thay vào đó chúng ta có thể đi bộ.",
+        "ipa": "/wi kʊd wɔk ˌɪnˈstɛd/"
+      },
+      {
+        "en": "We could call him instead.",
+        "vi": "Thay vào đó chúng ta có thể gọi cho anh ấy.",
+        "ipa": "/wi kʊd kɔl hɪm ˌɪnˈstɛd/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "The restaurant is full. What now?",
+        "vi": "Nhà hàng hết chỗ rồi. Giờ sao?"
+      },
+      {
+        "en": "Any other ideas?",
+        "vi": "Có ý nào khác không?"
+      }
+    ],
+    "id": "b1.we-could-instead"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-suggestions",
+    "topic_vi": "Đề xuất và thương lượng",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "Shall we ___?",
+    "frame_vi": "Chúng ta ___ nhé?",
+    "note_vi": "Shall we + động từ nguyên mẫu là cách lịch sự rủ ai cùng làm gì hoặc hỏi ý kiến người nghe. Chỉ dùng shall với I và we.",
+    "slots": [
+      {
+        "en": "get started",
+        "vi": "bắt đầu",
+        "ipa": "/ʃæl wi ɡɛt ˈstɑrtɪd/"
+      },
+      {
+        "en": "take a break",
+        "vi": "nghỉ giải lao",
+        "ipa": "/ʃæl wi teɪk ə breɪk/"
+      },
+      {
+        "en": "order some food",
+        "vi": "gọi đồ ăn",
+        "ipa": "/ʃæl wi ˈɔrdər sʌm fud/"
+      },
+      {
+        "en": "leave now",
+        "vi": "đi bây giờ",
+        "ipa": "/ʃæl wi liv naʊ/"
+      },
+      {
+        "en": "sit outside",
+        "vi": "ngồi ngoài trời",
+        "ipa": "/ʃæl wi sɪt ˈaʊtˈsaɪd/"
+      },
+      {
+        "en": "split the bill",
+        "vi": "chia hóa đơn",
+        "ipa": "/ʃæl wi splɪt ðə bɪl/"
+      },
+      {
+        "en": "call it a day",
+        "vi": "dừng ở đây hôm nay",
+        "ipa": "/ʃæl wi kɔl ɪt ə deɪ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Shall we go for a walk?",
+        "vi": "Chúng ta đi dạo nhé?",
+        "ipa": "/ʃæl wi ɡoʊ fɔr ə wɔk/"
+      },
+      {
+        "en": "Shall we ask the waiter?",
+        "vi": "Chúng ta hỏi người phục vụ nhé?",
+        "ipa": "/ʃæl wi æsk ðə ˈweɪtər/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you want to do now?",
+        "vi": "Bạn muốn làm gì bây giờ?"
+      },
+      {
+        "en": "Are you ready?",
+        "vi": "Bạn sẵn sàng chưa?"
+      }
+    ],
+    "id": "b1.shall-we"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-suggestions",
+    "topic_vi": "Đề xuất và thương lượng",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "I suggest we ___.",
+    "frame_vi": "Tôi đề xuất chúng ta ___.",
+    "note_vi": "I suggest we + động từ nguyên mẫu, trang trọng hơn một chút, hợp khi họp hoặc bàn công việc. Không nói suggest to do.",
+    "slots": [
+      {
+        "en": "meet on Monday",
+        "vi": "gặp vào thứ Hai",
+        "ipa": "/aɪ səˈdʒɛst wi mit ɑn ˈmʌndi/"
+      },
+      {
+        "en": "share the cost",
+        "vi": "chia chi phí",
+        "ipa": "/aɪ səˈdʒɛst wi ʃɛr ðə kɑst/"
+      },
+      {
+        "en": "try again later",
+        "vi": "thử lại sau",
+        "ipa": "/aɪ səˈdʒɛst wi traɪ əˈɡɛn ˈleɪtər/"
+      },
+      {
+        "en": "ask the manager",
+        "vi": "hỏi quản lý",
+        "ipa": "/aɪ səˈdʒɛst wi æsk ðə ˈmænədʒər/"
+      },
+      {
+        "en": "make a plan",
+        "vi": "lập kế hoạch",
+        "ipa": "/aɪ səˈdʒɛst wi meɪk ə plæn/"
+      },
+      {
+        "en": "keep it simple",
+        "vi": "giữ cho đơn giản",
+        "ipa": "/aɪ səˈdʒɛst wi kip ɪt ˈsɪmpəl/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I suggest we leave at eight.",
+        "vi": "Tôi đề xuất chúng ta đi lúc tám giờ.",
+        "ipa": "/aɪ səˈdʒɛst wi liv æt eɪt/"
+      },
+      {
+        "en": "I suggest we book a room.",
+        "vi": "Tôi đề xuất chúng ta đặt một phòng.",
+        "ipa": "/aɪ səˈdʒɛst wi bʊk ə rum/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "When should we meet?",
+        "vi": "Khi nào chúng ta nên gặp?"
+      },
+      {
+        "en": "What do you think we should do?",
+        "vi": "Bạn nghĩ chúng ta nên làm gì?"
+      }
+    ],
+    "id": "b1.i-suggest-we"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-suggestions",
+    "topic_vi": "Đề xuất và thương lượng",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "What if we ___?",
+    "frame_vi": "Nếu chúng ta ___ thì sao?",
+    "note_vi": "What if we + động từ nguyên mẫu dùng để thử một ý tưởng hoặc đề nghị thỏa hiệp khi thương lượng, nghe nhẹ nhàng và mở.",
+    "slots": [
+      {
+        "en": "pay half each",
+        "vi": "mỗi người trả một nửa",
+        "ipa": "/wʌt ɪf wi peɪ hæf itʃ/"
+      },
+      {
+        "en": "move it to Friday",
+        "vi": "dời sang thứ Sáu",
+        "ipa": "/wʌt ɪf wi muv ɪt tu ˈfraɪdi/"
+      },
+      {
+        "en": "try a smaller size",
+        "vi": "thử cỡ nhỏ hơn",
+        "ipa": "/wʌt ɪf wi traɪ ə ˈsmɔlər saɪz/"
+      },
+      {
+        "en": "leave a bit earlier",
+        "vi": "đi sớm hơn một chút",
+        "ipa": "/wʌt ɪf wi liv ə bɪt ˈɝliər/"
+      },
+      {
+        "en": "split the work",
+        "vi": "chia việc ra",
+        "ipa": "/wʌt ɪf wi splɪt ðə wɝk/"
+      },
+      {
+        "en": "take turns",
+        "vi": "thay phiên nhau",
+        "ipa": "/wʌt ɪf wi teɪk tɝnz/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What if we stay one more night?",
+        "vi": "Nếu chúng ta ở thêm một đêm thì sao?",
+        "ipa": "/wʌt ɪf wi steɪ wʌn mɔr naɪt/"
+      },
+      {
+        "en": "What if we meet halfway?",
+        "vi": "Nếu chúng ta gặp nhau ở giữa thì sao?",
+        "ipa": "/wʌt ɪf wi mit ˈhæfˈweɪ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "I can't make it on Thursday.",
+        "vi": "Tôi không đến được vào thứ Năm."
+      },
+      {
+        "en": "This is too expensive for me.",
+        "vi": "Cái này đắt quá với tôi."
+      }
+    ],
+    "id": "b1.what-if-we"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-preferences",
+    "topic_vi": "Nói sở thích và lựa chọn",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I'd rather ___ tonight.",
+    "frame_vi": "Tối nay tôi muốn ___ hơn.",
+    "note_vi": "I'd rather (would rather) + động từ nguyên mẫu không to, dùng để nói bạn thích làm việc nào hơn. Phủ định là I'd rather not.",
+    "slots": [
+      {
+        "en": "stay in",
+        "vi": "ở nhà",
+        "ipa": "/aɪd ˈræðər steɪ ɪn təˈnaɪt/"
+      },
+      {
+        "en": "go out",
+        "vi": "ra ngoài",
+        "ipa": "/aɪd ˈræðər ɡoʊ aʊt təˈnaɪt/"
+      },
+      {
+        "en": "cook at home",
+        "vi": "nấu ăn ở nhà",
+        "ipa": "/aɪd ˈræðər kʊk æt hoʊm təˈnaɪt/"
+      },
+      {
+        "en": "eat out",
+        "vi": "đi ăn ngoài",
+        "ipa": "/aɪd ˈræðər it aʊt təˈnaɪt/"
+      },
+      {
+        "en": "watch a film",
+        "vi": "xem phim",
+        "ipa": "/aɪd ˈræðər wɑtʃ ə fɪlm təˈnaɪt/"
+      },
+      {
+        "en": "get some sleep",
+        "vi": "ngủ một chút",
+        "ipa": "/aɪd ˈræðər ɡɛt sʌm slip təˈnaɪt/"
+      },
+      {
+        "en": "keep it simple",
+        "vi": "làm đơn giản thôi",
+        "ipa": "/aɪd ˈræðər kip ɪt ˈsɪmpəl təˈnaɪt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'd rather relax tonight.",
+        "vi": "Tối nay tôi muốn thư giãn hơn.",
+        "ipa": "/aɪd ˈræðər rɪˈlæks təˈnaɪt/"
+      },
+      {
+        "en": "I'd rather see friends tonight.",
+        "vi": "Tối nay tôi muốn gặp bạn bè hơn.",
+        "ipa": "/aɪd ˈræðər si frɛndz təˈnaɪt/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you want to do tonight?",
+        "vi": "Tối nay bạn muốn làm gì?"
+      },
+      {
+        "en": "Do you want to go out?",
+        "vi": "Bạn có muốn đi chơi không?"
+      }
+    ],
+    "id": "b1.id-rather-tonight"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-preferences",
+    "topic_vi": "Nói sở thích và lựa chọn",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "It depends on ___.",
+    "frame_vi": "Còn tùy vào ___.",
+    "note_vi": "It depends on + danh từ hoặc cụm danh từ, dùng khi chưa thể trả lời chắc chắn vì còn phụ thuộc vào điều khác.",
+    "slots": [
+      {
+        "en": "the weather",
+        "vi": "thời tiết",
+        "ipa": "/ɪt dɪˈpɛndz ɑn ðə ˈwɛðər/"
+      },
+      {
+        "en": "the price",
+        "vi": "giá cả",
+        "ipa": "/ɪt dɪˈpɛndz ɑn ðə praɪs/"
+      },
+      {
+        "en": "my schedule",
+        "vi": "lịch của tôi",
+        "ipa": "/ɪt dɪˈpɛndz ɑn maɪ ˈskɛdʒʊl/"
+      },
+      {
+        "en": "the traffic",
+        "vi": "giao thông",
+        "ipa": "/ɪt dɪˈpɛndz ɑn ðə ˈtræfɪk/"
+      },
+      {
+        "en": "my mood",
+        "vi": "tâm trạng của tôi",
+        "ipa": "/ɪt dɪˈpɛndz ɑn maɪ mud/"
+      },
+      {
+        "en": "who is coming",
+        "vi": "ai sẽ đến",
+        "ipa": "/ɪt dɪˈpɛndz ɑn hu ɪz ˈkʌmɪŋ/"
+      },
+      {
+        "en": "how much time I have",
+        "vi": "tôi có bao nhiêu thời gian",
+        "ipa": "/ɪt dɪˈpɛndz ɑn haʊ mʌtʃ taɪm aɪ hæv/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It depends on the location.",
+        "vi": "Còn tùy vào địa điểm.",
+        "ipa": "/ɪt dɪˈpɛndz ɑn ðə loʊˈkeɪʃən/"
+      },
+      {
+        "en": "It depends on my boss.",
+        "vi": "Còn tùy vào sếp của tôi.",
+        "ipa": "/ɪt dɪˈpɛndz ɑn maɪ bɑs/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you like spicy food?",
+        "vi": "Bạn có thích đồ ăn cay không?"
+      },
+      {
+        "en": "Will you come on Sunday?",
+        "vi": "Chủ nhật bạn có đến không?"
+      }
+    ],
+    "id": "b1.it-depends-on"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-preferences",
+    "topic_vi": "Nói sở thích và lựa chọn",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I'd go for ___.",
+    "frame_vi": "Tôi sẽ chọn ___.",
+    "note_vi": "I'd go for + danh từ nghĩa là tôi sẽ chọn cái đó. Dùng khi phải lựa chọn giữa hai hay nhiều thứ, nghe tự nhiên và thân mật.",
+    "slots": [
+      {
+        "en": "the red one",
+        "vi": "cái màu đỏ",
+        "ipa": "/aɪd ɡoʊ fɔr ðə rɛd wʌn/"
+      },
+      {
+        "en": "the cheaper option",
+        "vi": "lựa chọn rẻ hơn",
+        "ipa": "/aɪd ɡoʊ fɔr ðə ˈtʃipər ˈɑpʃən/"
+      },
+      {
+        "en": "the fish",
+        "vi": "món cá",
+        "ipa": "/aɪd ɡoʊ fɔr ðə fɪʃ/"
+      },
+      {
+        "en": "the morning flight",
+        "vi": "chuyến bay buổi sáng",
+        "ipa": "/aɪd ɡoʊ fɔr ðə ˈmɔrnɪŋ flaɪt/"
+      },
+      {
+        "en": "a window seat",
+        "vi": "ghế cạnh cửa sổ",
+        "ipa": "/aɪd ɡoʊ fɔr ə ˈwɪndoʊ sit/"
+      },
+      {
+        "en": "the smaller room",
+        "vi": "phòng nhỏ hơn",
+        "ipa": "/aɪd ɡoʊ fɔr ðə ˈsmɔlər rum/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'd go for the blue shirt.",
+        "vi": "Tôi sẽ chọn cái áo sơ mi màu xanh.",
+        "ipa": "/aɪd ɡoʊ fɔr ðə blu ʃɝt/"
+      },
+      {
+        "en": "I'd go for the cheaper hotel.",
+        "vi": "Tôi sẽ chọn khách sạn rẻ hơn.",
+        "ipa": "/aɪd ɡoʊ fɔr ðə ˈtʃipər hoʊˈtɛl/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Which one do you like more?",
+        "vi": "Bạn thích cái nào hơn?"
+      },
+      {
+        "en": "What are you having?",
+        "vi": "Bạn sẽ dùng món gì?"
+      }
+    ],
+    "id": "b1.id-go-for"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-preferences",
+    "topic_vi": "Nói sở thích và lựa chọn",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I'm more of a ___ person.",
+    "frame_vi": "Tôi thuộc kiểu người thích ___ hơn.",
+    "note_vi": "I'm more of a ___ person là cách nói tự nhiên về tính cách hoặc sở thích. Điền một danh từ ngắn, đặt trước person, không thêm s.",
+    "slots": [
+      {
+        "en": "morning",
+        "vi": "buổi sáng",
+        "ipa": "/aɪm mɔr ʌv ə ˈmɔrnɪŋ ˈpɝsən/"
+      },
+      {
+        "en": "city",
+        "vi": "thành phố",
+        "ipa": "/aɪm mɔr ʌv ə ˈsɪti ˈpɝsən/"
+      },
+      {
+        "en": "beach",
+        "vi": "biển",
+        "ipa": "/aɪm mɔr ʌv ə bitʃ ˈpɝsən/"
+      },
+      {
+        "en": "coffee",
+        "vi": "cà phê",
+        "ipa": "/aɪm mɔr ʌv ə ˈkɑfi ˈpɝsən/"
+      },
+      {
+        "en": "cat",
+        "vi": "mèo",
+        "ipa": "/aɪm mɔr ʌv ə kæt ˈpɝsən/"
+      },
+      {
+        "en": "home",
+        "vi": "ở nhà",
+        "ipa": "/aɪm mɔr ʌv ə hoʊm ˈpɝsən/"
+      },
+      {
+        "en": "team",
+        "vi": "làm việc nhóm",
+        "ipa": "/aɪm mɔr ʌv ə tim ˈpɝsən/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm more of a night person.",
+        "vi": "Tôi thuộc kiểu người thích ban đêm hơn.",
+        "ipa": "/aɪm mɔr ʌv ə naɪt ˈpɝsən/"
+      },
+      {
+        "en": "I'm more of a tea person.",
+        "vi": "Tôi thuộc kiểu người thích trà hơn.",
+        "ipa": "/aɪm mɔr ʌv ə ti ˈpɝsən/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you prefer tea or coffee?",
+        "vi": "Bạn thích trà hay cà phê hơn?"
+      },
+      {
+        "en": "Mountains or beach?",
+        "vi": "Núi hay biển?"
+      }
+    ],
+    "id": "b1.im-more-of-a-person"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-job-interview",
+    "topic_vi": "Phỏng vấn xin việc",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "I'm good at ___.",
+    "frame_vi": "Tôi giỏi ___.",
+    "note_vi": "Be good at đi với danh động từ, tức là động từ thêm ing. Dùng khi nói về điểm mạnh của mình trong buổi phỏng vấn.",
+    "slots": [
+      {
+        "en": "solving problems",
+        "vi": "giải quyết vấn đề",
+        "ipa": "/aɪm ɡʊd æt ˈsɑlvɪŋ ˈprɑbləmz/"
+      },
+      {
+        "en": "working in a team",
+        "vi": "làm việc nhóm",
+        "ipa": "/aɪm ɡʊd æt ˈwɝkɪŋ ɪn ə tim/"
+      },
+      {
+        "en": "managing my time",
+        "vi": "quản lý thời gian",
+        "ipa": "/aɪm ɡʊd æt ˈmænədʒɪŋ maɪ taɪm/"
+      },
+      {
+        "en": "talking to customers",
+        "vi": "nói chuyện với khách hàng",
+        "ipa": "/aɪm ɡʊd æt ˈtɔkɪŋ tu ˈkʌstəmərz/"
+      },
+      {
+        "en": "learning quickly",
+        "vi": "học nhanh",
+        "ipa": "/aɪm ɡʊd æt ˈlɝnɪŋ ˈkwɪkli/"
+      },
+      {
+        "en": "using Excel",
+        "vi": "dùng Excel",
+        "ipa": "/aɪm ɡʊd æt ˈjuzɪŋ ɪkˈsɛl/"
+      },
+      {
+        "en": "staying calm",
+        "vi": "giữ bình tĩnh",
+        "ipa": "/aɪm ɡʊd æt ˈsteɪɪŋ kɑm/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm good at explaining things clearly.",
+        "vi": "Tôi giỏi giải thích mọi thứ rõ ràng.",
+        "ipa": "/aɪm ɡʊd æt ɪkˈspleɪnɪŋ θɪŋz ˈklɪrli/"
+      },
+      {
+        "en": "I'm good at meeting deadlines.",
+        "vi": "Tôi giỏi hoàn thành đúng hạn.",
+        "ipa": "/aɪm ɡʊd æt ˈmitɪŋ ˈdɛdˌlaɪnz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What are your strengths?",
+        "vi": "Điểm mạnh của bạn là gì?"
+      },
+      {
+        "en": "Why should we hire you?",
+        "vi": "Tại sao chúng tôi nên tuyển bạn?"
+      }
+    ],
+    "id": "b1.im-good-at"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-job-interview",
+    "topic_vi": "Phỏng vấn xin việc",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "I have experience in ___.",
+    "frame_vi": "Tôi có kinh nghiệm về ___.",
+    "note_vi": "Experience in cộng danh từ chỉ lĩnh vực. Đây là cách nói gọn để giới thiệu nền tảng nghề nghiệp, không cần chia thì.",
+    "slots": [
+      {
+        "en": "sales",
+        "vi": "bán hàng",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn seɪlz/"
+      },
+      {
+        "en": "customer service",
+        "vi": "chăm sóc khách hàng",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn ˈkʌstəmər ˈsɝvəs/"
+      },
+      {
+        "en": "accounting",
+        "vi": "kế toán",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn əˈkaʊntɪŋ/"
+      },
+      {
+        "en": "teaching",
+        "vi": "giảng dạy",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn ˈtitʃɪŋ/"
+      },
+      {
+        "en": "web design",
+        "vi": "thiết kế web",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn wɛb dɪˈzaɪn/"
+      },
+      {
+        "en": "project management",
+        "vi": "quản lý dự án",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn ˈprɑdʒɛkt ˈmænədʒmənt/"
+      },
+      {
+        "en": "marketing",
+        "vi": "tiếp thị",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn ˈmɑrkətɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I have experience in hotel work.",
+        "vi": "Tôi có kinh nghiệm làm việc ở khách sạn.",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn hoʊˈtɛl wɝk/"
+      },
+      {
+        "en": "I have experience in online advertising.",
+        "vi": "Tôi có kinh nghiệm về quảng cáo trực tuyến.",
+        "ipa": "/aɪ hæv ɪkˈspɪriəns ɪn ˈɔnˌlaɪn ˈædvərˌtaɪzɪŋ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Tell me about your background.",
+        "vi": "Hãy kể về nền tảng của bạn."
+      },
+      {
+        "en": "What experience do you have?",
+        "vi": "Bạn có kinh nghiệm gì?"
+      }
+    ],
+    "id": "b1.i-have-experience-in"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-job-interview",
+    "topic_vi": "Phỏng vấn xin việc",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "My biggest strength is ___.",
+    "frame_vi": "Điểm mạnh nhất của tôi là ___.",
+    "note_vi": "Sau is có thể dùng danh từ như patience hoặc danh động từ như staying calm. Nên nói thêm một ví dụ ngắn để câu trả lời thuyết phục hơn.",
+    "slots": [
+      {
+        "en": "patience",
+        "vi": "sự kiên nhẫn",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz ˈpeɪʃəns/"
+      },
+      {
+        "en": "honesty",
+        "vi": "sự trung thực",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz ˈɑnəsti/"
+      },
+      {
+        "en": "communication",
+        "vi": "khả năng giao tiếp",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz kəmˌjunəˈkeɪʃən/"
+      },
+      {
+        "en": "my work ethic",
+        "vi": "tinh thần làm việc",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz maɪ wɝk ˈɛθɪk/"
+      },
+      {
+        "en": "staying calm",
+        "vi": "giữ bình tĩnh",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz ˈsteɪɪŋ kɑm/"
+      },
+      {
+        "en": "being organized",
+        "vi": "sự ngăn nắp",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz ˈbiɪŋ ˈɔrɡəˌnaɪzd/"
+      },
+      {
+        "en": "creativity",
+        "vi": "sự sáng tạo",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz ˌkrieɪˈtɪvəti/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My biggest strength is teamwork.",
+        "vi": "Điểm mạnh nhất của tôi là làm việc nhóm.",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz ˈtimˌwɝk/"
+      },
+      {
+        "en": "My biggest strength is learning fast.",
+        "vi": "Điểm mạnh nhất của tôi là học nhanh.",
+        "ipa": "/maɪ ˈbɪɡəst strɛŋkθ ɪz ˈlɝnɪŋ fæst/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your biggest strength?",
+        "vi": "Điểm mạnh nhất của bạn là gì?"
+      },
+      {
+        "en": "What makes you a good worker?",
+        "vi": "Điều gì khiến bạn là nhân viên tốt?"
+      }
+    ],
+    "id": "b1.my-biggest-strength-is"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-job-interview",
+    "topic_vi": "Phỏng vấn xin việc",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "In five years, I'd like to ___.",
+    "frame_vi": "Năm năm nữa, tôi muốn ___.",
+    "note_vi": "I'd like to là cách nói lịch sự về mong muốn, theo sau là động từ nguyên mẫu. Dùng để trả lời câu hỏi về mục tiêu tương lai.",
+    "slots": [
+      {
+        "en": "become a manager",
+        "vi": "trở thành quản lý",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu bɪˈkʌm ə ˈmænədʒər/"
+      },
+      {
+        "en": "lead a team",
+        "vi": "dẫn dắt một nhóm",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu lɛd ə tim/"
+      },
+      {
+        "en": "grow with the company",
+        "vi": "phát triển cùng công ty",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu ɡroʊ wɪð ðə ˈkʌmpəˌni/"
+      },
+      {
+        "en": "learn new skills",
+        "vi": "học thêm kỹ năng mới",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu lɝn nu skɪlz/"
+      },
+      {
+        "en": "work abroad",
+        "vi": "làm việc ở nước ngoài",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu wɝk əˈbrɔd/"
+      },
+      {
+        "en": "start my own business",
+        "vi": "tự mở công ty",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu stɑrt maɪ oʊn ˈbɪznəs/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "In five years, I'd like to run a project.",
+        "vi": "Năm năm nữa, tôi muốn điều hành một dự án.",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu rʌn ə ˈprɑdʒɛkt/"
+      },
+      {
+        "en": "In five years, I'd like to train others.",
+        "vi": "Năm năm nữa, tôi muốn đào tạo người khác.",
+        "ipa": "/ɪn faɪv jɪrz aɪd laɪk tu treɪn ˈʌðərz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where do you see yourself later?",
+        "vi": "Sau này bạn thấy mình ở đâu?"
+      },
+      {
+        "en": "What are your career goals?",
+        "vi": "Mục tiêu nghề nghiệp của bạn là gì?"
+      }
+    ],
+    "id": "b1.in-five-years-id-like-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-meetings",
+    "topic_vi": "Họp và thảo luận ở công ty",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "Let's move on to ___.",
+    "frame_vi": "Chúng ta chuyển sang ___ nhé.",
+    "note_vi": "Move on to là cụm để chuyển sang mục tiếp theo trong cuộc họp. Sau to dùng danh từ, thường có the đứng trước.",
+    "slots": [
+      {
+        "en": "the next item",
+        "vi": "mục tiếp theo",
+        "ipa": "/lɛts muv ɑn tu ðə nɛkst ˈaɪtəm/"
+      },
+      {
+        "en": "the budget",
+        "vi": "ngân sách",
+        "ipa": "/lɛts muv ɑn tu ðə ˈbʌdʒɪt/"
+      },
+      {
+        "en": "the schedule",
+        "vi": "lịch trình",
+        "ipa": "/lɛts muv ɑn tu ðə ˈskɛdʒʊl/"
+      },
+      {
+        "en": "the marketing plan",
+        "vi": "kế hoạch tiếp thị",
+        "ipa": "/lɛts muv ɑn tu ðə ˈmɑrkətɪŋ plæn/"
+      },
+      {
+        "en": "the second point",
+        "vi": "điểm thứ hai",
+        "ipa": "/lɛts muv ɑn tu ðə ˈsɛkənd pɔɪnt/"
+      },
+      {
+        "en": "the new project",
+        "vi": "dự án mới",
+        "ipa": "/lɛts muv ɑn tu ðə nu ˈprɑdʒɛkt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Let's move on to the sales figures.",
+        "vi": "Chúng ta chuyển sang số liệu bán hàng nhé.",
+        "ipa": "/lɛts muv ɑn tu ðə seɪlz ˈfɪɡjərz/"
+      },
+      {
+        "en": "Let's move on to any other business.",
+        "vi": "Chúng ta chuyển sang các vấn đề khác nhé.",
+        "ipa": "/lɛts muv ɑn tu ˈɛni ˈʌðər ˈbɪznəs/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Are we done with this topic?",
+        "vi": "Chúng ta xong chủ đề này chưa?"
+      },
+      {
+        "en": "What's next on the agenda?",
+        "vi": "Tiếp theo trong chương trình là gì?"
+      }
+    ],
+    "id": "b1.lets-move-on-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-meetings",
+    "topic_vi": "Họp và thảo luận ở công ty",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "I'd like to add ___.",
+    "frame_vi": "Tôi muốn bổ sung ___.",
+    "note_vi": "I'd like to add là cách chen vào cuộc họp một cách lịch sự. Sau add là danh từ, thường có a hoặc one trước.",
+    "slots": [
+      {
+        "en": "one more point",
+        "vi": "thêm một điểm",
+        "ipa": "/aɪd laɪk tu æd wʌn mɔr pɔɪnt/"
+      },
+      {
+        "en": "a quick comment",
+        "vi": "một nhận xét ngắn",
+        "ipa": "/aɪd laɪk tu æd ə kwɪk ˈkɑmɛnt/"
+      },
+      {
+        "en": "something about costs",
+        "vi": "vài điều về chi phí",
+        "ipa": "/aɪd laɪk tu æd ˈsʌmθɪŋ əˈbaʊt kɑsts/"
+      },
+      {
+        "en": "a suggestion",
+        "vi": "một đề xuất",
+        "ipa": "/aɪd laɪk tu æd ə səˈdʒɛstʃən/"
+      },
+      {
+        "en": "another idea",
+        "vi": "một ý tưởng khác",
+        "ipa": "/aɪd laɪk tu æd əˈnʌðər aɪˈdiə/"
+      },
+      {
+        "en": "one thing",
+        "vi": "một điều",
+        "ipa": "/aɪd laɪk tu æd wʌn θɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'd like to add a small detail.",
+        "vi": "Tôi muốn bổ sung một chi tiết nhỏ.",
+        "ipa": "/aɪd laɪk tu æd ə smɔl dɪˈteɪl/"
+      },
+      {
+        "en": "I'd like to add some good news.",
+        "vi": "Tôi muốn bổ sung một tin tốt.",
+        "ipa": "/aɪd laɪk tu æd sʌm ɡʊd nuz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Does anyone have something to add?",
+        "vi": "Có ai muốn bổ sung gì không?"
+      },
+      {
+        "en": "Any other thoughts?",
+        "vi": "Còn ý kiến nào khác không?"
+      }
+    ],
+    "id": "b1.id-like-to-add"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-meetings",
+    "topic_vi": "Họp và thảo luận ở công ty",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "Could you clarify ___?",
+    "frame_vi": "Bạn có thể làm rõ ___ không?",
+    "note_vi": "Clarify nghĩa là làm rõ. Could you lịch sự hơn can you, sau clarify dùng danh từ hoặc cụm như what you mean.",
+    "slots": [
+      {
+        "en": "that last point",
+        "vi": "điểm vừa rồi",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ ðæt læst pɔɪnt/"
+      },
+      {
+        "en": "the deadline",
+        "vi": "thời hạn",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ ðə ˈdɛdˌlaɪn/"
+      },
+      {
+        "en": "your main idea",
+        "vi": "ý chính của bạn",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ jɔr meɪn aɪˈdiə/"
+      },
+      {
+        "en": "what you mean",
+        "vi": "ý bạn là gì",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ wʌt ju min/"
+      },
+      {
+        "en": "the budget",
+        "vi": "ngân sách",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ ðə ˈbʌdʒɪt/"
+      },
+      {
+        "en": "the next steps",
+        "vi": "các bước tiếp theo",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ ðə nɛkst stɛps/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Could you clarify my role in this?",
+        "vi": "Bạn có thể làm rõ vai trò của tôi không?",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ maɪ roʊl ɪn ðɪs/"
+      },
+      {
+        "en": "Could you clarify the new rules?",
+        "vi": "Bạn có thể làm rõ các quy định mới không?",
+        "ipa": "/kʊd ju ˈklɛrəˌfaɪ ðə nu rulz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Is everything clear so far?",
+        "vi": "Đến giờ mọi thứ đã rõ chưa?"
+      },
+      {
+        "en": "Do you have any questions?",
+        "vi": "Bạn có câu hỏi nào không?"
+      }
+    ],
+    "id": "b1.could-you-clarify"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-meetings",
+    "topic_vi": "Họp và thảo luận ở công ty",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "Can we agree on ___?",
+    "frame_vi": "Chúng ta có thể thống nhất về ___ không?",
+    "note_vi": "Agree on dùng khi cả nhóm cùng chốt một việc. Sau on là danh từ hoặc cụm như who does what.",
+    "slots": [
+      {
+        "en": "a date",
+        "vi": "một ngày",
+        "ipa": "/kæn wi əˈɡri ɑn ə deɪt/"
+      },
+      {
+        "en": "the next steps",
+        "vi": "các bước tiếp theo",
+        "ipa": "/kæn wi əˈɡri ɑn ðə nɛkst stɛps/"
+      },
+      {
+        "en": "a budget",
+        "vi": "một ngân sách",
+        "ipa": "/kæn wi əˈɡri ɑn ə ˈbʌdʒɪt/"
+      },
+      {
+        "en": "who does what",
+        "vi": "ai làm việc gì",
+        "ipa": "/kæn wi əˈɡri ɑn hu dʌz wʌt/"
+      },
+      {
+        "en": "the final plan",
+        "vi": "kế hoạch cuối cùng",
+        "ipa": "/kæn wi əˈɡri ɑn ðə ˈfaɪnəl plæn/"
+      },
+      {
+        "en": "a deadline",
+        "vi": "một thời hạn",
+        "ipa": "/kæn wi əˈɡri ɑn ə ˈdɛdˌlaɪn/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Can we agree on a time to meet?",
+        "vi": "Chúng ta có thể thống nhất giờ gặp không?",
+        "ipa": "/kæn wi əˈɡri ɑn ə taɪm tu mit/"
+      },
+      {
+        "en": "Can we agree on the main goals?",
+        "vi": "Chúng ta có thể thống nhất các mục tiêu chính không?",
+        "ipa": "/kæn wi əˈɡri ɑn ðə meɪn ɡoʊlz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How should we wrap up?",
+        "vi": "Chúng ta nên kết thúc thế nào?"
+      },
+      {
+        "en": "What do we decide today?",
+        "vi": "Hôm nay chúng ta quyết định gì?"
+      }
+    ],
+    "id": "b1.can-we-agree-on"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-presentations",
+    "topic_vi": "Thuyết trình ngắn",
+    "goals": [
+      "work",
+      "social"
+    ],
+    "frame_en": "Today I'll talk about ___.",
+    "frame_vi": "Hôm nay tôi sẽ nói về ___.",
+    "note_vi": "I'll talk about dùng để mở đầu bài thuyết trình và cho người nghe biết chủ đề. Sau about là danh từ hoặc how to cộng động từ.",
+    "slots": [
+      {
+        "en": "our sales results",
+        "vi": "kết quả bán hàng của chúng ta",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt ˈaʊər seɪlz rɪˈzʌlts/"
+      },
+      {
+        "en": "a new idea",
+        "vi": "một ý tưởng mới",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt ə nu aɪˈdiə/"
+      },
+      {
+        "en": "my project",
+        "vi": "dự án của tôi",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt maɪ ˈprɑdʒɛkt/"
+      },
+      {
+        "en": "the main problems",
+        "vi": "các vấn đề chính",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt ðə meɪn ˈprɑbləmz/"
+      },
+      {
+        "en": "our plan",
+        "vi": "kế hoạch của chúng ta",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt ˈaʊər plæn/"
+      },
+      {
+        "en": "how to save time",
+        "vi": "cách tiết kiệm thời gian",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt haʊ tu seɪv taɪm/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Today I'll talk about healthy habits.",
+        "vi": "Hôm nay tôi sẽ nói về thói quen lành mạnh.",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt ˈhɛlθi ˈhæbəts/"
+      },
+      {
+        "en": "Today I'll talk about our new website.",
+        "vi": "Hôm nay tôi sẽ nói về trang web mới của chúng ta.",
+        "ipa": "/təˈdeɪ aɪl tɔk əˈbaʊt ˈaʊər nu ˈwɛbˌsaɪt/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your presentation about?",
+        "vi": "Bài thuyết trình của bạn nói về gì?"
+      },
+      {
+        "en": "What will you cover today?",
+        "vi": "Hôm nay bạn sẽ trình bày gì?"
+      }
+    ],
+    "id": "b1.today-ill-talk-about"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-presentations",
+    "topic_vi": "Thuyết trình ngắn",
+    "goals": [
+      "work",
+      "social"
+    ],
+    "frame_en": "Let me start with ___.",
+    "frame_vi": "Để tôi bắt đầu với ___.",
+    "note_vi": "Let me start with là cách báo hiệu phần đầu của bài nói. Sau with dùng danh từ, chẳng hạn một câu chuyện hay một câu hỏi.",
+    "slots": [
+      {
+        "en": "a short story",
+        "vi": "một câu chuyện ngắn",
+        "ipa": "/lɛt mi stɑrt wɪð ə ʃɔrt ˈstɔri/"
+      },
+      {
+        "en": "a quick question",
+        "vi": "một câu hỏi nhanh",
+        "ipa": "/lɛt mi stɑrt wɪð ə kwɪk ˈkwɛstʃən/"
+      },
+      {
+        "en": "the main idea",
+        "vi": "ý chính",
+        "ipa": "/lɛt mi stɑrt wɪð ðə meɪn aɪˈdiə/"
+      },
+      {
+        "en": "some background",
+        "vi": "một chút bối cảnh",
+        "ipa": "/lɛt mi stɑrt wɪð sʌm ˈbækˌɡraʊnd/"
+      },
+      {
+        "en": "last year's results",
+        "vi": "kết quả năm ngoái",
+        "ipa": "/lɛt mi stɑrt wɪð læst jɪrz rɪˈzʌlts/"
+      },
+      {
+        "en": "a simple example",
+        "vi": "một ví dụ đơn giản",
+        "ipa": "/lɛt mi stɑrt wɪð ə ˈsɪmpəl ɪɡˈzæmpəl/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Let me start with the good news.",
+        "vi": "Để tôi bắt đầu với tin tốt.",
+        "ipa": "/lɛt mi stɑrt wɪð ðə ɡʊd nuz/"
+      },
+      {
+        "en": "Let me start with a picture.",
+        "vi": "Để tôi bắt đầu với một bức hình.",
+        "ipa": "/lɛt mi stɑrt wɪð ə ˈpɪktʃər/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where would you like to begin?",
+        "vi": "Bạn muốn bắt đầu từ đâu?"
+      },
+      {
+        "en": "How will you open your talk?",
+        "vi": "Bạn sẽ mở đầu bài nói thế nào?"
+      }
+    ],
+    "id": "b1.let-me-start-with"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-presentations",
+    "topic_vi": "Thuyết trình ngắn",
+    "goals": [
+      "work",
+      "social"
+    ],
+    "frame_en": "As you can see, ___.",
+    "frame_vi": "Như các bạn thấy, ___.",
+    "note_vi": "As you can see dùng khi chỉ vào biểu đồ hoặc hình ảnh. Sau dấu phẩy là một câu hoàn chỉnh, nên dùng thì hiện tại hoặc quá khứ đơn.",
+    "slots": [
+      {
+        "en": "sales went up",
+        "vi": "doanh số đã tăng",
+        "ipa": "/æz ju kæn si seɪlz wɛnt ʌp/"
+      },
+      {
+        "en": "costs are lower",
+        "vi": "chi phí thấp hơn",
+        "ipa": "/æz ju kæn si kɑsts ɑr ˈloʊər/"
+      },
+      {
+        "en": "the trend is clear",
+        "vi": "xu hướng rất rõ",
+        "ipa": "/æz ju kæn si ðə trɛnd ɪz klɪr/"
+      },
+      {
+        "en": "most people agree",
+        "vi": "hầu hết mọi người đồng ý",
+        "ipa": "/æz ju kæn si moʊst ˈpipəl əˈɡri/"
+      },
+      {
+        "en": "it works well",
+        "vi": "nó hoạt động tốt",
+        "ipa": "/æz ju kæn si ɪt wɝks wɛl/"
+      },
+      {
+        "en": "we're on track",
+        "vi": "chúng ta đang đúng tiến độ",
+        "ipa": "/æz ju kæn si wir ɑn træk/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "As you can see, prices fell last month.",
+        "vi": "Như các bạn thấy, giá đã giảm tháng trước.",
+        "ipa": "/æz ju kæn si ˈpraɪsəz fɛl læst mʌnθ/"
+      },
+      {
+        "en": "As you can see, the team is growing.",
+        "vi": "Như các bạn thấy, đội ngũ đang lớn mạnh.",
+        "ipa": "/æz ju kæn si ðə tim ɪz ˈɡroʊɪŋ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What does this chart show?",
+        "vi": "Biểu đồ này cho thấy điều gì?"
+      },
+      {
+        "en": "Can you explain the results?",
+        "vi": "Bạn giải thích kết quả được không?"
+      }
+    ],
+    "id": "b1.as-you-can-see"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-presentations",
+    "topic_vi": "Thuyết trình ngắn",
+    "goals": [
+      "work",
+      "social"
+    ],
+    "frame_en": "To sum up, ___.",
+    "frame_vi": "Tóm lại, ___.",
+    "note_vi": "To sum up dùng ở phần kết để nhắc lại ý chính. Sau dấu phẩy là một câu đầy đủ, nên nói ngắn và rõ rồi cảm ơn người nghe.",
+    "slots": [
+      {
+        "en": "we need more time",
+        "vi": "chúng ta cần thêm thời gian",
+        "ipa": "/tu sʌm ʌp wi nid mɔr taɪm/"
+      },
+      {
+        "en": "the results are good",
+        "vi": "kết quả rất tốt",
+        "ipa": "/tu sʌm ʌp ðə rɪˈzʌlts ɑr ɡʊd/"
+      },
+      {
+        "en": "teamwork is the key",
+        "vi": "làm việc nhóm là chìa khóa",
+        "ipa": "/tu sʌm ʌp ˈtimˌwɝk ɪz ðə ki/"
+      },
+      {
+        "en": "customers come first",
+        "vi": "khách hàng là trên hết",
+        "ipa": "/tu sʌm ʌp ˈkʌstəmərz kʌm fɝst/"
+      },
+      {
+        "en": "the plan is working",
+        "vi": "kế hoạch đang hiệu quả",
+        "ipa": "/tu sʌm ʌp ðə plæn ɪz ˈwɝkɪŋ/"
+      },
+      {
+        "en": "we should act now",
+        "vi": "chúng ta nên hành động ngay",
+        "ipa": "/tu sʌm ʌp wi ʃʊd ækt naʊ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "To sum up, this idea saves money.",
+        "vi": "Tóm lại, ý tưởng này tiết kiệm tiền.",
+        "ipa": "/tu sʌm ʌp ðɪs aɪˈdiə seɪvz ˈmʌni/"
+      },
+      {
+        "en": "To sum up, we have a clear plan.",
+        "vi": "Tóm lại, chúng ta có một kế hoạch rõ ràng.",
+        "ipa": "/tu sʌm ʌp wi hæv ə klɪr plæn/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your main message?",
+        "vi": "Thông điệp chính của bạn là gì?"
+      },
+      {
+        "en": "Can you give us a summary?",
+        "vi": "Bạn có thể tóm tắt giúp không?"
+      }
+    ],
+    "id": "b1.to-sum-up"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reports-updates",
+    "topic_vi": "Báo cáo tiến độ",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "I've been working on ___.",
+    "frame_vi": "Dạo này tôi đang làm ___.",
+    "note_vi": "Have been + động từ ing nói về việc đã bắt đầu trước đây và vẫn đang làm đến bây giờ. Sau on là danh từ chỉ công việc.",
+    "slots": [
+      {
+        "en": "the new website",
+        "vi": "trang web mới",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə nu ˈwɛbˌsaɪt/"
+      },
+      {
+        "en": "the budget report",
+        "vi": "báo cáo ngân sách",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə ˈbʌdʒɪt riˈpɔrt/"
+      },
+      {
+        "en": "the sales plan",
+        "vi": "kế hoạch bán hàng",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə seɪlz plæn/"
+      },
+      {
+        "en": "the user guide",
+        "vi": "tài liệu hướng dẫn",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə ˈjuzər ɡaɪd/"
+      },
+      {
+        "en": "the client proposal",
+        "vi": "đề xuất cho khách hàng",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə ˈklaɪənt prəˈpoʊzəl/"
+      },
+      {
+        "en": "the monthly report",
+        "vi": "báo cáo hằng tháng",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə ˈmʌnθli riˈpɔrt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I've been working on the presentation.",
+        "vi": "Dạo này tôi đang làm bài thuyết trình.",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə ˌprɛzənˈteɪʃən/"
+      },
+      {
+        "en": "I've been working on the schedule all week.",
+        "vi": "Cả tuần nay tôi đang làm lịch trình.",
+        "ipa": "/aɪv bɪn ˈwɝkɪŋ ɑn ðə ˈskɛdʒʊl ɔl wik/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What have you been working on?",
+        "vi": "Dạo này bạn đang làm gì?"
+      },
+      {
+        "en": "How is the project going?",
+        "vi": "Dự án đang tiến triển thế nào?"
+      }
+    ],
+    "id": "b1.been-working-on"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reports-updates",
+    "topic_vi": "Báo cáo tiến độ",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "We've already finished ___.",
+    "frame_vi": "Chúng tôi đã hoàn thành ___ rồi.",
+    "note_vi": "Present perfect (have + quá khứ phân từ) với already báo rằng việc đã xong và kết quả còn liên quan đến hiện tại.",
+    "slots": [
+      {
+        "en": "the first draft",
+        "vi": "bản nháp đầu tiên",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə fɝst dræft/"
+      },
+      {
+        "en": "the testing",
+        "vi": "phần kiểm thử",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə ˈtɛstɪŋ/"
+      },
+      {
+        "en": "the survey",
+        "vi": "cuộc khảo sát",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə sərˈveɪ/"
+      },
+      {
+        "en": "the main design",
+        "vi": "thiết kế chính",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə meɪn dɪˈzaɪn/"
+      },
+      {
+        "en": "the training",
+        "vi": "buổi đào tạo",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə ˈtreɪnɪŋ/"
+      },
+      {
+        "en": "the budget",
+        "vi": "phần ngân sách",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə ˈbʌdʒɪt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "We've already finished the first stage.",
+        "vi": "Chúng tôi đã hoàn thành giai đoạn đầu rồi.",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə fɝst steɪdʒ/"
+      },
+      {
+        "en": "We've already finished the repairs.",
+        "vi": "Chúng tôi đã hoàn thành việc sửa chữa rồi.",
+        "ipa": "/wiv ɔlˈrɛdi ˈfɪnɪʃt ðə rɪˈpɛrz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What have you done so far?",
+        "vi": "Cho đến giờ bạn đã làm được gì?"
+      },
+      {
+        "en": "Is the project almost done?",
+        "vi": "Dự án sắp xong chưa?"
+      }
+    ],
+    "id": "b1.already-finished"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reports-updates",
+    "topic_vi": "Báo cáo tiến độ",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "We're running behind on ___.",
+    "frame_vi": "Chúng tôi đang chậm tiến độ ở ___.",
+    "note_vi": "Running behind on là cách nói tự nhiên khi công việc bị trễ so với kế hoạch. Dùng thì hiện tại tiếp diễn vì tình trạng này đang xảy ra.",
+    "slots": [
+      {
+        "en": "the delivery",
+        "vi": "khâu giao hàng",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə dɪˈlɪvəri/"
+      },
+      {
+        "en": "the testing",
+        "vi": "phần kiểm thử",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə ˈtɛstɪŋ/"
+      },
+      {
+        "en": "the new design",
+        "vi": "thiết kế mới",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə nu dɪˈzaɪn/"
+      },
+      {
+        "en": "the repairs",
+        "vi": "việc sửa chữa",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə rɪˈpɛrz/"
+      },
+      {
+        "en": "the monthly report",
+        "vi": "báo cáo hằng tháng",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə ˈmʌnθli riˈpɔrt/"
+      },
+      {
+        "en": "the hiring",
+        "vi": "việc tuyển người",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə ˈhaɪrɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "We're running behind on the website.",
+        "vi": "Chúng tôi đang chậm tiến độ ở trang web.",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə ˈwɛbˌsaɪt/"
+      },
+      {
+        "en": "We're running behind on the paperwork.",
+        "vi": "Chúng tôi đang chậm tiến độ ở phần giấy tờ.",
+        "ipa": "/wir ˈrʌnɪŋ bɪˈhaɪnd ɑn ðə ˈpeɪpərˌwɝk/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Are we on schedule?",
+        "vi": "Chúng ta có kịp tiến độ không?"
+      },
+      {
+        "en": "Is there any problem with the project?",
+        "vi": "Dự án có vấn đề gì không?"
+      }
+    ],
+    "id": "b1.running-behind-on"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reports-updates",
+    "topic_vi": "Báo cáo tiến độ",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "I'll send you ___ by tomorrow.",
+    "frame_vi": "Tôi sẽ gửi bạn ___ trước ngày mai.",
+    "note_vi": "I'll + động từ nguyên mẫu là lời hứa nói ngay lúc nói. By tomorrow nghĩa là chậm nhất là ngày mai, không muộn hơn.",
+    "slots": [
+      {
+        "en": "the report",
+        "vi": "báo cáo",
+        "ipa": "/aɪl sɛnd ju ðə riˈpɔrt baɪ təˈmɑˌroʊ/"
+      },
+      {
+        "en": "the numbers",
+        "vi": "các số liệu",
+        "ipa": "/aɪl sɛnd ju ðə ˈnʌmbərz baɪ təˈmɑˌroʊ/"
+      },
+      {
+        "en": "the full list",
+        "vi": "danh sách đầy đủ",
+        "ipa": "/aɪl sɛnd ju ðə fʊl lɪst baɪ təˈmɑˌroʊ/"
+      },
+      {
+        "en": "the updated plan",
+        "vi": "kế hoạch đã cập nhật",
+        "ipa": "/aɪl sɛnd ju ðə əpˈdeɪtɪd plæn baɪ təˈmɑˌroʊ/"
+      },
+      {
+        "en": "the invoice",
+        "vi": "hóa đơn",
+        "ipa": "/aɪl sɛnd ju ðə ˈɪnvɔɪs baɪ təˈmɑˌroʊ/"
+      },
+      {
+        "en": "a short summary",
+        "vi": "bản tóm tắt ngắn",
+        "ipa": "/aɪl sɛnd ju ə ʃɔrt ˈsʌməri baɪ təˈmɑˌroʊ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'll send you the photos by tomorrow.",
+        "vi": "Tôi sẽ gửi bạn các tấm ảnh trước ngày mai.",
+        "ipa": "/aɪl sɛnd ju ðə ˈfoʊˌtoʊz baɪ təˈmɑˌroʊ/"
+      },
+      {
+        "en": "I'll send you the new schedule by tomorrow.",
+        "vi": "Tôi sẽ gửi bạn lịch mới trước ngày mai.",
+        "ipa": "/aɪl sɛnd ju ðə nu ˈskɛdʒʊl baɪ təˈmɑˌroʊ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "When can I get the report?",
+        "vi": "Khi nào tôi nhận được báo cáo?"
+      },
+      {
+        "en": "Can you send me an update?",
+        "vi": "Bạn gửi tôi cập nhật được không?"
+      }
+    ],
+    "id": "b1.send-you-by-tomorrow"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-deadlines",
+    "topic_vi": "Thương lượng thời hạn",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "Would it be possible to ___?",
+    "frame_vi": "Liệu có thể ___ không?",
+    "note_vi": "Would it be possible to + động từ nguyên mẫu là cách xin phép rất lịch sự, hợp khi bạn muốn đổi thời hạn hay kế hoạch.",
+    "slots": [
+      {
+        "en": "move the meeting",
+        "vi": "dời cuộc họp",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu muv ðə ˈmitɪŋ/"
+      },
+      {
+        "en": "finish it on Monday",
+        "vi": "xong vào thứ Hai",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu ˈfɪnɪʃ ɪt ɑn ˈmʌndi/"
+      },
+      {
+        "en": "change the deadline",
+        "vi": "đổi hạn chót",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu tʃeɪndʒ ðə ˈdɛdˌlaɪn/"
+      },
+      {
+        "en": "work from home tomorrow",
+        "vi": "làm việc ở nhà ngày mai",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu wɝk frʌm hoʊm təˈmɑˌroʊ/"
+      },
+      {
+        "en": "have one more day",
+        "vi": "có thêm một ngày",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu hæv wʌn mɔr deɪ/"
+      },
+      {
+        "en": "submit it late",
+        "vi": "nộp trễ",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu səbˈmɪt ɪt leɪt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Would it be possible to start later?",
+        "vi": "Liệu có thể bắt đầu muộn hơn không?",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu stɑrt ˈleɪtər/"
+      },
+      {
+        "en": "Would it be possible to send it tomorrow?",
+        "vi": "Liệu có thể gửi nó vào ngày mai không?",
+        "ipa": "/wʊd ɪt bi ˈpɑsəbəl tu sɛnd ɪt təˈmɑˌroʊ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Is there a problem with the schedule?",
+        "vi": "Lịch trình có vấn đề gì không?"
+      },
+      {
+        "en": "Can you finish it today?",
+        "vi": "Hôm nay bạn xong được không?"
+      }
+    ],
+    "id": "b1.would-it-be-possible"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-deadlines",
+    "topic_vi": "Thương lượng thời hạn",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "I'm afraid I can't ___ by Friday.",
+    "frame_vi": "Tôi e là tôi không thể ___ trước thứ Sáu.",
+    "note_vi": "I'm afraid là cách báo tin không vui một cách nhẹ nhàng. Can't + động từ nguyên mẫu, by Friday nghĩa là chậm nhất là thứ Sáu.",
+    "slots": [
+      {
+        "en": "finish it",
+        "vi": "hoàn thành nó",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt ˈfɪnɪʃ ɪt baɪ ˈfraɪdi/"
+      },
+      {
+        "en": "send the file",
+        "vi": "gửi tệp",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt sɛnd ðə faɪl baɪ ˈfraɪdi/"
+      },
+      {
+        "en": "make the changes",
+        "vi": "thực hiện các thay đổi",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt meɪk ðə ˈtʃeɪndʒəz baɪ ˈfraɪdi/"
+      },
+      {
+        "en": "fix this bug",
+        "vi": "sửa lỗi này",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt fɪks ðɪs bʌɡ baɪ ˈfraɪdi/"
+      },
+      {
+        "en": "write the draft",
+        "vi": "viết xong bản nháp",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt raɪt ðə dræft baɪ ˈfraɪdi/"
+      },
+      {
+        "en": "get it ready",
+        "vi": "chuẩn bị xong",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt ɡɛt ɪt ˈrɛdi baɪ ˈfraɪdi/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm afraid I can't reply by Friday.",
+        "vi": "Tôi e là tôi không thể trả lời trước thứ Sáu.",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt rɪˈplaɪ baɪ ˈfraɪdi/"
+      },
+      {
+        "en": "I'm afraid I can't pay by Friday.",
+        "vi": "Tôi e là tôi không thể thanh toán trước thứ Sáu.",
+        "ipa": "/aɪm əˈfreɪd aɪ kænt peɪ baɪ ˈfraɪdi/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can you finish it by Friday?",
+        "vi": "Bạn xong trước thứ Sáu được không?"
+      },
+      {
+        "en": "Will it be ready this week?",
+        "vi": "Tuần này nó sẽ xong chứ?"
+      }
+    ],
+    "id": "b1.afraid-cant-by-friday"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-deadlines",
+    "topic_vi": "Thương lượng thời hạn",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "Could we extend ___?",
+    "frame_vi": "Chúng ta có thể gia hạn ___ không?",
+    "note_vi": "Extend nghĩa là kéo dài hoặc gia hạn. Could we + động từ nguyên mẫu là lời đề nghị lịch sự. Sau extend là danh từ.",
+    "slots": [
+      {
+        "en": "the deadline",
+        "vi": "hạn chót",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈdɛdˌlaɪn/"
+      },
+      {
+        "en": "the contract",
+        "vi": "hợp đồng",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈkɑnˌtrækt/"
+      },
+      {
+        "en": "the trial period",
+        "vi": "thời gian dùng thử",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈtraɪəl ˈpɪriəd/"
+      },
+      {
+        "en": "the project",
+        "vi": "dự án",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈprɑdʒɛkt/"
+      },
+      {
+        "en": "the offer",
+        "vi": "lời đề nghị",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈɔfər/"
+      },
+      {
+        "en": "the booking",
+        "vi": "lịch đặt chỗ",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈbʊkɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Could we extend the deadline by a week?",
+        "vi": "Chúng ta có thể gia hạn hạn chót thêm một tuần không?",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈdɛdˌlaɪn baɪ ə wik/"
+      },
+      {
+        "en": "Could we extend the meeting a little?",
+        "vi": "Chúng ta có thể kéo dài cuộc họp thêm chút không?",
+        "ipa": "/kʊd wi ɪkˈstɛnd ðə ˈmitɪŋ ə ˈlɪtəl/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you need more time?",
+        "vi": "Bạn có cần thêm thời gian không?"
+      },
+      {
+        "en": "Is the deadline a problem?",
+        "vi": "Hạn chót có là vấn đề không?"
+      }
+    ],
+    "id": "b1.could-we-extend"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-deadlines",
+    "topic_vi": "Thương lượng thời hạn",
+    "goals": [
+      "work"
+    ],
+    "frame_en": "I'll do my best to ___.",
+    "frame_vi": "Tôi sẽ cố hết sức để ___.",
+    "note_vi": "Do my best to + động từ nguyên mẫu nghĩa là cố hết sức làm việc gì. Dùng khi bạn hứa nỗ lực nhưng chưa chắc chắn.",
+    "slots": [
+      {
+        "en": "finish on time",
+        "vi": "xong đúng hạn",
+        "ipa": "/aɪl du maɪ bɛst tu ˈfɪnɪʃ ɑn taɪm/"
+      },
+      {
+        "en": "send it today",
+        "vi": "gửi nó hôm nay",
+        "ipa": "/aɪl du maɪ bɛst tu sɛnd ɪt təˈdeɪ/"
+      },
+      {
+        "en": "fix it quickly",
+        "vi": "sửa nó nhanh",
+        "ipa": "/aɪl du maɪ bɛst tu fɪks ɪt ˈkwɪkli/"
+      },
+      {
+        "en": "meet the deadline",
+        "vi": "kịp hạn chót",
+        "ipa": "/aɪl du maɪ bɛst tu mit ðə ˈdɛdˌlaɪn/"
+      },
+      {
+        "en": "get it done",
+        "vi": "làm xong việc này",
+        "ipa": "/aɪl du maɪ bɛst tu ɡɛt ɪt dʌn/"
+      },
+      {
+        "en": "help you out",
+        "vi": "giúp bạn",
+        "ipa": "/aɪl du maɪ bɛst tu hɛlp ju aʊt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'll do my best to come early.",
+        "vi": "Tôi sẽ cố hết sức để đến sớm.",
+        "ipa": "/aɪl du maɪ bɛst tu kʌm ˈɝli/"
+      },
+      {
+        "en": "I'll do my best to answer today.",
+        "vi": "Tôi sẽ cố hết sức để trả lời hôm nay.",
+        "ipa": "/aɪl du maɪ bɛst tu ˈænsər təˈdeɪ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can you make it by Friday?",
+        "vi": "Bạn kịp trước thứ Sáu được không?"
+      },
+      {
+        "en": "Will you be able to finish?",
+        "vi": "Bạn sẽ xong được chứ?"
+      }
+    ],
+    "id": "b1.do-my-best-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-customer-service",
+    "topic_vi": "Khách hàng và phàn nàn",
+    "goals": [
+      "work",
+      "travel"
+    ],
+    "frame_en": "I'm sorry for ___.",
+    "frame_vi": "Tôi xin lỗi vì ___.",
+    "note_vi": "Sorry for + danh từ hoặc động từ ing để xin lỗi về điều đã xảy ra. Không dùng động từ nguyên mẫu sau for.",
+    "slots": [
+      {
+        "en": "the delay",
+        "vi": "sự chậm trễ",
+        "ipa": "/aɪm ˈsɑri fɔr ðə dɪˈleɪ/"
+      },
+      {
+        "en": "the mistake",
+        "vi": "sai sót",
+        "ipa": "/aɪm ˈsɑri fɔr ðə mɪˈsteɪk/"
+      },
+      {
+        "en": "the confusion",
+        "vi": "sự nhầm lẫn",
+        "ipa": "/aɪm ˈsɑri fɔr ðə kənfˈjuʒən/"
+      },
+      {
+        "en": "the trouble",
+        "vi": "sự phiền toái",
+        "ipa": "/aɪm ˈsɑri fɔr ðə ˈtrʌbəl/"
+      },
+      {
+        "en": "the noise",
+        "vi": "tiếng ồn",
+        "ipa": "/aɪm ˈsɑri fɔr ðə nɔɪz/"
+      },
+      {
+        "en": "keeping you waiting",
+        "vi": "để bạn phải chờ",
+        "ipa": "/aɪm ˈsɑri fɔr ˈkipɪŋ ju ˈweɪtɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm sorry for the long wait.",
+        "vi": "Tôi xin lỗi vì phải chờ lâu.",
+        "ipa": "/aɪm ˈsɑri fɔr ðə lɔŋ weɪt/"
+      },
+      {
+        "en": "I'm sorry for the inconvenience.",
+        "vi": "Tôi xin lỗi vì sự bất tiện này.",
+        "ipa": "/aɪm ˈsɑri fɔr ðə ˌɪnkənˈvinjəns/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why is my order so late?",
+        "vi": "Sao đơn hàng của tôi trễ vậy?"
+      },
+      {
+        "en": "Why did nobody call me?",
+        "vi": "Sao không ai gọi cho tôi?"
+      }
+    ],
+    "id": "b1.sorry-for-the"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-customer-service",
+    "topic_vi": "Khách hàng và phàn nàn",
+    "goals": [
+      "work",
+      "travel"
+    ],
+    "frame_en": "I'd like to complain about ___.",
+    "frame_vi": "Tôi muốn khiếu nại về ___.",
+    "note_vi": "I'd like to + động từ nguyên mẫu là cách nói lịch sự. Complain about + danh từ để phàn nàn về điều gì, giọng vẫn nhã nhặn.",
+    "slots": [
+      {
+        "en": "the noise",
+        "vi": "tiếng ồn",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt ðə nɔɪz/"
+      },
+      {
+        "en": "my room",
+        "vi": "phòng của tôi",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt maɪ rum/"
+      },
+      {
+        "en": "the slow service",
+        "vi": "dịch vụ chậm",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt ðə sloʊ ˈsɝvəs/"
+      },
+      {
+        "en": "my order",
+        "vi": "đơn hàng của tôi",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt maɪ ˈɔrdər/"
+      },
+      {
+        "en": "the bill",
+        "vi": "hóa đơn",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt ðə bɪl/"
+      },
+      {
+        "en": "the cold food",
+        "vi": "đồ ăn nguội",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt ðə koʊld fud/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'd like to complain about the staff.",
+        "vi": "Tôi muốn khiếu nại về nhân viên.",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt ðə stæf/"
+      },
+      {
+        "en": "I'd like to complain about the price.",
+        "vi": "Tôi muốn khiếu nại về giá.",
+        "ipa": "/aɪd laɪk tu kəmˈpleɪn əˈbaʊt ðə praɪs/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How can I help you?",
+        "vi": "Tôi có thể giúp gì cho bạn?"
+      },
+      {
+        "en": "Is there a problem, sir?",
+        "vi": "Có vấn đề gì không, thưa ông?"
+      }
+    ],
+    "id": "b1.complain-about"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-customer-service",
+    "topic_vi": "Khách hàng và phàn nàn",
+    "goals": [
+      "work",
+      "travel"
+    ],
+    "frame_en": "We'll look into ___.",
+    "frame_vi": "Chúng tôi sẽ xem xét ___.",
+    "note_vi": "Look into nghĩa là xem xét, điều tra. We'll + động từ nguyên mẫu là lời hứa của nhân viên với khách.",
+    "slots": [
+      {
+        "en": "the problem",
+        "vi": "vấn đề này",
+        "ipa": "/wil lʊk ˈɪntu ðə ˈprɑbləm/"
+      },
+      {
+        "en": "your complaint",
+        "vi": "khiếu nại của bạn",
+        "ipa": "/wil lʊk ˈɪntu jɔr kəmˈpleɪnt/"
+      },
+      {
+        "en": "the delay",
+        "vi": "sự chậm trễ",
+        "ipa": "/wil lʊk ˈɪntu ðə dɪˈleɪ/"
+      },
+      {
+        "en": "what happened",
+        "vi": "chuyện đã xảy ra",
+        "ipa": "/wil lʊk ˈɪntu wʌt ˈhæpənd/"
+      },
+      {
+        "en": "your booking",
+        "vi": "đặt phòng của bạn",
+        "ipa": "/wil lʊk ˈɪntu jɔr ˈbʊkɪŋ/"
+      },
+      {
+        "en": "the matter",
+        "vi": "vụ việc này",
+        "ipa": "/wil lʊk ˈɪntu ðə ˈmætər/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "We'll look into your order today.",
+        "vi": "Chúng tôi sẽ xem xét đơn hàng của bạn hôm nay.",
+        "ipa": "/wil lʊk ˈɪntu jɔr ˈɔrdər təˈdeɪ/"
+      },
+      {
+        "en": "We'll look into it right away.",
+        "vi": "Chúng tôi sẽ xem xét việc đó ngay.",
+        "ipa": "/wil lʊk ˈɪntu ɪt raɪt əˈweɪ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What are you going to do about it?",
+        "vi": "Bạn sẽ xử lý việc này thế nào?"
+      },
+      {
+        "en": "Can someone fix this today?",
+        "vi": "Hôm nay có ai sửa được không?"
+      }
+    ],
+    "id": "b1.well-look-into"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-customer-service",
+    "topic_vi": "Khách hàng và phàn nàn",
+    "goals": [
+      "work",
+      "travel"
+    ],
+    "frame_en": "I understand that ___ is frustrating.",
+    "frame_vi": "Tôi hiểu rằng ___ rất bực mình.",
+    "note_vi": "I understand that + mệnh đề cho khách thấy bạn thông cảm. Chủ ngữ là danh từ hoặc động từ ing, theo sau là is frustrating.",
+    "slots": [
+      {
+        "en": "waiting",
+        "vi": "việc chờ đợi",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ˈweɪtɪŋ ɪz ˈfrʌˌstreɪtɪŋ/"
+      },
+      {
+        "en": "the delay",
+        "vi": "sự chậm trễ",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ðə dɪˈleɪ ɪz ˈfrʌˌstreɪtɪŋ/"
+      },
+      {
+        "en": "this problem",
+        "vi": "vấn đề này",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ðɪs ˈprɑbləm ɪz ˈfrʌˌstreɪtɪŋ/"
+      },
+      {
+        "en": "losing your bag",
+        "vi": "việc mất túi của bạn",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ˈluzɪŋ jɔr bæɡ ɪz ˈfrʌˌstreɪtɪŋ/"
+      },
+      {
+        "en": "the long queue",
+        "vi": "hàng đợi dài",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ðə lɔŋ kju ɪz ˈfrʌˌstreɪtɪŋ/"
+      },
+      {
+        "en": "a late delivery",
+        "vi": "việc giao hàng trễ",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ə leɪt dɪˈlɪvəri ɪz ˈfrʌˌstreɪtɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I understand that this is frustrating.",
+        "vi": "Tôi hiểu rằng chuyện này rất bực mình.",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ðɪs ɪz ˈfrʌˌstreɪtɪŋ/"
+      },
+      {
+        "en": "I understand that changing flights is frustrating.",
+        "vi": "Tôi hiểu rằng đổi chuyến bay rất bực mình.",
+        "ipa": "/aɪ ˌʌndərˈstænd ðæt ˈtʃeɪndʒɪŋ flaɪts ɪz ˈfrʌˌstreɪtɪŋ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why does this keep happening?",
+        "vi": "Sao chuyện này cứ xảy ra mãi?"
+      },
+      {
+        "en": "Can you believe how long this takes?",
+        "vi": "Bạn có tin nổi việc này lâu thế không?"
+      }
+    ],
+    "id": "b1.understand-frustrating"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-travel-problems",
+    "topic_vi": "Sự cố khi đi du lịch",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "I missed my ___.",
+    "frame_vi": "Tôi bị lỡ ___.",
+    "note_vi": "Missed là quá khứ của miss, nghĩa là lỡ chuyến. Sau my dùng danh từ chỉ phương tiện hoặc chuyến đi, ví dụ my flight, my train.",
+    "slots": [
+      {
+        "en": "flight",
+        "vi": "chuyến bay",
+        "ipa": "/aɪ mɪst maɪ flaɪt/"
+      },
+      {
+        "en": "train",
+        "vi": "chuyến tàu",
+        "ipa": "/aɪ mɪst maɪ treɪn/"
+      },
+      {
+        "en": "bus",
+        "vi": "chuyến xe buýt",
+        "ipa": "/aɪ mɪst maɪ bʌs/"
+      },
+      {
+        "en": "ferry",
+        "vi": "chuyến phà",
+        "ipa": "/aɪ mɪst maɪ ˈfɛri/"
+      },
+      {
+        "en": "connecting flight",
+        "vi": "chuyến bay nối chuyến",
+        "ipa": "/aɪ mɪst maɪ kəˈnɛktɪŋ flaɪt/"
+      },
+      {
+        "en": "tour",
+        "vi": "chuyến tham quan",
+        "ipa": "/aɪ mɪst maɪ tʊr/"
+      },
+      {
+        "en": "stop",
+        "vi": "trạm xuống",
+        "ipa": "/aɪ mɪst maɪ stɑp/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I missed my last bus.",
+        "vi": "Tôi bị lỡ chuyến xe buýt cuối.",
+        "ipa": "/aɪ mɪst maɪ læst bʌs/"
+      },
+      {
+        "en": "I missed my morning train.",
+        "vi": "Tôi bị lỡ chuyến tàu buổi sáng.",
+        "ipa": "/aɪ mɪst maɪ ˈmɔrnɪŋ treɪn/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What happened?",
+        "vi": "Chuyện gì đã xảy ra vậy?"
+      },
+      {
+        "en": "Why are you late?",
+        "vi": "Sao bạn đến trễ?"
+      }
+    ],
+    "id": "b1.i-missed-my"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-travel-problems",
+    "topic_vi": "Sự cố khi đi du lịch",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "My ___ was delayed.",
+    "frame_vi": "___ của tôi bị trễ.",
+    "note_vi": "Was delayed là thể bị động quá khứ, nghĩa là bị trễ. Dùng với danh từ số ít, nếu là số nhiều thì đổi thành were delayed.",
+    "slots": [
+      {
+        "en": "flight",
+        "vi": "Chuyến bay",
+        "ipa": "/maɪ flaɪt wɑz dɪˈleɪd/"
+      },
+      {
+        "en": "train",
+        "vi": "Chuyến tàu",
+        "ipa": "/maɪ treɪn wɑz dɪˈleɪd/"
+      },
+      {
+        "en": "bus",
+        "vi": "Chuyến xe buýt",
+        "ipa": "/maɪ bʌs wɑz dɪˈleɪd/"
+      },
+      {
+        "en": "ferry",
+        "vi": "Chuyến phà",
+        "ipa": "/maɪ ˈfɛri wɑz dɪˈleɪd/"
+      },
+      {
+        "en": "luggage",
+        "vi": "Hành lý",
+        "ipa": "/maɪ ˈlʌɡədʒ wɑz dɪˈleɪd/"
+      },
+      {
+        "en": "refund",
+        "vi": "Tiền hoàn lại",
+        "ipa": "/maɪ rɪˈfʌnd wɑz dɪˈleɪd/"
+      },
+      {
+        "en": "taxi",
+        "vi": "Chiếc taxi",
+        "ipa": "/maɪ ˈtæksi wɑz dɪˈleɪd/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My plane was delayed again.",
+        "vi": "Chuyến bay của tôi lại bị trễ.",
+        "ipa": "/maɪ pleɪn wɑz dɪˈleɪd əˈɡɛn/"
+      },
+      {
+        "en": "My pickup was delayed by an hour.",
+        "vi": "Xe đón của tôi bị trễ một tiếng.",
+        "ipa": "/maɪ ˈpɪˌkʌp wɑz dɪˈleɪd baɪ æn ˈaʊər/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why did you miss the meeting?",
+        "vi": "Sao bạn lỡ buổi họp?"
+      },
+      {
+        "en": "Is everything okay?",
+        "vi": "Mọi việc ổn chứ?"
+      }
+    ],
+    "id": "b1.my-was-delayed"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-travel-problems",
+    "topic_vi": "Sự cố khi đi du lịch",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "I need to rebook ___.",
+    "frame_vi": "Tôi cần đặt lại ___.",
+    "note_vi": "Need to cộng động từ nguyên mẫu để nói điều cần làm. Rebook là đặt lại, đi thẳng với danh từ, không cần giới từ.",
+    "slots": [
+      {
+        "en": "my flight",
+        "vi": "chuyến bay của tôi",
+        "ipa": "/aɪ nid tu riˈbʊk maɪ flaɪt/"
+      },
+      {
+        "en": "my train",
+        "vi": "chuyến tàu của tôi",
+        "ipa": "/aɪ nid tu riˈbʊk maɪ treɪn/"
+      },
+      {
+        "en": "my hotel",
+        "vi": "khách sạn của tôi",
+        "ipa": "/aɪ nid tu riˈbʊk maɪ hoʊˈtɛl/"
+      },
+      {
+        "en": "the tour",
+        "vi": "chuyến tham quan",
+        "ipa": "/aɪ nid tu riˈbʊk ðə tʊr/"
+      },
+      {
+        "en": "our tickets",
+        "vi": "vé của chúng tôi",
+        "ipa": "/aɪ nid tu riˈbʊk ˈaʊər ˈtɪkəts/"
+      },
+      {
+        "en": "my taxi",
+        "vi": "chuyến taxi của tôi",
+        "ipa": "/aɪ nid tu riˈbʊk maɪ ˈtæksi/"
+      },
+      {
+        "en": "tomorrow's bus",
+        "vi": "chuyến xe buýt ngày mai",
+        "ipa": "/aɪ nid tu riˈbʊk təˈmɑˌroʊz bʌs/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I need to rebook my ferry.",
+        "vi": "Tôi cần đặt lại chuyến phà của tôi.",
+        "ipa": "/aɪ nid tu riˈbʊk maɪ ˈfɛri/"
+      },
+      {
+        "en": "I need to rebook the airport transfer.",
+        "vi": "Tôi cần đặt lại xe đưa đón sân bay.",
+        "ipa": "/aɪ nid tu riˈbʊk ðə ˈɛrˌpɔrt trænsˈfɝ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How can I help you?",
+        "vi": "Tôi có thể giúp gì cho bạn?"
+      },
+      {
+        "en": "What seems to be the problem?",
+        "vi": "Có vấn đề gì vậy?"
+      }
+    ],
+    "id": "b1.i-need-to-rebook"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-travel-problems",
+    "topic_vi": "Sự cố khi đi du lịch",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "What should I do about ___?",
+    "frame_vi": "Tôi nên làm gì với ___?",
+    "note_vi": "What should I do about hỏi xin lời khuyên về một vấn đề. About cộng cụm danh từ, ví dụ my lost passport.",
+    "slots": [
+      {
+        "en": "my lost passport",
+        "vi": "hộ chiếu bị mất của tôi",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt maɪ lɔst ˈpæˌspɔrt/"
+      },
+      {
+        "en": "my lost luggage",
+        "vi": "hành lý bị thất lạc của tôi",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt maɪ lɔst ˈlʌɡədʒ/"
+      },
+      {
+        "en": "my missed train",
+        "vi": "chuyến tàu tôi bị lỡ",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt maɪ mɪst treɪn/"
+      },
+      {
+        "en": "my cancelled flight",
+        "vi": "chuyến bay bị hủy của tôi",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt maɪ ˈkænsəld flaɪt/"
+      },
+      {
+        "en": "my stolen wallet",
+        "vi": "ví bị trộm của tôi",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt maɪ ˈstoʊlən ˈwɔlət/"
+      },
+      {
+        "en": "my broken suitcase",
+        "vi": "vali bị hỏng của tôi",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt maɪ ˈbroʊkən ˈsutˌkeɪs/"
+      },
+      {
+        "en": "the wrong ticket",
+        "vi": "tấm vé sai",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt ðə rɔŋ ˈtɪkət/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What should I do about my lost phone?",
+        "vi": "Tôi nên làm gì với chiếc điện thoại bị mất?",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt maɪ lɔst foʊn/"
+      },
+      {
+        "en": "What should I do about the extra fee?",
+        "vi": "Tôi nên làm gì với khoản phí thêm này?",
+        "ipa": "/wʌt ʃʊd aɪ du əˈbaʊt ðə ˈɛkstrə fi/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you need any help?",
+        "vi": "Bạn có cần giúp gì không?"
+      },
+      {
+        "en": "What's wrong?",
+        "vi": "Có chuyện gì vậy?"
+      }
+    ],
+    "id": "b1.what-should-i-do-about"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-renting-booking",
+    "topic_vi": "Thuê và đặt dịch vụ",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "I'd like to rent ___.",
+    "frame_vi": "Tôi muốn thuê ___.",
+    "note_vi": "I'd like to cộng động từ nguyên mẫu là cách lịch sự để nói điều mình muốn. Rent là thuê, dùng thẳng với danh từ.",
+    "slots": [
+      {
+        "en": "a car",
+        "vi": "một chiếc ô tô",
+        "ipa": "/aɪd laɪk tu rɛnt ə kɑr/"
+      },
+      {
+        "en": "a bike",
+        "vi": "một chiếc xe đạp",
+        "ipa": "/aɪd laɪk tu rɛnt ə baɪk/"
+      },
+      {
+        "en": "a motorbike",
+        "vi": "một chiếc xe máy",
+        "ipa": "/aɪd laɪk tu rɛnt ə ˈmoʊtərˌbaɪk/"
+      },
+      {
+        "en": "a kayak",
+        "vi": "một chiếc thuyền kayak",
+        "ipa": "/aɪd laɪk tu rɛnt ə ˈkaɪæk/"
+      },
+      {
+        "en": "a small apartment",
+        "vi": "một căn hộ nhỏ",
+        "ipa": "/aɪd laɪk tu rɛnt ə smɔl əˈpɑrtmənt/"
+      },
+      {
+        "en": "a van",
+        "vi": "một chiếc xe tải nhỏ",
+        "ipa": "/aɪd laɪk tu rɛnt ə væn/"
+      },
+      {
+        "en": "a camera",
+        "vi": "một chiếc máy ảnh",
+        "ipa": "/aɪd laɪk tu rɛnt ə ˈkæmərə/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'd like to rent a scooter.",
+        "vi": "Tôi muốn thuê một chiếc xe tay ga.",
+        "ipa": "/aɪd laɪk tu rɛnt ə ˈskutər/"
+      },
+      {
+        "en": "I'd like to rent a room for a week.",
+        "vi": "Tôi muốn thuê một phòng trong một tuần.",
+        "ipa": "/aɪd laɪk tu rɛnt ə rum fɔr ə wik/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How can I help you?",
+        "vi": "Tôi có thể giúp gì cho bạn?"
+      },
+      {
+        "en": "What are you looking for?",
+        "vi": "Bạn đang tìm gì vậy?"
+      }
+    ],
+    "id": "b1.id-like-to-rent"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-renting-booking",
+    "topic_vi": "Thuê và đặt dịch vụ",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "Is there an extra charge for ___?",
+    "frame_vi": "Có tính thêm phí cho ___ không?",
+    "note_vi": "Extra charge là phí thêm. For cộng danh từ hoặc cụm danh từ để nói phí này dành cho thứ gì. Dùng để hỏi giá trước khi đặt.",
+    "slots": [
+      {
+        "en": "breakfast",
+        "vi": "bữa sáng",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ˈbrɛkfəst/"
+      },
+      {
+        "en": "insurance",
+        "vi": "bảo hiểm",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ˌɪnˈʃʊrəns/"
+      },
+      {
+        "en": "parking",
+        "vi": "chỗ đậu xe",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ˈpɑrkɪŋ/"
+      },
+      {
+        "en": "a second driver",
+        "vi": "người lái thứ hai",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ə ˈsɛkənd ˈdraɪvər/"
+      },
+      {
+        "en": "late checkout",
+        "vi": "trả phòng muộn",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr leɪt ˈtʃɛˌkaʊt/"
+      },
+      {
+        "en": "extra luggage",
+        "vi": "hành lý thêm",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ˈɛkstrə ˈlʌɡədʒ/"
+      },
+      {
+        "en": "wifi",
+        "vi": "wifi",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ˈwaɪˌfaɪ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Is there an extra charge for towels?",
+        "vi": "Có tính thêm phí cho khăn tắm không?",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ˈtaʊəlz/"
+      },
+      {
+        "en": "Is there an extra charge for a guide?",
+        "vi": "Có tính thêm phí cho hướng dẫn viên không?",
+        "ipa": "/ɪz ðɛr æn ˈɛkstrə tʃɑrdʒ fɔr ə ɡaɪd/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you have any questions about the price?",
+        "vi": "Bạn có thắc mắc gì về giá không?"
+      },
+      {
+        "en": "Is everything clear?",
+        "vi": "Mọi thứ rõ ràng chưa?"
+      }
+    ],
+    "id": "b1.is-there-an-extra-charge-for"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-renting-booking",
+    "topic_vi": "Thuê và đặt dịch vụ",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "Could you recommend ___?",
+    "frame_vi": "Bạn có thể giới thiệu ___ không?",
+    "note_vi": "Could you cộng động từ nguyên mẫu là cách nhờ lịch sự. Recommend đi thẳng với danh từ, thường có a hoặc an trước danh từ số ít.",
+    "slots": [
+      {
+        "en": "a good hotel",
+        "vi": "một khách sạn tốt",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə ɡʊd hoʊˈtɛl/"
+      },
+      {
+        "en": "a local restaurant",
+        "vi": "một nhà hàng địa phương",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə ˈloʊkəl ˈrɛstərˌɑnt/"
+      },
+      {
+        "en": "a cheap tour",
+        "vi": "một tour giá rẻ",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə tʃip tʊr/"
+      },
+      {
+        "en": "a good guide",
+        "vi": "một hướng dẫn viên giỏi",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə ɡʊd ɡaɪd/"
+      },
+      {
+        "en": "a reliable taxi",
+        "vi": "một hãng taxi đáng tin",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə rɪˈlaɪəbəl ˈtæksi/"
+      },
+      {
+        "en": "a nice cafe",
+        "vi": "một quán cà phê đẹp",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə naɪs kəˈfeɪ/"
+      },
+      {
+        "en": "a cheap place to stay",
+        "vi": "một chỗ ở giá rẻ",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə tʃip pleɪs tu steɪ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Could you recommend a quiet hostel?",
+        "vi": "Bạn có thể giới thiệu một nhà nghỉ yên tĩnh không?",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə ˈkwaɪət ˈhɑstəl/"
+      },
+      {
+        "en": "Could you recommend a good bike shop?",
+        "vi": "Bạn có thể giới thiệu một tiệm xe đạp tốt không?",
+        "ipa": "/kʊd ju ˌrɛkəˈmɛnd ə ɡʊd baɪk ʃɑp/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I help you with anything else?",
+        "vi": "Tôi có thể giúp gì thêm không?"
+      },
+      {
+        "en": "What do you need?",
+        "vi": "Bạn cần gì?"
+      }
+    ],
+    "id": "b1.could-you-recommend"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-renting-booking",
+    "topic_vi": "Thuê và đặt dịch vụ",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "I booked ___ online.",
+    "frame_vi": "Tôi đã đặt ___ trên mạng.",
+    "note_vi": "Booked là quá khứ của book. Dùng khi nói bạn đã đặt chỗ từ trước, đi thẳng với danh từ, rồi thêm online để nói đặt qua mạng.",
+    "slots": [
+      {
+        "en": "a room",
+        "vi": "một phòng",
+        "ipa": "/aɪ bʊkt ə rum ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "a car",
+        "vi": "một chiếc ô tô",
+        "ipa": "/aɪ bʊkt ə kɑr ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "a tour",
+        "vi": "một tour",
+        "ipa": "/aɪ bʊkt ə tʊr ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "two tickets",
+        "vi": "hai tấm vé",
+        "ipa": "/aɪ bʊkt tu ˈtɪkəts ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "a table",
+        "vi": "một bàn",
+        "ipa": "/aɪ bʊkt ə ˈteɪbəl ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "a taxi",
+        "vi": "một chiếc taxi",
+        "ipa": "/aɪ bʊkt ə ˈtæksi ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "a flight",
+        "vi": "một chuyến bay",
+        "ipa": "/aɪ bʊkt ə flaɪt ˈɔnˌlaɪn/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I booked a hostel online.",
+        "vi": "Tôi đã đặt một nhà nghỉ trên mạng.",
+        "ipa": "/aɪ bʊkt ə ˈhɑstəl ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "I booked a bike tour online.",
+        "vi": "Tôi đã đặt một tour xe đạp trên mạng.",
+        "ipa": "/aɪ bʊkt ə baɪk tʊr ˈɔnˌlaɪn/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you have a reservation?",
+        "vi": "Bạn có đặt chỗ trước không?"
+      },
+      {
+        "en": "Did you book in advance?",
+        "vi": "Bạn đã đặt trước chưa?"
+      }
+    ],
+    "id": "b1.i-booked-online"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-tourist-info",
+    "topic_vi": "Hỏi gợi ý du lịch",
+    "goals": [
+      "travel",
+      "social"
+    ],
+    "frame_en": "What's the best way to ___?",
+    "frame_vi": "Cách tốt nhất để ___ là gì?",
+    "note_vi": "The best way to cộng động từ nguyên mẫu để hỏi cách tốt nhất làm một việc. Dùng khi nhờ người địa phương chỉ đường hoặc gợi ý.",
+    "slots": [
+      {
+        "en": "get around",
+        "vi": "đi lại trong thành phố",
+        "ipa": "/wʌts ðə bɛst weɪ tu ɡɛt ərˈaʊnd/"
+      },
+      {
+        "en": "see the city",
+        "vi": "tham quan thành phố",
+        "ipa": "/wʌts ðə bɛst weɪ tu si ðə ˈsɪti/"
+      },
+      {
+        "en": "get downtown",
+        "vi": "vào trung tâm",
+        "ipa": "/wʌts ðə bɛst weɪ tu ɡɛt ˈdaʊnˈtaʊn/"
+      },
+      {
+        "en": "reach the airport",
+        "vi": "đến sân bay",
+        "ipa": "/wʌts ðə bɛst weɪ tu ritʃ ðə ˈɛrˌpɔrt/"
+      },
+      {
+        "en": "buy tickets",
+        "vi": "mua vé",
+        "ipa": "/wʌts ðə bɛst weɪ tu baɪ ˈtɪkəts/"
+      },
+      {
+        "en": "reach the island",
+        "vi": "ra đảo",
+        "ipa": "/wʌts ðə bɛst weɪ tu ritʃ ðə ˈaɪlənd/"
+      },
+      {
+        "en": "save money",
+        "vi": "tiết kiệm tiền",
+        "ipa": "/wʌts ðə bɛst weɪ tu seɪv ˈmʌni/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What's the best way to get to the beach?",
+        "vi": "Cách tốt nhất để đến bãi biển là gì?",
+        "ipa": "/wʌts ðə bɛst weɪ tu ɡɛt tu ðə bitʃ/"
+      },
+      {
+        "en": "What's the best way to meet locals?",
+        "vi": "Cách tốt nhất để gặp người địa phương là gì?",
+        "ipa": "/wʌts ðə bɛst weɪ tu mit ˈloʊkəlz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp được gì cho bạn?"
+      },
+      {
+        "en": "Are you looking for something?",
+        "vi": "Bạn đang tìm gì à?"
+      }
+    ],
+    "id": "b1.whats-the-best-way-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-tourist-info",
+    "topic_vi": "Hỏi gợi ý du lịch",
+    "goals": [
+      "travel",
+      "social"
+    ],
+    "frame_en": "Is it worth visiting ___?",
+    "frame_vi": "___ có đáng để ghé thăm không?",
+    "note_vi": "Worth cộng động từ đuôi ing nghĩa là đáng để làm gì. Hỏi Is it worth visiting để biết một nơi có đáng đi không.",
+    "slots": [
+      {
+        "en": "the museum",
+        "vi": "Bảo tàng",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə mjuˈziəm/"
+      },
+      {
+        "en": "the old town",
+        "vi": "Khu phố cổ",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə oʊld taʊn/"
+      },
+      {
+        "en": "the castle",
+        "vi": "Lâu đài",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə ˈkæsəl/"
+      },
+      {
+        "en": "that island",
+        "vi": "Hòn đảo đó",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðæt ˈaɪlənd/"
+      },
+      {
+        "en": "the night market",
+        "vi": "Chợ đêm",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə naɪt ˈmɑrkət/"
+      },
+      {
+        "en": "the national park",
+        "vi": "Vườn quốc gia",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə ˈnæʃənəl pɑrk/"
+      },
+      {
+        "en": "the zoo",
+        "vi": "Sở thú",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə zu/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Is it worth visiting the temple?",
+        "vi": "Ngôi đền có đáng để ghé thăm không?",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə ˈtɛmpəl/"
+      },
+      {
+        "en": "Is it worth visiting the waterfall?",
+        "vi": "Thác nước có đáng để ghé thăm không?",
+        "ipa": "/ɪz ɪt wɝθ ˈvɪzɪtɪŋ ðə ˈwɔtərˌfɔl/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where are you thinking of going?",
+        "vi": "Bạn đang định đi đâu?"
+      },
+      {
+        "en": "Have you been there before?",
+        "vi": "Bạn đã từng đến đó chưa?"
+      }
+    ],
+    "id": "b1.is-it-worth-visiting"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-tourist-info",
+    "topic_vi": "Hỏi gợi ý du lịch",
+    "goals": [
+      "travel",
+      "social"
+    ],
+    "frame_en": "How long does it take to ___?",
+    "frame_vi": "Mất bao lâu để ___?",
+    "note_vi": "How long does it take to cộng động từ nguyên mẫu để hỏi thời gian cần cho một việc. Chủ ngữ it luôn đi với does và take.",
+    "slots": [
+      {
+        "en": "get there",
+        "vi": "đến đó",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu ɡɛt ðɛr/"
+      },
+      {
+        "en": "walk there",
+        "vi": "đi bộ đến đó",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu wɔk ðɛr/"
+      },
+      {
+        "en": "drive there",
+        "vi": "lái xe đến đó",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu draɪv ðɛr/"
+      },
+      {
+        "en": "see everything",
+        "vi": "tham quan hết mọi thứ",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu si ˈɛvriˌθɪŋ/"
+      },
+      {
+        "en": "reach the beach",
+        "vi": "ra đến bãi biển",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu ritʃ ðə bitʃ/"
+      },
+      {
+        "en": "get a visa",
+        "vi": "xin visa",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu ɡɛt ə ˈvizə/"
+      },
+      {
+        "en": "climb the mountain",
+        "vi": "leo núi",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu klaɪm ðə ˈmaʊntən/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "How long does it take to cross the bridge?",
+        "vi": "Mất bao lâu để đi qua cây cầu?",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu krɔs ðə brɪdʒ/"
+      },
+      {
+        "en": "How long does it take to get downtown?",
+        "vi": "Mất bao lâu để vào trung tâm?",
+        "ipa": "/haʊ lɔŋ dʌz ɪt teɪk tu ɡɛt ˈdaʊnˈtaʊn/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you need directions?",
+        "vi": "Bạn có cần chỉ đường không?"
+      },
+      {
+        "en": "Are you in a hurry?",
+        "vi": "Bạn có đang vội không?"
+      }
+    ],
+    "id": "b1.how-long-does-it-take-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-tourist-info",
+    "topic_vi": "Hỏi gợi ý du lịch",
+    "goals": [
+      "travel",
+      "social"
+    ],
+    "frame_en": "You should definitely try ___.",
+    "frame_vi": "Bạn nhất định nên thử ___.",
+    "note_vi": "Should cộng động từ nguyên mẫu để khuyên. Definitely đứng giữa should và động từ để nhấn mạnh rằng nên làm.",
+    "slots": [
+      {
+        "en": "the street food",
+        "vi": "đồ ăn đường phố",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə strit fud/"
+      },
+      {
+        "en": "the seafood",
+        "vi": "hải sản",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə ˈsiˌfud/"
+      },
+      {
+        "en": "the local coffee",
+        "vi": "cà phê địa phương",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə ˈloʊkəl ˈkɑfi/"
+      },
+      {
+        "en": "the boat tour",
+        "vi": "chuyến đi thuyền",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə boʊt tʊr/"
+      },
+      {
+        "en": "the night market",
+        "vi": "chợ đêm",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə naɪt ˈmɑrkət/"
+      },
+      {
+        "en": "the fish soup",
+        "vi": "món canh cá",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə fɪʃ sup/"
+      },
+      {
+        "en": "the sunrise tour",
+        "vi": "chuyến ngắm bình minh",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə ˈsʌnˌraɪz tʊr/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "You should definitely try the noodles here.",
+        "vi": "Bạn nhất định nên thử món mì ở đây.",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə ˈnudəlz hir/"
+      },
+      {
+        "en": "You should definitely try the cable car.",
+        "vi": "Bạn nhất định nên thử đi cáp treo.",
+        "ipa": "/ju ʃʊd ˈdɛfənətli traɪ ðə ˈkeɪbəl kɑr/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What should I try here?",
+        "vi": "Tôi nên thử gì ở đây?"
+      },
+      {
+        "en": "Any tips for a first time visitor?",
+        "vi": "Có mẹo gì cho người đến lần đầu không?"
+      }
+    ],
+    "id": "b1.you-should-definitely-try"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-opinions-reasons",
+    "topic_vi": "Nêu ý kiến và lý do",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "To me, ___ is really important.",
+    "frame_vi": "Với tôi, ___ rất quan trọng.",
+    "note_vi": "To me mở đầu để nói ý kiến cá nhân. Sau đó là một danh từ không đếm được hoặc số ít, nên động từ là is.",
+    "slots": [
+      {
+        "en": "health",
+        "vi": "sức khỏe",
+        "ipa": "/tu mi hɛlθ ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      },
+      {
+        "en": "family",
+        "vi": "gia đình",
+        "ipa": "/tu mi ˈfæməli ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      },
+      {
+        "en": "honesty",
+        "vi": "sự trung thực",
+        "ipa": "/tu mi ˈɑnəsti ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      },
+      {
+        "en": "trust",
+        "vi": "lòng tin",
+        "ipa": "/tu mi trʌst ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      },
+      {
+        "en": "free time",
+        "vi": "thời gian rảnh",
+        "ipa": "/tu mi fri taɪm ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      },
+      {
+        "en": "friendship",
+        "vi": "tình bạn",
+        "ipa": "/tu mi ˈfrɛndʃɪp ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      },
+      {
+        "en": "sleep",
+        "vi": "giấc ngủ",
+        "ipa": "/tu mi slip ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "To me, communication is really important.",
+        "vi": "Với tôi, giao tiếp rất quan trọng.",
+        "ipa": "/tu mi kəmˌjunəˈkeɪʃən ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      },
+      {
+        "en": "To me, respect is really important.",
+        "vi": "Với tôi, sự tôn trọng rất quan trọng.",
+        "ipa": "/tu mi rɪˈspɛkt ɪz ˈrɪli ˌɪmˈpɔrtənt/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What matters most to you in life?",
+        "vi": "Điều gì quan trọng nhất với bạn trong cuộc sống?"
+      },
+      {
+        "en": "What do you think?",
+        "vi": "Bạn nghĩ sao?"
+      }
+    ],
+    "id": "b1.to-me-is-really-important"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-opinions-reasons",
+    "topic_vi": "Nêu ý kiến và lý do",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "The main problem is ___.",
+    "frame_vi": "Vấn đề chính là ___.",
+    "note_vi": "The main problem is cộng một cụm danh từ để nêu rõ điều bạn thấy khó khăn nhất. Thường dùng khi góp ý hoặc phân tích.",
+    "slots": [
+      {
+        "en": "the cost",
+        "vi": "chi phí",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz ðə kɑst/"
+      },
+      {
+        "en": "the noise",
+        "vi": "tiếng ồn",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz ðə nɔɪz/"
+      },
+      {
+        "en": "the traffic",
+        "vi": "giao thông",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz ðə ˈtræfɪk/"
+      },
+      {
+        "en": "the weather",
+        "vi": "thời tiết",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz ðə ˈwɛðər/"
+      },
+      {
+        "en": "the lack of time",
+        "vi": "việc thiếu thời gian",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz ðə læk ʌv taɪm/"
+      },
+      {
+        "en": "my schedule",
+        "vi": "lịch làm việc của tôi",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz maɪ ˈskɛdʒʊl/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "The main problem is the distance.",
+        "vi": "Vấn đề chính là khoảng cách.",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz ðə ˈdɪstəns/"
+      },
+      {
+        "en": "The main problem is the language.",
+        "vi": "Vấn đề chính là ngôn ngữ.",
+        "ipa": "/ðə meɪn ˈprɑbləm ɪz ðə ˈlæŋɡwədʒ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why don't you like living there?",
+        "vi": "Sao bạn không thích sống ở đó?"
+      },
+      {
+        "en": "What's wrong with the plan?",
+        "vi": "Kế hoạch này có vấn đề gì?"
+      }
+    ],
+    "id": "b1.the-main-problem-is"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-opinions-reasons",
+    "topic_vi": "Nêu ý kiến và lý do",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "One reason is ___.",
+    "frame_vi": "Một lý do là ___.",
+    "note_vi": "One reason is dùng để đưa ra lý do đầu tiên, sau đó có thể nói thêm Another reason is để thêm lý do khác.",
+    "slots": [
+      {
+        "en": "the price",
+        "vi": "giá cả",
+        "ipa": "/wʌn ˈrizən ɪz ðə praɪs/"
+      },
+      {
+        "en": "the weather",
+        "vi": "thời tiết",
+        "ipa": "/wʌn ˈrizən ɪz ðə ˈwɛðər/"
+      },
+      {
+        "en": "my job",
+        "vi": "công việc của tôi",
+        "ipa": "/wʌn ˈrizən ɪz maɪ dʒɑb/"
+      },
+      {
+        "en": "the traffic",
+        "vi": "giao thông",
+        "ipa": "/wʌn ˈrizən ɪz ðə ˈtræfɪk/"
+      },
+      {
+        "en": "my family",
+        "vi": "gia đình tôi",
+        "ipa": "/wʌn ˈrizən ɪz maɪ ˈfæməli/"
+      },
+      {
+        "en": "the distance",
+        "vi": "khoảng cách",
+        "ipa": "/wʌn ˈrizən ɪz ðə ˈdɪstəns/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "One reason is the salary.",
+        "vi": "Một lý do là mức lương.",
+        "ipa": "/wʌn ˈrizən ɪz ðə ˈsæləri/"
+      },
+      {
+        "en": "One reason is my health.",
+        "vi": "Một lý do là sức khỏe của tôi.",
+        "ipa": "/wʌn ˈrizən ɪz maɪ hɛlθ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why did you move?",
+        "vi": "Sao bạn chuyển nhà?"
+      },
+      {
+        "en": "Why did you change jobs?",
+        "vi": "Sao bạn đổi việc?"
+      }
+    ],
+    "id": "b1.one-reason-is"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-opinions-reasons",
+    "topic_vi": "Nêu ý kiến và lý do",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "That's why I ___.",
+    "frame_vi": "Đó là lý do tôi ___.",
+    "note_vi": "That's why nói về kết quả của lý do vừa nêu. Sau I dùng động từ nguyên mẫu cho thói quen ở hiện tại.",
+    "slots": [
+      {
+        "en": "take the bus",
+        "vi": "đi xe buýt",
+        "ipa": "/ðæts waɪ aɪ teɪk ðə bʌs/"
+      },
+      {
+        "en": "cook at home",
+        "vi": "nấu ăn ở nhà",
+        "ipa": "/ðæts waɪ aɪ kʊk æt hoʊm/"
+      },
+      {
+        "en": "get up early",
+        "vi": "dậy sớm",
+        "ipa": "/ðæts waɪ aɪ ɡɛt ʌp ˈɝli/"
+      },
+      {
+        "en": "work from home",
+        "vi": "làm việc ở nhà",
+        "ipa": "/ðæts waɪ aɪ wɝk frʌm hoʊm/"
+      },
+      {
+        "en": "never skip breakfast",
+        "vi": "không bao giờ bỏ bữa sáng",
+        "ipa": "/ðæts waɪ aɪ ˈnɛvər skɪp ˈbrɛkfəst/"
+      },
+      {
+        "en": "save money",
+        "vi": "tiết kiệm tiền",
+        "ipa": "/ðæts waɪ aɪ seɪv ˈmʌni/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "That's why I walk to work.",
+        "vi": "Đó là lý do tôi đi bộ đến chỗ làm.",
+        "ipa": "/ðæts waɪ aɪ wɔk tu wɝk/"
+      },
+      {
+        "en": "That's why I learn English.",
+        "vi": "Đó là lý do tôi học tiếng Anh.",
+        "ipa": "/ðæts waɪ aɪ lɝn ˈɪŋɡlɪʃ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why do you do that?",
+        "vi": "Sao bạn làm vậy?"
+      },
+      {
+        "en": "Why do you always get up so early?",
+        "vi": "Sao bạn luôn dậy sớm thế?"
+      }
+    ],
+    "id": "b1.thats-why-i"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-agree-disagree",
+    "topic_vi": "Đồng ý và phản đối lịch sự",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "I see your point, but ___.",
+    "frame_vi": "Tôi hiểu ý bạn, nhưng ___.",
+    "note_vi": "I see your point ghi nhận ý người kia trước, rồi but đưa ra ý khác. Cách này giúp lời phản đối nghe lịch sự hơn.",
+    "slots": [
+      {
+        "en": "it's too expensive",
+        "vi": "nó quá đắt",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt ɪts tu ɪkˈspɛnsɪv/"
+      },
+      {
+        "en": "it's risky",
+        "vi": "nó rủi ro",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt ɪts ˈrɪski/"
+      },
+      {
+        "en": "it takes too long",
+        "vi": "nó mất quá nhiều thời gian",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt ɪt teɪks tu lɔŋ/"
+      },
+      {
+        "en": "time is short",
+        "vi": "thời gian không còn nhiều",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt taɪm ɪz ʃɔrt/"
+      },
+      {
+        "en": "I'm not convinced",
+        "vi": "tôi chưa bị thuyết phục",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt aɪm nɑt kənˈvɪnst/"
+      },
+      {
+        "en": "it won't work",
+        "vi": "nó sẽ không hiệu quả",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt ɪt woʊnt wɝk/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I see your point, but it's too late.",
+        "vi": "Tôi hiểu ý bạn, nhưng đã quá muộn rồi.",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt ɪts tu leɪt/"
+      },
+      {
+        "en": "I see your point, but we need more time.",
+        "vi": "Tôi hiểu ý bạn, nhưng chúng ta cần thêm thời gian.",
+        "ipa": "/aɪ si jɔr pɔɪnt bʌt wi nid mɔr taɪm/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you think of my idea?",
+        "vi": "Bạn nghĩ gì về ý tưởng của tôi?"
+      },
+      {
+        "en": "Shall we do it this way?",
+        "vi": "Mình làm theo cách này nhé?"
+      }
+    ],
+    "id": "b1.i-see-your-point-but"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-agree-disagree",
+    "topic_vi": "Đồng ý và phản đối lịch sự",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "I partly agree with ___.",
+    "frame_vi": "Tôi đồng ý một phần với ___.",
+    "note_vi": "Partly agree nghĩa là chỉ đồng ý một phần. Sau with là người hoặc ý kiến, ví dụ you, Anna, the plan.",
+    "slots": [
+      {
+        "en": "you",
+        "vi": "bạn",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð ju/"
+      },
+      {
+        "en": "Anna",
+        "vi": "Anna",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð ˈænə/"
+      },
+      {
+        "en": "your idea",
+        "vi": "ý tưởng của bạn",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð jɔr aɪˈdiə/"
+      },
+      {
+        "en": "the plan",
+        "vi": "kế hoạch này",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð ðə plæn/"
+      },
+      {
+        "en": "that last point",
+        "vi": "điểm cuối cùng đó",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð ðæt læst pɔɪnt/"
+      },
+      {
+        "en": "the manager",
+        "vi": "quản lý",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð ðə ˈmænədʒər/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I partly agree with him.",
+        "vi": "Tôi đồng ý một phần với anh ấy.",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð hɪm/"
+      },
+      {
+        "en": "I partly agree with your idea.",
+        "vi": "Tôi đồng ý một phần với ý kiến của bạn.",
+        "ipa": "/aɪ ˈpɑrtli əˈɡri wɪð jɔr aɪˈdiə/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you agree with me?",
+        "vi": "Bạn có đồng ý với tôi không?"
+      },
+      {
+        "en": "What do you think about the plan?",
+        "vi": "Bạn nghĩ gì về kế hoạch này?"
+      }
+    ],
+    "id": "b1.i-partly-agree-with"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-agree-disagree",
+    "topic_vi": "Đồng ý và phản đối lịch sự",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "I'm not sure that's ___.",
+    "frame_vi": "Tôi không chắc đó là ___.",
+    "note_vi": "I'm not sure that's là cách nhẹ nhàng để nói không đồng ý. Sau đó dùng một danh từ có a hoặc một tính từ.",
+    "slots": [
+      {
+        "en": "a good idea",
+        "vi": "một ý hay",
+        "ipa": "/aɪm nɑt ʃʊr ðæts ə ɡʊd aɪˈdiə/"
+      },
+      {
+        "en": "true",
+        "vi": "đúng",
+        "ipa": "/aɪm nɑt ʃʊr ðæts tru/"
+      },
+      {
+        "en": "realistic",
+        "vi": "thực tế",
+        "ipa": "/aɪm nɑt ʃʊr ðæts ˌriəˈlɪstɪk/"
+      },
+      {
+        "en": "fair",
+        "vi": "công bằng",
+        "ipa": "/aɪm nɑt ʃʊr ðæts fɛr/"
+      },
+      {
+        "en": "the best way",
+        "vi": "cách tốt nhất",
+        "ipa": "/aɪm nɑt ʃʊr ðæts ðə bɛst weɪ/"
+      },
+      {
+        "en": "possible",
+        "vi": "khả thi",
+        "ipa": "/aɪm nɑt ʃʊr ðæts ˈpɑsəbəl/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm not sure that's right.",
+        "vi": "Tôi không chắc đó là đúng.",
+        "ipa": "/aɪm nɑt ʃʊr ðæts raɪt/"
+      },
+      {
+        "en": "I'm not sure that's a good plan.",
+        "vi": "Tôi không chắc đó là một kế hoạch tốt.",
+        "ipa": "/aɪm nɑt ʃʊr ðæts ə ɡʊd plæn/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Should we try this?",
+        "vi": "Mình có nên thử cái này không?"
+      },
+      {
+        "en": "Do you think that's true?",
+        "vi": "Bạn nghĩ điều đó có đúng không?"
+      }
+    ],
+    "id": "b1.im-not-sure-thats"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-agree-disagree",
+    "topic_vi": "Đồng ý và phản đối lịch sự",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "Maybe, but isn't it ___?",
+    "frame_vi": "Có thể, nhưng chẳng phải nó ___ sao?",
+    "note_vi": "Câu hỏi phủ định isn't it nghe mềm hơn khi phản đối. Sau đó dùng một tính từ hoặc cụm danh từ có a.",
+    "slots": [
+      {
+        "en": "too risky",
+        "vi": "quá rủi ro",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt tu ˈrɪski/"
+      },
+      {
+        "en": "too expensive",
+        "vi": "quá đắt",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt tu ɪkˈspɛnsɪv/"
+      },
+      {
+        "en": "a bit late",
+        "vi": "hơi muộn rồi",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt ə bɪt leɪt/"
+      },
+      {
+        "en": "too early",
+        "vi": "còn quá sớm",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt tu ˈɝli/"
+      },
+      {
+        "en": "too difficult",
+        "vi": "quá khó",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt tu ˈdɪfəkəlt/"
+      },
+      {
+        "en": "a waste of time",
+        "vi": "phí thời gian",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt ə weɪst ʌv taɪm/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Maybe, but isn't it too far?",
+        "vi": "Có thể, nhưng chẳng phải nó quá xa sao?",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt tu fɑr/"
+      },
+      {
+        "en": "Maybe, but isn't it a bit rude?",
+        "vi": "Có thể, nhưng chẳng phải nó hơi bất lịch sự sao?",
+        "ipa": "/ˈmeɪbi bʌt ˈɪzənt ɪt ə bɪt rud/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why not do it now?",
+        "vi": "Sao không làm ngay bây giờ?"
+      },
+      {
+        "en": "What do you think of this idea?",
+        "vi": "Bạn nghĩ sao về ý tưởng này?"
+      }
+    ],
+    "id": "b1.maybe-but-isnt-it"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reporting-speech",
+    "topic_vi": "Kể lại điều người khác nói",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "He said that ___.",
+    "frame_vi": "Anh ấy nói rằng ___.",
+    "note_vi": "Khi kể lại lời người khác, động từ lùi một thì: am thành was, can thành could, will thành would, đã làm thành had làm.",
+    "slots": [
+      {
+        "en": "he was tired",
+        "vi": "anh ấy mệt",
+        "ipa": "/hi sɛd ðæt hi wɑz ˈtaɪərd/"
+      },
+      {
+        "en": "he was late",
+        "vi": "anh ấy bị muộn",
+        "ipa": "/hi sɛd ðæt hi wɑz leɪt/"
+      },
+      {
+        "en": "he had a meeting",
+        "vi": "anh ấy có một cuộc họp",
+        "ipa": "/hi sɛd ðæt hi hæd ə ˈmitɪŋ/"
+      },
+      {
+        "en": "he couldn't come",
+        "vi": "anh ấy không thể đến",
+        "ipa": "/hi sɛd ðæt hi ˈkʊdənt kʌm/"
+      },
+      {
+        "en": "he would call back",
+        "vi": "anh ấy sẽ gọi lại",
+        "ipa": "/hi sɛd ðæt hi wʊd kɔl bæk/"
+      },
+      {
+        "en": "he'd lost his keys",
+        "vi": "anh ấy đã làm mất chìa khóa",
+        "ipa": "/hi sɛd ðæt hid lɔst hɪz kiz/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "He said that he was busy.",
+        "vi": "Anh ấy nói rằng anh ấy bận.",
+        "ipa": "/hi sɛd ðæt hi wɑz ˈbɪzi/"
+      },
+      {
+        "en": "He said that he would help us.",
+        "vi": "Anh ấy nói rằng anh ấy sẽ giúp chúng ta.",
+        "ipa": "/hi sɛd ðæt hi wʊd hɛlp ʌs/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What did Tom say?",
+        "vi": "Tom đã nói gì?"
+      },
+      {
+        "en": "Why isn't he here?",
+        "vi": "Sao anh ấy không có mặt ở đây?"
+      }
+    ],
+    "id": "b1.he-said-that"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reporting-speech",
+    "topic_vi": "Kể lại điều người khác nói",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "She told me to ___.",
+    "frame_vi": "Cô ấy bảo tôi ___.",
+    "note_vi": "Told me to cộng động từ nguyên mẫu để kể lại một lời yêu cầu hoặc mệnh lệnh. Dạng phủ định là told me not to.",
+    "slots": [
+      {
+        "en": "wait here",
+        "vi": "đợi ở đây",
+        "ipa": "/ʃi toʊld mi tu weɪt hir/"
+      },
+      {
+        "en": "call back later",
+        "vi": "gọi lại sau",
+        "ipa": "/ʃi toʊld mi tu kɔl bæk ˈleɪtər/"
+      },
+      {
+        "en": "check my email",
+        "vi": "kiểm tra email",
+        "ipa": "/ʃi toʊld mi tu tʃɛk maɪ iˈmeɪl/"
+      },
+      {
+        "en": "take a break",
+        "vi": "nghỉ giải lao",
+        "ipa": "/ʃi toʊld mi tu teɪk ə breɪk/"
+      },
+      {
+        "en": "come early",
+        "vi": "đến sớm",
+        "ipa": "/ʃi toʊld mi tu kʌm ˈɝli/"
+      },
+      {
+        "en": "bring my passport",
+        "vi": "mang hộ chiếu",
+        "ipa": "/ʃi toʊld mi tu brɪŋ maɪ ˈpæˌspɔrt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "She told me to sit down.",
+        "vi": "Cô ấy bảo tôi ngồi xuống.",
+        "ipa": "/ʃi toʊld mi tu sɪt daʊn/"
+      },
+      {
+        "en": "She told me to call her.",
+        "vi": "Cô ấy bảo tôi gọi cho cô ấy.",
+        "ipa": "/ʃi toʊld mi tu kɔl hɝ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What did the manager say?",
+        "vi": "Quản lý đã nói gì?"
+      },
+      {
+        "en": "Why are you waiting here?",
+        "vi": "Sao bạn đang đợi ở đây?"
+      }
+    ],
+    "id": "b1.she-told-me-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reporting-speech",
+    "topic_vi": "Kể lại điều người khác nói",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "They asked me if ___.",
+    "frame_vi": "Họ hỏi tôi liệu ___.",
+    "note_vi": "Kể lại câu hỏi có hoặc không thì dùng asked if, không đảo ngữ và động từ lùi một thì, ví dụ I was free.",
+    "slots": [
+      {
+        "en": "I was free",
+        "vi": "tôi có rảnh không",
+        "ipa": "/ðeɪ æskt mi ɪf aɪ wɑz fri/"
+      },
+      {
+        "en": "I could help",
+        "vi": "tôi có thể giúp không",
+        "ipa": "/ðeɪ æskt mi ɪf aɪ kʊd hɛlp/"
+      },
+      {
+        "en": "I'd finished",
+        "vi": "tôi đã xong chưa",
+        "ipa": "/ðeɪ æskt mi ɪf aɪd ˈfɪnɪʃt/"
+      },
+      {
+        "en": "I had a car",
+        "vi": "tôi có xe hơi không",
+        "ipa": "/ðeɪ æskt mi ɪf aɪ hæd ə kɑr/"
+      },
+      {
+        "en": "I liked spicy food",
+        "vi": "tôi có thích đồ cay không",
+        "ipa": "/ðeɪ æskt mi ɪf aɪ laɪkt ˈspaɪsi fud/"
+      },
+      {
+        "en": "I was coming",
+        "vi": "tôi có đến không",
+        "ipa": "/ðeɪ æskt mi ɪf aɪ wɑz ˈkʌmɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "They asked me if I was ready.",
+        "vi": "Họ hỏi tôi liệu tôi đã sẵn sàng chưa.",
+        "ipa": "/ðeɪ æskt mi ɪf aɪ wɑz ˈrɛdi/"
+      },
+      {
+        "en": "They asked me if I could drive.",
+        "vi": "Họ hỏi tôi liệu tôi có biết lái xe không.",
+        "ipa": "/ðeɪ æskt mi ɪf aɪ kʊd draɪv/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What did they ask you?",
+        "vi": "Họ đã hỏi bạn điều gì?"
+      },
+      {
+        "en": "What happened at the interview?",
+        "vi": "Buổi phỏng vấn thế nào?"
+      }
+    ],
+    "id": "b1.they-asked-me-if"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-reporting-speech",
+    "topic_vi": "Kể lại điều người khác nói",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "He wants to know ___.",
+    "frame_vi": "Anh ấy muốn biết ___.",
+    "note_vi": "Wants to know cộng từ để hỏi như where, when, how much, rồi đến chủ ngữ và động từ như câu thường, không đảo ngữ.",
+    "slots": [
+      {
+        "en": "where you work",
+        "vi": "bạn làm việc ở đâu",
+        "ipa": "/hi wɑnts tu noʊ wɛr ju wɝk/"
+      },
+      {
+        "en": "when you're free",
+        "vi": "khi nào bạn rảnh",
+        "ipa": "/hi wɑnts tu noʊ wɛn jʊr fri/"
+      },
+      {
+        "en": "how much it costs",
+        "vi": "nó giá bao nhiêu",
+        "ipa": "/hi wɑnts tu noʊ haʊ mʌtʃ ɪt kɑsts/"
+      },
+      {
+        "en": "why you left",
+        "vi": "sao bạn rời đi",
+        "ipa": "/hi wɑnts tu noʊ waɪ ju lɛft/"
+      },
+      {
+        "en": "who you're with",
+        "vi": "bạn đi cùng ai",
+        "ipa": "/hi wɑnts tu noʊ hu jʊr wɪð/"
+      },
+      {
+        "en": "what time it starts",
+        "vi": "mấy giờ nó bắt đầu",
+        "ipa": "/hi wɑnts tu noʊ wʌt taɪm ɪt stɑrts/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "He wants to know where you live.",
+        "vi": "Anh ấy muốn biết bạn sống ở đâu.",
+        "ipa": "/hi wɑnts tu noʊ wɛr ju laɪv/"
+      },
+      {
+        "en": "He wants to know how you got here.",
+        "vi": "Anh ấy muốn biết bạn đến đây bằng cách nào.",
+        "ipa": "/hi wɑnts tu noʊ haʊ ju ɡɑt hir/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Is he asking about me?",
+        "vi": "Anh ấy đang hỏi về tôi à?"
+      },
+      {
+        "en": "What does your boss want?",
+        "vi": "Sếp bạn muốn gì?"
+      }
+    ],
+    "id": "b1.he-wants-to-know"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-conditionals",
+    "topic_vi": "Nếu thì: điều kiện",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "If I have time, I'll ___.",
+    "frame_vi": "Nếu tôi có thời gian, tôi sẽ ___.",
+    "note_vi": "Câu điều kiện loại một: If + hiện tại đơn, will + động từ nguyên mẫu. Dùng cho việc có thể xảy ra trong tương lai.",
+    "slots": [
+      {
+        "en": "call you",
+        "vi": "gọi cho bạn",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl kɔl ju/"
+      },
+      {
+        "en": "help you",
+        "vi": "giúp bạn",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl hɛlp ju/"
+      },
+      {
+        "en": "cook dinner",
+        "vi": "nấu bữa tối",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl kʊk ˈdɪnər/"
+      },
+      {
+        "en": "go shopping",
+        "vi": "đi mua sắm",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl ɡoʊ ˈʃɑpɪŋ/"
+      },
+      {
+        "en": "clean the house",
+        "vi": "dọn nhà",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl klin ðə haʊs/"
+      },
+      {
+        "en": "check it",
+        "vi": "kiểm tra việc đó",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl tʃɛk ɪt/"
+      },
+      {
+        "en": "visit my parents",
+        "vi": "thăm bố mẹ",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl ˈvɪzɪt maɪ ˈpɛrənts/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "If I have time, I'll write to her.",
+        "vi": "Nếu tôi có thời gian, tôi sẽ viết thư cho cô ấy.",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl raɪt tu hɝ/"
+      },
+      {
+        "en": "If I have time, I'll fix your bike.",
+        "vi": "Nếu tôi có thời gian, tôi sẽ sửa xe đạp cho bạn.",
+        "ipa": "/ɪf aɪ hæv taɪm aɪl fɪks jɔr baɪk/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can you help me this weekend?",
+        "vi": "Cuối tuần này bạn giúp tôi được không?"
+      },
+      {
+        "en": "Will you come to the party?",
+        "vi": "Bạn sẽ đến bữa tiệc chứ?"
+      }
+    ],
+    "id": "b1.if-i-have-time-ill"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-conditionals",
+    "topic_vi": "Nếu thì: điều kiện",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "If I were rich, I'd ___.",
+    "frame_vi": "Nếu tôi giàu, tôi sẽ ___.",
+    "note_vi": "Câu điều kiện loại hai: If + quá khứ (với I dùng were), would + động từ nguyên mẫu. Nói về điều không có thật ở hiện tại.",
+    "slots": [
+      {
+        "en": "travel the world",
+        "vi": "đi du lịch khắp thế giới",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd ˈtrævəl ðə wɝld/"
+      },
+      {
+        "en": "buy a big house",
+        "vi": "mua một căn nhà lớn",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd baɪ ə bɪɡ haʊs/"
+      },
+      {
+        "en": "quit my job",
+        "vi": "nghỉ việc",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd kwɪt maɪ dʒɑb/"
+      },
+      {
+        "en": "help my family",
+        "vi": "giúp đỡ gia đình",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd hɛlp maɪ ˈfæməli/"
+      },
+      {
+        "en": "open a shop",
+        "vi": "mở một cửa hàng",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd ˈoʊpən ə ʃɑp/"
+      },
+      {
+        "en": "buy a new car",
+        "vi": "mua xe mới",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd baɪ ə nu kɑr/"
+      },
+      {
+        "en": "never work again",
+        "vi": "không bao giờ đi làm nữa",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd ˈnɛvər wɝk əˈɡɛn/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "If I were rich, I'd learn to fly.",
+        "vi": "Nếu tôi giàu, tôi sẽ học lái máy bay.",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd lɝn tu flaɪ/"
+      },
+      {
+        "en": "If I were rich, I'd give money away.",
+        "vi": "Nếu tôi giàu, tôi sẽ cho đi nhiều tiền.",
+        "ipa": "/ɪf aɪ wɝ rɪtʃ aɪd ɡɪv ˈmʌni əˈweɪ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What would you do with a lot of money?",
+        "vi": "Bạn sẽ làm gì với thật nhiều tiền?"
+      },
+      {
+        "en": "Do you want to be rich?",
+        "vi": "Bạn có muốn giàu không?"
+      }
+    ],
+    "id": "b1.if-i-were-rich-id"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-conditionals",
+    "topic_vi": "Nếu thì: điều kiện",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "Unless it rains, we'll ___.",
+    "frame_vi": "Trừ khi trời mưa, chúng ta sẽ ___.",
+    "note_vi": "Unless nghĩa là nếu không, theo sau là hiện tại đơn, không dùng will. Vế chính dùng will cộng động từ nguyên mẫu.",
+    "slots": [
+      {
+        "en": "go hiking",
+        "vi": "đi leo núi",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil ɡoʊ ˈhaɪkɪŋ/"
+      },
+      {
+        "en": "have a picnic",
+        "vi": "đi dã ngoại",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil hæv ə ˈpɪkˌnɪk/"
+      },
+      {
+        "en": "play football",
+        "vi": "chơi bóng đá",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil pleɪ ˈfʊtˌbɔl/"
+      },
+      {
+        "en": "eat outside",
+        "vi": "ăn ngoài trời",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil it ˈaʊtˈsaɪd/"
+      },
+      {
+        "en": "walk to the park",
+        "vi": "đi bộ đến công viên",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil wɔk tu ðə pɑrk/"
+      },
+      {
+        "en": "go to the beach",
+        "vi": "đi biển",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil ɡoʊ tu ðə bitʃ/"
+      },
+      {
+        "en": "ride our bikes",
+        "vi": "đạp xe",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil raɪd ˈaʊər baɪks/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Unless it rains, we'll swim tomorrow.",
+        "vi": "Trừ khi trời mưa, ngày mai chúng ta sẽ đi bơi.",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil swɪm təˈmɑˌroʊ/"
+      },
+      {
+        "en": "Unless it rains, we'll walk home.",
+        "vi": "Trừ khi trời mưa, chúng ta sẽ đi bộ về nhà.",
+        "ipa": "/ənˈlɛs ɪt reɪnz wil wɔk hoʊm/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What are we doing on Sunday?",
+        "vi": "Chủ nhật chúng ta làm gì?"
+      },
+      {
+        "en": "Are we still going out tomorrow?",
+        "vi": "Mai chúng ta vẫn đi chơi chứ?"
+      }
+    ],
+    "id": "b1.unless-it-rains-well"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-conditionals",
+    "topic_vi": "Nếu thì: điều kiện",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "What would you do if ___?",
+    "frame_vi": "Bạn sẽ làm gì nếu ___?",
+    "note_vi": "Hỏi giả định: What would you do if + quá khứ đơn? Dùng để hỏi người khác sẽ phản ứng thế nào trong một tình huống tưởng tượng.",
+    "slots": [
+      {
+        "en": "you lost your keys",
+        "vi": "bạn làm mất chìa khóa",
+        "ipa": "/wʌt wʊd ju du ɪf ju lɔst jɔr kiz/"
+      },
+      {
+        "en": "you missed the bus",
+        "vi": "bạn lỡ xe buýt",
+        "ipa": "/wʌt wʊd ju du ɪf ju mɪst ðə bʌs/"
+      },
+      {
+        "en": "you won the lottery",
+        "vi": "bạn trúng xổ số",
+        "ipa": "/wʌt wʊd ju du ɪf ju wʌn ðə ˈlɑtəri/"
+      },
+      {
+        "en": "you got lost",
+        "vi": "bạn bị lạc",
+        "ipa": "/wʌt wʊd ju du ɪf ju ɡɑt lɔst/"
+      },
+      {
+        "en": "you lost your phone",
+        "vi": "bạn làm mất điện thoại",
+        "ipa": "/wʌt wʊd ju du ɪf ju lɔst jɔr foʊn/"
+      },
+      {
+        "en": "you were late",
+        "vi": "bạn đến trễ",
+        "ipa": "/wʌt wʊd ju du ɪf ju wɝ leɪt/"
+      },
+      {
+        "en": "you lost your job",
+        "vi": "bạn mất việc",
+        "ipa": "/wʌt wʊd ju du ɪf ju lɔst jɔr dʒɑb/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What would you do if you saw a ghost?",
+        "vi": "Bạn sẽ làm gì nếu bạn thấy ma?",
+        "ipa": "/wʌt wʊd ju du ɪf ju sɔ ə ɡoʊst/"
+      },
+      {
+        "en": "What would you do if you were me?",
+        "vi": "Bạn sẽ làm gì nếu bạn là tôi?",
+        "ipa": "/wʌt wʊd ju du ɪf ju wɝ mi/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What would you do in my situation?",
+        "vi": "Bạn sẽ làm gì trong tình huống của tôi?"
+      },
+      {
+        "en": "Should I tell him the truth?",
+        "vi": "Tôi có nên nói sự thật với anh ấy không?"
+      }
+    ],
+    "id": "b1.what-would-you-do-if"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-health-lifestyle",
+    "topic_vi": "Lối sống và sức khỏe",
+    "goals": [
+      "daily"
+    ],
+    "frame_en": "I try to ___ every day.",
+    "frame_vi": "Ngày nào tôi cũng cố gắng ___.",
+    "note_vi": "Try to + động từ nguyên mẫu nghĩa là cố gắng làm gì. Every day đứng cuối câu để nói thói quen hằng ngày.",
+    "slots": [
+      {
+        "en": "walk",
+        "vi": "đi bộ",
+        "ipa": "/aɪ traɪ tu wɔk ˈɛvəri deɪ/"
+      },
+      {
+        "en": "drink more water",
+        "vi": "uống nhiều nước hơn",
+        "ipa": "/aɪ traɪ tu drɪŋk mɔr ˈwɔtər ˈɛvəri deɪ/"
+      },
+      {
+        "en": "eat fruit",
+        "vi": "ăn trái cây",
+        "ipa": "/aɪ traɪ tu it frut ˈɛvəri deɪ/"
+      },
+      {
+        "en": "stretch",
+        "vi": "giãn cơ",
+        "ipa": "/aɪ traɪ tu strɛtʃ ˈɛvəri deɪ/"
+      },
+      {
+        "en": "exercise",
+        "vi": "tập thể dục",
+        "ipa": "/aɪ traɪ tu ˈɛksərˌsaɪz ˈɛvəri deɪ/"
+      },
+      {
+        "en": "sleep early",
+        "vi": "ngủ sớm",
+        "ipa": "/aɪ traɪ tu slip ˈɝli ˈɛvəri deɪ/"
+      },
+      {
+        "en": "eat vegetables",
+        "vi": "ăn rau",
+        "ipa": "/aɪ traɪ tu it ˈvɛdʒtəbəlz ˈɛvəri deɪ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I try to cook at home every day.",
+        "vi": "Ngày nào tôi cũng cố gắng nấu ăn ở nhà.",
+        "ipa": "/aɪ traɪ tu kʊk æt hoʊm ˈɛvəri deɪ/"
+      },
+      {
+        "en": "I try to relax every day.",
+        "vi": "Ngày nào tôi cũng cố gắng thư giãn.",
+        "ipa": "/aɪ traɪ tu rɪˈlæks ˈɛvəri deɪ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How do you stay healthy?",
+        "vi": "Bạn giữ sức khỏe bằng cách nào?"
+      },
+      {
+        "en": "What's your daily routine?",
+        "vi": "Thói quen hằng ngày của bạn là gì?"
+      }
+    ],
+    "id": "b1.i-try-to-every-day"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-health-lifestyle",
+    "topic_vi": "Lối sống và sức khỏe",
+    "goals": [
+      "daily"
+    ],
+    "frame_en": "You shouldn't ___ too much.",
+    "frame_vi": "Bạn không nên ___ quá nhiều.",
+    "note_vi": "Shouldn't + động từ nguyên mẫu dùng để khuyên đừng làm gì. Too much đứng cuối câu nghĩa là quá nhiều.",
+    "slots": [
+      {
+        "en": "drink coffee",
+        "vi": "uống cà phê",
+        "ipa": "/ju ˈʃʊdənt drɪŋk ˈkɑfi tu mʌtʃ/"
+      },
+      {
+        "en": "eat sweets",
+        "vi": "ăn đồ ngọt",
+        "ipa": "/ju ˈʃʊdənt it swits tu mʌtʃ/"
+      },
+      {
+        "en": "drink soda",
+        "vi": "uống nước ngọt",
+        "ipa": "/ju ˈʃʊdənt drɪŋk ˈsoʊdə tu mʌtʃ/"
+      },
+      {
+        "en": "eat fast food",
+        "vi": "ăn đồ ăn nhanh",
+        "ipa": "/ju ˈʃʊdənt it fæst fud tu mʌtʃ/"
+      },
+      {
+        "en": "use your phone",
+        "vi": "dùng điện thoại",
+        "ipa": "/ju ˈʃʊdənt jus jɔr foʊn tu mʌtʃ/"
+      },
+      {
+        "en": "worry",
+        "vi": "lo lắng",
+        "ipa": "/ju ˈʃʊdənt ˈwɝi tu mʌtʃ/"
+      },
+      {
+        "en": "work",
+        "vi": "làm việc",
+        "ipa": "/ju ˈʃʊdənt wɝk tu mʌtʃ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "You shouldn't eat salt too much.",
+        "vi": "Bạn không nên ăn mặn quá nhiều.",
+        "ipa": "/ju ˈʃʊdənt it sɔlt tu mʌtʃ/"
+      },
+      {
+        "en": "You shouldn't watch TV too much.",
+        "vi": "Bạn không nên xem tivi quá nhiều.",
+        "ipa": "/ju ˈʃʊdənt wɑtʃ ˈtiˈvi tu mʌtʃ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why do I feel so tired?",
+        "vi": "Sao tôi thấy mệt thế?"
+      },
+      {
+        "en": "What should I avoid?",
+        "vi": "Tôi nên tránh điều gì?"
+      }
+    ],
+    "id": "b1.you-shouldnt-too-much"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-health-lifestyle",
+    "topic_vi": "Lối sống và sức khỏe",
+    "goals": [
+      "daily"
+    ],
+    "frame_en": "I've given up ___.",
+    "frame_vi": "Tôi đã bỏ ___.",
+    "note_vi": "Give up + danh từ hoặc động từ thêm ing nghĩa là bỏ một thói quen. Dùng hiện tại hoàn thành vì kết quả còn đến bây giờ.",
+    "slots": [
+      {
+        "en": "smoking",
+        "vi": "hút thuốc",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈsmoʊkɪŋ/"
+      },
+      {
+        "en": "sugar",
+        "vi": "đường",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈʃʊɡər/"
+      },
+      {
+        "en": "coffee",
+        "vi": "cà phê",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈkɑfi/"
+      },
+      {
+        "en": "fast food",
+        "vi": "đồ ăn nhanh",
+        "ipa": "/aɪv ˈɡɪvən ʌp fæst fud/"
+      },
+      {
+        "en": "soda",
+        "vi": "nước ngọt",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈsoʊdə/"
+      },
+      {
+        "en": "drinking beer",
+        "vi": "uống bia",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈdrɪŋkɪŋ bɪr/"
+      },
+      {
+        "en": "staying up late",
+        "vi": "thức khuya",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈsteɪɪŋ ʌp leɪt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I've given up eating meat.",
+        "vi": "Tôi đã bỏ ăn thịt.",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈitɪŋ mit/"
+      },
+      {
+        "en": "I've given up chocolate.",
+        "vi": "Tôi đã bỏ sô cô la.",
+        "ipa": "/aɪv ˈɡɪvən ʌp ˈtʃɔklət/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you still smoke?",
+        "vi": "Bạn còn hút thuốc không?"
+      },
+      {
+        "en": "Do you drink coffee?",
+        "vi": "Bạn có uống cà phê không?"
+      }
+    ],
+    "id": "b1.ive-given-up"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-health-lifestyle",
+    "topic_vi": "Lối sống và sức khỏe",
+    "goals": [
+      "daily"
+    ],
+    "frame_en": "It's good for you to ___.",
+    "frame_vi": "Việc ___ rất tốt cho bạn.",
+    "note_vi": "It's good for you to + động từ nguyên mẫu nói một việc có lợi cho sức khỏe. Dùng để khuyên nhẹ nhàng.",
+    "slots": [
+      {
+        "en": "walk every day",
+        "vi": "đi bộ mỗi ngày",
+        "ipa": "/ɪts ɡʊd fɔr ju tu wɔk ˈɛvəri deɪ/"
+      },
+      {
+        "en": "get enough sleep",
+        "vi": "ngủ đủ giấc",
+        "ipa": "/ɪts ɡʊd fɔr ju tu ɡɛt ɪˈnʌf slip/"
+      },
+      {
+        "en": "eat vegetables",
+        "vi": "ăn rau",
+        "ipa": "/ɪts ɡʊd fɔr ju tu it ˈvɛdʒtəbəlz/"
+      },
+      {
+        "en": "drink water",
+        "vi": "uống nước",
+        "ipa": "/ɪts ɡʊd fɔr ju tu drɪŋk ˈwɔtər/"
+      },
+      {
+        "en": "stay active",
+        "vi": "năng vận động",
+        "ipa": "/ɪts ɡʊd fɔr ju tu steɪ ˈæktɪv/"
+      },
+      {
+        "en": "relax sometimes",
+        "vi": "thỉnh thoảng thư giãn",
+        "ipa": "/ɪts ɡʊd fɔr ju tu rɪˈlæks səmˈtaɪmz/"
+      },
+      {
+        "en": "eat breakfast",
+        "vi": "ăn sáng",
+        "ipa": "/ɪts ɡʊd fɔr ju tu it ˈbrɛkfəst/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It's good for you to laugh more.",
+        "vi": "Việc cười nhiều hơn rất tốt cho bạn.",
+        "ipa": "/ɪts ɡʊd fɔr ju tu læf mɔr/"
+      },
+      {
+        "en": "It's good for you to take breaks.",
+        "vi": "Việc nghỉ giải lao rất tốt cho bạn.",
+        "ipa": "/ɪts ɡʊd fɔr ju tu teɪk breɪks/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why do you go running?",
+        "vi": "Sao bạn đi chạy bộ?"
+      },
+      {
+        "en": "Is sleeping early really important?",
+        "vi": "Ngủ sớm có thật sự quan trọng không?"
+      }
+    ],
+    "id": "b1.its-good-for-you-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-technology",
+    "topic_vi": "Công nghệ trong đời sống",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "I spend a lot of time ___.",
+    "frame_vi": "Tôi dành rất nhiều thời gian ___.",
+    "note_vi": "Spend time + động từ thêm ing hoặc on + danh từ. Dùng để nói bạn dành thời gian cho việc gì.",
+    "slots": [
+      {
+        "en": "on my phone",
+        "vi": "vào điện thoại",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ɑn maɪ foʊn/"
+      },
+      {
+        "en": "watching videos",
+        "vi": "xem video",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ˈwɑtʃɪŋ ˈvɪdioʊz/"
+      },
+      {
+        "en": "texting friends",
+        "vi": "nhắn tin cho bạn bè",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ˈtɛkˌstɪŋ frɛndz/"
+      },
+      {
+        "en": "playing games",
+        "vi": "chơi game",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ˈpleɪɪŋ ɡeɪmz/"
+      },
+      {
+        "en": "on social media",
+        "vi": "trên mạng xã hội",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ɑn ˈsoʊʃəl ˈmidiə/"
+      },
+      {
+        "en": "chatting online",
+        "vi": "trò chuyện trên mạng",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ˈtʃætɪŋ ˈɔnˌlaɪn/"
+      },
+      {
+        "en": "on my laptop",
+        "vi": "vào máy tính xách tay",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ɑn maɪ ˈlæpˌtɑp/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I spend a lot of time on email.",
+        "vi": "Tôi dành rất nhiều thời gian cho thư điện tử.",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ɑn iˈmeɪl/"
+      },
+      {
+        "en": "I spend a lot of time reading news.",
+        "vi": "Tôi dành rất nhiều thời gian đọc tin tức.",
+        "ipa": "/aɪ spɛnd ə lɑt ʌv taɪm ˈridɪŋ nuz/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you do online?",
+        "vi": "Bạn làm gì trên mạng?"
+      },
+      {
+        "en": "How do you spend your evenings?",
+        "vi": "Buổi tối bạn làm gì?"
+      }
+    ],
+    "id": "b1.i-spend-a-lot-of-time"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-technology",
+    "topic_vi": "Công nghệ trong đời sống",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "I can't live without ___.",
+    "frame_vi": "Tôi không thể sống thiếu ___.",
+    "note_vi": "Without là giới từ nên theo sau là danh từ hoặc động từ thêm ing. Dùng để nói thứ gì quá quan trọng với bạn.",
+    "slots": [
+      {
+        "en": "my phone",
+        "vi": "điện thoại",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt maɪ foʊn/"
+      },
+      {
+        "en": "the internet",
+        "vi": "internet",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt ðə ˈɪntərˌnɛt/"
+      },
+      {
+        "en": "my laptop",
+        "vi": "máy tính xách tay",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt maɪ ˈlæpˌtɑp/"
+      },
+      {
+        "en": "WiFi",
+        "vi": "WiFi",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt ˈwaɪˌfaɪ/"
+      },
+      {
+        "en": "social media",
+        "vi": "mạng xã hội",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt ˈsoʊʃəl ˈmidiə/"
+      },
+      {
+        "en": "my headphones",
+        "vi": "tai nghe",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt maɪ ˈhɛdˌfoʊnz/"
+      },
+      {
+        "en": "online maps",
+        "vi": "bản đồ trực tuyến",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt ˈɔnˌlaɪn mæps/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I can't live without my charger.",
+        "vi": "Tôi không thể sống thiếu cục sạc.",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt maɪ ˈtʃɑrdʒər/"
+      },
+      {
+        "en": "I can't live without music.",
+        "vi": "Tôi không thể sống thiếu âm nhạc.",
+        "ipa": "/aɪ kænt laɪv wɪˈθaʊt ˈmjuzɪk/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your favorite gadget?",
+        "vi": "Thiết bị yêu thích của bạn là gì?"
+      },
+      {
+        "en": "Do you use your phone a lot?",
+        "vi": "Bạn có dùng điện thoại nhiều không?"
+      }
+    ],
+    "id": "b1.i-cant-live-without"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-technology",
+    "topic_vi": "Công nghệ trong đời sống",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "My ___ keeps crashing.",
+    "frame_vi": "___ của tôi cứ bị treo hoài.",
+    "note_vi": "Keep + động từ thêm ing nghĩa là cứ lặp lại mãi. Chủ ngữ số ít nên dùng keeps. Crash nghĩa là máy hoặc ứng dụng bị treo.",
+    "slots": [
+      {
+        "en": "phone",
+        "vi": "Điện thoại",
+        "ipa": "/maɪ foʊn kips ˈkræʃɪŋ/"
+      },
+      {
+        "en": "laptop",
+        "vi": "Máy tính xách tay",
+        "ipa": "/maɪ ˈlæpˌtɑp kips ˈkræʃɪŋ/"
+      },
+      {
+        "en": "computer",
+        "vi": "Máy tính",
+        "ipa": "/maɪ kəmpˈjutər kips ˈkræʃɪŋ/"
+      },
+      {
+        "en": "app",
+        "vi": "Ứng dụng",
+        "ipa": "/maɪ æp kips ˈkræʃɪŋ/"
+      },
+      {
+        "en": "browser",
+        "vi": "Trình duyệt",
+        "ipa": "/maɪ ˈbraʊzər kips ˈkræʃɪŋ/"
+      },
+      {
+        "en": "game",
+        "vi": "Trò chơi",
+        "ipa": "/maɪ ɡeɪm kips ˈkræʃɪŋ/"
+      },
+      {
+        "en": "tablet",
+        "vi": "Máy tính bảng",
+        "ipa": "/maɪ ˈtæblət kips ˈkræʃɪŋ/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My printer keeps crashing.",
+        "vi": "Máy in của tôi cứ bị treo hoài.",
+        "ipa": "/maɪ ˈprɪntər kips ˈkræʃɪŋ/"
+      },
+      {
+        "en": "My email keeps crashing.",
+        "vi": "Thư điện tử của tôi cứ bị treo hoài.",
+        "ipa": "/maɪ iˈmeɪl kips ˈkræʃɪŋ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What's wrong with your laptop?",
+        "vi": "Máy tính xách tay của bạn bị sao vậy?"
+      },
+      {
+        "en": "Why are you so annoyed?",
+        "vi": "Sao bạn bực mình vậy?"
+      }
+    ],
+    "id": "b1.my-keeps-crashing"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-technology",
+    "topic_vi": "Công nghệ trong đời sống",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "It's easy to ___ with this app.",
+    "frame_vi": "Dùng ứng dụng này rất dễ để ___.",
+    "note_vi": "It's easy to + động từ nguyên mẫu nói một việc dễ làm. With this app cho biết bạn làm việc đó bằng công cụ nào.",
+    "slots": [
+      {
+        "en": "pay bills",
+        "vi": "trả hóa đơn",
+        "ipa": "/ɪts ˈizi tu peɪ bɪlz wɪð ðɪs æp/"
+      },
+      {
+        "en": "book a taxi",
+        "vi": "đặt taxi",
+        "ipa": "/ɪts ˈizi tu bʊk ə ˈtæksi wɪð ðɪs æp/"
+      },
+      {
+        "en": "order food",
+        "vi": "gọi đồ ăn",
+        "ipa": "/ɪts ˈizi tu ˈɔrdər fud wɪð ðɪs æp/"
+      },
+      {
+        "en": "send money",
+        "vi": "gửi tiền",
+        "ipa": "/ɪts ˈizi tu sɛnd ˈmʌni wɪð ðɪs æp/"
+      },
+      {
+        "en": "translate words",
+        "vi": "dịch từ",
+        "ipa": "/ɪts ˈizi tu trænzˈleɪt wɝdz wɪð ðɪs æp/"
+      },
+      {
+        "en": "chat with friends",
+        "vi": "trò chuyện với bạn bè",
+        "ipa": "/ɪts ˈizi tu tʃæt wɪð frɛndz wɪð ðɪs æp/"
+      },
+      {
+        "en": "find a hotel",
+        "vi": "tìm khách sạn",
+        "ipa": "/ɪts ˈizi tu faɪnd ə hoʊˈtɛl wɪð ðɪs æp/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It's easy to learn English with this app.",
+        "vi": "Dùng ứng dụng này rất dễ để học tiếng Anh.",
+        "ipa": "/ɪts ˈizi tu lɝn ˈɪŋɡlɪʃ wɪð ðɪs æp/"
+      },
+      {
+        "en": "It's easy to share photos with this app.",
+        "vi": "Dùng ứng dụng này rất dễ để chia sẻ ảnh.",
+        "ipa": "/ɪts ˈizi tu ʃɛr ˈfoʊˌtoʊz wɪð ðɪs æp/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why do you like this app?",
+        "vi": "Sao bạn thích ứng dụng này?"
+      },
+      {
+        "en": "Which app do you use for work?",
+        "vi": "Bạn dùng ứng dụng nào cho công việc?"
+      }
+    ],
+    "id": "b1.its-easy-to-with-this-app"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-feelings-reactions",
+    "topic_vi": "Cảm xúc và phản ứng",
+    "goals": [
+      "social"
+    ],
+    "frame_en": "I was surprised that ___.",
+    "frame_vi": "Tôi ngạc nhiên là ___.",
+    "note_vi": "Surprised that cộng một mệnh đề đầy đủ có chủ ngữ và động từ. Nói về chuyện đã xảy ra thì động từ trong mệnh đề thường ở quá khứ.",
+    "slots": [
+      {
+        "en": "he said yes",
+        "vi": "anh ấy đồng ý",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt hi sɛd jɛs/"
+      },
+      {
+        "en": "it was free",
+        "vi": "nó miễn phí",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt ɪt wɑz fri/"
+      },
+      {
+        "en": "she remembered me",
+        "vi": "cô ấy nhớ tôi",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt ʃi rɪˈmɛmbərd mi/"
+      },
+      {
+        "en": "nobody came",
+        "vi": "không ai đến",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt ˈnoʊˌbɑˌdi keɪm/"
+      },
+      {
+        "en": "the test was easy",
+        "vi": "bài kiểm tra dễ",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt ðə tɛst wɑz ˈizi/"
+      },
+      {
+        "en": "they won",
+        "vi": "họ đã thắng",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt ðeɪ wʌn/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I was surprised that the shop was closed.",
+        "vi": "Tôi ngạc nhiên là cửa hàng đóng cửa.",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt ðə ʃɑp wɑz kloʊzd/"
+      },
+      {
+        "en": "I was surprised that he spoke Korean.",
+        "vi": "Tôi ngạc nhiên là anh ấy nói được tiếng Hàn.",
+        "ipa": "/aɪ wɑz sərˈpraɪzd ðæt hi spoʊk ˌkɔˈriən/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How did you feel about the news?",
+        "vi": "Bạn thấy thế nào về tin đó?"
+      },
+      {
+        "en": "Was the result what you expected?",
+        "vi": "Kết quả có như bạn mong đợi không?"
+      }
+    ],
+    "id": "b1.was-surprised-that"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-feelings-reactions",
+    "topic_vi": "Cảm xúc và phản ứng",
+    "goals": [
+      "social"
+    ],
+    "frame_en": "It always makes me ___.",
+    "frame_vi": "Điều đó luôn khiến tôi ___.",
+    "note_vi": "Make me cộng tính từ hoặc động từ nguyên mẫu không có to, nghĩa là khiến tôi cảm thấy hoặc làm gì. Ví dụ makes me smile.",
+    "slots": [
+      {
+        "en": "smile",
+        "vi": "mỉm cười",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi smaɪl/"
+      },
+      {
+        "en": "so nervous",
+        "vi": "rất lo lắng",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi soʊ ˈnɝvəs/"
+      },
+      {
+        "en": "feel proud",
+        "vi": "cảm thấy tự hào",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi fil praʊd/"
+      },
+      {
+        "en": "really angry",
+        "vi": "rất tức giận",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi ˈrɪli ˈæŋɡri/"
+      },
+      {
+        "en": "laugh",
+        "vi": "bật cười",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi læf/"
+      },
+      {
+        "en": "want to cry",
+        "vi": "muốn khóc",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi wɑnt tu kraɪ/"
+      },
+      {
+        "en": "feel relaxed",
+        "vi": "thấy thư thái",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi fil rɪˈlækst/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It always makes me happy.",
+        "vi": "Điều đó luôn làm tôi vui.",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi ˈhæpi/"
+      },
+      {
+        "en": "It always makes me feel better.",
+        "vi": "Điều đó luôn làm tôi thấy khá hơn.",
+        "ipa": "/ɪt ˈɔlˌweɪz meɪks mi fil ˈbɛtər/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "How does that make you feel?",
+        "vi": "Điều đó khiến bạn cảm thấy thế nào?"
+      },
+      {
+        "en": "Why do you like this song?",
+        "vi": "Sao bạn thích bài hát này?"
+      }
+    ],
+    "id": "b1.it-always-makes-me"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-feelings-reactions",
+    "topic_vi": "Cảm xúc và phản ứng",
+    "goals": [
+      "social"
+    ],
+    "frame_en": "I'm worried about ___.",
+    "frame_vi": "Tôi đang lo về ___.",
+    "note_vi": "Worried about cộng danh từ hoặc động từ thêm ing, không dùng động từ nguyên mẫu. Ví dụ worried about my exam, worried about being late.",
+    "slots": [
+      {
+        "en": "my exam",
+        "vi": "kỳ thi của tôi",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt maɪ ɪɡˈzæm/"
+      },
+      {
+        "en": "the weather",
+        "vi": "thời tiết",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt ðə ˈwɛðər/"
+      },
+      {
+        "en": "money",
+        "vi": "tiền bạc",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt ˈmʌni/"
+      },
+      {
+        "en": "my job",
+        "vi": "công việc của tôi",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt maɪ dʒɑb/"
+      },
+      {
+        "en": "my mother's health",
+        "vi": "sức khỏe của mẹ tôi",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt maɪ ˈmʌðərz hɛlθ/"
+      },
+      {
+        "en": "being late",
+        "vi": "việc đến muộn",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt ˈbiɪŋ leɪt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm worried about the traffic.",
+        "vi": "Tôi đang lo về giao thông.",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt ðə ˈtræfɪk/"
+      },
+      {
+        "en": "I'm worried about losing my phone.",
+        "vi": "Tôi đang lo bị mất điện thoại.",
+        "ipa": "/aɪm ˈwɝid əˈbaʊt ˈluzɪŋ maɪ foʊn/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "You look stressed. What's wrong?",
+        "vi": "Trông bạn căng thẳng. Có chuyện gì vậy?"
+      },
+      {
+        "en": "Is something bothering you?",
+        "vi": "Có chuyện gì làm bạn phiền lòng à?"
+      }
+    ],
+    "id": "b1.im-worried-about"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-feelings-reactions",
+    "topic_vi": "Cảm xúc và phản ứng",
+    "goals": [
+      "social"
+    ],
+    "frame_en": "I can't believe ___.",
+    "frame_vi": "Tôi không thể tin là ___.",
+    "note_vi": "I can't believe cộng một mệnh đề đầy đủ để nói bạn rất bất ngờ. Dùng được cho cả chuyện tốt lẫn chuyện xấu.",
+    "slots": [
+      {
+        "en": "you're leaving",
+        "vi": "bạn sắp đi",
+        "ipa": "/aɪ kænt bɪˈliv jʊr ˈlivɪŋ/"
+      },
+      {
+        "en": "it's already October",
+        "vi": "đã tháng Mười rồi",
+        "ipa": "/aɪ kænt bɪˈliv ɪts ɔlˈrɛdi ɑkˈtoʊbər/"
+      },
+      {
+        "en": "we actually won",
+        "vi": "chúng ta thật sự thắng",
+        "ipa": "/aɪ kænt bɪˈliv wi ˈækˌtʃuəli wʌn/"
+      },
+      {
+        "en": "he lied to me",
+        "vi": "anh ấy nói dối tôi",
+        "ipa": "/aɪ kænt bɪˈliv hi laɪd tu mi/"
+      },
+      {
+        "en": "it's so cheap",
+        "vi": "nó rẻ thế",
+        "ipa": "/aɪ kænt bɪˈliv ɪts soʊ tʃip/"
+      },
+      {
+        "en": "I passed",
+        "vi": "tôi đã đậu",
+        "ipa": "/aɪ kænt bɪˈliv aɪ pæst/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I can't believe it's over.",
+        "vi": "Tôi không thể tin là nó đã kết thúc.",
+        "ipa": "/aɪ kænt bɪˈliv ɪts ˈoʊvər/"
+      },
+      {
+        "en": "I can't believe she got the job.",
+        "vi": "Tôi không thể tin là cô ấy được nhận việc.",
+        "ipa": "/aɪ kænt bɪˈliv ʃi ɡɑt ðə dʒɑb/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Did you hear the news?",
+        "vi": "Bạn nghe tin chưa?"
+      },
+      {
+        "en": "What do you think about the result?",
+        "vi": "Bạn nghĩ sao về kết quả?"
+      }
+    ],
+    "id": "b1.i-cant-believe"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-plans-hopes",
+    "topic_vi": "Dự định và ước mơ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I'm thinking of ___ next year.",
+    "frame_vi": "Năm sau tôi đang nghĩ đến việc ___.",
+    "note_vi": "Thinking of cộng động từ thêm ing để nói ý định chưa chắc chắn, mới đang cân nhắc. Ví dụ thinking of moving.",
+    "slots": [
+      {
+        "en": "changing jobs",
+        "vi": "đổi việc",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈtʃeɪndʒɪŋ dʒɑbz nɛkst jɪr/"
+      },
+      {
+        "en": "moving abroad",
+        "vi": "ra nước ngoài sống",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈmuvɪŋ əˈbrɔd nɛkst jɪr/"
+      },
+      {
+        "en": "buying a bike",
+        "vi": "mua một chiếc xe đạp",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈbaɪɪŋ ə baɪk nɛkst jɪr/"
+      },
+      {
+        "en": "learning French",
+        "vi": "học tiếng Pháp",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈlɝnɪŋ frɛntʃ nɛkst jɪr/"
+      },
+      {
+        "en": "starting a business",
+        "vi": "bắt đầu kinh doanh",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈstɑrtɪŋ ə ˈbɪznəs nɛkst jɪr/"
+      },
+      {
+        "en": "taking a break",
+        "vi": "nghỉ ngơi một thời gian",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈteɪkɪŋ ə breɪk nɛkst jɪr/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm thinking of getting a dog next year.",
+        "vi": "Năm sau tôi đang nghĩ đến việc nuôi một con chó.",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈɡɛtɪŋ ə dɔɡ nɛkst jɪr/"
+      },
+      {
+        "en": "I'm thinking of studying English next year.",
+        "vi": "Năm sau tôi đang nghĩ đến việc học tiếng Anh.",
+        "ipa": "/aɪm ˈθɪŋkɪŋ ʌv ˈstʌdiɪŋ ˈɪŋɡlɪʃ nɛkst jɪr/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What are your plans for next year?",
+        "vi": "Kế hoạch năm sau của bạn là gì?"
+      },
+      {
+        "en": "Are you going to stay in this job?",
+        "vi": "Bạn có định ở lại công việc này không?"
+      }
+    ],
+    "id": "b1.thinking-of-next-year"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-plans-hopes",
+    "topic_vi": "Dự định và ước mơ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I'm planning to ___ this summer.",
+    "frame_vi": "Mùa hè này tôi đang định ___.",
+    "note_vi": "Planning to cộng động từ nguyên mẫu để nói kế hoạch đã được lên khá rõ. Chắc chắn hơn thinking of.",
+    "slots": [
+      {
+        "en": "visit Japan",
+        "vi": "đi thăm Nhật Bản",
+        "ipa": "/aɪm ˈplænɪŋ tu ˈvɪzɪt dʒəˈpæn ðɪs ˈsʌmər/"
+      },
+      {
+        "en": "learn to swim",
+        "vi": "học bơi",
+        "ipa": "/aɪm ˈplænɪŋ tu lɝn tu swɪm ðɪs ˈsʌmər/"
+      },
+      {
+        "en": "save money",
+        "vi": "tiết kiệm tiền",
+        "ipa": "/aɪm ˈplænɪŋ tu seɪv ˈmʌni ðɪs ˈsʌmər/"
+      },
+      {
+        "en": "get fit",
+        "vi": "lấy lại vóc dáng",
+        "ipa": "/aɪm ˈplænɪŋ tu ɡɛt fɪt ðɪs ˈsʌmər/"
+      },
+      {
+        "en": "move out",
+        "vi": "dọn ra ở riêng",
+        "ipa": "/aɪm ˈplænɪŋ tu muv aʊt ðɪs ˈsʌmər/"
+      },
+      {
+        "en": "write a blog",
+        "vi": "viết blog",
+        "ipa": "/aɪm ˈplænɪŋ tu raɪt ə blɔɡ ðɪs ˈsʌmər/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm planning to see my grandparents this summer.",
+        "vi": "Mùa hè này tôi đang định thăm ông bà.",
+        "ipa": "/aɪm ˈplænɪŋ tu si maɪ ˈɡrændˌpɛrənts ðɪs ˈsʌmər/"
+      },
+      {
+        "en": "I'm planning to take a cooking class this summer.",
+        "vi": "Mùa hè này tôi đang định học một lớp nấu ăn.",
+        "ipa": "/aɪm ˈplænɪŋ tu teɪk ə ˈkʊkɪŋ klæs ðɪs ˈsʌmər/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you have any plans for the holidays?",
+        "vi": "Bạn có kế hoạch gì cho kỳ nghỉ không?"
+      },
+      {
+        "en": "What are you going to do this summer?",
+        "vi": "Mùa hè này bạn sẽ làm gì?"
+      }
+    ],
+    "id": "b1.planning-to-this-summer"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-plans-hopes",
+    "topic_vi": "Dự định và ước mơ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I wish I could ___.",
+    "frame_vi": "Ước gì tôi có thể ___.",
+    "note_vi": "Wish cộng could cộng động từ nguyên mẫu nói về điều mình muốn làm được nhưng hiện tại chưa làm được hoặc không thể.",
+    "slots": [
+      {
+        "en": "speak better English",
+        "vi": "nói tiếng Anh giỏi hơn",
+        "ipa": "/aɪ wɪʃ aɪ kʊd spik ˈbɛtər ˈɪŋɡlɪʃ/"
+      },
+      {
+        "en": "travel more",
+        "vi": "đi du lịch nhiều hơn",
+        "ipa": "/aɪ wɪʃ aɪ kʊd ˈtrævəl mɔr/"
+      },
+      {
+        "en": "sing well",
+        "vi": "hát hay",
+        "ipa": "/aɪ wɪʃ aɪ kʊd sɪŋ wɛl/"
+      },
+      {
+        "en": "play the guitar",
+        "vi": "chơi đàn ghi ta",
+        "ipa": "/aɪ wɪʃ aɪ kʊd pleɪ ðə ɡɪˈtɑr/"
+      },
+      {
+        "en": "stay longer",
+        "vi": "ở lại lâu hơn",
+        "ipa": "/aɪ wɪʃ aɪ kʊd steɪ ˈlɔŋɡər/"
+      },
+      {
+        "en": "drive a car",
+        "vi": "lái xe ô tô",
+        "ipa": "/aɪ wɪʃ aɪ kʊd draɪv ə kɑr/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I wish I could swim like you.",
+        "vi": "Ước gì tôi có thể bơi giỏi như bạn.",
+        "ipa": "/aɪ wɪʃ aɪ kʊd swɪm laɪk ju/"
+      },
+      {
+        "en": "I wish I could join you tonight.",
+        "vi": "Ước gì tôi có thể đi cùng bạn tối nay.",
+        "ipa": "/aɪ wɪʃ aɪ kʊd dʒɔɪn ju təˈnaɪt/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What would you like to be good at?",
+        "vi": "Bạn muốn giỏi điều gì?"
+      },
+      {
+        "en": "Why don't you come with us?",
+        "vi": "Sao bạn không đi cùng chúng tôi?"
+      }
+    ],
+    "id": "b1.i-wish-i-could"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-plans-hopes",
+    "topic_vi": "Dự định và ước mơ",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "One day, I'd like to ___.",
+    "frame_vi": "Một ngày nào đó, tôi muốn ___.",
+    "note_vi": "I'd like to cộng động từ nguyên mẫu là cách nói lịch sự về điều mình muốn. One day nói về ước mơ trong tương lai xa.",
+    "slots": [
+      {
+        "en": "own a bakery",
+        "vi": "có một tiệm bánh",
+        "ipa": "/wʌn deɪ aɪd laɪk tu oʊn ə ˈbeɪkəri/"
+      },
+      {
+        "en": "live by the sea",
+        "vi": "sống gần biển",
+        "ipa": "/wʌn deɪ aɪd laɪk tu laɪv baɪ ðə si/"
+      },
+      {
+        "en": "run a marathon",
+        "vi": "chạy một cuộc marathon",
+        "ipa": "/wʌn deɪ aɪd laɪk tu rʌn ə ˈmɛrəˌθɑn/"
+      },
+      {
+        "en": "travel the world",
+        "vi": "đi vòng quanh thế giới",
+        "ipa": "/wʌn deɪ aɪd laɪk tu ˈtrævəl ðə wɝld/"
+      },
+      {
+        "en": "build a house",
+        "vi": "xây một ngôi nhà",
+        "ipa": "/wʌn deɪ aɪd laɪk tu bɪld ə haʊs/"
+      },
+      {
+        "en": "become a teacher",
+        "vi": "trở thành giáo viên",
+        "ipa": "/wʌn deɪ aɪd laɪk tu bɪˈkʌm ə ˈtitʃər/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "One day, I'd like to visit Italy.",
+        "vi": "Một ngày nào đó, tôi muốn đến Ý.",
+        "ipa": "/wʌn deɪ aɪd laɪk tu ˈvɪzɪt ˈɪtəli/"
+      },
+      {
+        "en": "One day, I'd like to start my own company.",
+        "vi": "Một ngày nào đó, tôi muốn lập công ty riêng.",
+        "ipa": "/wʌn deɪ aɪd laɪk tu stɑrt maɪ oʊn ˈkʌmpəˌni/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What's your dream?",
+        "vi": "Ước mơ của bạn là gì?"
+      },
+      {
+        "en": "Where do you see yourself in ten years?",
+        "vi": "Mười năm nữa bạn thấy mình ở đâu?"
+      }
+    ],
+    "id": "b1.one-day-id-like-to"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-polite-questions",
+    "topic_vi": "Hỏi lịch sự và hỏi gián tiếp",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "Do you know if ___ is open?",
+    "frame_vi": "Bạn có biết ___ có mở cửa không?",
+    "note_vi": "Câu hỏi gián tiếp dùng if cho câu hỏi có hoặc không, và giữ trật tự câu thường: if the bank is open, không đảo is lên trước.",
+    "slots": [
+      {
+        "en": "the bank",
+        "vi": "ngân hàng",
+        "ipa": "/du ju noʊ ɪf ðə bæŋk ɪz ˈoʊpən/"
+      },
+      {
+        "en": "the museum",
+        "vi": "bảo tàng",
+        "ipa": "/du ju noʊ ɪf ðə mjuˈziəm ɪz ˈoʊpən/"
+      },
+      {
+        "en": "the pharmacy",
+        "vi": "hiệu thuốc",
+        "ipa": "/du ju noʊ ɪf ðə ˈfɑrməsi ɪz ˈoʊpən/"
+      },
+      {
+        "en": "the market",
+        "vi": "chợ",
+        "ipa": "/du ju noʊ ɪf ðə ˈmɑrkət ɪz ˈoʊpən/"
+      },
+      {
+        "en": "the post office",
+        "vi": "bưu điện",
+        "ipa": "/du ju noʊ ɪf ðə poʊst ˈɔfɪs ɪz ˈoʊpən/"
+      },
+      {
+        "en": "the library",
+        "vi": "thư viện",
+        "ipa": "/du ju noʊ ɪf ðə ˈlaɪbrɛˌri ɪz ˈoʊpən/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Do you know if the gym is open?",
+        "vi": "Bạn có biết phòng tập có mở cửa không?",
+        "ipa": "/du ju noʊ ɪf ðə dʒɪm ɪz ˈoʊpən/"
+      },
+      {
+        "en": "Do you know if the cafeteria is open?",
+        "vi": "Bạn có biết căng tin có mở cửa không?",
+        "ipa": "/du ju noʊ ɪf ðə ˌkæfəˈtɪriə ɪz ˈoʊpən/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Are you looking for something?",
+        "vi": "Bạn đang tìm gì à?"
+      },
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được cho bạn?"
+      }
+    ],
+    "id": "b1.do-you-know-if-open"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-polite-questions",
+    "topic_vi": "Hỏi lịch sự và hỏi gián tiếp",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "I was wondering if you could ___.",
+    "frame_vi": "Không biết bạn có thể ___ không.",
+    "note_vi": "I was wondering if you could là cách nhờ rất lịch sự. Dùng quá khứ tiếp diễn làm lời nhờ nhẹ nhàng hơn, sau could là động từ nguyên mẫu.",
+    "slots": [
+      {
+        "en": "help me out",
+        "vi": "giúp tôi một tay",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd hɛlp mi aʊt/"
+      },
+      {
+        "en": "check this email",
+        "vi": "xem giúp email này",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd tʃɛk ðɪs iˈmeɪl/"
+      },
+      {
+        "en": "open the window",
+        "vi": "mở cửa sổ",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd ˈoʊpən ðə ˈwɪndoʊ/"
+      },
+      {
+        "en": "send me the file",
+        "vi": "gửi tôi tệp đó",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd sɛnd mi ðə faɪl/"
+      },
+      {
+        "en": "lend me a pen",
+        "vi": "cho tôi mượn bút",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd lɛnd mi ə pɛn/"
+      },
+      {
+        "en": "explain this word",
+        "vi": "giải thích từ này",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd ɪkˈspleɪn ðɪs wɝd/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I was wondering if you could call me back.",
+        "vi": "Không biết bạn có thể gọi lại cho tôi không.",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd kɔl mi bæk/"
+      },
+      {
+        "en": "I was wondering if you could move your bag.",
+        "vi": "Không biết bạn có thể dời túi của bạn không.",
+        "ipa": "/aɪ wɑz ˈwʌndərɪŋ ɪf ju kʊd muv jɔr bæɡ/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Is there anything I can do for you?",
+        "vi": "Tôi có thể giúp gì cho bạn?"
+      },
+      {
+        "en": "What do you need?",
+        "vi": "Bạn cần gì?"
+      }
+    ],
+    "id": "b1.was-wondering-if-you-could"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-polite-questions",
+    "topic_vi": "Hỏi lịch sự và hỏi gián tiếp",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "Would you mind ___?",
+    "frame_vi": "Bạn có phiền nếu ___ không?",
+    "note_vi": "Would you mind cộng động từ thêm ing để nhờ lịch sự. Trả lời Not at all hoặc Of course not nghĩa là đồng ý.",
+    "slots": [
+      {
+        "en": "closing the window",
+        "vi": "đóng cửa sổ",
+        "ipa": "/wʊd ju maɪnd ˈkloʊzɪŋ ðə ˈwɪndoʊ/"
+      },
+      {
+        "en": "waiting a moment",
+        "vi": "đợi một lát",
+        "ipa": "/wʊd ju maɪnd ˈweɪtɪŋ ə ˈmoʊmənt/"
+      },
+      {
+        "en": "helping me",
+        "vi": "giúp tôi",
+        "ipa": "/wʊd ju maɪnd ˈhɛlpɪŋ mi/"
+      },
+      {
+        "en": "moving over",
+        "vi": "xích qua một chút",
+        "ipa": "/wʊd ju maɪnd ˈmuvɪŋ ˈoʊvər/"
+      },
+      {
+        "en": "speaking slowly",
+        "vi": "nói chậm lại",
+        "ipa": "/wʊd ju maɪnd ˈspikɪŋ ˈsloʊli/"
+      },
+      {
+        "en": "turning it down",
+        "vi": "vặn nhỏ lại",
+        "ipa": "/wʊd ju maɪnd ˈtɝnɪŋ ɪt daʊn/"
+      },
+      {
+        "en": "repeating that",
+        "vi": "nhắc lại điều đó",
+        "ipa": "/wʊd ju maɪnd rɪˈpitɪŋ ðæt/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Would you mind opening the door?",
+        "vi": "Bạn có phiền mở cửa giúp tôi không?",
+        "ipa": "/wʊd ju maɪnd ˈoʊpənɪŋ ðə dɔr/"
+      },
+      {
+        "en": "Would you mind taking a photo of us?",
+        "vi": "Bạn có phiền chụp giúp chúng tôi một tấm ảnh không?",
+        "ipa": "/wʊd ju maɪnd ˈteɪkɪŋ ə ˈfoʊˌtoʊ ʌv ʌs/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Is it okay if I ask a favor?",
+        "vi": "Tôi nhờ bạn một việc được không?"
+      },
+      {
+        "en": "Can you hear me clearly?",
+        "vi": "Bạn nghe tôi rõ không?"
+      }
+    ],
+    "id": "b1.would-you-mind"
+  },
+  {
+    "level": "B1",
+    "topic": "b1-polite-questions",
+    "topic_vi": "Hỏi lịch sự và hỏi gián tiếp",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "I'd like to know how much ___ costs.",
+    "frame_vi": "Tôi muốn biết ___ giá bao nhiêu.",
+    "note_vi": "Câu hỏi gián tiếp giữ trật tự câu thường: how much it costs, không nói how much does it cost. Chủ ngữ số ít thì costs.",
+    "slots": [
+      {
+        "en": "this bag",
+        "vi": "cái túi này",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ðɪs bæɡ kɑsts/"
+      },
+      {
+        "en": "the ticket",
+        "vi": "vé",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ðə ˈtɪkət kɑsts/"
+      },
+      {
+        "en": "a taxi",
+        "vi": "một chuyến taxi",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ə ˈtæksi kɑsts/"
+      },
+      {
+        "en": "the room",
+        "vi": "phòng",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ðə rum kɑsts/"
+      },
+      {
+        "en": "this jacket",
+        "vi": "cái áo khoác này",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ðɪs ˈdʒækət kɑsts/"
+      },
+      {
+        "en": "the tour",
+        "vi": "chuyến tham quan",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ðə tʊr kɑsts/"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'd like to know how much the repair costs.",
+        "vi": "Tôi muốn biết việc sửa chữa giá bao nhiêu.",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ðə rɪˈpɛr kɑsts/"
+      },
+      {
+        "en": "I'd like to know how much a coffee costs.",
+        "vi": "Tôi muốn biết một ly cà phê giá bao nhiêu.",
+        "ipa": "/aɪd laɪk tu noʊ haʊ mʌtʃ ə ˈkɑfi kɑsts/"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Is there anything you would like to ask?",
+        "vi": "Bạn có muốn hỏi điều gì không?"
+      },
+      {
+        "en": "How can I help you?",
+        "vi": "Tôi giúp gì được cho bạn?"
+      }
+    ],
+    "id": "b1.like-to-know-how-much"
+  }
+]

@@ -21,7 +21,7 @@ const drafts = fs
   .flatMap((f) => JSON.parse(fs.readFileSync(path.join(draftsDir, f), "utf8")));
 
 const byLevel = new Map();
-for (const level of ["a1", "a2"]) {
+for (const level of ["a1", "a2", "b1"]) {
   const patterns = JSON.parse(fs.readFileSync(path.join(root, `src/data/patterns/${level}.json`), "utf8"));
   const order = [...new Set(patterns.map((p) => p.topic))];
   const tips = order

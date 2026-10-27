@@ -12,7 +12,7 @@ export const GOAL_LABEL: Record<RoadmapGoal, string> = {
   all: "Tất cả chủ đề",
 };
 
-/** The conversation of each A1 topic (all of them are in src/data/situations) */
+/** The conversation of each topic (all of them are in src/data/situations); A1 has one for every topic, the other levels for most */
 export const STAGE_CONVERSATION: Record<string, string> = {
   "greetings-introductions": "introduce-yourself",
   family: "talking-about-family-a1",
@@ -60,6 +60,28 @@ export const STAGE_CONVERSATION: Record<string, string> = {
   "a2-invitations": "invitation-to-birthday-party-a2",
   "a2-experiences": "talking-about-hobbies-a2",
   "a2-home-neighbors": "meeting-a-new-neighbor-a2",
+  // B1
+  "b1-past-stories": "coffee-break-hiking-chat-b1",
+  "b1-advice": "advice-about-studying-abroad-b1",
+  "b1-suggestions": "planning-a-study-group-b1",
+  "b1-preferences": "choosing-an-evening-course-b1",
+  "b1-job-interview": "job-interview-strengths-b1",
+  "b1-meetings": "deciding-which-task-first-b1",
+  "b1-presentations": "practicing-a-short-presentation-b1",
+  "b1-reports-updates": "correcting-a-report-mistake-b1",
+  "b1-deadlines": "asking-for-a-longer-deadline-b1",
+  "b1-customer-service": "returning-a-faulty-blender-b1",
+  "b1-travel-problems": "flight-delayed-at-the-airport-b1",
+  "b1-renting-booking": "wrong-hotel-booking-b1",
+  "b1-opinions-reasons": "discussing-a-bus-lane-in-the-news-b1",
+  "b1-agree-disagree": "disagreeing-about-a-launch-date-b1",
+  "b1-reporting-speech": "taking-a-phone-message-b1",
+  "b1-conditionals": "thinking-about-a-job-offer-b1",
+  "b1-health-lifestyle": "doctor-visit-for-a-headache-b1",
+  "b1-technology": "fixing-a-projector-before-a-talk-b1",
+  "b1-feelings-reactions": "talking-about-a-mystery-novel-b1",
+  "b1-plans-hopes": "organizing-a-farewell-party-b1",
+  "b1-polite-questions": "asking-to-work-from-home-b1",
 };
 
 /** Minutes each part of a stage takes (an estimate, used to fit a day to the minutes the learner chose) */

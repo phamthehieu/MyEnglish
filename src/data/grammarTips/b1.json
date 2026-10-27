@@ -1,0 +1,887 @@
+[
+  {
+    "stage": "b1-past-stories",
+    "title": "Quá khứ tiếp diễn + quá khứ đơn: kể chuyện",
+    "points": [
+      "Việc đang diễn ra dùng was/were + động từ thêm -ing: I was walking home.",
+      "Việc xen vào giữa chừng dùng quá khứ đơn: ... when the rain started.",
+      "While đi với việc kéo dài (was/were + -ing). When thường đi với việc ngắn, xảy ra bất ngờ.",
+      "Việc xảy ra trước lúc nhận ra dùng had + quá khứ phân từ: I had left my keys at home."
+    ],
+    "examples": [
+      {
+        "en": "I was cooking dinner when the power went out.",
+        "vi": "Tôi đang nấu bữa tối thì mất điện."
+      },
+      {
+        "en": "While I was waiting for the bus, my phone died.",
+        "vi": "Trong lúc tôi đang đợi xe buýt thì điện thoại hết pin."
+      },
+      {
+        "en": "Suddenly I realized I had left my wallet at home.",
+        "vi": "Bỗng nhiên tôi nhận ra mình đã để quên ví ở nhà."
+      }
+    ],
+    "mistake": {
+      "wrong": "I was cook when he called.",
+      "right": "I was cooking when he called.",
+      "why": "Tiếng Việt không đổi dạng động từ, nhưng sau was/were phải dùng động từ thêm -ing."
+    },
+    "lessons": [
+      {
+        "id": "ch01-l05",
+        "title": "Thì quá khứ đơn"
+      },
+      {
+        "id": "ch01-l06",
+        "title": "Thì quá khứ tiếp diễn"
+      },
+      {
+        "id": "ch01-l07",
+        "title": "Thì quá khứ hoàn thành/ Tiền quá khứ"
+      }
+    ]
+  },
+  {
+    "stage": "b1-used-to",
+    "title": "Used to và be/get used to: hai nghĩa khác nhau",
+    "points": [
+      "Used to + động từ nguyên mẫu: thói quen cũ, bây giờ không còn. I used to play football.",
+      "Câu phủ định và câu hỏi bỏ d: I didn't use to like fish.",
+      "Be used to + danh từ hoặc -ing nghĩa là quen với: I'm not used to getting up early.",
+      "Get used to + danh từ hoặc -ing nói về quá trình đang quen dần."
+    ],
+    "examples": [
+      {
+        "en": "I used to play football every day as a kid.",
+        "vi": "Hồi nhỏ ngày nào tôi cũng chơi bóng đá."
+      },
+      {
+        "en": "I'm not used to getting up early yet.",
+        "vi": "Tôi vẫn chưa quen với việc dậy sớm."
+      },
+      {
+        "en": "I'm slowly getting used to the weather here.",
+        "vi": "Tôi đang dần quen với thời tiết ở đây."
+      }
+    ],
+    "mistake": {
+      "wrong": "I'm not used to wake up early.",
+      "right": "I'm not used to waking up early.",
+      "why": "Be used to (quen với) đi với danh từ hoặc -ing. Used to + nguyên mẫu mới là thói quen cũ."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l14",
+        "title": "USED TO - BE"
+      }
+    ]
+  },
+  {
+    "stage": "b1-life-changes",
+    "title": "Hiện tại hoàn thành với for và since",
+    "points": [
+      "Việc bắt đầu trong quá khứ và còn liên quan đến bây giờ dùng have/has + quá khứ phân từ.",
+      "For + khoảng thời gian (for a few months). Since + mốc thời gian (since 2020, since March).",
+      "Việc vẫn đang tiếp tục có thể dùng have been + -ing: I've been learning English.",
+      "Have just + quá khứ phân từ nói việc vừa mới xảy ra."
+    ],
+    "examples": [
+      {
+        "en": "I've been learning English for a few months.",
+        "vi": "Tôi học tiếng Anh được vài tháng rồi."
+      },
+      {
+        "en": "I've lived here since 2020.",
+        "vi": "Tôi sống ở đây từ năm 2020."
+      },
+      {
+        "en": "Life has changed a lot since I moved to Hanoi.",
+        "vi": "Cuộc sống đã thay đổi rất nhiều từ khi tôi chuyển ra Hà Nội."
+      }
+    ],
+    "mistake": {
+      "wrong": "I live here since 2020.",
+      "right": "I have lived here since 2020.",
+      "why": "Việc kéo dài từ quá khứ đến nay phải dùng hiện tại hoàn thành, không dùng hiện tại đơn với since."
+    },
+    "lessons": [
+      {
+        "id": "ch01-l03",
+        "title": "Thì hiện tại hoàn thành"
+      },
+      {
+        "id": "ch01-l04",
+        "title": "Thì hiện tại hoàn thành tiếp diễn"
+      }
+    ]
+  },
+  {
+    "stage": "b1-advice",
+    "title": "Cho lời khuyên: if I were you, had better, why don't you",
+    "points": [
+      "If I were you, I'd + động từ nguyên mẫu. Luôn dùng were, kể cả với I.",
+      "You'd better + động từ nguyên mẫu (không có to): khuyên mạnh, nếu không làm có thể gặp rắc rối.",
+      "Why don't you + động từ nguyên mẫu: lời khuyên thân thiện, nhẹ nhàng.",
+      "It might help to + động từ nguyên mẫu: lời khuyên mềm, không ép người nghe."
+    ],
+    "examples": [
+      {
+        "en": "If I were you, I'd talk to your boss.",
+        "vi": "Nếu tôi là bạn, tôi sẽ nói chuyện với sếp."
+      },
+      {
+        "en": "You'd better leave now, or you'll miss the train.",
+        "vi": "Bạn nên đi ngay, không thì sẽ lỡ chuyến tàu."
+      },
+      {
+        "en": "Why don't you try a different approach?",
+        "vi": "Sao bạn không thử một cách tiếp cận khác?"
+      }
+    ],
+    "mistake": {
+      "wrong": "You'd better to go to the doctor.",
+      "right": "You'd better go to the doctor.",
+      "why": "Sau had better dùng động từ nguyên mẫu không to."
+    },
+    "lessons": [
+      {
+        "id": "ch03-l01",
+        "title": "Ba loại câu điều kiện"
+      },
+      {
+        "id": "ch20-l18",
+        "title": "SHOULD"
+      }
+    ]
+  },
+  {
+    "stage": "b1-suggestions",
+    "title": "Đề xuất: could, shall we, suggest, what if",
+    "points": [
+      "We could + động từ nguyên mẫu: đưa ra một lựa chọn khác. Instead đứng cuối câu nghĩa là thay vì cách vừa nói.",
+      "Shall we + động từ nguyên mẫu: rủ ai cùng làm gì. Shall chỉ dùng với I và we.",
+      "I suggest we + động từ nguyên mẫu: hơi trang trọng, hợp khi họp hoặc bàn công việc.",
+      "What if we + quá khứ đơn hoặc hiện tại đơn? Dùng để thử một ý mới khi thương lượng."
+    ],
+    "examples": [
+      {
+        "en": "We could take the train instead.",
+        "vi": "Thay vào đó chúng ta có thể đi tàu."
+      },
+      {
+        "en": "Shall we start at nine?",
+        "vi": "Mình bắt đầu lúc chín giờ nhé?"
+      },
+      {
+        "en": "I suggest we ask the manager first.",
+        "vi": "Tôi đề nghị chúng ta hỏi quản lý trước."
+      }
+    ],
+    "mistake": {
+      "wrong": "I suggest to go by taxi.",
+      "right": "I suggest we go by taxi.",
+      "why": "Suggest không đi với to + động từ. Dùng suggest + we + động từ, hoặc suggest + -ing."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l17",
+        "title": "COULD/MAY/MIGHT"
+      }
+    ]
+  },
+  {
+    "stage": "b1-preferences",
+    "title": "Would rather + động từ: nói điều bạn thích hơn",
+    "points": [
+      "I'd rather + động từ nguyên mẫu không to: nói bạn thích làm việc nào hơn.",
+      "Phủ định là I'd rather not. Muốn so sánh thì thêm than: I'd rather walk than drive.",
+      "It depends on + danh từ: chưa trả lời chắc được vì còn phụ thuộc vào điều khác.",
+      "I'd go for + danh từ: tôi sẽ chọn cái đó. I'm more of a ___ person: nói về tính cách, sở thích."
+    ],
+    "examples": [
+      {
+        "en": "I'd rather stay at home tonight.",
+        "vi": "Tối nay tôi muốn ở nhà hơn."
+      },
+      {
+        "en": "It depends on the weather.",
+        "vi": "Còn tùy vào thời tiết."
+      },
+      {
+        "en": "I'm more of a coffee person.",
+        "vi": "Tôi là kiểu người thích cà phê hơn."
+      }
+    ],
+    "mistake": {
+      "wrong": "I'd rather to stay at home.",
+      "right": "I'd rather stay at home.",
+      "why": "Sau would rather dùng động từ nguyên mẫu không to, giống các động từ khuyết thiếu."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l15",
+        "title": "WOULD RATHER"
+      }
+    ]
+  },
+  {
+    "stage": "b1-job-interview",
+    "title": "Sau giới từ dùng -ing: good at, experience in",
+    "points": [
+      "Be good at + danh từ hoặc -ing: nói điểm mạnh. I'm good at solving problems.",
+      "Have experience in + danh từ chỉ lĩnh vực. Không cần chia thì sau in.",
+      "My biggest strength is + danh từ hoặc -ing, rồi nói thêm một ví dụ ngắn cho thuyết phục.",
+      "I'd like to + động từ nguyên mẫu: cách nói lịch sự về mong muốn, hợp để trả lời về mục tiêu."
+    ],
+    "examples": [
+      {
+        "en": "I'm good at solving problems under pressure.",
+        "vi": "Tôi giỏi giải quyết vấn đề khi bị áp lực."
+      },
+      {
+        "en": "I have experience in customer service.",
+        "vi": "Tôi có kinh nghiệm trong lĩnh vực chăm sóc khách hàng."
+      },
+      {
+        "en": "In five years, I'd like to lead a small team.",
+        "vi": "Trong năm năm tới, tôi muốn dẫn dắt một nhóm nhỏ."
+      }
+    ],
+    "mistake": {
+      "wrong": "I'm good at solve problems.",
+      "right": "I'm good at solving problems.",
+      "why": "Sau giới từ (at, in, about) dùng danh từ hoặc -ing, không dùng động từ nguyên mẫu."
+    },
+    "lessons": [
+      {
+        "id": "ch22-l19",
+        "title": "Giới từ theo sau các tính từ"
+      },
+      {
+        "id": "ch20-l16",
+        "title": "WOULD LIKE"
+      }
+    ]
+  },
+  {
+    "stage": "b1-meetings",
+    "title": "Câu lịch sự khi họp: could you, can we, I'd like to",
+    "points": [
+      "Let's move on to + danh từ: chuyển sang mục tiếp theo. Sau to là danh từ, thường có the.",
+      "Could you + động từ nguyên mẫu: lịch sự hơn can you. Clarify nghĩa là làm rõ.",
+      "I'd like to add + danh từ: chen ý vào một cách nhã nhặn.",
+      "Agree on + danh từ hoặc cụm như who does what: cả nhóm cùng chốt một việc."
+    ],
+    "examples": [
+      {
+        "en": "Let's move on to the budget.",
+        "vi": "Chúng ta chuyển sang phần ngân sách nhé."
+      },
+      {
+        "en": "Could you clarify what you mean by phase two?",
+        "vi": "Bạn có thể làm rõ ý của bạn về giai đoạn hai không?"
+      },
+      {
+        "en": "Can we agree on a deadline today?",
+        "vi": "Hôm nay chúng ta chốt hạn chót được không?"
+      }
+    ],
+    "mistake": {
+      "wrong": "Could you to clarify this point?",
+      "right": "Could you clarify this point?",
+      "why": "Sau could/can dùng động từ nguyên mẫu không to."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l16",
+        "title": "WOULD LIKE"
+      }
+    ]
+  },
+  {
+    "stage": "b1-presentations",
+    "title": "Mở bài, chuyển ý và kết bài khi thuyết trình",
+    "points": [
+      "Today I'll talk about + danh từ hoặc how to + động từ: báo trước chủ đề bằng I'll.",
+      "Let me start with + danh từ (a story, a question) để mở đầu.",
+      "As you can see, + câu đầy đủ: dùng khi chỉ vào biểu đồ hoặc hình. Nói ở hiện tại hoặc quá khứ đơn.",
+      "To sum up, + câu đầy đủ: nhắc lại ý chính ở phần kết, nói ngắn và rõ."
+    ],
+    "examples": [
+      {
+        "en": "Today I'll talk about how to save energy at home.",
+        "vi": "Hôm nay tôi sẽ nói về cách tiết kiệm điện ở nhà."
+      },
+      {
+        "en": "As you can see, sales went up in March.",
+        "vi": "Như các bạn thấy, doanh số đã tăng vào tháng Ba."
+      },
+      {
+        "en": "To sum up, we need more time and a bigger budget.",
+        "vi": "Tóm lại, chúng ta cần thêm thời gian và ngân sách lớn hơn."
+      }
+    ],
+    "mistake": {
+      "wrong": "Today I'll talk about to reduce waste.",
+      "right": "Today I'll talk about how to reduce waste.",
+      "why": "Sau about cần danh từ hoặc how to + động từ, không đặt to + động từ ngay sau about."
+    },
+    "lessons": [
+      {
+        "id": "ch01-l09",
+        "title": "Thì tương lai đơn"
+      }
+    ]
+  },
+  {
+    "stage": "b1-reports-updates",
+    "title": "Hiện tại hoàn thành và I'll: báo cáo tiến độ",
+    "points": [
+      "Have been + -ing: việc bắt đầu trước đây và vẫn đang làm. I've been working on the website.",
+      "Have/has + quá khứ phân từ với already: việc đã xong, kết quả còn dùng được bây giờ.",
+      "We're running behind on + danh từ: đang trễ so với kế hoạch. Dùng hiện tại tiếp diễn vì tình trạng đang diễn ra.",
+      "I'll + động từ nguyên mẫu + by tomorrow: hứa gửi chậm nhất là ngày mai."
+    ],
+    "examples": [
+      {
+        "en": "I've been working on the new website since Monday.",
+        "vi": "Tôi làm trang web mới từ thứ Hai đến giờ."
+      },
+      {
+        "en": "We've already finished the first draft.",
+        "vi": "Chúng tôi đã hoàn thành bản nháp đầu tiên rồi."
+      },
+      {
+        "en": "I'll send you the report by tomorrow.",
+        "vi": "Tôi sẽ gửi báo cáo cho bạn chậm nhất là ngày mai."
+      }
+    ],
+    "mistake": {
+      "wrong": "We have finish the design.",
+      "right": "We have finished the design.",
+      "why": "Have/has phải đi với quá khứ phân từ (finished), không dùng động từ nguyên mẫu."
+    },
+    "lessons": [
+      {
+        "id": "ch01-l03",
+        "title": "Thì hiện tại hoàn thành"
+      },
+      {
+        "id": "ch01-l04",
+        "title": "Thì hiện tại hoàn thành tiếp diễn"
+      },
+      {
+        "id": "ch01-l09",
+        "title": "Thì tương lai đơn"
+      }
+    ]
+  },
+  {
+    "stage": "b1-deadlines",
+    "title": "Xin đổi thời hạn một cách lịch sự",
+    "points": [
+      "Would it be possible to + động từ nguyên mẫu: cách xin phép rất lịch sự khi muốn đổi kế hoạch.",
+      "I'm afraid I can't + động từ nguyên mẫu: báo tin không vui một cách nhẹ nhàng.",
+      "By Friday nghĩa là chậm nhất là thứ Sáu. Could we extend + danh từ: xin gia hạn.",
+      "I'll do my best to + động từ nguyên mẫu: hứa cố gắng nhưng chưa chắc chắn."
+    ],
+    "examples": [
+      {
+        "en": "Would it be possible to move the meeting to Monday?",
+        "vi": "Có thể dời cuộc họp sang thứ Hai được không?"
+      },
+      {
+        "en": "I'm afraid I can't finish the report by Friday.",
+        "vi": "Tôi e là tôi không thể xong báo cáo trước thứ Sáu."
+      },
+      {
+        "en": "I'll do my best to send it earlier.",
+        "vi": "Tôi sẽ cố gắng gửi sớm hơn."
+      }
+    ],
+    "mistake": {
+      "wrong": "Would it be possible to extending the deadline?",
+      "right": "Would it be possible to extend the deadline?",
+      "why": "Sau to trong possible to dùng động từ nguyên mẫu, không thêm -ing."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l17",
+        "title": "COULD/MAY/MIGHT"
+      }
+    ]
+  },
+  {
+    "stage": "b1-customer-service",
+    "title": "Xin lỗi và phàn nàn: sorry for, complain about",
+    "points": [
+      "I'm sorry for + danh từ hoặc -ing: xin lỗi về điều đã xảy ra. Không dùng nguyên mẫu sau for.",
+      "I'd like to complain about + danh từ: phàn nàn nhưng vẫn nhã nhặn.",
+      "We'll look into + danh từ: nhân viên hứa sẽ xem xét, điều tra vấn đề.",
+      "I understand that + mệnh đề: cho khách thấy bạn thông cảm với họ."
+    ],
+    "examples": [
+      {
+        "en": "I'm sorry for the delay.",
+        "vi": "Tôi xin lỗi vì sự chậm trễ."
+      },
+      {
+        "en": "I'd like to complain about the slow service.",
+        "vi": "Tôi muốn phàn nàn về việc phục vụ chậm."
+      },
+      {
+        "en": "We'll look into the problem right away.",
+        "vi": "Chúng tôi sẽ xem xét vấn đề này ngay."
+      }
+    ],
+    "mistake": {
+      "wrong": "I'd like to complain for the service.",
+      "right": "I'd like to complain about the service.",
+      "why": "Phàn nàn về điều gì dùng complain about, không dùng for."
+    },
+    "lessons": [
+      {
+        "id": "ch22-l19",
+        "title": "Giới từ theo sau các tính từ"
+      }
+    ]
+  },
+  {
+    "stage": "b1-travel-problems",
+    "title": "Quá khứ và bị động: missed, was delayed",
+    "points": [
+      "Chuyện đã xảy ra thì động từ chuyển sang quá khứ: miss thành missed. Tiếng Việt không đổi dạng động từ, nên dễ quên.",
+      "Was delayed nghĩa là bị trễ (câu bị động): chủ ngữ là thứ chịu việc trễ, không phải thứ tự làm. Chủ ngữ số nhiều thì dùng were delayed.",
+      "Need to + động từ nguyên mẫu nói điều cần làm: I need to rebook. Rebook đi thẳng với danh từ, không thêm giới từ.",
+      "What should I do about + danh từ dùng để xin lời khuyên về một rắc rối."
+    ],
+    "examples": [
+      {
+        "en": "I missed my flight because of the traffic.",
+        "vi": "Tôi lỡ chuyến bay vì kẹt xe."
+      },
+      {
+        "en": "My train was delayed by two hours.",
+        "vi": "Chuyến tàu của tôi bị trễ hai tiếng."
+      },
+      {
+        "en": "What should I do about my lost luggage?",
+        "vi": "Tôi nên làm gì với hành lý bị thất lạc đây?"
+      }
+    ],
+    "mistake": {
+      "wrong": "My flight delayed two hours.",
+      "right": "My flight was delayed for two hours.",
+      "why": "Chuyến bay bị trễ nên cần bị động: was delayed. Chỉ có delayed thì không đủ."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b1-renting-booking",
+    "title": "Nhờ và hỏi lịch sự: I'd like, Could you",
+    "points": [
+      "I'd like to + động từ nguyên mẫu lịch sự hơn I want to. Dùng khi thuê, đặt chỗ hoặc gọi món.",
+      "Could you + động từ nguyên mẫu (không có to) là cách nhờ nhẹ nhàng: Could you recommend a hotel?",
+      "Is there an extra charge for + danh từ? dùng để hỏi trước về phí thêm. Sau for là danh từ hoặc động từ thêm ing.",
+      "Đã đặt từ trước thì dùng quá khứ: I booked a room online."
+    ],
+    "examples": [
+      {
+        "en": "I'd like to rent a car for three days.",
+        "vi": "Tôi muốn thuê một chiếc xe trong ba ngày."
+      },
+      {
+        "en": "Is there an extra charge for breakfast?",
+        "vi": "Bữa sáng có tính thêm phí không?"
+      },
+      {
+        "en": "I booked a double room online.",
+        "vi": "Tôi đã đặt một phòng đôi qua mạng."
+      }
+    ],
+    "mistake": {
+      "wrong": "Could you to recommend a good restaurant?",
+      "right": "Could you recommend a good restaurant?",
+      "why": "Sau could (và các động từ khuyết thiếu khác) dùng động từ nguyên mẫu không có to."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l16",
+        "title": "WOULD LIKE"
+      },
+      {
+        "id": "ch20-l17",
+        "title": "COULD/MAY/MIGHT"
+      }
+    ]
+  },
+  {
+    "stage": "b1-tourist-info",
+    "title": "Hỏi gợi ý: best way to, worth, take",
+    "points": [
+      "The best way to + động từ nguyên mẫu hỏi cách tốt nhất để làm gì: What's the best way to get downtown?",
+      "Worth + động từ thêm ing nghĩa là đáng để làm: Is it worth visiting the museum? Không dùng to sau worth.",
+      "How long does it take to + động từ? hỏi thời gian cần cho việc. Chủ ngữ it đi với does, và take giữ nguyên.",
+      "Should definitely + động từ nguyên mẫu là lời gợi ý mạnh. Definitely đứng giữa should và động từ."
+    ],
+    "examples": [
+      {
+        "en": "What's the best way to get to the old town?",
+        "vi": "Cách tốt nhất để đến khu phố cổ là gì?"
+      },
+      {
+        "en": "Is it worth visiting the night market?",
+        "vi": "Chợ đêm có đáng đi không?"
+      },
+      {
+        "en": "You should definitely try the local coffee.",
+        "vi": "Bạn nhất định nên thử cà phê địa phương."
+      }
+    ],
+    "mistake": {
+      "wrong": "Is it worth to visit this island?",
+      "right": "Is it worth visiting this island?",
+      "why": "Sau worth luôn dùng động từ thêm ing, không dùng to + động từ."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l18",
+        "title": "SHOULD"
+      }
+    ]
+  },
+  {
+    "stage": "b1-opinions-reasons",
+    "title": "Nêu ý kiến và lý do: To me, That's why",
+    "points": [
+      "To me, ... mở đầu cho ý kiến cá nhân. Sau đó là một câu đầy đủ, nhớ có động từ is: To me, health is important.",
+      "The main problem is / One reason is + cụm danh từ hoặc một câu. Nhớ giữ động từ is, tiếng Việt thường bỏ.",
+      "That's why + chủ ngữ + động từ nói kết quả của điều vừa nêu: It's cheap. That's why I like it.",
+      "Because chỉ lý do, còn that's why chỉ kết quả. Hai từ này không thay thế cho nhau."
+    ],
+    "examples": [
+      {
+        "en": "To me, sleep is really important.",
+        "vi": "Với tôi, giấc ngủ rất quan trọng."
+      },
+      {
+        "en": "The main problem is the high price.",
+        "vi": "Vấn đề chính là giá quá cao."
+      },
+      {
+        "en": "The bus is always late. That's why I walk to work.",
+        "vi": "Xe buýt luôn trễ. Vì thế tôi đi bộ đi làm."
+      }
+    ],
+    "mistake": {
+      "wrong": "To me, family really important.",
+      "right": "To me, family is really important.",
+      "why": "Tiếng Việt không cần động từ be trước tính từ, nhưng tiếng Anh luôn cần is/are/am."
+    },
+    "lessons": [
+      {
+        "id": "ch07-l02",
+        "title": "Mệnh đề trạng ngữ chỉ lý do"
+      }
+    ]
+  },
+  {
+    "stage": "b1-agree-disagree",
+    "title": "Phản đối lịch sự: I see your point, but",
+    "points": [
+      "Ghi nhận ý người kia trước (I see your point), rồi mới nói but. Cách này nghe mềm hơn nói thẳng I disagree.",
+      "I partly agree with + người hoặc ý kiến. Sau with là danh từ, không phải một câu: with you, with Anna.",
+      "I'm not sure that's + tính từ hoặc a + danh từ là cách nói không đồng ý nhẹ nhàng.",
+      "Isn't it ...? (câu hỏi đuôi phủ định) làm lời phản đối nghe như một câu hỏi gợi ý, ít gay gắt hơn."
+    ],
+    "examples": [
+      {
+        "en": "I see your point, but it costs too much.",
+        "vi": "Tôi hiểu ý bạn, nhưng nó tốn quá nhiều tiền."
+      },
+      {
+        "en": "I partly agree with you.",
+        "vi": "Tôi đồng ý với bạn một phần."
+      },
+      {
+        "en": "Maybe, but isn't it a bit dangerous?",
+        "vi": "Có thể, nhưng như vậy có hơi nguy hiểm không?"
+      }
+    ],
+    "mistake": {
+      "wrong": "I'm agree with you.",
+      "right": "I agree with you.",
+      "why": "Agree đã là động từ, không cần am/is/are. Tiếng Việt nói \"tôi đồng ý\" nên dễ thêm be."
+    },
+    "lessons": [
+      {
+        "id": "ch08-l02",
+        "title": "Mệnh đề trạng ngữ chỉ sự nhượng bộ"
+      }
+    ]
+  },
+  {
+    "stage": "b1-reporting-speech",
+    "title": "Câu gián tiếp: said that, told me to",
+    "points": [
+      "Kể lại lời người khác thì động từ thường lùi một thì: am thành was, can thành could, will thành would. Đại từ cũng đổi: I thành he/she.",
+      "Say không cần người nghe: He said that he was tired. Tell cần người nghe ngay sau: He told me that he was tired.",
+      "Told me to + động từ nguyên mẫu kể lại yêu cầu. Phủ định là told me not to.",
+      "Kể lại câu hỏi: asked if / wants to know + từ hỏi, rồi chủ ngữ + động từ như câu thường, không dùng do/does."
+    ],
+    "examples": [
+      {
+        "en": "He said that he was too busy to come.",
+        "vi": "Anh ấy nói rằng anh ấy quá bận nên không đến được."
+      },
+      {
+        "en": "She told me to call her back later.",
+        "vi": "Cô ấy bảo tôi gọi lại cho cô ấy sau."
+      },
+      {
+        "en": "They asked me if I was free on Friday.",
+        "vi": "Họ hỏi tôi có rảnh vào thứ Sáu không."
+      }
+    ],
+    "mistake": {
+      "wrong": "He said me that he was tired.",
+      "right": "He told me that he was tired.",
+      "why": "Say không đi với người nghe. Muốn có me thì dùng tell: told me."
+    },
+    "lessons": [
+      {
+        "id": "ch28-l01",
+        "title": "Thay đổi thì động từ"
+      },
+      {
+        "id": "ch28-l03",
+        "title": "Câu mệnh lệnh và câu yêu cầu"
+      },
+      {
+        "id": "ch28-l05",
+        "title": "Câu hỏi Yes - No"
+      }
+    ]
+  },
+  {
+    "stage": "b1-conditionals",
+    "title": "Câu điều kiện: If I have, If I were",
+    "points": [
+      "Việc có thể xảy ra: If + hiện tại đơn, will + động từ. Vế if không dùng will: If I have time, I'll call you.",
+      "Việc không có thật hoặc khó xảy ra: If + quá khứ đơn, would + động từ. Với I/he/she thường dùng were: If I were rich.",
+      "Unless nghĩa là if ... not (nếu không). Sau unless dùng hiện tại đơn, không thêm not: Unless it rains, we'll go.",
+      "What would you do if + quá khứ đơn? dùng để hỏi một tình huống tưởng tượng."
+    ],
+    "examples": [
+      {
+        "en": "If I have time, I'll visit my grandparents.",
+        "vi": "Nếu có thời gian, tôi sẽ đi thăm ông bà."
+      },
+      {
+        "en": "If I were rich, I'd travel around the world.",
+        "vi": "Nếu giàu, tôi sẽ đi du lịch vòng quanh thế giới."
+      },
+      {
+        "en": "What would you do if you lost your phone?",
+        "vi": "Bạn sẽ làm gì nếu bị mất điện thoại?"
+      }
+    ],
+    "mistake": {
+      "wrong": "If I will have time, I will call you.",
+      "right": "If I have time, I'll call you.",
+      "why": "Trong mệnh đề if không dùng will. Tiếng Việt \"nếu tôi sẽ có\" khiến dễ thêm will."
+    },
+    "lessons": [
+      {
+        "id": "ch03-l01",
+        "title": "Ba loại câu điều kiện"
+      },
+      {
+        "id": "ch03-l02",
+        "title": "Dùng UNLESS thay cho IF"
+      }
+    ]
+  },
+  {
+    "stage": "b1-health-lifestyle",
+    "title": "Khuyên và thói quen: shouldn't, give up",
+    "points": [
+      "Should / shouldn't + động từ nguyên mẫu (không có to) dùng để khuyên: You shouldn't eat too much sugar.",
+      "Give up + danh từ hoặc động từ thêm ing nghĩa là bỏ thói quen. Dùng I've given up (hiện tại hoàn thành) vì kết quả còn đến bây giờ.",
+      "Try to + động từ nguyên mẫu là cố gắng làm. Every day đứng cuối câu để nói thói quen.",
+      "It's good for you to + động từ nguyên mẫu nói việc có lợi, nghe là lời khuyên nhẹ nhàng."
+    ],
+    "examples": [
+      {
+        "en": "I try to walk for thirty minutes every day.",
+        "vi": "Tôi cố gắng đi bộ ba mươi phút mỗi ngày."
+      },
+      {
+        "en": "You shouldn't drink too much coffee.",
+        "vi": "Bạn không nên uống quá nhiều cà phê."
+      },
+      {
+        "en": "I've given up smoking.",
+        "vi": "Tôi đã bỏ thuốc lá."
+      }
+    ],
+    "mistake": {
+      "wrong": "You shouldn't to eat too much.",
+      "right": "You shouldn't eat too much.",
+      "why": "Sau should/shouldn't dùng động từ nguyên mẫu không có to."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l18",
+        "title": "SHOULD"
+      },
+      {
+        "id": "ch01-l03",
+        "title": "Thì hiện tại hoàn thành"
+      }
+    ]
+  },
+  {
+    "stage": "b1-technology",
+    "title": "Dạng V-ing: spend time, keeps crashing",
+    "points": [
+      "Spend time + động từ thêm ing: I spend a lot of time playing games. Hoặc dùng on + danh từ: spend time on my phone.",
+      "Without là giới từ, nên sau nó dùng danh từ hoặc động từ thêm ing: I can't live without my phone.",
+      "Keep + động từ thêm ing nghĩa là cứ lặp lại mãi: My laptop keeps crashing. Chủ ngữ số ít thì dùng keeps.",
+      "It's easy to + động từ nguyên mẫu nói một việc dễ làm. With this app cho biết dùng công cụ nào."
+    ],
+    "examples": [
+      {
+        "en": "I spend a lot of time watching videos.",
+        "vi": "Tôi dành nhiều thời gian xem video."
+      },
+      {
+        "en": "I can't live without my phone.",
+        "vi": "Tôi không thể sống thiếu điện thoại."
+      },
+      {
+        "en": "My laptop keeps crashing.",
+        "vi": "Laptop của tôi cứ bị treo hoài."
+      }
+    ],
+    "mistake": {
+      "wrong": "My phone keep crash.",
+      "right": "My phone keeps crashing.",
+      "why": "Chủ ngữ số ít cần keeps, và động từ sau keep phải thêm ing."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b1-feelings-reactions",
+    "title": "Diễn tả cảm xúc: surprised that, worried about",
+    "points": [
+      "Tính từ cảm xúc đi với giới từ riêng: worried about, surprised at/by. Sau about dùng danh từ hoặc động từ thêm ing.",
+      "Surprised that và can't believe được theo sau bởi một câu đầy đủ (có chủ ngữ và động từ). Chuyện đã xảy ra thì dùng quá khứ.",
+      "It makes me + tính từ nghĩa là điều đó khiến tôi cảm thấy thế nào: It makes me happy.",
+      "Phân biệt: I'm bored (tôi chán) và it's boring (nó chán). Người cảm thấy dùng -ed, điều gây ra cảm xúc dùng -ing."
+    ],
+    "examples": [
+      {
+        "en": "I was surprised that she remembered my name.",
+        "vi": "Tôi ngạc nhiên là cô ấy nhớ tên tôi."
+      },
+      {
+        "en": "It always makes me smile.",
+        "vi": "Điều đó luôn làm tôi mỉm cười."
+      },
+      {
+        "en": "I'm worried about my exam.",
+        "vi": "Tôi lo lắng về kỳ thi của mình."
+      }
+    ],
+    "mistake": {
+      "wrong": "I interested in this movie.",
+      "right": "I'm interested in this movie.",
+      "why": "Interested là tính từ nên cần am/is/are phía trước. Tiếng Việt không cần động từ này."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b1-plans-hopes",
+    "title": "Dự định và ước: thinking of, planning to, wish",
+    "points": [
+      "I'm thinking of + động từ thêm ing: mới đang cân nhắc. I'm planning to + động từ nguyên mẫu: kế hoạch đã rõ hơn.",
+      "Wish I could + động từ nguyên mẫu nói điều mình muốn nhưng hiện tại chưa làm được. Dùng could, không dùng can.",
+      "I'd like to + động từ nguyên mẫu nói điều muốn một cách lịch sự. One day đứng đầu câu cho ước mơ xa.",
+      "Thinking of đi với ing vì of là giới từ, còn planning to đi với động từ nguyên mẫu."
+    ],
+    "examples": [
+      {
+        "en": "I'm thinking of moving to a new city next year.",
+        "vi": "Năm sau tôi đang nghĩ đến chuyện chuyển sang thành phố mới."
+      },
+      {
+        "en": "I'm planning to visit Da Nang this summer.",
+        "vi": "Hè này tôi dự định đi Đà Nẵng."
+      },
+      {
+        "en": "I wish I could speak English fluently.",
+        "vi": "Ước gì tôi nói tiếng Anh trôi chảy được."
+      }
+    ],
+    "mistake": {
+      "wrong": "I wish I can speak English well.",
+      "right": "I wish I could speak English well.",
+      "why": "Sau wish (ước điều chưa có ở hiện tại) động từ lùi thành quá khứ: can thành could."
+    },
+    "lessons": [
+      {
+        "id": "ch04-l02",
+        "title": "Ao ước ở hiện tại"
+      },
+      {
+        "id": "ch20-l16",
+        "title": "WOULD LIKE"
+      }
+    ]
+  },
+  {
+    "stage": "b1-polite-questions",
+    "title": "Hỏi gián tiếp: Do you know if, how much it costs",
+    "points": [
+      "Hỏi gián tiếp dùng trật tự câu thường: chủ ngữ rồi động từ, không đảo và không dùng do/does. Đúng là how much it costs.",
+      "Câu hỏi có/không dùng if hoặc whether: Do you know if the bank is open?",
+      "Would you mind + động từ thêm ing nhờ lịch sự. Trả lời Not at all nghĩa là đồng ý.",
+      "I was wondering if you could + động từ nguyên mẫu là cách nhờ rất lịch sự, dùng quá khứ để mềm hơn."
+    ],
+    "examples": [
+      {
+        "en": "Do you know if the museum is open on Sundays?",
+        "vi": "Bạn có biết bảo tàng có mở cửa vào Chủ nhật không?"
+      },
+      {
+        "en": "I was wondering if you could help me with this form.",
+        "vi": "Không biết bạn có thể giúp tôi điền mẫu này được không."
+      },
+      {
+        "en": "I'd like to know how much this ticket costs.",
+        "vi": "Tôi muốn biết vé này giá bao nhiêu."
+      }
+    ],
+    "mistake": {
+      "wrong": "Do you know where is the bank?",
+      "right": "Do you know where the bank is?",
+      "why": "Trong hỏi gián tiếp giữ trật tự câu thường: where + chủ ngữ + động từ."
+    },
+    "lessons": [
+      {
+        "id": "ch28-l05",
+        "title": "Câu hỏi Yes - No"
+      },
+      {
+        "id": "ch28-l06",
+        "title": "Câu hỏi Wh-"
+      },
+      {
+        "id": "ch10-l02",
+        "title": "Mệnh đề danh từ làm tân ngữ trong câu"
+      }
+    ]
+  }
+]

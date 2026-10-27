@@ -43,7 +43,7 @@ describe("grammar tips of the speaking path", () => {
     const entries = tipEntries();
     expect(entries).toHaveLength(stages.length);
     expect(entries[0].level).toBe("A1");
-    expect(entries[entries.length - 1].level).toBe("A2");
+    expect(entries[entries.length - 1].level).toBe("B1");
     expect(entries.every((e) => e.stageTitle.length > 0)).toBe(true);
   });
 });
