@@ -79,6 +79,9 @@ import { useToggleMap } from "@/hooks/useToggleMap";
 import { GlobalToast, AutoReplenishBanner, type GlobalToastData } from "./dashboard/DashboardBanners";
 import Sidebar from "./dashboard/Sidebar";
 import DashboardHeader from "./dashboard/DashboardHeader";
+import DayFlowBar from "./dashboard/DayFlowBar";
+import { runTodayTask } from "./dashboard/runTask";
+import { retreatFlow } from "@/services/dayFlow";
 import LibraryTab from "./dashboard/LibraryTab";
 import CaptureTab from "./dashboard/CaptureTab";
 import ReviewTab from "./dashboard/ReviewTab";
@@ -160,6 +163,9 @@ export default function MainDashboard({
   // Listeners registered once read this instead of a stale isReviewing
   const isReviewingRef = useRef(false);
   isReviewingRef.current = isReviewing;
+  // The flow bar is running its next thing (true during that one call), and the exit question it caused
+  const flowRunRef = useRef(false);
+  const flowConfirmRef = useRef(false);
   const sessionCompletedRef = useRef(false);
   // New key per session so FlashcardReview never reuses the previous queue
   const [sessionId, setSessionId] = useState(0);
@@ -209,6 +215,8 @@ export default function MainDashboard({
         if (activeTab === "review" && tab === "review") {
           return;
         }
+        // Asked because the flow bar went to its next thing: staying must put the bar back
+        flowConfirmRef.current = flowRunRef.current;
         setConfirmExitNav({
           targetTab: tab,
           title: "Thoát bài đang học?",
@@ -225,8 +233,17 @@ export default function MainDashboard({
     [activeTab, autoFinishCompletedReview]
   );
 
+  /** "Học tiếp": the learner keeps the session that is open */
+  const cancelExit = useCallback(() => {
+    if (flowConfirmRef.current) retreatFlow();
+    flowConfirmRef.current = false;
+    setConfirmExitNav(null);
+    setActiveTab("review");
+  }, []);
+
   const handleConfirmExit = useCallback(() => {
     const pending = confirmExitNav;
+    flowConfirmRef.current = false;
     setConfirmExitNav(null);
     if (!pending) return;
 
@@ -252,13 +269,12 @@ export default function MainDashboard({
       e.stopPropagation();
       if (e.key === "Escape") {
         e.preventDefault();
-        setConfirmExitNav(null);
-        setActiveTab("review");
+        cancelExit();
       }
     };
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
-  }, [confirmExitNav]);
+  }, [confirmExitNav, cancelExit]);
 
   // The word panel belongs to the screen it was opened from: a tab change closes it, unless the same click
   // picked the word (Capture's "Xem chi tiết" opens the library with it). A new session closes it too, so the
@@ -1293,6 +1309,25 @@ export default function MainDashboard({
         />
         )}
 
+        {/* The day's flow: where the learner is in it, and one button to the next thing (every tab) */}
+        {!focusing && (
+          <DayFlowBar
+            onRun={(id) => {
+              flowRunRef.current = true;
+              try {
+                runTodayTask(id, {
+                  setActiveTab: handleSelectTab,
+                  startWords: () => handleStartReview(true),
+                  startReflex: () => setReflexChallengeOpen(true),
+                });
+              } finally {
+                flowRunRef.current = false;
+              }
+            }}
+            onFinish={() => handleSelectTab("today")}
+          />
+        )}
+
         {/* TODAY: the opening screen, one main action */}
         {activeTab === "today" && (
           <Suspense fallback={<TabFallback />}>
@@ -1615,10 +1650,7 @@ export default function MainDashboard({
           aria-modal="true"
           aria-label={confirmExitNav.title || "Thoát bài đang học"}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
-          onClick={() => {
-            setConfirmExitNav(null);
-            setActiveTab("review");
-          }}
+          onClick={cancelExit}
         >
           <div
             className="w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 space-y-3 shadow-xl"
@@ -1633,10 +1665,7 @@ export default function MainDashboard({
             <div className="flex gap-2 justify-end">
               <button
                 autoFocus
-                onClick={() => {
-                  setConfirmExitNav(null);
-                  setActiveTab("review");
-                }}
+                onClick={cancelExit}
                 className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold transition-colors"
               >
                 {confirmExitNav.pendingStart ? "Học tiếp bài cũ" : "Học tiếp"}

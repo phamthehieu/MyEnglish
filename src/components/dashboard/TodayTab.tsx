@@ -16,7 +16,6 @@ import { AI_VOCAB_ENABLED } from "@/services/features";
 import { PAGE_CONTAINER, type DashboardTab } from "./shared";
 import { useAuthStore } from "@/stores/authStore";
 import {
-  TASK_TAB,
   buildTodayTasks,
   cardsLaterToday,
   chosenDailyMinutes,
@@ -39,7 +38,8 @@ import StudyLevelBar from "./StudyLevelBar";
 import RoadmapTodayCard from "../roadmap/RoadmapTodayCard";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import { PATTERNS } from "@/data/patterns";
-import { AUTOSTART_KEY } from "../patterns/PatternsTab";
+import { planFlow, startFlow } from "@/services/dayFlow";
+import { runTodayTask } from "./runTask";
 import FocusStartCard from "./FocusStartCard";
 import DailyQuestsCard from "./DailyQuestsCard";
 import { FOCUS_SETTINGS_EVENT, getFocusSettings, nextReviewPeek } from "@/services/focusSession";
@@ -233,20 +233,12 @@ export default function TodayTab({
     canStudy: todayWork.total > 0 || hasStudied,
   });
 
-  const run = (task: TodayTask) => {
-    if (task.id === "speaking") {
-      // With a goal chosen, the day's work starts at once; without one the tab asks for it first
-      try {
-        if (path.road.goal !== null && path.plan && path.plan.tasks.length > 0) sessionStorage.setItem(AUTOSTART_KEY, "1");
-      } catch {
-        /* the learner presses the button in the tab instead */
-      }
-      setActiveTab("patterns");
-    } else if (task.id === "vocab") onStart();
-    else if (task.id === "reflex") {
-      if (onStartReflex) onStartReflex();
-      else setActiveTab("leaderboard");
-    } else setActiveTab(TASK_TAB[task.id]);
+  const runDeps = { setActiveTab, startWords: onStart, startReflex: onStartReflex };
+  const run = (task: TodayTask) => runTodayTask(task.id, runDeps);
+  // The main button, when several things are left: all of them one after the other (the bar on every tab goes on)
+  const startFlowNow = () => {
+    const queue = planFlow(tasks);
+    if (startFlow(queue)) runTodayTask(queue[0], runDeps);
   };
   const isCapped = unmasteredCount >= youngWordCap();
   const more = {
@@ -357,6 +349,7 @@ export default function TodayTab({
                 primary={primary}
                 heading={inComeback ? `Kế hoạch quay lại · ngày ${comeback.dayNumber}: chỉ phần dễ quên nhất` : "Hôm nay của bạn"}
                 onRun={run}
+                onStartFlow={startFlowNow}
                 quickMode={quickMode}
                 onQuickStart={onQuickStart}
                 streak={streakStats.currentStreak}

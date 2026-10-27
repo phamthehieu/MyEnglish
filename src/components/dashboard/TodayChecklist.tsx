@@ -26,6 +26,8 @@ interface TodayChecklistProps {
   quickMode: "hidden" | "normal" | "urgent";
   onQuickStart: () => void;
   streak: number;
+  /** Starts everything not done as one flow (the main button, when more than one thing is left) */
+  onStartFlow?: () => void;
   /** Same words as a timed focus session (shown when the first thing to do is the words) */
   onFocus?: () => void;
   focusMinutes?: number;
@@ -48,6 +50,7 @@ export default function TodayChecklist({
   quickMode,
   onQuickStart,
   streak,
+  onStartFlow,
   onFocus,
   focusMinutes,
   goalReached = false,
@@ -133,13 +136,14 @@ export default function TodayChecklist({
       </ol>
 
       <div className="flex flex-wrap items-center gap-2">
+        {/* More than one thing left: one button for all of them, one after the other */}
         <button
-          onClick={() => onRun(primary)}
+          onClick={() => (onStartFlow && left.length > 1 ? onStartFlow() : onRun(primary))}
           autoFocus
           className="basis-full px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 active:scale-[0.98] text-white text-sm font-bold shadow-md shadow-cyan-600/30 inline-flex items-center justify-center gap-2 transition-all"
         >
           <Play className="w-4 h-4 fill-white" />
-          {primaryLabel(primary, firstIndex === 0)}
+          {onStartFlow && left.length > 1 ? `Bắt đầu hôm nay: ${left.length} việc (~${minutesLeft} phút)` : primaryLabel(primary, firstIndex === 0)}
         </button>
         {onFocus && primary.id === "vocab" && (
           <button
