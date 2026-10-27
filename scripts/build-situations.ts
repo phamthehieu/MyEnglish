@@ -24,9 +24,13 @@ const onlyTopics = flag("--topics") ? new Set(flag("--topics").split(",").map((t
 const limit = Number(flag("--limit", "0")) || Infinity;
 const dry = args.includes("--dry");
 // Same default as the app's own API calls (src-tauri/src/ai_api.rs)
-const model = process.env.MYENGLISH_AI_MODEL || "gemini-3.8-flash";
-/** Pause between requests: the free tier allows only a few per minute */
-const DELAY_MS = 4500;
+const model = flag("--model") || process.env.MYENGLISH_AI_MODEL || "gemini-3.8-flash";
+/** A request that gets no answer within this is given up (and tried again) */
+const REQUEST_TIMEOUT_MS = 180_000;
+/** Conversations written at the same time (--parallel N); each worker pauses DELAY_MS between its own requests */
+const PARALLEL = Math.max(1, Number(flag("--parallel", "4")) || 4);
+/** Pause between one worker's requests: the free tier allows only a few per minute, a paid key can use less (--delay ms) */
+const DELAY_MS = Number(flag("--delay", "1500")) || 1500;
 const ATTEMPTS = 3;
 
 const GUIDE: Record<Situation["cefr"], string> = {
@@ -60,14 +64,25 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function ask(prompt: string, key: string): Promise<string> {
   for (let attempt = 1; ; attempt++) {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": key },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { responseMimeType: "application/json", temperature: 0.9 },
-      }),
-    });
+    let res: Response;
+    try {
+      res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": key },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: "application/json", temperature: 0.9 },
+        }),
+        // Without a limit a request that is never answered hangs for 5 minutes
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
+    } catch (err) {
+      if (attempt >= 3) {
+        throw new Error(`Gemini không trả lời (model "${model}"): ${(err as Error).name}. Kiểm tra mạng/key, hoặc thử lại sau ít phút.`);
+      }
+      console.log(`  … no answer in ${REQUEST_TIMEOUT_MS / 1000}s (model ${model}), trying again`);
+      continue;
+    }
     if (res.status === 429 || res.status >= 500) {
       if (attempt >= 4) throw new Error(`Gemini ${res.status} after ${attempt} tries`);
       console.log(`  … Gemini ${res.status}, waiting ${attempt * 30}s`);
@@ -101,48 +116,72 @@ async function main() {
   let made = 0;
   let failed = 0;
 
+  // What is still to write, up to --limit
+  const todo: Array<{ level: Situation["cefr"]; topic: TalkTopic; id: string }> = [];
   for (const level of levels) {
     for (const topic of topics) {
-      if (made >= limit) break;
       const id = `${topic.id}-${level.toLowerCase()}`;
-      if (saved[level].some((s) => s.id === id)) continue;
-
-      if (dry) {
-        console.log(`--- ${id}\n${buildPrompt(topic, level, everything().map((s) => s.title_en))}\n`);
-        made++;
-        continue;
-      }
-
-      let result: Situation | null = null;
-      let problem = "";
-      for (let attempt = 1; attempt <= ATTEMPTS && !result; attempt++) {
-        try {
-          const raw = await ask(buildPrompt(topic, level, everything().map((s) => s.title_en)), key!);
-          const s = buildSituationFromAi(raw, { id, group: topic.group, cefr: level, topicId: topic.id, now: Date.now() });
-          const duplicate = findDuplicate(s, everything());
-          if (duplicate) throw new ContentError(`trùng: ${duplicate}`);
-          // A built-in conversation carries no `ai` mark
-          delete s.ai;
-          result = s;
-        } catch (err) {
-          problem = (err as Error).message;
-          if (!(err instanceof ContentError)) throw err;
-        }
-        await sleep(DELAY_MS);
-      }
-
-      if (result) {
-        saved[level].push(result);
-        writeFileSync(join(outDir, `${level.toLowerCase()}.json`), JSON.stringify(saved[level], null, 2));
-        made++;
-        console.log(`✓ ${id}  ${result.title_en}  (${result.dialogue.length} lượt, ${result.lines.length} câu)`);
-      } else {
-        failed++;
-        console.log(`✗ ${id}  ${problem}`);
-      }
+      if (!saved[level].some((s) => s.id === id) && todo.length < limit) todo.push({ level, topic, id });
     }
   }
-  console.log(`\nDone: ${made} ${dry ? "prompts" : "saved"}, ${failed} failed.`);
+
+  if (dry) {
+    for (const { level, topic, id } of todo) {
+      console.log(`--- ${id}\n${buildPrompt(topic, level, everything().map((s) => s.title_en))}\n`);
+      made++;
+    }
+    console.log(`\nDone: ${made} prompts, 0 failed.`);
+    return;
+  }
+
+  console.log(`Writing ${todo.length} conversations, ${PARALLEL} at a time (model ${model}). The first lines appear after the first one is done.`);
+  const started = Date.now();
+
+  /** One conversation: asked for, checked, retried when it does not pass, saved as soon as it is good */
+  async function write({ level, topic, id }: (typeof todo)[number]): Promise<void> {
+    console.log(`→ ${id} …`);
+    let result: Situation | null = null;
+    let problem = "";
+    for (let attempt = 1; attempt <= ATTEMPTS && !result; attempt++) {
+      try {
+        const raw = await ask(buildPrompt(topic, level, everything().map((s) => s.title_en)), key!);
+        const s = buildSituationFromAi(raw, { id, group: topic.group, cefr: level, topicId: topic.id, now: Date.now() });
+        const duplicate = findDuplicate(s, everything());
+        if (duplicate) throw new ContentError(`trùng: ${duplicate}`);
+        // A built-in conversation carries no `ai` mark
+        delete s.ai;
+        result = s;
+      } catch (err) {
+        problem = (err as Error).message;
+        if (!(err instanceof ContentError)) {
+          // A request that failed (not a conversation that was not good enough): this one is given up, the others go on
+          failed++;
+          console.log(`✗ ${id}  ${problem}`);
+          return;
+        }
+      }
+      await sleep(DELAY_MS);
+    }
+    if (result) {
+      saved[level].push(result);
+      // Saved at once and synchronously, so a stopped run keeps everything done so far
+      writeFileSync(join(outDir, `${level.toLowerCase()}.json`), JSON.stringify(saved[level], null, 2));
+      made++;
+      console.log(`✓ ${id}  ${result.title_en}  (${result.dialogue.length} lượt, ${result.lines.length} câu)  [${made}/${todo.length}, ${Math.round((Date.now() - started) / 1000)}s]`);
+    } else {
+      failed++;
+      console.log(`✗ ${id}  ${problem}`);
+    }
+  }
+
+  // A few workers take the next conversation from the list as soon as they are free
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: Math.min(PARALLEL, todo.length) }, async () => {
+      while (next < todo.length) await write(todo[next++]);
+    })
+  );
+  console.log(`\nDone: ${made} saved, ${failed} failed, in ${Math.round((Date.now() - started) / 1000)}s.`);
 }
 
 main().catch((e) => {

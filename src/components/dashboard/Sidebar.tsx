@@ -173,6 +173,7 @@ export default function Sidebar({
     // Words marked "Đã biết", still waiting for their one check
     { tab: "known", label: "Đã biết", icon: BadgeCheck, iconClass: "text-emerald-500", badge: countBadge(knownWaitingCount) },
     { tab: "grammar", label: "Ngữ pháp", icon: GraduationCap, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
+    { tab: "patterns", label: "Mẫu câu", icon: Layers, iconClass: "text-emerald-500" },
     { tab: "talk", label: "Hội thoại", icon: MessageCircle, iconClass: "text-emerald-500" },
     { tab: "pronunciation", label: "Phát âm", icon: AudioLines, iconClass: "text-violet-500" },
     { tab: "shadowing", label: "Shadowing", icon: Clapperboard, iconClass: "text-violet-500" },
@@ -196,6 +197,7 @@ export default function Sidebar({
   const groupLook: Record<NavGroupId, { icon: typeof BookOpen; iconClass?: string; badge?: ReactNode }> = {
     today: { icon: Sunrise, iconClass: "text-amber-500" },
     vocab: { icon: BookOpen, iconClass: "text-orange-400", badge: countBadge(dueCount, true) },
+    patterns: { icon: Layers, iconClass: "text-emerald-500" },
     talk: { icon: MessageCircle, iconClass: "text-emerald-500" },
     pronunciation: { icon: AudioLines, iconClass: "text-violet-500" },
     shadowing: { icon: Clapperboard, iconClass: "text-violet-500" },
@@ -629,7 +631,7 @@ export default function Sidebar({
             type="button"
             onClick={item.onClick}
             aria-current={item.active ? "page" : undefined}
-            className={`flex-1 min-w-0 flex flex-col items-center gap-0.5 py-2 text-[11px] font-medium active:bg-slate-100 dark:active:bg-zinc-800 ${
+            className={`flex-1 min-w-0 flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium active:bg-slate-100 dark:active:bg-zinc-800 ${
               item.active ? "text-cyan-600 dark:text-cyan-400" : "text-slate-500 dark:text-zinc-400"
             }`}
           >
@@ -637,7 +639,7 @@ export default function Sidebar({
               <Icon className={`w-5 h-5 ${item.active ? "" : item.iconClass ?? ""}`} />
               {item.badge && <span className="absolute -top-1.5 -right-4">{item.badge}</span>}
             </span>
-            <span className="truncate max-w-full px-1">{item.label}</span>
+            <span className="truncate max-w-full px-0.5">{item.label}</span>
           </button>
         );
       })}

@@ -1,0 +1,77 @@
+[
+{"slug":"advice-about-studying-abroad","level":"B1","group":"daily","title_vi":"Xin tư vấn du học","title_en":"Advice about studying abroad","goal_vi":"Hỏi cố vấn về nước du học, điểm thi và học bổng.","partner_vi":"Cố vấn du học","partner_emoji":"🌏","lines":[
+{"key":"l1","en":"I am thinking about studying abroad next year.","vi":"Tôi đang nghĩ đến chuyện du học năm sau.","accept":["I want to study abroad next year","I am considering studying abroad next year"],"note":""},
+{"key":"l2","en":"I prefer Australia because the weather is warm.","vi":"Tôi thích Úc vì thời tiết ấm.","accept":["Australia, because the weather is warm","I like Australia more because it is warm"],"note":""},
+{"key":"l3","en":"Canada, although it is quite expensive.","vi":"Canada, dù khá đắt.","accept":["I would choose Canada, even though it is expensive","Canada, but I know it is expensive"],"note":"although/even though = mặc dù."},
+{"key":"l4","en":"Not yet. What score do I need?","vi":"Chưa. Tôi cần bao nhiêu điểm?","accept":["No, not yet. What score is required","Not yet. What score should I get"],"note":""},
+{"key":"l5","en":"I have saved some money, but not enough.","vi":"Tôi đã tiết kiệm ít tiền nhưng chưa đủ.","accept":["I have some savings, but not enough","I have saved a little, but it is not enough"],"note":""},
+{"key":"l6","en":"That is a great idea. How do I apply?","vi":"Ý rất hay. Tôi nộp đơn thế nào?","accept":["Good idea. How can I apply","That sounds great. How do I apply for one"],"note":""},
+{"key":"l7","en":"Thank you. I will check it tonight.","vi":"Cảm ơn. Tối nay tôi sẽ xem.","accept":["Thanks, I will look at it tonight","Thank you, I will read it tonight"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Please sit down. What can I do for you?","npc_vi":"Mời ngồi. Tôi giúp gì được bạn?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Interesting. Which country do you prefer?","npc_vi":"Thú vị. Bạn thích nước nào hơn?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Have you looked at the English test requirements?","npc_vi":"Bạn đã xem yêu cầu thi tiếng Anh chưa?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Usually six point five. Do you have a budget?","npc_vi":"Thường là sáu phẩy năm. Bạn có ngân sách không?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Then you should apply for a scholarship.","npc_vi":"Vậy bạn nên xin học bổng.","replies":[{"line":"l6","next":"n6"}]},
+{"id":"n6","npc_en":"Start with this website. The deadline is in March.","npc_vi":"Bắt đầu với trang web này. Hạn là tháng Ba.","replies":[{"line":"l7","next":null}]}
+]},
+{"slug":"correcting-a-report-mistake","level":"B1","group":"work","title_vi":"Sửa lỗi trong báo cáo","title_en":"Correcting a report mistake","goal_vi":"Nhận lỗi trong báo cáo, sửa nhanh và hứa cẩn thận hơn.","partner_vi":"Quản lý","partner_emoji":"🧮","lines":[
+{"key":"l1","en":"Really? Could you show me where?","vi":"Thật sao? Anh chỉ giúp tôi chỗ nào?","accept":["Oh no. Can you show me where","Really? Where exactly is it"],"note":""},
+{"key":"l2","en":"I am sorry, I must have typed it wrongly.","vi":"Xin lỗi, chắc tôi gõ nhầm.","accept":["Sorry, I must have made a typing mistake","I apologize, I must have typed it wrong"],"note":"must have + V3 = chắc hẳn đã."},
+{"key":"l3","en":"I copied the number from an old file.","vi":"Tôi chép số từ một file cũ.","accept":["I used an old file for that number","The number came from an old file"],"note":""},
+{"key":"l4","en":"Yes, I can correct it in ten minutes.","vi":"Được, tôi sửa trong mười phút.","accept":["Yes, I can fix it in ten minutes","Sure, it will take me ten minutes"],"note":""},
+{"key":"l5","en":"I will check every number before sending.","vi":"Tôi sẽ kiểm tra từng số trước khi gửi.","accept":["Next time I will check all numbers before sending","Before sending, I will check every number"],"note":""},
+{"key":"l6","en":"Understood. I will send it to you first.","vi":"Tôi hiểu. Tôi sẽ gửi cho anh trước.","accept":["Sure, you will get it first","Understood, I will send you the new file first"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"I found a mistake in the sales report.","npc_vi":"Tôi thấy một lỗi trong báo cáo doanh số.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"The total for March is wrong. It should be higher.","npc_vi":"Tổng tháng Ba sai. Đáng ra phải cao hơn.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"The director needs it today. Can you fix it quickly?","npc_vi":"Giám đốc cần hôm nay. Bạn sửa nhanh được không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Good. How will you avoid this next time?","npc_vi":"Tốt. Lần sau bạn tránh thế nào?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Good. Please send the new version to me first.","npc_vi":"Tốt. Hãy gửi bản mới cho tôi trước.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"organizing-a-farewell-party","level":"B1","group":"work","title_vi":"Tổ chức tiệc chia tay","title_en":"Organizing a farewell party","goal_vi":"Bàn với đồng nghiệp về thời gian, địa điểm và chi phí tiệc chia tay.","partner_vi":"Đồng nghiệp","partner_emoji":"🎂","lines":[
+{"key":"l1","en":"Yes, she has helped us so much.","vi":"Có, chị ấy đã giúp chúng ta rất nhiều.","accept":["Yes, she has done so much for us","Definitely, she has helped us a lot"],"note":""},
+{"key":"l2","en":"After work is better because everyone can come.","vi":"Sau giờ làm tốt hơn vì ai cũng đến được.","accept":["After work, because everyone can come","I prefer after work so everyone can come"],"note":""},
+{"key":"l3","en":"Lunch is easier, although it is shorter.","vi":"Bữa trưa dễ hơn, dù ngắn hơn.","accept":["Lunch is easier, but it is shorter","I think lunch is simpler, though it is shorter"],"note":""},
+{"key":"l4","en":"The office is cheaper, so let's stay here.","vi":"Văn phòng rẻ hơn nên mình ở lại đây.","accept":["The office is cheaper, so we should stay here","Let's stay in the office because it is cheaper"],"note":""},
+{"key":"l5","en":"A restaurant would be more special for her.","vi":"Nhà hàng sẽ đặc biệt hơn với chị ấy.","accept":["I think a restaurant is more special for her","A restaurant would feel more special for her"],"note":"more special: so sánh hơn với tính từ dài."},
+{"key":"l6","en":"Maybe fifty thousand dong each would be enough.","vi":"Có lẽ mỗi người năm mươi nghìn là đủ.","accept":["Fifty thousand dong each should be enough","I think fifty thousand dong each is enough"],"note":""},
+{"key":"l7","en":"Sure, I will buy them tomorrow.","vi":"Được, mai tôi sẽ mua.","accept":["Of course, I will get them tomorrow","Okay, I will buy them tomorrow"],"note":""},
+{"key":"l8","en":"Perfect. She is going to be so surprised.","vi":"Tuyệt. Chị ấy sẽ rất bất ngờ.","accept":["Great, she will be so surprised","Perfect. I hope she will be surprised"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Linh is leaving next week. Should we organize a farewell party?","npc_vi":"Tuần sau Linh nghỉ việc. Mình tổ chức tiệc chia tay nhé?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Agreed. Should we do it at lunch or after work?","npc_vi":"Đồng ý. Làm bữa trưa hay sau giờ làm?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Okay. Where? A restaurant or the office?","npc_vi":"Được. Ở đâu? Nhà hàng hay văn phòng?","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Good point. How much should each person pay?","npc_vi":"Ý đúng. Mỗi người nên góp bao nhiêu?","replies":[{"line":"l6","next":"n5"}]},
+{"id":"n5","npc_en":"Fine. Can you buy a card and a small gift?","npc_vi":"Được. Bạn mua thiệp và quà nhỏ nhé?","replies":[{"line":"l7","next":"n6"}]},
+{"id":"n6","npc_en":"Great. I will collect the money and set everything up.","npc_vi":"Tuyệt. Tôi sẽ thu tiền và chuẩn bị mọi thứ.","replies":[{"line":"l8","next":null}]}
+]},
+{"slug":"asking-for-a-reference-letter","level":"B1","group":"work","title_vi":"Nhờ thầy viết thư giới thiệu","title_en":"Asking for a reference letter","goal_vi":"Nhờ giáo viên viết thư giới thiệu cho đơn xin học bổng.","partner_vi":"Giáo viên cũ","partner_emoji":"📝","lines":[
+{"key":"l1","en":"I am applying for a scholarship abroad.","vi":"Em đang nộp đơn xin học bổng nước ngoài.","accept":["I am applying for a scholarship overseas","I want to apply for a scholarship abroad"],"note":""},
+{"key":"l2","en":"Could you write a reference letter for me?","vi":"Thầy viết thư giới thiệu cho em được không?","accept":["Would you write a reference letter for me","Can you write me a reference letter"],"note":"reference letter = thư giới thiệu."},
+{"key":"l3","en":"It is due on the fifteenth of May.","vi":"Hạn là ngày mười lăm tháng Năm.","accept":["The deadline is the fifteenth of May","It must be sent by the fifteenth of May"],"note":""},
+{"key":"l4","en":"Please mention my group project and volunteer work.","vi":"Thầy nhắc đến dự án nhóm và hoạt động tình nguyện của em.","accept":["Could you mention my group project and volunteer work","Please talk about my volunteer work and group project"],"note":""},
+{"key":"l5","en":"Please say that I work hard.","vi":"Thầy ghi là em làm việc chăm chỉ.","accept":["Please mention that I am hardworking","Could you say I am a hard worker"],"note":""},
+{"key":"l6","en":"I will email it to you today.","vi":"Hôm nay em sẽ gửi email cho thầy.","accept":["I will send it to you by email today","Today I will email it to you"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Hi there. How can I help you?","npc_vi":"Chào em. Thầy giúp gì được?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"That is exciting. What do you need from me?","npc_vi":"Thú vị đấy. Em cần gì ở thầy?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"I would be happy to. When is the deadline?","npc_vi":"Thầy rất sẵn lòng. Hạn là khi nào?","replies":[{"line":"l3","next":"n4"}]},
+{"id":"n4","npc_en":"That is fine. Is there anything special I should mention?","npc_vi":"Được. Có gì đặc biệt thầy nên nhắc không?","replies":[{"line":"l4","next":"n5"},{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"I will. Send me your resume and I will start.","npc_vi":"Được. Gửi thầy hồ sơ rồi thầy sẽ bắt đầu.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"requesting-a-new-office-chair","level":"B1","group":"work","title_vi":"Xin đổi ghế văn phòng","title_en":"Requesting a new office chair","goal_vi":"Báo ghế hỏng và xin đổi ghế mới cho bộ phận hành chính.","partner_vi":"Nhân viên hành chính","partner_emoji":"🪑","lines":[
+{"key":"l1","en":"My office chair is broken and uncomfortable.","vi":"Ghế văn phòng của tôi hỏng và khó chịu.","accept":["My chair is broken and uncomfortable","My office chair is broken and not comfortable"],"note":""},
+{"key":"l2","en":"It has been broken for about two weeks.","vi":"Nó hỏng khoảng hai tuần rồi.","accept":["It has been broken for around two weeks","It broke about two weeks ago"],"note":"for + khoảng thời gian dùng với present perfect."},
+{"key":"l3","en":"Yes, my back hurts if I sit long.","vi":"Có, lưng tôi đau nếu ngồi lâu.","accept":["Yes, my back hurts when I sit for long","Yes, I get back pain if I sit long"],"note":""},
+{"key":"l4","en":"Not really, but it is not safe.","vi":"Không hẳn, nhưng nó không an toàn.","accept":["Not really, but I do not feel safe","No, although it is not safe"],"note":""},
+{"key":"l5","en":"Yes, please. When can I get it?","vi":"Vâng. Khi nào tôi nhận được?","accept":["Yes, please. When can I have it","Yes, I would love that. When can I have it"],"note":""},
+{"key":"l6","en":"No problem. I will sign it now.","vi":"Không sao. Tôi ký ngay bây giờ.","accept":["Sure, I will sign it now","Okay, I will sign the form now"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Facilities office. What can I do for you?","npc_vi":"Phòng hành chính đây. Tôi giúp gì được?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Oh dear. How long has it been broken?","npc_vi":"Ôi. Nó hỏng bao lâu rồi?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Has it caused any problems for you?","npc_vi":"Nó có gây vấn đề gì cho bạn không?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"We have a better model. Would you like to try it?","npc_vi":"Chúng tôi có mẫu tốt hơn. Bạn muốn thử không?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Tomorrow morning. Please sign this request form first.","npc_vi":"Sáng mai. Trước tiên hãy ký đơn yêu cầu này.","replies":[{"line":"l6","next":null}]}
+]}
+]

@@ -1,0 +1,4303 @@
+[
+  {
+    "id": "asking-for-a-day-off-b1",
+    "group": "work",
+    "title_vi": "Xin nghỉ một ngày",
+    "title_en": "Asking for a day off",
+    "cefr": "B1",
+    "goal_vi": "Xin sếp cho nghỉ thứ Sáu và hứa hoàn thành việc trước.",
+    "partner_vi": "Sếp của bạn",
+    "partner_emoji": "👔",
+    "lines": [
+      {
+        "id": "asking-for-a-day-off-b1.l1",
+        "en": "Could I take Friday off, please?",
+        "vi": "Tôi nghỉ thứ Sáu được không ạ?",
+        "accept": [
+          "Is it possible to take Friday off",
+          "May I have Friday off, please"
+        ],
+        "note": "Could I...? là cách xin phép lịch sự."
+      },
+      {
+        "id": "asking-for-a-day-off-b1.l2",
+        "en": "I need to renew my passport.",
+        "vi": "Tôi cần gia hạn hộ chiếu.",
+        "accept": [
+          "I have to renew my passport",
+          "I have to get my passport renewed"
+        ]
+      },
+      {
+        "id": "asking-for-a-day-off-b1.l3",
+        "en": "My cousin is getting married that day.",
+        "vi": "Hôm đó anh họ tôi cưới.",
+        "accept": [
+          "My cousin has a wedding that day",
+          "It is my cousin's wedding that day"
+        ]
+      },
+      {
+        "id": "asking-for-a-day-off-b1.l4",
+        "en": "Yes, I will finish it on Thursday.",
+        "vi": "Vâng, tôi sẽ xong vào thứ Năm.",
+        "accept": [
+          "Sure, I can finish it by Thursday",
+          "Yes, I will finish it by Thursday"
+        ]
+      },
+      {
+        "id": "asking-for-a-day-off-b1.l5",
+        "en": "I will try, although it is long.",
+        "vi": "Tôi sẽ cố, dù nó khá dài.",
+        "accept": [
+          "I can try, but it is long",
+          "I will try, but it is quite long"
+        ],
+        "note": "although = dù cho, nối hai ý trái nhau."
+      },
+      {
+        "id": "asking-for-a-day-off-b1.l6",
+        "en": "Thank you, I really appreciate it.",
+        "vi": "Cảm ơn sếp, tôi rất biết ơn.",
+        "accept": [
+          "Thanks, I really appreciate it",
+          "Thank you so much for understanding"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "You wanted to talk to me about something?",
+        "npc_vi": "Bạn muốn nói chuyện với tôi à?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-day-off-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Friday is busy. Why do you need the day?",
+        "npc_vi": "Thứ Sáu bận lắm. Sao bạn cần nghỉ?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-day-off-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "asking-for-a-day-off-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I see. Can you finish the report before you go?",
+        "npc_vi": "Hiểu rồi. Bạn xong báo cáo trước khi nghỉ được không?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-day-off-b1.l4",
+            "next": "n4"
+          },
+          {
+            "lineId": "asking-for-a-day-off-b1.l5",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Fine. Your day off is approved.",
+        "npc_vi": "Được. Ngày nghỉ của bạn đã duyệt.",
+        "replies": [
+          {
+            "lineId": "asking-for-a-day-off-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "welcoming-a-new-colleague-b1",
+    "group": "work",
+    "title_vi": "Đón đồng nghiệp mới",
+    "title_en": "Welcoming a new colleague",
+    "cefr": "B1",
+    "goal_vi": "Chào đón và hướng dẫn đồng nghiệp mới trong ngày đầu.",
+    "partner_vi": "Đồng nghiệp mới",
+    "partner_emoji": "🙋",
+    "lines": [
+      {
+        "id": "welcoming-a-new-colleague-b1.l1",
+        "en": "Welcome! I am glad you joined us.",
+        "vi": "Chào mừng! Tôi vui vì bạn gia nhập.",
+        "accept": [
+          "Welcome to the team! I am happy you joined",
+          "Welcome aboard! I am glad you are here"
+        ]
+      },
+      {
+        "id": "welcoming-a-new-colleague-b1.l2",
+        "en": "First, let me show you your desk.",
+        "vi": "Trước tiên để tôi chỉ bàn của bạn.",
+        "accept": [
+          "Let me show you your desk first",
+          "First I will take you to your desk"
+        ]
+      },
+      {
+        "id": "welcoming-a-new-colleague-b1.l3",
+        "en": "Yes, and if you have problems, ask IT.",
+        "vi": "Có, và nếu gặp lỗi thì hỏi IT.",
+        "accept": [
+          "Yes, ask IT if you have any problems",
+          "Yes, and ask IT if something goes wrong"
+        ],
+        "note": "if + hiện tại, will/mệnh lệnh: câu điều kiện loại 1."
+      },
+      {
+        "id": "welcoming-a-new-colleague-b1.l4",
+        "en": "Yes, there is a cheap noodle shop.",
+        "vi": "Có, có một quán phở rẻ.",
+        "accept": [
+          "Yes, there is a cheap noodle place",
+          "Yes, there is a cheap noodle restaurant"
+        ]
+      },
+      {
+        "id": "welcoming-a-new-colleague-b1.l5",
+        "en": "Yes, but it gets crowded at noon.",
+        "vi": "Có, nhưng buổi trưa đông lắm.",
+        "accept": [
+          "Yes, although it gets crowded at noon",
+          "Yes, but it is very busy at noon"
+        ]
+      },
+      {
+        "id": "welcoming-a-new-colleague-b1.l6",
+        "en": "Sure, I would love to join you.",
+        "vi": "Chắc chắn rồi, tôi rất muốn đi cùng.",
+        "accept": [
+          "Of course, I would love to have lunch with you",
+          "Sure, that sounds great to me"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Hi, I am Minh. Today is my first day.",
+        "npc_vi": "Chào, tôi là Minh. Hôm nay là ngày đầu của tôi.",
+        "replies": [
+          {
+            "lineId": "welcoming-a-new-colleague-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Thanks. I am a bit nervous. What should we do first?",
+        "npc_vi": "Cảm ơn. Tôi hơi lo. Mình làm gì trước?",
+        "replies": [
+          {
+            "lineId": "welcoming-a-new-colleague-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Great. Do I need to set up my email?",
+        "npc_vi": "Tuyệt. Tôi có cần cài email không?",
+        "replies": [
+          {
+            "lineId": "welcoming-a-new-colleague-b1.l3",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Okay. Is there a good place for lunch nearby?",
+        "npc_vi": "Được. Gần đây có chỗ ăn trưa ngon không?",
+        "replies": [
+          {
+            "lineId": "welcoming-a-new-colleague-b1.l4",
+            "next": "n5"
+          },
+          {
+            "lineId": "welcoming-a-new-colleague-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Perfect. Could we have lunch together today?",
+        "npc_vi": "Tuyệt. Hôm nay mình ăn trưa cùng nhau nhé?",
+        "replies": [
+          {
+            "lineId": "welcoming-a-new-colleague-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "practicing-a-short-presentation-b1",
+    "group": "work",
+    "title_vi": "Luyện thuyết trình ngắn",
+    "title_en": "Practicing a short presentation",
+    "cefr": "B1",
+    "goal_vi": "Nói về chủ đề, cách mở đầu và thời lượng bài thuyết trình.",
+    "partner_vi": "Đồng nghiệp nghe thử",
+    "partner_emoji": "🎤",
+    "lines": [
+      {
+        "id": "practicing-a-short-presentation-b1.l1",
+        "en": "I am talking about our new app.",
+        "vi": "Tôi nói về ứng dụng mới của mình.",
+        "accept": [
+          "My topic is our new app",
+          "I will present our new app"
+        ]
+      },
+      {
+        "id": "practicing-a-short-presentation-b1.l2",
+        "en": "I will begin with a short story.",
+        "vi": "Tôi sẽ mở đầu bằng một câu chuyện ngắn.",
+        "accept": [
+          "I plan to start with a short story",
+          "I will start with a little story"
+        ]
+      },
+      {
+        "id": "practicing-a-short-presentation-b1.l3",
+        "en": "I will start by asking a question.",
+        "vi": "Tôi sẽ bắt đầu bằng một câu hỏi.",
+        "accept": [
+          "I plan to begin with a question",
+          "I will open with a question"
+        ]
+      },
+      {
+        "id": "practicing-a-short-presentation-b1.l4",
+        "en": "It will take about ten minutes.",
+        "vi": "Sẽ mất khoảng mười phút.",
+        "accept": [
+          "It should take around ten minutes",
+          "It will last about ten minutes"
+        ]
+      },
+      {
+        "id": "practicing-a-short-presentation-b1.l5",
+        "en": "Thanks, but I am still nervous.",
+        "vi": "Cảm ơn, nhưng tôi vẫn còn lo.",
+        "accept": [
+          "Thank you, although I am still nervous",
+          "Thanks, I still feel nervous"
+        ]
+      },
+      {
+        "id": "practicing-a-short-presentation-b1.l6",
+        "en": "That is good advice. I will try it.",
+        "vi": "Lời khuyên hay. Tôi sẽ thử.",
+        "accept": [
+          "Good advice, I will try that",
+          "Good idea, I will do that"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Ready to practice? What is your topic?",
+        "npc_vi": "Sẵn sàng luyện chưa? Chủ đề của bạn là gì?",
+        "replies": [
+          {
+            "lineId": "practicing-a-short-presentation-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Nice. How will you begin?",
+        "npc_vi": "Hay đấy. Bạn sẽ mở đầu thế nào?",
+        "replies": [
+          {
+            "lineId": "practicing-a-short-presentation-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "practicing-a-short-presentation-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Good idea. How long will it take?",
+        "npc_vi": "Ý hay. Sẽ mất bao lâu?",
+        "replies": [
+          {
+            "lineId": "practicing-a-short-presentation-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Perfect. I think the audience will enjoy it.",
+        "npc_vi": "Hoàn hảo. Tôi nghĩ khán giả sẽ thích.",
+        "replies": [
+          {
+            "lineId": "practicing-a-short-presentation-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Don't worry. Just breathe and speak slowly.",
+        "npc_vi": "Đừng lo. Cứ hít thở và nói chậm.",
+        "replies": [
+          {
+            "lineId": "practicing-a-short-presentation-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "choosing-an-evening-course-b1",
+    "group": "work",
+    "title_vi": "Chọn khóa học buổi tối",
+    "title_en": "Choosing an evening course",
+    "cefr": "B1",
+    "goal_vi": "Trao đổi với cố vấn học tập để chọn khóa phù hợp.",
+    "partner_vi": "Cố vấn học tập",
+    "partner_emoji": "🎓",
+    "lines": [
+      {
+        "id": "choosing-an-evening-course-b1.l1",
+        "en": "I cannot decide between design and marketing.",
+        "vi": "Tôi chưa chọn được giữa thiết kế và marketing.",
+        "accept": [
+          "I am not sure between design and marketing",
+          "It is hard to choose between design and marketing"
+        ]
+      },
+      {
+        "id": "choosing-an-evening-course-b1.l2",
+        "en": "I prefer design because I like drawing.",
+        "vi": "Tôi thích thiết kế vì tôi thích vẽ.",
+        "accept": [
+          "Design, because I enjoy drawing",
+          "I like design more because I enjoy drawing"
+        ]
+      },
+      {
+        "id": "choosing-an-evening-course-b1.l3",
+        "en": "Marketing, because it may give me more jobs.",
+        "vi": "Marketing, vì nó có thể có nhiều việc hơn.",
+        "accept": [
+          "I prefer marketing because it has more job chances",
+          "Marketing seems better for finding a job"
+        ],
+        "note": "more + danh từ dùng để so sánh số lượng."
+      },
+      {
+        "id": "choosing-an-evening-course-b1.l4",
+        "en": "Only in the evening, after I finish work.",
+        "vi": "Chỉ buổi tối, sau khi tôi tan làm.",
+        "accept": [
+          "I am only free in the evenings after work",
+          "Just in the evening, after my job"
+        ]
+      },
+      {
+        "id": "choosing-an-evening-course-b1.l5",
+        "en": "That works for me. How do I register?",
+        "vi": "Hợp với tôi. Đăng ký thế nào?",
+        "accept": [
+          "That sounds good. How can I sign up",
+          "Great. How do I sign up"
+        ]
+      },
+      {
+        "id": "choosing-an-evening-course-b1.l6",
+        "en": "Thank you. I will do it today.",
+        "vi": "Cảm ơn. Tôi sẽ làm hôm nay.",
+        "accept": [
+          "Thanks, I will do it today",
+          "Thank you, I will do that today"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Come in. Which courses are you thinking about?",
+        "npc_vi": "Vào đi. Bạn đang cân nhắc khóa nào?",
+        "replies": [
+          {
+            "lineId": "choosing-an-evening-course-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Both are good. Which one interests you more?",
+        "npc_vi": "Cả hai đều tốt. Bạn quan tâm cái nào hơn?",
+        "replies": [
+          {
+            "lineId": "choosing-an-evening-course-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "choosing-an-evening-course-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Do you have time for a class on weekdays?",
+        "npc_vi": "Bạn có thời gian học các ngày trong tuần không?",
+        "replies": [
+          {
+            "lineId": "choosing-an-evening-course-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Then I suggest the evening class. It starts in September.",
+        "npc_vi": "Vậy tôi gợi ý lớp tối. Khai giảng tháng Chín.",
+        "replies": [
+          {
+            "lineId": "choosing-an-evening-course-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Just fill in this form and pay online.",
+        "npc_vi": "Chỉ cần điền mẫu này và trả tiền online.",
+        "replies": [
+          {
+            "lineId": "choosing-an-evening-course-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "taking-a-phone-message-b1",
+    "group": "work",
+    "title_vi": "Nhận tin nhắn qua điện thoại",
+    "title_en": "Taking a phone message",
+    "cefr": "B1",
+    "goal_vi": "Trả lời điện thoại thay đồng nghiệp và ghi lại lời nhắn.",
+    "partner_vi": "Người gọi điện",
+    "partner_emoji": "📞",
+    "lines": [
+      {
+        "id": "taking-a-phone-message-b1.l1",
+        "en": "Sorry, she is in a meeting now.",
+        "vi": "Xin lỗi, cô ấy đang họp.",
+        "accept": [
+          "I am sorry, she is in a meeting",
+          "Sorry, she is in a meeting right now"
+        ]
+      },
+      {
+        "id": "taking-a-phone-message-b1.l2",
+        "en": "She should be free after eleven o'clock.",
+        "vi": "Cô ấy chắc rảnh sau mười một giờ.",
+        "accept": [
+          "She will probably be free after eleven",
+          "I think she is free after eleven o'clock"
+        ]
+      },
+      {
+        "id": "taking-a-phone-message-b1.l3",
+        "en": "I am not sure, maybe after lunch.",
+        "vi": "Tôi không chắc, có thể sau bữa trưa.",
+        "accept": [
+          "I do not know, maybe after lunch",
+          "Maybe after lunch, but I am not sure"
+        ]
+      },
+      {
+        "id": "taking-a-phone-message-b1.l4",
+        "en": "Of course. What would you like to say?",
+        "vi": "Tất nhiên. Bạn muốn nhắn gì?",
+        "accept": [
+          "Sure. What is your message",
+          "Certainly. What is the message"
+        ]
+      },
+      {
+        "id": "taking-a-phone-message-b1.l5",
+        "en": "Okay, I will tell her as soon as possible.",
+        "vi": "Vâng, tôi sẽ báo cô ấy sớm nhất.",
+        "accept": [
+          "Sure, I will let her know right away",
+          "All right, I will pass on the message soon"
+        ]
+      },
+      {
+        "id": "taking-a-phone-message-b1.l6",
+        "en": "You are welcome. Have a nice day!",
+        "vi": "Không có gì. Chúc một ngày tốt lành!",
+        "accept": [
+          "No problem. Have a good day",
+          "My pleasure. Have a nice day"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Good morning. Could I speak to Lan, please?",
+        "npc_vi": "Chào buổi sáng. Cho tôi nói chuyện với Lan được không?",
+        "replies": [
+          {
+            "lineId": "taking-a-phone-message-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "I see. When will she be free?",
+        "npc_vi": "Tôi hiểu. Khi nào cô ấy rảnh?",
+        "replies": [
+          {
+            "lineId": "taking-a-phone-message-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "taking-a-phone-message-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Could you take a message for her?",
+        "npc_vi": "Bạn nhận lời nhắn giúp cô ấy được không?",
+        "replies": [
+          {
+            "lineId": "taking-a-phone-message-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Please tell her the contract is ready to sign.",
+        "npc_vi": "Nhờ báo cô ấy hợp đồng đã sẵn sàng để ký.",
+        "replies": [
+          {
+            "lineId": "taking-a-phone-message-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Thank you very much. Goodbye!",
+        "npc_vi": "Cảm ơn rất nhiều. Tạm biệt!",
+        "replies": [
+          {
+            "lineId": "taking-a-phone-message-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "job-interview-strengths-b1",
+    "group": "work",
+    "title_vi": "Phỏng vấn: điểm mạnh của bạn",
+    "title_en": "Job interview strengths",
+    "cefr": "B1",
+    "goal_vi": "Kể kinh nghiệm, điểm mạnh và lý do muốn đổi việc.",
+    "partner_vi": "Nhà tuyển dụng",
+    "partner_emoji": "💼",
+    "lines": [
+      {
+        "id": "job-interview-strengths-b1.l1",
+        "en": "I worked as a sales assistant for two years.",
+        "vi": "Tôi làm trợ lý bán hàng hai năm.",
+        "accept": [
+          "I was a sales assistant for two years",
+          "For two years, I was a sales assistant"
+        ]
+      },
+      {
+        "id": "job-interview-strengths-b1.l2",
+        "en": "I am organized and I learn quickly.",
+        "vi": "Tôi ngăn nắp và học nhanh.",
+        "accept": [
+          "I learn fast and I am organized",
+          "I am very organized and learn quickly"
+        ]
+      },
+      {
+        "id": "job-interview-strengths-b1.l3",
+        "en": "I work well with other people.",
+        "vi": "Tôi làm việc tốt với người khác.",
+        "accept": [
+          "I am good at working in a team",
+          "I get along well with my team"
+        ]
+      },
+      {
+        "id": "job-interview-strengths-b1.l4",
+        "en": "I want more chances to learn new skills.",
+        "vi": "Tôi muốn thêm cơ hội học kỹ năng mới.",
+        "accept": [
+          "I am looking for chances to learn new skills",
+          "I would like to learn more new skills"
+        ],
+        "note": "Nêu lý do tích cực, đừng chê công ty cũ."
+      },
+      {
+        "id": "job-interview-strengths-b1.l5",
+        "en": "Yes, what would my daily tasks be?",
+        "vi": "Có, công việc hằng ngày của tôi là gì?",
+        "accept": [
+          "Yes, what will my daily work be",
+          "Yes, could you tell me about the daily tasks"
+        ]
+      },
+      {
+        "id": "job-interview-strengths-b1.l6",
+        "en": "Thank you. I look forward to your call.",
+        "vi": "Cảm ơn. Tôi mong cuộc gọi của anh chị.",
+        "accept": [
+          "Thanks, I am looking forward to your call",
+          "Thank you, I will wait for your call"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Thanks for coming. Please tell me about your last job.",
+        "npc_vi": "Cảm ơn đã đến. Hãy kể về công việc trước của bạn.",
+        "replies": [
+          {
+            "lineId": "job-interview-strengths-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "What is your biggest strength?",
+        "npc_vi": "Điểm mạnh lớn nhất của bạn là gì?",
+        "replies": [
+          {
+            "lineId": "job-interview-strengths-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "job-interview-strengths-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Why do you want to leave your current job?",
+        "npc_vi": "Sao bạn muốn rời công việc hiện tại?",
+        "replies": [
+          {
+            "lineId": "job-interview-strengths-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Good answer. Do you have any questions for us?",
+        "npc_vi": "Trả lời tốt. Bạn có câu hỏi nào cho chúng tôi không?",
+        "replies": [
+          {
+            "lineId": "job-interview-strengths-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "You would answer emails and help customers. We will call you next week.",
+        "npc_vi": "Bạn sẽ trả lời email và hỗ trợ khách. Tuần sau chúng tôi gọi.",
+        "replies": [
+          {
+            "lineId": "job-interview-strengths-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "disagreeing-about-a-launch-date-b1",
+    "group": "work",
+    "title_vi": "Bất đồng về ngày ra mắt",
+    "title_en": "Disagreeing about a launch date",
+    "cefr": "B1",
+    "goal_vi": "Lịch sự phản đối ngày ra mắt và đề xuất ngày khác.",
+    "partner_vi": "Đồng nghiệp trong họp",
+    "partner_emoji": "💬",
+    "lines": [
+      {
+        "id": "disagreeing-about-a-launch-date-b1.l1",
+        "en": "That seems too early to me.",
+        "vi": "Tôi thấy như vậy hơi sớm.",
+        "accept": [
+          "I think that is too early",
+          "May seems too early to me"
+        ]
+      },
+      {
+        "id": "disagreeing-about-a-launch-date-b1.l2",
+        "en": "Good idea, but we need more testing.",
+        "vi": "Ý hay, nhưng cần thử thêm.",
+        "accept": [
+          "I agree, although we need more testing",
+          "That is fine, but we still need more testing"
+        ],
+        "note": "Dùng but/although để phản đối nhẹ nhàng."
+      },
+      {
+        "id": "disagreeing-about-a-launch-date-b1.l3",
+        "en": "We have found several bugs in the checkout.",
+        "vi": "Chúng ta đã thấy vài lỗi ở phần thanh toán.",
+        "accept": [
+          "There are still several bugs in the checkout",
+          "We have found many bugs in the checkout"
+        ]
+      },
+      {
+        "id": "disagreeing-about-a-launch-date-b1.l4",
+        "en": "I suggest June, if the team agrees.",
+        "vi": "Tôi đề nghị tháng Sáu, nếu nhóm đồng ý.",
+        "accept": [
+          "How about June, if the team agrees",
+          "June would be better if everyone agrees"
+        ]
+      },
+      {
+        "id": "disagreeing-about-a-launch-date-b1.l5",
+        "en": "Maybe July, so we can test properly.",
+        "vi": "Có lẽ tháng Bảy, để thử cho kỹ.",
+        "accept": [
+          "Perhaps July, so we can test it well",
+          "July might be better for proper testing"
+        ]
+      },
+      {
+        "id": "disagreeing-about-a-launch-date-b1.l6",
+        "en": "Good. Let's decide before Friday.",
+        "vi": "Tốt. Quyết định trước thứ Sáu nhé.",
+        "accept": [
+          "Good, we should decide before Friday",
+          "Great. We need to decide by Friday"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "I think we should launch the website in May.",
+        "npc_vi": "Tôi nghĩ nên ra mắt website vào tháng Năm.",
+        "replies": [
+          {
+            "lineId": "disagreeing-about-a-launch-date-b1.l1",
+            "next": "n2"
+          },
+          {
+            "lineId": "disagreeing-about-a-launch-date-b1.l2",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Can you explain your reason?",
+        "npc_vi": "Bạn giải thích lý do được không?",
+        "replies": [
+          {
+            "lineId": "disagreeing-about-a-launch-date-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "That is true. When would be better?",
+        "npc_vi": "Đúng vậy. Khi nào thì tốt hơn?",
+        "replies": [
+          {
+            "lineId": "disagreeing-about-a-launch-date-b1.l4",
+            "next": "n4"
+          },
+          {
+            "lineId": "disagreeing-about-a-launch-date-b1.l5",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Okay. Let me ask the others about it.",
+        "npc_vi": "Được. Để tôi hỏi những người khác.",
+        "replies": [
+          {
+            "lineId": "disagreeing-about-a-launch-date-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "deciding-which-task-first-b1",
+    "group": "work",
+    "title_vi": "Việc nào làm trước",
+    "title_en": "Deciding which task first",
+    "cefr": "B1",
+    "goal_vi": "Hỏi sếp thứ tự ưu tiên và hạn chót của hai việc gấp.",
+    "partner_vi": "Quản lý",
+    "partner_emoji": "📋",
+    "lines": [
+      {
+        "id": "deciding-which-task-first-b1.l1",
+        "en": "Which one is more important?",
+        "vi": "Việc nào quan trọng hơn?",
+        "accept": [
+          "Which one should I do first",
+          "Which task is the priority"
+        ]
+      },
+      {
+        "id": "deciding-which-task-first-b1.l2",
+        "en": "When do you need the report?",
+        "vi": "Khi nào anh cần báo cáo?",
+        "accept": [
+          "What is the deadline for the report",
+          "By when do you need the report"
+        ]
+      },
+      {
+        "id": "deciding-which-task-first-b1.l3",
+        "en": "That is tight, but I can do it.",
+        "vi": "Gấp đấy, nhưng tôi làm được.",
+        "accept": [
+          "It is tight, but I will manage",
+          "That is a short time, but I can manage"
+        ]
+      },
+      {
+        "id": "deciding-which-task-first-b1.l4",
+        "en": "I have not started it yet, so I need help.",
+        "vi": "Tôi chưa bắt đầu nên cần giúp.",
+        "accept": [
+          "I haven't started yet, so I need some help",
+          "I have not begun, so I need help"
+        ],
+        "note": "Present perfect + yet: chưa làm gì cho đến giờ."
+      },
+      {
+        "id": "deciding-which-task-first-b1.l5",
+        "en": "Thank you. That would save a lot of time.",
+        "vi": "Cảm ơn. Vậy sẽ tiết kiệm nhiều thời gian.",
+        "accept": [
+          "Thanks, that would save me a lot of time",
+          "Great, that would really save time"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "I have two urgent tasks for you today.",
+        "npc_vi": "Hôm nay tôi có hai việc gấp cho bạn.",
+        "replies": [
+          {
+            "lineId": "deciding-which-task-first-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "The client report. The budget file can wait.",
+        "npc_vi": "Báo cáo cho khách. File ngân sách để sau được.",
+        "replies": [
+          {
+            "lineId": "deciding-which-task-first-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "By three o'clock this afternoon.",
+        "npc_vi": "Trước ba giờ chiều nay.",
+        "replies": [
+          {
+            "lineId": "deciding-which-task-first-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "deciding-which-task-first-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Okay. Let me ask Tom to help with the data.",
+        "npc_vi": "Được. Để tôi nhờ Tom giúp phần dữ liệu.",
+        "replies": [
+          {
+            "lineId": "deciding-which-task-first-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "apology-email-for-late-files-b1",
+    "group": "work",
+    "title_vi": "Email xin lỗi vì gửi trễ",
+    "title_en": "Apology email for late files",
+    "cefr": "B1",
+    "goal_vi": "Giải thích vì sao gửi file trễ và nhận hướng dẫn viết email xin lỗi.",
+    "partner_vi": "Đồng nghiệp lâu năm",
+    "partner_emoji": "📧",
+    "lines": [
+      {
+        "id": "apology-email-for-late-files-b1.l1",
+        "en": "Not yet, but I will send them today.",
+        "vi": "Chưa, nhưng hôm nay tôi sẽ gửi.",
+        "accept": [
+          "Not yet, I will send them today",
+          "No, but I will send them today"
+        ]
+      },
+      {
+        "id": "apology-email-for-late-files-b1.l2",
+        "en": "I had problems with the big file.",
+        "vi": "Tôi gặp lỗi với file lớn.",
+        "accept": [
+          "There was a problem with the large file",
+          "The big file gave me problems"
+        ]
+      },
+      {
+        "id": "apology-email-for-late-files-b1.l3",
+        "en": "I was ill, so I missed two days.",
+        "vi": "Tôi bị ốm nên nghỉ hai ngày.",
+        "accept": [
+          "I was sick, so I missed two days",
+          "I was sick, so I lost two days"
+        ]
+      },
+      {
+        "id": "apology-email-for-late-files-b1.l4",
+        "en": "Good idea. What should I say?",
+        "vi": "Ý hay. Tôi nên viết gì?",
+        "accept": [
+          "Okay. What should I write",
+          "Sure. What should I say in it"
+        ]
+      },
+      {
+        "id": "apology-email-for-late-files-b1.l5",
+        "en": "I will write it right now.",
+        "vi": "Tôi sẽ viết ngay bây giờ.",
+        "accept": [
+          "I will write it immediately",
+          "I am going to write it right away"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Did you send the files to the client?",
+        "npc_vi": "Bạn đã gửi file cho khách chưa?",
+        "replies": [
+          {
+            "lineId": "apology-email-for-late-files-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "They have waited since Monday. What happened?",
+        "npc_vi": "Họ chờ từ thứ Hai. Chuyện gì đã xảy ra?",
+        "replies": [
+          {
+            "lineId": "apology-email-for-late-files-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "apology-email-for-late-files-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Please write a short apology email to them.",
+        "npc_vi": "Hãy viết email xin lỗi ngắn cho họ.",
+        "replies": [
+          {
+            "lineId": "apology-email-for-late-files-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Say sorry for the delay and give a new date.",
+        "npc_vi": "Xin lỗi vì chậm và đưa ngày mới.",
+        "replies": [
+          {
+            "lineId": "apology-email-for-late-files-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "reporting-a-broken-printer-b1",
+    "group": "work",
+    "title_vi": "Báo máy in bị hỏng",
+    "title_en": "Reporting a broken printer",
+    "cefr": "B1",
+    "goal_vi": "Báo lỗi máy in cho bộ phận IT và chờ được sửa.",
+    "partner_vi": "Nhân viên IT",
+    "partner_emoji": "🔧",
+    "lines": [
+      {
+        "id": "reporting-a-broken-printer-b1.l1",
+        "en": "The printer on our floor is not working.",
+        "vi": "Máy in ở tầng chúng tôi không chạy.",
+        "accept": [
+          "Our floor printer does not work",
+          "The printer on this floor has stopped working"
+        ]
+      },
+      {
+        "id": "reporting-a-broken-printer-b1.l2",
+        "en": "Yes, it says there is a paper jam.",
+        "vi": "Có, nó báo kẹt giấy.",
+        "accept": [
+          "Yes, the message says paper jam",
+          "It says there is a paper jam"
+        ],
+        "note": "paper jam = kẹt giấy."
+      },
+      {
+        "id": "reporting-a-broken-printer-b1.l3",
+        "en": "No, but it makes a strange noise.",
+        "vi": "Không, nhưng nó kêu lạ.",
+        "accept": [
+          "No message, but it makes a strange sound",
+          "No, but it is making a strange noise"
+        ]
+      },
+      {
+        "id": "reporting-a-broken-printer-b1.l4",
+        "en": "Yes, I have tried that twice already.",
+        "vi": "Có, tôi đã thử hai lần rồi.",
+        "accept": [
+          "Yes, I already tried that twice",
+          "I have already tried it two times"
+        ]
+      },
+      {
+        "id": "reporting-a-broken-printer-b1.l5",
+        "en": "Thanks. I need to print something urgently.",
+        "vi": "Cảm ơn. Tôi cần in gấp một thứ.",
+        "accept": [
+          "Thank you. I have an urgent document to print",
+          "Thanks, I must print something urgent"
+        ]
+      },
+      {
+        "id": "reporting-a-broken-printer-b1.l6",
+        "en": "Good idea. I will go there now.",
+        "vi": "Ý hay. Tôi đi ngay đây.",
+        "accept": [
+          "Okay, I will go there now",
+          "Thanks, I will use that one"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "IT support. How can I help you?",
+        "npc_vi": "Bộ phận IT đây. Tôi giúp gì được?",
+        "replies": [
+          {
+            "lineId": "reporting-a-broken-printer-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Is there an error message on the screen?",
+        "npc_vi": "Trên màn hình có báo lỗi không?",
+        "replies": [
+          {
+            "lineId": "reporting-a-broken-printer-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "reporting-a-broken-printer-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Have you tried turning it off and on?",
+        "npc_vi": "Bạn đã thử tắt rồi bật lại chưa?",
+        "replies": [
+          {
+            "lineId": "reporting-a-broken-printer-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Okay. I will send someone in ten minutes.",
+        "npc_vi": "Được. Mười phút nữa tôi cử người đến.",
+        "replies": [
+          {
+            "lineId": "reporting-a-broken-printer-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Use the printer on the third floor until then.",
+        "npc_vi": "Tạm dùng máy in tầng ba nhé.",
+        "replies": [
+          {
+            "lineId": "reporting-a-broken-printer-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "planning-a-study-group-b1",
+    "group": "daily",
+    "title_vi": "Lập nhóm học ôn thi",
+    "title_en": "Planning a study group",
+    "cefr": "B1",
+    "goal_vi": "Cùng bạn học chọn địa điểm và ngày cho nhóm ôn thi.",
+    "partner_vi": "Bạn cùng lớp",
+    "partner_emoji": "📚",
+    "lines": [
+      {
+        "id": "planning-a-study-group-b1.l1",
+        "en": "Good idea. How many people should join?",
+        "vi": "Ý hay. Nên có bao nhiêu người?",
+        "accept": [
+          "Great idea. How many people do we need",
+          "Sure. How many people should we invite"
+        ]
+      },
+      {
+        "id": "planning-a-study-group-b1.l2",
+        "en": "The library is quiet, so let's meet there.",
+        "vi": "Thư viện yên tĩnh nên mình gặp ở đó.",
+        "accept": [
+          "Let's meet at the library because it is quiet",
+          "How about the library? It is quiet"
+        ],
+        "note": "so = nên, chỉ kết quả của lý do."
+      },
+      {
+        "id": "planning-a-study-group-b1.l3",
+        "en": "My place is comfortable, if you don't mind.",
+        "vi": "Nhà mình thoải mái, nếu bạn không phiền.",
+        "accept": [
+          "We can meet at my place if you want",
+          "My home is comfortable, if that is okay"
+        ]
+      },
+      {
+        "id": "planning-a-study-group-b1.l4",
+        "en": "Wednesday evening is better because I am free.",
+        "vi": "Tối thứ Tư tốt hơn vì mình rảnh.",
+        "accept": [
+          "I am free on Wednesday evening",
+          "Wednesday evening works best for me"
+        ]
+      },
+      {
+        "id": "planning-a-study-group-b1.l5",
+        "en": "Thanks. I will make a study plan.",
+        "vi": "Cảm ơn. Mình sẽ lập kế hoạch học.",
+        "accept": [
+          "Thank you. I will prepare a study plan",
+          "Great, I will write a study plan"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Shall we form a study group for the exam?",
+        "npc_vi": "Mình lập nhóm ôn thi nhé?",
+        "replies": [
+          {
+            "lineId": "planning-a-study-group-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Maybe four. Where should we meet?",
+        "npc_vi": "Có lẽ bốn người. Mình gặp ở đâu?",
+        "replies": [
+          {
+            "lineId": "planning-a-study-group-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "planning-a-study-group-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Fine. Which day is better for you?",
+        "npc_vi": "Được. Ngày nào tiện cho bạn hơn?",
+        "replies": [
+          {
+            "lineId": "planning-a-study-group-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Great. I will invite two more classmates.",
+        "npc_vi": "Tuyệt. Mình sẽ mời thêm hai bạn.",
+        "replies": [
+          {
+            "lineId": "planning-a-study-group-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "asking-a-teacher-for-more-time-b1",
+    "group": "work",
+    "title_vi": "Xin thầy cô gia hạn bài",
+    "title_en": "Asking a teacher for more time",
+    "cefr": "B1",
+    "goal_vi": "Giải thích lý do và xin thêm thời gian nộp bài luận.",
+    "partner_vi": "Giáo viên",
+    "partner_emoji": "🍎",
+    "lines": [
+      {
+        "id": "asking-a-teacher-for-more-time-b1.l1",
+        "en": "Yes, I need more time for my essay.",
+        "vi": "Vâng, em cần thêm thời gian cho bài luận.",
+        "accept": [
+          "Yes, could I have more time for my essay",
+          "Yes, I need an extension for my essay"
+        ],
+        "note": "extension = sự gia hạn."
+      },
+      {
+        "id": "asking-a-teacher-for-more-time-b1.l2",
+        "en": "I have been busy with my job.",
+        "vi": "Em đã bận việc đi làm.",
+        "accept": [
+          "I have been very busy with work",
+          "My job has kept me busy"
+        ]
+      },
+      {
+        "id": "asking-a-teacher-for-more-time-b1.l3",
+        "en": "My laptop broke, so I lost everything.",
+        "vi": "Laptop em hỏng nên mất hết.",
+        "accept": [
+          "My laptop broke and I lost my work",
+          "I lost my work because my laptop broke"
+        ]
+      },
+      {
+        "id": "asking-a-teacher-for-more-time-b1.l4",
+        "en": "Three more days would be enough.",
+        "vi": "Thêm ba ngày là đủ ạ.",
+        "accept": [
+          "Three extra days would be enough",
+          "I think three more days is enough"
+        ]
+      },
+      {
+        "id": "asking-a-teacher-for-more-time-b1.l5",
+        "en": "Thank you. I will hand it in on time.",
+        "vi": "Em cảm ơn. Em sẽ nộp đúng hạn.",
+        "accept": [
+          "Thanks, I will submit it on time",
+          "Thank you, I promise to hand it in on time"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Hello, you wanted to see me?",
+        "npc_vi": "Chào em, em muốn gặp cô à?",
+        "replies": [
+          {
+            "lineId": "asking-a-teacher-for-more-time-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "The deadline is tomorrow. What is the problem?",
+        "npc_vi": "Hạn là ngày mai. Vấn đề là gì?",
+        "replies": [
+          {
+            "lineId": "asking-a-teacher-for-more-time-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "asking-a-teacher-for-more-time-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I understand. How many days do you need?",
+        "npc_vi": "Cô hiểu. Em cần mấy ngày?",
+        "replies": [
+          {
+            "lineId": "asking-a-teacher-for-more-time-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "All right, but no more extensions after that.",
+        "npc_vi": "Được, nhưng sau đó không gia hạn nữa.",
+        "replies": [
+          {
+            "lineId": "asking-a-teacher-for-more-time-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "coffee-break-hiking-chat-b1",
+    "group": "work",
+    "title_vi": "Kể chuyện leo núi giờ nghỉ",
+    "title_en": "Coffee break hiking chat",
+    "cefr": "B1",
+    "goal_vi": "Trò chuyện xã giao với đồng nghiệp về chuyến leo núi cuối tuần.",
+    "partner_vi": "Đồng nghiệp",
+    "partner_emoji": "☕",
+    "lines": [
+      {
+        "id": "coffee-break-hiking-chat-b1.l1",
+        "en": "Yes, I went hiking with my friends.",
+        "vi": "Vâng, tôi đi leo núi với bạn.",
+        "accept": [
+          "Yes, I went hiking with friends",
+          "Yes, my friends and I went hiking"
+        ]
+      },
+      {
+        "id": "coffee-break-hiking-chat-b1.l2",
+        "en": "We went to Ba Vi, near Hanoi.",
+        "vi": "Chúng tôi đến Ba Vì, gần Hà Nội.",
+        "accept": [
+          "We hiked at Ba Vi near Hanoi"
+        ]
+      },
+      {
+        "id": "coffee-break-hiking-chat-b1.l3",
+        "en": "Not really, but it was quite hot.",
+        "vi": "Không hẳn, nhưng khá nóng.",
+        "accept": [
+          "Not really, although it was quite hot",
+          "It is not hard, but it was hot"
+        ]
+      },
+      {
+        "id": "coffee-break-hiking-chat-b1.l4",
+        "en": "A little, but the view was worth it.",
+        "vi": "Hơi khó, nhưng cảnh đáng công.",
+        "accept": [
+          "Slightly, but the view was worth it",
+          "It is a bit hard, but the view is worth it"
+        ],
+        "note": "worth it = đáng giá."
+      },
+      {
+        "id": "coffee-break-hiking-chat-b1.l5",
+        "en": "Of course, I will invite you next time.",
+        "vi": "Tất nhiên, lần sau tôi sẽ rủ bạn.",
+        "accept": [
+          "Sure, I will invite you next time",
+          "Of course, I will let you know next time"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "You look relaxed today. Did you have a good weekend?",
+        "npc_vi": "Hôm nay bạn thư thái quá. Cuối tuần vui chứ?",
+        "replies": [
+          {
+            "lineId": "coffee-break-hiking-chat-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "That sounds fun! Where did you go?",
+        "npc_vi": "Nghe vui đấy! Bạn đi đâu?",
+        "replies": [
+          {
+            "lineId": "coffee-break-hiking-chat-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I have never been there. Is it difficult?",
+        "npc_vi": "Tôi chưa từng đến đó. Có khó không?",
+        "replies": [
+          {
+            "lineId": "coffee-break-hiking-chat-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "coffee-break-hiking-chat-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "I would love to go. Can I join you next time?",
+        "npc_vi": "Tôi muốn đi lắm. Lần sau tôi đi cùng được không?",
+        "replies": [
+          {
+            "lineId": "coffee-break-hiking-chat-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "asking-to-work-from-home-b1",
+    "group": "work",
+    "title_vi": "Xin làm việc ở nhà",
+    "title_en": "Asking to work from home",
+    "cefr": "B1",
+    "goal_vi": "Thuyết phục sếp cho thỉnh thoảng làm việc tại nhà.",
+    "partner_vi": "Sếp của bạn",
+    "partner_emoji": "🏠",
+    "lines": [
+      {
+        "id": "asking-to-work-from-home-b1.l1",
+        "en": "I would like to work from home sometimes.",
+        "vi": "Tôi muốn thỉnh thoảng làm việc ở nhà.",
+        "accept": [
+          "Could I work from home sometimes",
+          "I want to work from home sometimes"
+        ],
+        "note": "would like to lịch sự hơn want to."
+      },
+      {
+        "id": "asking-to-work-from-home-b1.l2",
+        "en": "The trip to the office takes two hours.",
+        "vi": "Đi đến văn phòng mất hai tiếng.",
+        "accept": [
+          "It takes two hours to get to the office",
+          "My trip to the office takes two hours"
+        ]
+      },
+      {
+        "id": "asking-to-work-from-home-b1.l3",
+        "en": "I can concentrate better at home.",
+        "vi": "Ở nhà tôi tập trung hơn.",
+        "accept": [
+          "I focus better at home",
+          "It is easier to concentrate at home"
+        ],
+        "note": "better = so sánh hơn của well."
+      },
+      {
+        "id": "asking-to-work-from-home-b1.l4",
+        "en": "I will send you a daily summary.",
+        "vi": "Tôi sẽ gửi bản tóm tắt hằng ngày.",
+        "accept": [
+          "I can send you a daily report",
+          "I will email you a summary every day"
+        ]
+      },
+      {
+        "id": "asking-to-work-from-home-b1.l5",
+        "en": "That sounds fair. Thank you for trusting me.",
+        "vi": "Nghe hợp lý. Cảm ơn đã tin tôi.",
+        "accept": [
+          "That is fair. Thanks for trusting me",
+          "Sounds fair. I appreciate your trust"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "You asked to see me. What is it about?",
+        "npc_vi": "Bạn muốn gặp tôi. Chuyện gì vậy?",
+        "replies": [
+          {
+            "lineId": "asking-to-work-from-home-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Why would that be better for you?",
+        "npc_vi": "Sao điều đó tốt hơn cho bạn?",
+        "replies": [
+          {
+            "lineId": "asking-to-work-from-home-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "asking-to-work-from-home-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "How will I know that you are working?",
+        "npc_vi": "Làm sao tôi biết bạn đang làm việc?",
+        "replies": [
+          {
+            "lineId": "asking-to-work-from-home-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Let's try it for one month, two days a week.",
+        "npc_vi": "Thử một tháng, hai ngày mỗi tuần.",
+        "replies": [
+          {
+            "lineId": "asking-to-work-from-home-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rescheduling-a-client-meeting-b1",
+    "group": "work",
+    "title_vi": "Dời cuộc hẹn với khách",
+    "title_en": "Rescheduling a client meeting",
+    "cefr": "B1",
+    "goal_vi": "Gọi cho khách để dời cuộc họp ngày mai sang giờ khác.",
+    "partner_vi": "Khách hàng",
+    "partner_emoji": "📅",
+    "lines": [
+      {
+        "id": "rescheduling-a-client-meeting-b1.l1",
+        "en": "Yes, I am afraid I have a problem.",
+        "vi": "Vâng, tôi e là tôi có vấn đề.",
+        "accept": [
+          "Yes, I am sorry, but I have a problem",
+          "Yes, unfortunately I have a problem"
+        ],
+        "note": "I am afraid... mở đầu tin không vui."
+      },
+      {
+        "id": "rescheduling-a-client-meeting-b1.l2",
+        "en": "An urgent meeting has come up then.",
+        "vi": "Có một cuộc họp gấp vào giờ đó.",
+        "accept": [
+          "I must go to an urgent meeting then",
+          "I have an urgent meeting at that time"
+        ]
+      },
+      {
+        "id": "rescheduling-a-client-meeting-b1.l3",
+        "en": "Yes, two o'clock suits me better.",
+        "vi": "Vâng, hai giờ hợp với tôi hơn.",
+        "accept": [
+          "Yes, two o'clock is better for me",
+          "Yes, I prefer two o'clock"
+        ]
+      },
+      {
+        "id": "rescheduling-a-client-meeting-b1.l4",
+        "en": "Could we make it three o'clock instead?",
+        "vi": "Mình dời sang ba giờ được không?",
+        "accept": [
+          "Would three o'clock be possible",
+          "Can we do three o'clock instead"
+        ]
+      },
+      {
+        "id": "rescheduling-a-client-meeting-b1.l5",
+        "en": "Thank you for being so flexible.",
+        "vi": "Cảm ơn bạn đã linh hoạt như vậy.",
+        "accept": [
+          "Thanks for being so flexible",
+          "I appreciate your flexibility"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Hello, this is about our meeting tomorrow at ten.",
+        "npc_vi": "Chào, về cuộc họp ngày mai lúc mười giờ.",
+        "replies": [
+          {
+            "lineId": "rescheduling-a-client-meeting-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Oh no. What is the problem?",
+        "npc_vi": "Ôi. Vấn đề gì vậy?",
+        "replies": [
+          {
+            "lineId": "rescheduling-a-client-meeting-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I see. Could we meet in the afternoon instead?",
+        "npc_vi": "Tôi hiểu. Mình gặp buổi chiều được không?",
+        "replies": [
+          {
+            "lineId": "rescheduling-a-client-meeting-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "rescheduling-a-client-meeting-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Perfect. I will update the calendar and send an invitation.",
+        "npc_vi": "Tuyệt. Tôi sẽ cập nhật lịch và gửi thư mời.",
+        "replies": [
+          {
+            "lineId": "rescheduling-a-client-meeting-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "asking-for-a-longer-deadline-b1",
+    "group": "work",
+    "title_vi": "Xin thêm thời gian cho dự án",
+    "title_en": "Asking for a longer deadline",
+    "cefr": "B1",
+    "goal_vi": "Báo tiến độ và thương lượng hạn chót với sếp.",
+    "partner_vi": "Quản lý dự án",
+    "partner_emoji": "⏰",
+    "lines": [
+      {
+        "id": "asking-for-a-longer-deadline-b1.l1",
+        "en": "So far I have finished half of it.",
+        "vi": "Đến giờ tôi đã xong một nửa.",
+        "accept": [
+          "I have done half of it so far",
+          "Up to now I have finished half of it"
+        ],
+        "note": "Present perfect + so far: kết quả tính đến hiện tại."
+      },
+      {
+        "id": "asking-for-a-longer-deadline-b1.l2",
+        "en": "I am afraid I will not make it.",
+        "vi": "Tôi e là mình không kịp.",
+        "accept": [
+          "I am worried that I will not make it",
+          "I am not sure I can make it"
+        ]
+      },
+      {
+        "id": "asking-for-a-longer-deadline-b1.l3",
+        "en": "Yes, if I work this weekend.",
+        "vi": "Có, nếu tôi làm cuối tuần này.",
+        "accept": [
+          "Yes, if I work on the weekend",
+          "Yes, but only if I work this weekend"
+        ]
+      },
+      {
+        "id": "asking-for-a-longer-deadline-b1.l4",
+        "en": "Two more days would help a lot.",
+        "vi": "Thêm hai ngày sẽ giúp nhiều.",
+        "accept": [
+          "Two extra days would help a lot",
+          "I would need two more days"
+        ]
+      },
+      {
+        "id": "asking-for-a-longer-deadline-b1.l5",
+        "en": "Another person to help would be great.",
+        "vi": "Có thêm một người giúp thì tốt.",
+        "accept": [
+          "It would help to have another person",
+          "Some extra help would be great"
+        ]
+      },
+      {
+        "id": "asking-for-a-longer-deadline-b1.l6",
+        "en": "I could send half of it on Monday.",
+        "vi": "Tôi có thể gửi một nửa vào thứ Hai.",
+        "accept": [
+          "I can send half of it on Monday",
+          "On Monday I could send the first half"
+        ],
+        "note": "could = đề xuất khả năng một cách mềm mỏng."
+      },
+      {
+        "id": "asking-for-a-longer-deadline-b1.l7",
+        "en": "I will write to them this afternoon.",
+        "vi": "Chiều nay tôi sẽ viết cho họ.",
+        "accept": [
+          "I will email them this afternoon",
+          "This afternoon I will write to them"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "How is the survey project going?",
+        "npc_vi": "Dự án khảo sát tiến triển thế nào?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-longer-deadline-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "The deadline is next Monday. Will you make it?",
+        "npc_vi": "Hạn là thứ Hai tới. Bạn kịp không?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-longer-deadline-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "asking-for-a-longer-deadline-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I see. What would help you the most?",
+        "npc_vi": "Tôi hiểu. Điều gì giúp bạn nhiều nhất?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-longer-deadline-b1.l4",
+            "next": "n4"
+          },
+          {
+            "lineId": "asking-for-a-longer-deadline-b1.l5",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Hmm. The client expects it on Monday, though.",
+        "npc_vi": "Hmm. Nhưng khách mong nhận vào thứ Hai.",
+        "replies": [
+          {
+            "lineId": "asking-for-a-longer-deadline-b1.l6",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "That is a good compromise. Please send them an email.",
+        "npc_vi": "Thỏa hiệp hay đó. Hãy gửi email cho họ.",
+        "replies": [
+          {
+            "lineId": "asking-for-a-longer-deadline-b1.l7",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "thinking-about-a-job-offer-b1",
+    "group": "work",
+    "title_vi": "Cân nhắc lời mời làm việc",
+    "title_en": "Thinking about a job offer",
+    "cefr": "B1",
+    "goal_vi": "Nhận lời mời, hỏi về lương, phúc lợi và xin thời gian suy nghĩ.",
+    "partner_vi": "Nhân sự công ty",
+    "partner_emoji": "💰",
+    "lines": [
+      {
+        "id": "thinking-about-a-job-offer-b1.l1",
+        "en": "Thank you! I am very happy to hear that.",
+        "vi": "Cảm ơn! Tôi rất vui khi nghe vậy.",
+        "accept": [
+          "Thanks! I am really happy to hear that",
+          "That is great news, thank you"
+        ]
+      },
+      {
+        "id": "thinking-about-a-job-offer-b1.l2",
+        "en": "It is lower than I expected.",
+        "vi": "Thấp hơn tôi mong đợi.",
+        "accept": [
+          "That is less than I expected",
+          "I expected a little more than that"
+        ],
+        "note": "lower than = thấp hơn."
+      },
+      {
+        "id": "thinking-about-a-job-offer-b1.l3",
+        "en": "That sounds fine, but what about benefits?",
+        "vi": "Nghe ổn, nhưng còn phúc lợi thì sao?",
+        "accept": [
+          "That is fine. What about the benefits",
+          "Okay. Can you tell me about the benefits"
+        ]
+      },
+      {
+        "id": "thinking-about-a-job-offer-b1.l4",
+        "en": "That is helpful. Can I think about it?",
+        "vi": "Hữu ích đấy. Tôi suy nghĩ thêm được không?",
+        "accept": [
+          "Good. May I think about it first",
+          "That helps. Could I have time to think"
+        ]
+      },
+      {
+        "id": "thinking-about-a-job-offer-b1.l5",
+        "en": "I will give you my answer on Thursday.",
+        "vi": "Tôi sẽ trả lời bạn vào thứ Năm.",
+        "accept": [
+          "I will let you know by Thursday",
+          "You will have my answer on Thursday"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Congratulations! We would like to offer you the job.",
+        "npc_vi": "Chúc mừng! Chúng tôi muốn mời bạn nhận việc.",
+        "replies": [
+          {
+            "lineId": "thinking-about-a-job-offer-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "The salary is ten million dong a month. Does that work?",
+        "npc_vi": "Lương mười triệu đồng một tháng. Bạn thấy sao?",
+        "replies": [
+          {
+            "lineId": "thinking-about-a-job-offer-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "thinking-about-a-job-offer-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "We can add health insurance and a transport allowance.",
+        "npc_vi": "Chúng tôi có thể thêm bảo hiểm y tế và phụ cấp đi lại.",
+        "replies": [
+          {
+            "lineId": "thinking-about-a-job-offer-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Of course. Please tell us by Friday.",
+        "npc_vi": "Tất nhiên. Hãy báo chúng tôi trước thứ Sáu.",
+        "replies": [
+          {
+            "lineId": "thinking-about-a-job-offer-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dividing-group-project-tasks-b1",
+    "group": "daily",
+    "title_vi": "Chia việc dự án nhóm",
+    "title_en": "Dividing group project tasks",
+    "cefr": "B1",
+    "goal_vi": "Cùng bạn học chia việc và hẹn lịch họp nhóm.",
+    "partner_vi": "Bạn cùng nhóm",
+    "partner_emoji": "🧩",
+    "lines": [
+      {
+        "id": "dividing-group-project-tasks-b1.l1",
+        "en": "Let's divide the work so it's fair.",
+        "vi": "Mình chia việc cho công bằng nhé.",
+        "accept": [
+          "We should divide the work fairly",
+          "Let's share the work fairly"
+        ]
+      },
+      {
+        "id": "dividing-group-project-tasks-b1.l2",
+        "en": "Then I will take the design part.",
+        "vi": "Vậy mình sẽ lo phần thiết kế.",
+        "accept": [
+          "So I will take the design part",
+          "In that case I will do the design"
+        ]
+      },
+      {
+        "id": "dividing-group-project-tasks-b1.l3",
+        "en": "Okay, but I need help with slides.",
+        "vi": "Được, nhưng mình cần giúp phần slide.",
+        "accept": [
+          "Okay, although I need help with slides",
+          "Fine, but I will need help with the slides"
+        ]
+      },
+      {
+        "id": "dividing-group-project-tasks-b1.l4",
+        "en": "We can write it together online.",
+        "vi": "Mình viết chung trực tuyến được.",
+        "accept": [
+          "Let's write it together online",
+          "We should write it together online"
+        ]
+      },
+      {
+        "id": "dividing-group-project-tasks-b1.l5",
+        "en": "Yes, every Sunday evening would work.",
+        "vi": "Được, tối Chủ nhật hằng tuần là ổn.",
+        "accept": [
+          "Yes, every Sunday evening is good",
+          "Sure, Sunday evenings would be fine"
+        ]
+      },
+      {
+        "id": "dividing-group-project-tasks-b1.l6",
+        "en": "Perfect. Send me the link when it's ready.",
+        "vi": "Tuyệt. Gửi mình đường dẫn khi xong nhé.",
+        "accept": [
+          "Great. Please send me the link when ready",
+          "Perfect, send me the link later"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "We have two weeks to finish the group project.",
+        "npc_vi": "Chúng ta có hai tuần để xong dự án nhóm.",
+        "replies": [
+          {
+            "lineId": "dividing-group-project-tasks-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Good. I am better at research than design.",
+        "npc_vi": "Tốt. Mình nghiên cứu giỏi hơn thiết kế.",
+        "replies": [
+          {
+            "lineId": "dividing-group-project-tasks-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "dividing-group-project-tasks-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Who will write the final report?",
+        "npc_vi": "Ai sẽ viết báo cáo cuối?",
+        "replies": [
+          {
+            "lineId": "dividing-group-project-tasks-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Fine. Shall we have weekly meetings to check progress?",
+        "npc_vi": "Được. Mình họp hằng tuần để kiểm tra tiến độ nhé?",
+        "replies": [
+          {
+            "lineId": "dividing-group-project-tasks-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Great. I will create a group chat tonight.",
+        "npc_vi": "Tuyệt. Tối nay mình lập nhóm chat.",
+        "replies": [
+          {
+            "lineId": "dividing-group-project-tasks-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fixing-a-projector-before-a-talk-b1",
+    "group": "work",
+    "title_vi": "Máy chiếu hỏng trước buổi nói",
+    "title_en": "Fixing a projector before a talk",
+    "cefr": "B1",
+    "goal_vi": "Xử lý nhanh sự cố máy chiếu trước khi thuyết trình.",
+    "partner_vi": "Đồng nghiệp",
+    "partner_emoji": "💻",
+    "lines": [
+      {
+        "id": "fixing-a-projector-before-a-talk-b1.l1",
+        "en": "No, the screen is still black.",
+        "vi": "Chưa, màn hình vẫn đen.",
+        "accept": [
+          "No, I only see a black screen",
+          "No, the screen stays black"
+        ]
+      },
+      {
+        "id": "fixing-a-projector-before-a-talk-b1.l2",
+        "en": "Yes, it is connected to my laptop.",
+        "vi": "Có, nó đã nối với laptop của tôi.",
+        "accept": [
+          "Yes, it is plugged into my laptop",
+          "Yes, the cable is connected to my laptop"
+        ]
+      },
+      {
+        "id": "fixing-a-projector-before-a-talk-b1.l3",
+        "en": "Not yet. Where is the other cable?",
+        "vi": "Chưa. Dây còn lại ở đâu?",
+        "accept": [
+          "No. Is there another cable",
+          "Not yet. Do we have another cable"
+        ]
+      },
+      {
+        "id": "fixing-a-projector-before-a-talk-b1.l4",
+        "en": "It works now! Thanks for the tip.",
+        "vi": "Chạy rồi! Cảm ơn mẹo của bạn.",
+        "accept": [
+          "It works now! Thank you for the tip",
+          "Great, it works now! Thanks for the tip"
+        ]
+      },
+      {
+        "id": "fixing-a-projector-before-a-talk-b1.l5",
+        "en": "Thanks. I hope everything goes smoothly now.",
+        "vi": "Cảm ơn. Mong là giờ mọi thứ suôn sẻ.",
+        "accept": [
+          "Thank you. I hope it goes smoothly now",
+          "Thanks, I hope everything goes well now"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Five minutes until the presentation. Is the projector ready?",
+        "npc_vi": "Còn năm phút nữa. Máy chiếu sẵn sàng chưa?",
+        "replies": [
+          {
+            "lineId": "fixing-a-projector-before-a-talk-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Have you checked the cable?",
+        "npc_vi": "Bạn kiểm tra dây chưa?",
+        "replies": [
+          {
+            "lineId": "fixing-a-projector-before-a-talk-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "fixing-a-projector-before-a-talk-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Okay. Try pressing the display key on your laptop.",
+        "npc_vi": "Được. Thử bấm phím hiển thị trên laptop.",
+        "replies": [
+          {
+            "lineId": "fixing-a-projector-before-a-talk-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Wonderful. Good luck with your presentation!",
+        "npc_vi": "Tuyệt. Chúc thuyết trình tốt!",
+        "replies": [
+          {
+            "lineId": "fixing-a-projector-before-a-talk-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "giving-feedback-after-a-talk-b1",
+    "group": "work",
+    "title_vi": "Góp ý sau bài thuyết trình",
+    "title_en": "Giving feedback after a talk",
+    "cefr": "B1",
+    "goal_vi": "Góp ý chân thành nhưng lịch sự cho đồng nghiệp.",
+    "partner_vi": "Đồng nghiệp vừa thuyết trình",
+    "partner_emoji": "👏",
+    "lines": [
+      {
+        "id": "giving-feedback-after-a-talk-b1.l1",
+        "en": "Overall it was clear and interesting.",
+        "vi": "Nhìn chung rõ ràng và thú vị.",
+        "accept": [
+          "It was clear and interesting overall",
+          "In general it was clear and interesting"
+        ]
+      },
+      {
+        "id": "giving-feedback-after-a-talk-b1.l2",
+        "en": "You spoke a bit too fast.",
+        "vi": "Bạn nói hơi nhanh một chút.",
+        "accept": [
+          "You talked a little too fast",
+          "I think you spoke too quickly"
+        ]
+      },
+      {
+        "id": "giving-feedback-after-a-talk-b1.l3",
+        "en": "Some slides had too much text.",
+        "vi": "Vài slide có quá nhiều chữ.",
+        "accept": [
+          "A few slides had too many words",
+          "Some of your slides were too full of text"
+        ]
+      },
+      {
+        "id": "giving-feedback-after-a-talk-b1.l4",
+        "en": "If you practice more, you will feel confident.",
+        "vi": "Nếu luyện nhiều hơn, bạn sẽ tự tin.",
+        "accept": [
+          "Practice more and you will feel confident",
+          "With more practice, you will feel confident"
+        ]
+      },
+      {
+        "id": "giving-feedback-after-a-talk-b1.l5",
+        "en": "Good luck! I am sure you will do well.",
+        "vi": "Chúc may mắn! Tôi tin bạn sẽ làm tốt.",
+        "accept": [
+          "Good luck! I am sure you will be great",
+          "Best of luck, you will do well"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "How was my presentation? Please be honest.",
+        "npc_vi": "Bài thuyết trình của tôi sao? Hãy nói thật.",
+        "replies": [
+          {
+            "lineId": "giving-feedback-after-a-talk-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Thanks! Was there anything I should improve?",
+        "npc_vi": "Cảm ơn! Có gì tôi nên cải thiện không?",
+        "replies": [
+          {
+            "lineId": "giving-feedback-after-a-talk-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "giving-feedback-after-a-talk-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Good point. Do you have any other advice?",
+        "npc_vi": "Ý hay. Bạn còn lời khuyên nào khác không?",
+        "replies": [
+          {
+            "lineId": "giving-feedback-after-a-talk-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Thanks, that helps. I will rehearse again tonight.",
+        "npc_vi": "Cảm ơn, hữu ích lắm. Tối nay tôi sẽ tập lại.",
+        "replies": [
+          {
+            "lineId": "giving-feedback-after-a-talk-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "advice-about-studying-abroad-b1",
+    "group": "daily",
+    "title_vi": "Xin tư vấn du học",
+    "title_en": "Advice about studying abroad",
+    "cefr": "B1",
+    "goal_vi": "Hỏi cố vấn về nước du học, điểm thi và học bổng.",
+    "partner_vi": "Cố vấn du học",
+    "partner_emoji": "🌏",
+    "lines": [
+      {
+        "id": "advice-about-studying-abroad-b1.l1",
+        "en": "I am thinking about studying abroad next year.",
+        "vi": "Tôi đang nghĩ đến chuyện du học năm sau.",
+        "accept": [
+          "I want to study abroad next year",
+          "I am considering studying abroad next year"
+        ]
+      },
+      {
+        "id": "advice-about-studying-abroad-b1.l2",
+        "en": "I prefer Australia because the weather is warm.",
+        "vi": "Tôi thích Úc vì thời tiết ấm.",
+        "accept": [
+          "Australia, because the weather is warm",
+          "I like Australia more because it is warm"
+        ]
+      },
+      {
+        "id": "advice-about-studying-abroad-b1.l3",
+        "en": "Canada, although it is quite expensive.",
+        "vi": "Canada, dù khá đắt.",
+        "accept": [
+          "I would choose Canada, even though it is expensive",
+          "Canada, but I know it is expensive"
+        ],
+        "note": "although/even though = mặc dù."
+      },
+      {
+        "id": "advice-about-studying-abroad-b1.l4",
+        "en": "Not yet. What score do I need?",
+        "vi": "Chưa. Tôi cần bao nhiêu điểm?",
+        "accept": [
+          "No, not yet. What score is required",
+          "Not yet. What score should I get"
+        ]
+      },
+      {
+        "id": "advice-about-studying-abroad-b1.l5",
+        "en": "I have saved some money, but not enough.",
+        "vi": "Tôi đã tiết kiệm ít tiền nhưng chưa đủ.",
+        "accept": [
+          "I have some savings, but not enough",
+          "I have saved a little, but it is not enough"
+        ]
+      },
+      {
+        "id": "advice-about-studying-abroad-b1.l6",
+        "en": "That is a great idea. How do I apply?",
+        "vi": "Ý rất hay. Tôi nộp đơn thế nào?",
+        "accept": [
+          "Good idea. How can I apply",
+          "That sounds great. How do I apply for one"
+        ]
+      },
+      {
+        "id": "advice-about-studying-abroad-b1.l7",
+        "en": "Thank you. I will check it tonight.",
+        "vi": "Cảm ơn. Tối nay tôi sẽ xem.",
+        "accept": [
+          "Thanks, I will look at it tonight",
+          "Thank you, I will read it tonight"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Please sit down. What can I do for you?",
+        "npc_vi": "Mời ngồi. Tôi giúp gì được bạn?",
+        "replies": [
+          {
+            "lineId": "advice-about-studying-abroad-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Interesting. Which country do you prefer?",
+        "npc_vi": "Thú vị. Bạn thích nước nào hơn?",
+        "replies": [
+          {
+            "lineId": "advice-about-studying-abroad-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "advice-about-studying-abroad-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Have you looked at the English test requirements?",
+        "npc_vi": "Bạn đã xem yêu cầu thi tiếng Anh chưa?",
+        "replies": [
+          {
+            "lineId": "advice-about-studying-abroad-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Usually six point five. Do you have a budget?",
+        "npc_vi": "Thường là sáu phẩy năm. Bạn có ngân sách không?",
+        "replies": [
+          {
+            "lineId": "advice-about-studying-abroad-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Then you should apply for a scholarship.",
+        "npc_vi": "Vậy bạn nên xin học bổng.",
+        "replies": [
+          {
+            "lineId": "advice-about-studying-abroad-b1.l6",
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "npc_en": "Start with this website. The deadline is in March.",
+        "npc_vi": "Bắt đầu với trang web này. Hạn là tháng Ba.",
+        "replies": [
+          {
+            "lineId": "advice-about-studying-abroad-b1.l7",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "correcting-a-report-mistake-b1",
+    "group": "work",
+    "title_vi": "Sửa lỗi trong báo cáo",
+    "title_en": "Correcting a report mistake",
+    "cefr": "B1",
+    "goal_vi": "Nhận lỗi trong báo cáo, sửa nhanh và hứa cẩn thận hơn.",
+    "partner_vi": "Quản lý",
+    "partner_emoji": "🧮",
+    "lines": [
+      {
+        "id": "correcting-a-report-mistake-b1.l1",
+        "en": "Really? Could you show me where?",
+        "vi": "Thật sao? Anh chỉ giúp tôi chỗ nào?",
+        "accept": [
+          "Oh no. Can you show me where",
+          "Really? Where exactly is it"
+        ]
+      },
+      {
+        "id": "correcting-a-report-mistake-b1.l2",
+        "en": "I am sorry, I must have typed it wrongly.",
+        "vi": "Xin lỗi, chắc tôi gõ nhầm.",
+        "accept": [
+          "Sorry, I must have made a typing mistake",
+          "I apologize, I must have typed it wrong"
+        ],
+        "note": "must have + V3 = chắc hẳn đã."
+      },
+      {
+        "id": "correcting-a-report-mistake-b1.l3",
+        "en": "I copied the number from an old file.",
+        "vi": "Tôi chép số từ một file cũ.",
+        "accept": [
+          "I used an old file for that number",
+          "The number came from an old file"
+        ]
+      },
+      {
+        "id": "correcting-a-report-mistake-b1.l4",
+        "en": "Yes, I can correct it in ten minutes.",
+        "vi": "Được, tôi sửa trong mười phút.",
+        "accept": [
+          "Yes, I can fix it in ten minutes",
+          "Sure, it will take me ten minutes"
+        ]
+      },
+      {
+        "id": "correcting-a-report-mistake-b1.l5",
+        "en": "I will check every number before sending.",
+        "vi": "Tôi sẽ kiểm tra từng số trước khi gửi.",
+        "accept": [
+          "Next time I will check all numbers before sending",
+          "Before sending, I will check every number"
+        ]
+      },
+      {
+        "id": "correcting-a-report-mistake-b1.l6",
+        "en": "Understood. I will send it to you first.",
+        "vi": "Tôi hiểu. Tôi sẽ gửi cho anh trước.",
+        "accept": [
+          "Sure, you will get it first",
+          "Understood, I will send you the new file first"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "I found a mistake in the sales report.",
+        "npc_vi": "Tôi thấy một lỗi trong báo cáo doanh số.",
+        "replies": [
+          {
+            "lineId": "correcting-a-report-mistake-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "The total for March is wrong. It should be higher.",
+        "npc_vi": "Tổng tháng Ba sai. Đáng ra phải cao hơn.",
+        "replies": [
+          {
+            "lineId": "correcting-a-report-mistake-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "correcting-a-report-mistake-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "The director needs it today. Can you fix it quickly?",
+        "npc_vi": "Giám đốc cần hôm nay. Bạn sửa nhanh được không?",
+        "replies": [
+          {
+            "lineId": "correcting-a-report-mistake-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Good. How will you avoid this next time?",
+        "npc_vi": "Tốt. Lần sau bạn tránh thế nào?",
+        "replies": [
+          {
+            "lineId": "correcting-a-report-mistake-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Good. Please send the new version to me first.",
+        "npc_vi": "Tốt. Hãy gửi bản mới cho tôi trước.",
+        "replies": [
+          {
+            "lineId": "correcting-a-report-mistake-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "organizing-a-farewell-party-b1",
+    "group": "work",
+    "title_vi": "Tổ chức tiệc chia tay",
+    "title_en": "Organizing a farewell party",
+    "cefr": "B1",
+    "goal_vi": "Bàn với đồng nghiệp về thời gian, địa điểm và chi phí tiệc chia tay.",
+    "partner_vi": "Đồng nghiệp",
+    "partner_emoji": "🎂",
+    "lines": [
+      {
+        "id": "organizing-a-farewell-party-b1.l1",
+        "en": "Yes, she has helped us so much.",
+        "vi": "Có, chị ấy đã giúp chúng ta rất nhiều.",
+        "accept": [
+          "Yes, she has done so much for us",
+          "Definitely, she has helped us a lot"
+        ]
+      },
+      {
+        "id": "organizing-a-farewell-party-b1.l2",
+        "en": "After work is better because everyone can come.",
+        "vi": "Sau giờ làm tốt hơn vì ai cũng đến được.",
+        "accept": [
+          "After work, because everyone can come",
+          "I prefer after work so everyone can come"
+        ]
+      },
+      {
+        "id": "organizing-a-farewell-party-b1.l3",
+        "en": "Lunch is easier, although it is shorter.",
+        "vi": "Bữa trưa dễ hơn, dù ngắn hơn.",
+        "accept": [
+          "Lunch is easier, but it is shorter",
+          "I think lunch is simpler, though it is shorter"
+        ]
+      },
+      {
+        "id": "organizing-a-farewell-party-b1.l4",
+        "en": "The office is cheaper, so let's stay here.",
+        "vi": "Văn phòng rẻ hơn nên mình ở lại đây.",
+        "accept": [
+          "The office is cheaper, so we should stay here",
+          "Let's stay in the office because it is cheaper"
+        ]
+      },
+      {
+        "id": "organizing-a-farewell-party-b1.l5",
+        "en": "A restaurant would be more special for her.",
+        "vi": "Nhà hàng sẽ đặc biệt hơn với chị ấy.",
+        "accept": [
+          "I think a restaurant is more special for her",
+          "A restaurant would feel more special for her"
+        ],
+        "note": "more special: so sánh hơn với tính từ dài."
+      },
+      {
+        "id": "organizing-a-farewell-party-b1.l6",
+        "en": "Maybe fifty thousand dong each would be enough.",
+        "vi": "Có lẽ mỗi người năm mươi nghìn là đủ.",
+        "accept": [
+          "Fifty thousand dong each should be enough",
+          "I think fifty thousand dong each is enough"
+        ]
+      },
+      {
+        "id": "organizing-a-farewell-party-b1.l7",
+        "en": "Sure, I will buy them tomorrow.",
+        "vi": "Được, mai tôi sẽ mua.",
+        "accept": [
+          "Of course, I will get them tomorrow",
+          "Okay, I will buy them tomorrow"
+        ]
+      },
+      {
+        "id": "organizing-a-farewell-party-b1.l8",
+        "en": "Perfect. She is going to be so surprised.",
+        "vi": "Tuyệt. Chị ấy sẽ rất bất ngờ.",
+        "accept": [
+          "Great, she will be so surprised",
+          "Perfect. I hope she will be surprised"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Linh is leaving next week. Should we organize a farewell party?",
+        "npc_vi": "Tuần sau Linh nghỉ việc. Mình tổ chức tiệc chia tay nhé?",
+        "replies": [
+          {
+            "lineId": "organizing-a-farewell-party-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Agreed. Should we do it at lunch or after work?",
+        "npc_vi": "Đồng ý. Làm bữa trưa hay sau giờ làm?",
+        "replies": [
+          {
+            "lineId": "organizing-a-farewell-party-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "organizing-a-farewell-party-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Okay. Where? A restaurant or the office?",
+        "npc_vi": "Được. Ở đâu? Nhà hàng hay văn phòng?",
+        "replies": [
+          {
+            "lineId": "organizing-a-farewell-party-b1.l4",
+            "next": "n4"
+          },
+          {
+            "lineId": "organizing-a-farewell-party-b1.l5",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Good point. How much should each person pay?",
+        "npc_vi": "Ý đúng. Mỗi người nên góp bao nhiêu?",
+        "replies": [
+          {
+            "lineId": "organizing-a-farewell-party-b1.l6",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Fine. Can you buy a card and a small gift?",
+        "npc_vi": "Được. Bạn mua thiệp và quà nhỏ nhé?",
+        "replies": [
+          {
+            "lineId": "organizing-a-farewell-party-b1.l7",
+            "next": "n6"
+          }
+        ]
+      },
+      {
+        "id": "n6",
+        "npc_en": "Great. I will collect the money and set everything up.",
+        "npc_vi": "Tuyệt. Tôi sẽ thu tiền và chuẩn bị mọi thứ.",
+        "replies": [
+          {
+            "lineId": "organizing-a-farewell-party-b1.l8",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "asking-for-a-reference-letter-b1",
+    "group": "work",
+    "title_vi": "Nhờ thầy viết thư giới thiệu",
+    "title_en": "Asking for a reference letter",
+    "cefr": "B1",
+    "goal_vi": "Nhờ giáo viên viết thư giới thiệu cho đơn xin học bổng.",
+    "partner_vi": "Giáo viên cũ",
+    "partner_emoji": "📝",
+    "lines": [
+      {
+        "id": "asking-for-a-reference-letter-b1.l1",
+        "en": "I am applying for a scholarship abroad.",
+        "vi": "Em đang nộp đơn xin học bổng nước ngoài.",
+        "accept": [
+          "I am applying for a scholarship overseas",
+          "I want to apply for a scholarship abroad"
+        ]
+      },
+      {
+        "id": "asking-for-a-reference-letter-b1.l2",
+        "en": "Could you write a reference letter for me?",
+        "vi": "Thầy viết thư giới thiệu cho em được không?",
+        "accept": [
+          "Would you write a reference letter for me",
+          "Can you write me a reference letter"
+        ],
+        "note": "reference letter = thư giới thiệu."
+      },
+      {
+        "id": "asking-for-a-reference-letter-b1.l3",
+        "en": "It is due on the fifteenth of May.",
+        "vi": "Hạn là ngày mười lăm tháng Năm.",
+        "accept": [
+          "The deadline is the fifteenth of May",
+          "It must be sent by the fifteenth of May"
+        ]
+      },
+      {
+        "id": "asking-for-a-reference-letter-b1.l4",
+        "en": "Please mention my group project and volunteer work.",
+        "vi": "Thầy nhắc đến dự án nhóm và hoạt động tình nguyện của em.",
+        "accept": [
+          "Could you mention my group project and volunteer work",
+          "Please talk about my volunteer work and group project"
+        ]
+      },
+      {
+        "id": "asking-for-a-reference-letter-b1.l5",
+        "en": "Please say that I work hard.",
+        "vi": "Thầy ghi là em làm việc chăm chỉ.",
+        "accept": [
+          "Please mention that I am hardworking",
+          "Could you say I am a hard worker"
+        ]
+      },
+      {
+        "id": "asking-for-a-reference-letter-b1.l6",
+        "en": "I will email it to you today.",
+        "vi": "Hôm nay em sẽ gửi email cho thầy.",
+        "accept": [
+          "I will send it to you by email today",
+          "Today I will email it to you"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Hi there. How can I help you?",
+        "npc_vi": "Chào em. Thầy giúp gì được?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-reference-letter-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "That is exciting. What do you need from me?",
+        "npc_vi": "Thú vị đấy. Em cần gì ở thầy?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-reference-letter-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I would be happy to. When is the deadline?",
+        "npc_vi": "Thầy rất sẵn lòng. Hạn là khi nào?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-reference-letter-b1.l3",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "That is fine. Is there anything special I should mention?",
+        "npc_vi": "Được. Có gì đặc biệt thầy nên nhắc không?",
+        "replies": [
+          {
+            "lineId": "asking-for-a-reference-letter-b1.l4",
+            "next": "n5"
+          },
+          {
+            "lineId": "asking-for-a-reference-letter-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "I will. Send me your resume and I will start.",
+        "npc_vi": "Được. Gửi thầy hồ sơ rồi thầy sẽ bắt đầu.",
+        "replies": [
+          {
+            "lineId": "asking-for-a-reference-letter-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "requesting-a-new-office-chair-b1",
+    "group": "work",
+    "title_vi": "Xin đổi ghế văn phòng",
+    "title_en": "Requesting a new office chair",
+    "cefr": "B1",
+    "goal_vi": "Báo ghế hỏng và xin đổi ghế mới cho bộ phận hành chính.",
+    "partner_vi": "Nhân viên hành chính",
+    "partner_emoji": "🪑",
+    "lines": [
+      {
+        "id": "requesting-a-new-office-chair-b1.l1",
+        "en": "My office chair is broken and uncomfortable.",
+        "vi": "Ghế văn phòng của tôi hỏng và khó chịu.",
+        "accept": [
+          "My chair is broken and uncomfortable",
+          "My office chair is broken and not comfortable"
+        ]
+      },
+      {
+        "id": "requesting-a-new-office-chair-b1.l2",
+        "en": "It has been broken for about two weeks.",
+        "vi": "Nó hỏng khoảng hai tuần rồi.",
+        "accept": [
+          "It has been broken for around two weeks",
+          "It broke about two weeks ago"
+        ],
+        "note": "for + khoảng thời gian dùng với present perfect."
+      },
+      {
+        "id": "requesting-a-new-office-chair-b1.l3",
+        "en": "Yes, my back hurts if I sit long.",
+        "vi": "Có, lưng tôi đau nếu ngồi lâu.",
+        "accept": [
+          "Yes, my back hurts when I sit for long",
+          "Yes, I get back pain if I sit long"
+        ]
+      },
+      {
+        "id": "requesting-a-new-office-chair-b1.l4",
+        "en": "Not really, but it is not safe.",
+        "vi": "Không hẳn, nhưng nó không an toàn.",
+        "accept": [
+          "Not really, but I do not feel safe",
+          "No, although it is not safe"
+        ]
+      },
+      {
+        "id": "requesting-a-new-office-chair-b1.l5",
+        "en": "Yes, please. When can I get it?",
+        "vi": "Vâng. Khi nào tôi nhận được?",
+        "accept": [
+          "Yes, please. When can I have it",
+          "Yes, I would love that. When can I have it"
+        ]
+      },
+      {
+        "id": "requesting-a-new-office-chair-b1.l6",
+        "en": "No problem. I will sign it now.",
+        "vi": "Không sao. Tôi ký ngay bây giờ.",
+        "accept": [
+          "Sure, I will sign it now",
+          "Okay, I will sign the form now"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Facilities office. What can I do for you?",
+        "npc_vi": "Phòng hành chính đây. Tôi giúp gì được?",
+        "replies": [
+          {
+            "lineId": "requesting-a-new-office-chair-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Oh dear. How long has it been broken?",
+        "npc_vi": "Ôi. Nó hỏng bao lâu rồi?",
+        "replies": [
+          {
+            "lineId": "requesting-a-new-office-chair-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Has it caused any problems for you?",
+        "npc_vi": "Nó có gây vấn đề gì cho bạn không?",
+        "replies": [
+          {
+            "lineId": "requesting-a-new-office-chair-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "requesting-a-new-office-chair-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "We have a better model. Would you like to try it?",
+        "npc_vi": "Chúng tôi có mẫu tốt hơn. Bạn muốn thử không?",
+        "replies": [
+          {
+            "lineId": "requesting-a-new-office-chair-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Tomorrow morning. Please sign this request form first.",
+        "npc_vi": "Sáng mai. Trước tiên hãy ký đơn yêu cầu này.",
+        "replies": [
+          {
+            "lineId": "requesting-a-new-office-chair-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "complaining-about-cold-soup-b1",
+    "group": "daily",
+    "title_vi": "Phàn nàn món súp bị nguội",
+    "title_en": "Complaining about cold soup",
+    "cefr": "B1",
+    "goal_vi": "Phàn nàn lịch sự về món ăn nguội trong nhà hàng.",
+    "partner_vi": "Phục vụ nhà hàng",
+    "partner_emoji": "🍝",
+    "lines": [
+      {
+        "id": "complaining-about-cold-soup-b1.l1",
+        "en": "Actually, my soup is quite cold.",
+        "vi": "Thật ra súp của tôi khá nguội.",
+        "accept": [
+          "Actually my soup is rather cold",
+          "To be honest, my soup is quite cold"
+        ],
+        "note": "Actually mở đầu lời phàn nàn nhẹ nhàng."
+      },
+      {
+        "id": "complaining-about-cold-soup-b1.l2",
+        "en": "Could you bring me a hot one?",
+        "vi": "Bạn mang cho tôi một phần nóng được không?",
+        "accept": [
+          "Could you bring me a hot bowl",
+          "Can you bring me a hot one"
+        ]
+      },
+      {
+        "id": "complaining-about-cold-soup-b1.l3",
+        "en": "I would like my money back.",
+        "vi": "Tôi muốn được hoàn tiền.",
+        "accept": [
+          "I want a refund",
+          "I would like a refund"
+        ]
+      },
+      {
+        "id": "complaining-about-cold-soup-b1.l4",
+        "en": "That is kind, but I am full.",
+        "vi": "Bạn tốt quá, nhưng tôi no rồi.",
+        "accept": [
+          "That is kind of you, but I am full",
+          "Thanks, but I am already full"
+        ]
+      },
+      {
+        "id": "complaining-about-cold-soup-b1.l5",
+        "en": "Yes, that would make up for it.",
+        "vi": "Vâng, vậy cũng đền bù được.",
+        "accept": [
+          "Yes, that would be nice",
+          "Yes, that sounds fair"
+        ],
+        "note": "make up for: bù đắp cho điều gì."
+      },
+      {
+        "id": "complaining-about-cold-soup-b1.l6",
+        "en": "Thanks, you have been very helpful.",
+        "vi": "Cảm ơn, bạn đã giúp tôi rất nhiều.",
+        "accept": [
+          "Thank you, you have been really helpful",
+          "Thanks for your help"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Good evening. Is everything all right with your meal?",
+        "npc_vi": "Chào buổi tối. Bữa ăn của bạn ổn chứ?",
+        "replies": [
+          {
+            "lineId": "complaining-about-cold-soup-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "I am sorry about that. What would you like me to do?",
+        "npc_vi": "Tôi xin lỗi. Bạn muốn tôi làm gì?",
+        "replies": [
+          {
+            "lineId": "complaining-about-cold-soup-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "complaining-about-cold-soup-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Of course. Can I offer you a free dessert too?",
+        "npc_vi": "Tất nhiên. Tôi tặng thêm món tráng miệng nhé?",
+        "replies": [
+          {
+            "lineId": "complaining-about-cold-soup-b1.l4",
+            "next": "n4"
+          },
+          {
+            "lineId": "complaining-about-cold-soup-b1.l5",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Thank you for telling me. Enjoy the rest of your evening.",
+        "npc_vi": "Cảm ơn bạn đã nói. Chúc bạn buổi tối vui vẻ.",
+        "replies": [
+          {
+            "lineId": "complaining-about-cold-soup-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "returning-a-faulty-blender-b1",
+    "group": "daily",
+    "title_vi": "Trả lại máy xay bị hỏng",
+    "title_en": "Returning a faulty blender",
+    "cefr": "B1",
+    "goal_vi": "Trả lại một món đồ điện bị lỗi và chọn cách xử lý.",
+    "partner_vi": "Nhân viên cửa hàng",
+    "partner_emoji": "🛒",
+    "lines": [
+      {
+        "id": "returning-a-faulty-blender-b1.l1",
+        "en": "I would like to return this blender.",
+        "vi": "Tôi muốn trả lại máy xay này.",
+        "accept": [
+          "I want to return this blender",
+          "I need to return this blender"
+        ]
+      },
+      {
+        "id": "returning-a-faulty-blender-b1.l2",
+        "en": "It stopped working after only three days.",
+        "vi": "Nó hỏng chỉ sau ba ngày.",
+        "accept": [
+          "It broke after just three days",
+          "It stopped working after three days"
+        ]
+      },
+      {
+        "id": "returning-a-faulty-blender-b1.l3",
+        "en": "It makes a terrible noise and smells burnt.",
+        "vi": "Nó kêu rất to và có mùi khét.",
+        "accept": [
+          "It is very noisy and smells burnt",
+          "It makes a horrible noise and smells burnt"
+        ]
+      },
+      {
+        "id": "returning-a-faulty-blender-b1.l4",
+        "en": "Yes, I have it right here.",
+        "vi": "Vâng, tôi có ngay đây.",
+        "accept": [
+          "Yes, here it is",
+          "Yes, I have it with me"
+        ]
+      },
+      {
+        "id": "returning-a-faulty-blender-b1.l5",
+        "en": "No, but I paid by card.",
+        "vi": "Không, nhưng tôi trả bằng thẻ.",
+        "accept": [
+          "No, but I paid with my card",
+          "I do not have it, but I paid by card"
+        ]
+      },
+      {
+        "id": "returning-a-faulty-blender-b1.l6",
+        "en": "I would prefer a new one, please.",
+        "vi": "Tôi muốn đổi cái mới.",
+        "accept": [
+          "I would rather have a new one",
+          "A new one would be better, please"
+        ],
+        "note": "would prefer / would rather: muốn hơn."
+      },
+      {
+        "id": "returning-a-faulty-blender-b1.l7",
+        "en": "A refund, because I do not trust it.",
+        "vi": "Hoàn tiền, vì tôi không tin nó nữa.",
+        "accept": [
+          "I want a refund because I do not trust it",
+          "A refund, please, because I do not trust it"
+        ]
+      },
+      {
+        "id": "returning-a-faulty-blender-b1.l8",
+        "en": "That is fine, I will wait here.",
+        "vi": "Được thôi, tôi sẽ đợi ở đây.",
+        "accept": [
+          "That is okay, I will wait here",
+          "No problem, I will wait here"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Hello. How can I help you today?",
+        "npc_vi": "Xin chào. Tôi giúp gì được cho bạn?",
+        "replies": [
+          {
+            "lineId": "returning-a-faulty-blender-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Of course. What seems to be the problem?",
+        "npc_vi": "Được ạ. Vấn đề là gì vậy?",
+        "replies": [
+          {
+            "lineId": "returning-a-faulty-blender-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "returning-a-faulty-blender-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I see. Do you have the receipt with you?",
+        "npc_vi": "Tôi hiểu. Bạn có mang hóa đơn không?",
+        "replies": [
+          {
+            "lineId": "returning-a-faulty-blender-b1.l4",
+            "next": "n4"
+          },
+          {
+            "lineId": "returning-a-faulty-blender-b1.l5",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Fine. Would you prefer a refund or a new one?",
+        "npc_vi": "Được. Bạn muốn hoàn tiền hay đổi cái mới?",
+        "replies": [
+          {
+            "lineId": "returning-a-faulty-blender-b1.l6",
+            "next": "n5"
+          },
+          {
+            "lineId": "returning-a-faulty-blender-b1.l7",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "All right. It will take about ten minutes.",
+        "npc_vi": "Vâng. Sẽ mất khoảng mười phút.",
+        "replies": [
+          {
+            "lineId": "returning-a-faulty-blender-b1.l8",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "exchanging-shoes-wrong-size-b1",
+    "group": "daily",
+    "title_vi": "Đổi giày vì sai cỡ",
+    "title_en": "Exchanging shoes in the wrong size",
+    "cefr": "B1",
+    "goal_vi": "Đổi đôi giày đã mua vì không vừa cỡ.",
+    "partner_vi": "Nhân viên bán giày",
+    "partner_emoji": "👟",
+    "lines": [
+      {
+        "id": "exchanging-shoes-wrong-size-b1.l1",
+        "en": "They are too small for me.",
+        "vi": "Chúng quá nhỏ với tôi.",
+        "accept": [
+          "They are too tight for me",
+          "They do not fit me, they are too small"
+        ]
+      },
+      {
+        "id": "exchanging-shoes-wrong-size-b1.l2",
+        "en": "I bought size forty but need forty one.",
+        "vi": "Tôi mua cỡ bốn mươi nhưng cần cỡ bốn mươi mốt.",
+        "accept": [
+          "I bought size forty, but I need size forty one",
+          "I got size forty, but I need forty one"
+        ]
+      },
+      {
+        "id": "exchanging-shoes-wrong-size-b1.l3",
+        "en": "Blue is fine if the price is the same.",
+        "vi": "Màu xanh cũng được nếu giá như nhau.",
+        "accept": [
+          "Blue is okay if it costs the same",
+          "I can take blue if the price is the same"
+        ],
+        "note": "if + hiện tại đơn để nêu điều kiện."
+      },
+      {
+        "id": "exchanging-shoes-wrong-size-b1.l4",
+        "en": "Oh no, could you order black for me?",
+        "vi": "Ôi không, bạn đặt màu đen cho tôi được không?",
+        "accept": [
+          "Oh no, can you order black for me",
+          "Oh dear, could you order the black ones for me"
+        ]
+      },
+      {
+        "id": "exchanging-shoes-wrong-size-b1.l5",
+        "en": "Thank you, I really appreciate your help.",
+        "vi": "Cảm ơn, tôi rất cảm kích sự giúp đỡ của bạn.",
+        "accept": [
+          "Thanks, I really appreciate your help",
+          "Thank you so much for your help"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Welcome back! Is there a problem with those shoes?",
+        "npc_vi": "Chào mừng quay lại! Đôi giày có vấn đề gì sao?",
+        "replies": [
+          {
+            "lineId": "exchanging-shoes-wrong-size-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "I see. What size did you buy, and what do you need?",
+        "npc_vi": "Tôi hiểu. Bạn mua cỡ nào và cần cỡ nào?",
+        "replies": [
+          {
+            "lineId": "exchanging-shoes-wrong-size-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Let me check. We have that size in blue, but not black.",
+        "npc_vi": "Để tôi kiểm tra. Cỡ đó có màu xanh nhưng không có màu đen.",
+        "replies": [
+          {
+            "lineId": "exchanging-shoes-wrong-size-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "exchanging-shoes-wrong-size-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "I will see what I can do. Please wait a moment.",
+        "npc_vi": "Tôi sẽ xem có thể làm gì. Xin chờ một chút.",
+        "replies": [
+          {
+            "lineId": "exchanging-shoes-wrong-size-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "flight-delayed-at-the-airport-b1",
+    "group": "daily",
+    "title_vi": "Chuyến bay bị hoãn",
+    "title_en": "A delayed flight",
+    "cefr": "B1",
+    "goal_vi": "Hỏi nhân viên sân bay khi chuyến bay bị hoãn.",
+    "partner_vi": "Nhân viên hãng bay",
+    "partner_emoji": "✈️",
+    "lines": [
+      {
+        "id": "flight-delayed-at-the-airport-b1.l1",
+        "en": "Oh no, how long is the delay?",
+        "vi": "Ôi không, hoãn bao lâu vậy?",
+        "accept": [
+          "Oh no, how long will the delay be",
+          "Oh no, how long is it delayed"
+        ]
+      },
+      {
+        "id": "flight-delayed-at-the-airport-b1.l2",
+        "en": "That is a long time. Will I miss my connection?",
+        "vi": "Lâu quá. Tôi có lỡ chuyến nối không?",
+        "accept": [
+          "That is a long time. Am I going to miss my connection",
+          "That is long. Will I miss my connecting flight"
+        ],
+        "note": "connection: chuyến bay nối chuyến."
+      },
+      {
+        "id": "flight-delayed-at-the-airport-b1.l3",
+        "en": "Yes please, I need to arrive tonight.",
+        "vi": "Vâng, tôi cần đến nơi trong tối nay.",
+        "accept": [
+          "Yes please, I have to arrive tonight",
+          "Yes, please, I must arrive tonight"
+        ]
+      },
+      {
+        "id": "flight-delayed-at-the-airport-b1.l4",
+        "en": "Is there any way to get an earlier one?",
+        "vi": "Có cách nào đi chuyến sớm hơn không?",
+        "accept": [
+          "Is it possible to get an earlier flight",
+          "Could I get an earlier one"
+        ]
+      },
+      {
+        "id": "flight-delayed-at-the-airport-b1.l5",
+        "en": "Thank you, I will wait over there.",
+        "vi": "Cảm ơn, tôi sẽ đợi ở đằng kia.",
+        "accept": [
+          "Thanks, I will wait over there",
+          "Thank you, I will wait by the window"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Good morning. Your flight to Paris has been delayed.",
+        "npc_vi": "Chào buổi sáng. Chuyến bay đi Paris của bạn bị hoãn.",
+        "replies": [
+          {
+            "lineId": "flight-delayed-at-the-airport-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "About three hours, because of bad weather.",
+        "npc_vi": "Khoảng ba tiếng, vì thời tiết xấu.",
+        "replies": [
+          {
+            "lineId": "flight-delayed-at-the-airport-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Yes, probably. We can book you on a later flight.",
+        "npc_vi": "Có thể. Chúng tôi đặt cho bạn chuyến muộn hơn nhé.",
+        "replies": [
+          {
+            "lineId": "flight-delayed-at-the-airport-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "flight-delayed-at-the-airport-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "I will check what is available. Please wait here.",
+        "npc_vi": "Tôi sẽ xem còn chuyến nào. Xin đợi ở đây.",
+        "replies": [
+          {
+            "lineId": "flight-delayed-at-the-airport-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "reporting-lost-luggage-b1",
+    "group": "daily",
+    "title_vi": "Báo mất hành lý",
+    "title_en": "Reporting lost luggage",
+    "cefr": "B1",
+    "goal_vi": "Báo mất vali và để lại thông tin liên lạc.",
+    "partner_vi": "Nhân viên quầy hành lý",
+    "partner_emoji": "🧳",
+    "lines": [
+      {
+        "id": "reporting-lost-luggage-b1.l1",
+        "en": "My suitcase did not arrive on the carousel.",
+        "vi": "Vali của tôi không ra băng chuyền.",
+        "accept": [
+          "My suitcase never came out on the carousel",
+          "My bag did not arrive on the carousel"
+        ],
+        "note": "carousel: băng chuyền hành lý."
+      },
+      {
+        "id": "reporting-lost-luggage-b1.l2",
+        "en": "It is large, red, and has a yellow ribbon.",
+        "vi": "Nó to, màu đỏ và có dải ruy băng vàng.",
+        "accept": [
+          "It is big and red with a yellow ribbon",
+          "It is a large red one with a yellow ribbon"
+        ]
+      },
+      {
+        "id": "reporting-lost-luggage-b1.l3",
+        "en": "Please send it to my hotel downtown.",
+        "vi": "Hãy gửi nó đến khách sạn của tôi ở trung tâm.",
+        "accept": [
+          "Please deliver it to my hotel downtown",
+          "Could you send it to my hotel downtown"
+        ]
+      },
+      {
+        "id": "reporting-lost-luggage-b1.l4",
+        "en": "You can deliver it to my friend's house.",
+        "vi": "Bạn có thể giao đến nhà bạn tôi.",
+        "accept": [
+          "Please send it to my friend's house",
+          "You can send it to my friend's house"
+        ]
+      },
+      {
+        "id": "reporting-lost-luggage-b1.l5",
+        "en": "Sure, let me write it down here.",
+        "vi": "Được, để tôi viết ra đây.",
+        "accept": [
+          "Of course, let me write it here",
+          "Sure, I will write it down here"
+        ]
+      },
+      {
+        "id": "reporting-lost-luggage-b1.l6",
+        "en": "Thank you, I hope it comes soon.",
+        "vi": "Cảm ơn, tôi hy vọng nó sớm về.",
+        "accept": [
+          "Thanks, I hope it arrives soon",
+          "Thank you, I hope you find it soon"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Hello. How can I help you?",
+        "npc_vi": "Xin chào. Tôi giúp gì được bạn?",
+        "replies": [
+          {
+            "lineId": "reporting-lost-luggage-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "I am sorry. What does your suitcase look like?",
+        "npc_vi": "Tôi xin lỗi. Vali của bạn trông thế nào?",
+        "replies": [
+          {
+            "lineId": "reporting-lost-luggage-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Thank you. Where can we send it when we find it?",
+        "npc_vi": "Cảm ơn. Khi tìm thấy, chúng tôi gửi đến đâu?",
+        "replies": [
+          {
+            "lineId": "reporting-lost-luggage-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "reporting-lost-luggage-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Fine. Can I have your phone number too?",
+        "npc_vi": "Được. Cho tôi xin số điện thoại của bạn nữa nhé?",
+        "replies": [
+          {
+            "lineId": "reporting-lost-luggage-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "We will call you as soon as we have news.",
+        "npc_vi": "Chúng tôi sẽ gọi ngay khi có tin.",
+        "replies": [
+          {
+            "lineId": "reporting-lost-luggage-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wrong-hotel-booking-b1",
+    "group": "daily",
+    "title_vi": "Khách sạn đặt sai phòng",
+    "title_en": "A wrong hotel booking",
+    "cefr": "B1",
+    "goal_vi": "Giải quyết vấn đề khi khách sạn xếp sai loại phòng.",
+    "partner_vi": "Lễ tân khách sạn",
+    "partner_emoji": "🏨",
+    "lines": [
+      {
+        "id": "wrong-hotel-booking-b1.l1",
+        "en": "Yes, I booked a double room for two nights.",
+        "vi": "Có, tôi đã đặt phòng đôi hai đêm.",
+        "accept": [
+          "Yes, I reserved a double room for two nights",
+          "Yes, I have a double room booked for two nights"
+        ]
+      },
+      {
+        "id": "wrong-hotel-booking-b1.l2",
+        "en": "That is wrong, I booked a double room.",
+        "vi": "Sai rồi, tôi đã đặt phòng đôi.",
+        "accept": [
+          "That is a mistake, I booked a double room",
+          "That is not right, I booked a double room"
+        ]
+      },
+      {
+        "id": "wrong-hotel-booking-b1.l3",
+        "en": "Maybe there was a mistake on the website.",
+        "vi": "Có lẽ trang web đã nhầm.",
+        "accept": [
+          "Maybe the website made a mistake",
+          "Perhaps there was an error on the website"
+        ]
+      },
+      {
+        "id": "wrong-hotel-booking-b1.l4",
+        "en": "Could you find me another room, please?",
+        "vi": "Bạn tìm giúp tôi phòng khác được không?",
+        "accept": [
+          "Can you find me another room, please",
+          "Could you give me a different room, please"
+        ]
+      },
+      {
+        "id": "wrong-hotel-booking-b1.l5",
+        "en": "I will take it if you give a discount.",
+        "vi": "Tôi sẽ lấy nếu bạn giảm giá.",
+        "accept": [
+          "I will take it if you offer a discount",
+          "I will take it if there is a discount"
+        ],
+        "note": "if + hiện tại đơn, will + động từ."
+      },
+      {
+        "id": "wrong-hotel-booking-b1.l6",
+        "en": "Then I would like to cancel and go elsewhere.",
+        "vi": "Vậy tôi muốn hủy và đi chỗ khác.",
+        "accept": [
+          "Then I want to cancel and go somewhere else",
+          "In that case, I would like to cancel and go elsewhere"
+        ]
+      },
+      {
+        "id": "wrong-hotel-booking-b1.l7",
+        "en": "Okay, I will wait. Thank you for trying.",
+        "vi": "Được, tôi sẽ đợi. Cảm ơn bạn đã cố gắng.",
+        "accept": [
+          "Okay, I will wait. Thanks for trying",
+          "All right, I will wait. Thank you for your effort"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Good evening. Welcome. Do you have a reservation?",
+        "npc_vi": "Chào buổi tối. Bạn có đặt phòng chưa?",
+        "replies": [
+          {
+            "lineId": "wrong-hotel-booking-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "I only see a single room under your name.",
+        "npc_vi": "Tôi chỉ thấy một phòng đơn dưới tên bạn.",
+        "replies": [
+          {
+            "lineId": "wrong-hotel-booking-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "wrong-hotel-booking-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "I apologise. Unfortunately the hotel is almost full tonight.",
+        "npc_vi": "Tôi xin lỗi. Tiếc là tối nay khách sạn gần kín.",
+        "replies": [
+          {
+            "lineId": "wrong-hotel-booking-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "I have a suite, but it costs more.",
+        "npc_vi": "Tôi có phòng suite, nhưng giá cao hơn.",
+        "replies": [
+          {
+            "lineId": "wrong-hotel-booking-b1.l5",
+            "next": "n5"
+          },
+          {
+            "lineId": "wrong-hotel-booking-b1.l6",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Please let me speak to my manager first.",
+        "npc_vi": "Để tôi hỏi quản lý trước nhé.",
+        "replies": [
+          {
+            "lineId": "wrong-hotel-booking-b1.l7",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "doctor-visit-for-a-headache-b1",
+    "group": "daily",
+    "title_vi": "Đi khám vì đau đầu",
+    "title_en": "A doctor visit for a headache",
+    "cefr": "B1",
+    "goal_vi": "Mô tả triệu chứng đau đầu và nghe lời dặn của bác sĩ.",
+    "partner_vi": "Bác sĩ",
+    "partner_emoji": "🩺",
+    "lines": [
+      {
+        "id": "doctor-visit-for-a-headache-b1.l1",
+        "en": "I have had a headache for three days.",
+        "vi": "Tôi bị đau đầu ba ngày rồi.",
+        "accept": [
+          "I have had a headache for three days now",
+          "My head has hurt for three days"
+        ],
+        "note": "Present perfect với for + khoảng thời gian."
+      },
+      {
+        "id": "doctor-visit-for-a-headache-b1.l2",
+        "en": "It gets worse when I look at screens.",
+        "vi": "Nó nặng hơn khi tôi nhìn màn hình.",
+        "accept": [
+          "It is worse when I look at screens",
+          "It hurts more when I look at screens"
+        ]
+      },
+      {
+        "id": "doctor-visit-for-a-headache-b1.l3",
+        "en": "Nothing helps, even when I take pills.",
+        "vi": "Không gì giúp được, kể cả khi uống thuốc.",
+        "accept": [
+          "Nothing helps, even if I take pills",
+          "Nothing works, even when I take tablets"
+        ]
+      },
+      {
+        "id": "doctor-visit-for-a-headache-b1.l4",
+        "en": "Not well, because I have been stressed.",
+        "vi": "Không tốt, vì tôi bị căng thẳng.",
+        "accept": [
+          "Not very well, because I have been stressed",
+          "Badly, because I have been stressed"
+        ]
+      },
+      {
+        "id": "doctor-visit-for-a-headache-b1.l5",
+        "en": "I sleep fine, but I skip meals.",
+        "vi": "Tôi ngủ ổn, nhưng hay bỏ bữa.",
+        "accept": [
+          "I sleep well, but I often skip meals",
+          "My sleep is fine, but I skip meals"
+        ]
+      },
+      {
+        "id": "doctor-visit-for-a-headache-b1.l6",
+        "en": "Should I come back if it continues?",
+        "vi": "Tôi có nên quay lại nếu vẫn đau không?",
+        "accept": [
+          "Should I come back if it does not stop",
+          "Should I return if it continues"
+        ]
+      },
+      {
+        "id": "doctor-visit-for-a-headache-b1.l7",
+        "en": "Okay, I will do that. Thank you.",
+        "vi": "Được, tôi sẽ làm vậy. Cảm ơn bác sĩ.",
+        "accept": [
+          "All right, I will do that. Thanks",
+          "Okay, I will. Thank you, doctor"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Come in. What seems to be the problem?",
+        "npc_vi": "Mời vào. Bạn bị sao vậy?",
+        "replies": [
+          {
+            "lineId": "doctor-visit-for-a-headache-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Does anything make it better or worse?",
+        "npc_vi": "Có gì làm nó đỡ hơn hay nặng hơn không?",
+        "replies": [
+          {
+            "lineId": "doctor-visit-for-a-headache-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "doctor-visit-for-a-headache-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "How have you been sleeping and eating recently?",
+        "npc_vi": "Gần đây bạn ngủ và ăn thế nào?",
+        "replies": [
+          {
+            "lineId": "doctor-visit-for-a-headache-b1.l4",
+            "next": "n4"
+          },
+          {
+            "lineId": "doctor-visit-for-a-headache-b1.l5",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "I think you need rest and plenty of water.",
+        "npc_vi": "Tôi nghĩ bạn cần nghỉ ngơi và uống nhiều nước.",
+        "replies": [
+          {
+            "lineId": "doctor-visit-for-a-headache-b1.l6",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "Yes, come back next week if it does not improve.",
+        "npc_vi": "Có, tuần sau quay lại nếu chưa đỡ.",
+        "replies": [
+          {
+            "lineId": "doctor-visit-for-a-headache-b1.l7",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "buying-medicine-for-a-cold-b1",
+    "group": "daily",
+    "title_vi": "Mua thuốc cảm ở hiệu thuốc",
+    "title_en": "Buying medicine for a cold",
+    "cefr": "B1",
+    "goal_vi": "Kể triệu chứng cảm lạnh và hỏi cách dùng thuốc.",
+    "partner_vi": "Dược sĩ",
+    "partner_emoji": "💊",
+    "lines": [
+      {
+        "id": "buying-medicine-for-a-cold-b1.l1",
+        "en": "I have a sore throat and a cough.",
+        "vi": "Tôi bị đau họng và ho.",
+        "accept": [
+          "I have a sore throat and I am coughing",
+          "My throat hurts and I have a cough"
+        ]
+      },
+      {
+        "id": "buying-medicine-for-a-cold-b1.l2",
+        "en": "Since Monday, and now I feel tired too.",
+        "vi": "Từ thứ Hai, và giờ tôi còn thấy mệt.",
+        "accept": [
+          "Since Monday, and I feel tired now too",
+          "Since Monday, and now I am tired as well"
+        ]
+      },
+      {
+        "id": "buying-medicine-for-a-cold-b1.l3",
+        "en": "No, I do not have any allergies.",
+        "vi": "Không, tôi không bị dị ứng gì.",
+        "accept": [
+          "No, I am not allergic to anything",
+          "No, I have no allergies"
+        ]
+      },
+      {
+        "id": "buying-medicine-for-a-cold-b1.l4",
+        "en": "Yes, I am allergic to penicillin.",
+        "vi": "Có, tôi dị ứng penicillin.",
+        "accept": [
+          "Yes, I have an allergy to penicillin",
+          "Yes, penicillin makes me ill"
+        ],
+        "note": "be allergic to: dị ứng với."
+      },
+      {
+        "id": "buying-medicine-for-a-cold-b1.l5",
+        "en": "What should I do if it gets worse?",
+        "vi": "Tôi nên làm gì nếu bệnh nặng hơn?",
+        "accept": [
+          "What do I do if it gets worse",
+          "What should I do if I feel worse"
+        ]
+      },
+      {
+        "id": "buying-medicine-for-a-cold-b1.l6",
+        "en": "Okay, thanks for your advice.",
+        "vi": "Được, cảm ơn lời khuyên của bạn.",
+        "accept": [
+          "All right, thanks for your advice",
+          "Okay, thank you for the advice"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Hi there. What can I get for you?",
+        "npc_vi": "Chào bạn. Bạn cần mua gì?",
+        "replies": [
+          {
+            "lineId": "buying-medicine-for-a-cold-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "How long have you felt like this?",
+        "npc_vi": "Bạn bị như vậy bao lâu rồi?",
+        "replies": [
+          {
+            "lineId": "buying-medicine-for-a-cold-b1.l2",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Do you have any allergies to medicine?",
+        "npc_vi": "Bạn có dị ứng với thuốc nào không?",
+        "replies": [
+          {
+            "lineId": "buying-medicine-for-a-cold-b1.l3",
+            "next": "n4"
+          },
+          {
+            "lineId": "buying-medicine-for-a-cold-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "Thanks for telling me. These are safe. Take them twice a day.",
+        "npc_vi": "Cảm ơn bạn đã cho biết. Loại này an toàn. Uống hai lần mỗi ngày.",
+        "replies": [
+          {
+            "lineId": "buying-medicine-for-a-cold-b1.l5",
+            "next": "n5"
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "npc_en": "See a doctor if you get a fever.",
+        "npc_vi": "Hãy đi khám nếu bạn bị sốt.",
+        "replies": [
+          {
+            "lineId": "buying-medicine-for-a-cold-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "talking-about-a-mystery-novel-b1",
+    "group": "daily",
+    "title_vi": "Trò chuyện về một cuốn tiểu thuyết",
+    "title_en": "Talking about a mystery novel",
+    "cefr": "B1",
+    "goal_vi": "Nói về cuốn sách đang đọc và cho bạn mượn.",
+    "partner_vi": "Bạn cùng lớp",
+    "partner_emoji": "📚",
+    "lines": [
+      {
+        "id": "talking-about-a-mystery-novel-b1.l1",
+        "en": "A mystery novel that my sister recommended.",
+        "vi": "Một cuốn trinh thám chị tôi giới thiệu.",
+        "accept": [
+          "A mystery novel my sister recommended",
+          "A detective novel that my sister recommended"
+        ]
+      },
+      {
+        "id": "talking-about-a-mystery-novel-b1.l2",
+        "en": "Yes, it is more exciting than the last one.",
+        "vi": "Có, nó hấp dẫn hơn cuốn trước.",
+        "accept": [
+          "Yes, it is more exciting than the previous one",
+          "Yes, it is more interesting than the last one"
+        ],
+        "note": "So sánh hơn: more + tính từ dài."
+      },
+      {
+        "id": "talking-about-a-mystery-novel-b1.l3",
+        "en": "Not really, the plot is a little slow.",
+        "vi": "Không hẳn, cốt truyện hơi chậm.",
+        "accept": [
+          "Not really, the story is a bit slow",
+          "No, the plot is a bit slow"
+        ]
+      },
+      {
+        "id": "talking-about-a-mystery-novel-b1.l4",
+        "en": "The detective, because he is clever and funny.",
+        "vi": "Thám tử, vì anh ấy thông minh và hài hước.",
+        "accept": [
+          "The detective, because he is smart and funny",
+          "I like the detective because he is clever and funny"
+        ]
+      },
+      {
+        "id": "talking-about-a-mystery-novel-b1.l5",
+        "en": "Sure, I will lend it to you.",
+        "vi": "Chắc chắn, tôi sẽ cho bạn mượn.",
+        "accept": [
+          "Of course, I will lend it to you",
+          "Sure, you can borrow it"
+        ],
+        "note": "lend: cho mượn. borrow: mượn."
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "You look busy. What are you reading these days?",
+        "npc_vi": "Trông bạn bận nhỉ. Dạo này bạn đọc gì?",
+        "replies": [
+          {
+            "lineId": "talking-about-a-mystery-novel-b1.l1",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Sounds fun. Is it better than her last suggestion?",
+        "npc_vi": "Nghe hay đấy. Nó có hay hơn gợi ý trước của chị bạn không?",
+        "replies": [
+          {
+            "lineId": "talking-about-a-mystery-novel-b1.l2",
+            "next": "n3"
+          },
+          {
+            "lineId": "talking-about-a-mystery-novel-b1.l3",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Who is your favourite character so far?",
+        "npc_vi": "Đến giờ bạn thích nhân vật nào nhất?",
+        "replies": [
+          {
+            "lineId": "talking-about-a-mystery-novel-b1.l4",
+            "next": "n4"
+          }
+        ]
+      },
+      {
+        "id": "n4",
+        "npc_en": "I might borrow it when you have finished.",
+        "npc_vi": "Tôi có thể mượn khi bạn đọc xong.",
+        "replies": [
+          {
+            "lineId": "talking-about-a-mystery-novel-b1.l5",
+            "next": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "discussing-a-bus-lane-in-the-news-b1",
+    "group": "daily",
+    "title_vi": "Bàn tin tức về làn xe buýt",
+    "title_en": "Discussing a news story about bus lanes",
+    "cefr": "B1",
+    "goal_vi": "Nêu ý kiến về một tin tức giao thông trong thành phố.",
+    "partner_vi": "Đồng nghiệp cũ",
+    "partner_emoji": "📰",
+    "lines": [
+      {
+        "id": "discussing-a-bus-lane-in-the-news-b1.l1",
+        "en": "Yes, I have. I think it is a good idea.",
+        "vi": "Có, tôi đọc rồi. Tôi nghĩ đó là ý hay.",
+        "accept": [
+          "Yes, I have, and I think it is a good idea",
+          "Yes, I read it. I think it is a good idea"
+        ]
+      },
+      {
+        "id": "discussing-a-bus-lane-in-the-news-b1.l2",
+        "en": "Yes, but I am worried about traffic.",
+        "vi": "Có, nhưng tôi lo về giao thông.",
+        "accept": [
+          "Yes, but traffic worries me",
+          "Yes, but I am concerned about the traffic"
+        ]
+      },
+      {
+        "id": "discussing-a-bus-lane-in-the-news-b1.l3",
+        "en": "Fewer cars, so the air will be cleaner.",
+        "vi": "Ít xe hơn nên không khí sẽ sạch hơn.",
+        "accept": [
+          "There will be fewer cars, so the air will be cleaner",
+          "Fewer cars means cleaner air"
+        ],
+        "note": "fewer + danh từ đếm được."
+      },
+      {
+        "id": "discussing-a-bus-lane-in-the-news-b1.l4",
+        "en": "Traffic may get worse if cars have less space.",
+        "vi": "Giao thông có thể tệ hơn nếu xe có ít chỗ hơn.",
+        "accept": [
+          "Traffic could get worse if cars have less space",
+          "Traffic might be worse if cars have less room"
+        ]
+      },
+      {
+        "id": "discussing-a-bus-lane-in-the-news-b1.l5",
+        "en": "If it is faster, I probably would.",
+        "vi": "Nếu nhanh hơn thì chắc tôi sẽ đi.",
+        "accept": [
+          "If it is quicker, I probably would",
+          "If it is faster, I would probably use it"
+        ]
+      },
+      {
+        "id": "discussing-a-bus-lane-in-the-news-b1.l6",
+        "en": "I would, but only if tickets stay cheap.",
+        "vi": "Tôi sẽ đi, nhưng chỉ khi vé còn rẻ.",
+        "accept": [
+          "I would, but only if the tickets stay cheap",
+          "Yes, but only if the tickets stay cheap"
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "id": "n1",
+        "npc_en": "Did you read the news about the new bus lane?",
+        "npc_vi": "Bạn đọc tin về làn xe buýt mới chưa?",
+        "replies": [
+          {
+            "lineId": "discussing-a-bus-lane-in-the-news-b1.l1",
+            "next": "n2"
+          },
+          {
+            "lineId": "discussing-a-bus-lane-in-the-news-b1.l2",
+            "next": "n2"
+          }
+        ]
+      },
+      {
+        "id": "n2",
+        "npc_en": "Interesting. What do you think will change?",
+        "npc_vi": "Thú vị đấy. Bạn nghĩ sẽ thay đổi gì?",
+        "replies": [
+          {
+            "lineId": "discussing-a-bus-lane-in-the-news-b1.l3",
+            "next": "n3"
+          },
+          {
+            "lineId": "discussing-a-bus-lane-in-the-news-b1.l4",
+            "next": "n3"
+          }
+        ]
+      },
+      {
+        "id": "n3",
+        "npc_en": "Maybe you are right. Would you use the bus more?",
+        "npc_vi": "Có lẽ bạn đúng. Bạn có đi xe buýt nhiều hơn không?",
+        "replies": [
+          {
+            "lineId": "discussing-a-bus-lane-in-the-news-b1.l5",
+            "next": null
+          },
+          {
+            "lineId": "discussing-a-bus-lane-in-the-news-b1.l6",
+            "next": null
+          }
+        ]
+      }
+    ]
+  }
+]

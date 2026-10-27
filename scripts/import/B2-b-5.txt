@@ -1,0 +1,58 @@
+[
+{"slug":"complaining-about-a-heatwave-and-climate","level":"B2","group":"daily","title_vi":"Bàn về đợt nắng nóng","title_en":"Talking about a heatwave and climate","goal_vi":"Trao đổi về biến đổi khí hậu và hành động nhỏ.","partner_vi":"Bác tài xế taxi","partner_emoji":"🥵","lines":[
+{"key":"l1","en":"I know. Summers weren't this hot before.","vi":"Cháu biết. Trước đây mùa hè không nóng thế này.","accept":["I know. Summers didn't use to be this hot","Yes, summers weren't so hot in the past"],"note":""},
+{"key":"l2","en":"Probably. Scientists have been warning us for years.","vi":"Có lẽ vậy. Các nhà khoa học cảnh báo nhiều năm rồi.","accept":["Probably. Scientists have warned us for years","Most likely. Scientists have been warning us for years"],"note":"Present perfect continuous: have been warning."},
+{"key":"l3","en":"Partly, but cities trap heat too.","vi":"Một phần, nhưng thành phố cũng giữ nhiệt.","accept":["In part, but cities also trap heat","Partly, but city buildings trap heat as well"],"note":""},
+{"key":"l4","en":"Plant trees and use less electricity.","vi":"Trồng cây và dùng ít điện hơn.","accept":["We can plant trees and use less electricity","Planting trees and saving electricity would help"],"note":""},
+{"key":"l5","en":"Small steps add up if everyone joins.","vi":"Những bước nhỏ cộng lại nếu ai cũng tham gia.","accept":["Small steps add up if everybody joins in","Little steps add up when everyone takes part"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Another heatwave this week. It's getting unbearable.","npc_vi":"Lại một đợt nắng nóng tuần này. Chịu hết nổi rồi.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Do you think it's climate change?","npc_vi":"Cháu nghĩ đó là biến đổi khí hậu không?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"So what can ordinary people actually do?","npc_vi":"Vậy người bình thường thực sự làm được gì?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Easier said than done, but you're right.","npc_vi":"Nói dễ hơn làm, nhưng cháu nói đúng.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"advising-a-parent-on-kids-screen-time","level":"B2","group":"daily","title_vi":"Khuyên phụ huynh về giờ dùng màn hình","title_en":"Advising a parent on kids screen time","goal_vi":"Đưa lời khuyên về thời gian dùng thiết bị của trẻ.","partner_vi":"Phụ huynh đang lo lắng","partner_emoji":"📱","lines":[
+{"key":"l1","en":"That does sound like too much.","vi":"Nghe đúng là quá nhiều.","accept":["That sounds like far too much","That does seem like too much"],"note":""},
+{"key":"l2","en":"Maybe set limits instead of banning it?","vi":"Hay là đặt giới hạn thay vì cấm hẳn?","accept":["Perhaps set limits rather than banning it","Why not set limits instead of a ban"],"note":""},
+{"key":"l3","en":"Could you replace it with a hobby?","vi":"Bạn có thể thay bằng một sở thích không?","accept":["Could you swap it for a hobby","What about replacing it with a hobby"],"note":""},
+{"key":"l4","en":"Start with one hour after homework daily.","vi":"Bắt đầu với một giờ mỗi ngày sau khi làm bài.","accept":["Start with an hour a day after homework","Begin with one hour daily after homework"],"note":""},
+{"key":"l5","en":"Good luck. Be patient with him.","vi":"Chúc may mắn. Hãy kiên nhẫn với cháu.","accept":["Best of luck. Be patient with him","Good luck, and be patient with him"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"My son spends five hours a day on his tablet.","npc_vi":"Con trai tôi dùng máy tính bảng năm giờ mỗi ngày.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"I've tried banning it, but he gets angry.","npc_vi":"Tôi đã thử cấm, nhưng cháu nổi giận.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Good idea. How should I start?","npc_vi":"Ý hay. Tôi nên bắt đầu thế nào?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"That seems reasonable. I'll talk to him tonight.","npc_vi":"Nghe hợp lý. Tối nay tôi sẽ nói chuyện với cháu.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"weighing-up-volunteering-abroad","level":"B2","group":"daily","title_vi":"Cân nhắc tình nguyện ở nước ngoài","title_en":"Weighing up volunteering abroad","goal_vi":"Thảo luận ưu nhược điểm của chương trình tình nguyện.","partner_vi":"Bạn cùng lớp","partner_emoji":"🌍","lines":[
+{"key":"l1","en":"That sounds exciting! What would you do?","vi":"Nghe thú vị quá! Bạn sẽ làm gì?","accept":["How exciting! What would you be doing","Sounds exciting! What would your job be"],"note":""},
+{"key":"l2","en":"Isn't it expensive to join those programs?","vi":"Tham gia các chương trình đó có đắt không?","accept":["Aren't those programs expensive to join","Doesn't it cost a lot to join those programs"],"note":""},
+{"key":"l3","en":"I'd choose a small, well reviewed organization.","vi":"Mình sẽ chọn tổ chức nhỏ, được đánh giá tốt.","accept":["I would pick a small, well reviewed organization","I'd go for a small organization with good reviews"],"note":""},
+{"key":"l4","en":"Some of those programs mostly profit from volunteers.","vi":"Một số chương trình chủ yếu kiếm lời từ tình nguyện viên.","accept":["Some programs mainly make money from volunteers","A few of those programs mostly profit from volunteers"],"note":""},
+{"key":"l5","en":"Smart. Ask former volunteers for advice.","vi":"Khôn đấy. Hãy hỏi lời khuyên từ người từng đi.","accept":["Good thinking. Ask past volunteers for advice","Wise. Ask former volunteers for their advice"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I'm considering volunteering in Cambodia for a summer.","npc_vi":"Mình đang cân nhắc tình nguyện ở Campuchia một mùa hè.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Teaching English at a village school.","npc_vi":"Dạy tiếng Anh ở một trường làng.","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Yes, some charge a lot, which worries me.","npc_vi":"Đúng, vài nơi thu rất cao, mình lo lắm.","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Good point. I'll research reviews before paying.","npc_vi":"Có lý. Mình sẽ tìm đánh giá trước khi trả tiền.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"declining-an-invitation-politely","level":"B2","group":"daily","title_vi":"Từ chối lời mời khéo léo","title_en":"Declining an invitation politely","goal_vi":"Từ chối lời mời mà không làm mất lòng.","partner_vi":"Đồng nghiệp thân thiện","partner_emoji":"🎉","lines":[
+{"key":"l1","en":"Thanks for inviting me, but I can't.","vi":"Cảm ơn đã mời mình, nhưng mình không đi được.","accept":["Thank you for the invitation, but I can't make it","Thanks for asking, but I won't be able to come"],"note":""},
+{"key":"l2","en":"I have a family commitment, unfortunately.","vi":"Tiếc là mình có việc gia đình.","accept":["Unfortunately, I have a family commitment","I'm afraid I have a family commitment"],"note":""},
+{"key":"l3","en":"I'm trying to rest after a hectic week.","vi":"Mình đang cố nghỉ ngơi sau một tuần bận rộn.","accept":["I'm hoping to rest after a hectic week","I need to rest after such a hectic week"],"note":""},
+{"key":"l4","en":"I'd love that. Invite me again soon.","vi":"Mình rất thích. Sớm mời mình lần nữa nhé.","accept":["That would be lovely. Ask me again soon","I'd like that. Invite me again soon"],"note":""},
+{"key":"l5","en":"You too, and have fun Saturday!","vi":"Bạn cũng vậy, và chơi vui vào thứ Bảy nhé!","accept":["Same to you, and have fun on Saturday","You too, and enjoy Saturday"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"We're having a barbecue Saturday. Can you come?","npc_vi":"Thứ Bảy tụi mình nướng thịt. Bạn đến được không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Oh, that's a shame. Are you busy?","npc_vi":"Ồ, tiếc quá. Bạn bận à?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"No problem. Maybe next time then?","npc_vi":"Không sao. Có lẽ lần sau nhé?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Definitely! Enjoy your weekend.","npc_vi":"Chắc chắn! Cuối tuần vui vẻ nhé.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"choosing-between-city-and-countryside-life","level":"B2","group":"daily","title_vi":"Sống thành phố hay nông thôn","title_en":"Choosing between city and countryside life","goal_vi":"Giúp bạn cân nhắc chuyển về nông thôn.","partner_vi":"Bạn chán thành phố","partner_emoji":"🌄","lines":[
+{"key":"l1","en":"What do you dislike about the city?","vi":"Bạn không thích điều gì ở thành phố?","accept":["What bothers you about the city","What is it about the city you dislike"],"note":""},
+{"key":"l2","en":"Rural life is peaceful, but jobs are scarce.","vi":"Cuộc sống nông thôn yên bình, nhưng việc làm khan hiếm.","accept":["Country life is peaceful, but jobs are scarce","Village life is quiet, but there are few jobs"],"note":""},
+{"key":"l3","en":"If I were you, I'd rent there first.","vi":"Nếu là bạn, mình sẽ thuê thử ở đó trước.","accept":["I'd rent there first if I were you","If I were you, I would rent a place there first"],"note":""},
+{"key":"l4","en":"You might, unless you find a community.","vi":"Có thể, trừ khi bạn tìm được cộng đồng.","accept":["Maybe, unless you find a community","You could, unless you join a community"],"note":""},
+{"key":"l5","en":"Not if you enjoy hiking and gardening.","vi":"Không đâu nếu bạn thích đi bộ và làm vườn.","accept":["Not if you like hiking and gardening","Not if you're into hiking and gardening"],"note":""},
+{"key":"l6","en":"Sounds wise. Take your time deciding.","vi":"Nghe khôn ngoan đấy. Cứ từ từ quyết định.","accept":["That sounds wise. Take your time deciding","Wise idea. Take your time to decide"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I'm tired of the city. Should I move to the countryside?","npc_vi":"Mình chán thành phố rồi. Có nên chuyển về nông thôn không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"The noise, the traffic, and the high rent.","npc_vi":"Tiếng ồn, giao thông và tiền thuê nhà cao.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Hmm. Would I get bored out there?","npc_vi":"Hmm. Mình có chán ở đó không nhỉ?","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Alright. I'll visit a few villages first.","npc_vi":"Được rồi. Mình sẽ đi thăm vài ngôi làng trước.","replies":[{"line":"l6","next":null}]}]}
+]

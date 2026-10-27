@@ -1,0 +1,5499 @@
+[
+  {
+    "level": "A1",
+    "topic": "greetings-introductions",
+    "topic_vi": "Chào hỏi và giới thiệu",
+    "goals": [
+      "social",
+      "work",
+      "travel"
+    ],
+    "frame_en": "My name is ___.",
+    "frame_vi": "Tên tôi là ___.",
+    "note_vi": "Dùng khi tự giới thiệu. Chỉ cần điền tên của bạn vào chỗ trống, không cần mạo từ.",
+    "slots": [
+      {
+        "en": "Anna",
+        "vi": "Anna"
+      },
+      {
+        "en": "Tom",
+        "vi": "Tom"
+      },
+      {
+        "en": "Linh",
+        "vi": "Linh"
+      },
+      {
+        "en": "Minh",
+        "vi": "Minh"
+      },
+      {
+        "en": "Lisa",
+        "vi": "Lisa"
+      },
+      {
+        "en": "Sam",
+        "vi": "Sam"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My name is Hoa.",
+        "vi": "Tên tôi là Hoa."
+      },
+      {
+        "en": "My name is David.",
+        "vi": "Tên tôi là David."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What's your name?",
+        "vi": "Bạn tên là gì?"
+      },
+      {
+        "en": "Who are you?",
+        "vi": "Bạn là ai?"
+      }
+    ],
+    "id": "a1.my-name-is"
+  },
+  {
+    "level": "A1",
+    "topic": "greetings-introductions",
+    "topic_vi": "Chào hỏi và giới thiệu",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "Nice to meet you, ___.",
+    "frame_vi": "Rất vui được gặp bạn, ___.",
+    "note_vi": "Nói sau khi biết tên người mới gặp. Thêm tên hoặc Mr, Mrs để thân thiện và lịch sự hơn.",
+    "slots": [
+      {
+        "en": "Anna",
+        "vi": "Anna"
+      },
+      {
+        "en": "Tom",
+        "vi": "Tom"
+      },
+      {
+        "en": "Linh",
+        "vi": "Linh"
+      },
+      {
+        "en": "Sam",
+        "vi": "Sam"
+      },
+      {
+        "en": "Mr Brown",
+        "vi": "ông Brown"
+      },
+      {
+        "en": "Mrs Green",
+        "vi": "bà Green"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Nice to meet you, Hoa.",
+        "vi": "Rất vui được gặp bạn, Hoa."
+      },
+      {
+        "en": "Nice to meet you, Mr Smith.",
+        "vi": "Rất vui được gặp ông, ông Smith."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Hi, I'm Mai. Nice to meet you.",
+        "vi": "Chào, mình là Mai. Rất vui được gặp bạn."
+      },
+      {
+        "en": "This is my friend Ben.",
+        "vi": "Đây là bạn mình, Ben."
+      }
+    ],
+    "id": "a1.nice-to-meet-you-name"
+  },
+  {
+    "level": "A1",
+    "topic": "greetings-introductions",
+    "topic_vi": "Chào hỏi và giới thiệu",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I'm ___, thank you.",
+    "frame_vi": "Tôi ___, cảm ơn bạn.",
+    "note_vi": "Trả lời câu hỏi thăm sức khỏe. Sau I'm dùng một tính từ chỉ cảm giác, rồi nói thêm thank you cho lịch sự.",
+    "slots": [
+      {
+        "en": "fine",
+        "vi": "khỏe"
+      },
+      {
+        "en": "good",
+        "vi": "ổn"
+      },
+      {
+        "en": "great",
+        "vi": "rất tốt"
+      },
+      {
+        "en": "happy",
+        "vi": "vui"
+      },
+      {
+        "en": "tired",
+        "vi": "mệt"
+      },
+      {
+        "en": "OK",
+        "vi": "cũng được"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm very well, thank you.",
+        "vi": "Tôi rất khỏe, cảm ơn bạn."
+      },
+      {
+        "en": "I'm a little sad, thank you.",
+        "vi": "Tôi hơi buồn, cảm ơn bạn."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How are you?",
+        "vi": "Bạn khỏe không?"
+      },
+      {
+        "en": "How are you today?",
+        "vi": "Hôm nay bạn thế nào?"
+      }
+    ],
+    "id": "a1.im-feeling-thanks"
+  },
+  {
+    "level": "A1",
+    "topic": "greetings-introductions",
+    "topic_vi": "Chào hỏi và giới thiệu",
+    "goals": [
+      "social",
+      "travel"
+    ],
+    "frame_en": "I'm from ___.",
+    "frame_vi": "Tôi đến từ ___.",
+    "note_vi": "Nói bạn đến từ đâu. Tên nước hoặc thành phố viết hoa, chỉ nước có the như the United States thì mới thêm the.",
+    "slots": [
+      {
+        "en": "Vietnam",
+        "vi": "Việt Nam"
+      },
+      {
+        "en": "Hanoi",
+        "vi": "Hà Nội"
+      },
+      {
+        "en": "Japan",
+        "vi": "Nhật Bản"
+      },
+      {
+        "en": "Korea",
+        "vi": "Hàn Quốc"
+      },
+      {
+        "en": "France",
+        "vi": "nước Pháp"
+      },
+      {
+        "en": "the United States",
+        "vi": "nước Mỹ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm from Hue.",
+        "vi": "Tôi đến từ Huế."
+      },
+      {
+        "en": "I'm from China.",
+        "vi": "Tôi đến từ Trung Quốc."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where are you from?",
+        "vi": "Bạn đến từ đâu?"
+      },
+      {
+        "en": "Which country are you from?",
+        "vi": "Bạn đến từ nước nào?"
+      }
+    ],
+    "id": "a1.im-from"
+  },
+  {
+    "level": "A1",
+    "topic": "family",
+    "topic_vi": "Gia đình",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I have ___.",
+    "frame_vi": "Tôi có ___.",
+    "note_vi": "Nói về người thân của bạn. Dùng a hoặc an với một người, dùng số đếm với số nhiều và thêm s ở cuối danh từ.",
+    "slots": [
+      {
+        "en": "a brother",
+        "vi": "một anh hoặc em trai"
+      },
+      {
+        "en": "a sister",
+        "vi": "một chị hoặc em gái"
+      },
+      {
+        "en": "two brothers",
+        "vi": "hai anh em trai"
+      },
+      {
+        "en": "two sisters",
+        "vi": "hai chị em gái"
+      },
+      {
+        "en": "a big family",
+        "vi": "một gia đình đông người"
+      },
+      {
+        "en": "a small family",
+        "vi": "một gia đình nhỏ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I have three sisters.",
+        "vi": "Tôi có ba chị em gái."
+      },
+      {
+        "en": "I have a baby brother.",
+        "vi": "Tôi có một em trai nhỏ."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you have any brothers or sisters?",
+        "vi": "Bạn có anh chị em không?"
+      },
+      {
+        "en": "Tell me about your family.",
+        "vi": "Hãy kể về gia đình bạn."
+      }
+    ],
+    "id": "a1.i-have-siblings"
+  },
+  {
+    "level": "A1",
+    "topic": "family",
+    "topic_vi": "Gia đình",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "This is my ___.",
+    "frame_vi": "Đây là ___ của tôi.",
+    "note_vi": "Giới thiệu một người thân, thường khi chỉ vào ảnh hoặc người đứng cạnh. Dùng my trước từ chỉ người, không dùng a.",
+    "slots": [
+      {
+        "en": "mother",
+        "vi": "mẹ"
+      },
+      {
+        "en": "father",
+        "vi": "bố"
+      },
+      {
+        "en": "sister",
+        "vi": "chị gái"
+      },
+      {
+        "en": "brother",
+        "vi": "anh trai"
+      },
+      {
+        "en": "grandmother",
+        "vi": "bà"
+      },
+      {
+        "en": "grandfather",
+        "vi": "ông"
+      },
+      {
+        "en": "wife",
+        "vi": "vợ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "This is my uncle.",
+        "vi": "Đây là chú của tôi."
+      },
+      {
+        "en": "This is my daughter.",
+        "vi": "Đây là con gái của tôi."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Who is this?",
+        "vi": "Đây là ai?"
+      },
+      {
+        "en": "Who is in the photo?",
+        "vi": "Ai ở trong bức ảnh vậy?"
+      }
+    ],
+    "id": "a1.this-is-my-family"
+  },
+  {
+    "level": "A1",
+    "topic": "family",
+    "topic_vi": "Gia đình",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "My father is ___.",
+    "frame_vi": "Bố tôi là ___.",
+    "note_vi": "Nói về nghề của người thân. Trước tên nghề dùng a hoặc an, ví dụ a teacher, an engineer.",
+    "slots": [
+      {
+        "en": "a doctor",
+        "vi": "bác sĩ"
+      },
+      {
+        "en": "a teacher",
+        "vi": "giáo viên"
+      },
+      {
+        "en": "a driver",
+        "vi": "tài xế"
+      },
+      {
+        "en": "a cook",
+        "vi": "đầu bếp"
+      },
+      {
+        "en": "a farmer",
+        "vi": "nông dân"
+      },
+      {
+        "en": "a police officer",
+        "vi": "cảnh sát"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My father is a nurse.",
+        "vi": "Bố tôi là y tá."
+      },
+      {
+        "en": "My father is an engineer.",
+        "vi": "Bố tôi là kỹ sư."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What does your father do?",
+        "vi": "Bố bạn làm nghề gì?"
+      },
+      {
+        "en": "What is your father's job?",
+        "vi": "Công việc của bố bạn là gì?"
+      }
+    ],
+    "id": "a1.my-father-is-job"
+  },
+  {
+    "level": "A1",
+    "topic": "family",
+    "topic_vi": "Gia đình",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "My sister is ___.",
+    "frame_vi": "Chị gái tôi ___.",
+    "note_vi": "Mô tả tính cách hoặc ngoại hình người thân. Sau is dùng tính từ, thêm very để nhấn mạnh.",
+    "slots": [
+      {
+        "en": "tall",
+        "vi": "cao"
+      },
+      {
+        "en": "funny",
+        "vi": "vui tính"
+      },
+      {
+        "en": "kind",
+        "vi": "tốt bụng"
+      },
+      {
+        "en": "shy",
+        "vi": "nhút nhát"
+      },
+      {
+        "en": "young",
+        "vi": "còn trẻ"
+      },
+      {
+        "en": "very nice",
+        "vi": "rất dễ mến"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My sister is very smart.",
+        "vi": "Chị gái tôi rất thông minh."
+      },
+      {
+        "en": "My sister is quiet.",
+        "vi": "Chị gái tôi ít nói."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your sister like?",
+        "vi": "Chị gái bạn là người thế nào?"
+      },
+      {
+        "en": "Is your sister tall?",
+        "vi": "Chị gái bạn có cao không?"
+      }
+    ],
+    "id": "a1.my-sister-is-adjective"
+  },
+  {
+    "level": "A1",
+    "topic": "personal-info",
+    "topic_vi": "Thông tin cá nhân",
+    "goals": [
+      "social",
+      "daily",
+      "work"
+    ],
+    "frame_en": "I'm ___ years old.",
+    "frame_vi": "Tôi ___ tuổi.",
+    "note_vi": "Nói tuổi của bạn. Dùng số đếm viết bằng chữ rồi thêm years old, không dùng have như tiếng Việt.",
+    "slots": [
+      {
+        "en": "ten",
+        "vi": "mười"
+      },
+      {
+        "en": "fifteen",
+        "vi": "mười lăm"
+      },
+      {
+        "en": "eighteen",
+        "vi": "mười tám"
+      },
+      {
+        "en": "twenty",
+        "vi": "hai mươi"
+      },
+      {
+        "en": "thirty",
+        "vi": "ba mươi"
+      },
+      {
+        "en": "forty",
+        "vi": "bốn mươi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm twelve years old.",
+        "vi": "Tôi mười hai tuổi."
+      },
+      {
+        "en": "I'm fifty years old.",
+        "vi": "Tôi năm mươi tuổi."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How old are you?",
+        "vi": "Bạn bao nhiêu tuổi?"
+      },
+      {
+        "en": "What's your age?",
+        "vi": "Tuổi của bạn là bao nhiêu?"
+      }
+    ],
+    "id": "a1.im-years-old"
+  },
+  {
+    "level": "A1",
+    "topic": "personal-info",
+    "topic_vi": "Thông tin cá nhân",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "My birthday is in ___.",
+    "frame_vi": "Sinh nhật tôi vào ___.",
+    "note_vi": "Nói tháng sinh. Trước tên tháng dùng in, tên tháng luôn viết hoa chữ cái đầu.",
+    "slots": [
+      {
+        "en": "January",
+        "vi": "tháng Một"
+      },
+      {
+        "en": "March",
+        "vi": "tháng Ba"
+      },
+      {
+        "en": "May",
+        "vi": "tháng Năm"
+      },
+      {
+        "en": "July",
+        "vi": "tháng Bảy"
+      },
+      {
+        "en": "October",
+        "vi": "tháng Mười"
+      },
+      {
+        "en": "December",
+        "vi": "tháng Mười hai"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My birthday is in April.",
+        "vi": "Sinh nhật tôi vào tháng Tư."
+      },
+      {
+        "en": "My birthday is in August.",
+        "vi": "Sinh nhật tôi vào tháng Tám."
+      }
+    ],
+    "asks": [
+      {
+        "en": "When is your birthday?",
+        "vi": "Sinh nhật bạn khi nào?"
+      },
+      {
+        "en": "What month is your birthday?",
+        "vi": "Sinh nhật bạn vào tháng mấy?"
+      }
+    ],
+    "id": "a1.my-birthday-is-in"
+  },
+  {
+    "level": "A1",
+    "topic": "personal-info",
+    "topic_vi": "Thông tin cá nhân",
+    "goals": [
+      "social",
+      "travel",
+      "work"
+    ],
+    "frame_en": "I live in ___.",
+    "frame_vi": "Tôi sống ở ___.",
+    "note_vi": "Nói nơi bạn sống. Dùng in trước thành phố hoặc nước, thêm a hoặc an trước danh từ chung như a small town.",
+    "slots": [
+      {
+        "en": "Hanoi",
+        "vi": "Hà Nội"
+      },
+      {
+        "en": "Ho Chi Minh City",
+        "vi": "Thành phố Hồ Chí Minh"
+      },
+      {
+        "en": "Da Nang",
+        "vi": "Đà Nẵng"
+      },
+      {
+        "en": "a small town",
+        "vi": "một thị trấn nhỏ"
+      },
+      {
+        "en": "a big city",
+        "vi": "một thành phố lớn"
+      },
+      {
+        "en": "an old house",
+        "vi": "một ngôi nhà cũ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I live in Hue.",
+        "vi": "Tôi sống ở Huế."
+      },
+      {
+        "en": "I live in a small village.",
+        "vi": "Tôi sống ở một ngôi làng nhỏ."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where do you live?",
+        "vi": "Bạn sống ở đâu?"
+      },
+      {
+        "en": "Do you live in a city?",
+        "vi": "Bạn có sống ở thành phố không?"
+      }
+    ],
+    "id": "a1.i-live-in"
+  },
+  {
+    "level": "A1",
+    "topic": "personal-info",
+    "topic_vi": "Thông tin cá nhân",
+    "goals": [
+      "social",
+      "travel",
+      "work"
+    ],
+    "frame_en": "I speak ___.",
+    "frame_vi": "Tôi nói ___.",
+    "note_vi": "Nói về ngôn ngữ bạn dùng. Tên ngôn ngữ viết hoa, thêm a little để nói bạn nói được một chút.",
+    "slots": [
+      {
+        "en": "Vietnamese",
+        "vi": "tiếng Việt"
+      },
+      {
+        "en": "English",
+        "vi": "tiếng Anh"
+      },
+      {
+        "en": "a little English",
+        "vi": "một chút tiếng Anh"
+      },
+      {
+        "en": "French",
+        "vi": "tiếng Pháp"
+      },
+      {
+        "en": "Japanese",
+        "vi": "tiếng Nhật"
+      },
+      {
+        "en": "Korean",
+        "vi": "tiếng Hàn"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I speak Chinese.",
+        "vi": "Tôi nói tiếng Trung."
+      },
+      {
+        "en": "I speak a little German.",
+        "vi": "Tôi nói được một chút tiếng Đức."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What languages do you speak?",
+        "vi": "Bạn nói những ngôn ngữ nào?"
+      },
+      {
+        "en": "Do you speak English?",
+        "vi": "Bạn có nói tiếng Anh không?"
+      }
+    ],
+    "id": "a1.i-speak-language"
+  },
+  {
+    "level": "A1",
+    "topic": "food-drink-ordering",
+    "topic_vi": "Gọi đồ ăn uống",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Can I have ___, please?",
+    "frame_vi": "Cho tôi ___ nhé?",
+    "note_vi": "Câu gọi đồ lịch sự. Trước danh từ đếm được số ít dùng a hoặc an, với nước hay đồ không đếm được dùng some.",
+    "slots": [
+      {
+        "en": "a coffee",
+        "vi": "một ly cà phê"
+      },
+      {
+        "en": "a tea",
+        "vi": "một ly trà"
+      },
+      {
+        "en": "some water",
+        "vi": "ít nước"
+      },
+      {
+        "en": "an orange juice",
+        "vi": "một ly nước cam"
+      },
+      {
+        "en": "a sandwich",
+        "vi": "một cái bánh sandwich"
+      },
+      {
+        "en": "the menu",
+        "vi": "thực đơn"
+      },
+      {
+        "en": "the bill",
+        "vi": "hóa đơn"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Can I have some more rice, please?",
+        "vi": "Cho tôi thêm ít cơm nhé?"
+      },
+      {
+        "en": "Can I have a fork, please?",
+        "vi": "Cho tôi một cái nĩa nhé?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What would you like?",
+        "vi": "Bạn muốn dùng gì?"
+      },
+      {
+        "en": "Anything to drink?",
+        "vi": "Bạn uống gì không?"
+      }
+    ],
+    "id": "a1.can-i-have"
+  },
+  {
+    "level": "A1",
+    "topic": "food-drink-ordering",
+    "topic_vi": "Gọi đồ ăn uống",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "I would like ___, please.",
+    "frame_vi": "Làm ơn cho tôi ___.",
+    "note_vi": "Cách gọi món lịch sự hơn I want. Dùng a hoặc an với món đếm được, some với đồ không đếm được.",
+    "slots": [
+      {
+        "en": "a pizza",
+        "vi": "một cái pizza"
+      },
+      {
+        "en": "a hamburger",
+        "vi": "một cái hamburger"
+      },
+      {
+        "en": "some soup",
+        "vi": "một ít súp"
+      },
+      {
+        "en": "an ice cream",
+        "vi": "một cây kem"
+      },
+      {
+        "en": "a salad",
+        "vi": "một đĩa salad"
+      },
+      {
+        "en": "some bread",
+        "vi": "ít bánh mì"
+      },
+      {
+        "en": "a cold drink",
+        "vi": "một ly nước lạnh"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I would like a cup of tea, please.",
+        "vi": "Làm ơn cho tôi một tách trà."
+      },
+      {
+        "en": "I would like fish and rice, please.",
+        "vi": "Làm ơn cho tôi cá và cơm."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Are you ready to order?",
+        "vi": "Bạn gọi món chưa?"
+      },
+      {
+        "en": "What would you like to eat?",
+        "vi": "Bạn muốn ăn gì?"
+      }
+    ],
+    "id": "a1.i-would-like"
+  },
+  {
+    "level": "A1",
+    "topic": "food-drink-ordering",
+    "topic_vi": "Gọi đồ ăn uống",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Do you have ___?",
+    "frame_vi": "Bạn có ___ không?",
+    "note_vi": "Dùng để hỏi quán có món hay thứ gì đó không. Trả lời: Yes, we do. hoặc No, we don't.",
+    "slots": [
+      {
+        "en": "a menu in English",
+        "vi": "thực đơn tiếng Anh"
+      },
+      {
+        "en": "a table for two",
+        "vi": "bàn cho hai người"
+      },
+      {
+        "en": "any cold drinks",
+        "vi": "nước uống lạnh nào"
+      },
+      {
+        "en": "vegetable soup",
+        "vi": "súp rau"
+      },
+      {
+        "en": "a children's menu",
+        "vi": "thực đơn cho trẻ em"
+      },
+      {
+        "en": "any fresh fruit",
+        "vi": "trái cây tươi nào"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Do you have chicken noodles?",
+        "vi": "Bạn có mì gà không?"
+      },
+      {
+        "en": "Do you have free water?",
+        "vi": "Bạn có nước miễn phí không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được cho bạn?"
+      },
+      {
+        "en": "What are you looking for?",
+        "vi": "Bạn đang tìm gì?"
+      }
+    ],
+    "id": "a1.do-you-have"
+  },
+  {
+    "level": "A1",
+    "topic": "food-drink-ordering",
+    "topic_vi": "Gọi đồ ăn uống",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "No ___, please.",
+    "frame_vi": "Làm ơn đừng cho ___.",
+    "note_vi": "Dùng khi muốn bỏ một thứ khỏi món. Sau No không cần a hay some, chỉ nói tên thứ đó.",
+    "slots": [
+      {
+        "en": "sugar",
+        "vi": "đường"
+      },
+      {
+        "en": "ice",
+        "vi": "đá"
+      },
+      {
+        "en": "milk",
+        "vi": "sữa"
+      },
+      {
+        "en": "onions",
+        "vi": "hành"
+      },
+      {
+        "en": "salt",
+        "vi": "muối"
+      },
+      {
+        "en": "chili",
+        "vi": "ớt"
+      },
+      {
+        "en": "meat",
+        "vi": "thịt"
+      }
+    ],
+    "examples": [
+      {
+        "en": "No eggs, please.",
+        "vi": "Làm ơn đừng cho trứng."
+      },
+      {
+        "en": "No cream, please.",
+        "vi": "Làm ơn đừng cho kem."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you want sugar in your coffee?",
+        "vi": "Bạn có muốn đường trong cà phê không?"
+      },
+      {
+        "en": "Anything else?",
+        "vi": "Còn gì nữa không?"
+      }
+    ],
+    "id": "a1.no-please"
+  },
+  {
+    "level": "A1",
+    "topic": "food-likes",
+    "topic_vi": "Món ăn yêu thích",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "My favorite food is ___.",
+    "frame_vi": "Món ăn yêu thích của tôi là ___.",
+    "note_vi": "Nói về món ưa thích nhất. Sau is nói tên món, không cần thêm động từ khác.",
+    "slots": [
+      {
+        "en": "pizza",
+        "vi": "pizza"
+      },
+      {
+        "en": "fried rice",
+        "vi": "cơm chiên"
+      },
+      {
+        "en": "chicken",
+        "vi": "thịt gà"
+      },
+      {
+        "en": "noodle soup",
+        "vi": "mì nước"
+      },
+      {
+        "en": "fish",
+        "vi": "cá"
+      },
+      {
+        "en": "ice cream",
+        "vi": "kem"
+      },
+      {
+        "en": "spring rolls",
+        "vi": "chả giò"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My favorite food is pasta.",
+        "vi": "Món ăn yêu thích của tôi là mì Ý."
+      },
+      {
+        "en": "My favorite food is beef.",
+        "vi": "Món ăn yêu thích của tôi là thịt bò."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your favorite food?",
+        "vi": "Món ăn yêu thích của bạn là gì?"
+      },
+      {
+        "en": "What food do you like?",
+        "vi": "Bạn thích món gì?"
+      }
+    ],
+    "id": "a1.my-favorite-food-is"
+  },
+  {
+    "level": "A1",
+    "topic": "food-likes",
+    "topic_vi": "Món ăn yêu thích",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I don't like ___.",
+    "frame_vi": "Tôi không thích ___.",
+    "note_vi": "Nói món mình không thích. Dùng danh từ số nhiều hoặc không đếm được, không cần a hay an.",
+    "slots": [
+      {
+        "en": "fish",
+        "vi": "cá"
+      },
+      {
+        "en": "onions",
+        "vi": "hành"
+      },
+      {
+        "en": "spicy food",
+        "vi": "đồ ăn cay"
+      },
+      {
+        "en": "milk",
+        "vi": "sữa"
+      },
+      {
+        "en": "cold soup",
+        "vi": "súp lạnh"
+      },
+      {
+        "en": "eggs",
+        "vi": "trứng"
+      },
+      {
+        "en": "sweet tea",
+        "vi": "trà ngọt"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I don't like mushrooms.",
+        "vi": "Tôi không thích nấm."
+      },
+      {
+        "en": "I don't like cheese.",
+        "vi": "Tôi không thích phô mai."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you like fish?",
+        "vi": "Bạn có thích cá không?"
+      },
+      {
+        "en": "Is there a food you don't like?",
+        "vi": "Có món nào bạn không thích không?"
+      }
+    ],
+    "id": "a1.i-dont-like"
+  },
+  {
+    "level": "A1",
+    "topic": "food-likes",
+    "topic_vi": "Món ăn yêu thích",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I often eat ___ for breakfast.",
+    "frame_vi": "Tôi thường ăn ___ vào bữa sáng.",
+    "note_vi": "Nói về thói quen ăn uống. Often đứng trước động từ eat. Có thể đổi breakfast thành lunch hoặc dinner.",
+    "slots": [
+      {
+        "en": "bread",
+        "vi": "bánh mì"
+      },
+      {
+        "en": "eggs",
+        "vi": "trứng"
+      },
+      {
+        "en": "noodles",
+        "vi": "mì"
+      },
+      {
+        "en": "rice",
+        "vi": "cơm"
+      },
+      {
+        "en": "fruit",
+        "vi": "trái cây"
+      },
+      {
+        "en": "sticky rice",
+        "vi": "xôi"
+      },
+      {
+        "en": "cereal",
+        "vi": "ngũ cốc"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I often eat toast for breakfast.",
+        "vi": "Tôi thường ăn bánh mì nướng vào bữa sáng."
+      },
+      {
+        "en": "I often eat pho for breakfast.",
+        "vi": "Tôi thường ăn phở vào bữa sáng."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you eat for breakfast?",
+        "vi": "Bạn ăn gì vào bữa sáng?"
+      },
+      {
+        "en": "What do you have in the morning?",
+        "vi": "Buổi sáng bạn ăn gì?"
+      }
+    ],
+    "id": "a1.i-eat-for-breakfast"
+  },
+  {
+    "level": "A1",
+    "topic": "food-likes",
+    "topic_vi": "Món ăn yêu thích",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I can cook ___.",
+    "frame_vi": "Tôi biết nấu ___.",
+    "note_vi": "Can nói về khả năng. Sau can dùng động từ nguyên mẫu cook, không thêm s dù chủ ngữ là gì.",
+    "slots": [
+      {
+        "en": "rice",
+        "vi": "cơm"
+      },
+      {
+        "en": "noodles",
+        "vi": "mì"
+      },
+      {
+        "en": "eggs",
+        "vi": "trứng"
+      },
+      {
+        "en": "fish",
+        "vi": "cá"
+      },
+      {
+        "en": "chicken soup",
+        "vi": "súp gà"
+      },
+      {
+        "en": "vegetables",
+        "vi": "rau"
+      },
+      {
+        "en": "pasta",
+        "vi": "mì Ý"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I can cook beef.",
+        "vi": "Tôi biết nấu thịt bò."
+      },
+      {
+        "en": "I can cook potatoes.",
+        "vi": "Tôi biết nấu khoai tây."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can you cook?",
+        "vi": "Bạn biết nấu ăn không?"
+      },
+      {
+        "en": "What can you cook?",
+        "vi": "Bạn biết nấu món gì?"
+      }
+    ],
+    "id": "a1.i-can-cook"
+  },
+  {
+    "level": "A1",
+    "topic": "shopping-prices",
+    "topic_vi": "Mua sắm và giá cả",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "How much is ___?",
+    "frame_vi": "___ giá bao nhiêu?",
+    "note_vi": "Hỏi giá một món số ít hoặc không đếm được. Với nhiều món (these shoes) đổi is thành are.",
+    "slots": [
+      {
+        "en": "this shirt",
+        "vi": "Cái áo này"
+      },
+      {
+        "en": "that bag",
+        "vi": "Cái túi kia"
+      },
+      {
+        "en": "this hat",
+        "vi": "Cái mũ này"
+      },
+      {
+        "en": "the coffee",
+        "vi": "Ly cà phê"
+      },
+      {
+        "en": "the blue dress",
+        "vi": "Cái váy xanh"
+      },
+      {
+        "en": "a ticket",
+        "vi": "Một vé"
+      },
+      {
+        "en": "this one",
+        "vi": "Cái này"
+      }
+    ],
+    "examples": [
+      {
+        "en": "How much is the red jacket?",
+        "vi": "Cái áo khoác đỏ giá bao nhiêu?"
+      },
+      {
+        "en": "How much is a bottle of water?",
+        "vi": "Một chai nước giá bao nhiêu?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được cho bạn?"
+      },
+      {
+        "en": "Do you like it?",
+        "vi": "Bạn có thích nó không?"
+      }
+    ],
+    "id": "a1.how-much-is"
+  },
+  {
+    "level": "A1",
+    "topic": "shopping-prices",
+    "topic_vi": "Mua sắm và giá cả",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Do you have ___ in my size?",
+    "frame_vi": "Bạn có ___ cỡ của tôi không?",
+    "note_vi": "Hỏi cửa hàng còn đúng cỡ của mình không. This, that dùng cho một món. These, those dùng cho nhiều món.",
+    "slots": [
+      {
+        "en": "this shirt",
+        "vi": "cái áo này"
+      },
+      {
+        "en": "these shoes",
+        "vi": "đôi giày này"
+      },
+      {
+        "en": "those jeans",
+        "vi": "cái quần jeans kia"
+      },
+      {
+        "en": "this dress",
+        "vi": "cái váy này"
+      },
+      {
+        "en": "that jacket",
+        "vi": "cái áo khoác kia"
+      },
+      {
+        "en": "these pants",
+        "vi": "cái quần này"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Do you have a black skirt in my size?",
+        "vi": "Bạn có váy đen cỡ của tôi không?"
+      },
+      {
+        "en": "Do you have white socks in my size?",
+        "vi": "Bạn có tất trắng cỡ của tôi không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What size are you?",
+        "vi": "Bạn mặc cỡ nào?"
+      },
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được cho bạn?"
+      }
+    ],
+    "id": "a1.do-you-have-in-my-size"
+  },
+  {
+    "level": "A1",
+    "topic": "shopping-prices",
+    "topic_vi": "Mua sắm và giá cả",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "I will take ___.",
+    "frame_vi": "Tôi sẽ lấy ___.",
+    "note_vi": "Dùng khi quyết định mua. Will take nghĩa là sẽ lấy. Dùng one để chỉ một món đã nói tới.",
+    "slots": [
+      {
+        "en": "this one",
+        "vi": "cái này"
+      },
+      {
+        "en": "that one",
+        "vi": "cái kia"
+      },
+      {
+        "en": "the blue one",
+        "vi": "cái màu xanh"
+      },
+      {
+        "en": "the small one",
+        "vi": "cái nhỏ"
+      },
+      {
+        "en": "two of them",
+        "vi": "hai cái"
+      },
+      {
+        "en": "both of them",
+        "vi": "cả hai cái"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I will take the black bag.",
+        "vi": "Tôi sẽ lấy cái túi đen."
+      },
+      {
+        "en": "I will take three apples.",
+        "vi": "Tôi sẽ lấy ba quả táo."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Which one do you want?",
+        "vi": "Bạn muốn cái nào?"
+      },
+      {
+        "en": "Do you like this one?",
+        "vi": "Bạn có thích cái này không?"
+      }
+    ],
+    "id": "a1.i-will-take"
+  },
+  {
+    "level": "A1",
+    "topic": "shopping-prices",
+    "topic_vi": "Mua sắm và giá cả",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "It is too ___.",
+    "frame_vi": "Nó quá ___.",
+    "note_vi": "Dùng để nói món đồ không hợp. Too đứng trước tính từ và nghĩa là quá mức.",
+    "slots": [
+      {
+        "en": "expensive",
+        "vi": "đắt"
+      },
+      {
+        "en": "big",
+        "vi": "to"
+      },
+      {
+        "en": "small",
+        "vi": "nhỏ"
+      },
+      {
+        "en": "long",
+        "vi": "dài"
+      },
+      {
+        "en": "short",
+        "vi": "ngắn"
+      },
+      {
+        "en": "tight",
+        "vi": "chật"
+      },
+      {
+        "en": "heavy",
+        "vi": "nặng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It is too loose.",
+        "vi": "Nó quá rộng."
+      },
+      {
+        "en": "It is too old.",
+        "vi": "Nó quá cũ."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you like it?",
+        "vi": "Bạn có thích nó không?"
+      },
+      {
+        "en": "How is the size?",
+        "vi": "Cỡ này thế nào?"
+      }
+    ],
+    "id": "a1.it-is-too"
+  },
+  {
+    "level": "A1",
+    "topic": "directions-places",
+    "topic_vi": "Hỏi đường và địa điểm",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Where is ___?",
+    "frame_vi": "___ ở đâu?",
+    "note_vi": "Câu hỏi vị trí cơ bản nhất. Thêm the trước nơi chốn cụ thể, động từ is đứng trước danh từ số ít.",
+    "slots": [
+      {
+        "en": "the bank",
+        "vi": "Ngân hàng"
+      },
+      {
+        "en": "the station",
+        "vi": "Nhà ga"
+      },
+      {
+        "en": "the toilet",
+        "vi": "Nhà vệ sinh"
+      },
+      {
+        "en": "the hotel",
+        "vi": "Khách sạn"
+      },
+      {
+        "en": "the school",
+        "vi": "Trường học"
+      },
+      {
+        "en": "the post office",
+        "vi": "Bưu điện"
+      },
+      {
+        "en": "the bus stop",
+        "vi": "Trạm xe buýt"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Where is the market?",
+        "vi": "Chợ ở đâu?"
+      },
+      {
+        "en": "Where is the hospital?",
+        "vi": "Bệnh viện ở đâu?"
+      },
+      {
+        "en": "Where is my bag?",
+        "vi": "Cái túi của tôi ở đâu?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được bạn?"
+      },
+      {
+        "en": "What are you looking for?",
+        "vi": "Bạn đang tìm gì?"
+      }
+    ],
+    "id": "a1.where-is"
+  },
+  {
+    "level": "A1",
+    "topic": "directions-places",
+    "topic_vi": "Hỏi đường và địa điểm",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Is there ___ near here?",
+    "frame_vi": "Gần đây có ___ không?",
+    "note_vi": "Dùng Is there với danh từ số ít, thêm a hoặc an trước danh từ. Near here nghĩa là gần chỗ này.",
+    "slots": [
+      {
+        "en": "a bank",
+        "vi": "ngân hàng"
+      },
+      {
+        "en": "a bus stop",
+        "vi": "trạm xe buýt"
+      },
+      {
+        "en": "a toilet",
+        "vi": "nhà vệ sinh"
+      },
+      {
+        "en": "a shop",
+        "vi": "cửa hàng"
+      },
+      {
+        "en": "a cafe",
+        "vi": "quán cà phê"
+      },
+      {
+        "en": "a pharmacy",
+        "vi": "hiệu thuốc"
+      },
+      {
+        "en": "an ATM",
+        "vi": "cây ATM"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Is there a park near here?",
+        "vi": "Gần đây có công viên không?"
+      },
+      {
+        "en": "Is there a hotel near here?",
+        "vi": "Gần đây có khách sạn không?"
+      },
+      {
+        "en": "Is there an airport near here?",
+        "vi": "Gần đây có sân bay không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you need?",
+        "vi": "Bạn cần gì?"
+      },
+      {
+        "en": "Are you looking for something?",
+        "vi": "Bạn đang tìm thứ gì à?"
+      }
+    ],
+    "id": "a1.is-there-near-here"
+  },
+  {
+    "level": "A1",
+    "topic": "directions-places",
+    "topic_vi": "Hỏi đường và địa điểm",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "It's ___.",
+    "frame_vi": "Nó ___.",
+    "note_vi": "Dùng để chỉ vị trí khi có người hỏi đường. Sau vị trí thường có the và một địa điểm quen thuộc.",
+    "slots": [
+      {
+        "en": "on the left",
+        "vi": "ở bên trái"
+      },
+      {
+        "en": "on the right",
+        "vi": "ở bên phải"
+      },
+      {
+        "en": "next to the bank",
+        "vi": "cạnh ngân hàng"
+      },
+      {
+        "en": "near the park",
+        "vi": "gần công viên"
+      },
+      {
+        "en": "behind the hotel",
+        "vi": "sau khách sạn"
+      },
+      {
+        "en": "in front of the school",
+        "vi": "trước trường học"
+      },
+      {
+        "en": "over there",
+        "vi": "ở đằng kia"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It's across from the station.",
+        "vi": "Nó ở đối diện nhà ga."
+      },
+      {
+        "en": "It's between the shop and the cafe.",
+        "vi": "Nó ở giữa cửa hàng và quán cà phê."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where is the toilet?",
+        "vi": "Nhà vệ sinh ở đâu?"
+      },
+      {
+        "en": "Where is the bank?",
+        "vi": "Ngân hàng ở đâu?"
+      }
+    ],
+    "id": "a1.its-location"
+  },
+  {
+    "level": "A1",
+    "topic": "directions-places",
+    "topic_vi": "Hỏi đường và địa điểm",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "How do I get to ___?",
+    "frame_vi": "Làm sao để tôi đến ___?",
+    "note_vi": "Hỏi cách đi đến một nơi. Giữ the trước nơi chốn cụ thể, không cần giới từ nào khác sau to.",
+    "slots": [
+      {
+        "en": "the station",
+        "vi": "nhà ga"
+      },
+      {
+        "en": "the airport",
+        "vi": "sân bay"
+      },
+      {
+        "en": "the park",
+        "vi": "công viên"
+      },
+      {
+        "en": "the market",
+        "vi": "chợ"
+      },
+      {
+        "en": "the hospital",
+        "vi": "bệnh viện"
+      },
+      {
+        "en": "the museum",
+        "vi": "viện bảo tàng"
+      },
+      {
+        "en": "the beach",
+        "vi": "bãi biển"
+      }
+    ],
+    "examples": [
+      {
+        "en": "How do I get to the hotel?",
+        "vi": "Làm sao để tôi đến khách sạn?"
+      },
+      {
+        "en": "How do I get to your house?",
+        "vi": "Làm sao để tôi đến nhà bạn?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where do you want to go?",
+        "vi": "Bạn muốn đi đâu?"
+      },
+      {
+        "en": "Do you need help?",
+        "vi": "Bạn có cần giúp không?"
+      }
+    ],
+    "id": "a1.how-do-i-get-to"
+  },
+  {
+    "level": "A1",
+    "topic": "transport",
+    "topic_vi": "Đi lại bằng phương tiện",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I go to work ___.",
+    "frame_vi": "Tôi đi làm ___.",
+    "note_vi": "Nói cách bạn đi lại. Dùng by với phương tiện, nhưng đi bộ thì nói on foot, không dùng by.",
+    "slots": [
+      {
+        "en": "by bus",
+        "vi": "bằng xe buýt"
+      },
+      {
+        "en": "by car",
+        "vi": "bằng ô tô"
+      },
+      {
+        "en": "by bike",
+        "vi": "bằng xe đạp"
+      },
+      {
+        "en": "by train",
+        "vi": "bằng tàu hỏa"
+      },
+      {
+        "en": "by taxi",
+        "vi": "bằng taxi"
+      },
+      {
+        "en": "by motorbike",
+        "vi": "bằng xe máy"
+      },
+      {
+        "en": "on foot",
+        "vi": "bằng cách đi bộ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I go to school by bus.",
+        "vi": "Tôi đi học bằng xe buýt."
+      },
+      {
+        "en": "I go home by train.",
+        "vi": "Tôi về nhà bằng tàu hỏa."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How do you go to work?",
+        "vi": "Bạn đi làm bằng gì?"
+      },
+      {
+        "en": "How do you get home?",
+        "vi": "Bạn về nhà bằng gì?"
+      }
+    ],
+    "id": "a1.i-go-to-work"
+  },
+  {
+    "level": "A1",
+    "topic": "transport",
+    "topic_vi": "Đi lại bằng phương tiện",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "You can take ___.",
+    "frame_vi": "Bạn có thể đi ___.",
+    "note_vi": "Dùng để gợi ý phương tiện cho người khác. Take đi với phương tiện, thêm a hoặc the trước danh từ.",
+    "slots": [
+      {
+        "en": "a bus",
+        "vi": "xe buýt"
+      },
+      {
+        "en": "a taxi",
+        "vi": "taxi"
+      },
+      {
+        "en": "the train",
+        "vi": "tàu hỏa"
+      },
+      {
+        "en": "the subway",
+        "vi": "tàu điện ngầm"
+      },
+      {
+        "en": "bus number five",
+        "vi": "xe buýt số năm"
+      },
+      {
+        "en": "a motorbike taxi",
+        "vi": "xe ôm"
+      },
+      {
+        "en": "the airport bus",
+        "vi": "xe buýt sân bay"
+      }
+    ],
+    "examples": [
+      {
+        "en": "You can take a boat.",
+        "vi": "Bạn có thể đi thuyền."
+      },
+      {
+        "en": "You can take the next bus.",
+        "vi": "Bạn có thể đi chuyến xe buýt tiếp theo."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How can I get to the airport?",
+        "vi": "Tôi đến sân bay bằng cách nào?"
+      },
+      {
+        "en": "What is the best way to go?",
+        "vi": "Cách đi nào là tốt nhất?"
+      }
+    ],
+    "id": "a1.you-can-take"
+  },
+  {
+    "level": "A1",
+    "topic": "transport",
+    "topic_vi": "Đi lại bằng phương tiện",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "It takes ___ to get there.",
+    "frame_vi": "Mất ___ để đến đó.",
+    "note_vi": "Nói thời gian đi đường. Dùng it takes cộng thời gian, chú ý minutes và hours có s khi nhiều hơn một.",
+    "slots": [
+      {
+        "en": "five minutes",
+        "vi": "năm phút"
+      },
+      {
+        "en": "ten minutes",
+        "vi": "mười phút"
+      },
+      {
+        "en": "half an hour",
+        "vi": "nửa tiếng"
+      },
+      {
+        "en": "one hour",
+        "vi": "một tiếng"
+      },
+      {
+        "en": "two hours",
+        "vi": "hai tiếng"
+      },
+      {
+        "en": "a few minutes",
+        "vi": "vài phút"
+      },
+      {
+        "en": "a long time",
+        "vi": "rất lâu"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It takes three hours to get there.",
+        "vi": "Mất ba tiếng để đến đó."
+      },
+      {
+        "en": "It takes one day to get there.",
+        "vi": "Mất một ngày để đến đó."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How long does it take?",
+        "vi": "Mất bao lâu?"
+      },
+      {
+        "en": "Is it far from here?",
+        "vi": "Chỗ đó có xa đây không?"
+      }
+    ],
+    "id": "a1.it-takes"
+  },
+  {
+    "level": "A1",
+    "topic": "transport",
+    "topic_vi": "Đi lại bằng phương tiện",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "Does this bus go to ___?",
+    "frame_vi": "Xe buýt này có đi đến ___ không?",
+    "note_vi": "Hỏi xe có đến nơi bạn cần không. Sau Does động từ giữ nguyên là go, không thêm es.",
+    "slots": [
+      {
+        "en": "the airport",
+        "vi": "sân bay"
+      },
+      {
+        "en": "the station",
+        "vi": "nhà ga"
+      },
+      {
+        "en": "the market",
+        "vi": "chợ"
+      },
+      {
+        "en": "the beach",
+        "vi": "bãi biển"
+      },
+      {
+        "en": "the city",
+        "vi": "trung tâm thành phố"
+      },
+      {
+        "en": "the hospital",
+        "vi": "bệnh viện"
+      },
+      {
+        "en": "the park",
+        "vi": "công viên"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Does this bus go to the museum?",
+        "vi": "Xe buýt này có đi đến viện bảo tàng không?"
+      },
+      {
+        "en": "Does this bus go to Hue?",
+        "vi": "Xe buýt này có đi đến Huế không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where are you going?",
+        "vi": "Bạn đang đi đâu?"
+      },
+      {
+        "en": "Which bus do you want?",
+        "vi": "Bạn muốn đi xe nào?"
+      }
+    ],
+    "id": "a1.does-this-bus-go-to"
+  },
+  {
+    "level": "A1",
+    "topic": "travel-tickets",
+    "topic_vi": "Vé và chuyến đi",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "Two tickets to ___, please.",
+    "frame_vi": "Cho tôi hai vé đi ___.",
+    "note_vi": "Mua vé ở quầy. Đổi Two thành One hoặc Three tùy số vé, tên thành phố không cần a hay the.",
+    "slots": [
+      {
+        "en": "Hanoi",
+        "vi": "Hà Nội"
+      },
+      {
+        "en": "Hue",
+        "vi": "Huế"
+      },
+      {
+        "en": "Da Nang",
+        "vi": "Đà Nẵng"
+      },
+      {
+        "en": "London",
+        "vi": "Luân Đôn"
+      },
+      {
+        "en": "Paris",
+        "vi": "Pa ri"
+      },
+      {
+        "en": "Tokyo",
+        "vi": "Tô ky ô"
+      },
+      {
+        "en": "Bangkok",
+        "vi": "Băng Cốc"
+      }
+    ],
+    "examples": [
+      {
+        "en": "One ticket to Saigon, please.",
+        "vi": "Cho tôi một vé đi Sài Gòn."
+      },
+      {
+        "en": "Three tickets to Dalat, please.",
+        "vi": "Cho tôi ba vé đi Đà Lạt."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where are you going?",
+        "vi": "Bạn đi đâu?"
+      },
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được bạn?"
+      }
+    ],
+    "id": "a1.two-tickets-to"
+  },
+  {
+    "level": "A1",
+    "topic": "travel-tickets",
+    "topic_vi": "Vé và chuyến đi",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "What time does ___ leave?",
+    "frame_vi": "___ chạy lúc mấy giờ?",
+    "note_vi": "Hỏi giờ khởi hành. Sau does động từ leave giữ nguyên, không thêm s. Thêm the trước phương tiện.",
+    "slots": [
+      {
+        "en": "the train",
+        "vi": "Tàu hỏa"
+      },
+      {
+        "en": "the bus",
+        "vi": "Xe buýt"
+      },
+      {
+        "en": "the plane",
+        "vi": "Máy bay"
+      },
+      {
+        "en": "the boat",
+        "vi": "Thuyền"
+      },
+      {
+        "en": "my flight",
+        "vi": "Chuyến bay của tôi"
+      },
+      {
+        "en": "the next bus",
+        "vi": "Chuyến xe buýt tiếp theo"
+      },
+      {
+        "en": "the last train",
+        "vi": "Chuyến tàu cuối"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What time does the ferry leave?",
+        "vi": "Phà chạy lúc mấy giờ?"
+      },
+      {
+        "en": "What time does your bus leave?",
+        "vi": "Xe buýt của bạn chạy lúc mấy giờ?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Which one do you want?",
+        "vi": "Bạn muốn chuyến nào?"
+      },
+      {
+        "en": "Are you going today?",
+        "vi": "Hôm nay bạn đi à?"
+      }
+    ],
+    "id": "a1.what-time-does-leave"
+  },
+  {
+    "level": "A1",
+    "topic": "travel-tickets",
+    "topic_vi": "Vé và chuyến đi",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "How much is ___ to the airport?",
+    "frame_vi": "___ đến sân bay giá bao nhiêu?",
+    "note_vi": "Hỏi giá đi đến một nơi. Dùng is với số ít, thêm a hoặc the trước danh từ. Thay airport bằng nơi khác.",
+    "slots": [
+      {
+        "en": "a ticket",
+        "vi": "Một vé"
+      },
+      {
+        "en": "a taxi",
+        "vi": "Một chuyến taxi"
+      },
+      {
+        "en": "the train",
+        "vi": "Tàu hỏa"
+      },
+      {
+        "en": "the bus",
+        "vi": "Xe buýt"
+      },
+      {
+        "en": "a ride",
+        "vi": "Một chuyến xe"
+      }
+    ],
+    "examples": [
+      {
+        "en": "How much is a bus ticket to the city?",
+        "vi": "Một vé xe buýt vào thành phố giá bao nhiêu?"
+      },
+      {
+        "en": "How much is a taxi to the hotel?",
+        "vi": "Một chuyến taxi đến khách sạn giá bao nhiêu?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you need a ticket?",
+        "vi": "Bạn cần vé không?"
+      },
+      {
+        "en": "How are you going there?",
+        "vi": "Bạn đi đến đó bằng gì?"
+      }
+    ],
+    "id": "a1.how-much-ticket-to-airport"
+  },
+  {
+    "level": "A1",
+    "topic": "travel-tickets",
+    "topic_vi": "Vé và chuyến đi",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "Is this the right ___?",
+    "frame_vi": "Đây có phải ___ đúng không?",
+    "note_vi": "Hỏi để chắc mình không đi nhầm. The right nghĩa là đúng, đứng trước danh từ số ít như bus hay platform.",
+    "slots": [
+      {
+        "en": "bus",
+        "vi": "xe buýt"
+      },
+      {
+        "en": "train",
+        "vi": "chuyến tàu"
+      },
+      {
+        "en": "platform",
+        "vi": "sân ga"
+      },
+      {
+        "en": "gate",
+        "vi": "cổng"
+      },
+      {
+        "en": "way",
+        "vi": "đường"
+      },
+      {
+        "en": "seat",
+        "vi": "chỗ ngồi"
+      },
+      {
+        "en": "line",
+        "vi": "hàng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Is this the right door?",
+        "vi": "Đây có phải cửa đúng không?"
+      },
+      {
+        "en": "Is this the right road?",
+        "vi": "Đây có phải đường đúng không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I see your ticket?",
+        "vi": "Cho tôi xem vé của bạn được không?"
+      },
+      {
+        "en": "Are you lost?",
+        "vi": "Bạn bị lạc à?"
+      }
+    ],
+    "id": "a1.is-this-the-right"
+  },
+  {
+    "level": "A1",
+    "topic": "time-dates",
+    "topic_vi": "Giờ giấc và ngày tháng",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "It's ___ now.",
+    "frame_vi": "Bây giờ là ___.",
+    "note_vi": "Nói giờ hiện tại. Dùng It's, sau đó là giờ: o'clock cho giờ đúng, half past cho giờ rưỡi.",
+    "slots": [
+      {
+        "en": "one o'clock",
+        "vi": "một giờ"
+      },
+      {
+        "en": "three o'clock",
+        "vi": "ba giờ"
+      },
+      {
+        "en": "half past four",
+        "vi": "bốn giờ rưỡi"
+      },
+      {
+        "en": "ten past five",
+        "vi": "năm giờ mười"
+      },
+      {
+        "en": "quarter past six",
+        "vi": "sáu giờ mười lăm"
+      },
+      {
+        "en": "noon",
+        "vi": "mười hai giờ trưa"
+      },
+      {
+        "en": "midnight",
+        "vi": "nửa đêm"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It's eight o'clock now.",
+        "vi": "Bây giờ là tám giờ."
+      },
+      {
+        "en": "It's half past nine now.",
+        "vi": "Bây giờ là chín giờ rưỡi."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What time is it?",
+        "vi": "Mấy giờ rồi?"
+      },
+      {
+        "en": "Do you have the time?",
+        "vi": "Bạn biết mấy giờ không?"
+      }
+    ],
+    "id": "a1.its-time-now"
+  },
+  {
+    "level": "A1",
+    "topic": "time-dates",
+    "topic_vi": "Giờ giấc và ngày tháng",
+    "goals": [
+      "work",
+      "daily"
+    ],
+    "frame_en": "The class starts at ___.",
+    "frame_vi": "Lớp học bắt đầu lúc ___.",
+    "note_vi": "Dùng at trước giờ để nói một việc xảy ra lúc mấy giờ. Có thể thay The class bằng The movie, The meeting.",
+    "slots": [
+      {
+        "en": "seven o'clock",
+        "vi": "bảy giờ"
+      },
+      {
+        "en": "eight thirty",
+        "vi": "tám giờ ba mươi"
+      },
+      {
+        "en": "nine o'clock",
+        "vi": "chín giờ"
+      },
+      {
+        "en": "half past nine",
+        "vi": "chín giờ rưỡi"
+      },
+      {
+        "en": "ten o'clock",
+        "vi": "mười giờ"
+      },
+      {
+        "en": "noon",
+        "vi": "mười hai giờ trưa"
+      }
+    ],
+    "examples": [
+      {
+        "en": "The class starts at two o'clock.",
+        "vi": "Lớp học bắt đầu lúc hai giờ."
+      },
+      {
+        "en": "The class starts at quarter past one.",
+        "vi": "Lớp học bắt đầu lúc một giờ mười lăm."
+      },
+      {
+        "en": "The class starts at six thirty.",
+        "vi": "Lớp học bắt đầu lúc sáu giờ ba mươi."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What time does the class start?",
+        "vi": "Mấy giờ lớp học bắt đầu?"
+      },
+      {
+        "en": "When do we begin?",
+        "vi": "Khi nào chúng ta bắt đầu?"
+      }
+    ],
+    "id": "a1.class-starts-at"
+  },
+  {
+    "level": "A1",
+    "topic": "time-dates",
+    "topic_vi": "Giờ giấc và ngày tháng",
+    "goals": [
+      "social",
+      "work"
+    ],
+    "frame_en": "I'm free on ___.",
+    "frame_vi": "Tôi rảnh vào ___.",
+    "note_vi": "Dùng on trước thứ trong tuần để nói bạn rảnh ngày nào. Thứ viết hoa chữ cái đầu.",
+    "slots": [
+      {
+        "en": "Monday",
+        "vi": "thứ Hai"
+      },
+      {
+        "en": "Tuesday",
+        "vi": "thứ Ba"
+      },
+      {
+        "en": "Wednesday",
+        "vi": "thứ Tư"
+      },
+      {
+        "en": "Friday",
+        "vi": "thứ Sáu"
+      },
+      {
+        "en": "Saturday",
+        "vi": "thứ Bảy"
+      },
+      {
+        "en": "Sunday",
+        "vi": "Chủ nhật"
+      },
+      {
+        "en": "the weekend",
+        "vi": "cuối tuần"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm free on Thursday.",
+        "vi": "Tôi rảnh vào thứ Năm."
+      },
+      {
+        "en": "I'm free on Sunday morning.",
+        "vi": "Tôi rảnh vào sáng Chủ nhật."
+      }
+    ],
+    "asks": [
+      {
+        "en": "When are you free?",
+        "vi": "Khi nào bạn rảnh?"
+      },
+      {
+        "en": "Can we meet this week?",
+        "vi": "Tuần này chúng ta gặp nhau được không?"
+      }
+    ],
+    "id": "a1.im-free-on"
+  },
+  {
+    "level": "A1",
+    "topic": "weather",
+    "topic_vi": "Thời tiết",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "It's ___ today.",
+    "frame_vi": "Hôm nay trời ___.",
+    "note_vi": "Nói về thời tiết dùng It's và một tính từ. Chủ ngữ luôn là It, không dùng I hay He.",
+    "slots": [
+      {
+        "en": "hot",
+        "vi": "nóng"
+      },
+      {
+        "en": "cold",
+        "vi": "lạnh"
+      },
+      {
+        "en": "sunny",
+        "vi": "nắng"
+      },
+      {
+        "en": "rainy",
+        "vi": "mưa"
+      },
+      {
+        "en": "windy",
+        "vi": "có gió"
+      },
+      {
+        "en": "cloudy",
+        "vi": "nhiều mây"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It's warm today.",
+        "vi": "Hôm nay trời ấm."
+      },
+      {
+        "en": "It's very cold today.",
+        "vi": "Hôm nay trời rất lạnh."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How's the weather today?",
+        "vi": "Hôm nay thời tiết thế nào?"
+      },
+      {
+        "en": "What's the weather like?",
+        "vi": "Thời tiết ra sao?"
+      }
+    ],
+    "id": "a1.its-weather-today"
+  },
+  {
+    "level": "A1",
+    "topic": "weather",
+    "topic_vi": "Thời tiết",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I don't like ___ weather.",
+    "frame_vi": "Tôi không thích thời tiết ___.",
+    "note_vi": "Đặt tính từ giữa like và weather. Weather không đếm được nên không có a hay s. Đổi thành I like để nói thích.",
+    "slots": [
+      {
+        "en": "hot",
+        "vi": "nóng"
+      },
+      {
+        "en": "cold",
+        "vi": "lạnh"
+      },
+      {
+        "en": "rainy",
+        "vi": "mưa"
+      },
+      {
+        "en": "windy",
+        "vi": "nhiều gió"
+      },
+      {
+        "en": "cloudy",
+        "vi": "nhiều mây"
+      },
+      {
+        "en": "snowy",
+        "vi": "có tuyết"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I don't like wet weather.",
+        "vi": "Tôi không thích thời tiết ẩm ướt."
+      },
+      {
+        "en": "I don't like cool weather.",
+        "vi": "Tôi không thích thời tiết mát lạnh."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you like this weather?",
+        "vi": "Bạn có thích thời tiết này không?"
+      },
+      {
+        "en": "Why are you at home?",
+        "vi": "Sao bạn ở nhà?"
+      }
+    ],
+    "id": "a1.i-dont-like-weather"
+  },
+  {
+    "level": "A1",
+    "topic": "weather",
+    "topic_vi": "Thời tiết",
+    "goals": [
+      "daily",
+      "travel"
+    ],
+    "frame_en": "Take ___ with you.",
+    "frame_vi": "Hãy mang ___ theo.",
+    "note_vi": "Câu nhắc nhở ai đó mang đồ theo. Dùng a hoặc an cho vật đếm được, your cho đồ của người đó, some cho đồ không đếm được.",
+    "slots": [
+      {
+        "en": "an umbrella",
+        "vi": "một cái ô"
+      },
+      {
+        "en": "a coat",
+        "vi": "một cái áo khoác"
+      },
+      {
+        "en": "a hat",
+        "vi": "một cái mũ"
+      },
+      {
+        "en": "your jacket",
+        "vi": "áo khoác của bạn"
+      },
+      {
+        "en": "your sunglasses",
+        "vi": "kính râm của bạn"
+      },
+      {
+        "en": "some water",
+        "vi": "ít nước"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Take a map with you.",
+        "vi": "Hãy mang một tấm bản đồ theo."
+      },
+      {
+        "en": "Take your phone with you.",
+        "vi": "Hãy mang điện thoại theo."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What should I take today?",
+        "vi": "Hôm nay tôi nên mang gì?"
+      },
+      {
+        "en": "Is it going to rain?",
+        "vi": "Trời sắp mưa à?"
+      }
+    ],
+    "id": "a1.take-with-you"
+  },
+  {
+    "level": "A1",
+    "topic": "weather",
+    "topic_vi": "Thời tiết",
+    "goals": [
+      "travel",
+      "social"
+    ],
+    "frame_en": "It rains a lot in ___.",
+    "frame_vi": "Trời mưa nhiều vào ___.",
+    "note_vi": "Dùng in trước mùa hoặc tháng để nói khi nào trời mưa nhiều. Có thể đổi rains thành snows hoặc is hot.",
+    "slots": [
+      {
+        "en": "summer",
+        "vi": "mùa hè"
+      },
+      {
+        "en": "winter",
+        "vi": "mùa đông"
+      },
+      {
+        "en": "spring",
+        "vi": "mùa xuân"
+      },
+      {
+        "en": "autumn",
+        "vi": "mùa thu"
+      },
+      {
+        "en": "June",
+        "vi": "tháng Sáu"
+      },
+      {
+        "en": "September",
+        "vi": "tháng Chín"
+      }
+    ],
+    "examples": [
+      {
+        "en": "It rains a lot in July.",
+        "vi": "Trời mưa nhiều vào tháng Bảy."
+      },
+      {
+        "en": "It rains a lot in May.",
+        "vi": "Trời mưa nhiều vào tháng Năm."
+      }
+    ],
+    "asks": [
+      {
+        "en": "When does it rain here?",
+        "vi": "Ở đây khi nào trời mưa?"
+      },
+      {
+        "en": "When is the best time to visit?",
+        "vi": "Khi nào là thời gian tốt nhất để đến?"
+      }
+    ],
+    "id": "a1.it-rains-a-lot-in"
+  },
+  {
+    "level": "A1",
+    "topic": "daily-routine",
+    "topic_vi": "Thói quen hằng ngày",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I get up at ___.",
+    "frame_vi": "Tôi thức dậy lúc ___.",
+    "note_vi": "Dùng at trước giờ để nói thói quen. Với he hoặc she, động từ thêm s: She gets up at six.",
+    "slots": [
+      {
+        "en": "five thirty",
+        "vi": "năm giờ ba mươi"
+      },
+      {
+        "en": "six o'clock",
+        "vi": "sáu giờ"
+      },
+      {
+        "en": "half past six",
+        "vi": "sáu giờ rưỡi"
+      },
+      {
+        "en": "seven o'clock",
+        "vi": "bảy giờ"
+      },
+      {
+        "en": "seven thirty",
+        "vi": "bảy giờ ba mươi"
+      },
+      {
+        "en": "eight o'clock",
+        "vi": "tám giờ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I get up at five o'clock.",
+        "vi": "Tôi thức dậy lúc năm giờ."
+      },
+      {
+        "en": "I get up at quarter past seven.",
+        "vi": "Tôi thức dậy lúc bảy giờ mười lăm."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What time do you get up?",
+        "vi": "Bạn thức dậy lúc mấy giờ?"
+      },
+      {
+        "en": "Are you an early bird?",
+        "vi": "Bạn dậy sớm à?"
+      }
+    ],
+    "id": "a1.i-get-up-at"
+  },
+  {
+    "level": "A1",
+    "topic": "daily-routine",
+    "topic_vi": "Thói quen hằng ngày",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I ___ every day.",
+    "frame_vi": "Tôi ___ mỗi ngày.",
+    "note_vi": "Dùng động từ nguyên mẫu sau I để nói thói quen. Every day đứng cuối câu. Với he hoặc she, động từ thêm s.",
+    "slots": [
+      {
+        "en": "walk",
+        "vi": "đi bộ"
+      },
+      {
+        "en": "read",
+        "vi": "đọc sách"
+      },
+      {
+        "en": "cook",
+        "vi": "nấu ăn"
+      },
+      {
+        "en": "study English",
+        "vi": "học tiếng Anh"
+      },
+      {
+        "en": "drink coffee",
+        "vi": "uống cà phê"
+      },
+      {
+        "en": "play football",
+        "vi": "chơi bóng đá"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I swim every day.",
+        "vi": "Tôi bơi mỗi ngày."
+      },
+      {
+        "en": "I listen to music every day.",
+        "vi": "Tôi nghe nhạc mỗi ngày."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you do every day?",
+        "vi": "Bạn làm gì mỗi ngày?"
+      },
+      {
+        "en": "What's your hobby?",
+        "vi": "Sở thích của bạn là gì?"
+      }
+    ],
+    "id": "a1.i-do-every-day"
+  },
+  {
+    "level": "A1",
+    "topic": "health-body",
+    "topic_vi": "Sức khỏe và cơ thể",
+    "goals": [
+      "daily",
+      "travel"
+    ],
+    "frame_en": "I have a pain in my ___.",
+    "frame_vi": "Tôi bị đau ở ___ của tôi.",
+    "note_vi": "Nói chỗ đau với bác sĩ. Dùng my trước bộ phận cơ thể, số nhiều thêm s như legs.",
+    "slots": [
+      {
+        "en": "head",
+        "vi": "đầu"
+      },
+      {
+        "en": "back",
+        "vi": "lưng"
+      },
+      {
+        "en": "leg",
+        "vi": "chân"
+      },
+      {
+        "en": "arm",
+        "vi": "tay"
+      },
+      {
+        "en": "neck",
+        "vi": "cổ"
+      },
+      {
+        "en": "foot",
+        "vi": "bàn chân"
+      },
+      {
+        "en": "chest",
+        "vi": "ngực"
+      },
+      {
+        "en": "stomach",
+        "vi": "bụng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I have a pain in my knee.",
+        "vi": "Tôi bị đau ở đầu gối."
+      },
+      {
+        "en": "I have a pain in my hand.",
+        "vi": "Tôi bị đau ở bàn tay."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is the problem?",
+        "vi": "Bạn bị sao vậy?"
+      },
+      {
+        "en": "Where does it hurt?",
+        "vi": "Bạn đau ở đâu?"
+      }
+    ],
+    "id": "a1.i-have-a-pain"
+  },
+  {
+    "level": "A1",
+    "topic": "health-body",
+    "topic_vi": "Sức khỏe và cơ thể",
+    "goals": [
+      "daily",
+      "travel"
+    ],
+    "frame_en": "My ___ hurts.",
+    "frame_vi": "___ của tôi đau.",
+    "note_vi": "Dùng số ít với hurts. Nếu là số nhiều như eyes, feet thì nói My eyes hurt.",
+    "slots": [
+      {
+        "en": "head",
+        "vi": "Đầu"
+      },
+      {
+        "en": "back",
+        "vi": "Lưng"
+      },
+      {
+        "en": "tooth",
+        "vi": "Răng"
+      },
+      {
+        "en": "throat",
+        "vi": "Cổ họng"
+      },
+      {
+        "en": "ear",
+        "vi": "Tai"
+      },
+      {
+        "en": "stomach",
+        "vi": "Bụng"
+      },
+      {
+        "en": "leg",
+        "vi": "Chân"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My shoulder hurts.",
+        "vi": "Vai của tôi đau."
+      },
+      {
+        "en": "My finger hurts.",
+        "vi": "Ngón tay của tôi đau."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is wrong?",
+        "vi": "Có chuyện gì vậy?"
+      },
+      {
+        "en": "Are you okay?",
+        "vi": "Bạn ổn không?"
+      }
+    ],
+    "id": "a1.my-hurts"
+  },
+  {
+    "level": "A1",
+    "topic": "health-body",
+    "topic_vi": "Sức khỏe và cơ thể",
+    "goals": [
+      "daily",
+      "work"
+    ],
+    "frame_en": "I have ___ today.",
+    "frame_vi": "Hôm nay tôi bị ___.",
+    "note_vi": "Nói mình bị bệnh gì: I have + a cold, a headache, a fever. Dùng a trước bệnh đếm được.",
+    "slots": [
+      {
+        "en": "a cold",
+        "vi": "cảm lạnh"
+      },
+      {
+        "en": "a headache",
+        "vi": "đau đầu"
+      },
+      {
+        "en": "a fever",
+        "vi": "sốt"
+      },
+      {
+        "en": "a cough",
+        "vi": "ho"
+      },
+      {
+        "en": "a stomachache",
+        "vi": "đau bụng"
+      },
+      {
+        "en": "a toothache",
+        "vi": "đau răng"
+      },
+      {
+        "en": "a sore throat",
+        "vi": "đau họng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I have a bad cold today.",
+        "vi": "Hôm nay tôi bị cảm nặng."
+      },
+      {
+        "en": "I have a pain today.",
+        "vi": "Hôm nay tôi bị đau."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why are you not at work?",
+        "vi": "Sao bạn không đi làm?"
+      },
+      {
+        "en": "How do you feel?",
+        "vi": "Bạn thấy thế nào?"
+      }
+    ],
+    "id": "a1.i-feel-sick-today"
+  },
+  {
+    "level": "A1",
+    "topic": "health-body",
+    "topic_vi": "Sức khỏe và cơ thể",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "I need ___.",
+    "frame_vi": "Tôi cần ___.",
+    "note_vi": "Nói điều cần khi không khỏe. Trước danh từ đếm được số ít dùng a hoặc an, đồ không đếm được dùng some.",
+    "slots": [
+      {
+        "en": "a doctor",
+        "vi": "bác sĩ"
+      },
+      {
+        "en": "a rest",
+        "vi": "nghỉ ngơi"
+      },
+      {
+        "en": "some water",
+        "vi": "ít nước"
+      },
+      {
+        "en": "some medicine",
+        "vi": "ít thuốc"
+      },
+      {
+        "en": "a dentist",
+        "vi": "nha sĩ"
+      },
+      {
+        "en": "a hospital",
+        "vi": "bệnh viện"
+      },
+      {
+        "en": "some help",
+        "vi": "sự giúp đỡ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I need some sleep.",
+        "vi": "Tôi cần ngủ một chút."
+      },
+      {
+        "en": "I need a nurse.",
+        "vi": "Tôi cần một y tá."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you need?",
+        "vi": "Bạn cần gì?"
+      },
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp bạn được không?"
+      }
+    ],
+    "id": "a1.i-need-a-doctor"
+  },
+  {
+    "level": "A1",
+    "topic": "feelings",
+    "topic_vi": "Cảm xúc",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I am very ___ today.",
+    "frame_vi": "Hôm nay tôi rất ___.",
+    "note_vi": "Nói cảm xúc của mình. Dùng I am rồi đến tính từ, very làm mạnh thêm.",
+    "slots": [
+      {
+        "en": "happy",
+        "vi": "vui"
+      },
+      {
+        "en": "tired",
+        "vi": "mệt"
+      },
+      {
+        "en": "sad",
+        "vi": "buồn"
+      },
+      {
+        "en": "hungry",
+        "vi": "đói"
+      },
+      {
+        "en": "busy",
+        "vi": "bận"
+      },
+      {
+        "en": "angry",
+        "vi": "giận"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I am very sleepy today.",
+        "vi": "Hôm nay tôi rất buồn ngủ."
+      },
+      {
+        "en": "I am very well today.",
+        "vi": "Hôm nay tôi rất khỏe."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How are you today?",
+        "vi": "Hôm nay bạn thế nào?"
+      },
+      {
+        "en": "Are you okay?",
+        "vi": "Bạn ổn chứ?"
+      }
+    ],
+    "id": "a1.i-am-feeling"
+  },
+  {
+    "level": "A1",
+    "topic": "feelings",
+    "topic_vi": "Cảm xúc",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "Why are you ___?",
+    "frame_vi": "Sao bạn ___ vậy?",
+    "note_vi": "Hỏi lý do bạn bè đang có cảm xúc. Đặt tính từ cảm xúc sau are you.",
+    "slots": [
+      {
+        "en": "sad",
+        "vi": "buồn"
+      },
+      {
+        "en": "angry",
+        "vi": "giận"
+      },
+      {
+        "en": "happy",
+        "vi": "vui"
+      },
+      {
+        "en": "tired",
+        "vi": "mệt"
+      },
+      {
+        "en": "late",
+        "vi": "trễ"
+      },
+      {
+        "en": "afraid",
+        "vi": "sợ"
+      },
+      {
+        "en": "quiet",
+        "vi": "im lặng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Why are you so sad?",
+        "vi": "Sao bạn buồn thế?"
+      },
+      {
+        "en": "Why are you crying?",
+        "vi": "Sao bạn khóc vậy?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Are you okay?",
+        "vi": "Bạn ổn không?"
+      },
+      {
+        "en": "What is the matter?",
+        "vi": "Có chuyện gì vậy?"
+      }
+    ],
+    "id": "a1.are-you-ok"
+  },
+  {
+    "level": "A1",
+    "topic": "feelings",
+    "topic_vi": "Cảm xúc",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I am happy because ___.",
+    "frame_vi": "Tôi vui vì ___.",
+    "note_vi": "Giải thích lý do vui bằng because rồi một câu ngắn có chủ ngữ và động từ.",
+    "slots": [
+      {
+        "en": "it is Friday",
+        "vi": "hôm nay là thứ sáu"
+      },
+      {
+        "en": "I see my family",
+        "vi": "tôi gặp gia đình"
+      },
+      {
+        "en": "I have a new job",
+        "vi": "tôi có việc mới"
+      },
+      {
+        "en": "the sun is out",
+        "vi": "trời nắng"
+      },
+      {
+        "en": "you are here",
+        "vi": "bạn ở đây"
+      },
+      {
+        "en": "I have a gift",
+        "vi": "tôi có quà"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I am happy because I pass the test.",
+        "vi": "Tôi vui vì tôi đậu bài kiểm tra."
+      },
+      {
+        "en": "I am happy because we are friends.",
+        "vi": "Tôi vui vì chúng ta là bạn."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Why are you so happy?",
+        "vi": "Sao bạn vui thế?"
+      },
+      {
+        "en": "What is the good news?",
+        "vi": "Tin vui là gì?"
+      }
+    ],
+    "id": "a1.i-feel-because"
+  },
+  {
+    "level": "A1",
+    "topic": "feelings",
+    "topic_vi": "Cảm xúc",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I am afraid of ___.",
+    "frame_vi": "Tôi sợ ___.",
+    "note_vi": "Nói điều mình sợ. Sau of dùng danh từ, số nhiều không cần a, ví dụ dogs.",
+    "slots": [
+      {
+        "en": "dogs",
+        "vi": "chó"
+      },
+      {
+        "en": "snakes",
+        "vi": "rắn"
+      },
+      {
+        "en": "the dark",
+        "vi": "bóng tối"
+      },
+      {
+        "en": "water",
+        "vi": "nước"
+      },
+      {
+        "en": "spiders",
+        "vi": "nhện"
+      },
+      {
+        "en": "heights",
+        "vi": "độ cao"
+      },
+      {
+        "en": "my teacher",
+        "vi": "giáo viên của tôi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I am afraid of cats.",
+        "vi": "Tôi sợ mèo."
+      },
+      {
+        "en": "I am afraid of the doctor.",
+        "vi": "Tôi sợ bác sĩ."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Are you afraid?",
+        "vi": "Bạn có sợ không?"
+      },
+      {
+        "en": "What are you afraid of?",
+        "vi": "Bạn sợ điều gì?"
+      }
+    ],
+    "id": "a1.i-am-afraid-of"
+  },
+  {
+    "level": "A1",
+    "topic": "emergency-help",
+    "topic_vi": "Khẩn cấp và nhờ giúp đỡ",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Please call ___!",
+    "frame_vi": "Làm ơn gọi ___!",
+    "note_vi": "Nhờ người khác gọi giúp khi khẩn cấp. Thêm a hoặc the trước danh từ số ít.",
+    "slots": [
+      {
+        "en": "the police",
+        "vi": "cảnh sát"
+      },
+      {
+        "en": "a doctor",
+        "vi": "bác sĩ"
+      },
+      {
+        "en": "an ambulance",
+        "vi": "xe cứu thương"
+      },
+      {
+        "en": "my mother",
+        "vi": "mẹ tôi"
+      },
+      {
+        "en": "my friend",
+        "vi": "bạn tôi"
+      },
+      {
+        "en": "the hotel",
+        "vi": "khách sạn"
+      },
+      {
+        "en": "a taxi",
+        "vi": "taxi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Please call my father!",
+        "vi": "Làm ơn gọi bố tôi!"
+      },
+      {
+        "en": "Please call the nurse!",
+        "vi": "Làm ơn gọi y tá!"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What happened?",
+        "vi": "Chuyện gì xảy ra vậy?"
+      },
+      {
+        "en": "Who do you need?",
+        "vi": "Bạn cần gọi ai?"
+      }
+    ],
+    "id": "a1.please-call"
+  },
+  {
+    "level": "A1",
+    "topic": "emergency-help",
+    "topic_vi": "Khẩn cấp và nhờ giúp đỡ",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "I lost my ___.",
+    "frame_vi": "Tôi bị mất ___ của tôi.",
+    "note_vi": "Báo mất đồ. Dùng my trước đồ vật, không dùng a. Lost là quá khứ của lose.",
+    "slots": [
+      {
+        "en": "phone",
+        "vi": "điện thoại"
+      },
+      {
+        "en": "bag",
+        "vi": "túi"
+      },
+      {
+        "en": "passport",
+        "vi": "hộ chiếu"
+      },
+      {
+        "en": "wallet",
+        "vi": "ví"
+      },
+      {
+        "en": "key",
+        "vi": "chìa khóa"
+      },
+      {
+        "en": "ticket",
+        "vi": "vé"
+      },
+      {
+        "en": "money",
+        "vi": "tiền"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I lost my watch.",
+        "vi": "Tôi bị mất đồng hồ."
+      },
+      {
+        "en": "I lost my card.",
+        "vi": "Tôi bị mất thẻ."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is the problem?",
+        "vi": "Bạn gặp vấn đề gì?"
+      },
+      {
+        "en": "What did you lose?",
+        "vi": "Bạn làm mất gì?"
+      }
+    ],
+    "id": "a1.i-lost-my"
+  },
+  {
+    "level": "A1",
+    "topic": "emergency-help",
+    "topic_vi": "Khẩn cấp và nhờ giúp đỡ",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Can you help me ___?",
+    "frame_vi": "Bạn giúp tôi ___ được không?",
+    "note_vi": "Nhờ giúp một việc cụ thể. Sau help me dùng từ chỉ việc ngắn như now hoặc find it.",
+    "slots": [
+      {
+        "en": "now",
+        "vi": "ngay bây giờ"
+      },
+      {
+        "en": "please",
+        "vi": "với"
+      },
+      {
+        "en": "find my bag",
+        "vi": "tìm túi của tôi"
+      },
+      {
+        "en": "find a doctor",
+        "vi": "tìm bác sĩ"
+      },
+      {
+        "en": "find my phone",
+        "vi": "tìm điện thoại"
+      },
+      {
+        "en": "find the hotel",
+        "vi": "tìm khách sạn"
+      },
+      {
+        "en": "call my friend",
+        "vi": "gọi bạn tôi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Can you help me find my key?",
+        "vi": "Bạn giúp tôi tìm chìa khóa được không?"
+      },
+      {
+        "en": "Can you help me find the station?",
+        "vi": "Bạn giúp tôi tìm nhà ga được không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you need?",
+        "vi": "Bạn cần gì?"
+      },
+      {
+        "en": "Do you need help?",
+        "vi": "Bạn có cần giúp không?"
+      }
+    ],
+    "id": "a1.can-you-help-me"
+  },
+  {
+    "level": "A1",
+    "topic": "emergency-help",
+    "topic_vi": "Khẩn cấp và nhờ giúp đỡ",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "There is ___ here!",
+    "frame_vi": "Ở đây có ___!",
+    "note_vi": "Báo nguy hiểm nhanh. Dùng there is với danh từ số ít, thêm a hoặc an, hoặc some với đồ không đếm được.",
+    "slots": [
+      {
+        "en": "a fire",
+        "vi": "cháy"
+      },
+      {
+        "en": "a thief",
+        "vi": "kẻ trộm"
+      },
+      {
+        "en": "an accident",
+        "vi": "tai nạn"
+      },
+      {
+        "en": "an injured man",
+        "vi": "một người bị thương"
+      },
+      {
+        "en": "a bad dog",
+        "vi": "một con chó dữ"
+      },
+      {
+        "en": "some smoke",
+        "vi": "khói"
+      },
+      {
+        "en": "a problem",
+        "vi": "vấn đề"
+      }
+    ],
+    "examples": [
+      {
+        "en": "There is a snake here!",
+        "vi": "Ở đây có rắn!"
+      },
+      {
+        "en": "There is some gas here!",
+        "vi": "Ở đây có gas!"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is wrong?",
+        "vi": "Có chuyện gì vậy?"
+      },
+      {
+        "en": "What happened?",
+        "vi": "Chuyện gì xảy ra?"
+      }
+    ],
+    "id": "a1.there-is-a-fire"
+  },
+  {
+    "level": "A1",
+    "topic": "home-things",
+    "topic_vi": "Nhà cửa và đồ vật",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "There is ___ in my room.",
+    "frame_vi": "Trong phòng tôi có ___.",
+    "note_vi": "There is dùng cho đồ vật số ít. Đặt a hoặc an trước danh từ, an đứng trước chữ bắt đầu bằng nguyên âm.",
+    "slots": [
+      {
+        "en": "a bed",
+        "vi": "một cái giường"
+      },
+      {
+        "en": "a desk",
+        "vi": "một cái bàn học"
+      },
+      {
+        "en": "a window",
+        "vi": "một cái cửa sổ"
+      },
+      {
+        "en": "a chair",
+        "vi": "một cái ghế"
+      },
+      {
+        "en": "a lamp",
+        "vi": "một cái đèn"
+      },
+      {
+        "en": "a TV",
+        "vi": "một cái ti vi"
+      },
+      {
+        "en": "an old mirror",
+        "vi": "một cái gương cũ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "There is a sofa in my room.",
+        "vi": "Trong phòng tôi có một cái ghế sofa."
+      },
+      {
+        "en": "There is a fan in my room.",
+        "vi": "Trong phòng tôi có một cái quạt."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is in your room?",
+        "vi": "Trong phòng bạn có gì?"
+      },
+      {
+        "en": "Tell me about your room.",
+        "vi": "Kể cho mình nghe về phòng bạn đi."
+      }
+    ],
+    "id": "a1.there-is-in-my-room"
+  },
+  {
+    "level": "A1",
+    "topic": "home-things",
+    "topic_vi": "Nhà cửa và đồ vật",
+    "goals": [
+      "daily",
+      "travel"
+    ],
+    "frame_en": "Excuse me, where is ___?",
+    "frame_vi": "Xin lỗi, ___ ở đâu?",
+    "note_vi": "Dùng để hỏi vị trí của đồ vật hoặc căn phòng. Dùng is với một thứ, đặt the hoặc my trước danh từ.",
+    "slots": [
+      {
+        "en": "my phone",
+        "vi": "điện thoại của tôi"
+      },
+      {
+        "en": "the key",
+        "vi": "chìa khóa"
+      },
+      {
+        "en": "my bag",
+        "vi": "túi của tôi"
+      },
+      {
+        "en": "the remote",
+        "vi": "cái điều khiển"
+      },
+      {
+        "en": "the bathroom",
+        "vi": "phòng tắm"
+      },
+      {
+        "en": "the kitchen",
+        "vi": "nhà bếp"
+      },
+      {
+        "en": "my wallet",
+        "vi": "ví của tôi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Excuse me, where is the toilet?",
+        "vi": "Xin lỗi, nhà vệ sinh ở đâu?"
+      },
+      {
+        "en": "Excuse me, where is my book?",
+        "vi": "Xin lỗi, sách của tôi ở đâu?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được bạn không?"
+      },
+      {
+        "en": "What are you looking for?",
+        "vi": "Bạn đang tìm gì?"
+      }
+    ],
+    "id": "a1.excuse-me-where-is"
+  },
+  {
+    "level": "A1",
+    "topic": "home-things",
+    "topic_vi": "Nhà cửa và đồ vật",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "Please turn on ___.",
+    "frame_vi": "Làm ơn bật ___ lên.",
+    "note_vi": "Turn on nghĩa là bật, nói lịch sự với please. Muốn tắt thì đổi thành turn off.",
+    "slots": [
+      {
+        "en": "the light",
+        "vi": "đèn"
+      },
+      {
+        "en": "the TV",
+        "vi": "ti vi"
+      },
+      {
+        "en": "the fan",
+        "vi": "quạt"
+      },
+      {
+        "en": "the air conditioner",
+        "vi": "máy lạnh"
+      },
+      {
+        "en": "the radio",
+        "vi": "đài"
+      },
+      {
+        "en": "my computer",
+        "vi": "máy tính của tôi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Please turn on the heater.",
+        "vi": "Làm ơn bật máy sưởi lên."
+      },
+      {
+        "en": "Please turn on the water.",
+        "vi": "Làm ơn mở nước lên."
+      }
+    ],
+    "asks": [
+      {
+        "en": "It is dark. What can I do?",
+        "vi": "Trời tối quá. Tôi làm gì được?"
+      },
+      {
+        "en": "Are you hot?",
+        "vi": "Bạn có nóng không?"
+      }
+    ],
+    "id": "a1.please-turn-on"
+  },
+  {
+    "level": "A1",
+    "topic": "clothes-colors",
+    "topic_vi": "Quần áo và màu sắc",
+    "goals": [
+      "daily",
+      "travel"
+    ],
+    "frame_en": "I want to buy ___.",
+    "frame_vi": "Tôi muốn mua ___.",
+    "note_vi": "Want to buy là muốn mua. Đồ số ít cần a hoặc an, đồ số nhiều như shoes hay một nhóm đồ thì dùng some hoặc để nguyên.",
+    "slots": [
+      {
+        "en": "a shirt",
+        "vi": "một cái áo sơ mi"
+      },
+      {
+        "en": "a jacket",
+        "vi": "một cái áo khoác"
+      },
+      {
+        "en": "a hat",
+        "vi": "một cái mũ"
+      },
+      {
+        "en": "new shoes",
+        "vi": "đôi giày mới"
+      },
+      {
+        "en": "a dress",
+        "vi": "một cái váy liền"
+      },
+      {
+        "en": "some socks",
+        "vi": "vài đôi tất"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I want to buy a bag.",
+        "vi": "Tôi muốn mua một cái túi."
+      },
+      {
+        "en": "I want to buy a coat.",
+        "vi": "Tôi muốn mua một cái áo choàng."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can I help you?",
+        "vi": "Tôi giúp gì được bạn không?"
+      },
+      {
+        "en": "What are you looking for?",
+        "vi": "Bạn đang tìm gì?"
+      }
+    ],
+    "id": "a1.i-want-to-buy"
+  },
+  {
+    "level": "A1",
+    "topic": "clothes-colors",
+    "topic_vi": "Quần áo và màu sắc",
+    "goals": [
+      "travel",
+      "daily"
+    ],
+    "frame_en": "Do you have this in ___?",
+    "frame_vi": "Bạn có cái này màu ___ không?",
+    "note_vi": "Hỏi người bán xem món đồ có màu khác không. Chỉ cần thay tên màu vào chỗ trống.",
+    "slots": [
+      {
+        "en": "red",
+        "vi": "đỏ"
+      },
+      {
+        "en": "blue",
+        "vi": "xanh dương"
+      },
+      {
+        "en": "black",
+        "vi": "đen"
+      },
+      {
+        "en": "white",
+        "vi": "trắng"
+      },
+      {
+        "en": "green",
+        "vi": "xanh lá"
+      },
+      {
+        "en": "yellow",
+        "vi": "vàng"
+      },
+      {
+        "en": "pink",
+        "vi": "hồng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Do you have this in brown?",
+        "vi": "Bạn có cái này màu nâu không?"
+      },
+      {
+        "en": "Do you have this in grey?",
+        "vi": "Bạn có cái này màu xám không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you like this one?",
+        "vi": "Bạn có thích cái này không?"
+      },
+      {
+        "en": "What colour do you want?",
+        "vi": "Bạn muốn màu gì?"
+      }
+    ],
+    "id": "a1.do-you-have-this-in"
+  },
+  {
+    "level": "A1",
+    "topic": "clothes-colors",
+    "topic_vi": "Quần áo và màu sắc",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "My favourite colour is ___.",
+    "frame_vi": "Màu yêu thích của tôi là ___.",
+    "note_vi": "Nói về màu mình thích nhất. Tên màu không cần a hay an, chỉ nói thẳng tên màu.",
+    "slots": [
+      {
+        "en": "blue",
+        "vi": "xanh dương"
+      },
+      {
+        "en": "red",
+        "vi": "đỏ"
+      },
+      {
+        "en": "green",
+        "vi": "xanh lá"
+      },
+      {
+        "en": "black",
+        "vi": "đen"
+      },
+      {
+        "en": "yellow",
+        "vi": "vàng"
+      },
+      {
+        "en": "pink",
+        "vi": "hồng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My favourite colour is orange.",
+        "vi": "Màu yêu thích của tôi là màu cam."
+      },
+      {
+        "en": "My favourite colour is purple.",
+        "vi": "Màu yêu thích của tôi là màu tím."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your favourite colour?",
+        "vi": "Màu yêu thích của bạn là gì?"
+      },
+      {
+        "en": "What colour do you like?",
+        "vi": "Bạn thích màu gì?"
+      }
+    ],
+    "id": "a1.my-favourite-colour-is"
+  },
+  {
+    "level": "A1",
+    "topic": "clothes-colors",
+    "topic_vi": "Quần áo và màu sắc",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I'm wearing ___ today.",
+    "frame_vi": "Hôm nay tôi mặc ___.",
+    "note_vi": "I'm wearing là đang mặc. Đặt màu trước tên đồ, và dùng a với đồ số ít như a shirt.",
+    "slots": [
+      {
+        "en": "a white shirt",
+        "vi": "một cái áo sơ mi trắng"
+      },
+      {
+        "en": "a blue jacket",
+        "vi": "một cái áo khoác xanh"
+      },
+      {
+        "en": "a red dress",
+        "vi": "một cái váy đỏ"
+      },
+      {
+        "en": "a warm coat",
+        "vi": "một cái áo ấm"
+      },
+      {
+        "en": "old jeans",
+        "vi": "quần jeans cũ"
+      },
+      {
+        "en": "a yellow shirt",
+        "vi": "một cái áo vàng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'm wearing a black skirt today.",
+        "vi": "Hôm nay tôi mặc một cái váy đen."
+      },
+      {
+        "en": "I'm wearing new trousers today.",
+        "vi": "Hôm nay tôi mặc quần dài mới."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What are you wearing?",
+        "vi": "Bạn đang mặc gì vậy?"
+      },
+      {
+        "en": "Is it cold today?",
+        "vi": "Hôm nay trời có lạnh không?"
+      }
+    ],
+    "id": "a1.i-am-wearing-today"
+  },
+  {
+    "level": "A1",
+    "topic": "hobbies-free-time",
+    "topic_vi": "Sở thích và thời gian rảnh",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I like ___.",
+    "frame_vi": "Tôi thích ___.",
+    "note_vi": "Nói điều mình thích. Sau like có thể là danh từ như music hoặc động từ thêm ing như swimming.",
+    "slots": [
+      {
+        "en": "music",
+        "vi": "âm nhạc"
+      },
+      {
+        "en": "football",
+        "vi": "bóng đá"
+      },
+      {
+        "en": "cooking",
+        "vi": "nấu ăn"
+      },
+      {
+        "en": "reading",
+        "vi": "đọc sách"
+      },
+      {
+        "en": "swimming",
+        "vi": "bơi lội"
+      },
+      {
+        "en": "movies",
+        "vi": "phim"
+      },
+      {
+        "en": "dogs",
+        "vi": "chó"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I like tea.",
+        "vi": "Tôi thích trà."
+      },
+      {
+        "en": "I like dancing.",
+        "vi": "Tôi thích nhảy múa."
+      },
+      {
+        "en": "I like English.",
+        "vi": "Tôi thích tiếng Anh."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you like?",
+        "vi": "Bạn thích gì?"
+      },
+      {
+        "en": "What is your hobby?",
+        "vi": "Sở thích của bạn là gì?"
+      }
+    ],
+    "id": "a1.i-like"
+  },
+  {
+    "level": "A1",
+    "topic": "hobbies-free-time",
+    "topic_vi": "Sở thích và thời gian rảnh",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "I play ___ on weekends.",
+    "frame_vi": "Cuối tuần tôi chơi ___.",
+    "note_vi": "Dùng play với môn thể thao và trò chơi. Không dùng a hay the trước tên môn thể thao.",
+    "slots": [
+      {
+        "en": "football",
+        "vi": "bóng đá"
+      },
+      {
+        "en": "tennis",
+        "vi": "quần vợt"
+      },
+      {
+        "en": "chess",
+        "vi": "cờ vua"
+      },
+      {
+        "en": "badminton",
+        "vi": "cầu lông"
+      },
+      {
+        "en": "basketball",
+        "vi": "bóng rổ"
+      },
+      {
+        "en": "computer games",
+        "vi": "game trên máy tính"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I play volleyball on weekends.",
+        "vi": "Cuối tuần tôi chơi bóng chuyền."
+      },
+      {
+        "en": "I play cards on weekends.",
+        "vi": "Cuối tuần tôi chơi bài."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you do on weekends?",
+        "vi": "Cuối tuần bạn làm gì?"
+      },
+      {
+        "en": "Do you play sports?",
+        "vi": "Bạn có chơi thể thao không?"
+      }
+    ],
+    "id": "a1.i-play-on-weekends"
+  },
+  {
+    "level": "A1",
+    "topic": "hobbies-free-time",
+    "topic_vi": "Sở thích và thời gian rảnh",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "In my free time, I ___.",
+    "frame_vi": "Lúc rảnh, tôi ___.",
+    "note_vi": "Sau I dùng động từ nguyên mẫu, không thêm to hay ing. Dùng để kể thói quen lúc rảnh.",
+    "slots": [
+      {
+        "en": "read books",
+        "vi": "đọc sách"
+      },
+      {
+        "en": "watch TV",
+        "vi": "xem ti vi"
+      },
+      {
+        "en": "listen to music",
+        "vi": "nghe nhạc"
+      },
+      {
+        "en": "go shopping",
+        "vi": "đi mua sắm"
+      },
+      {
+        "en": "cook",
+        "vi": "nấu ăn"
+      },
+      {
+        "en": "sleep",
+        "vi": "ngủ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "In my free time, I draw.",
+        "vi": "Lúc rảnh, tôi vẽ tranh."
+      },
+      {
+        "en": "In my free time, I walk.",
+        "vi": "Lúc rảnh, tôi đi dạo."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you do in your free time?",
+        "vi": "Lúc rảnh bạn làm gì?"
+      },
+      {
+        "en": "Are you busy?",
+        "vi": "Bạn có bận không?"
+      }
+    ],
+    "id": "a1.in-my-free-time-i"
+  },
+  {
+    "level": "A1",
+    "topic": "hobbies-free-time",
+    "topic_vi": "Sở thích và thời gian rảnh",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "Let's ___.",
+    "frame_vi": "Mình cùng ___ nhé.",
+    "note_vi": "Let's dùng để rủ ai cùng làm gì. Sau Let's là động từ nguyên mẫu, không thêm to.",
+    "slots": [
+      {
+        "en": "play football",
+        "vi": "chơi bóng đá"
+      },
+      {
+        "en": "watch a movie",
+        "vi": "xem phim"
+      },
+      {
+        "en": "go swimming",
+        "vi": "đi bơi"
+      },
+      {
+        "en": "have lunch",
+        "vi": "ăn trưa"
+      },
+      {
+        "en": "go shopping",
+        "vi": "đi mua sắm"
+      },
+      {
+        "en": "have a coffee",
+        "vi": "uống cà phê"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Let's go home.",
+        "vi": "Mình cùng về nhà nhé."
+      },
+      {
+        "en": "Let's listen to music.",
+        "vi": "Mình cùng nghe nhạc nhé."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you want to do?",
+        "vi": "Bạn muốn làm gì?"
+      },
+      {
+        "en": "Are you free today?",
+        "vi": "Hôm nay bạn rảnh không?"
+      }
+    ],
+    "id": "a1.lets"
+  },
+  {
+    "level": "A1",
+    "topic": "jobs-work",
+    "topic_vi": "Nghề nghiệp và công việc",
+    "goals": [
+      "work",
+      "social"
+    ],
+    "frame_en": "I work as ___.",
+    "frame_vi": "Tôi làm nghề ___.",
+    "note_vi": "Nói nghề của mình. Sau work as dùng a hoặc an trước tên nghề: a teacher, an engineer.",
+    "slots": [
+      {
+        "en": "a teacher",
+        "vi": "giáo viên"
+      },
+      {
+        "en": "a nurse",
+        "vi": "y tá"
+      },
+      {
+        "en": "a driver",
+        "vi": "tài xế"
+      },
+      {
+        "en": "a cook",
+        "vi": "đầu bếp"
+      },
+      {
+        "en": "a doctor",
+        "vi": "bác sĩ"
+      },
+      {
+        "en": "a waiter",
+        "vi": "phục vụ bàn"
+      },
+      {
+        "en": "an engineer",
+        "vi": "kỹ sư"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I work as a farmer.",
+        "vi": "Tôi làm nghề nông."
+      },
+      {
+        "en": "I work as a police officer.",
+        "vi": "Tôi làm cảnh sát."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you do?",
+        "vi": "Bạn làm nghề gì?"
+      },
+      {
+        "en": "What's your job?",
+        "vi": "Công việc của bạn là gì?"
+      }
+    ],
+    "id": "a1.i-work-as"
+  },
+  {
+    "level": "A1",
+    "topic": "jobs-work",
+    "topic_vi": "Nghề nghiệp và công việc",
+    "goals": [
+      "work",
+      "social"
+    ],
+    "frame_en": "I work in ___.",
+    "frame_vi": "Tôi làm việc ở ___.",
+    "note_vi": "Nói nơi làm việc. Dùng in với nơi có không gian bên trong, và nhớ a hoặc an trước danh từ số ít.",
+    "slots": [
+      {
+        "en": "an office",
+        "vi": "văn phòng"
+      },
+      {
+        "en": "a shop",
+        "vi": "cửa hàng"
+      },
+      {
+        "en": "a hospital",
+        "vi": "bệnh viện"
+      },
+      {
+        "en": "a school",
+        "vi": "trường học"
+      },
+      {
+        "en": "a restaurant",
+        "vi": "nhà hàng"
+      },
+      {
+        "en": "a bank",
+        "vi": "ngân hàng"
+      },
+      {
+        "en": "a factory",
+        "vi": "nhà máy"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I work in a hotel.",
+        "vi": "Tôi làm việc ở khách sạn."
+      },
+      {
+        "en": "I work in a big company.",
+        "vi": "Tôi làm việc ở một công ty lớn."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Where do you work?",
+        "vi": "Bạn làm việc ở đâu?"
+      }
+    ],
+    "id": "a1.i-work-in"
+  },
+  {
+    "level": "A1",
+    "topic": "jobs-work",
+    "topic_vi": "Nghề nghiệp và công việc",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "My ___ works in a hospital.",
+    "frame_vi": "___ của tôi làm việc ở bệnh viện.",
+    "note_vi": "Nói về công việc của người thân. Với he, she hoặc một người, động từ thêm s: works.",
+    "slots": [
+      {
+        "en": "mother",
+        "vi": "Mẹ"
+      },
+      {
+        "en": "father",
+        "vi": "Bố"
+      },
+      {
+        "en": "sister",
+        "vi": "Chị gái"
+      },
+      {
+        "en": "brother",
+        "vi": "Anh trai"
+      },
+      {
+        "en": "wife",
+        "vi": "Vợ"
+      },
+      {
+        "en": "husband",
+        "vi": "Chồng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My friend works in a bank.",
+        "vi": "Bạn của tôi làm việc ở ngân hàng."
+      },
+      {
+        "en": "My uncle works in a shop.",
+        "vi": "Chú của tôi làm việc ở cửa hàng."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What does your family do?",
+        "vi": "Gia đình bạn làm nghề gì?"
+      },
+      {
+        "en": "Who works in a hospital?",
+        "vi": "Ai làm việc ở bệnh viện?"
+      }
+    ],
+    "id": "a1.my-family-works-in-a-hospital"
+  },
+  {
+    "level": "A1",
+    "topic": "jobs-work",
+    "topic_vi": "Nghề nghiệp và công việc",
+    "goals": [
+      "work",
+      "daily"
+    ],
+    "frame_en": "I start work at ___.",
+    "frame_vi": "Tôi bắt đầu làm việc lúc ___.",
+    "note_vi": "Nói giờ bắt đầu làm việc. Dùng at trước giờ: at eight o'clock, at noon.",
+    "slots": [
+      {
+        "en": "eight o'clock",
+        "vi": "tám giờ"
+      },
+      {
+        "en": "nine o'clock",
+        "vi": "chín giờ"
+      },
+      {
+        "en": "seven o'clock",
+        "vi": "bảy giờ"
+      },
+      {
+        "en": "half past seven",
+        "vi": "bảy rưỡi"
+      },
+      {
+        "en": "half past eight",
+        "vi": "tám rưỡi"
+      },
+      {
+        "en": "noon",
+        "vi": "giữa trưa"
+      },
+      {
+        "en": "six o'clock",
+        "vi": "sáu giờ"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I start work at ten o'clock.",
+        "vi": "Tôi bắt đầu làm việc lúc mười giờ."
+      },
+      {
+        "en": "I start work at night.",
+        "vi": "Tôi bắt đầu làm việc vào buổi tối."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What time do you start work?",
+        "vi": "Bạn bắt đầu làm việc lúc mấy giờ?"
+      },
+      {
+        "en": "When do you start?",
+        "vi": "Khi nào bạn bắt đầu?"
+      }
+    ],
+    "id": "a1.i-start-work-at"
+  },
+  {
+    "level": "A1",
+    "topic": "school-study",
+    "topic_vi": "Trường học và học tập",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I study ___ at school.",
+    "frame_vi": "Tôi học ___ ở trường.",
+    "note_vi": "Nói môn học. Tên môn học không cần a hoặc an, chỉ đặt môn vào chỗ trống.",
+    "slots": [
+      {
+        "en": "English",
+        "vi": "tiếng Anh"
+      },
+      {
+        "en": "math",
+        "vi": "toán"
+      },
+      {
+        "en": "science",
+        "vi": "khoa học"
+      },
+      {
+        "en": "music",
+        "vi": "âm nhạc"
+      },
+      {
+        "en": "art",
+        "vi": "mỹ thuật"
+      },
+      {
+        "en": "history",
+        "vi": "lịch sử"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I study French at school.",
+        "vi": "Tôi học tiếng Pháp ở trường."
+      },
+      {
+        "en": "I study sport at school.",
+        "vi": "Tôi học thể thao ở trường."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you study?",
+        "vi": "Bạn học môn gì?"
+      },
+      {
+        "en": "What do you learn at school?",
+        "vi": "Bạn học gì ở trường?"
+      }
+    ],
+    "id": "a1.i-study-at-school"
+  },
+  {
+    "level": "A1",
+    "topic": "school-study",
+    "topic_vi": "Trường học và học tập",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I go to school ___.",
+    "frame_vi": "Tôi đến trường ___.",
+    "note_vi": "Nói cách đi hoặc thời gian đi học. Dùng by với xe: by bus. Đi bộ nói on foot.",
+    "slots": [
+      {
+        "en": "by bus",
+        "vi": "bằng xe buýt"
+      },
+      {
+        "en": "by bike",
+        "vi": "bằng xe đạp"
+      },
+      {
+        "en": "on foot",
+        "vi": "đi bộ"
+      },
+      {
+        "en": "by car",
+        "vi": "bằng ô tô"
+      },
+      {
+        "en": "with my friend",
+        "vi": "cùng bạn tôi"
+      },
+      {
+        "en": "every day",
+        "vi": "mỗi ngày"
+      },
+      {
+        "en": "in the morning",
+        "vi": "vào buổi sáng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I go to school by taxi.",
+        "vi": "Tôi đến trường bằng taxi."
+      },
+      {
+        "en": "I go to school with my sister.",
+        "vi": "Tôi đến trường cùng chị gái."
+      }
+    ],
+    "asks": [
+      {
+        "en": "How do you go to school?",
+        "vi": "Bạn đến trường bằng cách nào?"
+      },
+      {
+        "en": "When do you go to school?",
+        "vi": "Khi nào bạn đến trường?"
+      }
+    ],
+    "id": "a1.i-go-to-school"
+  },
+  {
+    "level": "A1",
+    "topic": "school-study",
+    "topic_vi": "Trường học và học tập",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "Can I borrow ___?",
+    "frame_vi": "Cho tôi mượn ___ nhé?",
+    "note_vi": "Câu mượn đồ lịch sự. Dùng a hoặc an cho vật số ít, hoặc your hay the cho vật cụ thể.",
+    "slots": [
+      {
+        "en": "a pen",
+        "vi": "một cây bút"
+      },
+      {
+        "en": "a pencil",
+        "vi": "một cây bút chì"
+      },
+      {
+        "en": "your book",
+        "vi": "sách của bạn"
+      },
+      {
+        "en": "your notebook",
+        "vi": "vở của bạn"
+      },
+      {
+        "en": "an eraser",
+        "vi": "một cục tẩy"
+      },
+      {
+        "en": "a ruler",
+        "vi": "một cây thước"
+      },
+      {
+        "en": "your phone",
+        "vi": "điện thoại của bạn"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Can I borrow a bag?",
+        "vi": "Cho tôi mượn một cái túi nhé?"
+      },
+      {
+        "en": "Can I borrow your dictionary?",
+        "vi": "Cho tôi mượn từ điển của bạn nhé?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you need?",
+        "vi": "Bạn cần gì?"
+      },
+      {
+        "en": "Do you have a pen?",
+        "vi": "Bạn có bút không?"
+      }
+    ],
+    "id": "a1.can-i-borrow"
+  },
+  {
+    "level": "A1",
+    "topic": "phone-internet",
+    "topic_vi": "Điện thoại và internet",
+    "goals": [
+      "daily",
+      "travel",
+      "social"
+    ],
+    "frame_en": "Can I use your ___?",
+    "frame_vi": "Tôi dùng ___ của bạn được không?",
+    "note_vi": "Câu xin dùng đồ của người khác. Dùng your, không dùng a hay an, sau đó là đồ vật cần dùng.",
+    "slots": [
+      {
+        "en": "phone",
+        "vi": "điện thoại"
+      },
+      {
+        "en": "charger",
+        "vi": "sạc"
+      },
+      {
+        "en": "computer",
+        "vi": "máy tính"
+      },
+      {
+        "en": "laptop",
+        "vi": "máy tính xách tay"
+      },
+      {
+        "en": "tablet",
+        "vi": "máy tính bảng"
+      },
+      {
+        "en": "wifi",
+        "vi": "wifi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Can I use your pen?",
+        "vi": "Tôi dùng bút của bạn được không?"
+      },
+      {
+        "en": "Can I use your bathroom?",
+        "vi": "Tôi dùng phòng tắm của bạn được không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you need?",
+        "vi": "Bạn cần gì?"
+      },
+      {
+        "en": "Is there a problem?",
+        "vi": "Có vấn đề gì không?"
+      }
+    ],
+    "id": "a1.can-i-use-your"
+  },
+  {
+    "level": "A1",
+    "topic": "phone-internet",
+    "topic_vi": "Điện thoại và internet",
+    "goals": [
+      "daily",
+      "social",
+      "travel"
+    ],
+    "frame_en": "What is your ___?",
+    "frame_vi": "___ của bạn là gì?",
+    "note_vi": "Hỏi thông tin liên lạc. Dùng your, không cần a hay an. Trả lời bằng My ... is ...",
+    "slots": [
+      {
+        "en": "phone number",
+        "vi": "Số điện thoại"
+      },
+      {
+        "en": "email address",
+        "vi": "Địa chỉ email"
+      },
+      {
+        "en": "wifi name",
+        "vi": "Tên wifi"
+      },
+      {
+        "en": "user name",
+        "vi": "Tên tài khoản"
+      },
+      {
+        "en": "Facebook name",
+        "vi": "Tên Facebook"
+      },
+      {
+        "en": "Zalo name",
+        "vi": "Tên Zalo"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What is your last name?",
+        "vi": "Họ của bạn là gì?"
+      },
+      {
+        "en": "What is your home address?",
+        "vi": "Địa chỉ nhà của bạn là gì?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Can we stay in touch?",
+        "vi": "Chúng ta giữ liên lạc nhé?"
+      }
+    ],
+    "id": "a1.what-is-your-contact"
+  },
+  {
+    "level": "A1",
+    "topic": "phone-internet",
+    "topic_vi": "Điện thoại và internet",
+    "goals": [
+      "daily",
+      "travel"
+    ],
+    "frame_en": "My phone has no ___.",
+    "frame_vi": "Điện thoại của tôi không có ___.",
+    "note_vi": "Nói điện thoại thiếu gì. Dùng no trước danh từ, không dùng a hay an: no battery, no signal.",
+    "slots": [
+      {
+        "en": "battery",
+        "vi": "pin"
+      },
+      {
+        "en": "signal",
+        "vi": "sóng"
+      },
+      {
+        "en": "wifi",
+        "vi": "wifi"
+      },
+      {
+        "en": "sound",
+        "vi": "âm thanh"
+      },
+      {
+        "en": "internet",
+        "vi": "internet"
+      },
+      {
+        "en": "space",
+        "vi": "dung lượng trống"
+      }
+    ],
+    "examples": [
+      {
+        "en": "My phone has no camera.",
+        "vi": "Điện thoại của tôi không có camera."
+      },
+      {
+        "en": "My phone has no power.",
+        "vi": "Điện thoại của tôi hết điện."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is the problem?",
+        "vi": "Có vấn đề gì vậy?"
+      },
+      {
+        "en": "Why can't you call me?",
+        "vi": "Sao bạn không gọi cho tôi được?"
+      }
+    ],
+    "id": "a1.my-phone-has-no"
+  },
+  {
+    "level": "A1",
+    "topic": "phone-internet",
+    "topic_vi": "Điện thoại và internet",
+    "goals": [
+      "daily",
+      "social"
+    ],
+    "frame_en": "I use my phone to ___.",
+    "frame_vi": "Tôi dùng điện thoại để ___.",
+    "note_vi": "Nói dùng điện thoại làm gì. Sau to dùng động từ nguyên mẫu, không thêm s hay ing.",
+    "slots": [
+      {
+        "en": "take photos",
+        "vi": "chụp ảnh"
+      },
+      {
+        "en": "watch videos",
+        "vi": "xem video"
+      },
+      {
+        "en": "listen to music",
+        "vi": "nghe nhạc"
+      },
+      {
+        "en": "send messages",
+        "vi": "gửi tin nhắn"
+      },
+      {
+        "en": "call my mother",
+        "vi": "gọi cho mẹ"
+      },
+      {
+        "en": "read the news",
+        "vi": "đọc tin tức"
+      },
+      {
+        "en": "learn English",
+        "vi": "học tiếng Anh"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I use my phone to play games.",
+        "vi": "Tôi dùng điện thoại để chơi game."
+      },
+      {
+        "en": "I use my phone to find a map.",
+        "vi": "Tôi dùng điện thoại để tìm bản đồ."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you do on your phone?",
+        "vi": "Bạn làm gì trên điện thoại?"
+      },
+      {
+        "en": "Why do you like your phone?",
+        "vi": "Sao bạn thích điện thoại của mình?"
+      }
+    ],
+    "id": "a1.i-use-my-phone-to"
+  },
+  {
+    "level": "A1",
+    "topic": "plans-invitations",
+    "topic_vi": "Rủ rê và hẹn hò kế hoạch",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "Let's go to ___.",
+    "frame_vi": "Mình đi ___ nhé.",
+    "note_vi": "Let's + động từ là lời rủ. Sau go to dùng the hoặc a trước nơi chốn, còn my house thì không cần the.",
+    "slots": [
+      {
+        "en": "the park",
+        "vi": "công viên"
+      },
+      {
+        "en": "the beach",
+        "vi": "biển"
+      },
+      {
+        "en": "the market",
+        "vi": "chợ"
+      },
+      {
+        "en": "the cinema",
+        "vi": "rạp phim"
+      },
+      {
+        "en": "a cafe",
+        "vi": "quán cà phê"
+      },
+      {
+        "en": "my house",
+        "vi": "nhà tôi"
+      },
+      {
+        "en": "the zoo",
+        "vi": "sở thú"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Let's go to the library.",
+        "vi": "Mình đi thư viện nhé."
+      },
+      {
+        "en": "Let's go to the mall.",
+        "vi": "Mình đi trung tâm mua sắm nhé."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What do you want to do?",
+        "vi": "Bạn muốn làm gì?"
+      },
+      {
+        "en": "Where shall we go?",
+        "vi": "Chúng ta đi đâu?"
+      }
+    ],
+    "id": "a1.lets-go-to"
+  },
+  {
+    "level": "A1",
+    "topic": "plans-invitations",
+    "topic_vi": "Rủ rê và hẹn hò kế hoạch",
+    "goals": [
+      "social",
+      "daily"
+    ],
+    "frame_en": "Do you want to ___ with me?",
+    "frame_vi": "Bạn có muốn ___ với tôi không?",
+    "note_vi": "Do you want to + động từ nguyên mẫu là cách rủ lịch sự. Không thêm s hay ing sau to.",
+    "slots": [
+      {
+        "en": "eat lunch",
+        "vi": "ăn trưa"
+      },
+      {
+        "en": "watch a movie",
+        "vi": "xem phim"
+      },
+      {
+        "en": "play football",
+        "vi": "chơi bóng đá"
+      },
+      {
+        "en": "go shopping",
+        "vi": "đi mua sắm"
+      },
+      {
+        "en": "have coffee",
+        "vi": "uống cà phê"
+      },
+      {
+        "en": "take a walk",
+        "vi": "đi dạo"
+      },
+      {
+        "en": "play games",
+        "vi": "chơi game"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Do you want to swim with me?",
+        "vi": "Bạn có muốn bơi với tôi không?"
+      },
+      {
+        "en": "Do you want to cook with me?",
+        "vi": "Bạn có muốn nấu ăn với tôi không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What are you doing today?",
+        "vi": "Hôm nay bạn làm gì?"
+      },
+      {
+        "en": "Are you free?",
+        "vi": "Bạn rảnh không?"
+      }
+    ],
+    "id": "a1.do-you-want-to-with-me"
+  },
+  {
+    "level": "A1",
+    "topic": "plans-invitations",
+    "topic_vi": "Rủ rê và hẹn hò kế hoạch",
+    "goals": [
+      "social",
+      "work",
+      "travel"
+    ],
+    "frame_en": "Let's meet at ___.",
+    "frame_vi": "Mình gặp nhau ___ nhé.",
+    "note_vi": "Dùng at trước giờ cụ thể hoặc một địa điểm. Giờ tròn nói là số + o'clock.",
+    "slots": [
+      {
+        "en": "six o'clock",
+        "vi": "lúc sáu giờ"
+      },
+      {
+        "en": "seven o'clock",
+        "vi": "lúc bảy giờ"
+      },
+      {
+        "en": "eight o'clock",
+        "vi": "lúc tám giờ"
+      },
+      {
+        "en": "noon",
+        "vi": "lúc giữa trưa"
+      },
+      {
+        "en": "two o'clock",
+        "vi": "lúc hai giờ"
+      },
+      {
+        "en": "the station",
+        "vi": "ở nhà ga"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Let's meet at nine o'clock.",
+        "vi": "Mình gặp nhau lúc chín giờ nhé."
+      },
+      {
+        "en": "Let's meet at the bus stop.",
+        "vi": "Mình gặp nhau ở trạm xe buýt nhé."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What time shall we meet?",
+        "vi": "Mấy giờ mình gặp nhau?"
+      },
+      {
+        "en": "Where shall we meet?",
+        "vi": "Mình gặp nhau ở đâu?"
+      }
+    ],
+    "id": "a1.lets-meet-at"
+  },
+  {
+    "level": "A1",
+    "topic": "asking-for-help-repeating",
+    "topic_vi": "Nhờ giúp và hỏi lại",
+    "goals": [
+      "travel",
+      "daily",
+      "work"
+    ],
+    "frame_en": "Sorry, I don't understand ___.",
+    "frame_vi": "Xin lỗi, tôi không hiểu ___.",
+    "note_vi": "Câu nói khi nghe không hiểu. Don't understand đứng trước người hoặc vật bạn không hiểu, như you, this word.",
+    "slots": [
+      {
+        "en": "you",
+        "vi": "bạn nói gì"
+      },
+      {
+        "en": "this word",
+        "vi": "từ này"
+      },
+      {
+        "en": "the question",
+        "vi": "câu hỏi"
+      },
+      {
+        "en": "that",
+        "vi": "điều đó"
+      },
+      {
+        "en": "this sentence",
+        "vi": "câu này"
+      },
+      {
+        "en": "this sign",
+        "vi": "biển báo này"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Sorry, I don't understand the map.",
+        "vi": "Xin lỗi, tôi không hiểu bản đồ."
+      },
+      {
+        "en": "Sorry, I don't understand this menu.",
+        "vi": "Xin lỗi, tôi không hiểu thực đơn này."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you understand?",
+        "vi": "Bạn có hiểu không?"
+      },
+      {
+        "en": "Is it clear?",
+        "vi": "Rõ chưa?"
+      }
+    ],
+    "id": "a1.sorry-i-dont-understand"
+  },
+  {
+    "level": "A1",
+    "topic": "asking-for-help-repeating",
+    "topic_vi": "Nhờ giúp và hỏi lại",
+    "goals": [
+      "travel",
+      "daily",
+      "work"
+    ],
+    "frame_en": "Can you ___, please?",
+    "frame_vi": "Bạn có thể ___ được không?",
+    "note_vi": "Can you + động từ nguyên mẫu để nhờ ai đó làm gì. Thêm please cho lịch sự.",
+    "slots": [
+      {
+        "en": "repeat that",
+        "vi": "nhắc lại câu đó"
+      },
+      {
+        "en": "speak slowly",
+        "vi": "nói chậm"
+      },
+      {
+        "en": "say it again",
+        "vi": "nói lại lần nữa"
+      },
+      {
+        "en": "speak English",
+        "vi": "nói tiếng Anh"
+      },
+      {
+        "en": "help me",
+        "vi": "giúp tôi"
+      },
+      {
+        "en": "write it down",
+        "vi": "viết nó ra"
+      }
+    ],
+    "examples": [
+      {
+        "en": "Can you speak louder, please?",
+        "vi": "Bạn có thể nói to hơn được không?"
+      },
+      {
+        "en": "Can you show me, please?",
+        "vi": "Bạn có thể chỉ cho tôi được không?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is the problem?",
+        "vi": "Có vấn đề gì vậy?"
+      },
+      {
+        "en": "Is it too fast?",
+        "vi": "Nhanh quá phải không?"
+      }
+    ],
+    "id": "a1.can-you-please"
+  },
+  {
+    "level": "A1",
+    "topic": "asking-for-help-repeating",
+    "topic_vi": "Nhờ giúp và hỏi lại",
+    "goals": [
+      "travel",
+      "daily",
+      "work"
+    ],
+    "frame_en": "What does ___ mean?",
+    "frame_vi": "Nghĩa của ___ là gì?",
+    "note_vi": "Hỏi nghĩa của từ hay câu. Sau does, mean giữ nguyên, không thêm s.",
+    "slots": [
+      {
+        "en": "this word",
+        "vi": "từ này"
+      },
+      {
+        "en": "that word",
+        "vi": "từ đó"
+      },
+      {
+        "en": "this sign",
+        "vi": "biển báo này"
+      },
+      {
+        "en": "this sentence",
+        "vi": "câu này"
+      },
+      {
+        "en": "this",
+        "vi": "cái này"
+      },
+      {
+        "en": "that",
+        "vi": "cái kia"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What does this letter mean?",
+        "vi": "Nghĩa của lá thư này là gì?"
+      },
+      {
+        "en": "What does your name mean?",
+        "vi": "Nghĩa của tên bạn là gì?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you know this word?",
+        "vi": "Bạn có biết từ này không?"
+      },
+      {
+        "en": "What is the problem?",
+        "vi": "Có vấn đề gì vậy?"
+      }
+    ],
+    "id": "a1.what-does-mean"
+  },
+  {
+    "level": "A1",
+    "topic": "asking-for-help-repeating",
+    "topic_vi": "Nhờ giúp và hỏi lại",
+    "goals": [
+      "travel",
+      "work",
+      "daily"
+    ],
+    "frame_en": "How do you spell ___?",
+    "frame_vi": "Bạn đánh vần ___ thế nào?",
+    "note_vi": "Hỏi cách đánh vần từng chữ cái. Your name nghĩa là tên bạn, that word nghĩa là từ đó.",
+    "slots": [
+      {
+        "en": "your name",
+        "vi": "tên bạn"
+      },
+      {
+        "en": "your last name",
+        "vi": "họ của bạn"
+      },
+      {
+        "en": "that word",
+        "vi": "từ đó"
+      },
+      {
+        "en": "this word",
+        "vi": "từ này"
+      },
+      {
+        "en": "the street",
+        "vi": "tên đường"
+      },
+      {
+        "en": "your email",
+        "vi": "email của bạn"
+      }
+    ],
+    "examples": [
+      {
+        "en": "How do you spell Hanoi?",
+        "vi": "Bạn đánh vần Hanoi thế nào?"
+      },
+      {
+        "en": "How do you spell hotel?",
+        "vi": "Bạn đánh vần hotel thế nào?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is your name?",
+        "vi": "Bạn tên gì?"
+      },
+      {
+        "en": "Can you write it?",
+        "vi": "Bạn viết ra được không?"
+      }
+    ],
+    "id": "a1.how-do-you-spell"
+  },
+  {
+    "level": "A1",
+    "topic": "hotel-accommodation",
+    "topic_vi": "Khách sạn và chỗ ở",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "I have a reservation for ___.",
+    "frame_vi": "Tôi đã đặt phòng cho ___.",
+    "note_vi": "Nói khi nhận phòng. Sau for nói số đêm hoặc số người, như two nights, three people.",
+    "slots": [
+      {
+        "en": "one night",
+        "vi": "một đêm"
+      },
+      {
+        "en": "two nights",
+        "vi": "hai đêm"
+      },
+      {
+        "en": "three nights",
+        "vi": "ba đêm"
+      },
+      {
+        "en": "tonight",
+        "vi": "tối nay"
+      },
+      {
+        "en": "two people",
+        "vi": "hai người"
+      },
+      {
+        "en": "my family",
+        "vi": "gia đình tôi"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I have a reservation for four nights.",
+        "vi": "Tôi đã đặt phòng cho bốn đêm."
+      },
+      {
+        "en": "I have a reservation for five people.",
+        "vi": "Tôi đã đặt phòng cho năm người."
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you have a reservation?",
+        "vi": "Bạn có đặt phòng trước không?"
+      },
+      {
+        "en": "How long will you stay?",
+        "vi": "Bạn ở bao lâu?"
+      }
+    ],
+    "id": "a1.i-have-a-reservation-for"
+  },
+  {
+    "level": "A1",
+    "topic": "hotel-accommodation",
+    "topic_vi": "Khách sạn và chỗ ở",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "I'd like to book ___.",
+    "frame_vi": "Tôi muốn đặt ___.",
+    "note_vi": "I'd like to book + loại phòng. Trước room dùng a, còn a double room thì vẫn dùng a.",
+    "slots": [
+      {
+        "en": "a single room",
+        "vi": "một phòng đơn"
+      },
+      {
+        "en": "a double room",
+        "vi": "một phòng đôi"
+      },
+      {
+        "en": "a room for two",
+        "vi": "một phòng cho hai người"
+      },
+      {
+        "en": "a room for tonight",
+        "vi": "một phòng cho tối nay"
+      },
+      {
+        "en": "a quiet room",
+        "vi": "một phòng yên tĩnh"
+      },
+      {
+        "en": "a room with a bath",
+        "vi": "một phòng có bồn tắm"
+      }
+    ],
+    "examples": [
+      {
+        "en": "I'd like to book a room for three nights.",
+        "vi": "Tôi muốn đặt một phòng cho ba đêm."
+      },
+      {
+        "en": "I'd like to book a big room.",
+        "vi": "Tôi muốn đặt một phòng lớn."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What kind of room do you want?",
+        "vi": "Bạn muốn loại phòng nào?"
+      },
+      {
+        "en": "How can I help you?",
+        "vi": "Tôi giúp gì được cho bạn?"
+      }
+    ],
+    "id": "a1.id-like-to-book"
+  },
+  {
+    "level": "A1",
+    "topic": "hotel-accommodation",
+    "topic_vi": "Khách sạn và chỗ ở",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "What time is ___?",
+    "frame_vi": "Mấy giờ ___?",
+    "note_vi": "Hỏi giờ của một hoạt động ở khách sạn. Sau What time is chỉ cần một danh từ, như breakfast hay check out.",
+    "slots": [
+      {
+        "en": "breakfast",
+        "vi": "ăn sáng"
+      },
+      {
+        "en": "lunch",
+        "vi": "ăn trưa"
+      },
+      {
+        "en": "dinner",
+        "vi": "ăn tối"
+      },
+      {
+        "en": "check in",
+        "vi": "nhận phòng"
+      },
+      {
+        "en": "check out",
+        "vi": "trả phòng"
+      },
+      {
+        "en": "the shuttle bus",
+        "vi": "có xe đưa đón"
+      }
+    ],
+    "examples": [
+      {
+        "en": "What time is the pool open?",
+        "vi": "Mấy giờ hồ bơi mở cửa?"
+      },
+      {
+        "en": "What time is the last bus?",
+        "vi": "Mấy giờ có chuyến xe buýt cuối?"
+      }
+    ],
+    "asks": [
+      {
+        "en": "Do you need anything?",
+        "vi": "Bạn cần gì không?"
+      },
+      {
+        "en": "When do you want to eat?",
+        "vi": "Bạn muốn ăn lúc nào?"
+      }
+    ],
+    "id": "a1.what-time-is"
+  },
+  {
+    "level": "A1",
+    "topic": "hotel-accommodation",
+    "topic_vi": "Khách sạn và chỗ ở",
+    "goals": [
+      "travel"
+    ],
+    "frame_en": "The ___ is not working.",
+    "frame_vi": "Cái ___ không hoạt động.",
+    "note_vi": "Dùng để báo hỏng đồ trong phòng. The đứng trước danh từ số ít, và is not working nghĩa là không chạy.",
+    "slots": [
+      {
+        "en": "air conditioner",
+        "vi": "máy lạnh"
+      },
+      {
+        "en": "TV",
+        "vi": "ti vi"
+      },
+      {
+        "en": "shower",
+        "vi": "vòi sen"
+      },
+      {
+        "en": "light",
+        "vi": "đèn"
+      },
+      {
+        "en": "lift",
+        "vi": "thang máy"
+      },
+      {
+        "en": "key card",
+        "vi": "thẻ phòng"
+      }
+    ],
+    "examples": [
+      {
+        "en": "The phone is not working.",
+        "vi": "Cái điện thoại không hoạt động."
+      },
+      {
+        "en": "The fan is not working.",
+        "vi": "Cái quạt không hoạt động."
+      }
+    ],
+    "asks": [
+      {
+        "en": "What is the problem?",
+        "vi": "Có vấn đề gì vậy?"
+      },
+      {
+        "en": "Is everything OK in your room?",
+        "vi": "Phòng bạn ổn cả chứ?"
+      }
+    ],
+    "id": "a1.the-is-not-working"
+  }
+]

@@ -1,0 +1,67 @@
+[
+{"slug":"debating-the-ethics-of-eating-meat","level":"C1","group":"daily","title_vi":"Tranh luận đạo đức ăn thịt","title_en":"Debating the ethics of eating meat","goal_vi":"Trình bày quan điểm đạo đức một cách trung thực, không phán xét.","partner_vi":"Người bạn ăn chay","partner_emoji":"🥗","lines":[
+{"key":"l1","en":"I think industrial farming is, but eating meat itself isn't.","vi":"Tôi nghĩ chăn nuôi công nghiệp là vậy, nhưng ăn thịt thì không.","accept":["I think industrial farming is, but eating meat itself isn't","Factory farming is, I think, but eating meat itself isn't"],"note":""},
+{"key":"l2","en":"Increasingly, yes, though I don't judge anyone for it.","vi":"Ngày càng nghĩ vậy, dù tôi không phán xét ai.","accept":["More and more, yes, though I don't judge anyone for it","Increasingly so, although I don't judge anyone for it"],"note":""},
+{"key":"l3","en":"Possibly, but moral progress is rarely all or nothing.","vi":"Có thể, nhưng tiến bộ đạo đức hiếm khi tất cả hoặc không gì.","accept":["Possibly, but moral progress is seldom all or nothing","Perhaps, but moral progress is rarely all or nothing"],"note":"All or nothing: hoặc tất cả hoặc không."},
+{"key":"l4","en":"Perhaps one day, if the alternatives keep improving.","vi":"Có lẽ một ngày nào đó, nếu các lựa chọn thay thế tốt lên.","accept":["Maybe one day, if the alternatives keep getting better","Perhaps someday, if the alternatives continue to improve"],"note":""},
+{"key":"l5","en":"Preaching rarely changes minds, in my experience.","vi":"Theo kinh nghiệm tôi, thuyết giáo hiếm khi đổi ý ai.","accept":["In my experience, preaching rarely changes minds","Preaching seldom changes minds, in my experience"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Do you honestly think eating meat is unethical?","npc_vi":"Bạn thật sự nghĩ ăn thịt là phi đạo đức?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Isn't that a rather convenient distinction, though?","npc_vi":"Chẳng phải đó là sự phân biệt khá tiện lợi sao?","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Fair. Would you ever go fully vegan?","npc_vi":"Cũng phải. Bạn có bao giờ ăn thuần chay hoàn toàn không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"An honest answer. I respect that more than preaching.","npc_vi":"Câu trả lời thành thật. Tôi trân trọng hơn là thuyết giáo.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"panel-question-on-climate-responsibility","level":"C1","group":"daily","title_vi":"Hỏi đáp về trách nhiệm khí hậu","title_en":"Panel Q&A on climate responsibility","goal_vi":"Trả lời câu hỏi tham luận về trách nhiệm khí hậu.","partner_vi":"Người điều phối tọa đàm","partner_emoji":"🌍","lines":[
+{"key":"l1","en":"Governments and corporations, far more than individual consumers.","vi":"Chính phủ và doanh nghiệp, nhiều hơn hẳn người tiêu dùng cá nhân.","accept":["Governments and corporations, much more than individual consumers","Chiefly governments and corporations, rather than individual consumers"],"note":""},
+{"key":"l2","en":"Everyone, though not in equal measure, naturally.","vi":"Mọi người, dù tất nhiên không ngang bằng nhau.","accept":["Everyone, although naturally not in equal measure","All of us, though not equally, of course"],"note":"In equal measure: ở mức ngang nhau."},
+{"key":"l3","en":"Certainly, but it shouldn't let polluters off the hook.","vi":"Chắc chắn, nhưng không nên để kẻ gây ô nhiễm thoát tội.","accept":["Certainly, but it shouldn't let polluters off the hook","Of course, but that shouldn't let polluters off the hook"],"note":"Let off the hook: tha, cho thoát trách nhiệm."},
+{"key":"l4","en":"Given their historical emissions, it seems only fair.","vi":"Xét lượng khí thải lịch sử của họ, điều đó có vẻ công bằng.","accept":["Given their historical emissions, it seems only fair","Considering their historical emissions, it seems only fair"],"note":""},
+{"key":"l5","en":"Thank you. I enjoyed the lively debate.","vi":"Cảm ơn. Tôi thích cuộc tranh luận sôi nổi.","accept":["Thanks. I enjoyed the lively debate","Thank you. I enjoyed the lively discussion"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Our next question: who bears responsibility for climate action?","npc_vi":"Câu hỏi tiếp theo: ai chịu trách nhiệm hành động vì khí hậu?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Isn't individual responsibility still important, though?","npc_vi":"Nhưng trách nhiệm cá nhân vẫn quan trọng chứ?","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Should wealthy nations pay more?","npc_vi":"Các nước giàu có nên trả nhiều hơn không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Thank you, a thoughtful contribution as always.","npc_vi":"Cảm ơn, một đóng góp sâu sắc như mọi khi.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"answering-a-backhanded-compliment","level":"C1","group":"work","title_vi":"Đáp lời khen nửa mỉa","title_en":"Answering a backhanded compliment","goal_vi":"Đáp lại lời khen mỉa mai bằng sự dí dỏm.","partner_vi":"Đồng nghiệp hay nói móc","partner_emoji":"😏","lines":[
+{"key":"l1","en":"How kind. I'll try to be less surprising next time.","vi":"Tử tế quá. Lần sau tôi sẽ cố bớt gây ngạc nhiên.","accept":["How kind. I'll try to be less of a surprise next time","Thank you. I'll try to be less surprising next time"],"note":"Mỉa nhẹ: vờ cảm ơn lời khen có gai."},
+{"key":"l2","en":"Thank you, I think. Though junior is an odd qualifier.","vi":"Cảm ơn, tôi nghĩ vậy. Dù chữ non trẻ là giới hạn lạ.","accept":["Thanks, I think. Though junior is a strange qualifier","Thank you, I suppose. Though junior is an odd qualifier"],"note":"Thank you, I think: cảm ơn nhưng còn ngờ vực."},
+{"key":"l3","en":"I'm sure you did. Praise just works better unqualified.","vi":"Tôi tin là vậy. Lời khen hiệu quả hơn khi không kèm điều kiện.","accept":["I'm sure you did. Praise works better unqualified","I'm sure you did. Praise simply works better without qualifiers"],"note":""},
+{"key":"l4","en":"Much better. See how easy that was?","vi":"Tốt hơn nhiều. Thấy dễ không?","accept":["Much better. See how easy that was","That's much better. See how easy that was"],"note":""},
+{"key":"l5","en":"Gladly. Flattery with caffeine works every time.","vi":"Sẵn lòng. Nịnh kèm cà phê lần nào cũng hiệu quả.","accept":["Gladly. Flattery with caffeine always works","With pleasure. Flattery with caffeine works every time"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Your presentation was surprisingly good for someone so junior.","npc_vi":"Bài thuyết trình của bạn hay đến bất ngờ với người non kinh nghiệm.","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Oh, I meant it as praise, honestly.","npc_vi":"Ồ, tôi thật lòng muốn khen mà.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Fair enough. Let me rephrase: it was excellent.","npc_vi":"Cũng phải. Để tôi nói lại: nó xuất sắc.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Fair play. Shall I buy you a coffee?","npc_vi":"Chịu thua. Để tôi mời bạn cà phê nhé?","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"discussing-a-films-moral-message","level":"C1","group":"daily","title_vi":"Bàn về thông điệp đạo đức phim","title_en":"A film's moral message","goal_vi":"Phân tích và nêu quan điểm về một bộ phim.","partner_vi":"Bạn đi xem phim cùng","partner_emoji":"🎬","lines":[
+{"key":"l1","en":"Not glorify exactly, but it certainly didn't condemn it.","vi":"Không hẳn tôn vinh, nhưng chắc chắn không lên án.","accept":["Not exactly glorify, but it certainly didn't condemn it","Not glorify as such, but it certainly didn't condemn it"],"note":""},
+{"key":"l2","en":"On the contrary, it made the cost painfully clear.","vi":"Ngược lại, nó cho thấy cái giá phải trả quá rõ ràng.","accept":["On the contrary, it made the cost painfully obvious","Quite the opposite, it made the cost painfully clear"],"note":"On the contrary: ngược lại."},
+{"key":"l3","en":"It did, since the hero looked utterly hollow by then.","vi":"Có, vì lúc đó người hùng trông hoàn toàn trống rỗng.","accept":["It did, as the hero looked utterly hollow by then","It did, because the hero seemed utterly hollow by then"],"note":""},
+{"key":"l4","en":"Not really, I found it sentimental and heavy handed.","vi":"Không hẳn, tôi thấy nó sến và nặng tay.","accept":["Not really, I found it sentimental and heavy handed","Not really, it struck me as sentimental and heavy handed"],"note":"Heavy handed: thô, thiếu tinh tế."},
+{"key":"l5","en":"Not a duty, but good ones raise uncomfortable questions.","vi":"Không phải nghĩa vụ, nhưng phim hay đặt ra câu hỏi khó chịu.","accept":["Not a duty, but good films raise uncomfortable questions","Not an obligation, but good ones raise uncomfortable questions"],"note":""},
+{"key":"l6","en":"Only if you promise to pick something cheerful.","vi":"Chỉ khi bạn hứa chọn phim vui vẻ.","accept":["Only if you promise to choose something cheerful","Provided you promise to pick something cheerful"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Did the film glorify the hero's revenge, in your view?","npc_vi":"Theo bạn phim có tôn vinh sự trả thù của nhân vật chính không?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Interesting. Did the final scene change your opinion?","npc_vi":"Thú vị. Cảnh cuối có thay đổi ý kiến bạn không?","replies":[{"line":"l3","next":"n3"},{"line":"l4","next":"n3"}]},
+{"id":"n3","npc_en":"Do films have a duty to teach moral lessons?","npc_vi":"Phim có bổn phận dạy bài học đạo đức không?","replies":[{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Well put. Shall we watch another on Friday?","npc_vi":"Nói hay lắm. Thứ Sáu mình xem phim nữa nhé?","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"reflecting-on-life-regrets-with-an-old-friend","level":"C1","group":"daily","title_vi":"Ngẫm về nuối tiếc cùng bạn cũ","title_en":"Reflecting on regrets with an old friend","goal_vi":"Chia sẻ nuối tiếc và quyết tâm sống khác đi.","partner_vi":"Người bạn cũ lâu năm","partner_emoji":"🍂","lines":[
+{"key":"l1","en":"More often than I'd care to admit, honestly.","vi":"Thật lòng, nhiều hơn tôi muốn thừa nhận.","accept":["More often than I'd like to admit, honestly","Honestly, more often than I'd care to admit"],"note":"Than I'd care to admit: nhiều hơn mình muốn nhận."},
+{"key":"l2","en":"Not taking more risks, and letting good friendships lapse.","vi":"Không liều hơn, và để những tình bạn đẹp phai nhạt.","accept":["Not taking more risks, and letting good friendships fade","Not taking more chances, and letting friendships lapse"],"note":""},
+{"key":"l3","en":"Working relentlessly, and missing my father's final years.","vi":"Làm việc không ngừng, và bỏ lỡ những năm cuối của cha.","accept":["Working relentlessly, and missing my father's last years","Working non stop, and missing my father's final years"],"note":""},
+{"key":"l4","en":"No, but we can decide what to do next.","vi":"Không, nhưng ta quyết định được việc làm tiếp theo.","accept":["No, but we can choose what to do next","We can't, but we can decide what comes next"],"note":""},
+{"key":"l5","en":"Perhaps, yet it's never too late to begin.","vi":"Có lẽ, nhưng chẳng bao giờ là quá muộn để bắt đầu.","accept":["Perhaps, but it's never too late to begin","Maybe, yet it's never too late to start"],"note":""},
+{"key":"l6","en":"Done. I'll book the tickets before I lose nerve.","vi":"Chốt. Tôi sẽ đặt vé trước khi mất can đảm.","accept":["Done. I'll book the tickets before I lose my nerve","Agreed. I'll book the tickets before I lose nerve"],"note":""},
+{"key":"l7","en":"Well, fewer regrets, at any rate. Cheers!","vi":"Ừ, ít nuối tiếc hơn, ít nhất vậy. Cạn ly!","accept":["Well, fewer regrets, at any rate. Cheers","Fewer regrets, anyway. Cheers"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Do you ever wonder how things might have turned out differently?","npc_vi":"Bạn có bao giờ tự hỏi mọi chuyện có thể khác đi thế nào?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"What do you regret most about your twenties?","npc_vi":"Bạn tiếc nhất điều gì ở tuổi hai mươi?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"We can't change it, can we?","npc_vi":"Ta đâu thể thay đổi nó, đúng không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Easier said than done, at our age.","npc_vi":"Nói dễ hơn làm, ở tuổi ta.","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Then let's start with that trip we always planned.","npc_vi":"Vậy ta bắt đầu với chuyến đi ta luôn dự định.","replies":[{"line":"l6","next":"n6"}]},
+{"id":"n6","npc_en":"Wonderful. Here's to no more regrets!","npc_vi":"Tuyệt vời. Chúc không còn nuối tiếc!","replies":[{"line":"l7","next":null}]}
+]}
+]

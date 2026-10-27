@@ -1,0 +1,71 @@
+[
+{"slug":"asking-for-a-day-off","level":"B1","group":"work","title_vi":"Xin nghỉ một ngày","title_en":"Asking for a day off","goal_vi":"Xin sếp cho nghỉ thứ Sáu và hứa hoàn thành việc trước.","partner_vi":"Sếp của bạn","partner_emoji":"👔","lines":[
+{"key":"l1","en":"Could I take Friday off, please?","vi":"Tôi nghỉ thứ Sáu được không ạ?","accept":["Is it possible to take Friday off","May I have Friday off, please"],"note":"Could I...? là cách xin phép lịch sự."},
+{"key":"l2","en":"I need to renew my passport.","vi":"Tôi cần gia hạn hộ chiếu.","accept":["I have to renew my passport","I have to get my passport renewed"],"note":""},
+{"key":"l3","en":"My cousin is getting married that day.","vi":"Hôm đó anh họ tôi cưới.","accept":["My cousin has a wedding that day","It is my cousin's wedding that day"],"note":""},
+{"key":"l4","en":"Yes, I will finish it on Thursday.","vi":"Vâng, tôi sẽ xong vào thứ Năm.","accept":["Sure, I can finish it by Thursday","Yes, I will finish it by Thursday"],"note":""},
+{"key":"l5","en":"I will try, although it is long.","vi":"Tôi sẽ cố, dù nó khá dài.","accept":["I can try, but it is long","I will try, but it is quite long"],"note":"although = dù cho, nối hai ý trái nhau."},
+{"key":"l6","en":"Thank you, I really appreciate it.","vi":"Cảm ơn sếp, tôi rất biết ơn.","accept":["Thanks, I really appreciate it","Thank you so much for understanding"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"You wanted to talk to me about something?","npc_vi":"Bạn muốn nói chuyện với tôi à?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Friday is busy. Why do you need the day?","npc_vi":"Thứ Sáu bận lắm. Sao bạn cần nghỉ?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"I see. Can you finish the report before you go?","npc_vi":"Hiểu rồi. Bạn xong báo cáo trước khi nghỉ được không?","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Fine. Your day off is approved.","npc_vi":"Được. Ngày nghỉ của bạn đã duyệt.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"welcoming-a-new-colleague","level":"B1","group":"work","title_vi":"Đón đồng nghiệp mới","title_en":"Welcoming a new colleague","goal_vi":"Chào đón và hướng dẫn đồng nghiệp mới trong ngày đầu.","partner_vi":"Đồng nghiệp mới","partner_emoji":"🙋","lines":[
+{"key":"l1","en":"Welcome! I am glad you joined us.","vi":"Chào mừng! Tôi vui vì bạn gia nhập.","accept":["Welcome to the team! I am happy you joined","Welcome aboard! I am glad you are here"],"note":""},
+{"key":"l2","en":"First, let me show you your desk.","vi":"Trước tiên để tôi chỉ bàn của bạn.","accept":["Let me show you your desk first","First I will take you to your desk"],"note":""},
+{"key":"l3","en":"Yes, and if you have problems, ask IT.","vi":"Có, và nếu gặp lỗi thì hỏi IT.","accept":["Yes, ask IT if you have any problems","Yes, and ask IT if something goes wrong"],"note":"if + hiện tại, will/mệnh lệnh: câu điều kiện loại 1."},
+{"key":"l4","en":"Yes, there is a cheap noodle shop.","vi":"Có, có một quán phở rẻ.","accept":["Yes, there is a cheap noodle place","Yes, there is a cheap noodle restaurant"],"note":""},
+{"key":"l5","en":"Yes, but it gets crowded at noon.","vi":"Có, nhưng buổi trưa đông lắm.","accept":["Yes, although it gets crowded at noon","Yes, but it is very busy at noon"],"note":""},
+{"key":"l6","en":"Sure, I would love to join you.","vi":"Chắc chắn rồi, tôi rất muốn đi cùng.","accept":["Of course, I would love to have lunch with you","Sure, that sounds great to me"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Hi, I am Minh. Today is my first day.","npc_vi":"Chào, tôi là Minh. Hôm nay là ngày đầu của tôi.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Thanks. I am a bit nervous. What should we do first?","npc_vi":"Cảm ơn. Tôi hơi lo. Mình làm gì trước?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Great. Do I need to set up my email?","npc_vi":"Tuyệt. Tôi có cần cài email không?","replies":[{"line":"l3","next":"n4"}]},
+{"id":"n4","npc_en":"Okay. Is there a good place for lunch nearby?","npc_vi":"Được. Gần đây có chỗ ăn trưa ngon không?","replies":[{"line":"l4","next":"n5"},{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Perfect. Could we have lunch together today?","npc_vi":"Tuyệt. Hôm nay mình ăn trưa cùng nhau nhé?","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"practicing-a-short-presentation","level":"B1","group":"work","title_vi":"Luyện thuyết trình ngắn","title_en":"Practicing a short presentation","goal_vi":"Nói về chủ đề, cách mở đầu và thời lượng bài thuyết trình.","partner_vi":"Đồng nghiệp nghe thử","partner_emoji":"🎤","lines":[
+{"key":"l1","en":"I am talking about our new app.","vi":"Tôi nói về ứng dụng mới của mình.","accept":["My topic is our new app","I will present our new app"],"note":""},
+{"key":"l2","en":"I will begin with a short story.","vi":"Tôi sẽ mở đầu bằng một câu chuyện ngắn.","accept":["I plan to start with a short story","I will start with a little story"],"note":""},
+{"key":"l3","en":"I will start by asking a question.","vi":"Tôi sẽ bắt đầu bằng một câu hỏi.","accept":["I plan to begin with a question","I will open with a question"],"note":""},
+{"key":"l4","en":"It will take about ten minutes.","vi":"Sẽ mất khoảng mười phút.","accept":["It should take around ten minutes","It will last about ten minutes"],"note":""},
+{"key":"l5","en":"Thanks, but I am still nervous.","vi":"Cảm ơn, nhưng tôi vẫn còn lo.","accept":["Thank you, although I am still nervous","Thanks, I still feel nervous"],"note":""},
+{"key":"l6","en":"That is good advice. I will try it.","vi":"Lời khuyên hay. Tôi sẽ thử.","accept":["Good advice, I will try that","Good idea, I will do that"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Ready to practice? What is your topic?","npc_vi":"Sẵn sàng luyện chưa? Chủ đề của bạn là gì?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Nice. How will you begin?","npc_vi":"Hay đấy. Bạn sẽ mở đầu thế nào?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Good idea. How long will it take?","npc_vi":"Ý hay. Sẽ mất bao lâu?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Perfect. I think the audience will enjoy it.","npc_vi":"Hoàn hảo. Tôi nghĩ khán giả sẽ thích.","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Don't worry. Just breathe and speak slowly.","npc_vi":"Đừng lo. Cứ hít thở và nói chậm.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"choosing-an-evening-course","level":"B1","group":"work","title_vi":"Chọn khóa học buổi tối","title_en":"Choosing an evening course","goal_vi":"Trao đổi với cố vấn học tập để chọn khóa phù hợp.","partner_vi":"Cố vấn học tập","partner_emoji":"🎓","lines":[
+{"key":"l1","en":"I cannot decide between design and marketing.","vi":"Tôi chưa chọn được giữa thiết kế và marketing.","accept":["I am not sure between design and marketing","It is hard to choose between design and marketing"],"note":""},
+{"key":"l2","en":"I prefer design because I like drawing.","vi":"Tôi thích thiết kế vì tôi thích vẽ.","accept":["Design, because I enjoy drawing","I like design more because I enjoy drawing"],"note":""},
+{"key":"l3","en":"Marketing, because it may give me more jobs.","vi":"Marketing, vì nó có thể có nhiều việc hơn.","accept":["I prefer marketing because it has more job chances","Marketing seems better for finding a job"],"note":"more + danh từ dùng để so sánh số lượng."},
+{"key":"l4","en":"Only in the evening, after I finish work.","vi":"Chỉ buổi tối, sau khi tôi tan làm.","accept":["I am only free in the evenings after work","Just in the evening, after my job"],"note":""},
+{"key":"l5","en":"That works for me. How do I register?","vi":"Hợp với tôi. Đăng ký thế nào?","accept":["That sounds good. How can I sign up","Great. How do I sign up"],"note":""},
+{"key":"l6","en":"Thank you. I will do it today.","vi":"Cảm ơn. Tôi sẽ làm hôm nay.","accept":["Thanks, I will do it today","Thank you, I will do that today"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Come in. Which courses are you thinking about?","npc_vi":"Vào đi. Bạn đang cân nhắc khóa nào?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Both are good. Which one interests you more?","npc_vi":"Cả hai đều tốt. Bạn quan tâm cái nào hơn?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Do you have time for a class on weekdays?","npc_vi":"Bạn có thời gian học các ngày trong tuần không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Then I suggest the evening class. It starts in September.","npc_vi":"Vậy tôi gợi ý lớp tối. Khai giảng tháng Chín.","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Just fill in this form and pay online.","npc_vi":"Chỉ cần điền mẫu này và trả tiền online.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"taking-a-phone-message","level":"B1","group":"work","title_vi":"Nhận tin nhắn qua điện thoại","title_en":"Taking a phone message","goal_vi":"Trả lời điện thoại thay đồng nghiệp và ghi lại lời nhắn.","partner_vi":"Người gọi điện","partner_emoji":"📞","lines":[
+{"key":"l1","en":"Sorry, she is in a meeting now.","vi":"Xin lỗi, cô ấy đang họp.","accept":["I am sorry, she is in a meeting","Sorry, she is in a meeting right now"],"note":""},
+{"key":"l2","en":"She should be free after eleven o'clock.","vi":"Cô ấy chắc rảnh sau mười một giờ.","accept":["She will probably be free after eleven","I think she is free after eleven o'clock"],"note":""},
+{"key":"l3","en":"I am not sure, maybe after lunch.","vi":"Tôi không chắc, có thể sau bữa trưa.","accept":["I do not know, maybe after lunch","Maybe after lunch, but I am not sure"],"note":""},
+{"key":"l4","en":"Of course. What would you like to say?","vi":"Tất nhiên. Bạn muốn nhắn gì?","accept":["Sure. What is your message","Certainly. What is the message"],"note":""},
+{"key":"l5","en":"Okay, I will tell her as soon as possible.","vi":"Vâng, tôi sẽ báo cô ấy sớm nhất.","accept":["Sure, I will let her know right away","All right, I will pass on the message soon"],"note":""},
+{"key":"l6","en":"You are welcome. Have a nice day!","vi":"Không có gì. Chúc một ngày tốt lành!","accept":["No problem. Have a good day","My pleasure. Have a nice day"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Good morning. Could I speak to Lan, please?","npc_vi":"Chào buổi sáng. Cho tôi nói chuyện với Lan được không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"I see. When will she be free?","npc_vi":"Tôi hiểu. Khi nào cô ấy rảnh?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Could you take a message for her?","npc_vi":"Bạn nhận lời nhắn giúp cô ấy được không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Please tell her the contract is ready to sign.","npc_vi":"Nhờ báo cô ấy hợp đồng đã sẵn sàng để ký.","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Thank you very much. Goodbye!","npc_vi":"Cảm ơn rất nhiều. Tạm biệt!","replies":[{"line":"l6","next":null}]}
+]}
+]

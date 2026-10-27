@@ -1,0 +1,67 @@
+[
+{"slug":"job-interview-strengths","level":"B1","group":"work","title_vi":"Phỏng vấn: điểm mạnh của bạn","title_en":"Job interview strengths","goal_vi":"Kể kinh nghiệm, điểm mạnh và lý do muốn đổi việc.","partner_vi":"Nhà tuyển dụng","partner_emoji":"💼","lines":[
+{"key":"l1","en":"I worked as a sales assistant for two years.","vi":"Tôi làm trợ lý bán hàng hai năm.","accept":["I was a sales assistant for two years","For two years, I was a sales assistant"],"note":""},
+{"key":"l2","en":"I am organized and I learn quickly.","vi":"Tôi ngăn nắp và học nhanh.","accept":["I learn fast and I am organized","I am very organized and learn quickly"],"note":""},
+{"key":"l3","en":"I work well with other people.","vi":"Tôi làm việc tốt với người khác.","accept":["I am good at working in a team","I get along well with my team"],"note":""},
+{"key":"l4","en":"I want more chances to learn new skills.","vi":"Tôi muốn thêm cơ hội học kỹ năng mới.","accept":["I am looking for chances to learn new skills","I would like to learn more new skills"],"note":"Nêu lý do tích cực, đừng chê công ty cũ."},
+{"key":"l5","en":"Yes, what would my daily tasks be?","vi":"Có, công việc hằng ngày của tôi là gì?","accept":["Yes, what will my daily work be","Yes, could you tell me about the daily tasks"],"note":""},
+{"key":"l6","en":"Thank you. I look forward to your call.","vi":"Cảm ơn. Tôi mong cuộc gọi của anh chị.","accept":["Thanks, I am looking forward to your call","Thank you, I will wait for your call"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Thanks for coming. Please tell me about your last job.","npc_vi":"Cảm ơn đã đến. Hãy kể về công việc trước của bạn.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"What is your biggest strength?","npc_vi":"Điểm mạnh lớn nhất của bạn là gì?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Why do you want to leave your current job?","npc_vi":"Sao bạn muốn rời công việc hiện tại?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Good answer. Do you have any questions for us?","npc_vi":"Trả lời tốt. Bạn có câu hỏi nào cho chúng tôi không?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"You would answer emails and help customers. We will call you next week.","npc_vi":"Bạn sẽ trả lời email và hỗ trợ khách. Tuần sau chúng tôi gọi.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"disagreeing-about-a-launch-date","level":"B1","group":"work","title_vi":"Bất đồng về ngày ra mắt","title_en":"Disagreeing about a launch date","goal_vi":"Lịch sự phản đối ngày ra mắt và đề xuất ngày khác.","partner_vi":"Đồng nghiệp trong họp","partner_emoji":"💬","lines":[
+{"key":"l1","en":"That seems too early to me.","vi":"Tôi thấy như vậy hơi sớm.","accept":["I think that is too early","May seems too early to me"],"note":""},
+{"key":"l2","en":"Good idea, but we need more testing.","vi":"Ý hay, nhưng cần thử thêm.","accept":["I agree, although we need more testing","That is fine, but we still need more testing"],"note":"Dùng but/although để phản đối nhẹ nhàng."},
+{"key":"l3","en":"We have found several bugs in the checkout.","vi":"Chúng ta đã thấy vài lỗi ở phần thanh toán.","accept":["There are still several bugs in the checkout","We have found many bugs in the checkout"],"note":""},
+{"key":"l4","en":"I suggest June, if the team agrees.","vi":"Tôi đề nghị tháng Sáu, nếu nhóm đồng ý.","accept":["How about June, if the team agrees","June would be better if everyone agrees"],"note":""},
+{"key":"l5","en":"Maybe July, so we can test properly.","vi":"Có lẽ tháng Bảy, để thử cho kỹ.","accept":["Perhaps July, so we can test it well","July might be better for proper testing"],"note":""},
+{"key":"l6","en":"Good. Let's decide before Friday.","vi":"Tốt. Quyết định trước thứ Sáu nhé.","accept":["Good, we should decide before Friday","Great. We need to decide by Friday"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"I think we should launch the website in May.","npc_vi":"Tôi nghĩ nên ra mắt website vào tháng Năm.","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Can you explain your reason?","npc_vi":"Bạn giải thích lý do được không?","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"That is true. When would be better?","npc_vi":"Đúng vậy. Khi nào thì tốt hơn?","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Okay. Let me ask the others about it.","npc_vi":"Được. Để tôi hỏi những người khác.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"deciding-which-task-first","level":"B1","group":"work","title_vi":"Việc nào làm trước","title_en":"Deciding which task first","goal_vi":"Hỏi sếp thứ tự ưu tiên và hạn chót của hai việc gấp.","partner_vi":"Quản lý","partner_emoji":"📋","lines":[
+{"key":"l1","en":"Which one is more important?","vi":"Việc nào quan trọng hơn?","accept":["Which one should I do first","Which task is the priority"],"note":""},
+{"key":"l2","en":"When do you need the report?","vi":"Khi nào anh cần báo cáo?","accept":["What is the deadline for the report","By when do you need the report"],"note":""},
+{"key":"l3","en":"That is tight, but I can do it.","vi":"Gấp đấy, nhưng tôi làm được.","accept":["It is tight, but I will manage","That is a short time, but I can manage"],"note":""},
+{"key":"l4","en":"I have not started it yet, so I need help.","vi":"Tôi chưa bắt đầu nên cần giúp.","accept":["I haven't started yet, so I need some help","I have not begun, so I need help"],"note":"Present perfect + yet: chưa làm gì cho đến giờ."},
+{"key":"l5","en":"Thank you. That would save a lot of time.","vi":"Cảm ơn. Vậy sẽ tiết kiệm nhiều thời gian.","accept":["Thanks, that would save me a lot of time","Great, that would really save time"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"I have two urgent tasks for you today.","npc_vi":"Hôm nay tôi có hai việc gấp cho bạn.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"The client report. The budget file can wait.","npc_vi":"Báo cáo cho khách. File ngân sách để sau được.","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"By three o'clock this afternoon.","npc_vi":"Trước ba giờ chiều nay.","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Okay. Let me ask Tom to help with the data.","npc_vi":"Được. Để tôi nhờ Tom giúp phần dữ liệu.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"apology-email-for-late-files","level":"B1","group":"work","title_vi":"Email xin lỗi vì gửi trễ","title_en":"Apology email for late files","goal_vi":"Giải thích vì sao gửi file trễ và nhận hướng dẫn viết email xin lỗi.","partner_vi":"Đồng nghiệp lâu năm","partner_emoji":"📧","lines":[
+{"key":"l1","en":"Not yet, but I will send them today.","vi":"Chưa, nhưng hôm nay tôi sẽ gửi.","accept":["Not yet, I will send them today","No, but I will send them today"],"note":""},
+{"key":"l2","en":"I had problems with the big file.","vi":"Tôi gặp lỗi với file lớn.","accept":["There was a problem with the large file","The big file gave me problems"],"note":""},
+{"key":"l3","en":"I was ill, so I missed two days.","vi":"Tôi bị ốm nên nghỉ hai ngày.","accept":["I was sick, so I missed two days","I was sick, so I lost two days"],"note":""},
+{"key":"l4","en":"Good idea. What should I say?","vi":"Ý hay. Tôi nên viết gì?","accept":["Okay. What should I write","Sure. What should I say in it"],"note":""},
+{"key":"l5","en":"I will write it right now.","vi":"Tôi sẽ viết ngay bây giờ.","accept":["I will write it immediately","I am going to write it right away"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Did you send the files to the client?","npc_vi":"Bạn đã gửi file cho khách chưa?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"They have waited since Monday. What happened?","npc_vi":"Họ chờ từ thứ Hai. Chuyện gì đã xảy ra?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Please write a short apology email to them.","npc_vi":"Hãy viết email xin lỗi ngắn cho họ.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Say sorry for the delay and give a new date.","npc_vi":"Xin lỗi vì chậm và đưa ngày mới.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"reporting-a-broken-printer","level":"B1","group":"work","title_vi":"Báo máy in bị hỏng","title_en":"Reporting a broken printer","goal_vi":"Báo lỗi máy in cho bộ phận IT và chờ được sửa.","partner_vi":"Nhân viên IT","partner_emoji":"🔧","lines":[
+{"key":"l1","en":"The printer on our floor is not working.","vi":"Máy in ở tầng chúng tôi không chạy.","accept":["Our floor printer does not work","The printer on this floor has stopped working"],"note":""},
+{"key":"l2","en":"Yes, it says there is a paper jam.","vi":"Có, nó báo kẹt giấy.","accept":["Yes, the message says paper jam","It says there is a paper jam"],"note":"paper jam = kẹt giấy."},
+{"key":"l3","en":"No, but it makes a strange noise.","vi":"Không, nhưng nó kêu lạ.","accept":["No message, but it makes a strange sound","No, but it is making a strange noise"],"note":""},
+{"key":"l4","en":"Yes, I have tried that twice already.","vi":"Có, tôi đã thử hai lần rồi.","accept":["Yes, I already tried that twice","I have already tried it two times"],"note":""},
+{"key":"l5","en":"Thanks. I need to print something urgently.","vi":"Cảm ơn. Tôi cần in gấp một thứ.","accept":["Thank you. I have an urgent document to print","Thanks, I must print something urgent"],"note":""},
+{"key":"l6","en":"Good idea. I will go there now.","vi":"Ý hay. Tôi đi ngay đây.","accept":["Okay, I will go there now","Thanks, I will use that one"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"IT support. How can I help you?","npc_vi":"Bộ phận IT đây. Tôi giúp gì được?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Is there an error message on the screen?","npc_vi":"Trên màn hình có báo lỗi không?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Have you tried turning it off and on?","npc_vi":"Bạn đã thử tắt rồi bật lại chưa?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Okay. I will send someone in ten minutes.","npc_vi":"Được. Mười phút nữa tôi cử người đến.","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Use the printer on the third floor until then.","npc_vi":"Tạm dùng máy in tầng ba nhé.","replies":[{"line":"l6","next":null}]}
+]}
+]

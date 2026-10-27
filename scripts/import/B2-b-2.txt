@@ -1,0 +1,66 @@
+[
+{"slug":"apologizing-for-missing-a-birthday","level":"B2","group":"daily","title_vi":"Xin lỗi vì quên sinh nhật","title_en":"Apologizing for missing a birthday","goal_vi":"Xin lỗi chân thành và đề nghị bù đắp cho bạn.","partner_vi":"Bạn bị bỏ rơi trong sinh nhật","partner_emoji":"🎂","lines":[
+{"key":"l1","en":"I'm so sorry, I completely lost track of time.","vi":"Mình xin lỗi, mình hoàn toàn quên mất thời gian.","accept":["I'm really sorry, I totally lost track of time","I apologize, I completely lost track of the time"],"note":"Lose track of time nghĩa là mải làm gì đó mà quên giờ."},
+{"key":"l2","en":"I was stuck at work and my phone died.","vi":"Mình bị kẹt ở chỗ làm và điện thoại hết pin.","accept":["I got stuck at work and my phone died","My phone died and I was stuck at work"],"note":""},
+{"key":"l3","en":"Honestly, I had a terrible week and forgot.","vi":"Thật lòng thì tuần này tệ quá nên mình quên mất.","accept":["To be honest, I had an awful week and forgot","Honestly, it was a dreadful week and I forgot"],"note":""},
+{"key":"l4","en":"You're right, and I wish I had called.","vi":"Bạn nói đúng, và giá mà mình đã gọi.","accept":["You're right, and I wish I had phoned you","That's fair, and I wish I had called you"],"note":"I wish I had + V3 diễn tả sự tiếc nuối."},
+{"key":"l5","en":"I'd like to take you out for dinner.","vi":"Mình muốn đưa bạn đi ăn tối.","accept":["I would like to take you to dinner","Let me take you out for dinner"],"note":""},
+{"key":"l6","en":"Let me organize a small party for you.","vi":"Để mình tổ chức một bữa tiệc nhỏ cho bạn.","accept":["Let me throw a small party for you","I'll organize a little party for you"],"note":""},
+{"key":"l7","en":"I promise it won't happen again.","vi":"Mình hứa sẽ không có lần sau.","accept":["I promise this won't happen again","I swear it won't happen again"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"You never came to my birthday party. I was upset.","npc_vi":"Bạn không đến tiệc sinh nhật mình. Mình đã buồn.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"What happened? You didn't even text me.","npc_vi":"Chuyện gì vậy? Bạn còn không nhắn cho mình.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"I understand, but it really hurt my feelings.","npc_vi":"Mình hiểu, nhưng nó thật sự làm mình tổn thương.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Okay. How will you make it up to me?","npc_vi":"Được rồi. Bạn sẽ bù đắp cho mình thế nào?","replies":[{"line":"l5","next":"n5"},{"line":"l6","next":"n5"}]},
+{"id":"n5","npc_en":"Alright, apology accepted. Just don't do it again.","npc_vi":"Được, mình chấp nhận lời xin lỗi. Đừng tái phạm nhé.","replies":[{"line":"l7","next":null}]}]},
+{"slug":"hedging-opinions-on-teen-social-media-ban","level":"B2","group":"daily","title_vi":"Nêu ý kiến về cấm mạng xã hội","title_en":"Hedging opinions on a teen social media ban","goal_vi":"Nêu ý kiến một cách thận trọng về việc cấm mạng xã hội cho thiếu niên.","partner_vi":"Đồng nghiệp thích tranh luận","partner_emoji":"💬","lines":[
+{"key":"l1","en":"I'm not sure a ban would actually work.","vi":"Mình không chắc lệnh cấm có thật sự hiệu quả.","accept":["I doubt a ban would actually work","I'm not convinced a ban would really work"],"note":"Dùng I'm not sure để phản đối nhẹ nhàng."},
+{"key":"l2","en":"To be honest, I'd probably support it.","vi":"Thật lòng thì có lẽ mình sẽ ủng hộ.","accept":["Honestly, I would probably support it","To be honest, I would most likely back it"],"note":""},
+{"key":"l3","en":"Teenagers would simply find ways around the rules.","vi":"Thiếu niên sẽ đơn giản là tìm cách lách luật.","accept":["Teens would just find ways around the rules","Young people would simply get around the rules"],"note":""},
+{"key":"l4","en":"Young people seem to be struggling with anxiety.","vi":"Giới trẻ dường như đang chật vật với chứng lo âu.","accept":["Teenagers seem to be struggling with anxiety","It seems young people are struggling with anxiety"],"note":""},
+{"key":"l5","en":"Schools could teach healthier habits online.","vi":"Trường học có thể dạy thói quen lành mạnh khi dùng mạng.","accept":["Schools might teach healthier online habits","Schools could teach healthy online habits"],"note":""},
+{"key":"l6","en":"It could work, if parents were involved.","vi":"Có thể hiệu quả, nếu phụ huynh tham gia.","accept":["That could work if parents got involved","It might work, provided parents were involved"],"note":"If + quá khứ, would/could + V: câu điều kiện loại hai."}],
+"dialogue":[
+{"id":"n1","npc_en":"Should social media be banned for under sixteens?","npc_vi":"Có nên cấm mạng xã hội cho người dưới mười sáu tuổi không?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n3"}]},
+{"id":"n2","npc_en":"Really? Why do you think a ban would fail?","npc_vi":"Thật sao? Sao bạn nghĩ lệnh cấm sẽ thất bại?","replies":[{"line":"l3","next":"n4"}]},
+{"id":"n3","npc_en":"Interesting. Why would you support it?","npc_vi":"Thú vị đấy. Sao bạn lại ủng hộ?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"What else should be done, then?","npc_vi":"Vậy còn nên làm gì khác nữa?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Education might be a good compromise, I suppose.","npc_vi":"Giáo dục có lẽ là một sự dung hòa tốt.","replies":[{"line":"l6","next":null}]}]},
+{"slug":"considering-a-career-change-to-teaching","level":"B2","group":"daily","title_vi":"Chuyển nghề sang làm giáo viên","title_en":"Considering a career change to teaching","goal_vi":"Nói về lý do và kế hoạch đổi nghề.","partner_vi":"Anh họ quan tâm","partner_emoji":"🍎","lines":[
+{"key":"l1","en":"Yes, I've been considering becoming a teacher.","vi":"Đúng, mình đang cân nhắc trở thành giáo viên.","accept":["Yes, I've been thinking about becoming a teacher","That's right, I'm considering becoming a teacher"],"note":""},
+{"key":"l2","en":"I want work that feels more meaningful.","vi":"Mình muốn công việc có ý nghĩa hơn.","accept":["I'd like work that feels more meaningful","I want a job that feels more meaningful"],"note":""},
+{"key":"l3","en":"I'm burned out from the long hours.","vi":"Mình kiệt sức vì làm việc nhiều giờ.","accept":["I'm exhausted from the long hours","The long hours have burned me out"],"note":"Burned out nghĩa là kiệt sức vì công việc."},
+{"key":"l4","en":"It would, but I've saved some money.","vi":"Đúng vậy, nhưng mình đã tiết kiệm được chút tiền.","accept":["It would, but I've put some money aside","Yes, but I have some savings"],"note":""},
+{"key":"l5","en":"Good idea, I'll find a school nearby.","vi":"Ý hay, mình sẽ tìm một trường gần đây.","accept":["Good idea, I'll look for a nearby school","Great idea, I'll find a school close by"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I heard you're thinking of quitting your job.","npc_vi":"Anh nghe nói em định nghỉ việc.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"That's a big change. What's driving it?","npc_vi":"Thay đổi lớn đấy. Điều gì thúc đẩy em?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"The pay would drop a lot, wouldn't it?","npc_vi":"Lương sẽ giảm nhiều, đúng không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"If I were you, I'd try volunteering at a school first.","npc_vi":"Nếu là em, anh sẽ thử tình nguyện ở trường trước.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"first-day-volunteering-at-a-food-bank","level":"B2","group":"daily","title_vi":"Ngày đầu tình nguyện ở ngân hàng thực phẩm","title_en":"First day volunteering at a food bank","goal_vi":"Nhận việc và hỏi thêm về quy trình tình nguyện.","partner_vi":"Điều phối viên tình nguyện","partner_emoji":"🥫","lines":[
+{"key":"l1","en":"Yes, I saw your poster at the library.","vi":"Vâng, tôi thấy áp phích của các bạn ở thư viện.","accept":["Yes, I noticed your poster at the library","That's right, I saw your poster in the library"],"note":""},
+{"key":"l2","en":"Happy to help. Where should I start?","vi":"Rất vui được giúp. Tôi nên bắt đầu từ đâu?","accept":["Glad to help. Where should I begin","Sure thing. Where do I start"],"note":""},
+{"key":"l3","en":"Sure, I can stay until noon.","vi":"Được, tôi có thể ở lại đến trưa.","accept":["Of course, I can stay until noon","Sure, I'm free until noon"],"note":""},
+{"key":"l4","en":"Got it. What happens to expired items?","vi":"Hiểu rồi. Đồ hết hạn thì xử lý thế nào?","accept":["Understood. What happens to items past their date","Okay. What happens to expired food"],"note":""},
+{"key":"l5","en":"That makes sense. Safety comes first.","vi":"Hợp lý. An toàn là trên hết.","accept":["That makes sense. Safety is the priority","I see. Safety always comes first"],"note":""},
+{"key":"l6","en":"I'd love to, if my schedule allows.","vi":"Tôi rất muốn, nếu lịch cho phép.","accept":["I would love to, if my schedule permits","Sure, as long as my schedule allows"],"note":""},
+{"key":"l7","en":"Definitely, I'll sign up before leaving.","vi":"Chắc chắn rồi, tôi sẽ đăng ký trước khi về.","accept":["Absolutely, I'll sign up before I leave","Of course, I'll sign up before leaving"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Welcome! Is this your first time volunteering with us?","npc_vi":"Chào mừng! Đây là lần đầu bạn tình nguyện với chúng tôi à?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Great. We need help sorting donated food today.","npc_vi":"Tuyệt. Hôm nay chúng tôi cần người phân loại thực phẩm quyên góp.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Start with the tinned goods, please. Check expiry dates.","npc_vi":"Hãy bắt đầu với đồ hộp. Kiểm tra hạn sử dụng.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"They're thrown away, sadly. We can't risk anyone's health.","npc_vi":"Rất tiếc là bị bỏ đi. Chúng tôi không thể mạo hiểm sức khỏe ai.","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Thanks! Could you come back next week?","npc_vi":"Cảm ơn! Tuần sau bạn quay lại được không?","replies":[{"line":"l6","next":null},{"line":"l7","next":null}]}]},
+{"slug":"debating-intermittent-fasting","level":"B2","group":"daily","title_vi":"Bàn về nhịn ăn gián đoạn","title_en":"Debating intermittent fasting","goal_vi":"Thảo luận cẩn trọng về một xu hướng sức khỏe.","partner_vi":"Đồng nghiệp đang nhịn ăn sáng","partner_emoji":"🥗","lines":[
+{"key":"l1","en":"Is it really? I've heard mixed opinions.","vi":"Thật vậy sao? Mình nghe nhiều ý kiến trái chiều.","accept":["Is it? I've heard mixed opinions","Really? People seem to have mixed opinions"],"note":""},
+{"key":"l2","en":"Perhaps, but it may not suit everyone.","vi":"Có thể, nhưng nó có lẽ không hợp với mọi người.","accept":["Maybe, but it might not suit everybody","Possibly, but it may not work for everyone"],"note":""},
+{"key":"l3","en":"I'd want to ask a doctor first.","vi":"Mình sẽ muốn hỏi bác sĩ trước.","accept":["I would ask a doctor first","I'd prefer to ask a doctor first"],"note":""},
+{"key":"l4","en":"That sounds like a warning sign to me.","vi":"Nghe giống dấu hiệu cảnh báo với mình.","accept":["To me, that sounds like a warning sign","That seems like a warning sign to me"],"note":""},
+{"key":"l5","en":"Maybe you should eat something small earlier.","vi":"Có lẽ bạn nên ăn chút gì nhẹ sớm hơn.","accept":["Perhaps you should have a small snack earlier","You might want to eat something small earlier"],"note":""},
+{"key":"l6","en":"Good idea. Your health matters more than trends.","vi":"Ý hay. Sức khỏe quan trọng hơn xu hướng.","accept":["Good idea. Health matters more than trends","Sensible. Your health is more important than trends"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I've started skipping breakfast. Everyone says it's healthy.","npc_vi":"Mình bắt đầu bỏ bữa sáng. Ai cũng bảo nó tốt cho sức khỏe.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Some studies say it helps weight loss.","npc_vi":"Một số nghiên cứu nói nó giúp giảm cân.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"True. I do get dizzy before lunch.","npc_vi":"Đúng. Mình hay bị choáng trước bữa trưa.","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"You're right. I'll book a check up.","npc_vi":"Bạn nói đúng. Mình sẽ đặt lịch khám.","replies":[{"line":"l6","next":null}]}]}
+]

@@ -1,0 +1,67 @@
+[
+{"slug":"apologising-for-missing-a-birthday-dinner","level":"C1","group":"daily","title_vi":"Xin lỗi vì vắng mặt tiệc sinh nhật","title_en":"Apologising for missing a dinner","goal_vi":"Bày tỏ sự tiếc nuối và xin lỗi một cách chân thành.","partner_vi":"Bạn thân bị phụ lòng","partner_emoji":"💌","lines":[
+{"key":"l1","en":"I'm truly sorry, I deeply regret not being there.","vi":"Mình thật lòng xin lỗi, rất tiếc đã không có mặt.","accept":["I'm so sorry, I really regret not being there","I'm truly sorry, I regret not being there"],"note":"Regret + V-ing: hối tiếc đã làm/không làm."},
+{"key":"l2","en":"Had I known, I would never have missed it.","vi":"Nếu biết, mình đã không bao giờ bỏ lỡ.","accept":["If I had known, I would never have missed it","Had I known, I wouldn't have missed it for anything"],"note":"Đảo ngữ: Had I known = If I had known."},
+{"key":"l3","en":"Stuck at the airport, and my phone had died.","vi":"Kẹt ở sân bay, và điện thoại hết pin.","accept":["I was stuck at the airport and my phone had died","I was stranded at the airport, and my phone was dead"],"note":""},
+{"key":"l4","en":"You'd every right to be, and I should've called.","vi":"Bạn có mọi quyền để buồn, và mình lẽ ra nên gọi.","accept":["You had every right to be, and I should have called","You'd every right to be. I should have phoned"],"note":""},
+{"key":"l5","en":"Gladly. Dinner is on me, as penance.","vi":"Rất sẵn lòng. Mình khao bữa tối để chuộc lỗi.","accept":["Gladly. Dinner is on me, by way of penance","With pleasure. Dinner's on me, as penance"],"note":"Penance: sự chuộc lỗi."}
+],"dialogue":[
+{"id":"n1","npc_en":"We missed you at my birthday dinner last week.","npc_vi":"Bọn mình nhớ cậu ở tiệc sinh nhật tuần trước.","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Where were you, if you don't mind my asking?","npc_vi":"Cậu ở đâu, nếu cho phép mình hỏi?","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"That's unlucky. I did feel a bit hurt, though.","npc_vi":"Xui thật. Nhưng mình có hơi buồn đấy.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Apology accepted. Let's celebrate properly this weekend.","npc_vi":"Chấp nhận lời xin lỗi. Cuối tuần này ăn mừng cho đàng hoàng nhé.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"debating-universal-basic-income","level":"C1","group":"daily","title_vi":"Tranh luận về thu nhập cơ bản","title_en":"Debating universal basic income","goal_vi":"Thảo luận cân bằng về chính sách thu nhập cơ bản.","partner_vi":"Đồng nghiệp ham tranh luận","partner_emoji":"💶","lines":[
+{"key":"l1","en":"In principle, yes, but the funding question is thorny.","vi":"Về nguyên tắc thì có, nhưng vấn đề kinh phí rất hóc búa.","accept":["In theory, yes, but the funding question is thorny","In principle, yes, though funding is a thorny issue"],"note":"Thorny: hóc búa."},
+{"key":"l2","en":"I remain sceptical, though the pilot results are intriguing.","vi":"Tôi vẫn hoài nghi, dù kết quả thử nghiệm rất đáng chú ý.","accept":["I'm still sceptical, though the pilot results are intriguing","I remain doubtful, although the pilot results are intriguing"],"note":""},
+{"key":"l3","en":"The evidence so far suggests otherwise, surprisingly.","vi":"Bằng chứng hiện nay cho thấy ngược lại, đáng ngạc nhiên.","accept":["Surprisingly, the evidence so far suggests otherwise","The evidence so far points the other way, surprisingly"],"note":""},
+{"key":"l4","en":"Largely because it unsettles deeply held assumptions about deservingness.","vi":"Phần lớn vì nó lung lay những giả định ăn sâu về sự xứng đáng.","accept":["Mostly because it unsettles deeply held assumptions about deservingness","Largely because it challenges deeply held assumptions about who deserves help"],"note":""},
+{"key":"l5","en":"Gradually, once automation starts hitting white collar jobs.","vi":"Dần dần, khi tự động hóa bắt đầu ảnh hưởng việc văn phòng.","accept":["Gradually, once automation starts affecting white collar jobs","Slowly, once automation begins hitting white collar jobs"],"note":""},
+{"key":"l6","en":"Agreed. I'll bring some data next time.","vi":"Đồng ý. Lần sau tôi sẽ mang số liệu.","accept":["Agreed. I'll bring some figures next time","Fine by me. I'll bring some data next time"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Do you believe universal basic income could actually work?","npc_vi":"Bạn có tin thu nhập cơ bản phổ quát thực sự khả thi không?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Critics claim it would discourage people from working.","npc_vi":"Giới phê bình cho rằng nó làm người ta ngại đi làm.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Then why do governments hesitate to adopt it?","npc_vi":"Vậy sao các chính phủ còn ngần ngại áp dụng?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Hmm. Do you think public opinion will shift?","npc_vi":"Hmm. Bạn nghĩ dư luận sẽ thay đổi không?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"A sobering thought. Let's revisit this next month.","npc_vi":"Một ý nghĩ đáng suy ngẫm. Tháng sau ta bàn lại nhé.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"book-club-debating-a-novels-ending","level":"C1","group":"daily","title_vi":"CLB sách bàn về cái kết","title_en":"Book club on a novel's ending","goal_vi":"Bàn luận về kết thúc của một cuốn tiểu thuyết.","partner_vi":"Thành viên câu lạc bộ sách","partner_emoji":"📚","lines":[
+{"key":"l1","en":"Not really, it felt abrupt and somewhat contrived.","vi":"Không hẳn, nó đột ngột và hơi gượng ép.","accept":["Not really, it felt abrupt and rather contrived","Not quite, it seemed abrupt and somewhat contrived"],"note":"Contrived: gượng ép."},
+{"key":"l2","en":"Absolutely, the ambiguity was precisely the point.","vi":"Chắc chắn, sự mơ hồ chính là mục đích.","accept":["Absolutely, the ambiguity was exactly the point","Yes, the ambiguity was the whole point"],"note":""},
+{"key":"l3","en":"Presumably to leave readers with their own interpretations.","vi":"Có lẽ để người đọc tự diễn giải.","accept":["Presumably to let readers form their own interpretations","I assume to leave readers with their own interpretation"],"note":""},
+{"key":"l4","en":"Perhaps she ran out of steam, to be blunt.","vi":"Có lẽ bà ấy hết hơi, nói thẳng ra.","accept":["Perhaps she simply ran out of steam, to be blunt","Maybe she ran out of steam, to be blunt"],"note":"Run out of steam: cạn năng lượng."},
+{"key":"l5","en":"Restraint, or an excuse for unfinished business?","vi":"Sự kiềm chế, hay cái cớ cho việc dở dang?","accept":["Restraint, or just an excuse for unfinished business","Is it restraint, or an excuse for unfinished business"],"note":""},
+{"key":"l6","en":"Heaven help us. I'll bring the wine.","vi":"Trời giúp chúng ta. Tôi sẽ mang rượu.","accept":["Heaven help us. I'll bring the wine","God help us. I'll bring the wine"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Did the ending of the novel satisfy you?","npc_vi":"Cái kết của cuốn tiểu thuyết có làm bạn hài lòng không?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Interesting. Why do you think the author did that?","npc_vi":"Thú vị. Theo bạn sao tác giả làm vậy?","replies":[{"line":"l3","next":"n3"},{"line":"l4","next":"n3"}]},
+{"id":"n3","npc_en":"Some critics call it a masterpiece of restraint.","npc_vi":"Vài nhà phê bình gọi đó là kiệt tác của sự tiết chế.","replies":[{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Ha, you're impossible. Next month we read poetry.","npc_vi":"Ha, bạn khó chịu thật. Tháng sau ta đọc thơ.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"correcting-a-professor-tactfully","level":"C1","group":"daily","title_vi":"Sửa lỗi cho người lớn tuổi khéo léo","title_en":"Correcting someone tactfully","goal_vi":"Chỉ ra lỗi sai mà không làm mất mặt người nói.","partner_vi":"Giáo sư về hưu","partner_emoji":"👓","lines":[
+{"key":"l1","en":"Forgive me, but I think that was Aldous Huxley.","vi":"Xin thứ lỗi, nhưng tôi nghĩ đó là Aldous Huxley.","accept":["Forgive me, but I believe that was Aldous Huxley","Sorry to interrupt, but I think that was Aldous Huxley"],"note":"Forgive me, but...: mở đầu khi sửa lỗi."},
+{"key":"l2","en":"Funny, I always thought that was Huxley's work.","vi":"Lạ nhỉ, tôi luôn nghĩ đó là tác phẩm của Huxley.","accept":["Funny, I always assumed that was Huxley's work","Odd, I always thought that was by Huxley"],"note":"Dùng giọng ngạc nhiên để bớt gay gắt."},
+{"key":"l3","en":"Easily done. The two books are often confused.","vi":"Dễ nhầm thôi. Hai cuốn đó hay bị lẫn.","accept":["It's easily done. The two books are often mixed up","Easily done. People often confuse the two books"],"note":""},
+{"key":"l4","en":"Nineteen Eighty Four, and Animal Farm, if memory serves.","vi":"Nếu tôi nhớ đúng thì là Một Chín Tám Tư và Trại Súc Vật.","accept":["Nineteen Eighty Four and Animal Farm, if I remember rightly","Nineteen Eighty Four, and Animal Farm, if I recall correctly"],"note":"If memory serves: nếu tôi nhớ đúng."},
+{"key":"l5","en":"Not at all. Your talk was excellent otherwise.","vi":"Không có gì. Bài nói của thầy vốn rất xuất sắc.","accept":["Not at all. Your talk was excellent otherwise","Don't mention it. Your talk was otherwise excellent"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Of course, Orwell wrote Brave New World, as we all know.","npc_vi":"Tất nhiên Orwell viết Thế giới mới tươi đẹp, ai cũng biết.","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Was it? Oh dear, my memory is failing.","npc_vi":"Vậy sao? Trời ơi, trí nhớ tôi kém rồi.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"You're very diplomatic. Which books did Orwell write?","npc_vi":"Bạn khéo léo thật. Orwell viết những cuốn nào?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Of course! Thank you for rescuing me.","npc_vi":"Phải rồi! Cảm ơn bạn đã cứu tôi.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"worrying-about-gentrification","level":"C1","group":"daily","title_vi":"Lo ngại về quá trình cao cấp hóa","title_en":"Worrying about gentrification","goal_vi":"Thảo luận về thay đổi của khu phố và người dân.","partner_vi":"Bà hàng xóm lớn tuổi","partner_emoji":"🏘️","lines":[
+{"key":"l1","en":"It's a shame. Gentrification is eroding the neighbourhood's character.","vi":"Tiếc thật. Cao cấp hóa đang bào mòn nét riêng của khu phố.","accept":["It's a pity. Gentrification is eroding the neighbourhood's character","What a shame. Gentrification is wearing away the neighbourhood's character"],"note":"Erode: bào mòn."},
+{"key":"l2","en":"I understand their appeal, but we're losing something irreplaceable.","vi":"Tôi hiểu sức hút của chúng, nhưng ta mất đi thứ không thể thay thế.","accept":["I see their appeal, but we're losing something irreplaceable","I understand the appeal, but we're losing something irreplaceable"],"note":""},
+{"key":"l3","en":"Mind you, the area was run down before.","vi":"Nhưng khu này trước đây xuống cấp mà.","accept":["Mind you, the area was rather run down before","To be fair, the area was run down before"],"note":"Mind you: nhưng nói cho công bằng."},
+{"key":"l4","en":"Precisely the problem. Longstanding residents are being quietly priced out.","vi":"Chính là vấn đề. Cư dân lâu năm đang bị đẩy đi vì giá.","accept":["That's precisely the problem. Longstanding residents are being quietly priced out","Exactly the problem. Long term residents are being quietly priced out"],"note":"Priced out: bị đẩy ra vì giá."},
+{"key":"l5","en":"Support local shops and attend the council meetings, perhaps.","vi":"Có lẽ ủng hộ tiệm địa phương và dự họp hội đồng.","accept":["Perhaps support local shops and attend the council meetings","Support local shops and go to council meetings, perhaps"],"note":""},
+{"key":"l6","en":"Count me in. I'll save you a seat.","vi":"Tính cả tôi. Tôi sẽ giữ chỗ cho bà.","accept":["Count me in. I'll keep you a seat","I'm in. I'll save you a seat"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"The old bakery on our street has closed again.","npc_vi":"Tiệm bánh cũ trên phố ta lại đóng cửa.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Rents doubled, and the young couples love the new cafes.","npc_vi":"Tiền thuê tăng gấp đôi, các cặp trẻ thì mê quán mới.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"True, but who will afford to stay here?","npc_vi":"Đúng, nhưng ai còn đủ tiền ở lại đây?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"What can ordinary people like us do?","npc_vi":"Người bình thường như ta làm được gì?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Well said. I'll see you at the next one.","npc_vi":"Nói hay lắm. Hẹn gặp ở buổi tới.","replies":[{"line":"l6","next":null}]}
+]}
+]

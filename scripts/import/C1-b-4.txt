@@ -1,0 +1,63 @@
+[
+{"slug":"debating-children-and-screen-time","level":"C1","group":"daily","title_vi":"Tranh luận về trẻ em và màn hình","title_en":"Debating children and screen time","goal_vi":"Trao đổi quan điểm về việc cho trẻ dùng máy tính bảng.","partner_vi":"Phụ huynh đang phân vân","partner_emoji":"📱","lines":[
+{"key":"l1","en":"It's a double edged sword, depending on how it's used.","vi":"Đó là con dao hai lưỡi, tùy cách sử dụng.","accept":["It's a double edged sword, depending on usage","It cuts both ways, depending on how it's used"],"note":"Double edged sword: con dao hai lưỡi."},
+{"key":"l2","en":"Frankly, I'd hold off until she's at least eight.","vi":"Thẳng thắn, tôi sẽ đợi đến khi bé ít nhất tám tuổi.","accept":["Honestly, I'd wait until she's at least eight","Frankly, I'd hold off until she is eight at the very least"],"note":"Hold off: trì hoãn, chờ."},
+{"key":"l3","en":"Peer pressure is hardly a compelling reason, is it?","vi":"Áp lực bạn bè khó là lý do thuyết phục, đúng không?","accept":["Peer pressure is hardly a convincing reason, is it","Surely peer pressure is hardly a compelling reason"],"note":""},
+{"key":"l4","en":"Some are excellent, provided you stay involved and set limits.","vi":"Một số rất tốt, miễn là bạn tham gia và đặt giới hạn.","accept":["Some are excellent, as long as you stay involved and set limits","A few are excellent, provided you remain involved and set limits"],"note":""},
+{"key":"l5","en":"Every conscientious parent does at some point.","vi":"Bậc cha mẹ tận tâm nào cũng có lúc như vậy.","accept":["Every conscientious parent does at some stage","All conscientious parents do at some point"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"I'm torn about giving my daughter a tablet.","npc_vi":"Tôi phân vân chuyện cho con gái dùng máy tính bảng.","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"But all her classmates already have one.","npc_vi":"Nhưng các bạn cùng lớp bé đều có rồi.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Fair. What about educational apps, though?","npc_vi":"Cũng phải. Còn ứng dụng giáo dục thì sao?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Sensible. Maybe I'm overthinking this.","npc_vi":"Hợp lý. Có lẽ tôi nghĩ quá nhiều.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"free-speech-on-campus","level":"C1","group":"daily","title_vi":"Tự do ngôn luận ở trường đại học","title_en":"Free speech on campus","goal_vi":"Bảo vệ quan điểm về tự do ngôn luận một cách điềm đạm.","partner_vi":"Bạn cùng lớp thích tranh luận","partner_emoji":"🗣️","lines":[
+{"key":"l1","en":"Generally yes, since ideas should be challenged, not silenced.","vi":"Nhìn chung là có, vì ý tưởng cần bị thách thức chứ không bị bịt miệng.","accept":["Generally yes, as ideas should be challenged, not silenced","In general, yes, because ideas should be challenged, not silenced"],"note":""},
+{"key":"l2","en":"Not if the aim is simply provocation.","vi":"Không nếu mục đích chỉ là khiêu khích.","accept":["Not if the aim is merely provocation","Not if the only aim is provocation"],"note":""},
+{"key":"l3","en":"At incitement to violence. Short of that, let them speak.","vi":"Ở mức kích động bạo lực. Dưới mức đó, cứ để họ nói.","accept":["At incitement to violence. Short of that, let them talk","At incitement to violence. Anything less, let them speak"],"note":"Short of: chưa đến mức."},
+{"key":"l4","en":"Offence is the price of living in a free society.","vi":"Bị xúc phạm là cái giá của xã hội tự do.","accept":["Offence is the price we pay for a free society","Being offended is the price of living in a free society"],"note":""},
+{"key":"l5","en":"That's fine. Disagreeing well is half the fun.","vi":"Không sao. Bất đồng một cách tử tế là một nửa niềm vui.","accept":["That's fine. Disagreeing well is half the fun","Fair enough. Disagreeing well is half the fun"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Should universities invite controversial speakers at all?","npc_vi":"Trường đại học có nên mời diễn giả gây tranh cãi không?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"But where do you draw the line, exactly?","npc_vi":"Nhưng chính xác bạn vạch ranh giới ở đâu?","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"What about speech that merely offends people?","npc_vi":"Còn lời nói chỉ làm người ta phật ý thì sao?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"A bold stance. I'm not sure I'm convinced.","npc_vi":"Quan điểm táo bạo. Tôi chưa chắc đã bị thuyết phục.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"is-happiness-overrated","level":"C1","group":"daily","title_vi":"Hạnh phúc có bị đề cao quá?","title_en":"Is happiness overrated?","goal_vi":"Trao đổi triết lý về hạnh phúc và ý nghĩa sống.","partner_vi":"Người bạn yêu triết học","partner_emoji":"🌿","lines":[
+{"key":"l1","en":"Perhaps, because the pursuit itself tends to breed anxiety.","vi":"Có thể, vì chính việc theo đuổi thường sinh lo âu.","accept":["Perhaps, since the pursuit itself tends to breed anxiety","Maybe, because chasing it often breeds anxiety"],"note":"Breed anxiety: nuôi dưỡng lo âu."},
+{"key":"l2","en":"Meaning, I think, or a life well examined.","vi":"Tôi nghĩ là ý nghĩa, hay một cuộc đời được suy xét kỹ.","accept":["Meaning, I think, or a well examined life","I'd say meaning, or a life well examined"],"note":""},
+{"key":"l3","en":"Contentment, which is quieter and arguably more durable.","vi":"Sự mãn nguyện, êm hơn và có lẽ bền hơn.","accept":["Contentment, which is quieter and arguably more lasting","Contentment, as it's quieter and arguably more durable"],"note":"Arguably: có thể cho rằng."},
+{"key":"l4","en":"Not quite, since meaningful lives often involve real discomfort.","vi":"Không hẳn, vì đời sống ý nghĩa thường kèm khó chịu thật sự.","accept":["Not quite, as meaningful lives often involve real discomfort","Not exactly, since meaningful lives often involve genuine discomfort"],"note":""},
+{"key":"l5","en":"Up to a point, but let's not romanticise it.","vi":"Đến một mức nào đó, nhưng đừng lãng mạn hóa nó.","accept":["To a degree, but let's not romanticise it","Up to a point, but let's not glamorise it"],"note":"Up to a point: ở một mức độ nào đó."}
+],"dialogue":[
+{"id":"n1","npc_en":"Do you think chasing happiness is a mistake?","npc_vi":"Bạn có nghĩ theo đuổi hạnh phúc là sai lầm không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"So what should we aim for instead?","npc_vi":"Vậy ta nên hướng đến điều gì thay thế?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Isn't meaning just happiness in disguise?","npc_vi":"Ý nghĩa chẳng phải chỉ là hạnh phúc cải trang sao?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Good point. Suffering does build character, doesn't it?","npc_vi":"Có lý. Đau khổ rèn luyện tính cách, đúng không?","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"explaining-tet-to-a-foreign-friend","level":"C1","group":"daily","title_vi":"Giải thích Tết cho bạn nước ngoài","title_en":"Explaining Tet to a foreign friend","goal_vi":"Giải thích ý nghĩa truyền thống văn hóa của mình.","partner_vi":"Bạn nước ngoài tò mò","partner_emoji":"🧧","lines":[
+{"key":"l1","en":"It's about honouring ancestors and reconnecting with relatives.","vi":"Đó là tưởng nhớ tổ tiên và gắn kết lại với họ hàng.","accept":["It's about honouring our ancestors and reconnecting with relatives","It's about respecting ancestors and reconnecting with family"],"note":""},
+{"key":"l2","en":"Admittedly, yes, but the exhaustion is part of the ritual.","vi":"Phải thừa nhận là có, nhưng mệt mỏi là một phần nghi lễ.","accept":["Admittedly it is, but the exhaustion is part of the ritual","I admit it is, but the tiredness is part of the ritual"],"note":""},
+{"key":"l3","en":"Many do, though some find them rather stifling.","vi":"Nhiều người có, dù vài người thấy chúng khá ngột ngạt.","accept":["Many do, although some find them rather stifling","Plenty do, though some find them quite stifling"],"note":"Stifling: ngột ngạt."},
+{"key":"l4","en":"More than you'd think, even among the cynics.","vi":"Nhiều hơn bạn nghĩ, kể cả những người hoài nghi.","accept":["More than you'd expect, even among the cynics","More than you might think, even among the sceptics"],"note":""},
+{"key":"l5","en":"You'd be most welcome at our table.","vi":"Bạn sẽ được chào đón nhất tại bàn ăn nhà tôi.","accept":["You'd be very welcome at our table","You would be most welcome at our table"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Why do families make such an effort for Tet?","npc_vi":"Sao các gia đình nỗ lực đến vậy cho Tết?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Isn't it exhausting, all that cooking and visiting?","npc_vi":"Chẳng phải mệt sao, nấu nướng và thăm hỏi?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Do young people still value these customs?","npc_vi":"Người trẻ còn coi trọng các phong tục này không?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Fascinating. I'd love to experience it someday.","npc_vi":"Hấp dẫn. Tôi muốn được trải nghiệm một ngày nào đó.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"responding-to-online-criticism-of-an-article","level":"C1","group":"work","title_vi":"Đáp lại chỉ trích về bài báo","title_en":"Responding to online criticism","goal_vi":"Xử lý lời chỉ trích công khai một cách điềm tĩnh.","partner_vi":"Biên tập viên đồng nghiệp","partner_emoji":"💬","lines":[
+{"key":"l1","en":"Ouch. Was there anything constructive in it?","vi":"Đau thật. Có điều gì mang tính xây dựng không?","accept":["Ouch. Was there anything useful in it","Ouch. Did it contain anything constructive"],"note":""},
+{"key":"l2","en":"I suppose it comes with the territory.","vi":"Tôi đoán đó là điều khó tránh của nghề.","accept":["I suppose it comes with the job","I guess it comes with the territory"],"note":"Come with the territory: là chuyện thường của công việc."},
+{"key":"l3","en":"That's a fair criticism, and I should address it.","vi":"Chỉ trích đó công bằng, và tôi nên giải quyết.","accept":["That's a fair criticism, and I ought to address it","Fair criticism, and I should address it"],"note":""},
+{"key":"l4","en":"A brief, gracious reply acknowledging the gap would suffice.","vi":"Một phản hồi ngắn, lịch thiệp thừa nhận thiếu sót là đủ.","accept":["A brief, gracious reply acknowledging the gap would be enough","A short, gracious reply acknowledging the omission would suffice"],"note":""},
+{"key":"l5","en":"Let's append a transparent note and leave it there.","vi":"Hãy thêm một ghi chú minh bạch rồi dừng ở đó.","accept":["Let's add a transparent note and leave it there","Let's append a clear note and leave it at that"],"note":""},
+{"key":"l6","en":"I'll try. Thick skin is a learned skill.","vi":"Tôi sẽ cố. Mặt dày là kỹ năng học được.","accept":["I'll try. A thick skin is a learned skill","I'll try. Developing thick skin takes practice"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Someone savaged your article in the comments section.","npc_vi":"Có người chê bai thậm tệ bài của bạn ở phần bình luận.","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"One point was valid: you overlooked the rural data.","npc_vi":"Một điểm đúng: bạn bỏ sót dữ liệu nông thôn.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Should we publish a correction or reply?","npc_vi":"Ta nên đăng đính chính hay trả lời?","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Agreed. Don't take the nasty ones to heart.","npc_vi":"Đồng ý. Đừng để bụng những lời ác ý.","replies":[{"line":"l6","next":null}]}
+]}
+]

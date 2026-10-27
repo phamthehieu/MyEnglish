@@ -1,0 +1,62 @@
+[
+{"slug":"planning-a-study-group","level":"B1","group":"daily","title_vi":"Lập nhóm học ôn thi","title_en":"Planning a study group","goal_vi":"Cùng bạn học chọn địa điểm và ngày cho nhóm ôn thi.","partner_vi":"Bạn cùng lớp","partner_emoji":"📚","lines":[
+{"key":"l1","en":"Good idea. How many people should join?","vi":"Ý hay. Nên có bao nhiêu người?","accept":["Great idea. How many people do we need","Sure. How many people should we invite"],"note":""},
+{"key":"l2","en":"The library is quiet, so let's meet there.","vi":"Thư viện yên tĩnh nên mình gặp ở đó.","accept":["Let's meet at the library because it is quiet","How about the library? It is quiet"],"note":"so = nên, chỉ kết quả của lý do."},
+{"key":"l3","en":"My place is comfortable, if you don't mind.","vi":"Nhà mình thoải mái, nếu bạn không phiền.","accept":["We can meet at my place if you want","My home is comfortable, if that is okay"],"note":""},
+{"key":"l4","en":"Wednesday evening is better because I am free.","vi":"Tối thứ Tư tốt hơn vì mình rảnh.","accept":["I am free on Wednesday evening","Wednesday evening works best for me"],"note":""},
+{"key":"l5","en":"Thanks. I will make a study plan.","vi":"Cảm ơn. Mình sẽ lập kế hoạch học.","accept":["Thank you. I will prepare a study plan","Great, I will write a study plan"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Shall we form a study group for the exam?","npc_vi":"Mình lập nhóm ôn thi nhé?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Maybe four. Where should we meet?","npc_vi":"Có lẽ bốn người. Mình gặp ở đâu?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Fine. Which day is better for you?","npc_vi":"Được. Ngày nào tiện cho bạn hơn?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Great. I will invite two more classmates.","npc_vi":"Tuyệt. Mình sẽ mời thêm hai bạn.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"asking-a-teacher-for-more-time","level":"B1","group":"work","title_vi":"Xin thầy cô gia hạn bài","title_en":"Asking a teacher for more time","goal_vi":"Giải thích lý do và xin thêm thời gian nộp bài luận.","partner_vi":"Giáo viên","partner_emoji":"🍎","lines":[
+{"key":"l1","en":"Yes, I need more time for my essay.","vi":"Vâng, em cần thêm thời gian cho bài luận.","accept":["Yes, could I have more time for my essay","Yes, I need an extension for my essay"],"note":"extension = sự gia hạn."},
+{"key":"l2","en":"I have been busy with my job.","vi":"Em đã bận việc đi làm.","accept":["I have been very busy with work","My job has kept me busy"],"note":""},
+{"key":"l3","en":"My laptop broke, so I lost everything.","vi":"Laptop em hỏng nên mất hết.","accept":["My laptop broke and I lost my work","I lost my work because my laptop broke"],"note":""},
+{"key":"l4","en":"Three more days would be enough.","vi":"Thêm ba ngày là đủ ạ.","accept":["Three extra days would be enough","I think three more days is enough"],"note":""},
+{"key":"l5","en":"Thank you. I will hand it in on time.","vi":"Em cảm ơn. Em sẽ nộp đúng hạn.","accept":["Thanks, I will submit it on time","Thank you, I promise to hand it in on time"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Hello, you wanted to see me?","npc_vi":"Chào em, em muốn gặp cô à?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"The deadline is tomorrow. What is the problem?","npc_vi":"Hạn là ngày mai. Vấn đề là gì?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"I understand. How many days do you need?","npc_vi":"Cô hiểu. Em cần mấy ngày?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"All right, but no more extensions after that.","npc_vi":"Được, nhưng sau đó không gia hạn nữa.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"coffee-break-hiking-chat","level":"B1","group":"work","title_vi":"Kể chuyện leo núi giờ nghỉ","title_en":"Coffee break hiking chat","goal_vi":"Trò chuyện xã giao với đồng nghiệp về chuyến leo núi cuối tuần.","partner_vi":"Đồng nghiệp","partner_emoji":"☕","lines":[
+{"key":"l1","en":"Yes, I went hiking with my friends.","vi":"Vâng, tôi đi leo núi với bạn.","accept":["Yes, I went hiking with friends","Yes, my friends and I went hiking"],"note":""},
+{"key":"l2","en":"We went to Ba Vi, near Hanoi.","vi":"Chúng tôi đến Ba Vì, gần Hà Nội.","accept":["We went to Ba Vi near Hanoi","We hiked at Ba Vi near Hanoi"],"note":""},
+{"key":"l3","en":"Not really, but it was quite hot.","vi":"Không hẳn, nhưng khá nóng.","accept":["Not really, although it was quite hot","It is not hard, but it was hot"],"note":""},
+{"key":"l4","en":"A little, but the view was worth it.","vi":"Hơi khó, nhưng cảnh đáng công.","accept":["Slightly, but the view was worth it","It is a bit hard, but the view is worth it"],"note":"worth it = đáng giá."},
+{"key":"l5","en":"Of course, I will invite you next time.","vi":"Tất nhiên, lần sau tôi sẽ rủ bạn.","accept":["Sure, I will invite you next time","Of course, I will let you know next time"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"You look relaxed today. Did you have a good weekend?","npc_vi":"Hôm nay bạn thư thái quá. Cuối tuần vui chứ?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"That sounds fun! Where did you go?","npc_vi":"Nghe vui đấy! Bạn đi đâu?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"I have never been there. Is it difficult?","npc_vi":"Tôi chưa từng đến đó. Có khó không?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"I would love to go. Can I join you next time?","npc_vi":"Tôi muốn đi lắm. Lần sau tôi đi cùng được không?","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"asking-to-work-from-home","level":"B1","group":"work","title_vi":"Xin làm việc ở nhà","title_en":"Asking to work from home","goal_vi":"Thuyết phục sếp cho thỉnh thoảng làm việc tại nhà.","partner_vi":"Sếp của bạn","partner_emoji":"🏠","lines":[
+{"key":"l1","en":"I would like to work from home sometimes.","vi":"Tôi muốn thỉnh thoảng làm việc ở nhà.","accept":["Could I work from home sometimes","I want to work from home sometimes"],"note":"would like to lịch sự hơn want to."},
+{"key":"l2","en":"The trip to the office takes two hours.","vi":"Đi đến văn phòng mất hai tiếng.","accept":["It takes two hours to get to the office","My trip to the office takes two hours"],"note":""},
+{"key":"l3","en":"I can concentrate better at home.","vi":"Ở nhà tôi tập trung hơn.","accept":["I focus better at home","It is easier to concentrate at home"],"note":"better = so sánh hơn của well."},
+{"key":"l4","en":"I will send you a daily summary.","vi":"Tôi sẽ gửi bản tóm tắt hằng ngày.","accept":["I can send you a daily report","I will email you a summary every day"],"note":""},
+{"key":"l5","en":"That sounds fair. Thank you for trusting me.","vi":"Nghe hợp lý. Cảm ơn đã tin tôi.","accept":["That is fair. Thanks for trusting me","Sounds fair. I appreciate your trust"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"You asked to see me. What is it about?","npc_vi":"Bạn muốn gặp tôi. Chuyện gì vậy?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Why would that be better for you?","npc_vi":"Sao điều đó tốt hơn cho bạn?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"How will I know that you are working?","npc_vi":"Làm sao tôi biết bạn đang làm việc?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Let's try it for one month, two days a week.","npc_vi":"Thử một tháng, hai ngày mỗi tuần.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"rescheduling-a-client-meeting","level":"B1","group":"work","title_vi":"Dời cuộc hẹn với khách","title_en":"Rescheduling a client meeting","goal_vi":"Gọi cho khách để dời cuộc họp ngày mai sang giờ khác.","partner_vi":"Khách hàng","partner_emoji":"📅","lines":[
+{"key":"l1","en":"Yes, I am afraid I have a problem.","vi":"Vâng, tôi e là tôi có vấn đề.","accept":["Yes, I am sorry, but I have a problem","Yes, unfortunately I have a problem"],"note":"I am afraid... mở đầu tin không vui."},
+{"key":"l2","en":"An urgent meeting has come up then.","vi":"Có một cuộc họp gấp vào giờ đó.","accept":["I must go to an urgent meeting then","I have an urgent meeting at that time"],"note":""},
+{"key":"l3","en":"Yes, two o'clock suits me better.","vi":"Vâng, hai giờ hợp với tôi hơn.","accept":["Yes, two o'clock is better for me","Yes, I prefer two o'clock"],"note":""},
+{"key":"l4","en":"Could we make it three o'clock instead?","vi":"Mình dời sang ba giờ được không?","accept":["Would three o'clock be possible","Can we do three o'clock instead"],"note":""},
+{"key":"l5","en":"Thank you for being so flexible.","vi":"Cảm ơn bạn đã linh hoạt như vậy.","accept":["Thanks for being so flexible","I appreciate your flexibility"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Hello, this is about our meeting tomorrow at ten.","npc_vi":"Chào, về cuộc họp ngày mai lúc mười giờ.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Oh no. What is the problem?","npc_vi":"Ôi. Vấn đề gì vậy?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"I see. Could we meet in the afternoon instead?","npc_vi":"Tôi hiểu. Mình gặp buổi chiều được không?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Perfect. I will update the calendar and send an invitation.","npc_vi":"Tuyệt. Tôi sẽ cập nhật lịch và gửi thư mời.","replies":[{"line":"l5","next":null}]}
+]}
+]

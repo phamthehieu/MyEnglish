@@ -52,6 +52,7 @@ const KnownTab = lazy(() => import("./dashboard/KnownTab"));
 const PronunciationTab = lazy(() => import("./dashboard/PronunciationTab"));
 const ShadowingTab = lazy(() => import("./dashboard/ShadowingTab"));
 const TalkTab = lazy(() => import("./talk/TalkTab"));
+const PatternsTab = lazy(() => import("./patterns/PatternsTab"));
 const TodayTab = lazy(() => import("./dashboard/TodayTab"));
 const LeaderboardTab = lazy(() => import("./dashboard/LeaderboardTab"));
 const AccountTab = lazy(() => import("./dashboard/AccountTab"));
@@ -1459,6 +1460,7 @@ export default function MainDashboard({
 
         {/* TALK: scripted conversations for everyday situations */}
         {activeTab === "talk" && <TalkTab resetKey={tabResetKey} />}
+        {activeTab === "patterns" && <PatternsTab resetKey={tabResetKey} />}
 
         {/* TAB 6: GRAMMAR HUB (A1 - C1 ROADMAP & DIAGNOSTIC PRACTICE) */}
         {activeTab === "grammar" && <GrammarHub key={grammarLessonToOpen ?? "hub"} initialLessonId={grammarLessonToOpen} resetKey={tabResetKey} />}

@@ -1,0 +1,67 @@
+[
+{"slug":"asking-for-a-longer-deadline","level":"B1","group":"work","title_vi":"Xin thêm thời gian cho dự án","title_en":"Asking for a longer deadline","goal_vi":"Báo tiến độ và thương lượng hạn chót với sếp.","partner_vi":"Quản lý dự án","partner_emoji":"⏰","lines":[
+{"key":"l1","en":"So far I have finished half of it.","vi":"Đến giờ tôi đã xong một nửa.","accept":["I have done half of it so far","Up to now I have finished half of it"],"note":"Present perfect + so far: kết quả tính đến hiện tại."},
+{"key":"l2","en":"I am afraid I will not make it.","vi":"Tôi e là mình không kịp.","accept":["I am worried that I will not make it","I am not sure I can make it"],"note":""},
+{"key":"l3","en":"Yes, if I work this weekend.","vi":"Có, nếu tôi làm cuối tuần này.","accept":["Yes, if I work on the weekend","Yes, but only if I work this weekend"],"note":""},
+{"key":"l4","en":"Two more days would help a lot.","vi":"Thêm hai ngày sẽ giúp nhiều.","accept":["Two extra days would help a lot","I would need two more days"],"note":""},
+{"key":"l5","en":"Another person to help would be great.","vi":"Có thêm một người giúp thì tốt.","accept":["It would help to have another person","Some extra help would be great"],"note":""},
+{"key":"l6","en":"I could send half of it on Monday.","vi":"Tôi có thể gửi một nửa vào thứ Hai.","accept":["I can send half of it on Monday","On Monday I could send the first half"],"note":"could = đề xuất khả năng một cách mềm mỏng."},
+{"key":"l7","en":"I will write to them this afternoon.","vi":"Chiều nay tôi sẽ viết cho họ.","accept":["I will email them this afternoon","This afternoon I will write to them"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"How is the survey project going?","npc_vi":"Dự án khảo sát tiến triển thế nào?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"The deadline is next Monday. Will you make it?","npc_vi":"Hạn là thứ Hai tới. Bạn kịp không?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"I see. What would help you the most?","npc_vi":"Tôi hiểu. Điều gì giúp bạn nhiều nhất?","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Hmm. The client expects it on Monday, though.","npc_vi":"Hmm. Nhưng khách mong nhận vào thứ Hai.","replies":[{"line":"l6","next":"n5"}]},
+{"id":"n5","npc_en":"That is a good compromise. Please send them an email.","npc_vi":"Thỏa hiệp hay đó. Hãy gửi email cho họ.","replies":[{"line":"l7","next":null}]}
+]},
+{"slug":"thinking-about-a-job-offer","level":"B1","group":"work","title_vi":"Cân nhắc lời mời làm việc","title_en":"Thinking about a job offer","goal_vi":"Nhận lời mời, hỏi về lương, phúc lợi và xin thời gian suy nghĩ.","partner_vi":"Nhân sự công ty","partner_emoji":"💰","lines":[
+{"key":"l1","en":"Thank you! I am very happy to hear that.","vi":"Cảm ơn! Tôi rất vui khi nghe vậy.","accept":["Thanks! I am really happy to hear that","That is great news, thank you"],"note":""},
+{"key":"l2","en":"It is lower than I expected.","vi":"Thấp hơn tôi mong đợi.","accept":["That is less than I expected","I expected a little more than that"],"note":"lower than = thấp hơn."},
+{"key":"l3","en":"That sounds fine, but what about benefits?","vi":"Nghe ổn, nhưng còn phúc lợi thì sao?","accept":["That is fine. What about the benefits","Okay. Can you tell me about the benefits"],"note":""},
+{"key":"l4","en":"That is helpful. Can I think about it?","vi":"Hữu ích đấy. Tôi suy nghĩ thêm được không?","accept":["Good. May I think about it first","That helps. Could I have time to think"],"note":""},
+{"key":"l5","en":"I will give you my answer on Thursday.","vi":"Tôi sẽ trả lời bạn vào thứ Năm.","accept":["I will let you know by Thursday","You will have my answer on Thursday"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Congratulations! We would like to offer you the job.","npc_vi":"Chúc mừng! Chúng tôi muốn mời bạn nhận việc.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"The salary is ten million dong a month. Does that work?","npc_vi":"Lương mười triệu đồng một tháng. Bạn thấy sao?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"We can add health insurance and a transport allowance.","npc_vi":"Chúng tôi có thể thêm bảo hiểm y tế và phụ cấp đi lại.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Of course. Please tell us by Friday.","npc_vi":"Tất nhiên. Hãy báo chúng tôi trước thứ Sáu.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"dividing-group-project-tasks","level":"B1","group":"daily","title_vi":"Chia việc dự án nhóm","title_en":"Dividing group project tasks","goal_vi":"Cùng bạn học chia việc và hẹn lịch họp nhóm.","partner_vi":"Bạn cùng nhóm","partner_emoji":"🧩","lines":[
+{"key":"l1","en":"Let's divide the work so it's fair.","vi":"Mình chia việc cho công bằng nhé.","accept":["We should divide the work fairly","Let's share the work fairly"],"note":""},
+{"key":"l2","en":"Then I will take the design part.","vi":"Vậy mình sẽ lo phần thiết kế.","accept":["So I will take the design part","In that case I will do the design"],"note":""},
+{"key":"l3","en":"Okay, but I need help with slides.","vi":"Được, nhưng mình cần giúp phần slide.","accept":["Okay, although I need help with slides","Fine, but I will need help with the slides"],"note":""},
+{"key":"l4","en":"We can write it together online.","vi":"Mình viết chung trực tuyến được.","accept":["Let's write it together online","We should write it together online"],"note":""},
+{"key":"l5","en":"Yes, every Sunday evening would work.","vi":"Được, tối Chủ nhật hằng tuần là ổn.","accept":["Yes, every Sunday evening is good","Sure, Sunday evenings would be fine"],"note":""},
+{"key":"l6","en":"Perfect. Send me the link when it's ready.","vi":"Tuyệt. Gửi mình đường dẫn khi xong nhé.","accept":["Great. Please send me the link when ready","Perfect, send me the link later"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"We have two weeks to finish the group project.","npc_vi":"Chúng ta có hai tuần để xong dự án nhóm.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Good. I am better at research than design.","npc_vi":"Tốt. Mình nghiên cứu giỏi hơn thiết kế.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Who will write the final report?","npc_vi":"Ai sẽ viết báo cáo cuối?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Fine. Shall we have weekly meetings to check progress?","npc_vi":"Được. Mình họp hằng tuần để kiểm tra tiến độ nhé?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Great. I will create a group chat tonight.","npc_vi":"Tuyệt. Tối nay mình lập nhóm chat.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"fixing-a-projector-before-a-talk","level":"B1","group":"work","title_vi":"Máy chiếu hỏng trước buổi nói","title_en":"Fixing a projector before a talk","goal_vi":"Xử lý nhanh sự cố máy chiếu trước khi thuyết trình.","partner_vi":"Đồng nghiệp","partner_emoji":"💻","lines":[
+{"key":"l1","en":"No, the screen is still black.","vi":"Chưa, màn hình vẫn đen.","accept":["No, I only see a black screen","No, the screen stays black"],"note":""},
+{"key":"l2","en":"Yes, it is connected to my laptop.","vi":"Có, nó đã nối với laptop của tôi.","accept":["Yes, it is plugged into my laptop","Yes, the cable is connected to my laptop"],"note":""},
+{"key":"l3","en":"Not yet. Where is the other cable?","vi":"Chưa. Dây còn lại ở đâu?","accept":["No. Is there another cable","Not yet. Do we have another cable"],"note":""},
+{"key":"l4","en":"It works now! Thanks for the tip.","vi":"Chạy rồi! Cảm ơn mẹo của bạn.","accept":["It works now! Thank you for the tip","Great, it works now! Thanks for the tip"],"note":""},
+{"key":"l5","en":"Thanks. I hope everything goes smoothly now.","vi":"Cảm ơn. Mong là giờ mọi thứ suôn sẻ.","accept":["Thank you. I hope it goes smoothly now","Thanks, I hope everything goes well now"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Five minutes until the presentation. Is the projector ready?","npc_vi":"Còn năm phút nữa. Máy chiếu sẵn sàng chưa?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Have you checked the cable?","npc_vi":"Bạn kiểm tra dây chưa?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Okay. Try pressing the display key on your laptop.","npc_vi":"Được. Thử bấm phím hiển thị trên laptop.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Wonderful. Good luck with your presentation!","npc_vi":"Tuyệt. Chúc thuyết trình tốt!","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"giving-feedback-after-a-talk","level":"B1","group":"work","title_vi":"Góp ý sau bài thuyết trình","title_en":"Giving feedback after a talk","goal_vi":"Góp ý chân thành nhưng lịch sự cho đồng nghiệp.","partner_vi":"Đồng nghiệp vừa thuyết trình","partner_emoji":"👏","lines":[
+{"key":"l1","en":"Overall it was clear and interesting.","vi":"Nhìn chung rõ ràng và thú vị.","accept":["It was clear and interesting overall","In general it was clear and interesting"],"note":""},
+{"key":"l2","en":"You spoke a bit too fast.","vi":"Bạn nói hơi nhanh một chút.","accept":["You talked a little too fast","I think you spoke too quickly"],"note":""},
+{"key":"l3","en":"Some slides had too much text.","vi":"Vài slide có quá nhiều chữ.","accept":["A few slides had too many words","Some of your slides were too full of text"],"note":""},
+{"key":"l4","en":"If you practice more, you will feel confident.","vi":"Nếu luyện nhiều hơn, bạn sẽ tự tin.","accept":["Practice more and you will feel confident","With more practice, you will feel confident"],"note":""},
+{"key":"l5","en":"Good luck! I am sure you will do well.","vi":"Chúc may mắn! Tôi tin bạn sẽ làm tốt.","accept":["Good luck! I am sure you will be great","Best of luck, you will do well"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"How was my presentation? Please be honest.","npc_vi":"Bài thuyết trình của tôi sao? Hãy nói thật.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Thanks! Was there anything I should improve?","npc_vi":"Cảm ơn! Có gì tôi nên cải thiện không?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Good point. Do you have any other advice?","npc_vi":"Ý hay. Bạn còn lời khuyên nào khác không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Thanks, that helps. I will rehearse again tonight.","npc_vi":"Cảm ơn, hữu ích lắm. Tối nay tôi sẽ tập lại.","replies":[{"line":"l5","next":null}]}
+]}
+]

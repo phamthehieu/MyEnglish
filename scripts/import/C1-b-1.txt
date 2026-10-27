@@ -1,0 +1,60 @@
+[
+{"slug":"disagreeing-about-ai-ethics","level":"C1","group":"daily","title_vi":"Bất đồng về đạo đức AI","title_en":"Disagreeing about AI ethics","goal_vi":"Phản biện tinh tế về nghệ thuật do AI tạo ra.","partner_vi":"Bạn đồng nghiệp trong bữa tối","partner_emoji":"🤖","lines":[
+{"key":"l1","en":"I see where you're coming from, but it's nuanced.","vi":"Tôi hiểu ý bạn, nhưng vấn đề phức tạp hơn.","accept":["I understand your view, but it's more nuanced","I get your point, but it's nuanced"],"note":"Mở đầu lịch sự trước khi phản biện."},
+{"key":"l2","en":"I'd stop short of calling it theft, though.","vi":"Nhưng tôi sẽ không đi xa đến mức gọi đó là ăn cắp.","accept":["I wouldn't go as far as calling it theft","I'd hesitate to call it theft, though"],"note":"Stop short of: không đi đến mức."},
+{"key":"l3","en":"Fair point, and consent is where regulation should start.","vi":"Có lý, và sự đồng ý là điểm khởi đầu của quy định.","accept":["Good point, and consent is where regulation should begin","Fair enough, and regulation should start with consent"],"note":""},
+{"key":"l4","en":"Broadly, yes, provided they don't stifle genuine innovation.","vi":"Nhìn chung là có, miễn là không kìm hãm đổi mới thực sự.","accept":["Broadly speaking, yes, as long as they don't stifle real innovation","In general, yes, provided they don't stifle genuine innovation"],"note":"Provided (that): miễn là."},
+{"key":"l5","en":"Funny how that tends to happen after a debate.","vi":"Buồn cười là sau tranh luận thường như vậy.","accept":["Funny how that often happens after a debate","It's funny how that tends to happen after a debate"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Honestly, I think AI art is simply theft.","npc_vi":"Thật lòng, tôi nghĩ nghệ thuật AI chỉ là ăn cắp.","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"But artists never consented to being used as training data.","npc_vi":"Nhưng các họa sĩ chưa bao giờ đồng ý bị dùng làm dữ liệu huấn luyện.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"So you would support strict licensing laws?","npc_vi":"Vậy bạn ủng hộ luật cấp phép nghiêm ngặt?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Hm, we agree more than I expected.","npc_vi":"Hm, ta đồng ý với nhau nhiều hơn tôi nghĩ.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"giving-tactful-feedback-on-a-novel","level":"C1","group":"daily","title_vi":"Góp ý khéo về tiểu thuyết","title_en":"Tactful feedback on a novel","goal_vi":"Nhận xét thẳng thắn nhưng tế nhị về bản thảo của bạn.","partner_vi":"Bạn thân đang viết tiểu thuyết","partner_emoji":"📖","lines":[
+{"key":"l1","en":"The prose is lovely, though the middle drags slightly.","vi":"Văn phong đẹp, nhưng đoạn giữa hơi lê thê.","accept":["The writing is lovely, though the middle drags a little","Your prose is beautiful, but the middle drags a bit"],"note":"Drag: lê thê. Slightly làm lời chê nhẹ đi."},
+{"key":"l2","en":"I was gripped from start to finish, honestly.","vi":"Thật lòng, tôi bị cuốn hút từ đầu đến cuối.","accept":["Honestly, I was gripped from beginning to end","I was hooked from start to finish, honestly"],"note":""},
+{"key":"l3","en":"Well, the second act could do with tightening.","vi":"Ừ, hồi hai cần được cô đọng hơn.","accept":["Well, the second act could use some tightening","The second act could do with some tightening"],"note":"Could do with: cần được."},
+{"key":"l4","en":"Without hesitation, as long as you cut chapter six.","vi":"Không do dự, miễn là bạn cắt chương sáu.","accept":["Without a doubt, provided you cut chapter six","Of course, as long as chapter six goes"],"note":""},
+{"key":"l5","en":"Don't mention it, I'm just glad to help.","vi":"Đừng khách sáo, tôi chỉ vui vì giúp được.","accept":["Not at all, I'm glad to help","Don't mention it, I'm happy to help"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"I finally finished my draft. What did you think?","npc_vi":"Cuối cùng tớ viết xong bản thảo. Cậu thấy sao?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n3"}]},
+{"id":"n2","npc_en":"Slightly? Be honest, I can take it.","npc_vi":"Hơi thôi á? Cứ nói thật đi, tớ chịu được.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Would you read another draft, then?","npc_vi":"Vậy cậu sẽ đọc bản thảo nữa chứ?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"You're a true friend. Thank you.","npc_vi":"Cậu là người bạn thật sự. Cảm ơn cậu.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"accepting-a-compliment-gracefully","level":"C1","group":"daily","title_vi":"Đáp lời khen khéo léo","title_en":"Accepting a compliment gracefully","goal_vi":"Nhận lời khen một cách khiêm tốn và duyên dáng.","partner_vi":"Đồng nghiệp tại hội nghị","partner_emoji":"🏆","lines":[
+{"key":"l1","en":"That's very kind of you, though I was nervous.","vi":"Bạn tốt quá, dù tôi đã rất hồi hộp.","accept":["That's very kind, although I was nervous","How kind of you, though I was nervous"],"note":"Nhận lời khen, không gạt đi."},
+{"key":"l2","en":"You're too generous, honestly. It was a team effort.","vi":"Bạn quá rộng lượng. Đó là nỗ lực của cả nhóm.","accept":["You're too kind, honestly. It was a team effort","That's generous of you. It was really a team effort"],"note":""},
+{"key":"l3","en":"Well, I had a little luck on my side.","vi":"Ừ thì, tôi cũng có chút may mắn.","accept":["Well, I had a bit of luck on my side","I was a little lucky, to be fair"],"note":""},
+{"key":"l4","en":"Gladly, but only if you let me pay.","vi":"Rất vui, nhưng chỉ khi bạn để tôi trả tiền.","accept":["With pleasure, but only if I can pay","I'd love to, but let me pay"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Your talk was easily the highlight of the conference!","npc_vi":"Bài nói của bạn dễ dàng là điểm nhấn của hội nghị!","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Nonsense. You handled that tricky question brilliantly.","npc_vi":"Vớ vẩn. Bạn xử lý câu hỏi hóc búa đó xuất sắc.","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Modest as ever. Shall we grab a coffee?","npc_vi":"Vẫn khiêm tốn như mọi khi. Đi uống cà phê nhé?","replies":[{"line":"l4","next":null}]}
+]},
+{"slug":"questioning-a-speaker-at-a-seminar","level":"C1","group":"daily","title_vi":"Đặt câu hỏi cho diễn giả","title_en":"Questioning a speaker at a seminar","goal_vi":"Đặt câu hỏi phản biện lịch sự trong buổi hội thảo.","partner_vi":"Giáo sư thuyết trình","partner_emoji":"🎓","lines":[
+{"key":"l1","en":"Yes, I wonder whether your sample might be skewed.","vi":"Vâng, tôi băn khoăn liệu mẫu của bạn có bị lệch không.","accept":["Yes, I wonder if your sample is skewed","I wonder whether your sample could be biased"],"note":"Skewed: bị lệch."},
+{"key":"l2","en":"Most respondents were students, so generalising seems risky.","vi":"Hầu hết người trả lời là sinh viên nên khái quát hóa có rủi ro.","accept":["Most respondents were students, so generalising seems unwise","Since most respondents were students, generalising seems risky"],"note":""},
+{"key":"l3","en":"I take your point, I must have skimmed that.","vi":"Tôi hiểu rồi, chắc tôi đã đọc lướt phần đó.","accept":["Fair enough, I must have skimmed that","I take your point, I must have missed that"],"note":"Skim: đọc lướt."},
+{"key":"l4","en":"Admittedly, I missed that, but the issue remains.","vi":"Phải thừa nhận tôi bỏ sót, nhưng vấn đề vẫn còn.","accept":["I admit I missed that, but the issue remains","Admittedly I overlooked it, but the problem remains"],"note":""},
+{"key":"l5","en":"I'd welcome that. Thank you for your time.","vi":"Tôi rất hoan nghênh. Cảm ơn thời gian của thầy.","accept":["I'd welcome that. Thanks for your time","That would be great. Thank you for your time"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Thank you. Are there any questions on my paper?","npc_vi":"Cảm ơn. Có câu hỏi nào về bài viết của tôi không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Interesting. What makes you suspect a bias?","npc_vi":"Thú vị. Điều gì khiến bạn nghi ngờ có thiên lệch?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Valid concern, but I addressed it in the limitations section.","npc_vi":"Mối lo hợp lý, nhưng tôi đã nêu trong phần hạn chế.","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"No harm done. Let's discuss it afterwards.","npc_vi":"Không sao. Ta thảo luận sau nhé.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"media-interview-on-regulating-social-media","level":"C1","group":"daily","title_vi":"Phỏng vấn về quản lý mạng xã hội","title_en":"Interview on regulating social media","goal_vi":"Trả lời phỏng vấn báo chí một cách cân bằng.","partner_vi":"Nhà báo phỏng vấn","partner_emoji":"🎙️","lines":[
+{"key":"l1","en":"Some regulation is overdue, but heavy handed rules would backfire.","vi":"Cần có quy định từ lâu, nhưng luật quá cứng rắn sẽ phản tác dụng.","accept":["Some regulation is long overdue, but heavy handed rules would backfire","Regulation is overdue, but heavy handed rules could backfire"],"note":"Backfire: phản tác dụng."},
+{"key":"l2","en":"They won't, which is precisely why oversight must be independent.","vi":"Họ sẽ không, đó chính là lý do giám sát phải độc lập.","accept":["They won't, and that's precisely why oversight must be independent","They won't, which is exactly why oversight should be independent"],"note":""},
+{"key":"l3","en":"That's the crux. Transparent criteria and public appeals would help.","vi":"Đó là mấu chốt. Tiêu chí minh bạch và quyền khiếu nại sẽ giúp ích.","accept":["That's the crux. Clear criteria and public appeals would help","That's the heart of it. Transparent criteria and appeals would help"],"note":"The crux: mấu chốt."},
+{"key":"l4","en":"Fair question, and frankly nobody has a perfect answer.","vi":"Câu hỏi hay, và thẳng thắn là không ai có đáp án hoàn hảo.","accept":["Fair question, and frankly nobody has a perfect answer","Good question, and honestly nobody has a perfect answer"],"note":""},
+{"key":"l5","en":"Thank you for having me. It's been stimulating.","vi":"Cảm ơn đã mời tôi. Buổi trò chuyện rất thú vị.","accept":["Thanks for having me. It's been stimulating","Thank you for inviting me. It's been stimulating"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Should governments regulate social media more strictly?","npc_vi":"Chính phủ có nên quản lý mạng xã hội chặt hơn không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Critics say platforms will never police themselves.","npc_vi":"Giới phê bình nói các nền tảng sẽ không tự kiểm soát.","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Who decides what counts as harmful content, though?","npc_vi":"Nhưng ai quyết định thế nào là nội dung có hại?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Thank you. A very measured answer.","npc_vi":"Cảm ơn. Một câu trả lời rất cân nhắc.","replies":[{"line":"l5","next":null}]}
+]}
+]

@@ -16,6 +16,7 @@ export type DashboardTab =
   | "pronunciation"
   | "shadowing"
   | "talk"
+  | "patterns"
   | "leaderboard"
   | "account";
 export type ViewMode = "gallery" | "table";
@@ -44,7 +45,7 @@ export interface LibraryStats {
  * while one of its tabs is shown the header has a small bar to switch between them. Tab ids are unchanged
  * (other screens call setActiveTab("…")); every tab belongs to exactly one entry.
  */
-export type NavGroupId = "today" | "vocab" | "talk" | "pronunciation" | "shadowing" | "practice" | "quick" | "settings" | "account";
+export type NavGroupId = "today" | "vocab" | "patterns" | "talk" | "pronunciation" | "shadowing" | "practice" | "quick" | "settings" | "account";
 export interface NavGroup {
   id: NavGroupId;
   label: string;
@@ -69,6 +70,7 @@ export const SIMPLE_NAV_GROUPS: NavGroup[] = [
       { tab: "capture", label: AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Lộ trình từ vựng" },
     ],
   },
+  { id: "patterns", label: "Mẫu câu", tabs: [{ tab: "patterns", label: "Mẫu câu" }] },
   { id: "talk", label: "Hội thoại", tabs: [{ tab: "talk", label: "Hội thoại" }] },
   { id: "pronunciation", label: "Phát âm", tabs: [{ tab: "pronunciation", label: "Phát âm" }] },
   { id: "shadowing", label: "Shadowing", tabs: [{ tab: "shadowing", label: "Shadowing" }] },

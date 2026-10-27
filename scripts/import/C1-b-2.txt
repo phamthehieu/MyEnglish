@@ -1,0 +1,67 @@
+[
+{"slug":"living-between-two-cultures","level":"C1","group":"daily","title_vi":"Sống giữa hai nền văn hóa","title_en":"Living between two cultures","goal_vi":"Chia sẻ trải nghiệm về bản sắc văn hóa khi di cư.","partner_vi":"Người anh họ ở nước ngoài","partner_emoji":"🌏","lines":[
+{"key":"l1","en":"Constantly, though I've learned to see it as an asset.","vi":"Liên tục, dù tôi đã học cách coi đó là lợi thế.","accept":["All the time, though I've learned to see it as an asset","Constantly, but I've learned to view it as an asset"],"note":""},
+{"key":"l2","en":"Occasionally. Visiting my village, I'm the foreigner with the accent.","vi":"Thỉnh thoảng. Về làng, tôi là người ngoại quốc có giọng lạ.","accept":["Occasionally. In my village, I'm the foreigner with the accent","Sometimes. Back in my village, I'm the foreigner with the accent"],"note":""},
+{"key":"l3","en":"Not outright, but there's a subtle sense of distance.","vi":"Không hẳn, nhưng có một khoảng cách tinh tế.","accept":["Not openly, but there's a subtle sense of distance","Not overtly, but there's a subtle distance"],"note":"Subtle: tinh tế, khó nhận ra."},
+{"key":"l4","en":"I keep whatever gives my life meaning, not mere habit.","vi":"Tôi giữ những gì mang lại ý nghĩa, không chỉ là thói quen.","accept":["I keep what gives my life meaning, not just habit","I hold on to whatever gives my life meaning, not mere habit"],"note":""},
+{"key":"l5","en":"Ideally, yes, though it takes more discipline than people assume.","vi":"Lý tưởng thì có, dù cần kỷ luật hơn người ta nghĩ.","accept":["Ideally, yes, but it takes more discipline than people assume","Ideally, though it requires more discipline than people realise"],"note":""},
+{"key":"l6","en":"Thank you. That's the hope, at any rate.","vi":"Cảm ơn anh. Ít nhất đó là hy vọng của em.","accept":["Thanks. That's the hope, at any rate","Thank you. That's my hope, anyway"],"note":"At any rate: dù sao đi nữa."}
+],"dialogue":[
+{"id":"n1","npc_en":"Do you ever feel caught between two cultures?","npc_vi":"Em có bao giờ thấy mắc kẹt giữa hai nền văn hóa không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Do people back home treat you as an outsider?","npc_vi":"Người ở quê có coi em là người ngoài không?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"How do you decide which traditions to keep?","npc_vi":"Em chọn truyền thống nào để giữ thế nào?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"That's wise. Will you raise your children bilingual?","npc_vi":"Khôn ngoan đấy. Em sẽ nuôi con song ngữ chứ?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Good luck. Language is a lifelong gift.","npc_vi":"Chúc may mắn. Ngôn ngữ là món quà suốt đời.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"discussing-a-modern-art-installation","level":"C1","group":"daily","title_vi":"Bàn về tác phẩm sắp đặt","title_en":"Discussing a modern art installation","goal_vi":"Nêu cảm nhận về một tác phẩm nghệ thuật hiện đại.","partner_vi":"Bạn đi cùng ở phòng tranh","partner_emoji":"🖼️","lines":[
+{"key":"l1","en":"Frankly, I'm not sure whether it's profound or pretentious.","vi":"Thẳng thắn, tôi không chắc nó sâu sắc hay kiểu cách.","accept":["Honestly, I can't tell whether it's profound or pretentious","Frankly, I'm unsure whether it's profound or pretentious"],"note":"Pretentious: màu mè, làm bộ."},
+{"key":"l2","en":"It's oddly moving, though I can't explain why.","vi":"Nó lạ lùng làm tôi xúc động, dù không giải thích được.","accept":["It's strangely moving, though I can't say why","It's oddly touching, though I can't explain why"],"note":""},
+{"key":"l3","en":"Then the title seems rather misleading, if you ask me.","vi":"Vậy tên tác phẩm có vẻ gây hiểu lầm, theo tôi.","accept":["In that case the title seems rather misleading, if you ask me","Then the title seems quite misleading, in my opinion"],"note":""},
+{"key":"l4","en":"That would explain the empty chairs in the centre.","vi":"Thế thì giải thích được những chiếc ghế trống ở giữa.","accept":["That would explain the empty chairs in the middle","That explains the empty chairs in the centre"],"note":""},
+{"key":"l5","en":"Not necessarily, but a little context seldom hurts.","vi":"Không nhất thiết, nhưng chút bối cảnh hiếm khi thừa.","accept":["Not necessarily, but a bit of context rarely hurts","Not always, but some context seldom hurts"],"note":""},
+{"key":"l6","en":"Lead the way, before my brain gives up.","vi":"Dẫn đường đi, trước khi đầu óc tôi đầu hàng.","accept":["Lead on, before my brain gives up","After you, before my brain gives up"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"So, what do you make of this installation?","npc_vi":"Vậy, bạn nghĩ gì về tác phẩm sắp đặt này?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"The artist says it's about loss and memory.","npc_vi":"Nghệ sĩ nói nó nói về mất mát và ký ức.","replies":[{"line":"l3","next":"n3"},{"line":"l4","next":"n3"}]},
+{"id":"n3","npc_en":"Do you think art has to be understood?","npc_vi":"Bạn có nghĩ nghệ thuật cần phải được hiểu không?","replies":[{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Fair enough. Shall we see the sculptures upstairs?","npc_vi":"Có lý. Mình lên xem các tượng điêu khắc trên lầu nhé?","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"taking-criticism-of-a-report-gracefully","level":"C1","group":"work","title_vi":"Đón nhận góp ý về báo cáo","title_en":"Taking criticism of a report gracefully","goal_vi":"Tiếp nhận phê bình một cách chuyên nghiệp và cầu thị.","partner_vi":"Người hướng dẫn cấp trên","partner_emoji":"🧭","lines":[
+{"key":"l1","en":"Of course, I'd value your candid opinion.","vi":"Tất nhiên, tôi trân trọng ý kiến thẳng thắn của anh.","accept":["Of course, I'd appreciate your candid opinion","Sure, I'd value your honest opinion"],"note":"Candid: thẳng thắn."},
+{"key":"l2","en":"That's fair. I was up against a tight deadline.","vi":"Anh nói đúng. Tôi bị dồn bởi hạn chót gấp.","accept":["Fair enough. I was up against a tight deadline","That's fair. I was under a tight deadline"],"note":"Up against: đối mặt với."},
+{"key":"l3","en":"I'm surprised, but I'm open to hearing why.","vi":"Tôi ngạc nhiên, nhưng sẵn lòng nghe lý do.","accept":["That surprises me, but I'm open to hearing why","I'm taken aback, but I'd like to hear why"],"note":""},
+{"key":"l4","en":"Point taken. I should have led with it.","vi":"Tôi hiểu rồi. Lẽ ra tôi nên mở đầu bằng nó.","accept":["Fair point. I should have led with it","Point taken. I ought to have led with it"],"note":"Point taken: tôi hiểu ý anh."},
+{"key":"l5","en":"Certainly. Would you mind looking over the revised version?","vi":"Chắc chắn. Anh có phiền xem lại bản sửa không?","accept":["Certainly. Would you mind reviewing the revised version","Of course. Could you look over the revised version"],"note":""},
+{"key":"l6","en":"I'd rather hear it now than later.","vi":"Tôi thà nghe bây giờ còn hơn để sau.","accept":["I'd rather hear it now than later on","Better to hear it now than later"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Do you have a minute? I have feedback on your report.","npc_vi":"Em có rảnh không? Tôi có góp ý về báo cáo của em.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"The analysis is sound, but the conclusions feel rushed.","npc_vi":"Phần phân tích chắc chắn, nhưng kết luận có vẻ vội.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Frankly, you buried the key finding on page nine.","npc_vi":"Thẳng thắn, em chôn phát hiện chính ở trang chín.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Exactly. Could you restructure it by Friday?","npc_vi":"Đúng vậy. Em sắp xếp lại trước thứ Sáu được không?","replies":[{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Happy to. You take criticism very well.","npc_vi":"Rất sẵn lòng. Em tiếp thu phê bình rất tốt.","replies":[{"line":"l6","next":null}]}
+]},
+{"slug":"questioning-the-cult-of-busyness","level":"C1","group":"daily","title_vi":"Suy ngẫm về sự bận rộn","title_en":"Questioning the cult of busyness","goal_vi":"Trao đổi triết lý đời thường về sự bận rộn.","partner_vi":"Người bạn hay suy tư","partner_emoji":"☕","lines":[
+{"key":"l1","en":"Perhaps being busy has become a proxy for importance.","vi":"Có lẽ bận rộn đã thành thước đo của sự quan trọng.","accept":["Perhaps busyness has become a proxy for importance","Maybe being busy has become a stand in for importance"],"note":"A proxy for: thứ thay thế/đại diện."},
+{"key":"l2","en":"Largely, yes. Doing nothing feels almost like a moral failing.","vi":"Phần lớn là vậy. Không làm gì gần như là thất bại đạo đức.","accept":["Mostly, yes. Doing nothing feels almost like a moral failing","To a large extent, yes. Idleness feels almost like a moral failing"],"note":""},
+{"key":"l3","en":"In some cases, but ambition isn't inherently unhealthy.","vi":"Có lúc vậy, nhưng tham vọng vốn không có hại.","accept":["Sometimes, but ambition isn't inherently unhealthy","In some cases, but ambition isn't unhealthy in itself"],"note":""},
+{"key":"l4","en":"I protect one unscheduled evening a week, no exceptions.","vi":"Tôi giữ một buổi tối trống mỗi tuần, không ngoại lệ.","accept":["I guard one unscheduled evening a week, no exceptions","I keep one evening a week free, no exceptions"],"note":""},
+{"key":"l5","en":"Be my guest. It's been life changing.","vi":"Cứ tự nhiên. Nó đã thay đổi cuộc sống tôi.","accept":["Go ahead. It's been life changing","Feel free. It's changed my life"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"Why does everyone brag about being busy these days?","npc_vi":"Sao dạo này ai cũng khoe mình bận?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Have we confused activity with achievement?","npc_vi":"Có phải ta nhầm hoạt động với thành tựu?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"So how do you resist that pressure yourself?","npc_vi":"Vậy bạn tự chống lại áp lực đó thế nào?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"I might steal that idea.","npc_vi":"Có lẽ tôi sẽ mượn ý tưởng đó.","replies":[{"line":"l5","next":null}]}
+]},
+{"slug":"joking-dryly-about-a-long-meeting","level":"C1","group":"daily","title_vi":"Đùa châm biếm về cuộc họp dài","title_en":"Dry humour about a long meeting","goal_vi":"Dùng sự châm biếm nhẹ nhàng với đồng nghiệp.","partner_vi":"Đồng nghiệp cùng ra khỏi họp","partner_emoji":"⏳","lines":[
+{"key":"l1","en":"Well, we decided to meet again, which is progress.","vi":"Ừ, ta quyết định họp lại, vậy là tiến bộ.","accept":["Well, we agreed to meet again, which counts as progress","We decided to meet again, which is progress, I suppose"],"note":""},
+{"key":"l2","en":"Only that we need another meeting to decide.","vi":"Chỉ là cần thêm một cuộc họp nữa để quyết định.","accept":["Only that we need another meeting to decide","Just that we need one more meeting to decide"],"note":""},
+{"key":"l3","en":"Not entirely, but I nodded at all the right moments.","vi":"Không hẳn, nhưng tôi gật đầu đúng lúc cả rồi.","accept":["Not entirely, but I nodded at all the right times","Not fully, but I nodded at the right moments"],"note":""},
+{"key":"l4","en":"How refreshingly radical. I'd back that wholeheartedly.","vi":"Thật mới mẻ và táo bạo. Tôi hoàn toàn ủng hộ.","accept":["How refreshingly radical. I'd support that wholeheartedly","What a radical idea. I'd back that wholeheartedly"],"note":"Mỉa nhẹ: radical khi chỉ là gửi email."},
+{"key":"l5","en":"Splendid. I'll bring the coffee and the sarcasm.","vi":"Tuyệt. Tôi sẽ mang cà phê và sự mỉa mai.","accept":["Splendid. I'll bring the coffee and the sarcasm","Great. I'll bring the coffee and the sarcasm"],"note":""}
+],"dialogue":[
+{"id":"n1","npc_en":"That meeting ran for three hours. Did we decide anything?","npc_vi":"Cuộc họp kéo dài ba giờ. Ta có quyết định gì không?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"I admire your optimism. Did you follow the budget item?","npc_vi":"Tôi phục sự lạc quan của bạn. Bạn hiểu mục ngân sách không?","replies":[{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Perhaps we should email our objections instead.","npc_vi":"Có lẽ ta nên gửi email phản đối thay vì thế.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Deal. I'll draft it over lunch.","npc_vi":"Chốt. Tôi sẽ soạn trong bữa trưa.","replies":[{"line":"l5","next":null}]}
+]}
+]

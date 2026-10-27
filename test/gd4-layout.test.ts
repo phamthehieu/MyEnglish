@@ -51,11 +51,11 @@ describe("one definition of 'đã thuộc': Đang học / Nhớ lâu (U9)", () =
 
 describe("simple mode's five sidebar entries (U15)", () => {
   const ALL_TABS: DashboardTab[] = [
-    "today", "library", "known", "capture", "reading", "writing", "review", "forgotten", "analytics", "guide", "grammar", "talk", "pronunciation", "shadowing", "leaderboard", "account",
+    "today", "library", "known", "capture", "reading", "writing", "review", "forgotten", "analytics", "guide", "grammar", "talk", "patterns", "pronunciation", "shadowing", "leaderboard", "account",
   ];
 
   it("has six entries in order, and every tab belongs to exactly one", () => {
-    expect(SIMPLE_NAV_GROUPS.map((g) => g.label)).toEqual(["Hôm nay", "Từ vựng", "Hội thoại", "Phát âm", "Shadowing", "Luyện thêm", "Truy cập nhanh", "Cài đặt", "Tài khoản"]);
+    expect(SIMPLE_NAV_GROUPS.map((g) => g.label)).toEqual(["Hôm nay", "Từ vựng", "Mẫu câu", "Hội thoại", "Phát âm", "Shadowing", "Luyện thêm", "Truy cập nhanh", "Cài đặt", "Tài khoản"]);
     const tabs = SIMPLE_NAV_GROUPS.flatMap((g) => g.tabs.map((t) => t.tab));
     expect([...tabs].sort()).toEqual([...ALL_TABS].sort());
   });

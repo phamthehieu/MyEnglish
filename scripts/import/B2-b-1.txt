@@ -1,0 +1,59 @@
+[
+{"slug":"spotting-a-fake-news-headline","level":"B2","group":"daily","title_vi":"Nghi ngờ một tiêu đề tin tức","title_en":"Spotting a fake news headline","goal_vi":"Thảo luận với bạn về độ tin cậy của tin tức.","partner_vi":"Một người bạn","partner_emoji":"📰","lines":[
+{"key":"l1","en":"I did, but I doubt it's true.","vi":"Mình có xem, nhưng mình nghi là không đúng.","accept":["I saw it, but I'm not sure it's true","Yes, though I doubt that it's true"],"note":"Doubt that dùng để bày tỏ sự nghi ngờ."},
+{"key":"l2","en":"Sites often copy each other without checking facts.","vi":"Các trang hay chép nhau mà không kiểm tra sự thật.","accept":["Websites often repeat each other without checking facts","News sites tend to copy one another without checking"],"note":""},
+{"key":"l3","en":"I usually check the original source first.","vi":"Mình thường kiểm tra nguồn gốc trước.","accept":["I normally look for the original source first","First I usually find the original source"],"note":""},
+{"key":"l4","en":"I would suggest reading more than one outlet.","vi":"Mình khuyên nên đọc nhiều hơn một nguồn tin.","accept":["I'd suggest reading several news outlets","I would recommend reading more than one outlet"],"note":"I would suggest là cách đưa lời khuyên lịch sự."},
+{"key":"l5","en":"No problem, it saves a lot of confusion.","vi":"Không có gì, cách này tránh được nhiều nhầm lẫn.","accept":["Anytime, it avoids a lot of confusion","You're welcome, it prevents a lot of confusion"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Did you see that headline about the city banning cars?","npc_vi":"Bạn có thấy tiêu đề về việc thành phố cấm xe hơi không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Really? It was on three different news sites.","npc_vi":"Thật sao? Nó có trên ba trang tin khác nhau mà.","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Good point. How do you tell what is reliable?","npc_vi":"Có lý. Làm sao bạn biết tin nào đáng tin?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"That makes sense. Thanks, that is really helpful advice.","npc_vi":"Hợp lý đấy. Cảm ơn, lời khuyên rất hữu ích.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"debating-ai-tools-in-classrooms","level":"B2","group":"daily","title_vi":"Tranh luận về AI trong lớp học","title_en":"Debating AI tools in classrooms","goal_vi":"Nêu ý kiến và đề xuất quy tắc dùng AI ở trường.","partner_vi":"Đồng nghiệp ở trường học","partner_emoji":"🏫","lines":[
+{"key":"l1","en":"To be honest, I think it could help.","vi":"Thật lòng thì mình nghĩ nó có thể giúp ích.","accept":["Honestly, I think it might be useful","To be honest, I believe it could be useful"],"note":"To be honest giúp mở đầu ý kiến một cách mềm mại."},
+{"key":"l2","en":"I'm a bit worried students will stop thinking.","vi":"Mình hơi lo học sinh sẽ ngừng suy nghĩ.","accept":["I'm slightly concerned students will stop thinking","I worry that students might stop thinking for themselves"],"note":""},
+{"key":"l3","en":"I would suggest using it only for brainstorming.","vi":"Mình đề nghị chỉ dùng nó để tìm ý tưởng.","accept":["I'd suggest using it just for brainstorming","I would recommend using it only to brainstorm"],"note":""},
+{"key":"l4","en":"Students should have to explain their own ideas.","vi":"Học sinh nên phải tự giải thích ý tưởng của mình.","accept":["Students ought to explain their own ideas","Pupils should be required to explain their own ideas"],"note":""},
+{"key":"l5","en":"Oral exams would make cheating much harder.","vi":"Thi vấn đáp sẽ khiến gian lận khó hơn nhiều.","accept":["Spoken exams would make cheating a lot harder","Cheating would be much harder with oral exams"],"note":"Câu điều kiện loại hai: would + động từ."},
+{"key":"l6","en":"That sounds sensible, as long as results are shared.","vi":"Nghe hợp lý, miễn là kết quả được chia sẻ.","accept":["That seems sensible, provided the results are shared","Sounds sensible, as long as the results are shared"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Our school is thinking about allowing AI tools in class. Thoughts?","npc_vi":"Trường mình đang cân nhắc cho dùng công cụ AI trong lớp. Bạn nghĩ sao?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Interesting. What rules would you set?","npc_vi":"Thú vị đấy. Bạn sẽ đặt quy tắc nào?","replies":[{"line":"l3","next":"n3"},{"line":"l4","next":"n3"}]},
+{"id":"n3","npc_en":"Fair. And how would teachers catch cheating?","npc_vi":"Hợp lý. Và giáo viên sẽ bắt gian lận thế nào?","replies":[{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"True. Maybe we should start with a trial.","npc_vi":"Đúng. Có lẽ ta nên bắt đầu bằng thử nghiệm.","replies":[{"line":"l6","next":null}]}]},
+{"slug":"persuading-a-tired-friend-to-exercise","level":"B2","group":"daily","title_vi":"Thuyết phục bạn tập thể dục","title_en":"Persuading a tired friend to exercise","goal_vi":"Thuyết phục một người bạn mệt mỏi bắt đầu vận động.","partner_vi":"Bạn thân đang mệt mỏi","partner_emoji":"😴","lines":[
+{"key":"l1","en":"Have you thought about getting more exercise?","vi":"Bạn đã nghĩ đến việc vận động nhiều hơn chưa?","accept":["Have you considered exercising more","Have you ever thought about doing more exercise"],"note":""},
+{"key":"l2","en":"You could walk for twenty minutes every morning.","vi":"Bạn có thể đi bộ hai mươi phút mỗi sáng.","accept":["You could take a twenty minute walk every morning","Why not walk for twenty minutes each morning"],"note":""},
+{"key":"l3","en":"If I were you, I'd try free videos online.","vi":"Nếu là bạn, mình sẽ thử video miễn phí trên mạng.","accept":["I'd try free workout videos online if I were you","If I were you, I would use free online videos"],"note":"If I were you là mẫu khuyên nhủ rất hay."},
+{"key":"l4","en":"It worked for me when I felt exhausted.","vi":"Cách này có hiệu quả với mình khi mình kiệt sức.","accept":["It helped me when I was exhausted","It worked well for me when I felt worn out"],"note":""},
+{"key":"l5","en":"Sure, I'll meet you outside at seven.","vi":"Được, mình sẽ gặp bạn ở ngoài lúc bảy giờ.","accept":["Okay, I'll meet you outside at seven","Sure, see you outside at seven"],"note":""},
+{"key":"l6","en":"Sounds good, but only if it's not raining.","vi":"Nghe được đó, nhưng chỉ khi trời không mưa.","accept":["Sounds great, as long as it isn't raining","That works, provided it's not raining"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I'm so tired lately. I can't concentrate at all.","npc_vi":"Dạo này mình mệt quá. Mình không tập trung được.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"I have no time, and gyms are expensive.","npc_vi":"Mình không có thời gian, phòng gym lại đắt.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Hmm, would that really make a difference?","npc_vi":"Hmm, liệu nó có thật sự khác biệt không?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Okay, you've convinced me. Walk together tomorrow?","npc_vi":"Được rồi, bạn thuyết phục được mình. Mai đi bộ cùng nhé?","replies":[{"line":"l5","next":null},{"line":"l6","next":null}]}]},
+{"slug":"missing-a-dinner-because-of-a-misunderstanding","level":"B2","group":"daily","title_vi":"Hiểu lầm về ngày ăn tối","title_en":"A misunderstanding about dinner plans","goal_vi":"Giải thích hiểu lầm và đề nghị bù lại.","partner_vi":"Một người bạn bị cho leo cây","partner_emoji":"😅","lines":[
+{"key":"l1","en":"I thought dinner was on Saturday, not Friday.","vi":"Mình tưởng bữa tối là thứ Bảy, không phải thứ Sáu.","accept":["I thought dinner was Saturday, not Friday","I assumed dinner was on Saturday instead of Friday"],"note":""},
+{"key":"l2","en":"Maybe I misheard you on the phone.","vi":"Có lẽ mình nghe nhầm bạn qua điện thoại.","accept":["Perhaps I misheard you on the phone","I might have misheard you over the phone"],"note":"Misheard là quá khứ của mishear."},
+{"key":"l3","en":"Sorry, I should have double checked the message.","vi":"Xin lỗi, lẽ ra mình nên kiểm tra lại tin nhắn.","accept":["I'm sorry, I should have checked the message again","Sorry, I ought to have double checked the message"],"note":"Should have + V3 diễn tả điều lẽ ra nên làm."},
+{"key":"l4","en":"Yes, let me treat you to make up.","vi":"Được, để mình mời bạn để bù lại.","accept":["Yes, let me pay to make up for it","Okay, let me treat you to make it up to you"],"note":""},
+{"key":"l5","en":"I insist, it was my mistake.","vi":"Mình nhất định, đó là lỗi của mình.","accept":["Please, it was my fault","I insist, the mistake was mine"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Where were you last night? We waited an hour.","npc_vi":"Tối qua bạn ở đâu? Tụi mình đợi cả tiếng.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Oh no. I did say Friday, though.","npc_vi":"Ôi không. Nhưng mình đã nói thứ Sáu mà.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"No worries. Shall we reschedule for tomorrow?","npc_vi":"Không sao. Mình dời sang ngày mai nhé?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"You don't have to, but thanks!","npc_vi":"Bạn không cần đâu, nhưng cảm ơn nhé!","replies":[{"line":"l5","next":null}]}]},
+{"slug":"culture-shock-about-tipping-abroad","level":"B2","group":"daily","title_vi":"Sốc văn hóa về tiền tip","title_en":"Culture shock about tipping abroad","goal_vi":"Trao đổi về khác biệt văn hóa khi sống ở nước ngoài.","partner_vi":"Người bản xứ thân thiện","partner_emoji":"🗽","lines":[
+{"key":"l1","en":"Not really, tipping isn't expected back home.","vi":"Không hẳn, ở quê mình không bắt buộc boa.","accept":["Not really, we don't usually tip back home","No, people don't expect tips in my country"],"note":""},
+{"key":"l2","en":"That's a lot! Nobody told me that.","vi":"Nhiều thật! Chẳng ai nói với mình cả.","accept":["Twenty percent is a lot! Nobody warned me","Wow, that's a lot! No one told me"],"note":""},
+{"key":"l3","en":"I see, I'll leave a tip next time.","vi":"Mình hiểu rồi, lần sau mình sẽ boa.","accept":["Okay, I'll tip next time","Got it, I'll leave a tip next time"],"note":""},
+{"key":"l4","en":"I find it strange that customers pay wages.","vi":"Mình thấy lạ khi khách hàng phải trả lương.","accept":["It seems odd that customers pay the wages","I think it's strange that customers cover wages"],"note":""},
+{"key":"l5","en":"Thanks, I'm slowly getting used to it.","vi":"Cảm ơn, mình đang dần quen rồi.","accept":["Thanks, I'm gradually getting used to it","Thank you, I'm slowly adjusting to it"],"note":"Get used to + V-ing nghĩa là dần quen với."}],
+"dialogue":[
+{"id":"n1","npc_en":"You left no tip at the cafe. Is that normal where you're from?","npc_vi":"Bạn không boa ở quán cà phê. Ở quê bạn vậy là bình thường à?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Oh, here it's about twenty percent.","npc_vi":"Ồ, ở đây khoảng hai mươi phần trăm.","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Servers earn low wages, so tips matter.","npc_vi":"Nhân viên phục vụ lương thấp nên tiền boa rất quan trọng.","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Don't worry, everyone gets confused at first.","npc_vi":"Đừng lo, ai cũng bối rối lúc đầu.","replies":[{"line":"l5","next":null}]}]}
+]

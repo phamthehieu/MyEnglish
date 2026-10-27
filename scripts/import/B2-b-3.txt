@@ -1,0 +1,60 @@
+[
+{"slug":"recommending-a-trip-to-hoi-an","level":"B2","group":"daily","title_vi":"Gợi ý chuyến đi Hội An","title_en":"Recommending a trip to Hoi An","goal_vi":"Gợi ý điểm đến và món ăn cho du khách nước ngoài.","partner_vi":"Bạn nước ngoài sắp du lịch","partner_emoji":"🏮","lines":[
+{"key":"l1","en":"You should definitely visit Hoi An.","vi":"Bạn nhất định nên ghé Hội An.","accept":["You really should visit Hoi An","You must visit Hoi An"],"note":""},
+{"key":"l2","en":"The old town is beautifully lit at night.","vi":"Phố cổ được thắp sáng rất đẹp vào ban đêm.","accept":["The old town looks beautiful when it's lit at night","At night the old town is lit up beautifully"],"note":"Câu bị động: is lit."},
+{"key":"l3","en":"I'd say three days is plenty.","vi":"Mình nghĩ ba ngày là đủ.","accept":["I would say three days is enough","Three days should be plenty, I'd say"],"note":""},
+{"key":"l4","en":"If you have time, stay five days.","vi":"Nếu có thời gian, hãy ở năm ngày.","accept":["If you can, stay for five days","Stay five days if you have the time"],"note":""},
+{"key":"l5","en":"Try cao lau, a local noodle dish.","vi":"Hãy thử cao lầu, món mì địa phương.","accept":["You should try cao lau, a local noodle dish","Do try cao lau, a regional noodle dish"],"note":""},
+{"key":"l6","en":"You can't leave without trying banh mi.","vi":"Bạn không thể rời đi mà chưa thử bánh mì.","accept":["You can't go home without trying banh mi","Don't leave without trying banh mi"],"note":""},
+{"key":"l7","en":"Enjoy it, and send me photos!","vi":"Chúc bạn vui và gửi ảnh cho mình nhé!","accept":["Have fun, and send me some photos","Enjoy yourself, and send me photos"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I'm visiting Vietnam next month. Any recommendations?","npc_vi":"Tháng sau mình đến Việt Nam. Bạn có gợi ý nào không?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Why Hoi An? What's special about it?","npc_vi":"Sao lại Hội An? Có gì đặc biệt vậy?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Lovely. How many days would you suggest?","npc_vi":"Tuyệt. Bạn gợi ý bao nhiêu ngày?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Got it. Any food I must try?","npc_vi":"Hiểu rồi. Có món nào mình phải thử không?","replies":[{"line":"l5","next":"n5"},{"line":"l6","next":"n5"}]},
+{"id":"n5","npc_en":"Amazing, I'm writing this all down!","npc_vi":"Tuyệt quá, mình đang ghi lại hết đây!","replies":[{"line":"l7","next":null}]}]},
+{"slug":"debating-whether-to-buy-an-electric-car","level":"B2","group":"daily","title_vi":"Có nên mua xe điện không","title_en":"Debating whether to buy an electric car","goal_vi":"Cân nhắc ưu nhược điểm xe điện và đưa lời khuyên.","partner_vi":"Chú đang định mua xe","partner_emoji":"🚗","lines":[
+{"key":"l1","en":"They're greener, but charging stations are limited.","vi":"Chúng xanh hơn, nhưng trạm sạc còn hạn chế.","accept":["They're better for the planet, but charging points are limited","They're more eco friendly, but there are few charging stations"],"note":""},
+{"key":"l2","en":"That's a fair point. Running costs are lower.","vi":"Có lý đấy. Chi phí vận hành thấp hơn.","accept":["Fair point. The running costs are lower","That's true. They're cheaper to run"],"note":""},
+{"key":"l3","en":"Yes, though batteries are expensive to replace.","vi":"Đúng, dù pin thay rất đắt.","accept":["True, though replacing batteries is expensive","Yes, but batteries cost a lot to replace"],"note":""},
+{"key":"l4","en":"I'd wait a year if I were you.","vi":"Nếu là chú, cháu sẽ đợi một năm.","accept":["If I were you, I'd wait a year","I would wait a year if I were you"],"note":""},
+{"key":"l5","en":"I'd buy one if I had a garage.","vi":"Nếu có ga ra, cháu sẽ mua một chiếc.","accept":["If I had a garage, I'd buy one","I would buy one if I had a garage"],"note":"Câu điều kiện loại hai: If + quá khứ, would + V."},
+{"key":"l6","en":"Anytime. Let me know what you decide.","vi":"Không có gì. Chú quyết định xong báo cháu nhé.","accept":["No problem. Let me know your decision","Anytime. Tell me what you decide"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I'm thinking of buying an electric car. What do you think?","npc_vi":"Chú định mua xe điện. Cháu nghĩ sao?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"True. Still, petrol prices keep rising.","npc_vi":"Đúng. Nhưng giá xăng cứ tăng mãi.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"What would you do in my position?","npc_vi":"Nếu ở vị trí chú, cháu sẽ làm gì?","replies":[{"line":"l4","next":"n4"},{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"Thanks, you've given me plenty to think about.","npc_vi":"Cảm ơn, cháu cho chú nhiều điều để suy nghĩ.","replies":[{"line":"l6","next":null}]}]},
+{"slug":"politely-raising-a-recycling-issue-with-a-neighbor","level":"B2","group":"daily","title_vi":"Nhắc nhở hàng xóm về phân loại rác","title_en":"A recycling issue with a neighbor","goal_vi":"Xử lý góp ý về phân loại rác một cách lịch sự.","partner_vi":"Hàng xóm","partner_emoji":"🏠","lines":[
+{"key":"l1","en":"Oh, I'm sorry. I didn't realize.","vi":"Ồ, xin lỗi bạn. Mình không biết.","accept":["Oh, sorry about that. I had no idea","I'm sorry, I wasn't aware of that"],"note":""},
+{"key":"l2","en":"I'll be more careful from now on.","vi":"Từ giờ mình sẽ cẩn thận hơn.","accept":["I'll be more careful in future","From now on I'll be more careful"],"note":""},
+{"key":"l3","en":"Could you show me how to sort properly?","vi":"Bạn chỉ mình cách phân loại đúng được không?","accept":["Would you mind showing me how to sort properly","Could you explain how to sort things properly"],"note":"Could you... là cách nhờ lịch sự."},
+{"key":"l4","en":"Thanks. I'll read it this evening.","vi":"Cảm ơn. Tối nay mình sẽ đọc.","accept":["Thank you. I'll read it tonight","Thanks, I'll have a look this evening"],"note":""},
+{"key":"l5","en":"Absolutely, it's good for the whole building.","vi":"Chắc chắn rồi, điều đó tốt cho cả tòa nhà.","accept":["Definitely, it benefits the whole building","Of course, it's good for everyone here"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Excuse me, you've mixed plastic with food waste again.","npc_vi":"Xin lỗi, bạn lại trộn nhựa với rác thực phẩm rồi.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"It makes sorting really difficult for the collectors.","npc_vi":"Điều đó làm công nhân thu gom phân loại rất khó.","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"Thank you. There is a guide near the bins.","npc_vi":"Cảm ơn bạn. Có một tờ hướng dẫn gần thùng rác.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Appreciate it. Neighbors should help each other out.","npc_vi":"Cảm kích lắm. Hàng xóm nên giúp đỡ lẫn nhau.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"explaining-a-gap-year-plan-to-your-mother","level":"B2","group":"daily","title_vi":"Thuyết phục mẹ về năm nghỉ học","title_en":"Explaining a gap year plan to your mother","goal_vi":"Thuyết phục cha mẹ về kế hoạch nghỉ một năm đi du lịch.","partner_vi":"Mẹ của bạn","partner_emoji":"👩","lines":[
+{"key":"l1","en":"I'd like to travel before starting university.","vi":"Con muốn đi du lịch trước khi vào đại học.","accept":["I want to travel before I start university","I'd like to see the world before university"],"note":""},
+{"key":"l2","en":"I'd work part time to stay focused.","vi":"Con sẽ làm bán thời gian để giữ sự tập trung.","accept":["I would work part time to stay focused","I'd get a part time job to stay focused"],"note":""},
+{"key":"l3","en":"I think travelling would actually boost my motivation.","vi":"Con nghĩ du lịch thật ra sẽ tăng động lực của con.","accept":["Travelling would actually increase my motivation","I believe travel would boost my motivation"],"note":""},
+{"key":"l4","en":"I've saved enough for the first three months.","vi":"Con đã tiết kiệm đủ cho ba tháng đầu.","accept":["I have enough saved for the first three months","I've saved enough to cover three months"],"note":""},
+{"key":"l5","en":"I'll prepare a detailed budget by Sunday.","vi":"Con sẽ chuẩn bị ngân sách chi tiết trước Chủ nhật.","accept":["I'll make a detailed budget by Sunday","By Sunday I'll prepare a detailed budget"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Your father and I heard about your gap year idea.","npc_vi":"Ba mẹ nghe về ý định nghỉ một năm của con.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"But what if you lose your motivation?","npc_vi":"Nhưng nếu con mất động lực thì sao?","replies":[{"line":"l2","next":"n3"},{"line":"l3","next":"n3"}]},
+{"id":"n3","npc_en":"And who will pay for all this?","npc_vi":"Và ai sẽ trả tiền cho tất cả?","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"You've clearly thought about it. Show me a plan.","npc_vi":"Con rõ ràng đã suy nghĩ kỹ. Cho mẹ xem kế hoạch.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"disagreeing-diplomatically-at-a-dinner-party","level":"B2","group":"daily","title_vi":"Bất đồng lịch sự trong bữa tiệc","title_en":"Disagreeing diplomatically at a dinner party","goal_vi":"Phản đối ý kiến một cách khéo léo và chuyển chủ đề.","partner_vi":"Khách dự tiệc","partner_emoji":"🍷","lines":[
+{"key":"l1","en":"I wouldn't say all of them are.","vi":"Mình sẽ không nói tất cả họ đều vậy.","accept":["I wouldn't say that all of them are","I don't think all of them are"],"note":"Dùng I wouldn't say... để phản đối nhẹ nhàng."},
+{"key":"l2","en":"I understand your frustration, but I disagree slightly.","vi":"Mình hiểu sự bực bội của bạn, nhưng hơi khác ý.","accept":["I see your frustration, but I slightly disagree","I get your frustration, but I don't fully agree"],"note":""},
+{"key":"l3","en":"Some cases are shocking, but that's not everyone.","vi":"Vài vụ thật sốc, nhưng không phải tất cả.","accept":["Some cases are shocking, but not everyone is corrupt","A few cases are shocking, but that's not everybody"],"note":""},
+{"key":"l4","en":"Maybe we should agree to disagree.","vi":"Có lẽ ta nên đồng ý là bất đồng.","accept":["Perhaps we should agree to disagree","Maybe we'll just have to agree to disagree"],"note":"Agree to disagree: chấp nhận khác quan điểm."},
+{"key":"l5","en":"Good idea. Have you tried the dessert?","vi":"Ý hay. Bạn đã thử món tráng miệng chưa?","accept":["Good idea. Did you try the dessert","Great idea. Have you had the dessert yet"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Don't you think politicians are all corrupt?","npc_vi":"Bạn không nghĩ chính trị gia đều tham nhũng sao?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Come on, look at the recent scandals.","npc_vi":"Thôi nào, nhìn các vụ bê bối gần đây đi.","replies":[{"line":"l3","next":"n3"},{"line":"l4","next":"n3"}]},
+{"id":"n3","npc_en":"Fair enough. Let's talk about something lighter.","npc_vi":"Cũng được. Hãy nói chuyện gì nhẹ nhàng hơn.","replies":[{"line":"l5","next":null}]}]}
+]

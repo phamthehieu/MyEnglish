@@ -16,6 +16,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "gen:situations": "vite-node scripts/build-situations.ts --",
+    "gen:import": "vite-node scripts/import-situations.ts --",
     "shadowing:build": "node scripts/build-shadowing.mjs --batch scripts/shadowing-a1.tsv --level A1 --no-vi && node scripts/build-shadowing.mjs --batch scripts/shadowing-a2.tsv --level A2 --no-vi && node scripts/build-shadowing.mjs --batch scripts/shadowing-b1.tsv --level B1 --no-vi && node scripts/build-shadowing.mjs --batch scripts/shadowing-b2.tsv --level B2 --no-vi",
     "shadowing:channels": "node scripts/build-shadowing.mjs --channel https://www.youtube.com/@reach-l5p --level auto --limit 15 --no-vi && node scripts/build-shadowing.mjs --channel https://www.youtube.com/@dailyenglishconversation --level auto --fallback A2 --limit 15 --no-vi && node scripts/build-shadowing.mjs --channel https://www.youtube.com/@learnenglishwithom --level auto --fallback B1 --limit 15 --no-vi",
     "shadowing:publish": "node scripts/publish-shadowing-feed.mjs",

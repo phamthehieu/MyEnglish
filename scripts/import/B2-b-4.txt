@@ -1,0 +1,60 @@
+[
+{"slug":"clearing-up-a-noisy-night-misunderstanding","level":"B2","group":"daily","title_vi":"Hiểu lầm về tiếng ồn ban đêm","title_en":"Clearing up a noisy night misunderstanding","goal_vi":"Giải quyết hiểu lầm với hàng xóm một cách lịch sự.","partner_vi":"Hàng xóm bị làm phiền","partner_emoji":"🔊","lines":[
+{"key":"l1","en":"No, I was out until midnight.","vi":"Không, mình ra ngoài đến nửa đêm.","accept":["No, I didn't get home until midnight","No, I was out till midnight"],"note":""},
+{"key":"l2","en":"Sorry, was it really that loud?","vi":"Xin lỗi, nó có thật sự ồn vậy không?","accept":["I'm sorry, was it really that noisy","Oh sorry, was it that loud"],"note":""},
+{"key":"l3","en":"Possibly. Shall we talk to them together?","vi":"Có thể. Mình cùng nói chuyện với họ nhé?","accept":["Maybe. Should we talk to them together","It's possible. Shall we speak to them together"],"note":""},
+{"key":"l4","en":"I apologize. I'll keep it down next time.","vi":"Mình xin lỗi. Lần sau mình sẽ nhỏ tiếng.","accept":["I'm sorry. I'll keep the noise down next time","I apologize. I'll turn it down next time"],"note":"Keep it down nghĩa là giữ âm lượng nhỏ."},
+{"key":"l5","en":"No problem, we all want a quiet building.","vi":"Không sao, ai cũng muốn tòa nhà yên tĩnh.","accept":["No worries, we all want a peaceful building","That's fine, everyone wants a quiet building"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Hi, were you the one playing loud music last night?","npc_vi":"Chào, tối qua bạn mở nhạc to phải không?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n3"}]},
+{"id":"n2","npc_en":"Oh, then it must have been the flat above.","npc_vi":"Ồ, vậy chắc là căn hộ bên trên.","replies":[{"line":"l3","next":"n4"}]},
+{"id":"n3","npc_en":"Yes, it was after eleven. I couldn't sleep.","npc_vi":"Có, sau mười một giờ. Mình không ngủ được.","replies":[{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Thanks for being so reasonable about this.","npc_vi":"Cảm ơn bạn đã rất biết điều.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"feeling-homesick-while-living-abroad","level":"B2","group":"daily","title_vi":"Nhớ nhà khi sống xa xứ","title_en":"Feeling homesick while living abroad","goal_vi":"Chia sẻ cảm giác nhớ nhà và nhận lời khuyên.","partner_vi":"Đồng nghiệp tốt bụng","partner_emoji":"☔","lines":[
+{"key":"l1","en":"I'm just feeling a bit homesick.","vi":"Mình chỉ đang hơi nhớ nhà.","accept":["I'm feeling a little homesick","I just miss home a bit"],"note":""},
+{"key":"l2","en":"Almost eight months, but winters are tough.","vi":"Gần tám tháng, nhưng mùa đông khó chịu lắm.","accept":["Nearly eight months, but the winters are hard","About eight months, though winters are difficult"],"note":""},
+{"key":"l3","en":"Really? What helped you feel better?","vi":"Thật sao? Điều gì giúp bạn thấy khá hơn?","accept":["Oh really? What made you feel better","Did you? What helped you feel better"],"note":""},
+{"key":"l4","en":"I might try joining a hiking group.","vi":"Mình có thể thử tham gia nhóm đi bộ đường dài.","accept":["Maybe I'll try joining a hiking group","I could try joining a hiking club"],"note":""},
+{"key":"l5","en":"Calling my family more often sounds good.","vi":"Gọi cho gia đình thường xuyên hơn nghe hay đấy.","accept":["Phoning my family more often sounds good","Calling home more often sounds like a good idea"],"note":""},
+{"key":"l6","en":"That's very kind. I'd love to come.","vi":"Bạn tốt quá. Mình rất muốn đến.","accept":["That's so kind of you. I'd love to come","How kind. I would love to come"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"You seem quiet today. Is everything okay?","npc_vi":"Hôm nay bạn có vẻ trầm lặng. Mọi thứ ổn chứ?","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"How long have you been living here?","npc_vi":"Bạn sống ở đây bao lâu rồi?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"I felt the same when I moved abroad.","npc_vi":"Mình cũng từng như vậy khi chuyển ra nước ngoài.","replies":[{"line":"l3","next":"n4"}]},
+{"id":"n4","npc_en":"Joining a local club and calling family often.","npc_vi":"Tham gia câu lạc bộ địa phương và gọi về nhà thường xuyên.","replies":[{"line":"l4","next":"n5"},{"line":"l5","next":"n5"}]},
+{"id":"n5","npc_en":"Good. Come to my place for dinner Sunday.","npc_vi":"Tốt. Chủ nhật đến nhà mình ăn tối nhé.","replies":[{"line":"l6","next":null}]}]},
+{"slug":"talking-about-adopting-a-rescue-dog","level":"B2","group":"daily","title_vi":"Có nên nhận nuôi chó cứu hộ","title_en":"Talking about adopting a rescue dog","goal_vi":"Giúp bạn cân nhắc quyết định nhận nuôi chó.","partner_vi":"Bạn yêu động vật","partner_emoji":"🐶","lines":[
+{"key":"l1","en":"Are you thinking of adopting him?","vi":"Bạn đang nghĩ đến việc nhận nuôi nó à?","accept":["Are you considering adopting him","Do you want to adopt him"],"note":""},
+{"key":"l2","en":"Have you checked your rental contract yet?","vi":"Bạn đã xem hợp đồng thuê nhà chưa?","accept":["Have you read your rental contract yet","Did you check your rental agreement yet"],"note":""},
+{"key":"l3","en":"If you walk him daily, you'll manage.","vi":"Nếu bạn dắt nó đi dạo mỗi ngày thì sẽ ổn.","accept":["You'll manage if you walk him every day","If you walk him every day, you'll cope"],"note":""},
+{"key":"l4","en":"Honestly, dogs need a lot of time.","vi":"Thật lòng thì chó cần rất nhiều thời gian.","accept":["To be honest, dogs need a lot of time","Honestly, a dog takes up a lot of time"],"note":""},
+{"key":"l5","en":"Great, I'd love to meet him too.","vi":"Tuyệt, mình cũng muốn gặp nó.","accept":["Nice, I'd like to meet him too","Great, I would love to meet him as well"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"I met the cutest dog at the shelter today!","npc_vi":"Hôm nay mình gặp chú chó dễ thương nhất ở trạm cứu hộ!","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"Maybe. But my landlord might not allow pets.","npc_vi":"Có thể. Nhưng chủ nhà có thể không cho nuôi thú cưng.","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Not yet. Do you think I'm ready?","npc_vi":"Chưa. Bạn nghĩ mình đã sẵn sàng chưa?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"Good points. I'll visit him again this weekend.","npc_vi":"Bạn nói đúng. Cuối tuần này mình sẽ thăm nó lần nữa.","replies":[{"line":"l5","next":null}]}]},
+{"slug":"radio-debate-on-a-four-day-school-week","level":"B2","group":"daily","title_vi":"Tranh luận tuần học bốn ngày","title_en":"Radio debate on a four day school week","goal_vi":"Trình bày quan điểm và kiến nghị trên một chương trình radio.","partner_vi":"Người dẫn chương trình radio","partner_emoji":"📻","lines":[
+{"key":"l1","en":"I think it would reduce student stress.","vi":"Tôi nghĩ nó sẽ giảm căng thẳng cho học sinh.","accept":["I believe it would lower student stress","I think students would feel less stressed"],"note":""},
+{"key":"l2","en":"I'm skeptical because parents work five days.","vi":"Tôi hoài nghi vì phụ huynh làm việc năm ngày.","accept":["I'm doubtful because parents work five days","I have doubts, as parents work five days"],"note":""},
+{"key":"l3","en":"Not if the lessons were planned carefully.","vi":"Không, nếu bài học được lên kế hoạch cẩn thận.","accept":["Not if lessons were carefully planned","Not if the lessons were planned well"],"note":"Câu bị động: were planned."},
+{"key":"l4","en":"Possibly, unless the school days were longer.","vi":"Có thể, trừ khi ngày học dài hơn.","accept":["Perhaps, unless school days were longer","It might, unless the school days were longer"],"note":""},
+{"key":"l5","en":"I'd suggest a trial in a few schools.","vi":"Tôi đề nghị thử nghiệm ở vài trường.","accept":["I would suggest a trial in some schools","I'd recommend a trial in a few schools"],"note":""},
+{"key":"l6","en":"Thank you for having me.","vi":"Cảm ơn đã mời tôi.","accept":["Thanks for having me","It was a pleasure to be here"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"Welcome. Should schools switch to a four day week?","npc_vi":"Chào mừng. Trường học có nên chuyển sang tuần bốn ngày?","replies":[{"line":"l1","next":"n2"},{"line":"l2","next":"n2"}]},
+{"id":"n2","npc_en":"Interesting. Would learning suffer, in your view?","npc_vi":"Thú vị. Theo bạn việc học có bị ảnh hưởng không?","replies":[{"line":"l3","next":"n3"},{"line":"l4","next":"n3"}]},
+{"id":"n3","npc_en":"So what is your final recommendation?","npc_vi":"Vậy khuyến nghị cuối cùng của bạn là gì?","replies":[{"line":"l5","next":"n4"}]},
+{"id":"n4","npc_en":"A sensible compromise. Thanks for joining us.","npc_vi":"Một sự dung hòa hợp lý. Cảm ơn bạn đã tham gia.","replies":[{"line":"l6","next":null}]}]},
+{"slug":"telling-a-lost-luggage-travel-story","level":"B2","group":"daily","title_vi":"Kể chuyện thất lạc hành lý","title_en":"Telling a lost luggage travel story","goal_vi":"Kể lại một trải nghiệm du lịch không may.","partner_vi":"Bạn đón bạn ở sân bay","partner_emoji":"🧳","lines":[
+{"key":"l1","en":"It was great, but the airline lost my luggage.","vi":"Tuyệt lắm, nhưng hãng bay làm mất hành lý của mình.","accept":["It was wonderful, but the airline lost my bags","It was fun, but the airline lost my luggage"],"note":""},
+{"key":"l2","en":"I filed a complaint and bought some clothes.","vi":"Mình nộp đơn khiếu nại và mua ít quần áo.","accept":["I made a complaint and bought some clothes","I complained and bought a few clothes"],"note":""},
+{"key":"l3","en":"Yes, it was delivered two days later.","vi":"Có, nó được giao hai ngày sau đó.","accept":["Yes, it arrived two days later","Yes, they delivered it two days later"],"note":"Câu bị động: was delivered."},
+{"key":"l4","en":"Not yet, they're still searching for it.","vi":"Chưa, họ vẫn đang tìm.","accept":["Not yet, they're still looking for it","No, they're still trying to find it"],"note":""},
+{"key":"l5","en":"Me too. I'm waiting for their reply.","vi":"Mình cũng mong vậy. Mình đang chờ họ trả lời.","accept":["I hope so too. I'm waiting for their reply","Same here. I'm waiting to hear back from them"],"note":""}],
+"dialogue":[
+{"id":"n1","npc_en":"How was your trip? You look exhausted.","npc_vi":"Chuyến đi thế nào? Trông bạn kiệt sức quá.","replies":[{"line":"l1","next":"n2"}]},
+{"id":"n2","npc_en":"No way! What did you do?","npc_vi":"Không thể nào! Bạn đã làm gì?","replies":[{"line":"l2","next":"n3"}]},
+{"id":"n3","npc_en":"Did they find your suitcase in the end?","npc_vi":"Cuối cùng họ có tìm thấy vali của bạn không?","replies":[{"line":"l3","next":"n4"},{"line":"l4","next":"n4"}]},
+{"id":"n4","npc_en":"I hope they compensate you properly.","npc_vi":"Mong họ bồi thường cho bạn thỏa đáng.","replies":[{"line":"l5","next":null}]}]}
+]
