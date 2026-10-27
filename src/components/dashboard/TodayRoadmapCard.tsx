@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Layers, PartyPopper } from "lucide-react";
-import { STUDY_LEVELS, type StudyLevel } from "@/services/vocabCatalog";
+import type { StudyLevel } from "@/services/vocabCatalog";
 import {
   changeStudyLevels,
   getStudyLevels,
   isFeedExhausted,
+  levelAbove,
   levelWeights,
   loadLevelProgress,
   suggestNextLevel,
@@ -63,7 +64,7 @@ export default function TodayRoadmapCard({ simple, milestone, onOpenPath }: Toda
 
   const suggestion: NextLevelSuggestion | null =
     suggestNextLevel(progress, levels) ??
-    (isFeedExhausted() === true ? { next: STUDY_LEVELS[levels.length] ?? null, reason: "exhausted" } : null);
+    (isFeedExhausted() === true ? { next: levelAbove(levels), reason: "exhausted" } : null);
   const nextLevel = suggestion?.next ?? null;
 
   const openNext = async (next: StudyLevel) => {

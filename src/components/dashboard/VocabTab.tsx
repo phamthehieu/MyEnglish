@@ -21,6 +21,7 @@ import {
   markCatalogWordsKnown,
   nextUnstudiedEntries,
   suggestNextLevel,
+  toggleStudyLevel,
   type LevelProgress,
 } from "@/services/vocabFeed";
 import { estimateNewWordsPerDay, levelEtaDays } from "@/services/progress";
@@ -37,21 +38,21 @@ const LEVEL_NAMES: Record<StudyLevel, string> = {
 };
 
 /**
- * Levels to study: A1 is always on; choosing a level also takes every level below it (learning starts at
- * A1). The chosen levels are mixed, lower levels more often.
+ * Levels to study: a run of consecutive levels, which may start above A1 for a learner who is past the first
+ * ones (see toggleStudyLevel for what a tap does). The chosen levels are mixed, lower levels more often.
  */
 export function LevelPicker({ value, onChange, disabled }: { value: StudyLevel[]; onChange: (levels: StudyLevel[]) => void; disabled?: boolean }) {
-  const top = value.length - 1;
   return (
+    <div className="space-y-2">
     <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-      {STUDY_LEVELS.map((level, i) => {
-        const on = i <= top;
+      {STUDY_LEVELS.map((level) => {
+        const on = value.includes(level);
         return (
           <button
             key={level}
             type="button"
             disabled={disabled}
-            onClick={() => onChange(STUDY_LEVELS.slice(0, i === top && i > 0 ? i : i + 1))}
+            onClick={() => onChange(toggleStudyLevel(value, level))}
             className={`text-left p-3 rounded-xl border transition-all disabled:opacity-60 ${
               on
                 ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 ring-1 ring-cyan-500"
@@ -68,13 +69,18 @@ export function LevelPicker({ value, onChange, disabled }: { value: StudyLevel[]
         );
       })}
     </div>
+    <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+      Chạm một cấp để thêm vào. Chạm cấp ở đầu hoặc cuối để bỏ. Đã giỏi các cấp đầu? Bỏ chúng đi để bắt đầu từ cấp cao hơn.
+    </p>
+    </div>
   );
 }
 
 export function mixDescription(levels: StudyLevel[]): string {
-  if (levels.length === 1) return "Học các từ A1, từ IT trước, rồi theo độ phổ biến.";
+  const skipped = levels[0] !== "A1" ? ` Bạn bỏ qua các cấp thấp hơn ${levels[0]}.` : "";
+  if (levels.length === 1) return `Học các từ ${levels[0]}, từ IT trước, rồi theo độ phổ biến.${skipped}`;
   const ratio = levels.map((_, i) => levels.length - i).join(":");
-  return `Từ mới trộn các cấp ${levels.join(", ")} theo tỉ lệ ${ratio} (cấp thấp nhiều hơn). Trong mỗi cấp, từ IT học trước.`;
+  return `Từ mới trộn các cấp ${levels.join(", ")} theo tỉ lệ ${ratio} (cấp thấp nhiều hơn). Trong mỗi cấp, từ IT học trước.${skipped}`;
 }
 
 function useLevelProgress() {
@@ -144,8 +150,7 @@ function formatEta(days: number): string {
 
 /**
  * The path A1 → C1 in one row: per level whether it is studied, its words met and remembered, and (studied
- * levels) the days left at the current pace. A click chooses levels as LevelPicker does: up to that level, or
- * drops the top chosen level.
+ * levels) the days left at the current pace. A click chooses levels as LevelPicker does (toggleStudyLevel).
  */
 function LevelRoadmap({
   progress,
@@ -160,7 +165,7 @@ function LevelRoadmap({
   onMarkLevel?: (level: StudyLevel) => void;
   disabled?: boolean;
 }) {
-  const top = levels.length - 1;
+  const pick = (level: StudyLevel) => onChange(toggleStudyLevel(levels, level));
   // The level mix shares the new words among the chosen levels that still have some
   const open = progress.filter((p) => levels.includes(p.level) && p.total - p.met > 0);
   const weights = levelWeights(open.map((p) => p.level));
@@ -169,9 +174,9 @@ function LevelRoadmap({
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-      {STUDY_LEVELS.map((level, i) => {
+      {STUDY_LEVELS.map((level) => {
         const p = progress.find((x) => x.level === level);
-        const on = i <= top;
+        const on = levels.includes(level);
         const total = Math.max(1, p?.total ?? CATALOG_LEVEL_COUNTS[level]);
         const met = p?.met ?? 0;
         const remembered = p?.remembered ?? 0;
@@ -186,17 +191,25 @@ function LevelRoadmap({
             : ready
               ? { text: "Vững rồi", cls: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300" }
               : { text: "Đang học", cls: "bg-cyan-100 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300" };
-        const action = i === top && i > 0 ? `Bấm để bỏ ${level}` : on ? `Bấm để chỉ học đến ${level}` : `Bấm để học thêm đến ${level}`;
+        const next = toggleStudyLevel(levels, level);
+        const action =
+          next.length > levels.length
+            ? `Bấm để học thêm ${level}`
+            : next.length === levels.length
+              ? "Cần học ít nhất một cấp"
+              : next[0] !== levels[0]
+                ? `Bấm để bắt đầu từ ${next[0]}`
+                : `Bấm để bỏ ${level}`;
         return (
           <div
             key={level}
             role="button"
             tabIndex={disabled ? -1 : 0}
-            onClick={() => !disabled && onChange(STUDY_LEVELS.slice(0, i === top && i > 0 ? i : i + 1))}
+            onClick={() => !disabled && pick(level)}
             onKeyDown={(e) => {
               if (!disabled && (e.key === "Enter" || e.key === " ")) {
                 e.preventDefault();
-                onChange(STUDY_LEVELS.slice(0, i === top && i > 0 ? i : i + 1));
+                pick(level);
               }
             }}
             aria-pressed={on}

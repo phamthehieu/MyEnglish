@@ -50,15 +50,43 @@ interface LevelsSetting {
   drawn: Partial<Record<StudyLevel, number>>;
 }
 
-/** Contiguous from A1 up to the highest level given ([] or unknown -> A1 only) */
+/**
+ * A run of consecutive levels, from the lowest to the highest one given ([] or unknown -> A1 only). The run may
+ * start above A1: a learner who is past the first levels does not have to study them.
+ */
 export function normalizeStudyLevels(levels: readonly string[]): StudyLevel[] {
-  const top = Math.max(0, ...levels.map((l) => STUDY_LEVELS.indexOf(l as StudyLevel)));
-  return STUDY_LEVELS.slice(0, top + 1);
+  const at = levels.map((l) => STUDY_LEVELS.indexOf(l as StudyLevel)).filter((i) => i >= 0);
+  if (at.length === 0) return ["A1"];
+  return STUDY_LEVELS.slice(Math.min(...at), Math.max(...at) + 1);
 }
 
-/** Levels suggested for a self-assessed / placement level: start at A1, up to that level */
+/** Levels suggested for a self-assessed / placement level: start at A1, up to that level (the learner can drop the low ones) */
 export function defaultStudyLevelsFor(level: string | null | undefined): StudyLevel[] {
-  return normalizeStudyLevels(level && (STUDY_LEVELS as readonly string[]).includes(level) ? [level] : ["A1"]);
+  const i = level ? STUDY_LEVELS.indexOf(level as StudyLevel) : -1;
+  return STUDY_LEVELS.slice(0, Math.max(0, i) + 1);
+}
+
+/**
+ * The levels after the learner taps `level`: outside the run it is added (the run grows to it); at the top or the
+ * bottom of the run it is dropped; in the middle of the run, the run starts from it. A single level stays.
+ */
+export function toggleStudyLevel(levels: readonly StudyLevel[], level: StudyLevel): StudyLevel[] {
+  const run = normalizeStudyLevels(levels);
+  const lo = STUDY_LEVELS.indexOf(run[0]);
+  const hi = STUDY_LEVELS.indexOf(run[run.length - 1]);
+  const i = STUDY_LEVELS.indexOf(level);
+  if (i < lo) return STUDY_LEVELS.slice(i, hi + 1);
+  if (i > hi) return STUDY_LEVELS.slice(lo, i + 1);
+  if (lo === hi) return run;
+  if (i === hi) return STUDY_LEVELS.slice(lo, hi);
+  if (i === lo) return STUDY_LEVELS.slice(lo + 1, hi + 1);
+  return STUDY_LEVELS.slice(i, hi + 1);
+}
+
+/** The level above the highest one studied (null at C1) */
+export function levelAbove(levels: readonly StudyLevel[]): StudyLevel | null {
+  const run = normalizeStudyLevels(levels);
+  return STUDY_LEVELS[STUDY_LEVELS.indexOf(run[run.length - 1]) + 1] ?? null;
 }
 
 function readSetting(): LevelsSetting | null {
@@ -119,7 +147,7 @@ export function setStudyLevels(levels: readonly string[]): StudyLevel[] {
   return next;
 }
 
-/** Mix weights: the lowest chosen level k, the next k-1, … the highest 1 */
+/** Mix weights: the lowest chosen level k, the next k-1, … the highest 1 (k = how many levels are chosen) */
 export function levelWeights(levels: readonly StudyLevel[]): Map<StudyLevel, number> {
   return new Map(levels.map((l, i) => [l, levels.length - i]));
 }
@@ -517,7 +545,7 @@ export interface NextLevelSuggestion {
 export function suggestNextLevel(progress: LevelProgress[], levels: readonly StudyLevel[]): NextLevelSuggestion | null {
   const chosen = progress.filter((p) => levels.includes(p.level));
   if (chosen.length === 0) return null;
-  const next = STUDY_LEVELS[normalizeStudyLevels(levels).length] ?? null;
+  const next = levelAbove(levels);
   if (chosen.every((p) => p.notAdded === 0)) return { next, reason: "exhausted" };
   if (next && chosen.every(levelReadyToAdvance)) return { next, reason: "ready" };
   return null;

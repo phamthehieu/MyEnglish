@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { Rating } from "ts-fsrs";
 import type { CatalogEntry, StudyLevel } from "@/services/vocabCatalog";
-import { defaultStudyLevelsFor, normalizeStudyLevels, pickLevelSequence } from "@/services/vocabFeed";
+import { defaultStudyLevelsFor, levelAbove, normalizeStudyLevels, pickLevelSequence, toggleStudyLevel } from "@/services/vocabFeed";
 import { freshServices } from "./helpers";
 
 function entry(word: string, cefr: StudyLevel, order: number, extra: Partial<CatalogEntry> = {}): CatalogEntry {
@@ -56,12 +56,28 @@ async function introductionOrder(db: Awaited<ReturnType<typeof setup>>["db"]) {
 }
 
 describe("study levels", () => {
-  it("always start at A1 and stay contiguous", () => {
-    expect(normalizeStudyLevels(["B1"])).toEqual(["A1", "A2", "B1"]);
+  it("are a run of consecutive levels that may start above A1", () => {
+    expect(normalizeStudyLevels(["B1"])).toEqual(["B1"]);
+    expect(normalizeStudyLevels(["A2", "B2"])).toEqual(["A2", "B1", "B2"]);
     expect(normalizeStudyLevels(["A1", "B2"])).toEqual(["A1", "A2", "B1", "B2"]);
     expect(normalizeStudyLevels([])).toEqual(["A1"]);
+    expect(normalizeStudyLevels(["Z9"])).toEqual(["A1"]);
     expect(defaultStudyLevelsFor("B2")).toEqual(["A1", "A2", "B1", "B2"]);
     expect(defaultStudyLevelsFor(null)).toEqual(["A1"]);
+  });
+
+  it("change with a tap: add outside the run, drop at an end, start from a level in the middle", () => {
+    expect(toggleStudyLevel(["A1"], "B1")).toEqual(["A1", "A2", "B1"]);
+    expect(toggleStudyLevel(["B1", "B2"], "A2")).toEqual(["A2", "B1", "B2"]);
+    expect(toggleStudyLevel(["A1", "A2", "B1"], "B1")).toEqual(["A1", "A2"]);
+    expect(toggleStudyLevel(["A1", "A2", "B1"], "A1")).toEqual(["A2", "B1"]);
+    expect(toggleStudyLevel(["A1", "A2", "B1", "B2"], "B1")).toEqual(["B1", "B2"]);
+    expect(toggleStudyLevel(["B1"], "B1")).toEqual(["B1"]);
+  });
+
+  it("offer the level above the highest studied", () => {
+    expect(levelAbove(["A2", "B1"])).toBe("B2");
+    expect(levelAbove(["B2", "C1"])).toBeNull();
   });
 
   it("mixes levels k:…:1, lower levels more often, skipping levels with nothing left", () => {

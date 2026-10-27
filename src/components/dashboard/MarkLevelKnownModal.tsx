@@ -8,6 +8,7 @@ import {
 import {
   countUnstudiedWordsForLevel,
   markLevelWordsKnown,
+  normalizeStudyLevels,
   type LevelProgress,
 } from "@/services/vocabFeed";
 
@@ -85,8 +86,8 @@ export default function MarkLevelKnownModal({
 
       let updatedLevels: StudyLevel[] | undefined = undefined;
       if (autoAdvance && nextLevel) {
-        // Contiguous up to nextLevel
-        updatedLevels = STUDY_LEVELS.slice(0, nextLevelIndex + 1);
+        // The chosen levels plus the next one (a run that starts above A1 keeps its start)
+        updatedLevels = normalizeStudyLevels([...levels, nextLevel]);
       }
 
       onDone(updatedLevels);
