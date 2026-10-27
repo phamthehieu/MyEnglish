@@ -35,6 +35,7 @@ import TodayChecklist from "./TodayChecklist";
 import DayCloseCard from "./DayCloseCard";
 import TodayRoadmapCard from "./TodayRoadmapCard";
 import StudyLevelBar from "./StudyLevelBar";
+import AppUpdateBanner from "./AppUpdateBanner";
 import RoadmapTodayCard from "../roadmap/RoadmapTodayCard";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import { PATTERNS } from "@/data/patterns";
@@ -318,6 +319,9 @@ export default function TodayTab({
         */}
         <div className={twoColumns ? "grid gap-4 items-start min-[1000px]:grid-cols-[minmax(0,1fr)_320px] min-[1000px]:grid-rows-[auto_1fr]" : "max-w-3xl mx-auto space-y-4"}>
           <div className="min-w-0 space-y-4">
+            {/* A new version of the app (Android) */}
+            {!loading && <AppUpdateBanner />}
+
             {/* The learner's levels, with the way to change them */}
             {!loading && <StudyLevelBar />}
 
