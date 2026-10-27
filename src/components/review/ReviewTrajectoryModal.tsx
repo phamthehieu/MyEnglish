@@ -202,7 +202,7 @@ export default function ReviewTrajectoryModal({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-zinc-800 overflow-hidden"
+        className="popup-card-enter relative w-full max-w-lg bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-zinc-800 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

@@ -231,6 +231,73 @@ pre code {
   }
 }
 
+/* Screens fade in when they open (every tab and the views inside a tab): opacity only, so a fixed box inside
+   is not moved by a transform while it runs */
+@keyframes tab-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.tab-enter {
+  animation: tab-fade 0.2s ease-out;
+}
+/* A bottom sheet rises from the edge, a bar drops in from the top */
+@keyframes sheet-enter {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.sheet-enter {
+  animation: sheet-enter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes bar-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.bar-enter {
+  animation: bar-enter 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tab-enter,
+  .sheet-enter,
+  .bar-enter {
+    animation: none;
+  }
+}
+
+/* Press feedback on every button: it sinks a little under the finger. The individual "scale" property is used, so
+   it never replaces the transform a button may already have (centering, translations). */
+button,
+[role="button"] {
+  transition: scale 0.12s ease-out;
+}
+button:not(:disabled):active,
+[role="button"]:not([aria-disabled="true"]):active {
+  scale: 0.97;
+}
+@media (prefers-reduced-motion: reduce) {
+  button,
+  [role="button"] {
+    transition: none;
+  }
+  button:not(:disabled):active,
+  [role="button"]:not([aria-disabled="true"]):active {
+    scale: 1;
+  }
+}
+
 /* tailwindcss-animate utilities (animate-in, fade-in, zoom-in...) respect reduced motion too */
 @media (prefers-reduced-motion: reduce) {
   .animate-in,

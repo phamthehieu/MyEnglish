@@ -50,12 +50,12 @@ export default function StudyLevelBar() {
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/50 dark:bg-black/60 backdrop-blur-sm p-4"
+          className="popup-backdrop-enter fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/50 dark:bg-black/60 backdrop-blur-sm p-4"
           onClick={(e) => {
             if (e.target === e.currentTarget && !saving) setOpen(false);
           }}
         >
-          <div role="dialog" aria-modal="true" aria-label="Đổi cấp" className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 space-y-3 shadow-xl">
+          <div role="dialog" aria-modal="true" aria-label="Đổi cấp" className="popup-card-enter w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 space-y-3 shadow-xl">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">Bạn muốn học cấp nào?</h3>

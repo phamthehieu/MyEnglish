@@ -94,8 +94,8 @@ export default function WordSheet({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end" role="dialog" aria-modal="true" aria-label={`Từ ${shown}`}>
-      <button className="absolute inset-0 bg-black/40" onClick={onClose} aria-label="Đóng" />
-      <div className="relative mx-auto w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 px-5 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl">
+      <button className="popup-backdrop-enter absolute inset-0 bg-black/40" onClick={onClose} aria-label="Đóng" />
+      <div className="sheet-enter relative mx-auto w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 px-5 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl">
         <button onClick={onClose} className="mx-auto mb-4 block h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" aria-label="Đóng" />
 
         <div className="flex items-start justify-between gap-3">

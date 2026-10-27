@@ -295,7 +295,7 @@ export default function Sidebar({
   return (
     <>
     {navOpen && (
-      <div className="md:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setNavOpen(false)} aria-hidden="true" />
+      <div className="popup-backdrop-enter md:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setNavOpen(false)} aria-hidden="true" />
     )}
     <aside
       className={`min-h-0 border-r border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 md:dark:bg-zinc-900/50 flex flex-col shrink-0 select-none fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] pt-[env(safe-area-inset-top)] transition-transform duration-200 md:static md:z-auto md:w-64 md:max-w-none md:pt-0 md:translate-x-0 ${navOpen ? "translate-x-0" : "-translate-x-full"}`}
@@ -644,7 +644,7 @@ export default function Sidebar({
     {/* Phones: bottom tab bar */}
     <nav
       aria-label="Điều hướng chính"
-      className={`md:hidden fixed bottom-0 inset-x-0 z-30 ${typing ? "hidden" : "flex"} border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 pb-[env(safe-area-inset-bottom)] select-none`}
+      className={`md:hidden fixed bottom-0 inset-x-0 z-30 flex transition-transform duration-200 ease-out motion-reduce:transition-none ${typing ? "translate-y-full pointer-events-none" : "translate-y-0"} border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 pb-[env(safe-area-inset-bottom)] select-none`}
     >
       {bottomItems.map((item) => {
         const Icon = item.icon;

@@ -113,7 +113,7 @@ export default function MarkLevelKnownModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="mark-level-title"
-        className="w-full max-w-lg overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-6 space-y-5"
+        className="popup-card-enter w-full max-w-lg overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-6 space-y-5"
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-3">

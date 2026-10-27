@@ -112,11 +112,11 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
           role="dialog"
           aria-modal="true"
           aria-label="Thoát phiên tập trung"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          className="popup-backdrop-enter fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
           onClick={() => setConfirming(false)}
         >
           <div
-            className="w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 space-y-3 shadow-xl"
+            className="popup-card-enter w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 space-y-3 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-sm font-bold text-slate-900 dark:text-white">Thoát phiên tập trung?</p>

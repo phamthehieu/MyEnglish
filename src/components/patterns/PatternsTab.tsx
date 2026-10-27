@@ -11,6 +11,7 @@ import { isFinished, setFocus, setGoal, skipLevel, skipStage } from "@/services/
 import { addStageWords } from "@/services/roadmap/words";
 import { PAGE_CONTAINER } from "../dashboard/shared";
 import GrammarTipCard from "../grammar/GrammarTipCard";
+import Collapse from "../ui/Collapse";
 import DaySession from "../roadmap/DaySession";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import PatternRunner from "./PatternRunner";
@@ -92,11 +93,11 @@ function StageGrammar({ stageId, onOpenLesson }: { stageId: string; onOpenLesson
         </span>
         <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform ${shown ? "rotate-180" : ""}`} />
       </button>
-      {shown && (
+      <Collapse open={shown}>
         <div className="px-3 pb-3">
           <GrammarTipCard tip={tip} onOpenLesson={onOpenLesson} />
         </div>
-      )}
+      </Collapse>
     </div>
   );
 }
@@ -236,7 +237,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
         {PATTERNS.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có mẫu câu nào.</p>}
 
         {notice && (
-          <p className="rounded-xl border border-sky-300 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-200 px-3 py-2 text-sm" role="status">
+          <p className="bar-enter rounded-xl border border-sky-300 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-200 px-3 py-2 text-sm" role="status">
             {notice}
           </p>
         )}
@@ -267,7 +268,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
               </button>
             </div>
             <div className="h-2 rounded-full bg-emerald-200 dark:bg-emerald-900 overflow-hidden" aria-label="Tiến độ lộ trình">
-              <div className="h-full bg-emerald-600" style={{ width: `${(finishedCount / Math.max(1, stages.length)) * 100}%` }} />
+              <div className="h-full bg-emerald-600 transition-[width] duration-500 ease-out motion-reduce:transition-none" style={{ width: `${(finishedCount / Math.max(1, stages.length)) * 100}%` }} />
             </div>
             <p className="text-xs text-emerald-900 dark:text-emerald-200">
               Đã xong {finishedCount}/{stages.length} chặng · còn {etaText} nếu học {minutes} phút mỗi ngày
@@ -376,7 +377,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                   </span>
                   <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </button>
-                {isOpen && (
+                <Collapse open={isOpen}>
                   <div className="px-3.5 pb-3.5 space-y-2">
                     <StageGrammar stageId={stage.id} onOpenLesson={onOpenGrammarLesson} />
                     {stage.patterns.map((p) => {
@@ -409,7 +410,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                       </div>
                     )}
                   </div>
-                )}
+                </Collapse>
               </div>
             );
           })}

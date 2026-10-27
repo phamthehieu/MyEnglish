@@ -63,7 +63,7 @@ export default function RoadmapTodayCard({ setActiveTab, showStart = false }: { 
         </button>
       </div>
       <div className="h-2 rounded-full bg-emerald-200 dark:bg-emerald-900 overflow-hidden" aria-label="Tiến độ lộ trình">
-        <div className="h-full bg-emerald-600" style={{ width: `${(finishedCount / Math.max(1, stages.length)) * 100}%` }} />
+        <div className="h-full bg-emerald-600 transition-[width] duration-500 ease-out motion-reduce:transition-none" style={{ width: `${(finishedCount / Math.max(1, stages.length)) * 100}%` }} />
       </div>
       <p className="text-xs text-emerald-900 dark:text-emerald-200">
         Đã xong {finishedCount}/{stages.length} chặng · còn {etaText} nếu học {minutes} phút mỗi ngày

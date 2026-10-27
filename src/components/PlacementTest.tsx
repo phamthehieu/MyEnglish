@@ -65,8 +65,8 @@ export default function PlacementTest({ onDone, onClose }: { onDone: (level: Lev
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-5 space-y-4">
+    <div className="popup-backdrop-enter fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div className="popup-card-enter w-full max-w-md rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-5 space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-slate-900 dark:text-white">Kiểm tra trình độ</h3>
           <button onClick={onClose} className="text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200">

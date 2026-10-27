@@ -3,6 +3,7 @@ import { ChevronDown, Footprints } from "lucide-react";
 import { tipEntries } from "@/data/grammarTips";
 import type { PatternLevel } from "@/types/pattern";
 import GrammarTipCard from "./GrammarTipCard";
+import Collapse from "../ui/Collapse";
 import { useRoadmap } from "../roadmap/useRoadmap";
 
 /**
@@ -74,11 +75,11 @@ export default function SpeakingGrammar({ onOpenLesson }: { onOpenLesson?: (less
                 )}
                 <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
               </button>
-              {isOpen && (
+              <Collapse open={isOpen}>
                 <div className="px-3 pb-3">
                   <GrammarTipCard tip={e} onOpenLesson={onOpenLesson} />
                 </div>
-              )}
+              </Collapse>
             </li>
           );
         })}

@@ -481,8 +481,8 @@ function FontSheet({ index, onPick, onClose }: { index: number; onPick: (i: numb
   const pct = FONT_SCALES[index].pct;
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end" role="dialog" aria-modal="true" aria-label="Cỡ chữ">
-      <button className="absolute inset-0 bg-black/50" onClick={onClose} aria-label="Đóng" />
-      <div className="relative mx-auto w-full max-w-lg rounded-t-3xl bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-4 shadow-2xl">
+      <button className="popup-backdrop-enter absolute inset-0 bg-black/50" onClick={onClose} aria-label="Đóng" />
+      <div className="sheet-enter relative mx-auto w-full max-w-lg rounded-t-3xl bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-4 shadow-2xl">
         <button onClick={onClose} className="mx-auto block h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" aria-label="Đóng" />
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cỡ chữ</h3>
         <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 px-4 py-3">

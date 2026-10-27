@@ -33,7 +33,7 @@ export default function DayFlowBar({ onRun, onFinish }: { onRun: (id: TodayTaskI
   };
 
   return (
-    <div role="status" aria-label="Luồng hôm nay" className="shrink-0 flex items-center gap-2 border-b border-emerald-200 dark:border-emerald-900/60 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5">
+    <div role="status" aria-label="Luồng hôm nay" className="bar-enter shrink-0 flex items-center gap-2 border-b border-emerald-200 dark:border-emerald-900/60 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5">
       <span className="min-w-0 flex-1 text-xs text-emerald-900 dark:text-emerald-200">
         <b>
           Hôm nay · {flow.index + 1}/{flow.queue.length}
