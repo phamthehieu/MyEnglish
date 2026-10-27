@@ -1,0 +1,254 @@
+[
+  {
+    "stage": "a2-past-weekend",
+    "title": "Thì quá khứ đơn: kể chuyện đã xảy ra",
+    "points": [
+      "Chuyện đã xong rồi thì dùng động từ ở quá khứ: went, stayed, met. Các từ như last weekend, yesterday, on Saturday cho biết đó là quá khứ.",
+      "Nhiều động từ quen thuộc đổi dạng bất quy tắc: go thành went, meet thành met, have thành had. Cần học thuộc.",
+      "Động từ quá khứ không đổi theo chủ ngữ: I went, she went, they went đều giống nhau.",
+      "Câu phủ định dùng didn't + động từ nguyên mẫu: I didn't go. Sau didn't không thêm -ed hay đổi dạng nữa."
+    ],
+    "examples": [
+      { "en": "Last weekend, I went to my parents' house.", "vi": "Cuối tuần trước, tôi về nhà bố mẹ." },
+      { "en": "I met my old classmate on Saturday.", "vi": "Thứ Bảy tôi gặp một người bạn học cũ." },
+      { "en": "I didn't go out because I was tired.", "vi": "Tôi không đi chơi vì tôi mệt." }
+    ],
+    "mistake": {
+      "wrong": "Last weekend I go to my hometown.",
+      "right": "Last weekend I went to my hometown.",
+      "why": "Động từ tiếng Việt không đổi theo thời gian, nhưng tiếng Anh phải đổi: go thành went."
+    },
+    "lessons": ["ch01-l05"]
+  },
+  {
+    "stage": "a2-past-trips",
+    "title": "Quá khứ đơn khi kể về chuyến đi",
+    "points": [
+      "Chuyến đi đã kết thúc thì kể bằng quá khứ đơn: traveled, stayed, took. Last summer, two years ago là dấu hiệu quen thuộc.",
+      "Dùng for + khoảng thời gian để nói ở bao lâu: for three days, for a week. Không dùng for trước một mốc như last summer.",
+      "Take a photo của take là bất quy tắc: take thành took. Sau of là thứ bạn chụp: a lot of photos of the beach.",
+      "Muốn so sánh với điều mình nghĩ trước đó, dùng better than I expected (tốt hơn tôi tưởng)."
+    ],
+    "examples": [
+      { "en": "We traveled to Da Lat last summer.", "vi": "Mùa hè năm ngoái chúng tôi đi Đà Lạt." },
+      { "en": "We stayed in a small hotel for three days.", "vi": "Chúng tôi ở một khách sạn nhỏ ba ngày." },
+      { "en": "The food was better than I expected.", "vi": "Đồ ăn ngon hơn tôi tưởng." }
+    ],
+    "mistake": {
+      "wrong": "We stay in Hue three days last month.",
+      "right": "We stayed in Hue for three days last month.",
+      "why": "Cần quá khứ (stayed) vì chuyến đi đã xong, và cần for trước khoảng thời gian (three days)."
+    },
+    "lessons": ["ch01-l05", "ch19-l03"]
+  },
+  {
+    "stage": "a2-future-plans",
+    "title": "Be going to, will và câu điều kiện về tương lai",
+    "points": [
+      "Be going to + động từ dùng cho kế hoạch đã dự định từ trước: I'm going to visit my aunt next month.",
+      "Will dùng khi quyết định ngay lúc nói hoặc đoán, thường đi với I think: I think I'll stay home this weekend.",
+      "Hope to + động từ nguyên mẫu nói về mong muốn lâu dài: I hope to travel to Japan someday.",
+      "If + hiện tại, will + động từ: If it rains tomorrow, I will stay home. Sau if dùng hiện tại, không dùng will."
+    ],
+    "examples": [
+      { "en": "I'm going to start a new course next month.", "vi": "Tháng sau tôi sẽ bắt đầu một khóa học mới." },
+      { "en": "I think I'll watch a movie this weekend.", "vi": "Tôi nghĩ cuối tuần này tôi sẽ xem phim." },
+      { "en": "If it rains tomorrow, I will cancel the picnic.", "vi": "Nếu mai trời mưa, tôi sẽ hủy buổi dã ngoại." }
+    ],
+    "mistake": {
+      "wrong": "If it will rain tomorrow, I will stay home.",
+      "right": "If it rains tomorrow, I will stay home.",
+      "why": "Sau if dùng hiện tại đơn dù nói chuyện tương lai. Chỉ vế chính mới dùng will."
+    },
+    "lessons": ["ch01-l09", "ch01-l10", "ch03-l01"]
+  },
+  {
+    "stage": "a2-work-intro",
+    "title": "Hiện tại hoàn thành với for: làm việc được bao lâu",
+    "points": [
+      "I've worked here for + khoảng thời gian: việc bắt đầu trong quá khứ và vẫn đang tiếp diễn đến giờ. I've là viết tắt của I have.",
+      "For đi với khoảng thời gian (for two years). Since đi với mốc bắt đầu (since 2022).",
+      "Khi nói công việc cũ đã kết thúc, dùng quá khứ đơn: Before this job, I worked as a driver.",
+      "Mô tả nhiệm vụ: My job is to + động từ nguyên mẫu. Our team takes care of + danh từ (take care of: lo, phụ trách)."
+    ],
+    "examples": [
+      { "en": "I've worked here for three years.", "vi": "Tôi làm ở đây được ba năm rồi." },
+      { "en": "Before this job, I worked as a waiter.", "vi": "Trước công việc này, tôi làm phục vụ bàn." },
+      { "en": "My job is to answer customer questions.", "vi": "Việc của tôi là trả lời câu hỏi của khách hàng." }
+    ],
+    "mistake": {
+      "wrong": "I work here for three years.",
+      "right": "I've worked here for three years.",
+      "why": "Việc kéo dài từ quá khứ đến nay thì dùng have + quá khứ phân từ (worked), không dùng hiện tại đơn."
+    },
+    "lessons": ["ch01-l03", "ch01-l05"]
+  },
+  {
+    "stage": "a2-work-schedule",
+    "title": "Have to và too ... to: việc phải làm, quá bận",
+    "points": [
+      "Have to + động từ nguyên mẫu nghĩa là phải làm vì công việc hay quy định: I have to finish this by Friday. By + mốc nghĩa là chậm nhất lúc đó.",
+      "Giải thích lý do bằng because + một câu đầy đủ: I'll be late because the traffic is bad.",
+      "Take + thời gian + off là nghỉ phép: I'm taking Friday off. Dùng hiện tại tiếp diễn cho lịch đã sắp xếp.",
+      "Too + tính từ + to + động từ nghĩa là quá ... nên không thể: I'm too busy to talk."
+    ],
+    "examples": [
+      { "en": "I have to finish this report by five o'clock.", "vi": "Tôi phải làm xong báo cáo này trước năm giờ." },
+      { "en": "I'll be late because I have a meeting.", "vi": "Tôi sẽ đến muộn vì có một cuộc họp." },
+      { "en": "I'm too busy to have lunch today.", "vi": "Hôm nay tôi bận quá nên không ăn trưa được." }
+    ],
+    "mistake": {
+      "wrong": "I'll be late because traffic jam.",
+      "right": "I'll be late because there is a traffic jam.",
+      "why": "Sau because cần một câu có chủ ngữ và động từ. Dùng because of nếu chỉ có danh từ."
+    },
+    "lessons": ["ch20-l20", "ch06-l02", "ch07-l02"]
+  },
+  {
+    "stage": "a2-work-requests",
+    "title": "Could you, can you: nhờ vả lịch sự",
+    "points": [
+      "Could you + động từ nguyên mẫu là cách nhờ lịch sự, dùng với đồng nghiệp hoặc cấp trên. Can you cũng được nhưng thân mật hơn.",
+      "Muốn xin phép làm gì, hỏi Do you mind if I + hiện tại: Do you mind if I open the window? Trả lời No, go ahead nghĩa là không sao, cứ làm.",
+      "Muốn đề nghị giúp ai, hỏi Do you want me to + động từ nguyên mẫu: Do you want me to call him?",
+      "Thêm please hoặc for me để lời nhờ nhẹ nhàng hơn."
+    ],
+    "examples": [
+      { "en": "Could you check this email for me?", "vi": "Bạn xem giúp tôi email này được không?" },
+      { "en": "Do you mind if I open the window?", "vi": "Bạn có phiền nếu tôi mở cửa sổ không?" },
+      { "en": "Do you want me to book the meeting room?", "vi": "Bạn có muốn tôi đặt phòng họp không?" }
+    ],
+    "mistake": {
+      "wrong": "Could you to help me?",
+      "right": "Could you help me?",
+      "why": "Sau could, can không dùng to. Động từ đi ngay sau, ở dạng nguyên mẫu."
+    },
+    "lessons": ["ch28-l03", "ch20-l17"]
+  },
+  {
+    "stage": "a2-phone-calls",
+    "title": "Nói chuyện qua điện thoại lịch sự",
+    "points": [
+      "Could I speak to + tên, please? là cách xin gặp ai trên điện thoại. Could lịch sự hơn Can.",
+      "I'm calling about + danh từ để nói lý do gọi: I'm calling about the invoice.",
+      "Nhờ người khác nhắn lại: ask him to + động từ nguyên mẫu. Could you ask him to call me back?",
+      "Không nghe rõ thì nói Sorry, could you speak more slowly, please? hoặc could you repeat that, please?"
+    ],
+    "examples": [
+      { "en": "Could I speak to Mr. Lee, please?", "vi": "Cho tôi nói chuyện với anh Lee được không ạ?" },
+      { "en": "I'm calling about the meeting on Monday.", "vi": "Tôi gọi về cuộc họp hôm thứ Hai." },
+      { "en": "Could you ask him to call me back?", "vi": "Bạn nhờ anh ấy gọi lại cho tôi được không?" }
+    ],
+    "mistake": {
+      "wrong": "Could you ask him call me back?",
+      "right": "Could you ask him to call me back?",
+      "why": "Sau ask + người phải có to + động từ: ask him to call."
+    },
+    "lessons": ["ch28-l03", "ch20-l17"]
+  },
+  {
+    "stage": "a2-emails-messages",
+    "title": "Cách mở và kết email thông dụng",
+    "points": [
+      "I'm writing to + động từ nguyên mẫu nêu mục đích email: I'm writing to ask about the schedule.",
+      "Please find + danh từ + attached nghĩa là xin xem file đính kèm. Câu này dùng trong email công việc.",
+      "Sau giới từ for, động từ thêm -ing: Thank you very much for your help, hoặc for helping me.",
+      "Let me know if you need + danh từ: nếu cần gì xin báo tôi biết. Sau if dùng hiện tại, không dùng will."
+    ],
+    "examples": [
+      { "en": "I'm writing to confirm our meeting on Friday.", "vi": "Tôi viết email này để xác nhận cuộc họp hôm thứ Sáu." },
+      { "en": "Please find the report attached.", "vi": "Xin xem báo cáo đính kèm." },
+      { "en": "Thank you very much for sending the file.", "vi": "Cảm ơn bạn rất nhiều vì đã gửi file." }
+    ],
+    "mistake": {
+      "wrong": "Thank you for help me.",
+      "right": "Thank you for helping me.",
+      "why": "Sau giới từ for dùng danh từ hoặc động từ thêm -ing, không dùng động từ nguyên mẫu."
+    },
+    "lessons": ["ch20-l11", "ch05-l01"]
+  },
+  {
+    "stage": "a2-workplace-problems",
+    "title": "Kể sự cố: quá khứ đơn và can't",
+    "points": [
+      "Sự cố đã xảy ra thì dùng quá khứ đơn kèm mốc thời gian: stopped working this morning, deleted by mistake.",
+      "Stop working nghĩa là ngừng hoạt động. Dùng cho máy móc: My printer stopped working. Còn working là dạng -ing đi sau stop.",
+      "Can't find nói việc đang không tìm thấy ngay lúc này: I can't find the file. Đây là hiện tại, không phải quá khứ.",
+      "Need help with + danh từ để xin giúp đỡ: I need help with the printer. By mistake nghĩa là do nhầm."
+    ],
+    "examples": [
+      { "en": "My laptop stopped working this morning.", "vi": "Sáng nay máy tính xách tay của tôi bị hỏng." },
+      { "en": "I can't find the invoice in the system.", "vi": "Tôi không tìm thấy hóa đơn trong hệ thống." },
+      { "en": "I deleted the file by mistake.", "vi": "Tôi xóa nhầm file đó." }
+    ],
+    "mistake": {
+      "wrong": "My computer stop working this morning.",
+      "right": "My computer stopped working this morning.",
+      "why": "Chuyện xảy ra sáng nay là quá khứ, nên stop phải thành stopped (thêm -ed)."
+    },
+    "lessons": ["ch01-l05", "ch20-l11"]
+  },
+  {
+    "stage": "a2-doctor-health",
+    "title": "Hiện tại hoàn thành: bị bao lâu rồi",
+    "points": [
+      "I've had + triệu chứng + for + thời gian nói bạn bị từ quá khứ đến giờ: I've had a headache for two days.",
+      "Không nói I have a headache for two days. Khi có for + khoảng thời gian, dùng have had.",
+      "Should I + động từ nguyên mẫu là hỏi lời khuyên của bác sĩ: Should I take a day off?",
+      "It hurts when I + hiện tại để mô tả lúc nào bị đau: It hurts when I swallow. Need to see + bác sĩ nghĩa là cần đi khám."
+    ],
+    "examples": [
+      { "en": "I've had a sore throat for two days.", "vi": "Tôi bị đau họng hai ngày rồi." },
+      { "en": "I need to see a doctor today.", "vi": "Hôm nay tôi cần đi khám bác sĩ." },
+      { "en": "It hurts when I walk.", "vi": "Tôi đau mỗi khi đi bộ." }
+    ],
+    "mistake": {
+      "wrong": "I have a cough since two days.",
+      "right": "I've had a cough for two days.",
+      "why": "Dùng have had và for với khoảng thời gian. Since chỉ dùng với mốc, như since Monday."
+    },
+    "lessons": ["ch01-l03", "ch20-l18"]
+  },
+  {
+    "stage": "a2-pharmacy",
+    "title": "Hỏi thuốc: should, make me và anything for",
+    "points": [
+      "Do you have anything for + bệnh? là câu hỏi quen thuộc ở hiệu thuốc. For ở đây nghĩa là để chữa: anything for a cough.",
+      "How often should I take + thuốc? hỏi uống bao lâu một lần. Should + động từ nguyên mẫu là hỏi lời khuyên.",
+      "Is it safe to take this with + thuốc hoặc đồ ăn? Sau with là danh từ: with food, with other medicine.",
+      "Will this medicine make me + tính từ? hỏi tác dụng phụ: make me sleepy (làm tôi buồn ngủ)."
+    ],
+    "examples": [
+      { "en": "Do you have anything for a sore throat?", "vi": "Chị có thuốc nào cho đau họng không?" },
+      { "en": "How often should I take this medicine?", "vi": "Tôi nên uống thuốc này bao lâu một lần?" },
+      { "en": "Will this medicine make me sleepy?", "vi": "Thuốc này có làm tôi buồn ngủ không?" }
+    ],
+    "mistake": {
+      "wrong": "How often I should take this?",
+      "right": "How often should I take this?",
+      "why": "Câu hỏi đảo trợ động từ lên trước chủ ngữ: should I, không phải I should."
+    },
+    "lessons": ["ch20-l18", "ch28-l05"]
+  },
+  {
+    "stage": "a2-bank-post",
+    "title": "I'd like to và need to: nói điều mình muốn",
+    "points": [
+      "I'd like to + động từ nguyên mẫu là cách nói muốn làm gì một cách lịch sự. I'd là viết tắt của I would.",
+      "I'd like to open an account, I'd like to send a package. Cách này nhẹ nhàng hơn I want to.",
+      "I need to + động từ nguyên mẫu nói điều cần làm: I need to withdraw some money. Withdraw là rút tiền.",
+      "Is there a fee for + danh từ hoặc V-ing? Sau for dùng danh từ: a fee for sending money."
+    ],
+    "examples": [
+      { "en": "I'd like to open a savings account today.", "vi": "Hôm nay tôi muốn mở một tài khoản tiết kiệm." },
+      { "en": "I need to withdraw some money today.", "vi": "Hôm nay tôi cần rút ít tiền." },
+      { "en": "Is there a fee for sending money abroad?", "vi": "Gửi tiền ra nước ngoài có mất phí không?" }
+    ],
+    "mistake": {
+      "wrong": "I want open an account.",
+      "right": "I'd like to open an account.",
+      "why": "Sau want hoặc would like phải có to + động từ. I'd like to lịch sự hơn I want to."
+    },
+    "lessons": ["ch20-l16"]
+  }
+]

@@ -1,0 +1,254 @@
+[
+  {
+    "stage": "health-body",
+    "title": "My ___ hurts / I have a pain in my ___",
+    "points": [
+      "Nói chỗ đau bằng my + bộ phận cơ thể: My head hurts. Luôn có my, không nói 'the head'.",
+      "Động từ hurts có -s khi chỗ đau chỉ có một (head, back). Chỗ đau số nhiều thì không có -s: My legs hurt.",
+      "Nói triệu chứng bằng I have + a/an + tên bệnh: I have a headache, I have a fever, I have a cold.",
+      "I need + thứ bạn cần: I need water, I need a doctor."
+    ],
+    "examples": [
+      { "en": "My stomach hurts.", "vi": "Bụng tôi đau." },
+      { "en": "I have a pain in my back.", "vi": "Tôi bị đau ở lưng." },
+      { "en": "I have a fever today.", "vi": "Hôm nay tôi bị sốt." }
+    ],
+    "mistake": {
+      "wrong": "My legs hurts.",
+      "right": "My legs hurt.",
+      "why": "Legs là số nhiều nên động từ hurt không thêm -s. Chỉ thêm -s khi chủ ngữ là một cái (My leg hurts)."
+    },
+    "lessons": ["ch01-l01", "ch15-l25"]
+  },
+  {
+    "stage": "feelings",
+    "title": "am / is / are + tính từ chỉ cảm xúc",
+    "points": [
+      "Cảm xúc là tính từ (tired, happy, sad), đứng sau am/is/are: I am tired. Không bỏ am/is/are được.",
+      "very (rất) đứng trước tính từ: I am very happy. Hỏi lý do: Why are you sad?",
+      "Trả lời bằng because + một câu đầy đủ: I am happy because my friend is here.",
+      "afraid of + danh từ hoặc V-ing: I am afraid of dogs, I am afraid of flying."
+    ],
+    "examples": [
+      { "en": "I am very tired today.", "vi": "Hôm nay tôi rất mệt." },
+      { "en": "Why are you sad?", "vi": "Sao bạn buồn vậy?" },
+      { "en": "I am afraid of dogs.", "vi": "Tôi sợ chó." }
+    ],
+    "mistake": {
+      "wrong": "I very tired today.",
+      "right": "I am very tired today.",
+      "why": "Tiếng Việt nói 'tôi rất mệt' không cần động từ, nhưng tiếng Anh bắt buộc có am/is/are."
+    },
+    "lessons": ["ch01-l01", "ch07-l02"]
+  },
+  {
+    "stage": "emergency-help",
+    "title": "Câu nhờ vả: Please call... / Can you help me...?",
+    "points": [
+      "Câu ra lệnh lịch sự bắt đầu bằng động từ, thêm please: Please call the police!",
+      "lost là quá khứ của lose. Đồ đã mất rồi thì dùng lost: I lost my passport.",
+      "Can you help me + động từ nguyên mẫu? Ví dụ: Can you help me find my bag?",
+      "There is + a/an + danh từ số ít báo có gì ở đây: There is a fire here! Nhiều thứ thì There are."
+    ],
+    "examples": [
+      { "en": "Please call the police!", "vi": "Làm ơn gọi cảnh sát!" },
+      { "en": "I lost my passport.", "vi": "Tôi làm mất hộ chiếu rồi." },
+      { "en": "Can you help me find my bag?", "vi": "Bạn giúp tôi tìm cái túi được không?" }
+    ],
+    "mistake": {
+      "wrong": "I lose my wallet.",
+      "right": "I lost my wallet.",
+      "why": "Việc mất đã xảy ra rồi nên phải dùng quá khứ lost. Lose chỉ dùng cho việc đang hoặc sẽ mất."
+    },
+    "lessons": ["ch01-l05", "ch28-l03"]
+  },
+  {
+    "stage": "home-things",
+    "title": "There is ___ / Where is ___?",
+    "points": [
+      "Muốn nói 'có cái gì ở đâu', mở đầu bằng There is + a/an + danh từ số ít: There is a lamp in my room.",
+      "Có nhiều cái thì dùng There are + danh từ số nhiều: There are two chairs in my room.",
+      "Where is + the + đồ vật hỏi vị trí: Where is the bathroom? Thêm Excuse me cho lịch sự.",
+      "Please turn on + đồ vật để nhờ bật đèn, quạt, máy lạnh. Tắt thì dùng turn off."
+    ],
+    "examples": [
+      { "en": "There is a TV in my room.", "vi": "Trong phòng tôi có một cái ti vi." },
+      { "en": "Excuse me, where is the bathroom?", "vi": "Xin lỗi, nhà vệ sinh ở đâu ạ?" },
+      { "en": "Please turn on the air conditioner.", "vi": "Làm ơn bật máy lạnh giúp." }
+    ],
+    "mistake": {
+      "wrong": "In my room has a desk.",
+      "right": "There is a desk in my room.",
+      "why": "Tiếng Việt nói 'trong phòng có...', nhưng tiếng Anh không dùng has ở đây mà dùng There is."
+    },
+    "lessons": ["ch28-l06", "ch22-l06"]
+  },
+  {
+    "stage": "clothes-colors",
+    "title": "want to + động từ; tính từ đứng trước danh từ",
+    "points": [
+      "Sau want phải có to rồi mới đến động từ: I want to buy a jacket. Không nói 'I want buy'.",
+      "Tính từ màu đứng trước danh từ, ngược với tiếng Việt: a blue shirt (không phải 'a shirt blue').",
+      "Do you have this in + màu hoặc cỡ? Ở đây in nghĩa là 'với màu, cỡ đó': in black, in size M.",
+      "I'm wearing (am + V-ing) nói bạn đang mặc gì hôm nay: I'm wearing a white shirt."
+    ],
+    "examples": [
+      { "en": "I want to buy a new jacket.", "vi": "Tôi muốn mua một cái áo khoác mới." },
+      { "en": "Do you have this in black?", "vi": "Cái này có màu đen không ạ?" },
+      { "en": "I'm wearing a white shirt today.", "vi": "Hôm nay tôi mặc áo sơ mi trắng." }
+    ],
+    "mistake": {
+      "wrong": "I want buy a shirt blue.",
+      "right": "I want to buy a blue shirt.",
+      "why": "Cần có to sau want, và tính từ màu phải đứng trước danh từ (khác tiếng Việt)."
+    },
+    "lessons": ["ch01-l02", "ch20-l10", "ch17-l07"]
+  },
+  {
+    "stage": "hobbies-free-time",
+    "title": "I like + V-ing; play + môn thể thao",
+    "points": [
+      "Sau I like có thể là danh từ hoặc động từ thêm -ing: I like music, I like cooking.",
+      "Với môn thể thao, play đi thẳng với tên môn, không có the: I play football on weekends.",
+      "In my free time, I + động từ nguyên mẫu: In my free time, I read books.",
+      "Let's + động từ nguyên mẫu để rủ người khác: Let's watch a movie. Không thêm to sau Let's."
+    ],
+    "examples": [
+      { "en": "I like cooking.", "vi": "Tôi thích nấu ăn." },
+      { "en": "I play badminton on weekends.", "vi": "Cuối tuần tôi chơi cầu lông." },
+      { "en": "Let's watch a movie.", "vi": "Mình xem phim đi." }
+    ],
+    "mistake": {
+      "wrong": "I play the football on weekends.",
+      "right": "I play football on weekends.",
+      "why": "Tên môn thể thao không dùng the. Chỉ nhạc cụ mới dùng the: play the guitar."
+    },
+    "lessons": ["ch24-l21", "ch20-l11"]
+  },
+  {
+    "stage": "jobs-work",
+    "title": "work as / work in / works",
+    "points": [
+      "work as + nghề, và nghề phải có a/an: I work as a teacher, I work as an engineer.",
+      "work in + nơi hoặc ngành: I work in a bank, I work in a hospital.",
+      "Chủ ngữ là he/she/it hoặc một người (my sister, my father) thì động từ thêm -s: My sister works in a hospital.",
+      "start work at + giờ: I start work at 8 o'clock."
+    ],
+    "examples": [
+      { "en": "I work as a nurse.", "vi": "Tôi làm y tá." },
+      { "en": "My sister works in a hospital.", "vi": "Chị gái tôi làm việc ở bệnh viện." },
+      { "en": "I start work at eight o'clock.", "vi": "Tôi bắt đầu làm việc lúc 8 giờ." }
+    ],
+    "mistake": {
+      "wrong": "My mother work in a hospital.",
+      "right": "My mother works in a hospital.",
+      "why": "My mother là ngôi thứ ba số ít (như she), nên động từ phải thêm -s. Tiếng Việt không có quy tắc này."
+    },
+    "lessons": ["ch01-l01", "ch24-l01", "ch22-l10"]
+  },
+  {
+    "stage": "school-study",
+    "title": "go to school + thời gian; Can I borrow...?",
+    "points": [
+      "study + môn học, không có a/the: I study English at school.",
+      "go to school không có the. Thêm cách đi hoặc thời gian phía sau: by bus, by bike, every day.",
+      "Can I borrow + đồ vật của người kia? Ví dụ: Can I borrow your pen?",
+      "borrow là mình đi mượn (chủ ngữ là I). Nhờ người khác cho mượn thì dùng lend: Can you lend me your pen?"
+    ],
+    "examples": [
+      { "en": "I study math at school.", "vi": "Tôi học toán ở trường." },
+      { "en": "I go to school by bike.", "vi": "Tôi đi học bằng xe đạp." },
+      { "en": "Can I borrow your pen?", "vi": "Mình mượn cây bút của bạn được không?" }
+    ],
+    "mistake": {
+      "wrong": "Can you borrow me your pen?",
+      "right": "Can I borrow your pen?",
+      "why": "Borrow là mình mượn nên chủ ngữ là I. Muốn người kia cho mượn thì dùng: Can you lend me...?"
+    },
+    "lessons": ["ch22-l13", "ch01-l01"]
+  },
+  {
+    "stage": "phone-internet",
+    "title": "your/my + danh từ; use ... to + động từ",
+    "points": [
+      "your, my đứng ngay trước danh từ: Can I use your charger? What is your Wi-Fi password?",
+      "has no + danh từ nghĩa là 'không có': My phone has no signal, My phone has no battery.",
+      "I use my phone to + động từ nguyên mẫu để nói dùng điện thoại làm gì: I use my phone to take photos.",
+      "Hỏi thông tin của người khác bằng What is your + danh từ: What is your phone number?"
+    ],
+    "examples": [
+      { "en": "Can I use your charger?", "vi": "Cho mình dùng sạc của bạn được không?" },
+      { "en": "What is your Wi-Fi password?", "vi": "Mật khẩu Wi-Fi của bạn là gì?" },
+      { "en": "I use my phone to learn English.", "vi": "Tôi dùng điện thoại để học tiếng Anh." }
+    ],
+    "mistake": {
+      "wrong": "I use my phone for take photos.",
+      "right": "I use my phone to take photos.",
+      "why": "Chỉ mục đích thì dùng to + động từ. Sau for phải là danh từ hoặc V-ing, không phải động từ nguyên mẫu."
+    },
+    "lessons": ["ch05-l01"]
+  },
+  {
+    "stage": "plans-invitations",
+    "title": "Let's + V; Do you want to + V?",
+    "points": [
+      "Let's + động từ nguyên mẫu để rủ ai đó làm gì: Let's go to the cinema. Đáp lại: Good idea! hoặc Sure!",
+      "Do you want to + động từ + with me? Câu hỏi dùng Do, và sau want phải có to.",
+      "go to + nơi chốn: go to the park. Riêng home thì không có to: Let's go home.",
+      "Let's meet at + địa điểm hoặc giờ: Let's meet at the café, Let's meet at six."
+    ],
+    "examples": [
+      { "en": "Let's go to the cinema.", "vi": "Mình đi xem phim đi." },
+      { "en": "Do you want to have lunch with me?", "vi": "Bạn muốn ăn trưa với mình không?" },
+      { "en": "Let's meet at the café at six.", "vi": "Mình gặp nhau ở quán cà phê lúc sáu giờ nhé." }
+    ],
+    "mistake": {
+      "wrong": "Let's go to home.",
+      "right": "Let's go home.",
+      "why": "Home ở đây là trạng từ chỉ nơi chốn, nên không cần to. Tiếng Việt 'đi về nhà' dễ làm bạn thêm to."
+    },
+    "lessons": ["ch22-l14", "ch28-l05", "ch22-l10"]
+  },
+  {
+    "stage": "asking-for-help-repeating",
+    "title": "don't understand, Can you...?, What does ___ mean?",
+    "points": [
+      "I don't understand + từ hoặc cụm từ: I don't understand this word. Sau don't, động từ giữ nguyên.",
+      "Can you + động từ nguyên mẫu, please? để nhờ lịch sự: Can you repeat that, please?",
+      "What does ___ mean? Có does rồi nên mean không thêm -s.",
+      "How do you spell + từ? để hỏi cách đánh vần: How do you spell 'receipt'?"
+    ],
+    "examples": [
+      { "en": "Sorry, I don't understand this word.", "vi": "Xin lỗi, tôi không hiểu từ này." },
+      { "en": "Can you speak slowly, please?", "vi": "Bạn nói chậm lại giúp tôi được không?" },
+      { "en": "What does 'delay' mean?", "vi": "'Delay' nghĩa là gì?" }
+    ],
+    "mistake": {
+      "wrong": "What does this word means?",
+      "right": "What does this word mean?",
+      "why": "Does đã mang -s rồi, nên động từ chính mean phải giữ nguyên, không thêm -s nữa."
+    },
+    "lessons": ["ch28-l06", "ch01-l01"]
+  },
+  {
+    "stage": "hotel-accommodation",
+    "title": "I'd like to + V; What time is ___?",
+    "points": [
+      "I'd like to + động từ nguyên mẫu (I'd like to book a room) lịch sự hơn I want to. I'd like còn đi với danh từ: I'd like a room.",
+      "I have a reservation for + thời gian hoặc tên: I have a reservation for two nights.",
+      "What time is + sự kiện? hỏi giờ: What time is breakfast? What time is check-out?",
+      "Đồ bị hỏng: The + thiết bị + is not working. Nhiều thiết bị thì dùng are not working."
+    ],
+    "examples": [
+      { "en": "I have a reservation for two nights.", "vi": "Tôi đã đặt phòng hai đêm." },
+      { "en": "I'd like to book a double room.", "vi": "Tôi muốn đặt một phòng đôi." },
+      { "en": "The air conditioner is not working.", "vi": "Máy lạnh không hoạt động." }
+    ],
+    "mistake": {
+      "wrong": "I'd like book a room.",
+      "right": "I'd like to book a room.",
+      "why": "Sau I'd like phải có to trước động từ, giống như sau want."
+    },
+    "lessons": ["ch20-l16", "ch28-l06"]
+  }
+]

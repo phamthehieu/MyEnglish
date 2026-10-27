@@ -1,0 +1,251 @@
+[
+  {
+    "stage": "greetings-introductions",
+    "title": "I'm, My name is: giới thiệu bản thân",
+    "points": [
+      "\"My name is Lan\" nghĩa là \"Tên tôi là Lan\". \"My\" là từ chỉ sở hữu (của tôi), luôn đứng trước danh từ.",
+      "\"I'm\" là viết tắt của \"I am\". Tiếng Anh không được bỏ \"am\" như tiếng Việt: \"I'm from Vietnam\", không phải \"I from Vietnam\".",
+      "\"I'm from + nơi\" nói về quê hương hoặc đất nước của bạn. \"Nice to meet you\" là câu cố định khi gặp ai lần đầu."
+    ],
+    "examples": [
+      { "en": "My name is Lan.", "vi": "Tên tôi là Lan." },
+      { "en": "Nice to meet you, Tom.", "vi": "Rất vui được gặp bạn, Tom." },
+      { "en": "I'm from Vietnam.", "vi": "Tôi đến từ Việt Nam." }
+    ],
+    "mistake": {
+      "wrong": "I from Vietnam.",
+      "right": "I'm from Vietnam.",
+      "why": "Câu tiếng Anh cần động từ to be (am/is/are). Tiếng Việt bỏ được, tiếng Anh thì không."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "family",
+    "title": "This is my..., I have... nói về gia đình",
+    "points": [
+      "\"This is my + người thân\" dùng để giới thiệu ai đó: \"This is my mother\". \"My\" đứng trước danh từ, không thêm \"the\".",
+      "\"My father is a teacher\": giữa chủ ngữ và nghề nghiệp phải có \"is\". Nghề nghiệp ở số ít cần thêm \"a\" hoặc \"an\".",
+      "\"I have two sisters\": từ hai người trở lên thì danh từ thêm -s (sisters, brothers). Một người thì dùng \"a\": \"I have a brother\"."
+    ],
+    "examples": [
+      { "en": "This is my mother.", "vi": "Đây là mẹ tôi." },
+      { "en": "My father is a doctor.", "vi": "Bố tôi là bác sĩ." },
+      { "en": "I have two sisters.", "vi": "Tôi có hai chị em gái." }
+    ],
+    "mistake": {
+      "wrong": "My father teacher.",
+      "right": "My father is a teacher.",
+      "why": "Tiếng Anh cần \"is\" nối chủ ngữ với nghề nghiệp, và nghề ở số ít cần \"a/an\"."
+    },
+    "lessons": ["ch24-l01", "ch15-l15"]
+  },
+  {
+    "stage": "personal-info",
+    "title": "I'm 25 years old: tuổi, nơi ở, ngôn ngữ",
+    "points": [
+      "Nói tuổi bằng \"be\": \"I'm 25 years old\". Tiếng Việt nói \"tôi 25 tuổi\" nhưng tiếng Anh không được bỏ \"am\", và không dùng \"have\".",
+      "\"in + tháng\" (in May) và \"in + thành phố\" (I live in Hanoi). Chỉ ngày cụ thể mới dùng \"on\": on May 5th.",
+      "\"I speak English\": sau \"speak\" đi thẳng tên ngôn ngữ, không thêm giới từ."
+    ],
+    "examples": [
+      { "en": "I'm twenty-five years old.", "vi": "Tôi hai mươi lăm tuổi." },
+      { "en": "My birthday is in May.", "vi": "Sinh nhật tôi vào tháng Năm." },
+      { "en": "I live in Hanoi.", "vi": "Tôi sống ở Hà Nội." }
+    ],
+    "mistake": {
+      "wrong": "I have 25 years old.",
+      "right": "I'm 25 years old.",
+      "why": "Dịch từ \"tôi có 25 tuổi\" là sai. Tiếng Anh dùng \"be\" (am/is/are) để nói tuổi."
+    },
+    "lessons": ["ch22-l11", "ch01-l01"]
+  },
+  {
+    "stage": "food-drink-ordering",
+    "title": "Can I have / I would like: gọi món lịch sự",
+    "points": [
+      "\"Can I have + món\" và \"I would like + món\" đều dùng để gọi món. \"I would like\" lịch sự hơn một chút. Thêm \"please\" cho nhẹ nhàng.",
+      "Sau \"Can I\" là động từ nguyên mẫu, không có \"to\": \"Can I have\", không phải \"Can I to have\".",
+      "Món đếm được thì dùng \"a/an\": a coffee, a sandwich. Món không đếm được thì dùng \"some\": some water, some rice.",
+      "\"Do you have + món?\" dùng để hỏi quán có món đó không."
+    ],
+    "examples": [
+      { "en": "Can I have a coffee, please?", "vi": "Cho tôi một ly cà phê nhé?" },
+      { "en": "I would like some water, please.", "vi": "Làm ơn cho tôi ít nước." },
+      { "en": "Do you have vegetarian dishes?", "vi": "Quán có món chay không?" }
+    ],
+    "mistake": {
+      "wrong": "Can I to have a coffee?",
+      "right": "Can I have a coffee, please?",
+      "why": "Sau \"can\" dùng động từ nguyên mẫu không \"to\"."
+    },
+    "lessons": ["ch20-l16", "ch12-l01", "ch24-l01"]
+  },
+  {
+    "stage": "food-likes",
+    "title": "Hiện tại đơn: I don't like, I often eat",
+    "points": [
+      "Dùng thì hiện tại đơn để nói sở thích và thói quen: \"I often eat eggs for breakfast\".",
+      "Phủ định: \"I don't + động từ nguyên mẫu\". Không nói \"I not like\" và không thêm gì sau \"don't\".",
+      "Từ chỉ tần suất như \"often\", \"always\" đứng trước động từ thường: \"I often eat\".",
+      "\"I can cook + món\": sau \"can\" luôn là động từ nguyên mẫu, không thêm -s hay -ing."
+    ],
+    "examples": [
+      { "en": "My favorite food is pho.", "vi": "Món ăn yêu thích của tôi là phở." },
+      { "en": "I don't like spicy food.", "vi": "Tôi không thích đồ ăn cay." },
+      { "en": "I often eat eggs for breakfast.", "vi": "Tôi thường ăn trứng vào bữa sáng." }
+    ],
+    "mistake": {
+      "wrong": "I not like fish.",
+      "right": "I don't like fish.",
+      "why": "Phủ định với động từ thường cần trợ động từ \"do not\" (don't), không chỉ thêm \"not\"."
+    },
+    "lessons": ["ch01-l01", "ch18-l10"]
+  },
+  {
+    "stage": "shopping-prices",
+    "title": "How much is...? It is too...: hỏi giá",
+    "points": [
+      "\"How much is + món?\" hỏi giá một món (số ít): How much is this shirt? Nhiều món thì dùng \"are\": How much are these shoes?",
+      "Đừng quên \"is/are\" sau \"How much\". Tiếng Việt nói \"cái áo này bao nhiêu\" nhưng tiếng Anh cần động từ.",
+      "\"too + tính từ\" nghĩa là \"quá\" và thường mang ý chê: too expensive (quá đắt), too big (quá rộng).",
+      "\"I will take it\" nghĩa là \"Tôi lấy cái này\", dùng khi bạn đã quyết định mua."
+    ],
+    "examples": [
+      { "en": "How much is this shirt?", "vi": "Cái áo này giá bao nhiêu?" },
+      { "en": "It is too expensive.", "vi": "Cái này đắt quá." },
+      { "en": "I will take it.", "vi": "Tôi lấy cái này." }
+    ],
+    "mistake": {
+      "wrong": "How much this shirt?",
+      "right": "How much is this shirt?",
+      "why": "Câu hỏi tiếng Anh cần động từ to be: How much + is/are + chủ ngữ."
+    },
+    "lessons": ["ch06-l02", "ch28-l06"]
+  },
+  {
+    "stage": "directions-places",
+    "title": "Where is...? Is there...? hỏi đường",
+    "points": [
+      "\"Where is + nơi?\" hỏi vị trí. Động từ \"is\" đứng trước chủ ngữ: \"Where is the bank?\", không phải \"Where the bank is?\".",
+      "\"Is there + a/an + nơi + near here?\" hỏi xem gần đây có nơi đó không. Nơi đếm được ở số ít thì cần \"a/an\".",
+      "\"How do I get to + nơi?\" hỏi cách đi đến một nơi. Nhớ có \"to\" ở cuối.",
+      "\"It's + vị trí\" để trả lời, ví dụ: It's next to the bank."
+    ],
+    "examples": [
+      { "en": "Where is the bus station?", "vi": "Bến xe buýt ở đâu?" },
+      { "en": "Is there a pharmacy near here?", "vi": "Gần đây có hiệu thuốc không?" },
+      { "en": "How do I get to the airport?", "vi": "Tôi đến sân bay bằng cách nào?" }
+    ],
+    "mistake": {
+      "wrong": "Where the bank is?",
+      "right": "Where is the bank?",
+      "why": "Trong câu hỏi, \"is\" phải đứng trước chủ ngữ, không để sau như câu kể."
+    },
+    "lessons": ["ch28-l06", "ch28-l05"]
+  },
+  {
+    "stage": "transport",
+    "title": "by + phương tiện, It takes + thời gian",
+    "points": [
+      "\"by + phương tiện\" không có \"a/the\": by bus, by motorbike, by taxi. Đi bộ thì nói \"on foot\".",
+      "Khi chỉ một chuyến cụ thể thì dùng \"take the + phương tiện\": You can take the bus.",
+      "\"It takes + thời gian + to get there\" nói về thời gian di chuyển: It takes twenty minutes.",
+      "\"Does this bus go...?\": đã có \"does\" thì động từ trở về nguyên mẫu \"go\", không thêm -es."
+    ],
+    "examples": [
+      { "en": "I go to work by motorbike.", "vi": "Tôi đi làm bằng xe máy." },
+      { "en": "It takes twenty minutes to get there.", "vi": "Đến đó mất hai mươi phút." },
+      { "en": "Does this bus go to the airport?", "vi": "Xe buýt này có đi sân bay không?" }
+    ],
+    "mistake": {
+      "wrong": "Does this bus goes to the airport?",
+      "right": "Does this bus go to the airport?",
+      "why": "Sau \"does\" động từ ở nguyên mẫu, không thêm -s/-es."
+    },
+    "lessons": ["ch22-l13", "ch01-l01"]
+  },
+  {
+    "stage": "travel-tickets",
+    "title": "Two tickets to..., What time does... leave?",
+    "points": [
+      "\"Two tickets to + nơi, please\": số lượng từ hai trở lên thì danh từ thêm -s (tickets). \"to\" chỉ nơi đến.",
+      "\"What time does + chủ ngữ + leave?\" hỏi giờ khởi hành. Đã có \"does\" thì \"leave\" không thêm -s.",
+      "\"Is this the right + danh từ?\" dùng để hỏi xác nhận mình lên đúng xe, đúng quầy, đúng sân ga.",
+      "\"Please\" ở cuối câu giúp lời yêu cầu lịch sự hơn."
+    ],
+    "examples": [
+      { "en": "Two tickets to Da Nang, please.", "vi": "Cho tôi hai vé đi Đà Nẵng." },
+      { "en": "What time does the train leave?", "vi": "Mấy giờ tàu chạy?" },
+      { "en": "Is this the right platform?", "vi": "Đây có phải đúng sân ga không?" }
+    ],
+    "mistake": {
+      "wrong": "What time the train leaves?",
+      "right": "What time does the train leave?",
+      "why": "Câu hỏi cần trợ động từ \"does\" sau \"What time\", và động từ chính trở về nguyên mẫu."
+    },
+    "lessons": ["ch28-l06", "ch15-l15"]
+  },
+  {
+    "stage": "time-dates",
+    "title": "at, on, in với giờ và ngày",
+    "points": [
+      "Dùng \"at\" với giờ cụ thể: at 8 o'clock, at half past nine.",
+      "Dùng \"on\" với thứ và ngày: on Saturday, on May 5th. Dùng \"in\" với tháng và năm: in May, in 2025.",
+      "\"It's + giờ\" để nói bây giờ là mấy giờ: It's half past three now.",
+      "\"The class starts\" có -s vì \"the class\" là ngôi thứ ba số ít (giống he/she/it)."
+    ],
+    "examples": [
+      { "en": "It's half past three now.", "vi": "Bây giờ là ba giờ rưỡi." },
+      { "en": "The class starts at 8 o'clock.", "vi": "Lớp học bắt đầu lúc 8 giờ." },
+      { "en": "I'm free on Saturday.", "vi": "Tôi rảnh vào thứ Bảy." }
+    ],
+    "mistake": {
+      "wrong": "I'm free in Saturday.",
+      "right": "I'm free on Saturday.",
+      "why": "Thứ trong tuần và ngày cụ thể đi với \"on\", không dùng \"in\"."
+    },
+    "lessons": ["ch22-l07", "ch22-l10", "ch22-l12"]
+  },
+  {
+    "stage": "weather",
+    "title": "It's + tính từ: nói về thời tiết",
+    "points": [
+      "Nói về thời tiết luôn bắt đầu bằng \"It's\": It's hot, It's rainy. Tiếng Việt nói \"hôm nay nóng\" nhưng tiếng Anh không được bỏ \"It's\".",
+      "\"weather\" không đếm được nên không có \"a\": I don't like cold weather.",
+      "\"Take an umbrella with you\" là câu mệnh lệnh: bắt đầu bằng động từ, không cần chủ ngữ.",
+      "\"It rains a lot in + nơi/mùa\": động từ \"rains\" có -s vì chủ ngữ là \"it\"."
+    ],
+    "examples": [
+      { "en": "It's sunny today.", "vi": "Hôm nay trời nắng." },
+      { "en": "I don't like cold weather.", "vi": "Tôi không thích thời tiết lạnh." },
+      { "en": "Take an umbrella with you.", "vi": "Mang theo một cái ô nhé." }
+    ],
+    "mistake": {
+      "wrong": "Today hot.",
+      "right": "It's hot today.",
+      "why": "Câu tiếng Anh cần chủ ngữ và động từ be: dùng \"It's\" khi nói về thời tiết."
+    },
+    "lessons": ["ch30-l09", "ch01-l01"]
+  },
+  {
+    "stage": "daily-routine",
+    "title": "Hiện tại đơn: thói quen hằng ngày",
+    "points": [
+      "Thói quen lặp lại hằng ngày dùng thì hiện tại đơn: I get up at six. I drink coffee every day.",
+      "\"at + giờ\" cho giờ cụ thể. \"every day\" thường đứng cuối câu.",
+      "Với I/you/we/they thì động từ giữ nguyên. Với he/she/it phải thêm -s/-es: she gets up, he goes.",
+      "Không dùng \"am/is/are\" trước động từ thường: nói \"I get up\", không nói \"I am get up\"."
+    ],
+    "examples": [
+      { "en": "I get up at six.", "vi": "Tôi thức dậy lúc sáu giờ." },
+      { "en": "I walk to school every day.", "vi": "Tôi đi bộ đến trường mỗi ngày." },
+      { "en": "She gets up at six.", "vi": "Cô ấy thức dậy lúc sáu giờ." }
+    ],
+    "mistake": {
+      "wrong": "She get up at six.",
+      "right": "She gets up at six.",
+      "why": "Chủ ngữ he/she/it ở hiện tại đơn thì động từ phải thêm -s/-es."
+    },
+    "lessons": ["ch01-l01"]
+  }
+]

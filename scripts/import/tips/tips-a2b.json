@@ -1,0 +1,254 @@
+[
+  {
+    "stage": "a2-restaurant-requests",
+    "title": "Yêu cầu lịch sự: Could I have ... without ...?",
+    "points": [
+      "Could I / Could we / Could you + động từ nguyên mẫu là cách xin hoặc nhờ lịch sự. Thêm please ở cuối câu thì càng nhẹ nhàng.",
+      "Sau without dùng danh từ hoặc V-ing, không dùng động từ nguyên mẫu: without onions, without adding sugar.",
+      "Is there ... in it? hỏi xem món có thành phần nào đó không. Dùng any khi hỏi chung: Is there any milk in it?",
+      "a little less + tính từ nghĩa là bớt đi một chút: a little less spicy (bớt cay), a little less sweet (bớt ngọt)."
+    ],
+    "examples": [
+      { "en": "Could I have this without onions?", "vi": "Cho tôi món này không hành được không?" },
+      { "en": "Is there any peanut in it?", "vi": "Trong món này có đậu phộng không?" },
+      { "en": "Could you make it a little less spicy?", "vi": "Bạn làm món này bớt cay một chút được không?" }
+    ],
+    "mistake": {
+      "wrong": "Could I have this without put onions?",
+      "right": "Could I have this without onions?",
+      "why": "Sau without phải là danh từ hoặc V-ing, không để động từ trần."
+    },
+    "lessons": ["ch28-l03", "ch12-l03"]
+  },
+  {
+    "stage": "a2-shopping-compare",
+    "title": "So sánh hơn và so sánh bằng khi mua sắm",
+    "points": [
+      "Tính từ ngắn thêm -er trước than: cheaper than, bigger than. Tính từ dài dùng more: more expensive than, more comfortable than.",
+      "as ... as là bằng nhau. not as ... as là kém hơn: It is not as expensive as the other one nghĩa là cái kia đắt hơn.",
+      "Ở câu hỏi Which one is ...?, nếu chọn trong nhiều thứ thì dùng dạng cao nhất: the cheapest, the best, the most useful.",
+      "Do you have anything cheaper? Đặt tính từ so sánh ngay sau anything để hỏi có món nào rẻ hơn không."
+    ],
+    "examples": [
+      { "en": "This one is cheaper than that one.", "vi": "Cái này rẻ hơn cái kia." },
+      { "en": "It is not as expensive as the other one.", "vi": "Cái này không đắt bằng cái còn lại." },
+      { "en": "Which one do you think is the best?", "vi": "Bạn nghĩ cái nào tốt nhất?" }
+    ],
+    "mistake": {
+      "wrong": "This one is more cheaper than that one.",
+      "right": "This one is cheaper than that one.",
+      "why": "Đã có -er thì không thêm more nữa. Chỉ chọn một trong hai cách."
+    },
+    "lessons": ["ch19-l01", "ch19-l02", "ch19-l03"]
+  },
+  {
+    "stage": "a2-returns-complaints",
+    "title": "Nói về lỗi sản phẩm: doesn't work, was broken",
+    "points": [
+      "Hiện tại phủ định: doesn't + động từ nguyên mẫu, không thêm -s: It doesn't work properly. Với they dùng don't.",
+      "Khi nói đã mua lúc nào, dùng quá khứ đơn với mốc thời gian: I bought it yesterday, I bought it last week.",
+      "was / were + tính từ hoặc quá khứ phân từ mô tả tình trạng lúc mở hộp: It was broken, It was damaged, It was dirty.",
+      "Could I get a refund / a replacement for this? Dùng get hoặc have để xin hoàn tiền hoặc đổi hàng."
+    ],
+    "examples": [
+      { "en": "It doesn't work properly.", "vi": "Nó không hoạt động bình thường." },
+      { "en": "I bought it yesterday.", "vi": "Tôi mới mua nó hôm qua." },
+      { "en": "It was broken when I opened it.", "vi": "Nó bị hỏng khi tôi mở hộp." }
+    ],
+    "mistake": {
+      "wrong": "It doesn't works properly.",
+      "right": "It doesn't work properly.",
+      "why": "Sau doesn't động từ phải ở dạng nguyên mẫu, không thêm -s."
+    },
+    "lessons": ["ch01-l05", "ch01-l01"]
+  },
+  {
+    "stage": "a2-travel-booking",
+    "title": "Đặt phòng: I'd like to book, Does the price include?",
+    "points": [
+      "I'd like to + động từ là cách nói lịch sự của I want to: I'd like to book a room. I'd like = I would like.",
+      "for + số đêm hoặc số người: for two nights, for three people. Ngày cụ thể thì dùng on hoặc from ... to.",
+      "Is there a room available tonight? available nghĩa là còn trống, còn dùng được. Hỏi chung thì dùng Is there ...?",
+      "Câu hỏi với do: Does + chủ ngữ số ít + động từ nguyên mẫu. Does the price include breakfast? Không thêm -s vào include."
+    ],
+    "examples": [
+      { "en": "I'd like to book a room for two nights.", "vi": "Tôi muốn đặt một phòng cho hai đêm." },
+      { "en": "Can I change my booking to Friday?", "vi": "Tôi đổi lịch đặt sang thứ Sáu được không?" },
+      { "en": "Does the price include breakfast?", "vi": "Giá này có bao gồm bữa sáng không?" }
+    ],
+    "mistake": {
+      "wrong": "Does the price includes breakfast?",
+      "right": "Does the price include breakfast?",
+      "why": "Đã có Does đứng đầu câu thì động từ chính trở về dạng nguyên mẫu."
+    },
+    "lessons": ["ch20-l16", "ch28-l05"]
+  },
+  {
+    "stage": "a2-airport-hotel",
+    "title": "Câu hỏi gián tiếp: Could you tell me where ... is?",
+    "points": [
+      "Sau Could you tell me ... đặt câu hỏi vào trong câu và đổi về thứ tự câu thường: chủ ngữ rồi mới đến động từ. where the gate is, không phải where is the gate.",
+      "Câu hỏi gián tiếp nghe lịch sự hơn Where is the gate? và không cần trợ động từ do / does.",
+      "Câu hỏi trực tiếp với What time vẫn dùng trợ động từ: What time do I need to check in?",
+      "Could you send ... to my room? là mẫu nhờ dịch vụ khách sạn: send a towel, send some water, send a taxi."
+    ],
+    "examples": [
+      { "en": "Could you tell me where the gate is?", "vi": "Bạn cho tôi biết cổng lên máy bay ở đâu được không?" },
+      { "en": "What time do I need to check in?", "vi": "Tôi cần làm thủ tục lúc mấy giờ?" },
+      { "en": "Could you send some towels to my room?", "vi": "Bạn gửi vài chiếc khăn tắm lên phòng tôi được không?" }
+    ],
+    "mistake": {
+      "wrong": "Could you tell me where is the gate?",
+      "right": "Could you tell me where the gate is?",
+      "why": "Trong câu hỏi gián tiếp giữ thứ tự câu khẳng định: chủ ngữ trước, động từ sau."
+    },
+    "lessons": ["ch10-l02", "ch28-l06"]
+  },
+  {
+    "stage": "a2-detailed-directions",
+    "title": "Chỉ đường: câu mệnh lệnh và giới từ vị trí",
+    "points": [
+      "Chỉ đường dùng câu mệnh lệnh: bắt đầu bằng động từ nguyên mẫu, không có chủ ngữ. Turn left, Go straight, Walk past the bank.",
+      "at chỉ một điểm: Turn left at the traffic lights. past là đi ngang qua: Go past the bank. opposite là đối diện: It's opposite the park.",
+      "Dùng and then để nối bước tiếp theo: Go past the bank and then turn right.",
+      "until + mệnh đề: Walk straight until you see the station. Sau until dùng hiện tại đơn, không dùng will."
+    ],
+    "examples": [
+      { "en": "Turn left at the traffic lights.", "vi": "Rẽ trái ở chỗ đèn giao thông." },
+      { "en": "Go past the bank and then turn right.", "vi": "Đi qua ngân hàng rồi rẽ phải." },
+      { "en": "Walk straight until you see the station.", "vi": "Đi thẳng cho đến khi bạn thấy nhà ga." }
+    ],
+    "mistake": {
+      "wrong": "Walk straight until you will see the station.",
+      "right": "Walk straight until you see the station.",
+      "why": "Sau until nói về tương lai vẫn dùng hiện tại đơn, không thêm will."
+    },
+    "lessons": ["ch22-l06", "ch30-l09"]
+  },
+  {
+    "stage": "a2-opinions",
+    "title": "Nói ý kiến: I think we should, I don't think we can",
+    "points": [
+      "I think we should + động từ nguyên mẫu dùng để đề xuất nhẹ nhàng. should nghĩa là nên, luôn theo sau bởi động từ nguyên mẫu.",
+      "I agree with you about + danh từ. Nói đồng ý với ai thì dùng with, không nói agree to you hay am agree.",
+      "In my opinion, ... là cách mở đầu khi nói ý kiến riêng. too + tính từ nghĩa là quá mức: too expensive (đắt quá).",
+      "Muốn nói không nghĩ là được, đưa not vào think: I don't think we can ..., không nói I think we can't ..."
+    ],
+    "examples": [
+      { "en": "I think we should take a taxi.", "vi": "Tôi nghĩ chúng ta nên đi taxi." },
+      { "en": "In my opinion, this hotel is too expensive.", "vi": "Theo tôi, khách sạn này đắt quá." },
+      { "en": "I don't think we can finish today.", "vi": "Tôi không nghĩ chúng ta có thể xong trong hôm nay." }
+    ],
+    "mistake": {
+      "wrong": "I think we can't finish today.",
+      "right": "I don't think we can finish today.",
+      "why": "Với think, người bản xứ đặt phủ định ở think: I don't think ..."
+    },
+    "lessons": ["ch20-l18", "ch06-l02"]
+  },
+  {
+    "stage": "a2-likes-reasons",
+    "title": "Thích và lý do: because, prefer, enjoy, would rather",
+    "points": [
+      "because + mệnh đề đầy đủ (có chủ ngữ và động từ): I like this place because it's quiet. Không để because đứng trước danh từ đơn lẻ.",
+      "enjoy + V-ing: I enjoy swimming. prefer A to B: cả A và B đều là danh từ hoặc V-ing: I prefer walking to driving.",
+      "would rather + động từ nguyên mẫu (không có to) than + động từ nguyên mẫu: I'd rather go out than stay at home.",
+      "I'd rather là viết tắt của I would rather. Dùng khi nói điều mình muốn hơn một lựa chọn khác."
+    ],
+    "examples": [
+      { "en": "I like this place because it's quiet.", "vi": "Tôi thích chỗ này vì nó yên tĩnh." },
+      { "en": "I prefer walking to driving.", "vi": "Tôi thích đi bộ hơn lái xe." },
+      { "en": "I'd rather go out than stay at home.", "vi": "Tôi thà ra ngoài còn hơn ở nhà." }
+    ],
+    "mistake": {
+      "wrong": "I enjoy to walk in the park.",
+      "right": "I enjoy walking in the park.",
+      "why": "Sau enjoy dùng V-ing, không dùng to + động từ."
+    },
+    "lessons": ["ch20-l15", "ch20-l11", "ch07-l02"]
+  },
+  {
+    "stage": "a2-describing",
+    "title": "Miêu tả: tính từ đứng trước danh từ, không thêm -s",
+    "points": [
+      "Tính từ đứng trước danh từ: long hair, a kind person, tall buildings. Tiếng Việt để tính từ sau (tóc dài) nhưng tiếng Anh thì ngược lại.",
+      "Tính từ không thay đổi theo số nhiều: many tall buildings, không phải many talls buildings. Chỉ danh từ mới thêm -s.",
+      "Miêu tả đặc điểm cơ thể dùng have / has: She has long hair, He has blue eyes. Miêu tả tính cách dùng be: He is a very kind person.",
+      "So sánh hai nơi: My new house is bigger than my old one. one thay cho danh từ đã nhắc, tránh lặp lại house."
+    ],
+    "examples": [
+      { "en": "She has long black hair.", "vi": "Cô ấy có mái tóc đen dài." },
+      { "en": "There are many tall buildings in my city.", "vi": "Thành phố tôi có nhiều tòa nhà cao." },
+      { "en": "My new house is bigger than my old one.", "vi": "Nhà mới của tôi to hơn nhà cũ." }
+    ],
+    "mistake": {
+      "wrong": "She has hair long.",
+      "right": "She has long hair.",
+      "why": "Tiếng Anh đặt tính từ trước danh từ, khác với tiếng Việt."
+    },
+    "lessons": ["ch17-l07", "ch17-l11", "ch19-l03"]
+  },
+  {
+    "stage": "a2-invitations",
+    "title": "Mời, từ chối, gợi ý: Would you like to, How about",
+    "points": [
+      "Would you like to + động từ nguyên mẫu là cách mời lịch sự: Would you like to join us? Trả lời: Yes, I'd love to.",
+      "Từ chối lịch sự: Sorry, I can't + động từ, rồi nói lý do ngắn: Sorry, I can't come tonight. I have to work.",
+      "How about + V-ing hoặc danh từ để gợi ý: How about going to the cinema? How about Saturday?",
+      "Thank you for inviting me to + danh từ. Sau giới từ for dùng V-ing: Thank you for inviting me."
+    ],
+    "examples": [
+      { "en": "Would you like to have dinner with us?", "vi": "Bạn có muốn ăn tối với chúng tôi không?" },
+      { "en": "Sorry, I can't come tonight.", "vi": "Xin lỗi, tối nay tôi không đến được." },
+      { "en": "How about going to the cinema on Saturday?", "vi": "Thứ Bảy đi xem phim thì sao?" }
+    ],
+    "mistake": {
+      "wrong": "How about go to the cinema?",
+      "right": "How about going to the cinema?",
+      "why": "Sau How about dùng V-ing hoặc danh từ, không dùng động từ nguyên mẫu."
+    },
+    "lessons": ["ch20-l16", "ch20-l11"]
+  },
+  {
+    "stage": "a2-experiences",
+    "title": "Kinh nghiệm: have + quá khứ phân từ và quá khứ đơn",
+    "points": [
+      "Have you ever + quá khứ phân từ? hỏi về trải nghiệm trong đời, không nói rõ khi nào. Trả lời: Yes, I have. hoặc No, I've never ...",
+      "I've never + quá khứ phân từ nghĩa là chưa từng. I've been to ... twice: đã từng đến nơi đó hai lần (rồi đã về).",
+      "Khi có mốc thời gian cụ thể (last year, in 2020, yesterday) thì chuyển sang quá khứ đơn: Last year, I visited Da Nang.",
+      "Quá khứ phân từ của động từ bất quy tắc phải học riêng: go, went, gone; see, saw, seen; eat, ate, eaten."
+    ],
+    "examples": [
+      { "en": "Have you ever tried Korean food?", "vi": "Bạn đã bao giờ thử đồ ăn Hàn Quốc chưa?" },
+      { "en": "I've never ridden a horse before.", "vi": "Trước giờ tôi chưa từng cưỡi ngựa." },
+      { "en": "I've been to Da Nang twice.", "vi": "Tôi đã đến Đà Nẵng hai lần." }
+    ],
+    "mistake": {
+      "wrong": "I have been to Da Lat last year.",
+      "right": "I went to Da Lat last year.",
+      "why": "Có mốc thời gian đã qua (last year) thì dùng quá khứ đơn, không dùng hiện tại hoàn thành."
+    },
+    "lessons": ["ch01-l03", "ch01-l05"]
+  },
+  {
+    "stage": "a2-home-neighbors",
+    "title": "Nhà ở và hàng xóm: nhờ vả và hỏi thông tin",
+    "points": [
+      "There's a problem with + danh từ để báo vấn đề: There's a problem with the heater. Số nhiều thì dùng There are problems with ...",
+      "Could you please + động từ nguyên mẫu (không có to) để nhờ lịch sự: Could you please turn down the music?",
+      "I'm looking for + danh từ dùng hiện tại tiếp diễn vì đang tìm ngay lúc này: I'm looking for a flat near here.",
+      "Does the rent include + danh từ? hỏi tiền thuê đã gồm gì chưa: Does the rent include electricity? Động từ include không thêm -s."
+    ],
+    "examples": [
+      { "en": "There's a problem with the water heater.", "vi": "Máy nước nóng có vấn đề." },
+      { "en": "Could you please turn down the music?", "vi": "Bạn làm ơn vặn nhỏ nhạc lại được không?" },
+      { "en": "Does the rent include electricity?", "vi": "Tiền thuê nhà có bao gồm tiền điện không?" }
+    ],
+    "mistake": {
+      "wrong": "Could you please to turn down the music?",
+      "right": "Could you please turn down the music?",
+      "why": "Sau Could you (please) dùng động từ nguyên mẫu không có to."
+    },
+    "lessons": ["ch28-l03", "ch01-l02"]
+  }
+]

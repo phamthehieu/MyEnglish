@@ -14,37 +14,45 @@
     "slots": [
       {
         "en": "Anna",
-        "vi": "Anna"
+        "vi": "Anna",
+        "ipa": "/maɪ neɪm ɪz ˈænə/"
       },
       {
         "en": "Tom",
-        "vi": "Tom"
+        "vi": "Tom",
+        "ipa": "/maɪ neɪm ɪz tɑm/"
       },
       {
         "en": "Linh",
-        "vi": "Linh"
+        "vi": "Linh",
+        "ipa": "/maɪ neɪm ɪz lɪn/"
       },
       {
         "en": "Minh",
-        "vi": "Minh"
+        "vi": "Minh",
+        "ipa": "/maɪ neɪm ɪz mɪn/"
       },
       {
         "en": "Lisa",
-        "vi": "Lisa"
+        "vi": "Lisa",
+        "ipa": "/maɪ neɪm ɪz ˈlisə/"
       },
       {
         "en": "Sam",
-        "vi": "Sam"
+        "vi": "Sam",
+        "ipa": "/maɪ neɪm ɪz sæm/"
       }
     ],
     "examples": [
       {
         "en": "My name is Hoa.",
-        "vi": "Tên tôi là Hoa."
+        "vi": "Tên tôi là Hoa.",
+        "ipa": "/maɪ neɪm ɪz Hoa/"
       },
       {
         "en": "My name is David.",
-        "vi": "Tên tôi là David."
+        "vi": "Tên tôi là David.",
+        "ipa": "/maɪ neɪm ɪz ˈdeɪvɪd/"
       }
     ],
     "asks": [
@@ -73,37 +81,45 @@
     "slots": [
       {
         "en": "Anna",
-        "vi": "Anna"
+        "vi": "Anna",
+        "ipa": "/naɪs tu mit ju ˈænə/"
       },
       {
         "en": "Tom",
-        "vi": "Tom"
+        "vi": "Tom",
+        "ipa": "/naɪs tu mit ju tɑm/"
       },
       {
         "en": "Linh",
-        "vi": "Linh"
+        "vi": "Linh",
+        "ipa": "/naɪs tu mit ju lɪn/"
       },
       {
         "en": "Sam",
-        "vi": "Sam"
+        "vi": "Sam",
+        "ipa": "/naɪs tu mit ju sæm/"
       },
       {
         "en": "Mr Brown",
-        "vi": "ông Brown"
+        "vi": "ông Brown",
+        "ipa": "/naɪs tu mit ju ˈmɪstər braʊn/"
       },
       {
         "en": "Mrs Green",
-        "vi": "bà Green"
+        "vi": "bà Green",
+        "ipa": "/naɪs tu mit ju ˈmɪsɪz ɡrin/"
       }
     ],
     "examples": [
       {
         "en": "Nice to meet you, Hoa.",
-        "vi": "Rất vui được gặp bạn, Hoa."
+        "vi": "Rất vui được gặp bạn, Hoa.",
+        "ipa": "/naɪs tu mit ju Hoa/"
       },
       {
         "en": "Nice to meet you, Mr Smith.",
-        "vi": "Rất vui được gặp ông, ông Smith."
+        "vi": "Rất vui được gặp ông, ông Smith.",
+        "ipa": "/naɪs tu mit ju ˈmɪstər smɪθ/"
       }
     ],
     "asks": [
@@ -132,37 +148,45 @@
     "slots": [
       {
         "en": "fine",
-        "vi": "khỏe"
+        "vi": "khỏe",
+        "ipa": "/aɪm faɪn θæŋk ju/"
       },
       {
         "en": "good",
-        "vi": "ổn"
+        "vi": "ổn",
+        "ipa": "/aɪm ɡʊd θæŋk ju/"
       },
       {
         "en": "great",
-        "vi": "rất tốt"
+        "vi": "rất tốt",
+        "ipa": "/aɪm ɡreɪt θæŋk ju/"
       },
       {
         "en": "happy",
-        "vi": "vui"
+        "vi": "vui",
+        "ipa": "/aɪm ˈhæpi θæŋk ju/"
       },
       {
         "en": "tired",
-        "vi": "mệt"
+        "vi": "mệt",
+        "ipa": "/aɪm ˈtaɪərd θæŋk ju/"
       },
       {
         "en": "OK",
-        "vi": "cũng được"
+        "vi": "cũng được",
+        "ipa": "/aɪm ˈoʊˈkeɪ θæŋk ju/"
       }
     ],
     "examples": [
       {
         "en": "I'm very well, thank you.",
-        "vi": "Tôi rất khỏe, cảm ơn bạn."
+        "vi": "Tôi rất khỏe, cảm ơn bạn.",
+        "ipa": "/aɪm ˈvɛri wɛl θæŋk ju/"
       },
       {
         "en": "I'm a little sad, thank you.",
-        "vi": "Tôi hơi buồn, cảm ơn bạn."
+        "vi": "Tôi hơi buồn, cảm ơn bạn.",
+        "ipa": "/aɪm ə ˈlɪtəl sæd θæŋk ju/"
       }
     ],
     "asks": [
@@ -191,37 +215,45 @@
     "slots": [
       {
         "en": "Vietnam",
-        "vi": "Việt Nam"
+        "vi": "Việt Nam",
+        "ipa": "/aɪm frʌm viˌɛtˈnɑm/"
       },
       {
         "en": "Hanoi",
-        "vi": "Hà Nội"
+        "vi": "Hà Nội",
+        "ipa": "/aɪm frʌm ˈhænɔɪ/"
       },
       {
         "en": "Japan",
-        "vi": "Nhật Bản"
+        "vi": "Nhật Bản",
+        "ipa": "/aɪm frʌm dʒəˈpæn/"
       },
       {
         "en": "Korea",
-        "vi": "Hàn Quốc"
+        "vi": "Hàn Quốc",
+        "ipa": "/aɪm frʌm ˌkɔˈriə/"
       },
       {
         "en": "France",
-        "vi": "nước Pháp"
+        "vi": "nước Pháp",
+        "ipa": "/aɪm frʌm fræns/"
       },
       {
         "en": "the United States",
-        "vi": "nước Mỹ"
+        "vi": "nước Mỹ",
+        "ipa": "/aɪm frʌm ðə juˈnaɪtɪd steɪts/"
       }
     ],
     "examples": [
       {
         "en": "I'm from Hue.",
-        "vi": "Tôi đến từ Huế."
+        "vi": "Tôi đến từ Huế.",
+        "ipa": "/aɪm frʌm hju/"
       },
       {
         "en": "I'm from China.",
-        "vi": "Tôi đến từ Trung Quốc."
+        "vi": "Tôi đến từ Trung Quốc.",
+        "ipa": "/aɪm frʌm ˈtʃaɪnə/"
       }
     ],
     "asks": [
@@ -250,37 +282,45 @@
     "slots": [
       {
         "en": "a brother",
-        "vi": "một anh hoặc em trai"
+        "vi": "một anh hoặc em trai",
+        "ipa": "/aɪ hæv ə ˈbrʌðər/"
       },
       {
         "en": "a sister",
-        "vi": "một chị hoặc em gái"
+        "vi": "một chị hoặc em gái",
+        "ipa": "/aɪ hæv ə ˈsɪstər/"
       },
       {
         "en": "two brothers",
-        "vi": "hai anh em trai"
+        "vi": "hai anh em trai",
+        "ipa": "/aɪ hæv tu ˈbrʌðərz/"
       },
       {
         "en": "two sisters",
-        "vi": "hai chị em gái"
+        "vi": "hai chị em gái",
+        "ipa": "/aɪ hæv tu ˈsɪstərz/"
       },
       {
         "en": "a big family",
-        "vi": "một gia đình đông người"
+        "vi": "một gia đình đông người",
+        "ipa": "/aɪ hæv ə bɪɡ ˈfæməli/"
       },
       {
         "en": "a small family",
-        "vi": "một gia đình nhỏ"
+        "vi": "một gia đình nhỏ",
+        "ipa": "/aɪ hæv ə smɔl ˈfæməli/"
       }
     ],
     "examples": [
       {
         "en": "I have three sisters.",
-        "vi": "Tôi có ba chị em gái."
+        "vi": "Tôi có ba chị em gái.",
+        "ipa": "/aɪ hæv θri ˈsɪstərz/"
       },
       {
         "en": "I have a baby brother.",
-        "vi": "Tôi có một em trai nhỏ."
+        "vi": "Tôi có một em trai nhỏ.",
+        "ipa": "/aɪ hæv ə ˈbeɪbi ˈbrʌðər/"
       }
     ],
     "asks": [
@@ -309,41 +349,50 @@
     "slots": [
       {
         "en": "mother",
-        "vi": "mẹ"
+        "vi": "mẹ",
+        "ipa": "/ðɪs ɪz maɪ ˈmʌðər/"
       },
       {
         "en": "father",
-        "vi": "bố"
+        "vi": "bố",
+        "ipa": "/ðɪs ɪz maɪ ˈfɑðər/"
       },
       {
         "en": "sister",
-        "vi": "chị gái"
+        "vi": "chị gái",
+        "ipa": "/ðɪs ɪz maɪ ˈsɪstər/"
       },
       {
         "en": "brother",
-        "vi": "anh trai"
+        "vi": "anh trai",
+        "ipa": "/ðɪs ɪz maɪ ˈbrʌðər/"
       },
       {
         "en": "grandmother",
-        "vi": "bà"
+        "vi": "bà",
+        "ipa": "/ðɪs ɪz maɪ ˈɡrændˌmʌðər/"
       },
       {
         "en": "grandfather",
-        "vi": "ông"
+        "vi": "ông",
+        "ipa": "/ðɪs ɪz maɪ ˈɡrændˌfɑðər/"
       },
       {
         "en": "wife",
-        "vi": "vợ"
+        "vi": "vợ",
+        "ipa": "/ðɪs ɪz maɪ waɪf/"
       }
     ],
     "examples": [
       {
         "en": "This is my uncle.",
-        "vi": "Đây là chú của tôi."
+        "vi": "Đây là chú của tôi.",
+        "ipa": "/ðɪs ɪz maɪ ˈʌŋkəl/"
       },
       {
         "en": "This is my daughter.",
-        "vi": "Đây là con gái của tôi."
+        "vi": "Đây là con gái của tôi.",
+        "ipa": "/ðɪs ɪz maɪ ˈdɔtər/"
       }
     ],
     "asks": [
@@ -372,37 +421,45 @@
     "slots": [
       {
         "en": "a doctor",
-        "vi": "bác sĩ"
+        "vi": "bác sĩ",
+        "ipa": "/maɪ ˈfɑðər ɪz ə ˈdɑktər/"
       },
       {
         "en": "a teacher",
-        "vi": "giáo viên"
+        "vi": "giáo viên",
+        "ipa": "/maɪ ˈfɑðər ɪz ə ˈtitʃər/"
       },
       {
         "en": "a driver",
-        "vi": "tài xế"
+        "vi": "tài xế",
+        "ipa": "/maɪ ˈfɑðər ɪz ə ˈdraɪvər/"
       },
       {
         "en": "a cook",
-        "vi": "đầu bếp"
+        "vi": "đầu bếp",
+        "ipa": "/maɪ ˈfɑðər ɪz ə kʊk/"
       },
       {
         "en": "a farmer",
-        "vi": "nông dân"
+        "vi": "nông dân",
+        "ipa": "/maɪ ˈfɑðər ɪz ə ˈfɑrmər/"
       },
       {
         "en": "a police officer",
-        "vi": "cảnh sát"
+        "vi": "cảnh sát",
+        "ipa": "/maɪ ˈfɑðər ɪz ə pəˈlis ˈɔfəsər/"
       }
     ],
     "examples": [
       {
         "en": "My father is a nurse.",
-        "vi": "Bố tôi là y tá."
+        "vi": "Bố tôi là y tá.",
+        "ipa": "/maɪ ˈfɑðər ɪz ə nɝs/"
       },
       {
         "en": "My father is an engineer.",
-        "vi": "Bố tôi là kỹ sư."
+        "vi": "Bố tôi là kỹ sư.",
+        "ipa": "/maɪ ˈfɑðər ɪz æn ˈɛndʒəˈnɪr/"
       }
     ],
     "asks": [
@@ -431,37 +488,45 @@
     "slots": [
       {
         "en": "tall",
-        "vi": "cao"
+        "vi": "cao",
+        "ipa": "/maɪ ˈsɪstər ɪz tɔl/"
       },
       {
         "en": "funny",
-        "vi": "vui tính"
+        "vi": "vui tính",
+        "ipa": "/maɪ ˈsɪstər ɪz ˈfʌni/"
       },
       {
         "en": "kind",
-        "vi": "tốt bụng"
+        "vi": "tốt bụng",
+        "ipa": "/maɪ ˈsɪstər ɪz kaɪnd/"
       },
       {
         "en": "shy",
-        "vi": "nhút nhát"
+        "vi": "nhút nhát",
+        "ipa": "/maɪ ˈsɪstər ɪz ʃaɪ/"
       },
       {
         "en": "young",
-        "vi": "còn trẻ"
+        "vi": "còn trẻ",
+        "ipa": "/maɪ ˈsɪstər ɪz jʌŋ/"
       },
       {
         "en": "very nice",
-        "vi": "rất dễ mến"
+        "vi": "rất dễ mến",
+        "ipa": "/maɪ ˈsɪstər ɪz ˈvɛri naɪs/"
       }
     ],
     "examples": [
       {
         "en": "My sister is very smart.",
-        "vi": "Chị gái tôi rất thông minh."
+        "vi": "Chị gái tôi rất thông minh.",
+        "ipa": "/maɪ ˈsɪstər ɪz ˈvɛri smɑrt/"
       },
       {
         "en": "My sister is quiet.",
-        "vi": "Chị gái tôi ít nói."
+        "vi": "Chị gái tôi ít nói.",
+        "ipa": "/maɪ ˈsɪstər ɪz ˈkwaɪət/"
       }
     ],
     "asks": [
@@ -491,37 +556,45 @@
     "slots": [
       {
         "en": "ten",
-        "vi": "mười"
+        "vi": "mười",
+        "ipa": "/aɪm tɛn jɪrz oʊld/"
       },
       {
         "en": "fifteen",
-        "vi": "mười lăm"
+        "vi": "mười lăm",
+        "ipa": "/aɪm fɪfˈtin jɪrz oʊld/"
       },
       {
         "en": "eighteen",
-        "vi": "mười tám"
+        "vi": "mười tám",
+        "ipa": "/aɪm eɪˈtin jɪrz oʊld/"
       },
       {
         "en": "twenty",
-        "vi": "hai mươi"
+        "vi": "hai mươi",
+        "ipa": "/aɪm ˈtwɛnti jɪrz oʊld/"
       },
       {
         "en": "thirty",
-        "vi": "ba mươi"
+        "vi": "ba mươi",
+        "ipa": "/aɪm ˈθɝˌdi jɪrz oʊld/"
       },
       {
         "en": "forty",
-        "vi": "bốn mươi"
+        "vi": "bốn mươi",
+        "ipa": "/aɪm ˈfɔrti jɪrz oʊld/"
       }
     ],
     "examples": [
       {
         "en": "I'm twelve years old.",
-        "vi": "Tôi mười hai tuổi."
+        "vi": "Tôi mười hai tuổi.",
+        "ipa": "/aɪm twɛlv jɪrz oʊld/"
       },
       {
         "en": "I'm fifty years old.",
-        "vi": "Tôi năm mươi tuổi."
+        "vi": "Tôi năm mươi tuổi.",
+        "ipa": "/aɪm ˈfɪfti jɪrz oʊld/"
       }
     ],
     "asks": [
@@ -550,37 +623,45 @@
     "slots": [
       {
         "en": "January",
-        "vi": "tháng Một"
+        "vi": "tháng Một",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn ˈdʒænjuˌɛri/"
       },
       {
         "en": "March",
-        "vi": "tháng Ba"
+        "vi": "tháng Ba",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn mɑrtʃ/"
       },
       {
         "en": "May",
-        "vi": "tháng Năm"
+        "vi": "tháng Năm",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn meɪ/"
       },
       {
         "en": "July",
-        "vi": "tháng Bảy"
+        "vi": "tháng Bảy",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn ˌdʒuˈlaɪ/"
       },
       {
         "en": "October",
-        "vi": "tháng Mười"
+        "vi": "tháng Mười",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn ɑkˈtoʊbər/"
       },
       {
         "en": "December",
-        "vi": "tháng Mười hai"
+        "vi": "tháng Mười hai",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn dɪˈsɛmbər/"
       }
     ],
     "examples": [
       {
         "en": "My birthday is in April.",
-        "vi": "Sinh nhật tôi vào tháng Tư."
+        "vi": "Sinh nhật tôi vào tháng Tư.",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn ˈeɪprəl/"
       },
       {
         "en": "My birthday is in August.",
-        "vi": "Sinh nhật tôi vào tháng Tám."
+        "vi": "Sinh nhật tôi vào tháng Tám.",
+        "ipa": "/maɪ ˈbɝθˌdeɪ ɪz ɪn ˈɑɡəst/"
       }
     ],
     "asks": [
@@ -610,37 +691,45 @@
     "slots": [
       {
         "en": "Hanoi",
-        "vi": "Hà Nội"
+        "vi": "Hà Nội",
+        "ipa": "/aɪ laɪv ɪn ˈhænɔɪ/"
       },
       {
         "en": "Ho Chi Minh City",
-        "vi": "Thành phố Hồ Chí Minh"
+        "vi": "Thành phố Hồ Chí Minh",
+        "ipa": "/aɪ laɪv ɪn hoʊ kaɪ mɪn ˈsɪti/"
       },
       {
         "en": "Da Nang",
-        "vi": "Đà Nẵng"
+        "vi": "Đà Nẵng",
+        "ipa": "/aɪ laɪv ɪn dɑ næŋ/"
       },
       {
         "en": "a small town",
-        "vi": "một thị trấn nhỏ"
+        "vi": "một thị trấn nhỏ",
+        "ipa": "/aɪ laɪv ɪn ə smɔl taʊn/"
       },
       {
         "en": "a big city",
-        "vi": "một thành phố lớn"
+        "vi": "một thành phố lớn",
+        "ipa": "/aɪ laɪv ɪn ə bɪɡ ˈsɪti/"
       },
       {
         "en": "an old house",
-        "vi": "một ngôi nhà cũ"
+        "vi": "một ngôi nhà cũ",
+        "ipa": "/aɪ laɪv ɪn æn oʊld haʊs/"
       }
     ],
     "examples": [
       {
         "en": "I live in Hue.",
-        "vi": "Tôi sống ở Huế."
+        "vi": "Tôi sống ở Huế.",
+        "ipa": "/aɪ laɪv ɪn hju/"
       },
       {
         "en": "I live in a small village.",
-        "vi": "Tôi sống ở một ngôi làng nhỏ."
+        "vi": "Tôi sống ở một ngôi làng nhỏ.",
+        "ipa": "/aɪ laɪv ɪn ə smɔl ˈvɪlədʒ/"
       }
     ],
     "asks": [
@@ -670,37 +759,45 @@
     "slots": [
       {
         "en": "Vietnamese",
-        "vi": "tiếng Việt"
+        "vi": "tiếng Việt",
+        "ipa": "/aɪ spik viˌɛtnɑˈmis/"
       },
       {
         "en": "English",
-        "vi": "tiếng Anh"
+        "vi": "tiếng Anh",
+        "ipa": "/aɪ spik ˈɪŋɡlɪʃ/"
       },
       {
         "en": "a little English",
-        "vi": "một chút tiếng Anh"
+        "vi": "một chút tiếng Anh",
+        "ipa": "/aɪ spik ə ˈlɪtəl ˈɪŋɡlɪʃ/"
       },
       {
         "en": "French",
-        "vi": "tiếng Pháp"
+        "vi": "tiếng Pháp",
+        "ipa": "/aɪ spik frɛntʃ/"
       },
       {
         "en": "Japanese",
-        "vi": "tiếng Nhật"
+        "vi": "tiếng Nhật",
+        "ipa": "/aɪ spik ˌdʒæpəˈniz/"
       },
       {
         "en": "Korean",
-        "vi": "tiếng Hàn"
+        "vi": "tiếng Hàn",
+        "ipa": "/aɪ spik ˌkɔˈriən/"
       }
     ],
     "examples": [
       {
         "en": "I speak Chinese.",
-        "vi": "Tôi nói tiếng Trung."
+        "vi": "Tôi nói tiếng Trung.",
+        "ipa": "/aɪ spik tʃaɪˈniz/"
       },
       {
         "en": "I speak a little German.",
-        "vi": "Tôi nói được một chút tiếng Đức."
+        "vi": "Tôi nói được một chút tiếng Đức.",
+        "ipa": "/aɪ spik ə ˈlɪtəl ˈdʒɝmən/"
       }
     ],
     "asks": [
@@ -729,41 +826,50 @@
     "slots": [
       {
         "en": "a coffee",
-        "vi": "một ly cà phê"
+        "vi": "một ly cà phê",
+        "ipa": "/kæn aɪ hæv ə ˈkɑfi pliz/"
       },
       {
         "en": "a tea",
-        "vi": "một ly trà"
+        "vi": "một ly trà",
+        "ipa": "/kæn aɪ hæv ə ti pliz/"
       },
       {
         "en": "some water",
-        "vi": "ít nước"
+        "vi": "ít nước",
+        "ipa": "/kæn aɪ hæv sʌm ˈwɔtər pliz/"
       },
       {
         "en": "an orange juice",
-        "vi": "một ly nước cam"
+        "vi": "một ly nước cam",
+        "ipa": "/kæn aɪ hæv æn ˈɔrəndʒ dʒus pliz/"
       },
       {
         "en": "a sandwich",
-        "vi": "một cái bánh sandwich"
+        "vi": "một cái bánh sandwich",
+        "ipa": "/kæn aɪ hæv ə ˈsændwɪtʃ pliz/"
       },
       {
         "en": "the menu",
-        "vi": "thực đơn"
+        "vi": "thực đơn",
+        "ipa": "/kæn aɪ hæv ðə ˈmɛnju pliz/"
       },
       {
         "en": "the bill",
-        "vi": "hóa đơn"
+        "vi": "hóa đơn",
+        "ipa": "/kæn aɪ hæv ðə bɪl pliz/"
       }
     ],
     "examples": [
       {
         "en": "Can I have some more rice, please?",
-        "vi": "Cho tôi thêm ít cơm nhé?"
+        "vi": "Cho tôi thêm ít cơm nhé?",
+        "ipa": "/kæn aɪ hæv sʌm mɔr raɪs pliz/"
       },
       {
         "en": "Can I have a fork, please?",
-        "vi": "Cho tôi một cái nĩa nhé?"
+        "vi": "Cho tôi một cái nĩa nhé?",
+        "ipa": "/kæn aɪ hæv ə fɔrk pliz/"
       }
     ],
     "asks": [
@@ -792,41 +898,50 @@
     "slots": [
       {
         "en": "a pizza",
-        "vi": "một cái pizza"
+        "vi": "một cái pizza",
+        "ipa": "/aɪ wʊd laɪk ə ˈpitsə pliz/"
       },
       {
         "en": "a hamburger",
-        "vi": "một cái hamburger"
+        "vi": "một cái hamburger",
+        "ipa": "/aɪ wʊd laɪk ə ˈhæmbərɡər pliz/"
       },
       {
         "en": "some soup",
-        "vi": "một ít súp"
+        "vi": "một ít súp",
+        "ipa": "/aɪ wʊd laɪk sʌm sup pliz/"
       },
       {
         "en": "an ice cream",
-        "vi": "một cây kem"
+        "vi": "một cây kem",
+        "ipa": "/aɪ wʊd laɪk æn aɪs krim pliz/"
       },
       {
         "en": "a salad",
-        "vi": "một đĩa salad"
+        "vi": "một đĩa salad",
+        "ipa": "/aɪ wʊd laɪk ə ˈsæləd pliz/"
       },
       {
         "en": "some bread",
-        "vi": "ít bánh mì"
+        "vi": "ít bánh mì",
+        "ipa": "/aɪ wʊd laɪk sʌm brɛd pliz/"
       },
       {
         "en": "a cold drink",
-        "vi": "một ly nước lạnh"
+        "vi": "một ly nước lạnh",
+        "ipa": "/aɪ wʊd laɪk ə koʊld drɪŋk pliz/"
       }
     ],
     "examples": [
       {
         "en": "I would like a cup of tea, please.",
-        "vi": "Làm ơn cho tôi một tách trà."
+        "vi": "Làm ơn cho tôi một tách trà.",
+        "ipa": "/aɪ wʊd laɪk ə kʌp ʌv ti pliz/"
       },
       {
         "en": "I would like fish and rice, please.",
-        "vi": "Làm ơn cho tôi cá và cơm."
+        "vi": "Làm ơn cho tôi cá và cơm.",
+        "ipa": "/aɪ wʊd laɪk fɪʃ ənd raɪs pliz/"
       }
     ],
     "asks": [
@@ -855,37 +970,45 @@
     "slots": [
       {
         "en": "a menu in English",
-        "vi": "thực đơn tiếng Anh"
+        "vi": "thực đơn tiếng Anh",
+        "ipa": "/du ju hæv ə ˈmɛnju ɪn ˈɪŋɡlɪʃ/"
       },
       {
         "en": "a table for two",
-        "vi": "bàn cho hai người"
+        "vi": "bàn cho hai người",
+        "ipa": "/du ju hæv ə ˈteɪbəl fɔr tu/"
       },
       {
         "en": "any cold drinks",
-        "vi": "nước uống lạnh nào"
+        "vi": "nước uống lạnh nào",
+        "ipa": "/du ju hæv ˈɛni koʊld drɪŋks/"
       },
       {
         "en": "vegetable soup",
-        "vi": "súp rau"
+        "vi": "súp rau",
+        "ipa": "/du ju hæv ˈvɛdʒtəbəl sup/"
       },
       {
         "en": "a children's menu",
-        "vi": "thực đơn cho trẻ em"
+        "vi": "thực đơn cho trẻ em",
+        "ipa": "/du ju hæv ə ˈtʃɪldrənz ˈmɛnju/"
       },
       {
         "en": "any fresh fruit",
-        "vi": "trái cây tươi nào"
+        "vi": "trái cây tươi nào",
+        "ipa": "/du ju hæv ˈɛni frɛʃ frut/"
       }
     ],
     "examples": [
       {
         "en": "Do you have chicken noodles?",
-        "vi": "Bạn có mì gà không?"
+        "vi": "Bạn có mì gà không?",
+        "ipa": "/du ju hæv ˈtʃɪkən ˈnudəlz/"
       },
       {
         "en": "Do you have free water?",
-        "vi": "Bạn có nước miễn phí không?"
+        "vi": "Bạn có nước miễn phí không?",
+        "ipa": "/du ju hæv fri ˈwɔtər/"
       }
     ],
     "asks": [
@@ -914,41 +1037,50 @@
     "slots": [
       {
         "en": "sugar",
-        "vi": "đường"
+        "vi": "đường",
+        "ipa": "/noʊ ˈʃʊɡər pliz/"
       },
       {
         "en": "ice",
-        "vi": "đá"
+        "vi": "đá",
+        "ipa": "/noʊ aɪs pliz/"
       },
       {
         "en": "milk",
-        "vi": "sữa"
+        "vi": "sữa",
+        "ipa": "/noʊ mɪlk pliz/"
       },
       {
         "en": "onions",
-        "vi": "hành"
+        "vi": "hành",
+        "ipa": "/noʊ ˈʌnjənz pliz/"
       },
       {
         "en": "salt",
-        "vi": "muối"
+        "vi": "muối",
+        "ipa": "/noʊ sɔlt pliz/"
       },
       {
         "en": "chili",
-        "vi": "ớt"
+        "vi": "ớt",
+        "ipa": "/noʊ ˈtʃɪli pliz/"
       },
       {
         "en": "meat",
-        "vi": "thịt"
+        "vi": "thịt",
+        "ipa": "/noʊ mit pliz/"
       }
     ],
     "examples": [
       {
         "en": "No eggs, please.",
-        "vi": "Làm ơn đừng cho trứng."
+        "vi": "Làm ơn đừng cho trứng.",
+        "ipa": "/noʊ ɛɡz pliz/"
       },
       {
         "en": "No cream, please.",
-        "vi": "Làm ơn đừng cho kem."
+        "vi": "Làm ơn đừng cho kem.",
+        "ipa": "/noʊ krim pliz/"
       }
     ],
     "asks": [
@@ -977,41 +1109,50 @@
     "slots": [
       {
         "en": "pizza",
-        "vi": "pizza"
+        "vi": "pizza",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz ˈpitsə/"
       },
       {
         "en": "fried rice",
-        "vi": "cơm chiên"
+        "vi": "cơm chiên",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz fraɪd raɪs/"
       },
       {
         "en": "chicken",
-        "vi": "thịt gà"
+        "vi": "thịt gà",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz ˈtʃɪkən/"
       },
       {
         "en": "noodle soup",
-        "vi": "mì nước"
+        "vi": "mì nước",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz ˈnudəl sup/"
       },
       {
         "en": "fish",
-        "vi": "cá"
+        "vi": "cá",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz fɪʃ/"
       },
       {
         "en": "ice cream",
-        "vi": "kem"
+        "vi": "kem",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz aɪs krim/"
       },
       {
         "en": "spring rolls",
-        "vi": "chả giò"
+        "vi": "chả giò",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz sprɪŋ roʊlz/"
       }
     ],
     "examples": [
       {
         "en": "My favorite food is pasta.",
-        "vi": "Món ăn yêu thích của tôi là mì Ý."
+        "vi": "Món ăn yêu thích của tôi là mì Ý.",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz ˈpɑstə/"
       },
       {
         "en": "My favorite food is beef.",
-        "vi": "Món ăn yêu thích của tôi là thịt bò."
+        "vi": "Món ăn yêu thích của tôi là thịt bò.",
+        "ipa": "/maɪ ˈfeɪvərɪt fud ɪz bif/"
       }
     ],
     "asks": [
@@ -1040,41 +1181,50 @@
     "slots": [
       {
         "en": "fish",
-        "vi": "cá"
+        "vi": "cá",
+        "ipa": "/aɪ doʊnt laɪk fɪʃ/"
       },
       {
         "en": "onions",
-        "vi": "hành"
+        "vi": "hành",
+        "ipa": "/aɪ doʊnt laɪk ˈʌnjənz/"
       },
       {
         "en": "spicy food",
-        "vi": "đồ ăn cay"
+        "vi": "đồ ăn cay",
+        "ipa": "/aɪ doʊnt laɪk ˈspaɪsi fud/"
       },
       {
         "en": "milk",
-        "vi": "sữa"
+        "vi": "sữa",
+        "ipa": "/aɪ doʊnt laɪk mɪlk/"
       },
       {
         "en": "cold soup",
-        "vi": "súp lạnh"
+        "vi": "súp lạnh",
+        "ipa": "/aɪ doʊnt laɪk koʊld sup/"
       },
       {
         "en": "eggs",
-        "vi": "trứng"
+        "vi": "trứng",
+        "ipa": "/aɪ doʊnt laɪk ɛɡz/"
       },
       {
         "en": "sweet tea",
-        "vi": "trà ngọt"
+        "vi": "trà ngọt",
+        "ipa": "/aɪ doʊnt laɪk swit ti/"
       }
     ],
     "examples": [
       {
         "en": "I don't like mushrooms.",
-        "vi": "Tôi không thích nấm."
+        "vi": "Tôi không thích nấm.",
+        "ipa": "/aɪ doʊnt laɪk ˈmʌʃrumz/"
       },
       {
         "en": "I don't like cheese.",
-        "vi": "Tôi không thích phô mai."
+        "vi": "Tôi không thích phô mai.",
+        "ipa": "/aɪ doʊnt laɪk tʃiz/"
       }
     ],
     "asks": [
@@ -1103,41 +1253,50 @@
     "slots": [
       {
         "en": "bread",
-        "vi": "bánh mì"
+        "vi": "bánh mì",
+        "ipa": "/aɪ ˈɔfən it brɛd fɔr ˈbrɛkfəst/"
       },
       {
         "en": "eggs",
-        "vi": "trứng"
+        "vi": "trứng",
+        "ipa": "/aɪ ˈɔfən it ɛɡz fɔr ˈbrɛkfəst/"
       },
       {
         "en": "noodles",
-        "vi": "mì"
+        "vi": "mì",
+        "ipa": "/aɪ ˈɔfən it ˈnudəlz fɔr ˈbrɛkfəst/"
       },
       {
         "en": "rice",
-        "vi": "cơm"
+        "vi": "cơm",
+        "ipa": "/aɪ ˈɔfən it raɪs fɔr ˈbrɛkfəst/"
       },
       {
         "en": "fruit",
-        "vi": "trái cây"
+        "vi": "trái cây",
+        "ipa": "/aɪ ˈɔfən it frut fɔr ˈbrɛkfəst/"
       },
       {
         "en": "sticky rice",
-        "vi": "xôi"
+        "vi": "xôi",
+        "ipa": "/aɪ ˈɔfən it ˈstɪki raɪs fɔr ˈbrɛkfəst/"
       },
       {
         "en": "cereal",
-        "vi": "ngũ cốc"
+        "vi": "ngũ cốc",
+        "ipa": "/aɪ ˈɔfən it ˈsɪriəl fɔr ˈbrɛkfəst/"
       }
     ],
     "examples": [
       {
         "en": "I often eat toast for breakfast.",
-        "vi": "Tôi thường ăn bánh mì nướng vào bữa sáng."
+        "vi": "Tôi thường ăn bánh mì nướng vào bữa sáng.",
+        "ipa": "/aɪ ˈɔfən it toʊst fɔr ˈbrɛkfəst/"
       },
       {
         "en": "I often eat pho for breakfast.",
-        "vi": "Tôi thường ăn phở vào bữa sáng."
+        "vi": "Tôi thường ăn phở vào bữa sáng.",
+        "ipa": "/aɪ ˈɔfən it foʊ fɔr ˈbrɛkfəst/"
       }
     ],
     "asks": [
@@ -1166,41 +1325,50 @@
     "slots": [
       {
         "en": "rice",
-        "vi": "cơm"
+        "vi": "cơm",
+        "ipa": "/aɪ kæn kʊk raɪs/"
       },
       {
         "en": "noodles",
-        "vi": "mì"
+        "vi": "mì",
+        "ipa": "/aɪ kæn kʊk ˈnudəlz/"
       },
       {
         "en": "eggs",
-        "vi": "trứng"
+        "vi": "trứng",
+        "ipa": "/aɪ kæn kʊk ɛɡz/"
       },
       {
         "en": "fish",
-        "vi": "cá"
+        "vi": "cá",
+        "ipa": "/aɪ kæn kʊk fɪʃ/"
       },
       {
         "en": "chicken soup",
-        "vi": "súp gà"
+        "vi": "súp gà",
+        "ipa": "/aɪ kæn kʊk ˈtʃɪkən sup/"
       },
       {
         "en": "vegetables",
-        "vi": "rau"
+        "vi": "rau",
+        "ipa": "/aɪ kæn kʊk ˈvɛdʒtəbəlz/"
       },
       {
         "en": "pasta",
-        "vi": "mì Ý"
+        "vi": "mì Ý",
+        "ipa": "/aɪ kæn kʊk ˈpɑstə/"
       }
     ],
     "examples": [
       {
         "en": "I can cook beef.",
-        "vi": "Tôi biết nấu thịt bò."
+        "vi": "Tôi biết nấu thịt bò.",
+        "ipa": "/aɪ kæn kʊk bif/"
       },
       {
         "en": "I can cook potatoes.",
-        "vi": "Tôi biết nấu khoai tây."
+        "vi": "Tôi biết nấu khoai tây.",
+        "ipa": "/aɪ kæn kʊk pəˈteɪtoʊz/"
       }
     ],
     "asks": [
@@ -1229,41 +1397,50 @@
     "slots": [
       {
         "en": "this shirt",
-        "vi": "Cái áo này"
+        "vi": "Cái áo này",
+        "ipa": "/haʊ mʌtʃ ɪz ðɪs ʃɝt/"
       },
       {
         "en": "that bag",
-        "vi": "Cái túi kia"
+        "vi": "Cái túi kia",
+        "ipa": "/haʊ mʌtʃ ɪz ðæt bæɡ/"
       },
       {
         "en": "this hat",
-        "vi": "Cái mũ này"
+        "vi": "Cái mũ này",
+        "ipa": "/haʊ mʌtʃ ɪz ðɪs hæt/"
       },
       {
         "en": "the coffee",
-        "vi": "Ly cà phê"
+        "vi": "Ly cà phê",
+        "ipa": "/haʊ mʌtʃ ɪz ðə ˈkɑfi/"
       },
       {
         "en": "the blue dress",
-        "vi": "Cái váy xanh"
+        "vi": "Cái váy xanh",
+        "ipa": "/haʊ mʌtʃ ɪz ðə blu drɛs/"
       },
       {
         "en": "a ticket",
-        "vi": "Một vé"
+        "vi": "Một vé",
+        "ipa": "/haʊ mʌtʃ ɪz ə ˈtɪkət/"
       },
       {
         "en": "this one",
-        "vi": "Cái này"
+        "vi": "Cái này",
+        "ipa": "/haʊ mʌtʃ ɪz ðɪs wʌn/"
       }
     ],
     "examples": [
       {
         "en": "How much is the red jacket?",
-        "vi": "Cái áo khoác đỏ giá bao nhiêu?"
+        "vi": "Cái áo khoác đỏ giá bao nhiêu?",
+        "ipa": "/haʊ mʌtʃ ɪz ðə rɛd ˈdʒækət/"
       },
       {
         "en": "How much is a bottle of water?",
-        "vi": "Một chai nước giá bao nhiêu?"
+        "vi": "Một chai nước giá bao nhiêu?",
+        "ipa": "/haʊ mʌtʃ ɪz ə ˈbɑtəl ʌv ˈwɔtər/"
       }
     ],
     "asks": [
@@ -1292,37 +1469,45 @@
     "slots": [
       {
         "en": "this shirt",
-        "vi": "cái áo này"
+        "vi": "cái áo này",
+        "ipa": "/du ju hæv ðɪs ʃɝt ɪn maɪ saɪz/"
       },
       {
         "en": "these shoes",
-        "vi": "đôi giày này"
+        "vi": "đôi giày này",
+        "ipa": "/du ju hæv ðiz ʃuz ɪn maɪ saɪz/"
       },
       {
         "en": "those jeans",
-        "vi": "cái quần jeans kia"
+        "vi": "cái quần jeans kia",
+        "ipa": "/du ju hæv ðoʊz dʒinz ɪn maɪ saɪz/"
       },
       {
         "en": "this dress",
-        "vi": "cái váy này"
+        "vi": "cái váy này",
+        "ipa": "/du ju hæv ðɪs drɛs ɪn maɪ saɪz/"
       },
       {
         "en": "that jacket",
-        "vi": "cái áo khoác kia"
+        "vi": "cái áo khoác kia",
+        "ipa": "/du ju hæv ðæt ˈdʒækət ɪn maɪ saɪz/"
       },
       {
         "en": "these pants",
-        "vi": "cái quần này"
+        "vi": "cái quần này",
+        "ipa": "/du ju hæv ðiz pænts ɪn maɪ saɪz/"
       }
     ],
     "examples": [
       {
         "en": "Do you have a black skirt in my size?",
-        "vi": "Bạn có váy đen cỡ của tôi không?"
+        "vi": "Bạn có váy đen cỡ của tôi không?",
+        "ipa": "/du ju hæv ə blæk skɝt ɪn maɪ saɪz/"
       },
       {
         "en": "Do you have white socks in my size?",
-        "vi": "Bạn có tất trắng cỡ của tôi không?"
+        "vi": "Bạn có tất trắng cỡ của tôi không?",
+        "ipa": "/du ju hæv waɪt sɑks ɪn maɪ saɪz/"
       }
     ],
     "asks": [
@@ -1351,37 +1536,45 @@
     "slots": [
       {
         "en": "this one",
-        "vi": "cái này"
+        "vi": "cái này",
+        "ipa": "/aɪ wɪl teɪk ðɪs wʌn/"
       },
       {
         "en": "that one",
-        "vi": "cái kia"
+        "vi": "cái kia",
+        "ipa": "/aɪ wɪl teɪk ðæt wʌn/"
       },
       {
         "en": "the blue one",
-        "vi": "cái màu xanh"
+        "vi": "cái màu xanh",
+        "ipa": "/aɪ wɪl teɪk ðə blu wʌn/"
       },
       {
         "en": "the small one",
-        "vi": "cái nhỏ"
+        "vi": "cái nhỏ",
+        "ipa": "/aɪ wɪl teɪk ðə smɔl wʌn/"
       },
       {
         "en": "two of them",
-        "vi": "hai cái"
+        "vi": "hai cái",
+        "ipa": "/aɪ wɪl teɪk tu ʌv ðɛm/"
       },
       {
         "en": "both of them",
-        "vi": "cả hai cái"
+        "vi": "cả hai cái",
+        "ipa": "/aɪ wɪl teɪk boʊθ ʌv ðɛm/"
       }
     ],
     "examples": [
       {
         "en": "I will take the black bag.",
-        "vi": "Tôi sẽ lấy cái túi đen."
+        "vi": "Tôi sẽ lấy cái túi đen.",
+        "ipa": "/aɪ wɪl teɪk ðə blæk bæɡ/"
       },
       {
         "en": "I will take three apples.",
-        "vi": "Tôi sẽ lấy ba quả táo."
+        "vi": "Tôi sẽ lấy ba quả táo.",
+        "ipa": "/aɪ wɪl teɪk θri ˈæpəlz/"
       }
     ],
     "asks": [
@@ -1410,41 +1603,50 @@
     "slots": [
       {
         "en": "expensive",
-        "vi": "đắt"
+        "vi": "đắt",
+        "ipa": "/ɪt ɪz tu ɪkˈspɛnsɪv/"
       },
       {
         "en": "big",
-        "vi": "to"
+        "vi": "to",
+        "ipa": "/ɪt ɪz tu bɪɡ/"
       },
       {
         "en": "small",
-        "vi": "nhỏ"
+        "vi": "nhỏ",
+        "ipa": "/ɪt ɪz tu smɔl/"
       },
       {
         "en": "long",
-        "vi": "dài"
+        "vi": "dài",
+        "ipa": "/ɪt ɪz tu lɔŋ/"
       },
       {
         "en": "short",
-        "vi": "ngắn"
+        "vi": "ngắn",
+        "ipa": "/ɪt ɪz tu ʃɔrt/"
       },
       {
         "en": "tight",
-        "vi": "chật"
+        "vi": "chật",
+        "ipa": "/ɪt ɪz tu taɪt/"
       },
       {
         "en": "heavy",
-        "vi": "nặng"
+        "vi": "nặng",
+        "ipa": "/ɪt ɪz tu ˈhɛvi/"
       }
     ],
     "examples": [
       {
         "en": "It is too loose.",
-        "vi": "Nó quá rộng."
+        "vi": "Nó quá rộng.",
+        "ipa": "/ɪt ɪz tu lus/"
       },
       {
         "en": "It is too old.",
-        "vi": "Nó quá cũ."
+        "vi": "Nó quá cũ.",
+        "ipa": "/ɪt ɪz tu oʊld/"
       }
     ],
     "asks": [
@@ -1473,45 +1675,55 @@
     "slots": [
       {
         "en": "the bank",
-        "vi": "Ngân hàng"
+        "vi": "Ngân hàng",
+        "ipa": "/wɛr ɪz ðə bæŋk/"
       },
       {
         "en": "the station",
-        "vi": "Nhà ga"
+        "vi": "Nhà ga",
+        "ipa": "/wɛr ɪz ðə ˈsteɪʃən/"
       },
       {
         "en": "the toilet",
-        "vi": "Nhà vệ sinh"
+        "vi": "Nhà vệ sinh",
+        "ipa": "/wɛr ɪz ðə ˈtɔɪlət/"
       },
       {
         "en": "the hotel",
-        "vi": "Khách sạn"
+        "vi": "Khách sạn",
+        "ipa": "/wɛr ɪz ðə hoʊˈtɛl/"
       },
       {
         "en": "the school",
-        "vi": "Trường học"
+        "vi": "Trường học",
+        "ipa": "/wɛr ɪz ðə skul/"
       },
       {
         "en": "the post office",
-        "vi": "Bưu điện"
+        "vi": "Bưu điện",
+        "ipa": "/wɛr ɪz ðə poʊst ˈɔfɪs/"
       },
       {
         "en": "the bus stop",
-        "vi": "Trạm xe buýt"
+        "vi": "Trạm xe buýt",
+        "ipa": "/wɛr ɪz ðə bʌs stɑp/"
       }
     ],
     "examples": [
       {
         "en": "Where is the market?",
-        "vi": "Chợ ở đâu?"
+        "vi": "Chợ ở đâu?",
+        "ipa": "/wɛr ɪz ðə ˈmɑrkət/"
       },
       {
         "en": "Where is the hospital?",
-        "vi": "Bệnh viện ở đâu?"
+        "vi": "Bệnh viện ở đâu?",
+        "ipa": "/wɛr ɪz ðə ˈhɑˌspɪtəl/"
       },
       {
         "en": "Where is my bag?",
-        "vi": "Cái túi của tôi ở đâu?"
+        "vi": "Cái túi của tôi ở đâu?",
+        "ipa": "/wɛr ɪz maɪ bæɡ/"
       }
     ],
     "asks": [
@@ -1540,45 +1752,55 @@
     "slots": [
       {
         "en": "a bank",
-        "vi": "ngân hàng"
+        "vi": "ngân hàng",
+        "ipa": "/ɪz ðɛr ə bæŋk nɪr hir/"
       },
       {
         "en": "a bus stop",
-        "vi": "trạm xe buýt"
+        "vi": "trạm xe buýt",
+        "ipa": "/ɪz ðɛr ə bʌs stɑp nɪr hir/"
       },
       {
         "en": "a toilet",
-        "vi": "nhà vệ sinh"
+        "vi": "nhà vệ sinh",
+        "ipa": "/ɪz ðɛr ə ˈtɔɪlət nɪr hir/"
       },
       {
         "en": "a shop",
-        "vi": "cửa hàng"
+        "vi": "cửa hàng",
+        "ipa": "/ɪz ðɛr ə ʃɑp nɪr hir/"
       },
       {
         "en": "a cafe",
-        "vi": "quán cà phê"
+        "vi": "quán cà phê",
+        "ipa": "/ɪz ðɛr ə kəˈfeɪ nɪr hir/"
       },
       {
         "en": "a pharmacy",
-        "vi": "hiệu thuốc"
+        "vi": "hiệu thuốc",
+        "ipa": "/ɪz ðɛr ə ˈfɑrməsi nɪr hir/"
       },
       {
         "en": "an ATM",
-        "vi": "cây ATM"
+        "vi": "cây ATM",
+        "ipa": "/ɪz ðɛr æn ˈeɪˌtiˈɛm nɪr hir/"
       }
     ],
     "examples": [
       {
         "en": "Is there a park near here?",
-        "vi": "Gần đây có công viên không?"
+        "vi": "Gần đây có công viên không?",
+        "ipa": "/ɪz ðɛr ə pɑrk nɪr hir/"
       },
       {
         "en": "Is there a hotel near here?",
-        "vi": "Gần đây có khách sạn không?"
+        "vi": "Gần đây có khách sạn không?",
+        "ipa": "/ɪz ðɛr ə hoʊˈtɛl nɪr hir/"
       },
       {
         "en": "Is there an airport near here?",
-        "vi": "Gần đây có sân bay không?"
+        "vi": "Gần đây có sân bay không?",
+        "ipa": "/ɪz ðɛr æn ˈɛrˌpɔrt nɪr hir/"
       }
     ],
     "asks": [
@@ -1607,41 +1829,50 @@
     "slots": [
       {
         "en": "on the left",
-        "vi": "ở bên trái"
+        "vi": "ở bên trái",
+        "ipa": "/ɪts ɑn ðə lɛft/"
       },
       {
         "en": "on the right",
-        "vi": "ở bên phải"
+        "vi": "ở bên phải",
+        "ipa": "/ɪts ɑn ðə raɪt/"
       },
       {
         "en": "next to the bank",
-        "vi": "cạnh ngân hàng"
+        "vi": "cạnh ngân hàng",
+        "ipa": "/ɪts nɛkst tu ðə bæŋk/"
       },
       {
         "en": "near the park",
-        "vi": "gần công viên"
+        "vi": "gần công viên",
+        "ipa": "/ɪts nɪr ðə pɑrk/"
       },
       {
         "en": "behind the hotel",
-        "vi": "sau khách sạn"
+        "vi": "sau khách sạn",
+        "ipa": "/ɪts bɪˈhaɪnd ðə hoʊˈtɛl/"
       },
       {
         "en": "in front of the school",
-        "vi": "trước trường học"
+        "vi": "trước trường học",
+        "ipa": "/ɪts ɪn frʌnt ʌv ðə skul/"
       },
       {
         "en": "over there",
-        "vi": "ở đằng kia"
+        "vi": "ở đằng kia",
+        "ipa": "/ɪts ˈoʊvər ðɛr/"
       }
     ],
     "examples": [
       {
         "en": "It's across from the station.",
-        "vi": "Nó ở đối diện nhà ga."
+        "vi": "Nó ở đối diện nhà ga.",
+        "ipa": "/ɪts əˈkrɔs frʌm ðə ˈsteɪʃən/"
       },
       {
         "en": "It's between the shop and the cafe.",
-        "vi": "Nó ở giữa cửa hàng và quán cà phê."
+        "vi": "Nó ở giữa cửa hàng và quán cà phê.",
+        "ipa": "/ɪts bɪˈtwin ðə ʃɑp ənd ðə kəˈfeɪ/"
       }
     ],
     "asks": [
@@ -1669,41 +1900,50 @@
     "slots": [
       {
         "en": "the station",
-        "vi": "nhà ga"
+        "vi": "nhà ga",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə ˈsteɪʃən/"
       },
       {
         "en": "the airport",
-        "vi": "sân bay"
+        "vi": "sân bay",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə ˈɛrˌpɔrt/"
       },
       {
         "en": "the park",
-        "vi": "công viên"
+        "vi": "công viên",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə pɑrk/"
       },
       {
         "en": "the market",
-        "vi": "chợ"
+        "vi": "chợ",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə ˈmɑrkət/"
       },
       {
         "en": "the hospital",
-        "vi": "bệnh viện"
+        "vi": "bệnh viện",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə ˈhɑˌspɪtəl/"
       },
       {
         "en": "the museum",
-        "vi": "viện bảo tàng"
+        "vi": "viện bảo tàng",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə mjuˈziəm/"
       },
       {
         "en": "the beach",
-        "vi": "bãi biển"
+        "vi": "bãi biển",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə bitʃ/"
       }
     ],
     "examples": [
       {
         "en": "How do I get to the hotel?",
-        "vi": "Làm sao để tôi đến khách sạn?"
+        "vi": "Làm sao để tôi đến khách sạn?",
+        "ipa": "/haʊ du aɪ ɡɛt tu ðə hoʊˈtɛl/"
       },
       {
         "en": "How do I get to your house?",
-        "vi": "Làm sao để tôi đến nhà bạn?"
+        "vi": "Làm sao để tôi đến nhà bạn?",
+        "ipa": "/haʊ du aɪ ɡɛt tu jɔr haʊs/"
       }
     ],
     "asks": [
@@ -1732,41 +1972,50 @@
     "slots": [
       {
         "en": "by bus",
-        "vi": "bằng xe buýt"
+        "vi": "bằng xe buýt",
+        "ipa": "/aɪ ɡoʊ tu wɝk baɪ bʌs/"
       },
       {
         "en": "by car",
-        "vi": "bằng ô tô"
+        "vi": "bằng ô tô",
+        "ipa": "/aɪ ɡoʊ tu wɝk baɪ kɑr/"
       },
       {
         "en": "by bike",
-        "vi": "bằng xe đạp"
+        "vi": "bằng xe đạp",
+        "ipa": "/aɪ ɡoʊ tu wɝk baɪ baɪk/"
       },
       {
         "en": "by train",
-        "vi": "bằng tàu hỏa"
+        "vi": "bằng tàu hỏa",
+        "ipa": "/aɪ ɡoʊ tu wɝk baɪ treɪn/"
       },
       {
         "en": "by taxi",
-        "vi": "bằng taxi"
+        "vi": "bằng taxi",
+        "ipa": "/aɪ ɡoʊ tu wɝk baɪ ˈtæksi/"
       },
       {
         "en": "by motorbike",
-        "vi": "bằng xe máy"
+        "vi": "bằng xe máy",
+        "ipa": "/aɪ ɡoʊ tu wɝk baɪ ˈmoʊtərˌbaɪk/"
       },
       {
         "en": "on foot",
-        "vi": "bằng cách đi bộ"
+        "vi": "bằng cách đi bộ",
+        "ipa": "/aɪ ɡoʊ tu wɝk ɑn fʊt/"
       }
     ],
     "examples": [
       {
         "en": "I go to school by bus.",
-        "vi": "Tôi đi học bằng xe buýt."
+        "vi": "Tôi đi học bằng xe buýt.",
+        "ipa": "/aɪ ɡoʊ tu skul baɪ bʌs/"
       },
       {
         "en": "I go home by train.",
-        "vi": "Tôi về nhà bằng tàu hỏa."
+        "vi": "Tôi về nhà bằng tàu hỏa.",
+        "ipa": "/aɪ ɡoʊ hoʊm baɪ treɪn/"
       }
     ],
     "asks": [
@@ -1794,41 +2043,50 @@
     "slots": [
       {
         "en": "a bus",
-        "vi": "xe buýt"
+        "vi": "xe buýt",
+        "ipa": "/ju kæn teɪk ə bʌs/"
       },
       {
         "en": "a taxi",
-        "vi": "taxi"
+        "vi": "taxi",
+        "ipa": "/ju kæn teɪk ə ˈtæksi/"
       },
       {
         "en": "the train",
-        "vi": "tàu hỏa"
+        "vi": "tàu hỏa",
+        "ipa": "/ju kæn teɪk ðə treɪn/"
       },
       {
         "en": "the subway",
-        "vi": "tàu điện ngầm"
+        "vi": "tàu điện ngầm",
+        "ipa": "/ju kæn teɪk ðə ˈsʌbˌweɪ/"
       },
       {
         "en": "bus number five",
-        "vi": "xe buýt số năm"
+        "vi": "xe buýt số năm",
+        "ipa": "/ju kæn teɪk bʌs ˈnʌmbər faɪv/"
       },
       {
         "en": "a motorbike taxi",
-        "vi": "xe ôm"
+        "vi": "xe ôm",
+        "ipa": "/ju kæn teɪk ə ˈmoʊtərˌbaɪk ˈtæksi/"
       },
       {
         "en": "the airport bus",
-        "vi": "xe buýt sân bay"
+        "vi": "xe buýt sân bay",
+        "ipa": "/ju kæn teɪk ðə ˈɛrˌpɔrt bʌs/"
       }
     ],
     "examples": [
       {
         "en": "You can take a boat.",
-        "vi": "Bạn có thể đi thuyền."
+        "vi": "Bạn có thể đi thuyền.",
+        "ipa": "/ju kæn teɪk ə boʊt/"
       },
       {
         "en": "You can take the next bus.",
-        "vi": "Bạn có thể đi chuyến xe buýt tiếp theo."
+        "vi": "Bạn có thể đi chuyến xe buýt tiếp theo.",
+        "ipa": "/ju kæn teɪk ðə nɛkst bʌs/"
       }
     ],
     "asks": [
@@ -1857,41 +2115,50 @@
     "slots": [
       {
         "en": "five minutes",
-        "vi": "năm phút"
+        "vi": "năm phút",
+        "ipa": "/ɪt teɪks faɪv ˈmɪnəts tu ɡɛt ðɛr/"
       },
       {
         "en": "ten minutes",
-        "vi": "mười phút"
+        "vi": "mười phút",
+        "ipa": "/ɪt teɪks tɛn ˈmɪnəts tu ɡɛt ðɛr/"
       },
       {
         "en": "half an hour",
-        "vi": "nửa tiếng"
+        "vi": "nửa tiếng",
+        "ipa": "/ɪt teɪks hæf æn ˈaʊər tu ɡɛt ðɛr/"
       },
       {
         "en": "one hour",
-        "vi": "một tiếng"
+        "vi": "một tiếng",
+        "ipa": "/ɪt teɪks wʌn ˈaʊər tu ɡɛt ðɛr/"
       },
       {
         "en": "two hours",
-        "vi": "hai tiếng"
+        "vi": "hai tiếng",
+        "ipa": "/ɪt teɪks tu ˈaʊərz tu ɡɛt ðɛr/"
       },
       {
         "en": "a few minutes",
-        "vi": "vài phút"
+        "vi": "vài phút",
+        "ipa": "/ɪt teɪks ə fju ˈmɪnəts tu ɡɛt ðɛr/"
       },
       {
         "en": "a long time",
-        "vi": "rất lâu"
+        "vi": "rất lâu",
+        "ipa": "/ɪt teɪks ə lɔŋ taɪm tu ɡɛt ðɛr/"
       }
     ],
     "examples": [
       {
         "en": "It takes three hours to get there.",
-        "vi": "Mất ba tiếng để đến đó."
+        "vi": "Mất ba tiếng để đến đó.",
+        "ipa": "/ɪt teɪks θri ˈaʊərz tu ɡɛt ðɛr/"
       },
       {
         "en": "It takes one day to get there.",
-        "vi": "Mất một ngày để đến đó."
+        "vi": "Mất một ngày để đến đó.",
+        "ipa": "/ɪt teɪks wʌn deɪ tu ɡɛt ðɛr/"
       }
     ],
     "asks": [
@@ -1919,41 +2186,50 @@
     "slots": [
       {
         "en": "the airport",
-        "vi": "sân bay"
+        "vi": "sân bay",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə ˈɛrˌpɔrt/"
       },
       {
         "en": "the station",
-        "vi": "nhà ga"
+        "vi": "nhà ga",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə ˈsteɪʃən/"
       },
       {
         "en": "the market",
-        "vi": "chợ"
+        "vi": "chợ",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə ˈmɑrkət/"
       },
       {
         "en": "the beach",
-        "vi": "bãi biển"
+        "vi": "bãi biển",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə bitʃ/"
       },
       {
         "en": "the city",
-        "vi": "trung tâm thành phố"
+        "vi": "trung tâm thành phố",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə ˈsɪti/"
       },
       {
         "en": "the hospital",
-        "vi": "bệnh viện"
+        "vi": "bệnh viện",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə ˈhɑˌspɪtəl/"
       },
       {
         "en": "the park",
-        "vi": "công viên"
+        "vi": "công viên",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə pɑrk/"
       }
     ],
     "examples": [
       {
         "en": "Does this bus go to the museum?",
-        "vi": "Xe buýt này có đi đến viện bảo tàng không?"
+        "vi": "Xe buýt này có đi đến viện bảo tàng không?",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu ðə mjuˈziəm/"
       },
       {
         "en": "Does this bus go to Hue?",
-        "vi": "Xe buýt này có đi đến Huế không?"
+        "vi": "Xe buýt này có đi đến Huế không?",
+        "ipa": "/dʌz ðɪs bʌs ɡoʊ tu hju/"
       }
     ],
     "asks": [
@@ -1981,41 +2257,50 @@
     "slots": [
       {
         "en": "Hanoi",
-        "vi": "Hà Nội"
+        "vi": "Hà Nội",
+        "ipa": "/tu ˈtɪkəts tu ˈhænɔɪ pliz/"
       },
       {
         "en": "Hue",
-        "vi": "Huế"
+        "vi": "Huế",
+        "ipa": "/tu ˈtɪkəts tu hju pliz/"
       },
       {
         "en": "Da Nang",
-        "vi": "Đà Nẵng"
+        "vi": "Đà Nẵng",
+        "ipa": "/tu ˈtɪkəts tu dɑ næŋ pliz/"
       },
       {
         "en": "London",
-        "vi": "Luân Đôn"
+        "vi": "Luân Đôn",
+        "ipa": "/tu ˈtɪkəts tu ˈlʌndən pliz/"
       },
       {
         "en": "Paris",
-        "vi": "Pa ri"
+        "vi": "Pa ri",
+        "ipa": "/tu ˈtɪkəts tu ˈpɛrɪs pliz/"
       },
       {
         "en": "Tokyo",
-        "vi": "Tô ky ô"
+        "vi": "Tô ky ô",
+        "ipa": "/tu ˈtɪkəts tu ˈtoʊkiˌoʊ pliz/"
       },
       {
         "en": "Bangkok",
-        "vi": "Băng Cốc"
+        "vi": "Băng Cốc",
+        "ipa": "/tu ˈtɪkəts tu bæŋˈkɑk pliz/"
       }
     ],
     "examples": [
       {
         "en": "One ticket to Saigon, please.",
-        "vi": "Cho tôi một vé đi Sài Gòn."
+        "vi": "Cho tôi một vé đi Sài Gòn.",
+        "ipa": "/wʌn ˈtɪkət tu ˌsaɪˈɡɑn pliz/"
       },
       {
         "en": "Three tickets to Dalat, please.",
-        "vi": "Cho tôi ba vé đi Đà Lạt."
+        "vi": "Cho tôi ba vé đi Đà Lạt.",
+        "ipa": "/θri ˈtɪkəts tu Dalat pliz/"
       }
     ],
     "asks": [
@@ -2043,41 +2328,50 @@
     "slots": [
       {
         "en": "the train",
-        "vi": "Tàu hỏa"
+        "vi": "Tàu hỏa",
+        "ipa": "/wʌt taɪm dʌz ðə treɪn liv/"
       },
       {
         "en": "the bus",
-        "vi": "Xe buýt"
+        "vi": "Xe buýt",
+        "ipa": "/wʌt taɪm dʌz ðə bʌs liv/"
       },
       {
         "en": "the plane",
-        "vi": "Máy bay"
+        "vi": "Máy bay",
+        "ipa": "/wʌt taɪm dʌz ðə pleɪn liv/"
       },
       {
         "en": "the boat",
-        "vi": "Thuyền"
+        "vi": "Thuyền",
+        "ipa": "/wʌt taɪm dʌz ðə boʊt liv/"
       },
       {
         "en": "my flight",
-        "vi": "Chuyến bay của tôi"
+        "vi": "Chuyến bay của tôi",
+        "ipa": "/wʌt taɪm dʌz maɪ flaɪt liv/"
       },
       {
         "en": "the next bus",
-        "vi": "Chuyến xe buýt tiếp theo"
+        "vi": "Chuyến xe buýt tiếp theo",
+        "ipa": "/wʌt taɪm dʌz ðə nɛkst bʌs liv/"
       },
       {
         "en": "the last train",
-        "vi": "Chuyến tàu cuối"
+        "vi": "Chuyến tàu cuối",
+        "ipa": "/wʌt taɪm dʌz ðə læst treɪn liv/"
       }
     ],
     "examples": [
       {
         "en": "What time does the ferry leave?",
-        "vi": "Phà chạy lúc mấy giờ?"
+        "vi": "Phà chạy lúc mấy giờ?",
+        "ipa": "/wʌt taɪm dʌz ðə ˈfɛri liv/"
       },
       {
         "en": "What time does your bus leave?",
-        "vi": "Xe buýt của bạn chạy lúc mấy giờ?"
+        "vi": "Xe buýt của bạn chạy lúc mấy giờ?",
+        "ipa": "/wʌt taɪm dʌz jɔr bʌs liv/"
       }
     ],
     "asks": [
@@ -2105,33 +2399,40 @@
     "slots": [
       {
         "en": "a ticket",
-        "vi": "Một vé"
+        "vi": "Một vé",
+        "ipa": "/haʊ mʌtʃ ɪz ə ˈtɪkət tu ðə ˈɛrˌpɔrt/"
       },
       {
         "en": "a taxi",
-        "vi": "Một chuyến taxi"
+        "vi": "Một chuyến taxi",
+        "ipa": "/haʊ mʌtʃ ɪz ə ˈtæksi tu ðə ˈɛrˌpɔrt/"
       },
       {
         "en": "the train",
-        "vi": "Tàu hỏa"
+        "vi": "Tàu hỏa",
+        "ipa": "/haʊ mʌtʃ ɪz ðə treɪn tu ðə ˈɛrˌpɔrt/"
       },
       {
         "en": "the bus",
-        "vi": "Xe buýt"
+        "vi": "Xe buýt",
+        "ipa": "/haʊ mʌtʃ ɪz ðə bʌs tu ðə ˈɛrˌpɔrt/"
       },
       {
         "en": "a ride",
-        "vi": "Một chuyến xe"
+        "vi": "Một chuyến xe",
+        "ipa": "/haʊ mʌtʃ ɪz ə raɪd tu ðə ˈɛrˌpɔrt/"
       }
     ],
     "examples": [
       {
         "en": "How much is a bus ticket to the city?",
-        "vi": "Một vé xe buýt vào thành phố giá bao nhiêu?"
+        "vi": "Một vé xe buýt vào thành phố giá bao nhiêu?",
+        "ipa": "/haʊ mʌtʃ ɪz ə bʌs ˈtɪkət tu ðə ˈsɪti/"
       },
       {
         "en": "How much is a taxi to the hotel?",
-        "vi": "Một chuyến taxi đến khách sạn giá bao nhiêu?"
+        "vi": "Một chuyến taxi đến khách sạn giá bao nhiêu?",
+        "ipa": "/haʊ mʌtʃ ɪz ə ˈtæksi tu ðə hoʊˈtɛl/"
       }
     ],
     "asks": [
@@ -2159,41 +2460,50 @@
     "slots": [
       {
         "en": "bus",
-        "vi": "xe buýt"
+        "vi": "xe buýt",
+        "ipa": "/ɪz ðɪs ðə raɪt bʌs/"
       },
       {
         "en": "train",
-        "vi": "chuyến tàu"
+        "vi": "chuyến tàu",
+        "ipa": "/ɪz ðɪs ðə raɪt treɪn/"
       },
       {
         "en": "platform",
-        "vi": "sân ga"
+        "vi": "sân ga",
+        "ipa": "/ɪz ðɪs ðə raɪt ˈplætˌfɔrm/"
       },
       {
         "en": "gate",
-        "vi": "cổng"
+        "vi": "cổng",
+        "ipa": "/ɪz ðɪs ðə raɪt ɡeɪt/"
       },
       {
         "en": "way",
-        "vi": "đường"
+        "vi": "đường",
+        "ipa": "/ɪz ðɪs ðə raɪt weɪ/"
       },
       {
         "en": "seat",
-        "vi": "chỗ ngồi"
+        "vi": "chỗ ngồi",
+        "ipa": "/ɪz ðɪs ðə raɪt sit/"
       },
       {
         "en": "line",
-        "vi": "hàng"
+        "vi": "hàng",
+        "ipa": "/ɪz ðɪs ðə raɪt laɪn/"
       }
     ],
     "examples": [
       {
         "en": "Is this the right door?",
-        "vi": "Đây có phải cửa đúng không?"
+        "vi": "Đây có phải cửa đúng không?",
+        "ipa": "/ɪz ðɪs ðə raɪt dɔr/"
       },
       {
         "en": "Is this the right road?",
-        "vi": "Đây có phải đường đúng không?"
+        "vi": "Đây có phải đường đúng không?",
+        "ipa": "/ɪz ðɪs ðə raɪt roʊd/"
       }
     ],
     "asks": [
@@ -2222,41 +2532,50 @@
     "slots": [
       {
         "en": "one o'clock",
-        "vi": "một giờ"
+        "vi": "một giờ",
+        "ipa": "/ɪts wʌn əˈklɑk naʊ/"
       },
       {
         "en": "three o'clock",
-        "vi": "ba giờ"
+        "vi": "ba giờ",
+        "ipa": "/ɪts θri əˈklɑk naʊ/"
       },
       {
         "en": "half past four",
-        "vi": "bốn giờ rưỡi"
+        "vi": "bốn giờ rưỡi",
+        "ipa": "/ɪts hæf pæst fɔr naʊ/"
       },
       {
         "en": "ten past five",
-        "vi": "năm giờ mười"
+        "vi": "năm giờ mười",
+        "ipa": "/ɪts tɛn pæst faɪv naʊ/"
       },
       {
         "en": "quarter past six",
-        "vi": "sáu giờ mười lăm"
+        "vi": "sáu giờ mười lăm",
+        "ipa": "/ɪts ˈkwɔrtər pæst sɪks naʊ/"
       },
       {
         "en": "noon",
-        "vi": "mười hai giờ trưa"
+        "vi": "mười hai giờ trưa",
+        "ipa": "/ɪts nun naʊ/"
       },
       {
         "en": "midnight",
-        "vi": "nửa đêm"
+        "vi": "nửa đêm",
+        "ipa": "/ɪts ˈmɪdˌnaɪt naʊ/"
       }
     ],
     "examples": [
       {
         "en": "It's eight o'clock now.",
-        "vi": "Bây giờ là tám giờ."
+        "vi": "Bây giờ là tám giờ.",
+        "ipa": "/ɪts eɪt əˈklɑk naʊ/"
       },
       {
         "en": "It's half past nine now.",
-        "vi": "Bây giờ là chín giờ rưỡi."
+        "vi": "Bây giờ là chín giờ rưỡi.",
+        "ipa": "/ɪts hæf pæst naɪn naʊ/"
       }
     ],
     "asks": [
@@ -2285,41 +2604,50 @@
     "slots": [
       {
         "en": "seven o'clock",
-        "vi": "bảy giờ"
+        "vi": "bảy giờ",
+        "ipa": "/ðə klæs stɑrts æt ˈsɛvən əˈklɑk/"
       },
       {
         "en": "eight thirty",
-        "vi": "tám giờ ba mươi"
+        "vi": "tám giờ ba mươi",
+        "ipa": "/ðə klæs stɑrts æt eɪt ˈθɝˌdi/"
       },
       {
         "en": "nine o'clock",
-        "vi": "chín giờ"
+        "vi": "chín giờ",
+        "ipa": "/ðə klæs stɑrts æt naɪn əˈklɑk/"
       },
       {
         "en": "half past nine",
-        "vi": "chín giờ rưỡi"
+        "vi": "chín giờ rưỡi",
+        "ipa": "/ðə klæs stɑrts æt hæf pæst naɪn/"
       },
       {
         "en": "ten o'clock",
-        "vi": "mười giờ"
+        "vi": "mười giờ",
+        "ipa": "/ðə klæs stɑrts æt tɛn əˈklɑk/"
       },
       {
         "en": "noon",
-        "vi": "mười hai giờ trưa"
+        "vi": "mười hai giờ trưa",
+        "ipa": "/ðə klæs stɑrts æt nun/"
       }
     ],
     "examples": [
       {
         "en": "The class starts at two o'clock.",
-        "vi": "Lớp học bắt đầu lúc hai giờ."
+        "vi": "Lớp học bắt đầu lúc hai giờ.",
+        "ipa": "/ðə klæs stɑrts æt tu əˈklɑk/"
       },
       {
         "en": "The class starts at quarter past one.",
-        "vi": "Lớp học bắt đầu lúc một giờ mười lăm."
+        "vi": "Lớp học bắt đầu lúc một giờ mười lăm.",
+        "ipa": "/ðə klæs stɑrts æt ˈkwɔrtər pæst wʌn/"
       },
       {
         "en": "The class starts at six thirty.",
-        "vi": "Lớp học bắt đầu lúc sáu giờ ba mươi."
+        "vi": "Lớp học bắt đầu lúc sáu giờ ba mươi.",
+        "ipa": "/ðə klæs stɑrts æt sɪks ˈθɝˌdi/"
       }
     ],
     "asks": [
@@ -2348,41 +2676,50 @@
     "slots": [
       {
         "en": "Monday",
-        "vi": "thứ Hai"
+        "vi": "thứ Hai",
+        "ipa": "/aɪm fri ɑn ˈmʌndi/"
       },
       {
         "en": "Tuesday",
-        "vi": "thứ Ba"
+        "vi": "thứ Ba",
+        "ipa": "/aɪm fri ɑn ˈtuzdi/"
       },
       {
         "en": "Wednesday",
-        "vi": "thứ Tư"
+        "vi": "thứ Tư",
+        "ipa": "/aɪm fri ɑn ˈwɛnzdi/"
       },
       {
         "en": "Friday",
-        "vi": "thứ Sáu"
+        "vi": "thứ Sáu",
+        "ipa": "/aɪm fri ɑn ˈfraɪdi/"
       },
       {
         "en": "Saturday",
-        "vi": "thứ Bảy"
+        "vi": "thứ Bảy",
+        "ipa": "/aɪm fri ɑn ˈsætərdi/"
       },
       {
         "en": "Sunday",
-        "vi": "Chủ nhật"
+        "vi": "Chủ nhật",
+        "ipa": "/aɪm fri ɑn ˈsʌnˌdeɪ/"
       },
       {
         "en": "the weekend",
-        "vi": "cuối tuần"
+        "vi": "cuối tuần",
+        "ipa": "/aɪm fri ɑn ðə ˈwiˌkɛnd/"
       }
     ],
     "examples": [
       {
         "en": "I'm free on Thursday.",
-        "vi": "Tôi rảnh vào thứ Năm."
+        "vi": "Tôi rảnh vào thứ Năm.",
+        "ipa": "/aɪm fri ɑn ˈθɝzˌdeɪ/"
       },
       {
         "en": "I'm free on Sunday morning.",
-        "vi": "Tôi rảnh vào sáng Chủ nhật."
+        "vi": "Tôi rảnh vào sáng Chủ nhật.",
+        "ipa": "/aɪm fri ɑn ˈsʌnˌdeɪ ˈmɔrnɪŋ/"
       }
     ],
     "asks": [
@@ -2411,37 +2748,45 @@
     "slots": [
       {
         "en": "hot",
-        "vi": "nóng"
+        "vi": "nóng",
+        "ipa": "/ɪts hɑt təˈdeɪ/"
       },
       {
         "en": "cold",
-        "vi": "lạnh"
+        "vi": "lạnh",
+        "ipa": "/ɪts koʊld təˈdeɪ/"
       },
       {
         "en": "sunny",
-        "vi": "nắng"
+        "vi": "nắng",
+        "ipa": "/ɪts ˈsʌni təˈdeɪ/"
       },
       {
         "en": "rainy",
-        "vi": "mưa"
+        "vi": "mưa",
+        "ipa": "/ɪts ˈreɪni təˈdeɪ/"
       },
       {
         "en": "windy",
-        "vi": "có gió"
+        "vi": "có gió",
+        "ipa": "/ɪts ˈwɪndi təˈdeɪ/"
       },
       {
         "en": "cloudy",
-        "vi": "nhiều mây"
+        "vi": "nhiều mây",
+        "ipa": "/ɪts ˈklaʊdi təˈdeɪ/"
       }
     ],
     "examples": [
       {
         "en": "It's warm today.",
-        "vi": "Hôm nay trời ấm."
+        "vi": "Hôm nay trời ấm.",
+        "ipa": "/ɪts wɔrm təˈdeɪ/"
       },
       {
         "en": "It's very cold today.",
-        "vi": "Hôm nay trời rất lạnh."
+        "vi": "Hôm nay trời rất lạnh.",
+        "ipa": "/ɪts ˈvɛri koʊld təˈdeɪ/"
       }
     ],
     "asks": [
@@ -2470,37 +2815,45 @@
     "slots": [
       {
         "en": "hot",
-        "vi": "nóng"
+        "vi": "nóng",
+        "ipa": "/aɪ doʊnt laɪk hɑt ˈwɛðər/"
       },
       {
         "en": "cold",
-        "vi": "lạnh"
+        "vi": "lạnh",
+        "ipa": "/aɪ doʊnt laɪk koʊld ˈwɛðər/"
       },
       {
         "en": "rainy",
-        "vi": "mưa"
+        "vi": "mưa",
+        "ipa": "/aɪ doʊnt laɪk ˈreɪni ˈwɛðər/"
       },
       {
         "en": "windy",
-        "vi": "nhiều gió"
+        "vi": "nhiều gió",
+        "ipa": "/aɪ doʊnt laɪk ˈwɪndi ˈwɛðər/"
       },
       {
         "en": "cloudy",
-        "vi": "nhiều mây"
+        "vi": "nhiều mây",
+        "ipa": "/aɪ doʊnt laɪk ˈklaʊdi ˈwɛðər/"
       },
       {
         "en": "snowy",
-        "vi": "có tuyết"
+        "vi": "có tuyết",
+        "ipa": "/aɪ doʊnt laɪk ˈsnoʊi ˈwɛðər/"
       }
     ],
     "examples": [
       {
         "en": "I don't like wet weather.",
-        "vi": "Tôi không thích thời tiết ẩm ướt."
+        "vi": "Tôi không thích thời tiết ẩm ướt.",
+        "ipa": "/aɪ doʊnt laɪk wɛt ˈwɛðər/"
       },
       {
         "en": "I don't like cool weather.",
-        "vi": "Tôi không thích thời tiết mát lạnh."
+        "vi": "Tôi không thích thời tiết mát lạnh.",
+        "ipa": "/aɪ doʊnt laɪk kul ˈwɛðər/"
       }
     ],
     "asks": [
@@ -2529,37 +2882,45 @@
     "slots": [
       {
         "en": "an umbrella",
-        "vi": "một cái ô"
+        "vi": "một cái ô",
+        "ipa": "/teɪk æn əmˈbrɛlə wɪð ju/"
       },
       {
         "en": "a coat",
-        "vi": "một cái áo khoác"
+        "vi": "một cái áo khoác",
+        "ipa": "/teɪk ə koʊt wɪð ju/"
       },
       {
         "en": "a hat",
-        "vi": "một cái mũ"
+        "vi": "một cái mũ",
+        "ipa": "/teɪk ə hæt wɪð ju/"
       },
       {
         "en": "your jacket",
-        "vi": "áo khoác của bạn"
+        "vi": "áo khoác của bạn",
+        "ipa": "/teɪk jɔr ˈdʒækət wɪð ju/"
       },
       {
         "en": "your sunglasses",
-        "vi": "kính râm của bạn"
+        "vi": "kính râm của bạn",
+        "ipa": "/teɪk jɔr ˈsʌnˌɡlæsɪz wɪð ju/"
       },
       {
         "en": "some water",
-        "vi": "ít nước"
+        "vi": "ít nước",
+        "ipa": "/teɪk sʌm ˈwɔtər wɪð ju/"
       }
     ],
     "examples": [
       {
         "en": "Take a map with you.",
-        "vi": "Hãy mang một tấm bản đồ theo."
+        "vi": "Hãy mang một tấm bản đồ theo.",
+        "ipa": "/teɪk ə mæp wɪð ju/"
       },
       {
         "en": "Take your phone with you.",
-        "vi": "Hãy mang điện thoại theo."
+        "vi": "Hãy mang điện thoại theo.",
+        "ipa": "/teɪk jɔr foʊn wɪð ju/"
       }
     ],
     "asks": [
@@ -2588,37 +2949,45 @@
     "slots": [
       {
         "en": "summer",
-        "vi": "mùa hè"
+        "vi": "mùa hè",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn ˈsʌmər/"
       },
       {
         "en": "winter",
-        "vi": "mùa đông"
+        "vi": "mùa đông",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn ˈwɪntər/"
       },
       {
         "en": "spring",
-        "vi": "mùa xuân"
+        "vi": "mùa xuân",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn sprɪŋ/"
       },
       {
         "en": "autumn",
-        "vi": "mùa thu"
+        "vi": "mùa thu",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn ˈɔtəm/"
       },
       {
         "en": "June",
-        "vi": "tháng Sáu"
+        "vi": "tháng Sáu",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn dʒun/"
       },
       {
         "en": "September",
-        "vi": "tháng Chín"
+        "vi": "tháng Chín",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn sɛpˈtɛmbər/"
       }
     ],
     "examples": [
       {
         "en": "It rains a lot in July.",
-        "vi": "Trời mưa nhiều vào tháng Bảy."
+        "vi": "Trời mưa nhiều vào tháng Bảy.",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn ˌdʒuˈlaɪ/"
       },
       {
         "en": "It rains a lot in May.",
-        "vi": "Trời mưa nhiều vào tháng Năm."
+        "vi": "Trời mưa nhiều vào tháng Năm.",
+        "ipa": "/ɪt reɪnz ə lɑt ɪn meɪ/"
       }
     ],
     "asks": [
@@ -2647,37 +3016,45 @@
     "slots": [
       {
         "en": "five thirty",
-        "vi": "năm giờ ba mươi"
+        "vi": "năm giờ ba mươi",
+        "ipa": "/aɪ ɡɛt ʌp æt faɪv ˈθɝˌdi/"
       },
       {
         "en": "six o'clock",
-        "vi": "sáu giờ"
+        "vi": "sáu giờ",
+        "ipa": "/aɪ ɡɛt ʌp æt sɪks əˈklɑk/"
       },
       {
         "en": "half past six",
-        "vi": "sáu giờ rưỡi"
+        "vi": "sáu giờ rưỡi",
+        "ipa": "/aɪ ɡɛt ʌp æt hæf pæst sɪks/"
       },
       {
         "en": "seven o'clock",
-        "vi": "bảy giờ"
+        "vi": "bảy giờ",
+        "ipa": "/aɪ ɡɛt ʌp æt ˈsɛvən əˈklɑk/"
       },
       {
         "en": "seven thirty",
-        "vi": "bảy giờ ba mươi"
+        "vi": "bảy giờ ba mươi",
+        "ipa": "/aɪ ɡɛt ʌp æt ˈsɛvən ˈθɝˌdi/"
       },
       {
         "en": "eight o'clock",
-        "vi": "tám giờ"
+        "vi": "tám giờ",
+        "ipa": "/aɪ ɡɛt ʌp æt eɪt əˈklɑk/"
       }
     ],
     "examples": [
       {
         "en": "I get up at five o'clock.",
-        "vi": "Tôi thức dậy lúc năm giờ."
+        "vi": "Tôi thức dậy lúc năm giờ.",
+        "ipa": "/aɪ ɡɛt ʌp æt faɪv əˈklɑk/"
       },
       {
         "en": "I get up at quarter past seven.",
-        "vi": "Tôi thức dậy lúc bảy giờ mười lăm."
+        "vi": "Tôi thức dậy lúc bảy giờ mười lăm.",
+        "ipa": "/aɪ ɡɛt ʌp æt ˈkwɔrtər pæst ˈsɛvən/"
       }
     ],
     "asks": [
@@ -2706,37 +3083,45 @@
     "slots": [
       {
         "en": "walk",
-        "vi": "đi bộ"
+        "vi": "đi bộ",
+        "ipa": "/aɪ wɔk ˈɛvəri deɪ/"
       },
       {
         "en": "read",
-        "vi": "đọc sách"
+        "vi": "đọc sách",
+        "ipa": "/aɪ rɛd ˈɛvəri deɪ/"
       },
       {
         "en": "cook",
-        "vi": "nấu ăn"
+        "vi": "nấu ăn",
+        "ipa": "/aɪ kʊk ˈɛvəri deɪ/"
       },
       {
         "en": "study English",
-        "vi": "học tiếng Anh"
+        "vi": "học tiếng Anh",
+        "ipa": "/aɪ ˈstʌdi ˈɪŋɡlɪʃ ˈɛvəri deɪ/"
       },
       {
         "en": "drink coffee",
-        "vi": "uống cà phê"
+        "vi": "uống cà phê",
+        "ipa": "/aɪ drɪŋk ˈkɑfi ˈɛvəri deɪ/"
       },
       {
         "en": "play football",
-        "vi": "chơi bóng đá"
+        "vi": "chơi bóng đá",
+        "ipa": "/aɪ pleɪ ˈfʊtˌbɔl ˈɛvəri deɪ/"
       }
     ],
     "examples": [
       {
         "en": "I swim every day.",
-        "vi": "Tôi bơi mỗi ngày."
+        "vi": "Tôi bơi mỗi ngày.",
+        "ipa": "/aɪ swɪm ˈɛvəri deɪ/"
       },
       {
         "en": "I listen to music every day.",
-        "vi": "Tôi nghe nhạc mỗi ngày."
+        "vi": "Tôi nghe nhạc mỗi ngày.",
+        "ipa": "/aɪ ˈlɪsən tu ˈmjuzɪk ˈɛvəri deɪ/"
       }
     ],
     "asks": [
@@ -2765,45 +3150,55 @@
     "slots": [
       {
         "en": "head",
-        "vi": "đầu"
+        "vi": "đầu",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ hɛd/"
       },
       {
         "en": "back",
-        "vi": "lưng"
+        "vi": "lưng",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ bæk/"
       },
       {
         "en": "leg",
-        "vi": "chân"
+        "vi": "chân",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ lɛɡ/"
       },
       {
         "en": "arm",
-        "vi": "tay"
+        "vi": "tay",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ ɑrm/"
       },
       {
         "en": "neck",
-        "vi": "cổ"
+        "vi": "cổ",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ nɛk/"
       },
       {
         "en": "foot",
-        "vi": "bàn chân"
+        "vi": "bàn chân",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ fʊt/"
       },
       {
         "en": "chest",
-        "vi": "ngực"
+        "vi": "ngực",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ tʃɛst/"
       },
       {
         "en": "stomach",
-        "vi": "bụng"
+        "vi": "bụng",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ ˈstʌmək/"
       }
     ],
     "examples": [
       {
         "en": "I have a pain in my knee.",
-        "vi": "Tôi bị đau ở đầu gối."
+        "vi": "Tôi bị đau ở đầu gối.",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ ni/"
       },
       {
         "en": "I have a pain in my hand.",
-        "vi": "Tôi bị đau ở bàn tay."
+        "vi": "Tôi bị đau ở bàn tay.",
+        "ipa": "/aɪ hæv ə peɪn ɪn maɪ hænd/"
       }
     ],
     "asks": [
@@ -2832,41 +3227,50 @@
     "slots": [
       {
         "en": "head",
-        "vi": "Đầu"
+        "vi": "Đầu",
+        "ipa": "/maɪ hɛd hɝts/"
       },
       {
         "en": "back",
-        "vi": "Lưng"
+        "vi": "Lưng",
+        "ipa": "/maɪ bæk hɝts/"
       },
       {
         "en": "tooth",
-        "vi": "Răng"
+        "vi": "Răng",
+        "ipa": "/maɪ tuθ hɝts/"
       },
       {
         "en": "throat",
-        "vi": "Cổ họng"
+        "vi": "Cổ họng",
+        "ipa": "/maɪ θroʊt hɝts/"
       },
       {
         "en": "ear",
-        "vi": "Tai"
+        "vi": "Tai",
+        "ipa": "/maɪ ir hɝts/"
       },
       {
         "en": "stomach",
-        "vi": "Bụng"
+        "vi": "Bụng",
+        "ipa": "/maɪ ˈstʌmək hɝts/"
       },
       {
         "en": "leg",
-        "vi": "Chân"
+        "vi": "Chân",
+        "ipa": "/maɪ lɛɡ hɝts/"
       }
     ],
     "examples": [
       {
         "en": "My shoulder hurts.",
-        "vi": "Vai của tôi đau."
+        "vi": "Vai của tôi đau.",
+        "ipa": "/maɪ ˈʃoʊldər hɝts/"
       },
       {
         "en": "My finger hurts.",
-        "vi": "Ngón tay của tôi đau."
+        "vi": "Ngón tay của tôi đau.",
+        "ipa": "/maɪ ˈfɪŋɡər hɝts/"
       }
     ],
     "asks": [
@@ -2895,41 +3299,50 @@
     "slots": [
       {
         "en": "a cold",
-        "vi": "cảm lạnh"
+        "vi": "cảm lạnh",
+        "ipa": "/aɪ hæv ə koʊld təˈdeɪ/"
       },
       {
         "en": "a headache",
-        "vi": "đau đầu"
+        "vi": "đau đầu",
+        "ipa": "/aɪ hæv ə ˈhɛˌdeɪk təˈdeɪ/"
       },
       {
         "en": "a fever",
-        "vi": "sốt"
+        "vi": "sốt",
+        "ipa": "/aɪ hæv ə ˈfivər təˈdeɪ/"
       },
       {
         "en": "a cough",
-        "vi": "ho"
+        "vi": "ho",
+        "ipa": "/aɪ hæv ə kɑf təˈdeɪ/"
       },
       {
         "en": "a stomachache",
-        "vi": "đau bụng"
+        "vi": "đau bụng",
+        "ipa": "/aɪ hæv ə stomachache təˈdeɪ/"
       },
       {
         "en": "a toothache",
-        "vi": "đau răng"
+        "vi": "đau răng",
+        "ipa": "/aɪ hæv ə toothache təˈdeɪ/"
       },
       {
         "en": "a sore throat",
-        "vi": "đau họng"
+        "vi": "đau họng",
+        "ipa": "/aɪ hæv ə sɔr θroʊt təˈdeɪ/"
       }
     ],
     "examples": [
       {
         "en": "I have a bad cold today.",
-        "vi": "Hôm nay tôi bị cảm nặng."
+        "vi": "Hôm nay tôi bị cảm nặng.",
+        "ipa": "/aɪ hæv ə bæd koʊld təˈdeɪ/"
       },
       {
         "en": "I have a pain today.",
-        "vi": "Hôm nay tôi bị đau."
+        "vi": "Hôm nay tôi bị đau.",
+        "ipa": "/aɪ hæv ə peɪn təˈdeɪ/"
       }
     ],
     "asks": [
@@ -2958,41 +3371,50 @@
     "slots": [
       {
         "en": "a doctor",
-        "vi": "bác sĩ"
+        "vi": "bác sĩ",
+        "ipa": "/aɪ nid ə ˈdɑktər/"
       },
       {
         "en": "a rest",
-        "vi": "nghỉ ngơi"
+        "vi": "nghỉ ngơi",
+        "ipa": "/aɪ nid ə rɛst/"
       },
       {
         "en": "some water",
-        "vi": "ít nước"
+        "vi": "ít nước",
+        "ipa": "/aɪ nid sʌm ˈwɔtər/"
       },
       {
         "en": "some medicine",
-        "vi": "ít thuốc"
+        "vi": "ít thuốc",
+        "ipa": "/aɪ nid sʌm ˈmɛdəsən/"
       },
       {
         "en": "a dentist",
-        "vi": "nha sĩ"
+        "vi": "nha sĩ",
+        "ipa": "/aɪ nid ə ˈdɛntəst/"
       },
       {
         "en": "a hospital",
-        "vi": "bệnh viện"
+        "vi": "bệnh viện",
+        "ipa": "/aɪ nid ə ˈhɑˌspɪtəl/"
       },
       {
         "en": "some help",
-        "vi": "sự giúp đỡ"
+        "vi": "sự giúp đỡ",
+        "ipa": "/aɪ nid sʌm hɛlp/"
       }
     ],
     "examples": [
       {
         "en": "I need some sleep.",
-        "vi": "Tôi cần ngủ một chút."
+        "vi": "Tôi cần ngủ một chút.",
+        "ipa": "/aɪ nid sʌm slip/"
       },
       {
         "en": "I need a nurse.",
-        "vi": "Tôi cần một y tá."
+        "vi": "Tôi cần một y tá.",
+        "ipa": "/aɪ nid ə nɝs/"
       }
     ],
     "asks": [
@@ -3021,37 +3443,45 @@
     "slots": [
       {
         "en": "happy",
-        "vi": "vui"
+        "vi": "vui",
+        "ipa": "/aɪ æm ˈvɛri ˈhæpi təˈdeɪ/"
       },
       {
         "en": "tired",
-        "vi": "mệt"
+        "vi": "mệt",
+        "ipa": "/aɪ æm ˈvɛri ˈtaɪərd təˈdeɪ/"
       },
       {
         "en": "sad",
-        "vi": "buồn"
+        "vi": "buồn",
+        "ipa": "/aɪ æm ˈvɛri sæd təˈdeɪ/"
       },
       {
         "en": "hungry",
-        "vi": "đói"
+        "vi": "đói",
+        "ipa": "/aɪ æm ˈvɛri ˈhʌŋɡri təˈdeɪ/"
       },
       {
         "en": "busy",
-        "vi": "bận"
+        "vi": "bận",
+        "ipa": "/aɪ æm ˈvɛri ˈbɪzi təˈdeɪ/"
       },
       {
         "en": "angry",
-        "vi": "giận"
+        "vi": "giận",
+        "ipa": "/aɪ æm ˈvɛri ˈæŋɡri təˈdeɪ/"
       }
     ],
     "examples": [
       {
         "en": "I am very sleepy today.",
-        "vi": "Hôm nay tôi rất buồn ngủ."
+        "vi": "Hôm nay tôi rất buồn ngủ.",
+        "ipa": "/aɪ æm ˈvɛri ˈslipi təˈdeɪ/"
       },
       {
         "en": "I am very well today.",
-        "vi": "Hôm nay tôi rất khỏe."
+        "vi": "Hôm nay tôi rất khỏe.",
+        "ipa": "/aɪ æm ˈvɛri wɛl təˈdeɪ/"
       }
     ],
     "asks": [
@@ -3080,41 +3510,50 @@
     "slots": [
       {
         "en": "sad",
-        "vi": "buồn"
+        "vi": "buồn",
+        "ipa": "/waɪ ɑr ju sæd/"
       },
       {
         "en": "angry",
-        "vi": "giận"
+        "vi": "giận",
+        "ipa": "/waɪ ɑr ju ˈæŋɡri/"
       },
       {
         "en": "happy",
-        "vi": "vui"
+        "vi": "vui",
+        "ipa": "/waɪ ɑr ju ˈhæpi/"
       },
       {
         "en": "tired",
-        "vi": "mệt"
+        "vi": "mệt",
+        "ipa": "/waɪ ɑr ju ˈtaɪərd/"
       },
       {
         "en": "late",
-        "vi": "trễ"
+        "vi": "trễ",
+        "ipa": "/waɪ ɑr ju leɪt/"
       },
       {
         "en": "afraid",
-        "vi": "sợ"
+        "vi": "sợ",
+        "ipa": "/waɪ ɑr ju əˈfreɪd/"
       },
       {
         "en": "quiet",
-        "vi": "im lặng"
+        "vi": "im lặng",
+        "ipa": "/waɪ ɑr ju ˈkwaɪət/"
       }
     ],
     "examples": [
       {
         "en": "Why are you so sad?",
-        "vi": "Sao bạn buồn thế?"
+        "vi": "Sao bạn buồn thế?",
+        "ipa": "/waɪ ɑr ju soʊ sæd/"
       },
       {
         "en": "Why are you crying?",
-        "vi": "Sao bạn khóc vậy?"
+        "vi": "Sao bạn khóc vậy?",
+        "ipa": "/waɪ ɑr ju ˈkraɪɪŋ/"
       }
     ],
     "asks": [
@@ -3143,37 +3582,45 @@
     "slots": [
       {
         "en": "it is Friday",
-        "vi": "hôm nay là thứ sáu"
+        "vi": "hôm nay là thứ sáu",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz ɪt ɪz ˈfraɪdi/"
       },
       {
         "en": "I see my family",
-        "vi": "tôi gặp gia đình"
+        "vi": "tôi gặp gia đình",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz aɪ si maɪ ˈfæməli/"
       },
       {
         "en": "I have a new job",
-        "vi": "tôi có việc mới"
+        "vi": "tôi có việc mới",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz aɪ hæv ə nu dʒɑb/"
       },
       {
         "en": "the sun is out",
-        "vi": "trời nắng"
+        "vi": "trời nắng",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz ðə sʌn ɪz aʊt/"
       },
       {
         "en": "you are here",
-        "vi": "bạn ở đây"
+        "vi": "bạn ở đây",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz ju ɑr hir/"
       },
       {
         "en": "I have a gift",
-        "vi": "tôi có quà"
+        "vi": "tôi có quà",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz aɪ hæv ə ɡɪft/"
       }
     ],
     "examples": [
       {
         "en": "I am happy because I pass the test.",
-        "vi": "Tôi vui vì tôi đậu bài kiểm tra."
+        "vi": "Tôi vui vì tôi đậu bài kiểm tra.",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz aɪ pæs ðə tɛst/"
       },
       {
         "en": "I am happy because we are friends.",
-        "vi": "Tôi vui vì chúng ta là bạn."
+        "vi": "Tôi vui vì chúng ta là bạn.",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz wi ɑr frɛndz/"
       }
     ],
     "asks": [
@@ -3202,41 +3649,50 @@
     "slots": [
       {
         "en": "dogs",
-        "vi": "chó"
+        "vi": "chó",
+        "ipa": "/aɪ æm əˈfreɪd ʌv dɑɡz/"
       },
       {
         "en": "snakes",
-        "vi": "rắn"
+        "vi": "rắn",
+        "ipa": "/aɪ æm əˈfreɪd ʌv sneɪks/"
       },
       {
         "en": "the dark",
-        "vi": "bóng tối"
+        "vi": "bóng tối",
+        "ipa": "/aɪ æm əˈfreɪd ʌv ðə dɑrk/"
       },
       {
         "en": "water",
-        "vi": "nước"
+        "vi": "nước",
+        "ipa": "/aɪ æm əˈfreɪd ʌv ˈwɔtər/"
       },
       {
         "en": "spiders",
-        "vi": "nhện"
+        "vi": "nhện",
+        "ipa": "/aɪ æm əˈfreɪd ʌv ˈspaɪdərz/"
       },
       {
         "en": "heights",
-        "vi": "độ cao"
+        "vi": "độ cao",
+        "ipa": "/aɪ æm əˈfreɪd ʌv haɪts/"
       },
       {
         "en": "my teacher",
-        "vi": "giáo viên của tôi"
+        "vi": "giáo viên của tôi",
+        "ipa": "/aɪ æm əˈfreɪd ʌv maɪ ˈtitʃər/"
       }
     ],
     "examples": [
       {
         "en": "I am afraid of cats.",
-        "vi": "Tôi sợ mèo."
+        "vi": "Tôi sợ mèo.",
+        "ipa": "/aɪ æm əˈfreɪd ʌv kæts/"
       },
       {
         "en": "I am afraid of the doctor.",
-        "vi": "Tôi sợ bác sĩ."
+        "vi": "Tôi sợ bác sĩ.",
+        "ipa": "/aɪ æm əˈfreɪd ʌv ðə ˈdɑktər/"
       }
     ],
     "asks": [
@@ -3265,41 +3721,50 @@
     "slots": [
       {
         "en": "the police",
-        "vi": "cảnh sát"
+        "vi": "cảnh sát",
+        "ipa": "/pliz kɔl ðə pəˈlis/"
       },
       {
         "en": "a doctor",
-        "vi": "bác sĩ"
+        "vi": "bác sĩ",
+        "ipa": "/pliz kɔl ə ˈdɑktər/"
       },
       {
         "en": "an ambulance",
-        "vi": "xe cứu thương"
+        "vi": "xe cứu thương",
+        "ipa": "/pliz kɔl æn ˈæmbjələns/"
       },
       {
         "en": "my mother",
-        "vi": "mẹ tôi"
+        "vi": "mẹ tôi",
+        "ipa": "/pliz kɔl maɪ ˈmʌðər/"
       },
       {
         "en": "my friend",
-        "vi": "bạn tôi"
+        "vi": "bạn tôi",
+        "ipa": "/pliz kɔl maɪ frɛnd/"
       },
       {
         "en": "the hotel",
-        "vi": "khách sạn"
+        "vi": "khách sạn",
+        "ipa": "/pliz kɔl ðə hoʊˈtɛl/"
       },
       {
         "en": "a taxi",
-        "vi": "taxi"
+        "vi": "taxi",
+        "ipa": "/pliz kɔl ə ˈtæksi/"
       }
     ],
     "examples": [
       {
         "en": "Please call my father!",
-        "vi": "Làm ơn gọi bố tôi!"
+        "vi": "Làm ơn gọi bố tôi!",
+        "ipa": "/pliz kɔl maɪ ˈfɑðər/"
       },
       {
         "en": "Please call the nurse!",
-        "vi": "Làm ơn gọi y tá!"
+        "vi": "Làm ơn gọi y tá!",
+        "ipa": "/pliz kɔl ðə nɝs/"
       }
     ],
     "asks": [
@@ -3327,41 +3792,50 @@
     "slots": [
       {
         "en": "phone",
-        "vi": "điện thoại"
+        "vi": "điện thoại",
+        "ipa": "/aɪ lɔst maɪ foʊn/"
       },
       {
         "en": "bag",
-        "vi": "túi"
+        "vi": "túi",
+        "ipa": "/aɪ lɔst maɪ bæɡ/"
       },
       {
         "en": "passport",
-        "vi": "hộ chiếu"
+        "vi": "hộ chiếu",
+        "ipa": "/aɪ lɔst maɪ ˈpæˌspɔrt/"
       },
       {
         "en": "wallet",
-        "vi": "ví"
+        "vi": "ví",
+        "ipa": "/aɪ lɔst maɪ ˈwɔlət/"
       },
       {
         "en": "key",
-        "vi": "chìa khóa"
+        "vi": "chìa khóa",
+        "ipa": "/aɪ lɔst maɪ ki/"
       },
       {
         "en": "ticket",
-        "vi": "vé"
+        "vi": "vé",
+        "ipa": "/aɪ lɔst maɪ ˈtɪkət/"
       },
       {
         "en": "money",
-        "vi": "tiền"
+        "vi": "tiền",
+        "ipa": "/aɪ lɔst maɪ ˈmʌni/"
       }
     ],
     "examples": [
       {
         "en": "I lost my watch.",
-        "vi": "Tôi bị mất đồng hồ."
+        "vi": "Tôi bị mất đồng hồ.",
+        "ipa": "/aɪ lɔst maɪ wɑtʃ/"
       },
       {
         "en": "I lost my card.",
-        "vi": "Tôi bị mất thẻ."
+        "vi": "Tôi bị mất thẻ.",
+        "ipa": "/aɪ lɔst maɪ kɑrd/"
       }
     ],
     "asks": [
@@ -3390,41 +3864,50 @@
     "slots": [
       {
         "en": "now",
-        "vi": "ngay bây giờ"
+        "vi": "ngay bây giờ",
+        "ipa": "/kæn ju hɛlp mi naʊ/"
       },
       {
         "en": "please",
-        "vi": "với"
+        "vi": "với",
+        "ipa": "/kæn ju hɛlp mi pliz/"
       },
       {
         "en": "find my bag",
-        "vi": "tìm túi của tôi"
+        "vi": "tìm túi của tôi",
+        "ipa": "/kæn ju hɛlp mi faɪnd maɪ bæɡ/"
       },
       {
         "en": "find a doctor",
-        "vi": "tìm bác sĩ"
+        "vi": "tìm bác sĩ",
+        "ipa": "/kæn ju hɛlp mi faɪnd ə ˈdɑktər/"
       },
       {
         "en": "find my phone",
-        "vi": "tìm điện thoại"
+        "vi": "tìm điện thoại",
+        "ipa": "/kæn ju hɛlp mi faɪnd maɪ foʊn/"
       },
       {
         "en": "find the hotel",
-        "vi": "tìm khách sạn"
+        "vi": "tìm khách sạn",
+        "ipa": "/kæn ju hɛlp mi faɪnd ðə hoʊˈtɛl/"
       },
       {
         "en": "call my friend",
-        "vi": "gọi bạn tôi"
+        "vi": "gọi bạn tôi",
+        "ipa": "/kæn ju hɛlp mi kɔl maɪ frɛnd/"
       }
     ],
     "examples": [
       {
         "en": "Can you help me find my key?",
-        "vi": "Bạn giúp tôi tìm chìa khóa được không?"
+        "vi": "Bạn giúp tôi tìm chìa khóa được không?",
+        "ipa": "/kæn ju hɛlp mi faɪnd maɪ ki/"
       },
       {
         "en": "Can you help me find the station?",
-        "vi": "Bạn giúp tôi tìm nhà ga được không?"
+        "vi": "Bạn giúp tôi tìm nhà ga được không?",
+        "ipa": "/kæn ju hɛlp mi faɪnd ðə ˈsteɪʃən/"
       }
     ],
     "asks": [
@@ -3453,41 +3936,50 @@
     "slots": [
       {
         "en": "a fire",
-        "vi": "cháy"
+        "vi": "cháy",
+        "ipa": "/ðɛr ɪz ə ˈfaɪər hir/"
       },
       {
         "en": "a thief",
-        "vi": "kẻ trộm"
+        "vi": "kẻ trộm",
+        "ipa": "/ðɛr ɪz ə θif hir/"
       },
       {
         "en": "an accident",
-        "vi": "tai nạn"
+        "vi": "tai nạn",
+        "ipa": "/ðɛr ɪz æn ˈæksədənt hir/"
       },
       {
         "en": "an injured man",
-        "vi": "một người bị thương"
+        "vi": "một người bị thương",
+        "ipa": "/ðɛr ɪz æn ˈɪndʒərd mæn hir/"
       },
       {
         "en": "a bad dog",
-        "vi": "một con chó dữ"
+        "vi": "một con chó dữ",
+        "ipa": "/ðɛr ɪz ə bæd dɔɡ hir/"
       },
       {
         "en": "some smoke",
-        "vi": "khói"
+        "vi": "khói",
+        "ipa": "/ðɛr ɪz sʌm smoʊk hir/"
       },
       {
         "en": "a problem",
-        "vi": "vấn đề"
+        "vi": "vấn đề",
+        "ipa": "/ðɛr ɪz ə ˈprɑbləm hir/"
       }
     ],
     "examples": [
       {
         "en": "There is a snake here!",
-        "vi": "Ở đây có rắn!"
+        "vi": "Ở đây có rắn!",
+        "ipa": "/ðɛr ɪz ə sneɪk hir/"
       },
       {
         "en": "There is some gas here!",
-        "vi": "Ở đây có gas!"
+        "vi": "Ở đây có gas!",
+        "ipa": "/ðɛr ɪz sʌm ɡæs hir/"
       }
     ],
     "asks": [
@@ -3516,41 +4008,50 @@
     "slots": [
       {
         "en": "a bed",
-        "vi": "một cái giường"
+        "vi": "một cái giường",
+        "ipa": "/ðɛr ɪz ə bɛd ɪn maɪ rum/"
       },
       {
         "en": "a desk",
-        "vi": "một cái bàn học"
+        "vi": "một cái bàn học",
+        "ipa": "/ðɛr ɪz ə dɛsk ɪn maɪ rum/"
       },
       {
         "en": "a window",
-        "vi": "một cái cửa sổ"
+        "vi": "một cái cửa sổ",
+        "ipa": "/ðɛr ɪz ə ˈwɪndoʊ ɪn maɪ rum/"
       },
       {
         "en": "a chair",
-        "vi": "một cái ghế"
+        "vi": "một cái ghế",
+        "ipa": "/ðɛr ɪz ə tʃɛr ɪn maɪ rum/"
       },
       {
         "en": "a lamp",
-        "vi": "một cái đèn"
+        "vi": "một cái đèn",
+        "ipa": "/ðɛr ɪz ə læmp ɪn maɪ rum/"
       },
       {
         "en": "a TV",
-        "vi": "một cái ti vi"
+        "vi": "một cái ti vi",
+        "ipa": "/ðɛr ɪz ə ˈtiˈvi ɪn maɪ rum/"
       },
       {
         "en": "an old mirror",
-        "vi": "một cái gương cũ"
+        "vi": "một cái gương cũ",
+        "ipa": "/ðɛr ɪz æn oʊld ˈmɪrər ɪn maɪ rum/"
       }
     ],
     "examples": [
       {
         "en": "There is a sofa in my room.",
-        "vi": "Trong phòng tôi có một cái ghế sofa."
+        "vi": "Trong phòng tôi có một cái ghế sofa.",
+        "ipa": "/ðɛr ɪz ə ˈsoʊfə ɪn maɪ rum/"
       },
       {
         "en": "There is a fan in my room.",
-        "vi": "Trong phòng tôi có một cái quạt."
+        "vi": "Trong phòng tôi có một cái quạt.",
+        "ipa": "/ðɛr ɪz ə fæn ɪn maɪ rum/"
       }
     ],
     "asks": [
@@ -3579,41 +4080,50 @@
     "slots": [
       {
         "en": "my phone",
-        "vi": "điện thoại của tôi"
+        "vi": "điện thoại của tôi",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz maɪ foʊn/"
       },
       {
         "en": "the key",
-        "vi": "chìa khóa"
+        "vi": "chìa khóa",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz ðə ki/"
       },
       {
         "en": "my bag",
-        "vi": "túi của tôi"
+        "vi": "túi của tôi",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz maɪ bæɡ/"
       },
       {
         "en": "the remote",
-        "vi": "cái điều khiển"
+        "vi": "cái điều khiển",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz ðə rɪˈmoʊt/"
       },
       {
         "en": "the bathroom",
-        "vi": "phòng tắm"
+        "vi": "phòng tắm",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz ðə ˈbæˌθrum/"
       },
       {
         "en": "the kitchen",
-        "vi": "nhà bếp"
+        "vi": "nhà bếp",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz ðə ˈkɪtʃən/"
       },
       {
         "en": "my wallet",
-        "vi": "ví của tôi"
+        "vi": "ví của tôi",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz maɪ ˈwɔlət/"
       }
     ],
     "examples": [
       {
         "en": "Excuse me, where is the toilet?",
-        "vi": "Xin lỗi, nhà vệ sinh ở đâu?"
+        "vi": "Xin lỗi, nhà vệ sinh ở đâu?",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz ðə ˈtɔɪlət/"
       },
       {
         "en": "Excuse me, where is my book?",
-        "vi": "Xin lỗi, sách của tôi ở đâu?"
+        "vi": "Xin lỗi, sách của tôi ở đâu?",
+        "ipa": "/ɪkskˈjus mi wɛr ɪz maɪ bʊk/"
       }
     ],
     "asks": [
@@ -3642,37 +4152,45 @@
     "slots": [
       {
         "en": "the light",
-        "vi": "đèn"
+        "vi": "đèn",
+        "ipa": "/pliz tɝn ɑn ðə laɪt/"
       },
       {
         "en": "the TV",
-        "vi": "ti vi"
+        "vi": "ti vi",
+        "ipa": "/pliz tɝn ɑn ðə ˈtiˈvi/"
       },
       {
         "en": "the fan",
-        "vi": "quạt"
+        "vi": "quạt",
+        "ipa": "/pliz tɝn ɑn ðə fæn/"
       },
       {
         "en": "the air conditioner",
-        "vi": "máy lạnh"
+        "vi": "máy lạnh",
+        "ipa": "/pliz tɝn ɑn ðə ɛr kənˈdɪʃənər/"
       },
       {
         "en": "the radio",
-        "vi": "đài"
+        "vi": "đài",
+        "ipa": "/pliz tɝn ɑn ðə ˈreɪdiˌoʊ/"
       },
       {
         "en": "my computer",
-        "vi": "máy tính của tôi"
+        "vi": "máy tính của tôi",
+        "ipa": "/pliz tɝn ɑn maɪ kəmpˈjutər/"
       }
     ],
     "examples": [
       {
         "en": "Please turn on the heater.",
-        "vi": "Làm ơn bật máy sưởi lên."
+        "vi": "Làm ơn bật máy sưởi lên.",
+        "ipa": "/pliz tɝn ɑn ðə ˈhitər/"
       },
       {
         "en": "Please turn on the water.",
-        "vi": "Làm ơn mở nước lên."
+        "vi": "Làm ơn mở nước lên.",
+        "ipa": "/pliz tɝn ɑn ðə ˈwɔtər/"
       }
     ],
     "asks": [
@@ -3701,37 +4219,45 @@
     "slots": [
       {
         "en": "a shirt",
-        "vi": "một cái áo sơ mi"
+        "vi": "một cái áo sơ mi",
+        "ipa": "/aɪ wɑnt tu baɪ ə ʃɝt/"
       },
       {
         "en": "a jacket",
-        "vi": "một cái áo khoác"
+        "vi": "một cái áo khoác",
+        "ipa": "/aɪ wɑnt tu baɪ ə ˈdʒækət/"
       },
       {
         "en": "a hat",
-        "vi": "một cái mũ"
+        "vi": "một cái mũ",
+        "ipa": "/aɪ wɑnt tu baɪ ə hæt/"
       },
       {
         "en": "new shoes",
-        "vi": "đôi giày mới"
+        "vi": "đôi giày mới",
+        "ipa": "/aɪ wɑnt tu baɪ nu ʃuz/"
       },
       {
         "en": "a dress",
-        "vi": "một cái váy liền"
+        "vi": "một cái váy liền",
+        "ipa": "/aɪ wɑnt tu baɪ ə drɛs/"
       },
       {
         "en": "some socks",
-        "vi": "vài đôi tất"
+        "vi": "vài đôi tất",
+        "ipa": "/aɪ wɑnt tu baɪ sʌm sɑks/"
       }
     ],
     "examples": [
       {
         "en": "I want to buy a bag.",
-        "vi": "Tôi muốn mua một cái túi."
+        "vi": "Tôi muốn mua một cái túi.",
+        "ipa": "/aɪ wɑnt tu baɪ ə bæɡ/"
       },
       {
         "en": "I want to buy a coat.",
-        "vi": "Tôi muốn mua một cái áo choàng."
+        "vi": "Tôi muốn mua một cái áo choàng.",
+        "ipa": "/aɪ wɑnt tu baɪ ə koʊt/"
       }
     ],
     "asks": [
@@ -3760,41 +4286,50 @@
     "slots": [
       {
         "en": "red",
-        "vi": "đỏ"
+        "vi": "đỏ",
+        "ipa": "/du ju hæv ðɪs ɪn rɛd/"
       },
       {
         "en": "blue",
-        "vi": "xanh dương"
+        "vi": "xanh dương",
+        "ipa": "/du ju hæv ðɪs ɪn blu/"
       },
       {
         "en": "black",
-        "vi": "đen"
+        "vi": "đen",
+        "ipa": "/du ju hæv ðɪs ɪn blæk/"
       },
       {
         "en": "white",
-        "vi": "trắng"
+        "vi": "trắng",
+        "ipa": "/du ju hæv ðɪs ɪn waɪt/"
       },
       {
         "en": "green",
-        "vi": "xanh lá"
+        "vi": "xanh lá",
+        "ipa": "/du ju hæv ðɪs ɪn ɡrin/"
       },
       {
         "en": "yellow",
-        "vi": "vàng"
+        "vi": "vàng",
+        "ipa": "/du ju hæv ðɪs ɪn ˈjɛloʊ/"
       },
       {
         "en": "pink",
-        "vi": "hồng"
+        "vi": "hồng",
+        "ipa": "/du ju hæv ðɪs ɪn pɪŋk/"
       }
     ],
     "examples": [
       {
         "en": "Do you have this in brown?",
-        "vi": "Bạn có cái này màu nâu không?"
+        "vi": "Bạn có cái này màu nâu không?",
+        "ipa": "/du ju hæv ðɪs ɪn braʊn/"
       },
       {
         "en": "Do you have this in grey?",
-        "vi": "Bạn có cái này màu xám không?"
+        "vi": "Bạn có cái này màu xám không?",
+        "ipa": "/du ju hæv ðɪs ɪn ɡreɪ/"
       }
     ],
     "asks": [
@@ -3823,37 +4358,45 @@
     "slots": [
       {
         "en": "blue",
-        "vi": "xanh dương"
+        "vi": "xanh dương",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz blu/"
       },
       {
         "en": "red",
-        "vi": "đỏ"
+        "vi": "đỏ",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz rɛd/"
       },
       {
         "en": "green",
-        "vi": "xanh lá"
+        "vi": "xanh lá",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz ɡrin/"
       },
       {
         "en": "black",
-        "vi": "đen"
+        "vi": "đen",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz blæk/"
       },
       {
         "en": "yellow",
-        "vi": "vàng"
+        "vi": "vàng",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz ˈjɛloʊ/"
       },
       {
         "en": "pink",
-        "vi": "hồng"
+        "vi": "hồng",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz pɪŋk/"
       }
     ],
     "examples": [
       {
         "en": "My favourite colour is orange.",
-        "vi": "Màu yêu thích của tôi là màu cam."
+        "vi": "Màu yêu thích của tôi là màu cam.",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz ˈɔrəndʒ/"
       },
       {
         "en": "My favourite colour is purple.",
-        "vi": "Màu yêu thích của tôi là màu tím."
+        "vi": "Màu yêu thích của tôi là màu tím.",
+        "ipa": "/maɪ ˈfeɪvərɪt ˈkʌlər ɪz ˈpɝpəl/"
       }
     ],
     "asks": [
@@ -3882,37 +4425,45 @@
     "slots": [
       {
         "en": "a white shirt",
-        "vi": "một cái áo sơ mi trắng"
+        "vi": "một cái áo sơ mi trắng",
+        "ipa": "/aɪm ˈwɛrɪŋ ə waɪt ʃɝt təˈdeɪ/"
       },
       {
         "en": "a blue jacket",
-        "vi": "một cái áo khoác xanh"
+        "vi": "một cái áo khoác xanh",
+        "ipa": "/aɪm ˈwɛrɪŋ ə blu ˈdʒækət təˈdeɪ/"
       },
       {
         "en": "a red dress",
-        "vi": "một cái váy đỏ"
+        "vi": "một cái váy đỏ",
+        "ipa": "/aɪm ˈwɛrɪŋ ə rɛd drɛs təˈdeɪ/"
       },
       {
         "en": "a warm coat",
-        "vi": "một cái áo ấm"
+        "vi": "một cái áo ấm",
+        "ipa": "/aɪm ˈwɛrɪŋ ə wɔrm koʊt təˈdeɪ/"
       },
       {
         "en": "old jeans",
-        "vi": "quần jeans cũ"
+        "vi": "quần jeans cũ",
+        "ipa": "/aɪm ˈwɛrɪŋ oʊld dʒinz təˈdeɪ/"
       },
       {
         "en": "a yellow shirt",
-        "vi": "một cái áo vàng"
+        "vi": "một cái áo vàng",
+        "ipa": "/aɪm ˈwɛrɪŋ ə ˈjɛloʊ ʃɝt təˈdeɪ/"
       }
     ],
     "examples": [
       {
         "en": "I'm wearing a black skirt today.",
-        "vi": "Hôm nay tôi mặc một cái váy đen."
+        "vi": "Hôm nay tôi mặc một cái váy đen.",
+        "ipa": "/aɪm ˈwɛrɪŋ ə blæk skɝt təˈdeɪ/"
       },
       {
         "en": "I'm wearing new trousers today.",
-        "vi": "Hôm nay tôi mặc quần dài mới."
+        "vi": "Hôm nay tôi mặc quần dài mới.",
+        "ipa": "/aɪm ˈwɛrɪŋ nu ˈtraʊzərz təˈdeɪ/"
       }
     ],
     "asks": [
@@ -3941,45 +4492,55 @@
     "slots": [
       {
         "en": "music",
-        "vi": "âm nhạc"
+        "vi": "âm nhạc",
+        "ipa": "/aɪ laɪk ˈmjuzɪk/"
       },
       {
         "en": "football",
-        "vi": "bóng đá"
+        "vi": "bóng đá",
+        "ipa": "/aɪ laɪk ˈfʊtˌbɔl/"
       },
       {
         "en": "cooking",
-        "vi": "nấu ăn"
+        "vi": "nấu ăn",
+        "ipa": "/aɪ laɪk ˈkʊkɪŋ/"
       },
       {
         "en": "reading",
-        "vi": "đọc sách"
+        "vi": "đọc sách",
+        "ipa": "/aɪ laɪk ˈridɪŋ/"
       },
       {
         "en": "swimming",
-        "vi": "bơi lội"
+        "vi": "bơi lội",
+        "ipa": "/aɪ laɪk ˈswɪmɪŋ/"
       },
       {
         "en": "movies",
-        "vi": "phim"
+        "vi": "phim",
+        "ipa": "/aɪ laɪk ˈmuviz/"
       },
       {
         "en": "dogs",
-        "vi": "chó"
+        "vi": "chó",
+        "ipa": "/aɪ laɪk dɑɡz/"
       }
     ],
     "examples": [
       {
         "en": "I like tea.",
-        "vi": "Tôi thích trà."
+        "vi": "Tôi thích trà.",
+        "ipa": "/aɪ laɪk ti/"
       },
       {
         "en": "I like dancing.",
-        "vi": "Tôi thích nhảy múa."
+        "vi": "Tôi thích nhảy múa.",
+        "ipa": "/aɪ laɪk ˈdænsɪŋ/"
       },
       {
         "en": "I like English.",
-        "vi": "Tôi thích tiếng Anh."
+        "vi": "Tôi thích tiếng Anh.",
+        "ipa": "/aɪ laɪk ˈɪŋɡlɪʃ/"
       }
     ],
     "asks": [
@@ -4008,37 +4569,45 @@
     "slots": [
       {
         "en": "football",
-        "vi": "bóng đá"
+        "vi": "bóng đá",
+        "ipa": "/aɪ pleɪ ˈfʊtˌbɔl ɑn ˈwiˌkɛndz/"
       },
       {
         "en": "tennis",
-        "vi": "quần vợt"
+        "vi": "quần vợt",
+        "ipa": "/aɪ pleɪ ˈtɛnəs ɑn ˈwiˌkɛndz/"
       },
       {
         "en": "chess",
-        "vi": "cờ vua"
+        "vi": "cờ vua",
+        "ipa": "/aɪ pleɪ tʃɛs ɑn ˈwiˌkɛndz/"
       },
       {
         "en": "badminton",
-        "vi": "cầu lông"
+        "vi": "cầu lông",
+        "ipa": "/aɪ pleɪ ˈbædˌmɪntən ɑn ˈwiˌkɛndz/"
       },
       {
         "en": "basketball",
-        "vi": "bóng rổ"
+        "vi": "bóng rổ",
+        "ipa": "/aɪ pleɪ ˈbæskətˌbɔl ɑn ˈwiˌkɛndz/"
       },
       {
         "en": "computer games",
-        "vi": "game trên máy tính"
+        "vi": "game trên máy tính",
+        "ipa": "/aɪ pleɪ kəmpˈjutər ɡeɪmz ɑn ˈwiˌkɛndz/"
       }
     ],
     "examples": [
       {
         "en": "I play volleyball on weekends.",
-        "vi": "Cuối tuần tôi chơi bóng chuyền."
+        "vi": "Cuối tuần tôi chơi bóng chuyền.",
+        "ipa": "/aɪ pleɪ ˈvɑliˌbɔl ɑn ˈwiˌkɛndz/"
       },
       {
         "en": "I play cards on weekends.",
-        "vi": "Cuối tuần tôi chơi bài."
+        "vi": "Cuối tuần tôi chơi bài.",
+        "ipa": "/aɪ pleɪ kɑrdz ɑn ˈwiˌkɛndz/"
       }
     ],
     "asks": [
@@ -4067,37 +4636,45 @@
     "slots": [
       {
         "en": "read books",
-        "vi": "đọc sách"
+        "vi": "đọc sách",
+        "ipa": "/ɪn maɪ fri taɪm aɪ rɛd bʊks/"
       },
       {
         "en": "watch TV",
-        "vi": "xem ti vi"
+        "vi": "xem ti vi",
+        "ipa": "/ɪn maɪ fri taɪm aɪ wɑtʃ ˈtiˈvi/"
       },
       {
         "en": "listen to music",
-        "vi": "nghe nhạc"
+        "vi": "nghe nhạc",
+        "ipa": "/ɪn maɪ fri taɪm aɪ ˈlɪsən tu ˈmjuzɪk/"
       },
       {
         "en": "go shopping",
-        "vi": "đi mua sắm"
+        "vi": "đi mua sắm",
+        "ipa": "/ɪn maɪ fri taɪm aɪ ɡoʊ ˈʃɑpɪŋ/"
       },
       {
         "en": "cook",
-        "vi": "nấu ăn"
+        "vi": "nấu ăn",
+        "ipa": "/ɪn maɪ fri taɪm aɪ kʊk/"
       },
       {
         "en": "sleep",
-        "vi": "ngủ"
+        "vi": "ngủ",
+        "ipa": "/ɪn maɪ fri taɪm aɪ slip/"
       }
     ],
     "examples": [
       {
         "en": "In my free time, I draw.",
-        "vi": "Lúc rảnh, tôi vẽ tranh."
+        "vi": "Lúc rảnh, tôi vẽ tranh.",
+        "ipa": "/ɪn maɪ fri taɪm aɪ drɔ/"
       },
       {
         "en": "In my free time, I walk.",
-        "vi": "Lúc rảnh, tôi đi dạo."
+        "vi": "Lúc rảnh, tôi đi dạo.",
+        "ipa": "/ɪn maɪ fri taɪm aɪ wɔk/"
       }
     ],
     "asks": [
@@ -4126,37 +4703,45 @@
     "slots": [
       {
         "en": "play football",
-        "vi": "chơi bóng đá"
+        "vi": "chơi bóng đá",
+        "ipa": "/lɛts pleɪ ˈfʊtˌbɔl/"
       },
       {
         "en": "watch a movie",
-        "vi": "xem phim"
+        "vi": "xem phim",
+        "ipa": "/lɛts wɑtʃ ə ˈmuvi/"
       },
       {
         "en": "go swimming",
-        "vi": "đi bơi"
+        "vi": "đi bơi",
+        "ipa": "/lɛts ɡoʊ ˈswɪmɪŋ/"
       },
       {
         "en": "have lunch",
-        "vi": "ăn trưa"
+        "vi": "ăn trưa",
+        "ipa": "/lɛts hæv lʌntʃ/"
       },
       {
         "en": "go shopping",
-        "vi": "đi mua sắm"
+        "vi": "đi mua sắm",
+        "ipa": "/lɛts ɡoʊ ˈʃɑpɪŋ/"
       },
       {
         "en": "have a coffee",
-        "vi": "uống cà phê"
+        "vi": "uống cà phê",
+        "ipa": "/lɛts hæv ə ˈkɑfi/"
       }
     ],
     "examples": [
       {
         "en": "Let's go home.",
-        "vi": "Mình cùng về nhà nhé."
+        "vi": "Mình cùng về nhà nhé.",
+        "ipa": "/lɛts ɡoʊ hoʊm/"
       },
       {
         "en": "Let's listen to music.",
-        "vi": "Mình cùng nghe nhạc nhé."
+        "vi": "Mình cùng nghe nhạc nhé.",
+        "ipa": "/lɛts ˈlɪsən tu ˈmjuzɪk/"
       }
     ],
     "asks": [
@@ -4185,41 +4770,50 @@
     "slots": [
       {
         "en": "a teacher",
-        "vi": "giáo viên"
+        "vi": "giáo viên",
+        "ipa": "/aɪ wɝk æz ə ˈtitʃər/"
       },
       {
         "en": "a nurse",
-        "vi": "y tá"
+        "vi": "y tá",
+        "ipa": "/aɪ wɝk æz ə nɝs/"
       },
       {
         "en": "a driver",
-        "vi": "tài xế"
+        "vi": "tài xế",
+        "ipa": "/aɪ wɝk æz ə ˈdraɪvər/"
       },
       {
         "en": "a cook",
-        "vi": "đầu bếp"
+        "vi": "đầu bếp",
+        "ipa": "/aɪ wɝk æz ə kʊk/"
       },
       {
         "en": "a doctor",
-        "vi": "bác sĩ"
+        "vi": "bác sĩ",
+        "ipa": "/aɪ wɝk æz ə ˈdɑktər/"
       },
       {
         "en": "a waiter",
-        "vi": "phục vụ bàn"
+        "vi": "phục vụ bàn",
+        "ipa": "/aɪ wɝk æz ə ˈweɪtər/"
       },
       {
         "en": "an engineer",
-        "vi": "kỹ sư"
+        "vi": "kỹ sư",
+        "ipa": "/aɪ wɝk æz æn ˈɛndʒəˈnɪr/"
       }
     ],
     "examples": [
       {
         "en": "I work as a farmer.",
-        "vi": "Tôi làm nghề nông."
+        "vi": "Tôi làm nghề nông.",
+        "ipa": "/aɪ wɝk æz ə ˈfɑrmər/"
       },
       {
         "en": "I work as a police officer.",
-        "vi": "Tôi làm cảnh sát."
+        "vi": "Tôi làm cảnh sát.",
+        "ipa": "/aɪ wɝk æz ə pəˈlis ˈɔfəsər/"
       }
     ],
     "asks": [
@@ -4248,41 +4842,50 @@
     "slots": [
       {
         "en": "an office",
-        "vi": "văn phòng"
+        "vi": "văn phòng",
+        "ipa": "/aɪ wɝk ɪn æn ˈɔfɪs/"
       },
       {
         "en": "a shop",
-        "vi": "cửa hàng"
+        "vi": "cửa hàng",
+        "ipa": "/aɪ wɝk ɪn ə ʃɑp/"
       },
       {
         "en": "a hospital",
-        "vi": "bệnh viện"
+        "vi": "bệnh viện",
+        "ipa": "/aɪ wɝk ɪn ə ˈhɑˌspɪtəl/"
       },
       {
         "en": "a school",
-        "vi": "trường học"
+        "vi": "trường học",
+        "ipa": "/aɪ wɝk ɪn ə skul/"
       },
       {
         "en": "a restaurant",
-        "vi": "nhà hàng"
+        "vi": "nhà hàng",
+        "ipa": "/aɪ wɝk ɪn ə ˈrɛstərˌɑnt/"
       },
       {
         "en": "a bank",
-        "vi": "ngân hàng"
+        "vi": "ngân hàng",
+        "ipa": "/aɪ wɝk ɪn ə bæŋk/"
       },
       {
         "en": "a factory",
-        "vi": "nhà máy"
+        "vi": "nhà máy",
+        "ipa": "/aɪ wɝk ɪn ə ˈfæktəri/"
       }
     ],
     "examples": [
       {
         "en": "I work in a hotel.",
-        "vi": "Tôi làm việc ở khách sạn."
+        "vi": "Tôi làm việc ở khách sạn.",
+        "ipa": "/aɪ wɝk ɪn ə hoʊˈtɛl/"
       },
       {
         "en": "I work in a big company.",
-        "vi": "Tôi làm việc ở một công ty lớn."
+        "vi": "Tôi làm việc ở một công ty lớn.",
+        "ipa": "/aɪ wɝk ɪn ə bɪɡ ˈkʌmpəˌni/"
       }
     ],
     "asks": [
@@ -4307,37 +4910,45 @@
     "slots": [
       {
         "en": "mother",
-        "vi": "Mẹ"
+        "vi": "Mẹ",
+        "ipa": "/maɪ ˈmʌðər wɝks ɪn ə ˈhɑˌspɪtəl/"
       },
       {
         "en": "father",
-        "vi": "Bố"
+        "vi": "Bố",
+        "ipa": "/maɪ ˈfɑðər wɝks ɪn ə ˈhɑˌspɪtəl/"
       },
       {
         "en": "sister",
-        "vi": "Chị gái"
+        "vi": "Chị gái",
+        "ipa": "/maɪ ˈsɪstər wɝks ɪn ə ˈhɑˌspɪtəl/"
       },
       {
         "en": "brother",
-        "vi": "Anh trai"
+        "vi": "Anh trai",
+        "ipa": "/maɪ ˈbrʌðər wɝks ɪn ə ˈhɑˌspɪtəl/"
       },
       {
         "en": "wife",
-        "vi": "Vợ"
+        "vi": "Vợ",
+        "ipa": "/maɪ waɪf wɝks ɪn ə ˈhɑˌspɪtəl/"
       },
       {
         "en": "husband",
-        "vi": "Chồng"
+        "vi": "Chồng",
+        "ipa": "/maɪ ˈhʌzbənd wɝks ɪn ə ˈhɑˌspɪtəl/"
       }
     ],
     "examples": [
       {
         "en": "My friend works in a bank.",
-        "vi": "Bạn của tôi làm việc ở ngân hàng."
+        "vi": "Bạn của tôi làm việc ở ngân hàng.",
+        "ipa": "/maɪ frɛnd wɝks ɪn ə bæŋk/"
       },
       {
         "en": "My uncle works in a shop.",
-        "vi": "Chú của tôi làm việc ở cửa hàng."
+        "vi": "Chú của tôi làm việc ở cửa hàng.",
+        "ipa": "/maɪ ˈʌŋkəl wɝks ɪn ə ʃɑp/"
       }
     ],
     "asks": [
@@ -4366,41 +4977,50 @@
     "slots": [
       {
         "en": "eight o'clock",
-        "vi": "tám giờ"
+        "vi": "tám giờ",
+        "ipa": "/aɪ stɑrt wɝk æt eɪt əˈklɑk/"
       },
       {
         "en": "nine o'clock",
-        "vi": "chín giờ"
+        "vi": "chín giờ",
+        "ipa": "/aɪ stɑrt wɝk æt naɪn əˈklɑk/"
       },
       {
         "en": "seven o'clock",
-        "vi": "bảy giờ"
+        "vi": "bảy giờ",
+        "ipa": "/aɪ stɑrt wɝk æt ˈsɛvən əˈklɑk/"
       },
       {
         "en": "half past seven",
-        "vi": "bảy rưỡi"
+        "vi": "bảy rưỡi",
+        "ipa": "/aɪ stɑrt wɝk æt hæf pæst ˈsɛvən/"
       },
       {
         "en": "half past eight",
-        "vi": "tám rưỡi"
+        "vi": "tám rưỡi",
+        "ipa": "/aɪ stɑrt wɝk æt hæf pæst eɪt/"
       },
       {
         "en": "noon",
-        "vi": "giữa trưa"
+        "vi": "giữa trưa",
+        "ipa": "/aɪ stɑrt wɝk æt nun/"
       },
       {
         "en": "six o'clock",
-        "vi": "sáu giờ"
+        "vi": "sáu giờ",
+        "ipa": "/aɪ stɑrt wɝk æt sɪks əˈklɑk/"
       }
     ],
     "examples": [
       {
         "en": "I start work at ten o'clock.",
-        "vi": "Tôi bắt đầu làm việc lúc mười giờ."
+        "vi": "Tôi bắt đầu làm việc lúc mười giờ.",
+        "ipa": "/aɪ stɑrt wɝk æt tɛn əˈklɑk/"
       },
       {
         "en": "I start work at night.",
-        "vi": "Tôi bắt đầu làm việc vào buổi tối."
+        "vi": "Tôi bắt đầu làm việc vào buổi tối.",
+        "ipa": "/aɪ stɑrt wɝk æt naɪt/"
       }
     ],
     "asks": [
@@ -4429,37 +5049,45 @@
     "slots": [
       {
         "en": "English",
-        "vi": "tiếng Anh"
+        "vi": "tiếng Anh",
+        "ipa": "/aɪ ˈstʌdi ˈɪŋɡlɪʃ æt skul/"
       },
       {
         "en": "math",
-        "vi": "toán"
+        "vi": "toán",
+        "ipa": "/aɪ ˈstʌdi mæθ æt skul/"
       },
       {
         "en": "science",
-        "vi": "khoa học"
+        "vi": "khoa học",
+        "ipa": "/aɪ ˈstʌdi ˈsaɪəns æt skul/"
       },
       {
         "en": "music",
-        "vi": "âm nhạc"
+        "vi": "âm nhạc",
+        "ipa": "/aɪ ˈstʌdi ˈmjuzɪk æt skul/"
       },
       {
         "en": "art",
-        "vi": "mỹ thuật"
+        "vi": "mỹ thuật",
+        "ipa": "/aɪ ˈstʌdi ɑrt æt skul/"
       },
       {
         "en": "history",
-        "vi": "lịch sử"
+        "vi": "lịch sử",
+        "ipa": "/aɪ ˈstʌdi ˈhɪstəri æt skul/"
       }
     ],
     "examples": [
       {
         "en": "I study French at school.",
-        "vi": "Tôi học tiếng Pháp ở trường."
+        "vi": "Tôi học tiếng Pháp ở trường.",
+        "ipa": "/aɪ ˈstʌdi frɛntʃ æt skul/"
       },
       {
         "en": "I study sport at school.",
-        "vi": "Tôi học thể thao ở trường."
+        "vi": "Tôi học thể thao ở trường.",
+        "ipa": "/aɪ ˈstʌdi spɔrt æt skul/"
       }
     ],
     "asks": [
@@ -4488,41 +5116,50 @@
     "slots": [
       {
         "en": "by bus",
-        "vi": "bằng xe buýt"
+        "vi": "bằng xe buýt",
+        "ipa": "/aɪ ɡoʊ tu skul baɪ bʌs/"
       },
       {
         "en": "by bike",
-        "vi": "bằng xe đạp"
+        "vi": "bằng xe đạp",
+        "ipa": "/aɪ ɡoʊ tu skul baɪ baɪk/"
       },
       {
         "en": "on foot",
-        "vi": "đi bộ"
+        "vi": "đi bộ",
+        "ipa": "/aɪ ɡoʊ tu skul ɑn fʊt/"
       },
       {
         "en": "by car",
-        "vi": "bằng ô tô"
+        "vi": "bằng ô tô",
+        "ipa": "/aɪ ɡoʊ tu skul baɪ kɑr/"
       },
       {
         "en": "with my friend",
-        "vi": "cùng bạn tôi"
+        "vi": "cùng bạn tôi",
+        "ipa": "/aɪ ɡoʊ tu skul wɪð maɪ frɛnd/"
       },
       {
         "en": "every day",
-        "vi": "mỗi ngày"
+        "vi": "mỗi ngày",
+        "ipa": "/aɪ ɡoʊ tu skul ˈɛvəri deɪ/"
       },
       {
         "en": "in the morning",
-        "vi": "vào buổi sáng"
+        "vi": "vào buổi sáng",
+        "ipa": "/aɪ ɡoʊ tu skul ɪn ðə ˈmɔrnɪŋ/"
       }
     ],
     "examples": [
       {
         "en": "I go to school by taxi.",
-        "vi": "Tôi đến trường bằng taxi."
+        "vi": "Tôi đến trường bằng taxi.",
+        "ipa": "/aɪ ɡoʊ tu skul baɪ ˈtæksi/"
       },
       {
         "en": "I go to school with my sister.",
-        "vi": "Tôi đến trường cùng chị gái."
+        "vi": "Tôi đến trường cùng chị gái.",
+        "ipa": "/aɪ ɡoʊ tu skul wɪð maɪ ˈsɪstər/"
       }
     ],
     "asks": [
@@ -4551,41 +5188,50 @@
     "slots": [
       {
         "en": "a pen",
-        "vi": "một cây bút"
+        "vi": "một cây bút",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ ə pɛn/"
       },
       {
         "en": "a pencil",
-        "vi": "một cây bút chì"
+        "vi": "một cây bút chì",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ ə ˈpɛnsəl/"
       },
       {
         "en": "your book",
-        "vi": "sách của bạn"
+        "vi": "sách của bạn",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ jɔr bʊk/"
       },
       {
         "en": "your notebook",
-        "vi": "vở của bạn"
+        "vi": "vở của bạn",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ jɔr ˈnoʊtˌbʊk/"
       },
       {
         "en": "an eraser",
-        "vi": "một cục tẩy"
+        "vi": "một cục tẩy",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ æn ɪˈreɪsər/"
       },
       {
         "en": "a ruler",
-        "vi": "một cây thước"
+        "vi": "một cây thước",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ ə ˈrulər/"
       },
       {
         "en": "your phone",
-        "vi": "điện thoại của bạn"
+        "vi": "điện thoại của bạn",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ jɔr foʊn/"
       }
     ],
     "examples": [
       {
         "en": "Can I borrow a bag?",
-        "vi": "Cho tôi mượn một cái túi nhé?"
+        "vi": "Cho tôi mượn một cái túi nhé?",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ ə bæɡ/"
       },
       {
         "en": "Can I borrow your dictionary?",
-        "vi": "Cho tôi mượn từ điển của bạn nhé?"
+        "vi": "Cho tôi mượn từ điển của bạn nhé?",
+        "ipa": "/kæn aɪ ˈbɑˌroʊ jɔr ˈdɪkʃəˌnɛri/"
       }
     ],
     "asks": [
@@ -4615,37 +5261,45 @@
     "slots": [
       {
         "en": "phone",
-        "vi": "điện thoại"
+        "vi": "điện thoại",
+        "ipa": "/kæn aɪ jus jɔr foʊn/"
       },
       {
         "en": "charger",
-        "vi": "sạc"
+        "vi": "sạc",
+        "ipa": "/kæn aɪ jus jɔr ˈtʃɑrdʒər/"
       },
       {
         "en": "computer",
-        "vi": "máy tính"
+        "vi": "máy tính",
+        "ipa": "/kæn aɪ jus jɔr kəmpˈjutər/"
       },
       {
         "en": "laptop",
-        "vi": "máy tính xách tay"
+        "vi": "máy tính xách tay",
+        "ipa": "/kæn aɪ jus jɔr ˈlæpˌtɑp/"
       },
       {
         "en": "tablet",
-        "vi": "máy tính bảng"
+        "vi": "máy tính bảng",
+        "ipa": "/kæn aɪ jus jɔr ˈtæblət/"
       },
       {
         "en": "wifi",
-        "vi": "wifi"
+        "vi": "wifi",
+        "ipa": "/kæn aɪ jus jɔr ˈwaɪˌfaɪ/"
       }
     ],
     "examples": [
       {
         "en": "Can I use your pen?",
-        "vi": "Tôi dùng bút của bạn được không?"
+        "vi": "Tôi dùng bút của bạn được không?",
+        "ipa": "/kæn aɪ jus jɔr pɛn/"
       },
       {
         "en": "Can I use your bathroom?",
-        "vi": "Tôi dùng phòng tắm của bạn được không?"
+        "vi": "Tôi dùng phòng tắm của bạn được không?",
+        "ipa": "/kæn aɪ jus jɔr ˈbæˌθrum/"
       }
     ],
     "asks": [
@@ -4675,37 +5329,45 @@
     "slots": [
       {
         "en": "phone number",
-        "vi": "Số điện thoại"
+        "vi": "Số điện thoại",
+        "ipa": "/wʌt ɪz jɔr foʊn ˈnʌmbər/"
       },
       {
         "en": "email address",
-        "vi": "Địa chỉ email"
+        "vi": "Địa chỉ email",
+        "ipa": "/wʌt ɪz jɔr iˈmeɪl ˈæˌdrɛs/"
       },
       {
         "en": "wifi name",
-        "vi": "Tên wifi"
+        "vi": "Tên wifi",
+        "ipa": "/wʌt ɪz jɔr ˈwaɪˌfaɪ neɪm/"
       },
       {
         "en": "user name",
-        "vi": "Tên tài khoản"
+        "vi": "Tên tài khoản",
+        "ipa": "/wʌt ɪz jɔr ˈjuzər neɪm/"
       },
       {
         "en": "Facebook name",
-        "vi": "Tên Facebook"
+        "vi": "Tên Facebook",
+        "ipa": "/wʌt ɪz jɔr ˈfeɪsˌbʊk neɪm/"
       },
       {
         "en": "Zalo name",
-        "vi": "Tên Zalo"
+        "vi": "Tên Zalo",
+        "ipa": "/wʌt ɪz jɔr Zalo neɪm/"
       }
     ],
     "examples": [
       {
         "en": "What is your last name?",
-        "vi": "Họ của bạn là gì?"
+        "vi": "Họ của bạn là gì?",
+        "ipa": "/wʌt ɪz jɔr læst neɪm/"
       },
       {
         "en": "What is your home address?",
-        "vi": "Địa chỉ nhà của bạn là gì?"
+        "vi": "Địa chỉ nhà của bạn là gì?",
+        "ipa": "/wʌt ɪz jɔr hoʊm ˈæˌdrɛs/"
       }
     ],
     "asks": [
@@ -4730,37 +5392,45 @@
     "slots": [
       {
         "en": "battery",
-        "vi": "pin"
+        "vi": "pin",
+        "ipa": "/maɪ foʊn hæz noʊ ˈbætəri/"
       },
       {
         "en": "signal",
-        "vi": "sóng"
+        "vi": "sóng",
+        "ipa": "/maɪ foʊn hæz noʊ ˈsɪɡnəl/"
       },
       {
         "en": "wifi",
-        "vi": "wifi"
+        "vi": "wifi",
+        "ipa": "/maɪ foʊn hæz noʊ ˈwaɪˌfaɪ/"
       },
       {
         "en": "sound",
-        "vi": "âm thanh"
+        "vi": "âm thanh",
+        "ipa": "/maɪ foʊn hæz noʊ saʊnd/"
       },
       {
         "en": "internet",
-        "vi": "internet"
+        "vi": "internet",
+        "ipa": "/maɪ foʊn hæz noʊ ˈɪntərˌnɛt/"
       },
       {
         "en": "space",
-        "vi": "dung lượng trống"
+        "vi": "dung lượng trống",
+        "ipa": "/maɪ foʊn hæz noʊ speɪs/"
       }
     ],
     "examples": [
       {
         "en": "My phone has no camera.",
-        "vi": "Điện thoại của tôi không có camera."
+        "vi": "Điện thoại của tôi không có camera.",
+        "ipa": "/maɪ foʊn hæz noʊ ˈkæmərə/"
       },
       {
         "en": "My phone has no power.",
-        "vi": "Điện thoại của tôi hết điện."
+        "vi": "Điện thoại của tôi hết điện.",
+        "ipa": "/maɪ foʊn hæz noʊ ˈpaʊər/"
       }
     ],
     "asks": [
@@ -4789,41 +5459,50 @@
     "slots": [
       {
         "en": "take photos",
-        "vi": "chụp ảnh"
+        "vi": "chụp ảnh",
+        "ipa": "/aɪ jus maɪ foʊn tu teɪk ˈfoʊˌtoʊz/"
       },
       {
         "en": "watch videos",
-        "vi": "xem video"
+        "vi": "xem video",
+        "ipa": "/aɪ jus maɪ foʊn tu wɑtʃ ˈvɪdioʊz/"
       },
       {
         "en": "listen to music",
-        "vi": "nghe nhạc"
+        "vi": "nghe nhạc",
+        "ipa": "/aɪ jus maɪ foʊn tu ˈlɪsən tu ˈmjuzɪk/"
       },
       {
         "en": "send messages",
-        "vi": "gửi tin nhắn"
+        "vi": "gửi tin nhắn",
+        "ipa": "/aɪ jus maɪ foʊn tu sɛnd ˈmɛsədʒəz/"
       },
       {
         "en": "call my mother",
-        "vi": "gọi cho mẹ"
+        "vi": "gọi cho mẹ",
+        "ipa": "/aɪ jus maɪ foʊn tu kɔl maɪ ˈmʌðər/"
       },
       {
         "en": "read the news",
-        "vi": "đọc tin tức"
+        "vi": "đọc tin tức",
+        "ipa": "/aɪ jus maɪ foʊn tu rɛd ðə nuz/"
       },
       {
         "en": "learn English",
-        "vi": "học tiếng Anh"
+        "vi": "học tiếng Anh",
+        "ipa": "/aɪ jus maɪ foʊn tu lɝn ˈɪŋɡlɪʃ/"
       }
     ],
     "examples": [
       {
         "en": "I use my phone to play games.",
-        "vi": "Tôi dùng điện thoại để chơi game."
+        "vi": "Tôi dùng điện thoại để chơi game.",
+        "ipa": "/aɪ jus maɪ foʊn tu pleɪ ɡeɪmz/"
       },
       {
         "en": "I use my phone to find a map.",
-        "vi": "Tôi dùng điện thoại để tìm bản đồ."
+        "vi": "Tôi dùng điện thoại để tìm bản đồ.",
+        "ipa": "/aɪ jus maɪ foʊn tu faɪnd ə mæp/"
       }
     ],
     "asks": [
@@ -4852,41 +5531,50 @@
     "slots": [
       {
         "en": "the park",
-        "vi": "công viên"
+        "vi": "công viên",
+        "ipa": "/lɛts ɡoʊ tu ðə pɑrk/"
       },
       {
         "en": "the beach",
-        "vi": "biển"
+        "vi": "biển",
+        "ipa": "/lɛts ɡoʊ tu ðə bitʃ/"
       },
       {
         "en": "the market",
-        "vi": "chợ"
+        "vi": "chợ",
+        "ipa": "/lɛts ɡoʊ tu ðə ˈmɑrkət/"
       },
       {
         "en": "the cinema",
-        "vi": "rạp phim"
+        "vi": "rạp phim",
+        "ipa": "/lɛts ɡoʊ tu ðə ˈsɪnəmə/"
       },
       {
         "en": "a cafe",
-        "vi": "quán cà phê"
+        "vi": "quán cà phê",
+        "ipa": "/lɛts ɡoʊ tu ə kəˈfeɪ/"
       },
       {
         "en": "my house",
-        "vi": "nhà tôi"
+        "vi": "nhà tôi",
+        "ipa": "/lɛts ɡoʊ tu maɪ haʊs/"
       },
       {
         "en": "the zoo",
-        "vi": "sở thú"
+        "vi": "sở thú",
+        "ipa": "/lɛts ɡoʊ tu ðə zu/"
       }
     ],
     "examples": [
       {
         "en": "Let's go to the library.",
-        "vi": "Mình đi thư viện nhé."
+        "vi": "Mình đi thư viện nhé.",
+        "ipa": "/lɛts ɡoʊ tu ðə ˈlaɪbrɛˌri/"
       },
       {
         "en": "Let's go to the mall.",
-        "vi": "Mình đi trung tâm mua sắm nhé."
+        "vi": "Mình đi trung tâm mua sắm nhé.",
+        "ipa": "/lɛts ɡoʊ tu ðə mɔl/"
       }
     ],
     "asks": [
@@ -4915,41 +5603,50 @@
     "slots": [
       {
         "en": "eat lunch",
-        "vi": "ăn trưa"
+        "vi": "ăn trưa",
+        "ipa": "/du ju wɑnt tu it lʌntʃ wɪð mi/"
       },
       {
         "en": "watch a movie",
-        "vi": "xem phim"
+        "vi": "xem phim",
+        "ipa": "/du ju wɑnt tu wɑtʃ ə ˈmuvi wɪð mi/"
       },
       {
         "en": "play football",
-        "vi": "chơi bóng đá"
+        "vi": "chơi bóng đá",
+        "ipa": "/du ju wɑnt tu pleɪ ˈfʊtˌbɔl wɪð mi/"
       },
       {
         "en": "go shopping",
-        "vi": "đi mua sắm"
+        "vi": "đi mua sắm",
+        "ipa": "/du ju wɑnt tu ɡoʊ ˈʃɑpɪŋ wɪð mi/"
       },
       {
         "en": "have coffee",
-        "vi": "uống cà phê"
+        "vi": "uống cà phê",
+        "ipa": "/du ju wɑnt tu hæv ˈkɑfi wɪð mi/"
       },
       {
         "en": "take a walk",
-        "vi": "đi dạo"
+        "vi": "đi dạo",
+        "ipa": "/du ju wɑnt tu teɪk ə wɔk wɪð mi/"
       },
       {
         "en": "play games",
-        "vi": "chơi game"
+        "vi": "chơi game",
+        "ipa": "/du ju wɑnt tu pleɪ ɡeɪmz wɪð mi/"
       }
     ],
     "examples": [
       {
         "en": "Do you want to swim with me?",
-        "vi": "Bạn có muốn bơi với tôi không?"
+        "vi": "Bạn có muốn bơi với tôi không?",
+        "ipa": "/du ju wɑnt tu swɪm wɪð mi/"
       },
       {
         "en": "Do you want to cook with me?",
-        "vi": "Bạn có muốn nấu ăn với tôi không?"
+        "vi": "Bạn có muốn nấu ăn với tôi không?",
+        "ipa": "/du ju wɑnt tu kʊk wɪð mi/"
       }
     ],
     "asks": [
@@ -4979,37 +5676,45 @@
     "slots": [
       {
         "en": "six o'clock",
-        "vi": "lúc sáu giờ"
+        "vi": "lúc sáu giờ",
+        "ipa": "/lɛts mit æt sɪks əˈklɑk/"
       },
       {
         "en": "seven o'clock",
-        "vi": "lúc bảy giờ"
+        "vi": "lúc bảy giờ",
+        "ipa": "/lɛts mit æt ˈsɛvən əˈklɑk/"
       },
       {
         "en": "eight o'clock",
-        "vi": "lúc tám giờ"
+        "vi": "lúc tám giờ",
+        "ipa": "/lɛts mit æt eɪt əˈklɑk/"
       },
       {
         "en": "noon",
-        "vi": "lúc giữa trưa"
+        "vi": "lúc giữa trưa",
+        "ipa": "/lɛts mit æt nun/"
       },
       {
         "en": "two o'clock",
-        "vi": "lúc hai giờ"
+        "vi": "lúc hai giờ",
+        "ipa": "/lɛts mit æt tu əˈklɑk/"
       },
       {
         "en": "the station",
-        "vi": "ở nhà ga"
+        "vi": "ở nhà ga",
+        "ipa": "/lɛts mit æt ðə ˈsteɪʃən/"
       }
     ],
     "examples": [
       {
         "en": "Let's meet at nine o'clock.",
-        "vi": "Mình gặp nhau lúc chín giờ nhé."
+        "vi": "Mình gặp nhau lúc chín giờ nhé.",
+        "ipa": "/lɛts mit æt naɪn əˈklɑk/"
       },
       {
         "en": "Let's meet at the bus stop.",
-        "vi": "Mình gặp nhau ở trạm xe buýt nhé."
+        "vi": "Mình gặp nhau ở trạm xe buýt nhé.",
+        "ipa": "/lɛts mit æt ðə bʌs stɑp/"
       }
     ],
     "asks": [
@@ -5039,37 +5744,45 @@
     "slots": [
       {
         "en": "you",
-        "vi": "bạn nói gì"
+        "vi": "bạn nói gì",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ju/"
       },
       {
         "en": "this word",
-        "vi": "từ này"
+        "vi": "từ này",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ðɪs wɝd/"
       },
       {
         "en": "the question",
-        "vi": "câu hỏi"
+        "vi": "câu hỏi",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ðə ˈkwɛstʃən/"
       },
       {
         "en": "that",
-        "vi": "điều đó"
+        "vi": "điều đó",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ðæt/"
       },
       {
         "en": "this sentence",
-        "vi": "câu này"
+        "vi": "câu này",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ðɪs ˈsɛntəns/"
       },
       {
         "en": "this sign",
-        "vi": "biển báo này"
+        "vi": "biển báo này",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ðɪs saɪn/"
       }
     ],
     "examples": [
       {
         "en": "Sorry, I don't understand the map.",
-        "vi": "Xin lỗi, tôi không hiểu bản đồ."
+        "vi": "Xin lỗi, tôi không hiểu bản đồ.",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ðə mæp/"
       },
       {
         "en": "Sorry, I don't understand this menu.",
-        "vi": "Xin lỗi, tôi không hiểu thực đơn này."
+        "vi": "Xin lỗi, tôi không hiểu thực đơn này.",
+        "ipa": "/ˈsɑri aɪ doʊnt ˌʌndərˈstænd ðɪs ˈmɛnju/"
       }
     ],
     "asks": [
@@ -5099,37 +5812,45 @@
     "slots": [
       {
         "en": "repeat that",
-        "vi": "nhắc lại câu đó"
+        "vi": "nhắc lại câu đó",
+        "ipa": "/kæn ju rɪˈpit ðæt pliz/"
       },
       {
         "en": "speak slowly",
-        "vi": "nói chậm"
+        "vi": "nói chậm",
+        "ipa": "/kæn ju spik ˈsloʊli pliz/"
       },
       {
         "en": "say it again",
-        "vi": "nói lại lần nữa"
+        "vi": "nói lại lần nữa",
+        "ipa": "/kæn ju seɪ ɪt əˈɡɛn pliz/"
       },
       {
         "en": "speak English",
-        "vi": "nói tiếng Anh"
+        "vi": "nói tiếng Anh",
+        "ipa": "/kæn ju spik ˈɪŋɡlɪʃ pliz/"
       },
       {
         "en": "help me",
-        "vi": "giúp tôi"
+        "vi": "giúp tôi",
+        "ipa": "/kæn ju hɛlp mi pliz/"
       },
       {
         "en": "write it down",
-        "vi": "viết nó ra"
+        "vi": "viết nó ra",
+        "ipa": "/kæn ju raɪt ɪt daʊn pliz/"
       }
     ],
     "examples": [
       {
         "en": "Can you speak louder, please?",
-        "vi": "Bạn có thể nói to hơn được không?"
+        "vi": "Bạn có thể nói to hơn được không?",
+        "ipa": "/kæn ju spik ˈlaʊdər pliz/"
       },
       {
         "en": "Can you show me, please?",
-        "vi": "Bạn có thể chỉ cho tôi được không?"
+        "vi": "Bạn có thể chỉ cho tôi được không?",
+        "ipa": "/kæn ju ʃoʊ mi pliz/"
       }
     ],
     "asks": [
@@ -5159,37 +5880,45 @@
     "slots": [
       {
         "en": "this word",
-        "vi": "từ này"
+        "vi": "từ này",
+        "ipa": "/wʌt dʌz ðɪs wɝd min/"
       },
       {
         "en": "that word",
-        "vi": "từ đó"
+        "vi": "từ đó",
+        "ipa": "/wʌt dʌz ðæt wɝd min/"
       },
       {
         "en": "this sign",
-        "vi": "biển báo này"
+        "vi": "biển báo này",
+        "ipa": "/wʌt dʌz ðɪs saɪn min/"
       },
       {
         "en": "this sentence",
-        "vi": "câu này"
+        "vi": "câu này",
+        "ipa": "/wʌt dʌz ðɪs ˈsɛntəns min/"
       },
       {
         "en": "this",
-        "vi": "cái này"
+        "vi": "cái này",
+        "ipa": "/wʌt dʌz ðɪs min/"
       },
       {
         "en": "that",
-        "vi": "cái kia"
+        "vi": "cái kia",
+        "ipa": "/wʌt dʌz ðæt min/"
       }
     ],
     "examples": [
       {
         "en": "What does this letter mean?",
-        "vi": "Nghĩa của lá thư này là gì?"
+        "vi": "Nghĩa của lá thư này là gì?",
+        "ipa": "/wʌt dʌz ðɪs ˈlɛtər min/"
       },
       {
         "en": "What does your name mean?",
-        "vi": "Nghĩa của tên bạn là gì?"
+        "vi": "Nghĩa của tên bạn là gì?",
+        "ipa": "/wʌt dʌz jɔr neɪm min/"
       }
     ],
     "asks": [
@@ -5219,37 +5948,45 @@
     "slots": [
       {
         "en": "your name",
-        "vi": "tên bạn"
+        "vi": "tên bạn",
+        "ipa": "/haʊ du ju spɛl jɔr neɪm/"
       },
       {
         "en": "your last name",
-        "vi": "họ của bạn"
+        "vi": "họ của bạn",
+        "ipa": "/haʊ du ju spɛl jɔr læst neɪm/"
       },
       {
         "en": "that word",
-        "vi": "từ đó"
+        "vi": "từ đó",
+        "ipa": "/haʊ du ju spɛl ðæt wɝd/"
       },
       {
         "en": "this word",
-        "vi": "từ này"
+        "vi": "từ này",
+        "ipa": "/haʊ du ju spɛl ðɪs wɝd/"
       },
       {
         "en": "the street",
-        "vi": "tên đường"
+        "vi": "tên đường",
+        "ipa": "/haʊ du ju spɛl ðə strit/"
       },
       {
         "en": "your email",
-        "vi": "email của bạn"
+        "vi": "email của bạn",
+        "ipa": "/haʊ du ju spɛl jɔr iˈmeɪl/"
       }
     ],
     "examples": [
       {
         "en": "How do you spell Hanoi?",
-        "vi": "Bạn đánh vần Hanoi thế nào?"
+        "vi": "Bạn đánh vần Hanoi thế nào?",
+        "ipa": "/haʊ du ju spɛl ˈhænɔɪ/"
       },
       {
         "en": "How do you spell hotel?",
-        "vi": "Bạn đánh vần hotel thế nào?"
+        "vi": "Bạn đánh vần hotel thế nào?",
+        "ipa": "/haʊ du ju spɛl hoʊˈtɛl/"
       }
     ],
     "asks": [
@@ -5277,37 +6014,45 @@
     "slots": [
       {
         "en": "one night",
-        "vi": "một đêm"
+        "vi": "một đêm",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr wʌn naɪt/"
       },
       {
         "en": "two nights",
-        "vi": "hai đêm"
+        "vi": "hai đêm",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr tu naɪts/"
       },
       {
         "en": "three nights",
-        "vi": "ba đêm"
+        "vi": "ba đêm",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr θri naɪts/"
       },
       {
         "en": "tonight",
-        "vi": "tối nay"
+        "vi": "tối nay",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr təˈnaɪt/"
       },
       {
         "en": "two people",
-        "vi": "hai người"
+        "vi": "hai người",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr tu ˈpipəl/"
       },
       {
         "en": "my family",
-        "vi": "gia đình tôi"
+        "vi": "gia đình tôi",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr maɪ ˈfæməli/"
       }
     ],
     "examples": [
       {
         "en": "I have a reservation for four nights.",
-        "vi": "Tôi đã đặt phòng cho bốn đêm."
+        "vi": "Tôi đã đặt phòng cho bốn đêm.",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr fɔr naɪts/"
       },
       {
         "en": "I have a reservation for five people.",
-        "vi": "Tôi đã đặt phòng cho năm người."
+        "vi": "Tôi đã đặt phòng cho năm người.",
+        "ipa": "/aɪ hæv ə ˌrɛzərˈveɪʃən fɔr faɪv ˈpipəl/"
       }
     ],
     "asks": [
@@ -5335,37 +6080,45 @@
     "slots": [
       {
         "en": "a single room",
-        "vi": "một phòng đơn"
+        "vi": "một phòng đơn",
+        "ipa": "/aɪd laɪk tu bʊk ə ˈsɪŋɡəl rum/"
       },
       {
         "en": "a double room",
-        "vi": "một phòng đôi"
+        "vi": "một phòng đôi",
+        "ipa": "/aɪd laɪk tu bʊk ə ˈdʌbəl rum/"
       },
       {
         "en": "a room for two",
-        "vi": "một phòng cho hai người"
+        "vi": "một phòng cho hai người",
+        "ipa": "/aɪd laɪk tu bʊk ə rum fɔr tu/"
       },
       {
         "en": "a room for tonight",
-        "vi": "một phòng cho tối nay"
+        "vi": "một phòng cho tối nay",
+        "ipa": "/aɪd laɪk tu bʊk ə rum fɔr təˈnaɪt/"
       },
       {
         "en": "a quiet room",
-        "vi": "một phòng yên tĩnh"
+        "vi": "một phòng yên tĩnh",
+        "ipa": "/aɪd laɪk tu bʊk ə ˈkwaɪət rum/"
       },
       {
         "en": "a room with a bath",
-        "vi": "một phòng có bồn tắm"
+        "vi": "một phòng có bồn tắm",
+        "ipa": "/aɪd laɪk tu bʊk ə rum wɪð ə bæθ/"
       }
     ],
     "examples": [
       {
         "en": "I'd like to book a room for three nights.",
-        "vi": "Tôi muốn đặt một phòng cho ba đêm."
+        "vi": "Tôi muốn đặt một phòng cho ba đêm.",
+        "ipa": "/aɪd laɪk tu bʊk ə rum fɔr θri naɪts/"
       },
       {
         "en": "I'd like to book a big room.",
-        "vi": "Tôi muốn đặt một phòng lớn."
+        "vi": "Tôi muốn đặt một phòng lớn.",
+        "ipa": "/aɪd laɪk tu bʊk ə bɪɡ rum/"
       }
     ],
     "asks": [
@@ -5393,37 +6146,45 @@
     "slots": [
       {
         "en": "breakfast",
-        "vi": "ăn sáng"
+        "vi": "ăn sáng",
+        "ipa": "/wʌt taɪm ɪz ˈbrɛkfəst/"
       },
       {
         "en": "lunch",
-        "vi": "ăn trưa"
+        "vi": "ăn trưa",
+        "ipa": "/wʌt taɪm ɪz lʌntʃ/"
       },
       {
         "en": "dinner",
-        "vi": "ăn tối"
+        "vi": "ăn tối",
+        "ipa": "/wʌt taɪm ɪz ˈdɪnər/"
       },
       {
         "en": "check in",
-        "vi": "nhận phòng"
+        "vi": "nhận phòng",
+        "ipa": "/wʌt taɪm ɪz tʃɛk ɪn/"
       },
       {
         "en": "check out",
-        "vi": "trả phòng"
+        "vi": "trả phòng",
+        "ipa": "/wʌt taɪm ɪz tʃɛk aʊt/"
       },
       {
         "en": "the shuttle bus",
-        "vi": "có xe đưa đón"
+        "vi": "có xe đưa đón",
+        "ipa": "/wʌt taɪm ɪz ðə ˈʃʌtəl bʌs/"
       }
     ],
     "examples": [
       {
         "en": "What time is the pool open?",
-        "vi": "Mấy giờ hồ bơi mở cửa?"
+        "vi": "Mấy giờ hồ bơi mở cửa?",
+        "ipa": "/wʌt taɪm ɪz ðə pul ˈoʊpən/"
       },
       {
         "en": "What time is the last bus?",
-        "vi": "Mấy giờ có chuyến xe buýt cuối?"
+        "vi": "Mấy giờ có chuyến xe buýt cuối?",
+        "ipa": "/wʌt taɪm ɪz ðə læst bʌs/"
       }
     ],
     "asks": [
@@ -5451,37 +6212,45 @@
     "slots": [
       {
         "en": "air conditioner",
-        "vi": "máy lạnh"
+        "vi": "máy lạnh",
+        "ipa": "/ðə ɛr kənˈdɪʃənər ɪz nɑt ˈwɝkɪŋ/"
       },
       {
         "en": "TV",
-        "vi": "ti vi"
+        "vi": "ti vi",
+        "ipa": "/ðə ˈtiˈvi ɪz nɑt ˈwɝkɪŋ/"
       },
       {
         "en": "shower",
-        "vi": "vòi sen"
+        "vi": "vòi sen",
+        "ipa": "/ðə ˈʃaʊər ɪz nɑt ˈwɝkɪŋ/"
       },
       {
         "en": "light",
-        "vi": "đèn"
+        "vi": "đèn",
+        "ipa": "/ðə laɪt ɪz nɑt ˈwɝkɪŋ/"
       },
       {
         "en": "lift",
-        "vi": "thang máy"
+        "vi": "thang máy",
+        "ipa": "/ðə lɪft ɪz nɑt ˈwɝkɪŋ/"
       },
       {
         "en": "key card",
-        "vi": "thẻ phòng"
+        "vi": "thẻ phòng",
+        "ipa": "/ðə ki kɑrd ɪz nɑt ˈwɝkɪŋ/"
       }
     ],
     "examples": [
       {
         "en": "The phone is not working.",
-        "vi": "Cái điện thoại không hoạt động."
+        "vi": "Cái điện thoại không hoạt động.",
+        "ipa": "/ðə foʊn ɪz nɑt ˈwɝkɪŋ/"
       },
       {
         "en": "The fan is not working.",
-        "vi": "Cái quạt không hoạt động."
+        "vi": "Cái quạt không hoạt động.",
+        "ipa": "/ðə fæn ɪz nɑt ˈwɝkɪŋ/"
       }
     ],
     "asks": [
