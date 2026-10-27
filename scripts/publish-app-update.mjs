@@ -8,12 +8,14 @@
 //   2. put MyEnglish-v<version>.apk on a GitHub release named v<version> (the file keeps that name), for example:
 //        gh release create v0.3.6 D:\nghich\MyEnglish-android\MyEnglish-v0.3.6.apk --title v0.3.6 --notes "..."
 //   3. publish the notice (only after the APK can be downloaded, or learners get an error):
-//        node scripts/publish-app-update.mjs --notes "What is new" [--push]
-//      without --push it only shows what would be sent
+//        node scripts/publish-app-update.mjs --notes "What is new" [--apk <the file uploaded>] [--push]
+//      without --push it only shows what would be sent. The notice carries the SHA-256 of that APK; the app refuses a
+//      download that does not match it.
 //
 // The APK must be signed with the same key as the one installed, and have a higher version, or Android refuses to
 // install it over the old app.
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -44,14 +46,25 @@ if (!repo) {
   process.exit(1);
 }
 
+// The APK that is on the release: the app checks the file it downloads against this hash. It must be the very file
+// uploaded to the release (--apk <path> names it; by default the release build of this version).
+const apkAt = args.indexOf("--apk");
+const localApk = apkAt >= 0 ? args[apkAt + 1] : join(root, "..", "MyEnglish-android", `MyEnglish-v${tauriVersion}.apk`);
+let sha256 = "";
+if (localApk && existsSync(localApk)) {
+  sha256 = createHash("sha256").update(readFileSync(localApk)).digest("hex");
+  console.log(`SHA-256 of ${localApk}:\n  ${sha256}`);
+} else {
+  console.warn(`Warning: ${localApk} does not exist, so the notice has no hash and the app cannot check the download.`);
+}
+
 const manifest = {
   version: tauriVersion,
   apkUrl: `https://github.com/${repo}/releases/download/v${tauriVersion}/MyEnglish-v${tauriVersion}.apk`,
   notes,
+  ...(sha256 ? { sha256 } : {}),
 };
 console.log(JSON.stringify(manifest, null, 2));
-const localApk = join(root, "..", "MyEnglish-android", `MyEnglish-v${tauriVersion}.apk`);
-if (!existsSync(localApk)) console.warn(`Warning: ${localApk} does not exist (build the release first).`);
 if (!notes) console.warn('Warning: no --notes, learners will see no description of what is new.');
 
 const work = mkdtempSync(join(tmpdir(), "app-update-"));

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { compareVersions, fetchAppUpdate, parseUpdateManifest, pickUpdate } from "@/services/appUpdate";
+import { compareVersions, fetchAppUpdate, IDLE_UPDATE, nextUpdateState, parseUpdateManifest, pickUpdate } from "@/services/appUpdate";
 
 const good = { version: "0.3.6", apkUrl: "https://github.com/phamthehieu/MyEnglish/releases/download/v0.3.6/MyEnglish-v0.3.6.apk", notes: "Lộ trình nói B1" };
+const hash = "a".repeat(64);
 
 const reply = (body: unknown, ok = true) => (async () => ({ ok, json: async () => body })) as unknown as typeof fetch;
 
@@ -17,8 +18,15 @@ describe("versions", () => {
 
 describe("the published update file", () => {
   it("is read when it is complete", () => {
-    expect(parseUpdateManifest(good)).toEqual(good);
+    expect(parseUpdateManifest(good)).toEqual({ ...good, sha256: "" });
     expect(parseUpdateManifest({ version: "0.3.6", apkUrl: good.apkUrl })?.notes).toBe("");
+  });
+
+  it("carries the hash of the APK, which must be a real one when given", () => {
+    expect(parseUpdateManifest({ ...good, sha256: hash.toUpperCase() })?.sha256).toBe(hash);
+    expect(parseUpdateManifest({ ...good, sha256: "abc" })).toBeNull();
+    expect(parseUpdateManifest({ ...good, sha256: "g".repeat(64) })).toBeNull();
+    expect(parseUpdateManifest({ ...good, sha256: 123 })).toBeNull();
   });
 
   it("is refused when something is missing or unsafe", () => {
@@ -34,6 +42,32 @@ describe("the published update file", () => {
 
   it("keeps the notes short", () => {
     expect(parseUpdateManifest({ ...good, notes: "x".repeat(900) })?.notes).toHaveLength(400);
+  });
+});
+
+describe("the update in progress", () => {
+  it("goes from the button to the download, the installer and the end", () => {
+    let s = nextUpdateState(IDLE_UPDATE, { type: "start" });
+    expect(s).toEqual({ phase: "downloading", percent: 0, message: "" });
+    s = nextUpdateState(s, { type: "progress", percent: 42.4 });
+    expect(s.percent).toBe(42);
+    s = nextUpdateState(s, { type: "progress", percent: 250 });
+    expect(s.percent).toBe(100);
+    s = nextUpdateState(s, { type: "downloaded" });
+    expect(s.phase).toBe("installing");
+    expect(nextUpdateState(s, { type: "reset" })).toEqual(IDLE_UPDATE);
+  });
+
+  it("ignores a progress that comes after the end, and keeps the message of an error", () => {
+    const installing = nextUpdateState(IDLE_UPDATE, { type: "downloaded" });
+    expect(nextUpdateState(installing, { type: "progress", percent: 10 })).toBe(installing);
+    const failed = nextUpdateState(nextUpdateState(IDLE_UPDATE, { type: "start" }), { type: "error", message: "Không tải được" });
+    expect(failed).toEqual({ phase: "error", percent: 0, message: "Không tải được" });
+    expect(nextUpdateState(failed, { type: "start" }).phase).toBe("downloading");
+  });
+
+  it("asks for the permission to install first", () => {
+    expect(nextUpdateState(IDLE_UPDATE, { type: "needs-permission" }).phase).toBe("permission");
   });
 });
 

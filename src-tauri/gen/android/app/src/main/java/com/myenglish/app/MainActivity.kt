@@ -101,6 +101,8 @@ class MainActivity : TauriActivity() {
 
     webView.addJavascriptInterface(RemindersBridge(this), "AndroidReminders")
     webView.addJavascriptInterface(SituationsBridge(this), "AndroidSituations")
+    // A new version of the app, downloaded and installed from inside it
+    webView.addJavascriptInterface(UpdateBridge(this, webView), "AndroidUpdater")
 
     // Deliver any action pending from activity cold start
     val act = pendingAction

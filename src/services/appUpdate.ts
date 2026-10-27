@@ -13,9 +13,12 @@ export interface AppUpdateInfo {
   apkUrl: string;
   /** What is new, a line or two */
   notes: string;
+  /** SHA-256 of the APK (hex), what the downloaded file must hash to; empty when the notice does not give it */
+  sha256: string;
 }
 
 const VERSION = /^\d+\.\d+\.\d+$/;
+const SHA256 = /^[0-9a-f]{64}$/i;
 
 /** Negative when a is older than b, 0 when equal, positive when newer ("0.3.10" is newer than "0.3.9") */
 export function compareVersions(a: string, b: string): number {
@@ -39,7 +42,14 @@ export function parseUpdateManifest(raw: unknown): AppUpdateInfo | null {
   } catch {
     return null;
   }
-  return { version: o.version, apkUrl: o.apkUrl, notes: typeof o.notes === "string" ? o.notes.trim().slice(0, 400) : "" };
+  // A hash that is given must be a real one: a damaged notice is refused rather than the check silently skipped
+  if (o.sha256 !== undefined && (typeof o.sha256 !== "string" || !SHA256.test(o.sha256))) return null;
+  return {
+    version: o.version,
+    apkUrl: o.apkUrl,
+    notes: typeof o.notes === "string" ? o.notes.trim().slice(0, 400) : "",
+    sha256: typeof o.sha256 === "string" ? o.sha256.toLowerCase() : "",
+  };
 }
 
 /** The update to offer: the file names a version newer than the one running (null otherwise) */
@@ -56,6 +66,49 @@ export async function fetchAppUpdate(current: string, fetchImpl: typeof fetch = 
     return pickUpdate(current, await res.json());
   } catch {
     return null;
+  }
+}
+
+// ─── The update in progress, as the notice shows it ──────────────────────────
+
+/**
+ * idle: the notice with its button; permission: Android must first be allowed to install from this app;
+ * downloading: the APK is coming (percent); installing: handed to Android's installer, waiting for the learner to confirm;
+ * error: something failed (message), the button tries again
+ */
+export type UpdatePhase = "idle" | "permission" | "downloading" | "installing" | "error";
+
+export interface UpdateUiState {
+  phase: UpdatePhase;
+  percent: number;
+  message: string;
+}
+
+export type UpdateEvent =
+  | { type: "needs-permission" }
+  | { type: "start" }
+  | { type: "progress"; percent: number }
+  | { type: "downloaded" }
+  | { type: "error"; message: string }
+  | { type: "reset" };
+
+export const IDLE_UPDATE: UpdateUiState = { phase: "idle", percent: 0, message: "" };
+
+export function nextUpdateState(state: UpdateUiState, event: UpdateEvent): UpdateUiState {
+  switch (event.type) {
+    case "needs-permission":
+      return { phase: "permission", percent: 0, message: "" };
+    case "start":
+      return { phase: "downloading", percent: 0, message: "" };
+    case "progress":
+      // A late progress after the end must not bring the bar back
+      return state.phase === "downloading" ? { ...state, percent: Math.max(0, Math.min(100, Math.round(event.percent))) } : state;
+    case "downloaded":
+      return { phase: "installing", percent: 100, message: "" };
+    case "error":
+      return { phase: "error", percent: 0, message: event.message };
+    case "reset":
+      return IDLE_UPDATE;
   }
 }
 
