@@ -87,14 +87,20 @@ export default function GradingBar({
         effectiveExerciseType
       ) ? (
         <div className="w-full flex items-center justify-between px-3">
-          <button
-            onClick={() => handleGrade(Rating.Again, effectiveExerciseType)}
-            disabled={isAdvancing}
-            className="text-xs text-slate-400 hover:text-rose-500 font-medium flex items-center gap-1.5 transition-colors"
-          >
-            <SkipForward className="w-3.5 h-3.5" />
-            <span>Chưa nhớ từ này, bỏ qua</span>
-          </button>
+          {effectiveExerciseType === "letter_tiles" ? (
+            // The exercise has its own "Không nhớ, xem đáp án" (it asks twice): a second one-tap way to fail the word, down
+            // here by the bottom of the screen, was only a mis-tap waiting to happen
+            <span />
+          ) : (
+            <button
+              onClick={() => handleGrade(Rating.Again, effectiveExerciseType)}
+              disabled={isAdvancing}
+              className="text-xs text-slate-400 hover:text-rose-500 font-medium flex items-center gap-1.5 transition-colors"
+            >
+              <SkipForward className="w-3.5 h-3.5" />
+              <span>Chưa nhớ từ này, bỏ qua</span>
+            </button>
+          )}
           <div className="text-[11px] text-slate-400 dark:text-zinc-500">
             {EXERCISE_LABEL_VN[effectiveExerciseType]}
           </div>

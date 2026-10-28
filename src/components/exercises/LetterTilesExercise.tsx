@@ -141,6 +141,8 @@ export default function LetterTilesExercise({
   const [wrongAttempts, setWrongAttempts] = useState(0);
   const [hint, setHint] = useState(false);
   const [state, setState] = useState<"building" | "wrong" | "correct" | "give_up">("building");
+  // "Không nhớ" was pressed once: the next press gives up (it falls back after a few seconds, or when the learner goes on)
+  const [confirmGiveUp, setConfirmGiveUp] = useState(false);
   const doneRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const recentUndosRef = useRef<Array<{ id: number; ch: string; time: number }>>([]);
@@ -162,6 +164,15 @@ export default function LetterTilesExercise({
   useEffect(() => () => {
     if (timerRef.current) clearTimeout(timerRef.current);
   }, []);
+
+  useEffect(() => {
+    setConfirmGiveUp(false);
+  }, [target, picked]);
+  useEffect(() => {
+    if (!confirmGiveUp) return;
+    const t = setTimeout(() => setConfirmGiveUp(false), 3000);
+    return () => clearTimeout(t);
+  }, [confirmGiveUp]);
 
   const letterCount = slots.filter((c) => !FIXED.test(c)).length;
   const example = pickExample(word);
@@ -448,6 +459,33 @@ export default function LetterTilesExercise({
         })}
       </div>
 
+      {/* Helpers sit under the answer being built, away from the main button: a hint costs the word a grade (Hard) */}
+      {state !== "correct" && state !== "give_up" && (
+        <div className="flex items-center justify-center gap-2 text-xs">
+          <button
+            type="button"
+            onClick={clear}
+            disabled={picked.length === 0}
+            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:pointer-events-none transition-colors font-medium cursor-pointer"
+            title="Làm lại từ đầu"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Làm lại</span>
+          </button>
+          {!hideHints && !hint && (
+            <button
+              type="button"
+              onClick={() => setHint(true)}
+              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors font-medium cursor-pointer"
+              title="Hiện chữ cái đầu tiên làm gợi ý (từ này sẽ được chấm Khó)"
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Gợi ý chữ đầu</span>
+            </button>
+          )}
+        </div>
+      )}
+
       {/* Tiles */}
       <div className="flex flex-wrap justify-center gap-2 py-1">
         {tiles.map((t) => {
@@ -477,67 +515,61 @@ export default function LetterTilesExercise({
         })}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-2.5 text-xs px-1 min-h-[38px] pt-1">
-        <div className="flex items-center gap-2 flex-wrap">
+      {/* What the exercise says now. Always the same height, so nothing moves under the learner's finger */}
+      <div className="min-h-[28px] flex items-center justify-center px-1 text-xs text-center" aria-live="polite">
+        {state === "correct" ? (
+          <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400 animate-in fade-in">
+            <CheckCircle2 className="w-4 h-4 shrink-0" /> {target}
+          </span>
+        ) : state === "give_up" ? (
+          <span className="inline-flex items-center gap-1.5 font-semibold text-rose-600 dark:text-rose-400 animate-in fade-in">
+            <AlertCircle className="w-4 h-4 shrink-0" /> Đáp án: {target}
+          </span>
+        ) : state === "wrong" ? (
+          <span className="inline-flex items-center gap-1.5 font-semibold text-amber-700 dark:text-amber-300 animate-in fade-in">
+            <AlertCircle className="w-4 h-4 shrink-0 text-amber-500" /> Gần rồi, đổi vài chữ rồi thử lại nhé
+          </span>
+        ) : picked.length === letterCount ? (
+          <span className="font-medium text-cyan-700 dark:text-cyan-400">Đã đủ chữ, bấm Kiểm tra</span>
+        ) : (
+          <span className="font-mono text-slate-400 dark:text-zinc-500">
+            {picked.length}/{letterCount} chữ
+          </span>
+        )}
+      </div>
+
+      {state !== "correct" && state !== "give_up" && (
+        <div className="space-y-6">
+          {/* The main button: wide and tall, under the tiles, always in the same place. It sleeps until every letter is
+              placed, so a tap that comes too early does nothing */}
           <button
             type="button"
-            onClick={clear}
-            disabled={picked.length === 0 || state === "correct" || state === "give_up"}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-750 hover:text-slate-900 dark:hover:text-white disabled:opacity-40 disabled:pointer-events-none transition-colors text-xs font-medium cursor-pointer shadow-2xs"
-            title="Làm lại từ đầu"
+            onClick={() => check(picked)}
+            disabled={state === "wrong" || picked.length !== letterCount}
+            className="w-full h-12 rounded-xl bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 disabled:pointer-events-none text-white font-bold text-sm shadow-sm transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Làm lại</span>
+            <span>Kiểm tra</span>
+            <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[10px] font-mono leading-none">Enter</kbd>
           </button>
-          {!hideHints && !hint && state !== "correct" && state !== "give_up" && (
+
+          {/* Giving up counts the word as forgotten: a quiet link, well away from the main button, that asks twice */}
+          <div className="flex justify-center">
             <button
               type="button"
-              onClick={() => setHint(true)}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors text-xs font-medium cursor-pointer"
-              title="Hiện chữ cái đầu tiên làm gợi ý"
-            >
-              <HelpCircle className="w-3.5 h-3.5" />
-              <span>Gợi ý chữ đầu</span>
-            </button>
-          )}
-          {state !== "correct" && state !== "give_up" && (
-            <button
-              type="button"
-              onClick={giveUp}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/60 bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-900/50 text-rose-600 dark:text-rose-400 text-xs font-semibold transition-colors cursor-pointer shrink-0"
-              title="Xem đáp án và học lại từ này"
+              onClick={() => (confirmGiveUp ? giveUp() : setConfirmGiveUp(true))}
+              className={`inline-flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                confirmGiveUp
+                  ? "border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300"
+                  : "text-slate-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400"
+              }`}
+              title="Xem đáp án và học lại từ này (tính là chưa nhớ)"
             >
               <Eye className="w-3.5 h-3.5" />
-              <span>Không nhớ</span>
+              <span>{confirmGiveUp ? "Bấm lần nữa để xem đáp án" : "Không nhớ, xem đáp án"}</span>
             </button>
-          )}
+          </div>
         </div>
-
-        <div className="flex items-center justify-end shrink-0 ml-auto">
-          {state === "correct" ? (
-            <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400 animate-in fade-in">
-              <CheckCircle2 className="w-4 h-4 shrink-0" /> {target}
-            </span>
-          ) : state === "give_up" ? (
-            <span className="inline-flex items-center gap-1.5 font-semibold text-rose-600 dark:text-rose-400 animate-in fade-in">
-              <AlertCircle className="w-4 h-4 shrink-0" /> Đáp án: {target}
-            </span>
-          ) : state === "wrong" ? (
-            <span className="inline-flex items-center gap-1.5 font-semibold text-amber-700 dark:text-amber-300 animate-in fade-in">
-              <AlertCircle className="w-4 h-4 shrink-0 text-amber-500" /> Gần rồi, đổi vài chữ rồi thử lại nhé
-            </span>
-          ) : picked.length === letterCount ? (
-            <button
-              type="button"
-              onClick={() => check(picked)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition-all active:scale-95 cursor-pointer animate-in fade-in"
-            >
-              <span>Kiểm tra</span>
-              <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[10px] font-mono leading-none">Enter</kbd>
-            </button>
-          ) : null}
-        </div>
-      </div>
+      )}
     </div>
   );
 }
