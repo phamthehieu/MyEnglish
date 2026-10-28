@@ -67,6 +67,7 @@ export default function LibraryTab({
   const selectedWord = useWordsStore((s) => s.selectedWord);
   const setSelectedWord = useWordsStore((s) => s.setSelectedWord);
   const [trajectoryWord, setTrajectoryWord] = useState<WordDetail | null>(null);
+  const hasAnyFilter = searchQuery.trim() !== "" || selectedTopic !== "all" || reviewTimeFilter !== "all";
 
   return (
     <div className={`${PAGE_CONTAINER} space-y-3 sm:space-y-4`}>
@@ -78,6 +79,7 @@ export default function LibraryTab({
             <span>{message}</span>
           </div>
           <button
+            type="button"
             onClick={() => setMessage(null)}
             aria-label="Đóng thông báo"
             className="text-cyan-600 hover:text-cyan-900 dark:text-cyan-400 dark:hover:text-white"
@@ -110,6 +112,7 @@ export default function LibraryTab({
           />
           {searchQuery ? (
             <button
+              type="button"
               onClick={() => setSearchQuery("")}
               className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 p-1"
               aria-label="Xóa tìm kiếm"
@@ -198,6 +201,7 @@ export default function LibraryTab({
             {filteredWords.length > visibleWords.length && (
               <div className="col-span-full flex justify-center pt-2">
                 <button
+                  type="button"
                   onClick={() => setVisibleCount((c) => c + GALLERY_PAGE_SIZE)}
                   className="px-4 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-800 dark:text-zinc-200 text-xs font-medium transition-colors shadow-sm"
                 >
@@ -216,16 +220,22 @@ export default function LibraryTab({
           <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm mx-auto">
             Thử thay đổi từ khóa tìm kiếm, chọn chủ đề khác hoặc đặt lại bộ lọc lịch nhắc lại.
           </p>
-          <div className="pt-2 flex justify-center gap-2">
-            {reviewTimeFilter !== "all" && (
+          <div className="pt-2 flex flex-wrap justify-center gap-2">
+            {hasAnyFilter && (
               <button
-                onClick={() => setReviewTimeFilter("all")}
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedTopic("all");
+                  setReviewTimeFilter("all");
+                }}
                 className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-medium text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700"
               >
-                Xóa bộ lọc lịch nhắc
+                Đặt lại bộ lọc
               </button>
             )}
             <button
+              type="button"
               onClick={() => setActiveTab("capture")}
               className="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-medium shadow-sm transition-colors flex items-center gap-1.5"
             >

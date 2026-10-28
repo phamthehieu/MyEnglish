@@ -744,7 +744,7 @@ export default function ReflexChallengeModal({
                       <span className="w-7 h-7 rounded-xl bg-slate-950/60 text-slate-300 font-mono text-xs font-bold flex items-center justify-center border border-slate-800 shrink-0">
                         {idx + 1}
                       </span>
-                      <span className="flex-1 min-w-0 truncate">{opt}</span>
+                      <span className="flex-1 min-w-0 line-clamp-2 break-words leading-snug">{opt}</span>
                     </button>
                   );
                 })}

@@ -38,6 +38,10 @@ export default function AccountSettings() {
     store().clearMessages();
   }, [mode, store]);
 
+  useEffect(() => {
+    if (!sync.accountMismatch) setConfirmWipe(false);
+  }, [sync.accountMismatch]);
+
   const shell = (children: React.ReactNode) => (
     <section>
       <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">{children}</div>
@@ -82,21 +86,38 @@ export default function AccountSettings() {
             Sách ngữ pháp của bạn không bao giờ được tải lên.
           </p>
         </div>
-        <div className="flex gap-2">
-          {([["signin", "Đăng nhập"], ["signup", "Tạo tài khoản"]] as const).map(([m, label]) => (
+        {mode === "forgot" ? (
+          <div className="flex items-center justify-between gap-2 pt-0.5">
+            <span className="text-xs font-bold text-slate-800 dark:text-zinc-200">
+              Đặt lại mật khẩu qua email
+            </span>
             <button
               type="button"
-              key={m}
-              onClick={() => setMode(m)}
-              className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-semibold border",
-                mode === m ? "bg-cyan-600 border-cyan-600 text-white" : "border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300"
-              )}
+              onClick={() => setMode("signin")}
+              className="text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:underline"
             >
-              {label}
+              ← Quay lại đăng nhập
             </button>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            {([["signin", "Đăng nhập"], ["signup", "Tạo tài khoản"]] as const).map(([m, label]) => (
+              <button
+                type="button"
+                key={m}
+                onClick={() => setMode(m)}
+                className={cn(
+                  "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors",
+                  mode === m
+                    ? "bg-cyan-600 border-cyan-600 text-white"
+                    : "border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
         <input className={field} type="email" required autoComplete="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
         {mode === "signup" && (
           <input className={field} required minLength={3} maxLength={20} placeholder="Tên hiển thị trên bảng xếp hạng (3–20 ký tự)" value={name} onChange={(e) => setName(e.target.value)} />
@@ -116,7 +137,7 @@ export default function AccountSettings() {
         {error && <div className="text-xs text-rose-600 dark:text-rose-400">{error}</div>}
         {notice && <div className="text-xs text-emerald-600 dark:text-emerald-400">{notice}</div>}
         <div className="flex items-center gap-3">
-          <button className={primary} disabled={busy}>
+          <button type="submit" className={primary} disabled={busy}>
             {busy && <Loader2 className="w-4 h-4 animate-spin" />}
             {mode === "signin" ? "Đăng nhập" : mode === "signup" ? "Tạo tài khoản" : "Gửi thư đặt lại mật khẩu"}
           </button>
@@ -154,7 +175,11 @@ export default function AccountSettings() {
             {editName === null ? (
               <div className="text-sm font-bold text-slate-900 dark:text-white truncate">
                 {profile?.displayName ?? "…"}
-                <button onClick={() => setEditName(profile?.displayName ?? "")} className="ml-2 text-[11px] font-normal text-cyan-600 hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setEditName(profile?.displayName ?? "")}
+                  className="ml-2 text-[11px] font-normal text-cyan-600 hover:underline"
+                >
                   Đổi tên
                 </button>
               </div>
@@ -166,15 +191,29 @@ export default function AccountSettings() {
                   if (await store().updateDisplayName(editName)) setEditName(null);
                 }}
               >
-                <input className={cn(field, "py-1")} minLength={3} maxLength={20} value={editName} onChange={(e) => setEditName(e.target.value)} autoFocus />
-                <button className={secondary} disabled={busy}>Lưu</button>
-                <button type="button" className={secondary} onClick={() => setEditName(null)}>Hủy</button>
+                <input
+                  className={cn(field, "py-1")}
+                  minLength={3}
+                  maxLength={20}
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape") setEditName(null);
+                  }}
+                  autoFocus
+                />
+                <button type="submit" className={secondary} disabled={busy || editName.trim().length < 3}>
+                  Lưu
+                </button>
+                <button type="button" className={secondary} onClick={() => setEditName(null)}>
+                  Hủy
+                </button>
               </form>
             )}
             <div className="text-xs text-slate-500 dark:text-zinc-400 truncate">{user.email}</div>
           </div>
         </div>
-        <button className={secondary} disabled={busy || syncing} onClick={() => void store().signOut()}>
+        <button type="button" className={secondary} disabled={busy || syncing} onClick={() => void store().signOut()}>
           <LogOut className="w-3.5 h-3.5" /> Đăng xuất
         </button>
       </div>
@@ -209,7 +248,7 @@ export default function AccountSettings() {
       {sync.accountMismatch ? (
         <div className="p-4 rounded-xl border border-amber-200 dark:border-amber-900/60 bg-amber-50 dark:bg-amber-950/20 space-y-3 text-xs text-slate-700 dark:text-zinc-300">
           <div className="flex items-center gap-2 font-bold text-amber-700 dark:text-amber-300">
-            <AlertTriangle className="w-4 h-4" />
+            <AlertTriangle className="w-4 h-4 shrink-0" />
             {sync.mismatchReason === "reset"
               ? "Tài khoản đã được đặt lại từ một máy khác"
               : "Máy này đang chứa dữ liệu của một tài khoản khác"}
@@ -220,18 +259,40 @@ export default function AccountSettings() {
               : "Bạn vừa đăng nhập bằng tài khoản mới, nhưng tiến trình trên máy đã đồng bộ với tài khoản trước. Chọn cách xử lý:"}
           </p>
           <div className="flex flex-wrap gap-2">
-            <button className={primary} onClick={() => void resolveAccountMismatch("merge")}>
+            <button
+              type="button"
+              className={primary}
+              disabled={busy || syncing}
+              onClick={() => void resolveAccountMismatch("merge")}
+            >
               {sync.mismatchReason === "reset" ? "Giữ tiến trình máy này, gửi lại lên tài khoản" : "Gộp dữ liệu máy này vào tài khoản mới"}
             </button>
             {confirmWipe ? (
-              <button
-                className="px-4 py-2 rounded-lg text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-white"
-                onClick={() => void resolveAccountMismatch("wipe")}
-              >
-                Chắc chắn: xóa dữ liệu trên máy
-              </button>
+              <>
+                <button
+                  type="button"
+                  disabled={busy || syncing}
+                  className="px-4 py-2 rounded-lg text-sm font-semibold bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white"
+                  onClick={() => void resolveAccountMismatch("wipe")}
+                >
+                  Chắc chắn: xóa dữ liệu trên máy
+                </button>
+                <button
+                  type="button"
+                  disabled={busy || syncing}
+                  className={secondary}
+                  onClick={() => setConfirmWipe(false)}
+                >
+                  Hủy
+                </button>
+              </>
             ) : (
-              <button className={secondary} onClick={() => setConfirmWipe(true)}>
+              <button
+                type="button"
+                disabled={busy || syncing}
+                className={secondary}
+                onClick={() => setConfirmWipe(true)}
+              >
                 {sync.mismatchReason === "reset" ? "Xóa dữ liệu trên máy này cho khớp tài khoản" : "Xóa dữ liệu trên máy, bắt đầu từ tài khoản mới"}
               </button>
             )}
@@ -257,7 +318,7 @@ export default function AccountSettings() {
               </div>
             )}
           </div>
-          <button className={secondary} disabled={syncing} onClick={() => void runSync()}>
+          <button type="button" className={secondary} disabled={busy || syncing} onClick={() => void runSync()}>
             <RefreshCw className={cn("w-3.5 h-3.5", syncing && "animate-spin")} /> Đồng bộ ngay
           </button>
         </div>

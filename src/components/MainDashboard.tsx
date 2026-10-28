@@ -1051,7 +1051,7 @@ export default function MainDashboard({
     if (!isLibraryTab) return EMPTY_BUCKET_COUNTS;
     const now = new Date(nowTick);
     const counts: Record<ReviewTimeBucket, number> = {
-      all: libraryWords.length,
+      all: 0,
       due: 0,
       today: 0,
       "1-3d": 0,
@@ -1060,9 +1060,15 @@ export default function MainDashboard({
       waiting: 0,
       new: 0,
     };
-    for (const w of libraryWords) counts[librarySchedule(w, now).info.bucket]++;
+    for (const w of libraryWords) {
+      if (selectedTopic !== "all" && (w.topic || "General Tech").trim().toLowerCase() !== selectedTopic.toLowerCase()) {
+        continue;
+      }
+      counts.all++;
+      counts[librarySchedule(w, now).info.bucket]++;
+    }
     return counts;
-  }, [libraryWords, nowTick, isLibraryTab]);
+  }, [libraryWords, nowTick, isLibraryTab, selectedTopic]);
 
   // Single pass over words: due/learned/leech counts and per-topic {total, due}
   const libraryStats = useMemo<LibraryStats>(() => {
