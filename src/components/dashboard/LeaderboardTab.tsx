@@ -69,7 +69,7 @@ const MEDAL = ["🥇", "🥈", "🥉"];
 
 const chip = (active: boolean) =>
   cn(
-    "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors",
+    "px-3 min-h-10 rounded-lg text-xs font-semibold border transition-colors",
     active
       ? "bg-cyan-600 border-cyan-600 text-white"
       : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
@@ -160,7 +160,7 @@ export default function LeaderboardTab({
           <p className="text-sm text-slate-600 dark:text-zinc-400 max-w-md mx-auto">
             {configured
               ? "Đăng nhập để đua kinh nghiệm với mọi người, hoặc lập nhóm riêng với bạn bè. Tiến trình học của bạn cũng được đồng bộ giữa các máy."
-              : "Tính năng tài khoản chưa được cấu hình trong bản này (thiếu khóa Supabase). Xem supabase/README.md."}
+              : "Tính năng tài khoản và bảng xếp hạng chưa dùng được trong bản này. Bạn vẫn học bình thường."}
           </p>
           {configured && onOpenSettings && (
             <button
@@ -180,22 +180,23 @@ export default function LeaderboardTab({
   const isStreak = kind === "streak";
   const scopeName = groupId ? (groups.find((g) => g.id === groupId)?.name ?? "Nhóm") : "Tất cả mọi người";
 
-  const row = (r: LeaderRow) => (
+  // The index keeps the key unique when two players tie on rank and name
+  const row = (r: LeaderRow, i: number) => (
     <div
-      key={`${r.rank}-${r.displayName}`}
+      key={`${r.rank}-${r.displayName}-${i}`}
       className={cn(
         "flex items-center gap-3 px-4 py-2.5 border-b last:border-b-0 border-slate-100 dark:border-zinc-800/70",
         r.isMe && "bg-cyan-50 dark:bg-cyan-500/10"
       )}
     >
-      <div className="w-8 text-center text-sm font-bold text-slate-500 dark:text-zinc-400">{MEDAL[r.rank - 1] ?? r.rank}</div>
+      <div className="w-8 text-center text-sm font-bold text-slate-600 dark:text-zinc-400">{MEDAL[r.rank - 1] ?? r.rank}</div>
       <Avatar id={r.avatar} name={r.displayName} size="sm" />
       <div className="flex-1 min-w-0">
         <div className={cn("text-sm truncate", r.isMe ? "font-bold text-cyan-700 dark:text-cyan-300" : "font-medium text-slate-900 dark:text-white")}>
           {r.displayName}
-          {r.isMe && <span className="ml-2 text-[10px] uppercase tracking-wide">bạn</span>}
+          {r.isMe && <span className="ml-2 text-xs uppercase tracking-wide">bạn</span>}
         </div>
-        <div className="text-[11px] text-slate-500 dark:text-zinc-400">Lv.{r.level}{!isStreak && r.streak > 0 ? ` · 🔥 ${r.streak} ngày` : ""}</div>
+        <div className="text-xs text-slate-600 dark:text-zinc-400">Lv.{r.level}{!isStreak && r.streak > 0 ? ` · 🔥 ${r.streak} ngày` : ""}</div>
       </div>
       <div className="text-sm font-bold tabular-nums text-slate-900 dark:text-white">
         {isStreak ? `🔥 ${r.streak}` : `${r.xp.toLocaleString("vi-VN")} XP`}
@@ -213,13 +214,13 @@ export default function LeaderboardTab({
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-900 dark:text-white">Bảng xếp hạng</h2>
-              <p className="text-xs text-slate-500 dark:text-zinc-400">{scopeName}</p>
+              <p className="text-xs text-slate-600 dark:text-zinc-400">{scopeName}</p>
             </div>
           </div>
           <button
             onClick={() => void load()}
             disabled={loading}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
+            className="inline-flex items-center gap-1.5 px-3 min-h-10 rounded-lg text-xs font-semibold border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
           >
             <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} /> Làm mới
           </button>
@@ -235,14 +236,14 @@ export default function LeaderboardTab({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-black uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full text-white">
-                      Ramp Up
+                    <span className="text-xs font-black uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full text-white">
+                      Tốc độ
                     </span>
                     <h3 className="font-extrabold text-base text-white">
-                      Thử Thách Phản Xạ
+                      Thử thách phản xạ
                     </h3>
                   </div>
-                  <p className="text-xs text-amber-100 mt-0.5">
+                  <p className="text-xs text-white/90 mt-0.5">
                     Vượt 3 chặng phản xạ tính giờ để giành tới <strong className="text-white font-bold">+80 XP</strong> bứt phá bảng xếp hạng!
                   </p>
                 </div>
@@ -300,7 +301,7 @@ export default function LeaderboardTab({
               {error}
               {rows && rows.length > 0 ? " Đang hiện số lần trước." : ""}
             </span>
-            <button onClick={() => void load()} className="shrink-0 px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold">
+            <button onClick={() => void load()} className="shrink-0 px-3 min-h-10 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold">
               Thử lại
             </button>
           </div>
@@ -315,10 +316,10 @@ export default function LeaderboardTab({
           )}
           {rows === null ? (
             error ? (
-              <div className="p-8 text-center text-sm text-slate-500 dark:text-zinc-400">Chưa tải được bảng xếp hạng.</div>
+              <div className="p-8 text-center text-sm text-slate-600 dark:text-zinc-400">Chưa tải được bảng xếp hạng.</div>
             ) : (
               <>
-                <div className="px-4 pt-3 pb-1 flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400" role="status">
+                <div className="px-4 pt-3 pb-1 flex items-center gap-2 text-xs text-slate-600 dark:text-zinc-400" role="status">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   {slow ? "Mạng hơi chậm, vẫn đang tải bảng xếp hạng…" : "Đang tải bảng xếp hạng…"}
                 </div>
@@ -329,27 +330,32 @@ export default function LeaderboardTab({
             loading ? (
               <SkeletonRows count={3} />
             ) : (
-            <div className="p-8 text-center text-sm text-slate-500 dark:text-zinc-400">
+            <div className="p-8 text-center text-sm text-slate-600 dark:text-zinc-400">
               Chưa có ai trên bảng này. Ôn vài thẻ để lên bảng đầu tiên!
             </div>
             )
           ) : (
             <div className={cn("transition-opacity", loading && slow && "opacity-60")}>
-              {top.map(row)}
+              {top.map((r, i) => row(r, i))}
               {mineOutside && (
                 <>
-                  <div className="px-4 py-1 text-center text-xs text-slate-400">···</div>
-                  {row(mineOutside)}
+                  <div className="px-4 py-1 text-center text-xs text-slate-600 dark:text-zinc-400">···</div>
+                  {row(mineOutside, top.length)}
                 </>
               )}
             </div>
           )}
         </div>
 
-        <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+        <p className="text-xs text-slate-600 dark:text-zinc-400">
           {syncing ? "Đang đồng bộ…  " : ""}
           XP của bạn được cập nhật mỗi lần đồng bộ (tự động sau khi học). Bảng chỉ để vui cùng bạn bè: XP do ứng dụng tự báo lên.
         </p>
+        {groupId === null && (
+          <p className="text-xs text-amber-800 dark:text-amber-300">
+            Bảng "Tất cả" công khai: người lạ cũng thấy tên và ảnh đại diện của bạn. Muốn chỉ thi đua với bạn bè, hãy tạo nhóm riêng.
+          </p>
+        )}
       </div>
     </div>
   );
@@ -378,9 +384,9 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
   };
 
   const input =
-    "flex-1 min-w-0 px-3 py-2 rounded-lg text-xs border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-slate-400";
+    "flex-1 min-w-0 px-3 min-h-10 rounded-lg text-sm border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-slate-500";
   const button =
-    "px-3 py-2 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white";
+    "px-4 min-h-10 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white";
 
   return (
     <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm space-y-4">
@@ -393,6 +399,7 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
           }}
         >
           <div className="text-xs font-bold text-slate-700 dark:text-zinc-300">Tạo nhóm mới</div>
+          <p className="text-xs text-slate-600 dark:text-zinc-400">Đặt tên nhóm, rồi gửi mã mời cho bạn bè để họ vào cùng.</p>
           <div className="flex gap-2">
             <input className={input} placeholder="Tên nhóm (2–30 ký tự)" maxLength={30} value={name} onChange={(e) => setName(e.target.value)} />
             <button className={button} disabled={busy || name.trim().length < 2}>Tạo</button>
@@ -405,7 +412,8 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
             if (code.trim()) void act(async () => { const g = await joinGroup(code.trim()); setCode(""); return g.id; });
           }}
         >
-          <div className="text-xs font-bold text-slate-700 dark:text-zinc-300">Vào nhóm bằng mã mời</div>
+          <div className="text-xs font-bold text-slate-700 dark:text-zinc-300">Vào nhóm của bạn bè</div>
+          <p className="text-xs text-slate-600 dark:text-zinc-400">Nhập mã mời bạn bè gửi cho bạn để vào nhóm của họ.</p>
           <div className="flex gap-2">
             <input className={cn(input, "uppercase")} placeholder="VD: 3F9A12BC" maxLength={12} value={code} onChange={(e) => setCode(e.target.value)} />
             <button className={button} disabled={busy || !code.trim()}>Vào</button>
@@ -421,22 +429,24 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
             <li key={g.id} className="py-2 flex items-center gap-3 text-xs">
               <div className="flex-1 min-w-0">
                 <div className="font-semibold text-slate-900 dark:text-white truncate">{g.name}</div>
-                <div className="text-slate-500 dark:text-zinc-400">{g.memberCount} thành viên · mã mời <span className="font-mono">{g.inviteCode}</span></div>
+                <div className="text-slate-600 dark:text-zinc-400">{g.memberCount} thành viên · mã mời <span className="font-mono">{g.inviteCode}</span></div>
               </div>
               <button
                 title="Chép mã mời"
+                aria-label="Chép mã mời"
                 onClick={() => {
                   void navigator.clipboard?.writeText(g.inviteCode).then(() => {
                     setCopied(g.id);
                     window.setTimeout(() => setCopied(null), 1500);
                   });
                 }}
-                className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                className="min-w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800"
               >
-                {copied === g.id ? "✓" : <Copy className="w-3.5 h-3.5" />}
+                {copied === g.id ? "✓" : <Copy className="w-4 h-4" />}
               </button>
               <button
                 title="Rời nhóm"
+                aria-label="Rời nhóm"
                 disabled={busy}
                 onClick={() => {
                   if (leaving !== g.id) {
@@ -448,11 +458,11 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
                   void act(async () => { await leaveGroup(g.id); return null; });
                 }}
                 className={cn(
-                  "p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10",
+                  "min-w-10 h-10 flex items-center justify-center rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10",
                   leaving === g.id && "px-2 font-semibold bg-rose-50 dark:bg-rose-500/10"
                 )}
               >
-                {leaving === g.id ? "Rời nhóm?" : <X className="w-3.5 h-3.5" />}
+                {leaving === g.id ? "Bấm lần nữa để rời" : <X className="w-4 h-4" />}
               </button>
             </li>
           ))}

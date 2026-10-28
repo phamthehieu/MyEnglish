@@ -1,9 +1,8 @@
 import DisplaySettings from "./dashboard/DisplaySettings";
-import SettingsSection from "./dashboard/SettingsSection";
+import SettingsSection, { OPEN_SETTINGS_SECTION_EVENT } from "./dashboard/SettingsSection";
 import { FOCUS_DURATIONS, getFocusSettings, saveFocusSettings } from "@/services/focusSettings";
-import AdvancedLearningSettings from "./dashboard/AdvancedLearningSettings";
+import AdvancedLearningSettings, { BackupRestoreSettings } from "./dashboard/AdvancedLearningSettings";
 import ResetAppDataModal from "./dashboard/ResetAppDataModal";
-import Jargon from "./Jargon";
 import { isPretestEnabled, setPretestEnabled } from "@/services/pretest";
 import { ANCHOR_TIMES, getQuietHours, type ReminderAnchor } from "@/services/reminderMoments";
 import { getActivityLogs, getDailyGoal, getLocalDateString, setDailyGoal } from "@/services/streak";
@@ -74,6 +73,7 @@ import {
 } from "@/services/reminderSettings";
 import { PAGE_CONTAINER } from "./dashboard/shared";
 import { isMobilePlatform } from "@/lib/platform";
+import { SHOW_DEV_TOOLS } from "@/lib/devTools";
 import {
   nextPlannedReminder,
   reminderGapMinutes,
@@ -337,7 +337,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     try {
       await triggerReviewPopup();
       setNotifFeedback(
-        "Đã kích hoạt Pop-up Focus Review toàn màn hình! Bạn có thể nhấn Esc để tắt nhanh, dùng phím 1-4 để chọn đáp án, hoặc bấm Hoãn (Snooze)."
+        "Đã mở thẻ ôn toàn màn hình! Bạn có thể nhấn Esc để tắt nhanh, dùng phím 1-4 để chọn đáp án, hoặc bấm Hoãn."
       );
     } catch (e) {
       setNotifFeedback(`Lỗi khi mở pop-up: ${e}`);
@@ -438,7 +438,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       if (word) {
         onRefreshWords?.();
         setNotifFeedback(
-          `Đã chuyển từ "${word}" thành trạng thái đến hạn ôn tập ngay! Bạn có thể nhấp vào thông báo nổi bên trên hoặc mở Daily Review.`
+          `Đã chuyển từ "${word}" thành trạng thái đến hạn ôn tập ngay! Bạn có thể nhấp vào thông báo nổi bên trên hoặc mở phần Ôn tập.`
         );
       } else {
         setNotifFeedback("Thư viện hiện chưa có từ vựng nào. Hãy thêm từ vựng trước.");
@@ -484,8 +484,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         </div>
         <div>
           <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Cài đặt</h2>
-          <p className="text-xs text-slate-500 dark:text-zinc-400">
-            Phần quan trọng cho việc học ở trên cùng; giao diện, AI và phần nâng cao được thu gọn, cần thì mở ra. Mỗi thay
+          <p className="text-xs text-slate-600 dark:text-zinc-400">
+            Phần quan trọng cho việc học ở trên cùng; AI và phần nâng cao được thu gọn, cần thì mở ra. Mỗi thay
             đổi được lưu ngay.
           </p>
         </div>
@@ -499,14 +499,18 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             ["reminders", "Nhắc học"],
             ["display", "Giao diện & âm thanh"],
             ["ai", "AI"],
-            ["algorithm", "Thuật toán lịch ôn"],
+            ["algorithm", "Lịch ôn thông minh"],
             ["data", "Dữ liệu"],
           ] as const
         ).map(([id, label]) => (
           <button
             key={id}
-            onClick={() => document.getElementById(`settings-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
-            className="px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700"
+            onClick={() => {
+              // A folded section opens first, then the page scrolls to it
+              window.dispatchEvent(new CustomEvent(OPEN_SETTINGS_SECTION_EVENT, { detail: id }));
+              window.setTimeout(() => document.getElementById(`settings-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+            }}
+            className="min-h-10 px-3 py-2 rounded-lg text-xs font-medium text-slate-700 dark:text-zinc-300 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700"
           >
             {label}
           </button>
@@ -526,7 +530,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               className="shrink-0 px-3.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-semibold text-xs transition-colors shadow-sm flex items-center gap-1.5"
             >
               <Flame className="w-3.5 h-3.5" />
-              <span>Mở Daily Review ngay →</span>
+              <span>Mở phần Ôn tập ngay →</span>
             </button>
           )}
         </div>
@@ -548,7 +552,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                   <Target className="w-3.5 h-3.5 text-emerald-500" /> Mục tiêu mỗi ngày
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400">Số câu trả lời để tính là đã học xong hôm nay (giữ chuỗi ngày học).</p>
+                <p className="text-xs text-slate-600 dark:text-zinc-400">Số câu trả lời để tính là đã học xong hôm nay (giữ chuỗi ngày học).</p>
               </div>
               <span className="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400">{dailyGoal}</span>
             </div>
@@ -561,7 +565,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     setDailyGoalState(g);
                     setNotifFeedback(`Đã đặt mục tiêu mỗi ngày: ${g} câu.`);
                   }}
-                  className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${dailyGoal === g
+                  className={`min-h-10 py-2 rounded-lg text-xs font-mono font-medium transition-all ${dailyGoal === g
                       ? "bg-emerald-600 text-white shadow-sm font-bold"
                       : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
                     }`}
@@ -579,7 +583,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                   <Timer className="w-3.5 h-3.5 text-violet-500" /> Độ dài phiên tập trung
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400">Bấm "Tập trung" ở bất kỳ đâu sẽ học trọn chừng này phút, tắt nhắc nhở.</p>
+                <p className="text-xs text-slate-600 dark:text-zinc-400">Bấm "Tập trung" ở bất kỳ đâu sẽ học trọn chừng này phút, tắt nhắc nhở.</p>
               </div>
               <span className="text-sm font-bold font-mono text-violet-600 dark:text-violet-400">{focusMinutes}′</span>
             </div>
@@ -591,7 +595,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     saveFocusSettings({ minutes: m });
                     setFocusMinutes(m);
                   }}
-                  className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${focusMinutes === m
+                  className={`min-h-10 py-2 rounded-lg text-xs font-mono font-medium transition-all ${focusMinutes === m
                       ? "bg-violet-600 text-white shadow-sm font-bold"
                       : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
                     }`}
@@ -623,7 +627,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white">{cfg.title}</div>
-                  <p className="text-[11px] text-slate-500 dark:text-zinc-400">{cfg.desc}</p>
+                  <p className="text-xs text-slate-600 dark:text-zinc-400">{cfg.desc}</p>
                 </div>
                 <span className="text-sm font-bold text-cyan-600 dark:text-cyan-400 font-mono">
                   {studyLimits[cfg.key]}
@@ -638,7 +642,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       setStudyLimits((prev) => ({ ...prev, [cfg.key]: val }));
                       setNotifFeedback(`Đã cập nhật "${cfg.title}" thành ${val}!`);
                     }}
-                    className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${studyLimits[cfg.key] === val
+                    className={`min-h-10 py-2 rounded-lg text-xs font-mono font-medium transition-all ${studyLimits[cfg.key] === val
                         ? "bg-cyan-600 text-white shadow-sm font-bold"
                         : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
                       }`}
@@ -652,7 +656,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           <label className="flex items-start justify-between gap-3 pt-2 border-t border-slate-200 dark:border-zinc-800 cursor-pointer">
             <div>
               <div className="text-xs font-bold text-slate-900 dark:text-white">Đoán nghĩa trước khi học từ mới</div>
-              <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+              <p className="text-xs text-slate-600 dark:text-zinc-400">
                 Trước thẻ giới thiệu, đoán nghĩa từ trong một câu ví dụ (3 lựa chọn). Đoán trước, kể cả đoán sai, giúp nhớ lâu hơn. Không tính điểm.
               </p>
             </div>
@@ -663,7 +667,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 setPretestEnabled(e.target.checked);
                 setPretestOn(e.target.checked);
               }}
-              className="mt-1 accent-cyan-600"
+              className="mt-0.5 h-5 w-5 shrink-0 accent-cyan-600"
             />
           </label>
         </div>
@@ -691,11 +695,11 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                         Tự khởi động cùng hệ điều hành
                       </h3>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                      <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
                         Mặc định: Bật
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
+                    <p className="text-xs text-slate-600 dark:text-zinc-400 mt-0.5">
                       Tự động mở MyEnglish khi khởi động máy tính để không bỏ lỡ lịch nhắc từ vựng và phím tắt tra từ nhanh
                     </p>
                   </div>
@@ -706,7 +710,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   type="button"
                   disabled={togglingAutostart}
                   onClick={() => handleToggleAutostart(!autostart)}
-                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm disabled:opacity-50 ${autostart
+                  className={`min-h-10 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm disabled:opacity-50 ${autostart
                       ? "bg-emerald-600 hover:bg-emerald-500 text-white"
                       : "bg-slate-200 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                     }`}
@@ -736,10 +740,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 </span>
                 <div>
                   <h3 className="text-sm font-bold text-slate-900 dark:text-white">
-                    Cấu hình Lịch nhắc & Pop-up Quiz (Focus Review)
+                    Lịch nhắc và câu hỏi nhanh
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-zinc-400">
-                    Tùy chỉnh tần suất nhắc nhở, thời gian hoãn (Snooze), dạng câu hỏi và hiệu ứng mờ màn hình
+                  <p className="text-xs text-slate-600 dark:text-zinc-400">
+                    Tùy chỉnh tần suất nhắc, thời gian hoãn, dạng câu hỏi và độ mờ màn hình
                   </p>
                 </div>
               </div>
@@ -747,13 +751,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               {/* Master Toggle */}
               <button
                 onClick={() => handleUpdateReminder({ enabled: !reminderSettings.enabled })}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${reminderSettings.enabled
+                className={`min-h-10 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${reminderSettings.enabled
                     ? "bg-emerald-600 hover:bg-emerald-500 text-white"
                     : "bg-slate-200 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                   }`}
               >
                 <span className={`w-2 h-2 rounded-full ${reminderSettings.enabled ? "bg-white animate-pulse" : "bg-slate-400"}`} />
-                <span>{reminderSettings.enabled ? "Đang bật Pop-up" : "Đã tạm dừng"}</span>
+                <span>{reminderSettings.enabled ? "Đang bật nhắc" : "Đã tạm dừng"}</span>
               </button>
             </div>
 
@@ -776,7 +780,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                           {IS_MOBILE ? "Nhắc kế tiếp:" : "Lần hiển thị kế tiếp:"}
                         </span>
                         {IS_MOBILE && phoneNextMs === 0 ? (
-                          <span className="text-xs text-slate-500 dark:text-zinc-400">
+                          <span className="text-xs text-slate-600 dark:text-zinc-400">
                             chưa đặt: thoát app ra màn hình chính một lần để đặt nhắc
                           </span>
                         ) : (
@@ -791,7 +795,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         )}
                       </div>
                     )}
-                    <div className="text-[11px] text-slate-500 dark:text-zinc-400 mt-0.5">
+                    <div className="text-xs text-slate-600 dark:text-zinc-400 mt-0.5">
                       {IS_MOBILE ? (
                         <span className="text-cyan-600 dark:text-cyan-400 font-medium">
                           Nhắc cách nhau khoảng {reminderGapMinutes(reminderSettings)} phút ban ngày (tối đa {reminderSettings.maxNudgesPerDay || "không giới hạn"} lần/ngày), kể cả khi đã đóng app
@@ -812,7 +816,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <button
                     onClick={handleTestNudge}
                     disabled={testingNudge}
-                    className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
+                    className="min-h-10 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 shrink-0"
                     title="Mở popup nhắc nhỏ có kèm 1 câu quiz"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
@@ -821,7 +825,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <button
                     onClick={handleTestPopupQuiz}
                     disabled={testingPopup}
-                    className="px-3 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-semibold transition-all border border-slate-300 dark:border-zinc-700 flex items-center gap-1.5 shrink-0"
+                    className="min-h-10 px-3 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-semibold transition-all border border-slate-300 dark:border-zinc-700 flex items-center gap-1.5 shrink-0"
                   >
                     <span>{testingPopup ? "Đang mở..." : "Toàn màn hình"}</span>
                   </button>
@@ -836,14 +840,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <span className="text-xl shrink-0">🦉</span>
                   <div>
                     <div className="font-bold text-slate-900 dark:text-white">Quyền hiển thị trên ứng dụng khác chưa bật</div>
-                    <div className="text-[11px] text-slate-600 dark:text-zinc-400">
+                    <div className="text-xs text-slate-600 dark:text-zinc-400">
                       Bật quyền để thẻ nhắc ôn tập & 1 câu quiz có thể xuất hiện nổi trên màn hình khi bạn đang mở app khác.
                     </div>
                   </div>
                 </div>
                 <button
                   onClick={handleRequestOverlay}
-                  className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors whitespace-nowrap shrink-0"
+                  className="min-h-10 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors shrink-0"
                 >
                   Cấp quyền hiển thị nổi
                 </button>
@@ -860,14 +864,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <button
                     onClick={() => handleTestNudgeIn(5)}
                     disabled={testingNudge}
-                    className="px-2.5 py-1 rounded-lg bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white font-semibold text-[11px] transition-colors whitespace-nowrap shadow-sm"
+                    className="min-h-10 px-3 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 active:scale-95 text-white font-semibold text-xs transition-colors shadow-sm"
                   >
                     Thử sau 5s (thoát app)
                   </button>
                   <button
                     onClick={handleTestNudge}
                     disabled={testingNudge}
-                    className="px-2.5 py-1 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-700 dark:text-emerald-300 font-semibold text-[11px] transition-colors whitespace-nowrap"
+                    className="min-h-10 px-3 py-2 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-700 dark:text-emerald-300 font-semibold text-xs transition-colors"
                   >
                     {testingNudge ? "Đang mở..." : "Thử popup ngay"}
                   </button>
@@ -881,13 +885,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center gap-2.5 text-amber-800 dark:text-amber-300 text-xs font-semibold">
                   <Hourglass className="w-4 h-4 text-amber-600 dark:text-amber-400 animate-spin-slow shrink-0" />
                   <span>
-                    Đang trong thời gian hoãn (Snooze): Còn khoảng{" "}
+                    Đang hoãn nhắc: còn khoảng{" "}
                     <strong>{snoozeMinutesRemaining} phút</strong> trước lần nhắc kế tiếp.
                   </span>
                 </div>
                 <button
                   onClick={handleCancelSnooze}
-                  className="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-colors"
+                  className="min-h-10 px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-colors"
                 >
                   Hủy hoãn ngay
                 </button>
@@ -903,7 +907,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                     Khoảng thời gian nhắc học:
                   </span>
-                  <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
+                  <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
                     {reminderSettings.intervalMinutes === 0 ? "Chỉ mở thủ công" : `Mỗi ${reminderSettings.intervalMinutes} phút`}
                   </span>
                 </div>
@@ -915,7 +919,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       <button
                         key={val}
                         onClick={() => handleUpdateReminder({ intervalMinutes: val })}
-                        className={`py-1.5 px-2 rounded-xl text-xs font-semibold transition-all text-center ${isSelected
+                        className={`min-h-10 min-h-10 py-2 px-2 rounded-xl text-xs font-semibold transition-all text-center ${isSelected
                             ? "bg-cyan-600 text-white shadow-sm shadow-cyan-600/30"
                             : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-cyan-500"
                           }`}
@@ -925,7 +929,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     );
                   })}
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight">
+                <p className="text-xs text-slate-600 dark:text-zinc-400 leading-tight">
                   Khuyên dùng: <strong>30 phút</strong> để vừa tập trung làm việc vừa duy trì nhịp ôn tập đều đặn.
                 </p>
               </div>
@@ -935,9 +939,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Hourglass className="w-3.5 h-3.5 text-amber-500" />
-                    Thời gian Hoãn học (Snooze):
+                    Thời gian hoãn nhắc:
                   </span>
-                  <span className="text-[11px] font-mono text-amber-600 dark:text-amber-400 font-semibold">
+                  <span className="text-xs font-mono text-amber-600 dark:text-amber-400 font-semibold">
                     {reminderSettings.snoozeMinutes} phút
                   </span>
                 </div>
@@ -948,7 +952,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       <button
                         key={val}
                         onClick={() => handleUpdateReminder({ snoozeMinutes: val })}
-                        className={`py-1.5 px-2 rounded-xl text-xs font-semibold transition-all text-center ${isSelected
+                        className={`min-h-10 min-h-10 py-2 px-2 rounded-xl text-xs font-semibold transition-all text-center ${isSelected
                             ? "bg-amber-600 text-white shadow-sm shadow-amber-600/30"
                             : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-amber-500"
                           }`}
@@ -958,7 +962,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     );
                   })}
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight">
+                <p className="text-xs text-slate-600 dark:text-zinc-400 leading-tight">
                   Khi đang bận, bạn chỉ cần bấm nút <strong>Hoãn [S]</strong> trên pop-up để dời thời điểm ôn.
                 </p>
               </div>
@@ -969,7 +973,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                   Giờ học cố định:
                 </span>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-snug">
+                <p className="text-xs text-slate-600 dark:text-zinc-400 leading-snug">
                   Nhắc đúng lúc bạn hay học trong ngày, mỗi mốc một lần mỗi ngày. Mốc này không bị giới hạn số lần nhắc tối đa.
                 </p>
                 <div className="space-y-1.5">
@@ -980,12 +984,12 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         key={anchor}
                         className={`flex items-center gap-2 text-xs ${anchorsActive
                             ? "cursor-pointer text-slate-700 dark:text-zinc-300"
-                            : "text-slate-400 dark:text-zinc-500"
+                            : "text-slate-600 dark:text-zinc-400"
                           }`}
                       >
                         <input
                           type="checkbox"
-                          className="h-4 w-4 accent-cyan-600"
+                          className="h-5 w-5 accent-cyan-600"
                           checked={chosen}
                           disabled={!anchorsActive}
                           onChange={(e) => {
@@ -1001,7 +1005,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   })}
                 </div>
                 {!anchorsActive && (
-                  <p className="text-[11px] text-amber-700 dark:text-amber-400 leading-snug">
+                  <p className="text-xs text-amber-700 dark:text-amber-400 leading-snug">
                     Chỉ có tác dụng khi bật pop-up và chọn một khoảng thời gian nhắc (không phải &quot;Tắt tự động&quot;).
                   </p>
                 )}
@@ -1020,8 +1024,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
                       }`}
                   >
-                    <span className="text-xs font-bold">Chỉ khi có từ đến hạn (FSRS)</span>
-                    <span className="text-[10px] opacity-75">Tôn trọng chu kỳ phân bổ khoa học</span>
+                    <span className="text-xs font-bold">Chỉ khi có từ đến hạn ôn</span>
+                    <span className="text-xs opacity-75">Nhắc đúng lịch ôn, không nhắc thừa</span>
                   </button>
 
                   <button
@@ -1032,7 +1036,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       }`}
                   >
                     <span className="text-xs font-bold">Đến hạn → Hết thì ngẫu nhiên</span>
-                    <span className="text-[10px] opacity-75">Ưu tiên đúng hạn, hết thì ôn thêm</span>
+                    <span className="text-xs opacity-75">Ưu tiên đúng hạn, hết thì ôn thêm</span>
                   </button>
 
                   <button
@@ -1043,7 +1047,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       }`}
                   >
                     <span className="text-xs font-bold">Luôn nhắc nhở ngẫu nhiên</span>
-                    <span className="text-[10px] opacity-75">Duy trì phản xạ từ vựng liên tục</span>
+                    <span className="text-xs opacity-75">Duy trì phản xạ từ vựng liên tục</span>
                   </button>
                 </div>
               </div>
@@ -1055,21 +1059,21 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Không làm phiền khi đang bận
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
                       Tự hoãn pop-up khi có ứng dụng toàn màn hình (trình chiếu, video, họp), khi đang chia sẻ màn
                       hình Zoom, khi bật Focus/Không làm phiền (nếu macOS cho phép đọc) hoặc khi bạn rời máy quá 5
                       phút. Khi đến giờ, một thẻ nhỏ hiện ở góc màn hình (không chiếm bàn phím) lúc bạn tạm dừng
                       thao tác; bỏ qua thì thẻ tự hoãn sau 20 giây, bấm Học ngay để mở bài ôn.
                     </span>
                     {!IS_MAC && (
-                      <span className="block text-[11px] font-semibold text-amber-700 dark:text-amber-400 pt-1">
+                      <span className="block text-xs font-semibold text-amber-700 dark:text-amber-400 pt-1">
                         Hiện chỉ hoạt động trên macOS.
                       </span>
                     )}
                   </span>
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-cyan-600 shrink-0"
+                    className="mt-0.5 h-5 w-5 accent-cyan-600 shrink-0"
                     checked={reminderSettings.respectFocus}
                     onChange={(e) => handleUpdateReminder({ respectFocus: e.target.checked })}
                   />
@@ -1079,13 +1083,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Luôn hiện trên màn hình chính
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
                       Mặc định nhắc nhở hiện trên màn hình bạn đang làm việc (nơi có con trỏ chuột).
                     </span>
                   </span>
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-cyan-600 shrink-0"
+                    className="mt-0.5 h-5 w-5 accent-cyan-600 shrink-0"
                     checked={reminderSettings.preferPrimaryMonitor}
                     onChange={(e) => handleUpdateReminder({ preferPrimaryMonitor: e.target.checked })}
                   />
@@ -1095,20 +1099,20 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Nhắc vào lúc chuyển việc
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
                       Ngoài chu kỳ trên, nhắc sớm hơn vào lúc bạn vừa quay lại máy (buổi sáng, sau khi rời máy hoặc
                       máy ngủ), vừa tắt chia sẻ màn hình hoặc vừa thoát ứng dụng toàn màn hình. Chỉ khi có thẻ cần ôn,
                       và cách lời nhắc trước ít nhất 20 phút.
                     </span>
                     {!IS_MAC && (
-                      <span className="block text-[11px] font-semibold text-amber-700 dark:text-amber-400 pt-1">
+                      <span className="block text-xs font-semibold text-amber-700 dark:text-amber-400 pt-1">
                         Hiện chỉ hoạt động trên macOS.
                       </span>
                     )}
                   </span>
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-cyan-600 shrink-0"
+                    className="mt-0.5 h-5 w-5 accent-cyan-600 shrink-0"
                     checked={reminderSettings.contextMoments}
                     onChange={(e) => handleUpdateReminder({ contextMoments: e.target.checked })}
                   />
@@ -1118,7 +1122,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Né giờ bạn hay bỏ qua lời nhắc
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
                       Học từ 30 ngày gần nhất: giờ nào lời nhắc gần như luôn bị hoãn hoặc bỏ qua thì không nhắc theo
                       chu kỳ vào giờ đó (lời nhắc lúc chuyển việc vẫn hiện).
                       {getQuietHours().length > 0 && ` Hiện đang né: ${getQuietHours().map((h) => `${h}h`).join(", ")}.`}
@@ -1126,7 +1130,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </span>
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-cyan-600 shrink-0"
+                    className="mt-0.5 h-5 w-5 accent-cyan-600 shrink-0"
                     checked={reminderSettings.avoidQuietHours}
                     onChange={(e) => handleUpdateReminder({ avoidQuietHours: e.target.checked })}
                   />
@@ -1136,13 +1140,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Xong mục tiêu ngày thì thôi nhắc
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
                       Đạt mục tiêu hôm nay rồi thì nghỉ, mai nhắc tiếp. Bạn vẫn có thể tự mở bài ôn bất cứ lúc nào.
                     </span>
                   </span>
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-cyan-600 shrink-0"
+                    className="mt-0.5 h-5 w-5 accent-cyan-600 shrink-0"
                     checked={reminderSettings.stopAfterGoal}
                     onChange={(e) => handleUpdateReminder({ stopAfterGoal: e.target.checked })}
                   />
@@ -1152,13 +1156,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Không nhắc ban đêm ({NIGHT_QUIET_START}:00–{String(NIGHT_QUIET_END).padStart(2, "0")}:00)
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
                       Ngủ đủ giúp nhớ từ tốt hơn học khuya.
                     </span>
                   </span>
                   <input
                     type="checkbox"
-                    className="mt-0.5 h-4 w-4 accent-cyan-600 shrink-0"
+                    className="mt-0.5 h-5 w-5 accent-cyan-600 shrink-0"
                     checked={reminderSettings.nightQuiet}
                     onChange={(e) => handleUpdateReminder({ nightQuiet: e.target.checked })}
                   />
@@ -1168,12 +1172,12 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Tối đa số lần nhắc mỗi ngày
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-zinc-400 block leading-snug">
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
                       Nhắc quá nhiều dễ thành thói quen bấm bỏ qua.
                     </span>
                   </span>
                   <select
-                    className="text-xs rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 py-1 shrink-0"
+                    className="text-sm min-h-10 rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 py-1 shrink-0"
                     value={reminderSettings.maxNudgesPerDay}
                     onChange={(e) => handleUpdateReminder({ maxNudgesPerDay: Number(e.target.value) })}
                   >
@@ -1191,9 +1195,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Zap className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                    Số lượng từ mỗi lần Pop-up:
+                    Số từ mỗi lần nhắc:
                   </span>
-                  <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
+                  <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
                     {reminderSettings.wordsPerSession} từ / phiên
                   </span>
                 </div>
@@ -1208,20 +1212,20 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       <button
                         key={item.count}
                         onClick={() => handleUpdateReminder({ wordsPerSession: item.count })}
-                        className={`py-2 px-2 rounded-xl text-xs font-semibold transition-all text-center flex flex-col items-center gap-0.5 ${isSelected
+                        className={`min-h-10 py-2 px-2 rounded-xl text-xs font-semibold transition-all text-center flex flex-col items-center gap-0.5 ${isSelected
                             ? "bg-cyan-600 text-white shadow-sm shadow-cyan-600/30"
                             : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-cyan-500"
                           }`}
                       >
                         <span className="font-bold">{item.label}</span>
-                        <span className={`text-[10px] ${isSelected ? "text-cyan-100" : "text-slate-400 dark:text-zinc-500"}`}>
+                        <span className={`text-xs ${isSelected ? "text-cyan-100" : "text-slate-600 dark:text-zinc-400"}`}>
                           {item.desc}
                         </span>
                       </button>
                     );
                   })}
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight">
+                <p className="text-xs text-slate-600 dark:text-zinc-400 leading-tight">
                   Các câu hỏi trong phiên pop-up được tự động phân bổ ngẫu nhiên giữa trắc nghiệm 1-4, gõ từ vựng và tự động xen kẽ các bài ngữ pháp đã học.
                 </p>
               </div>
@@ -1231,9 +1235,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Maximize2 className="w-3.5 h-3.5 text-indigo-500" />
-                    Độ mờ màn hình (Backdrop Blur):
+                    Độ mờ màn hình nền:
                   </span>
-                  <span className="text-[11px] font-mono text-indigo-600 dark:text-indigo-400 font-semibold">
+                  <span className="text-xs font-mono text-indigo-600 dark:text-indigo-400 font-semibold">
                     {reminderSettings.blurOverlay === "light" ? "Mờ nhẹ" : reminderSettings.blurOverlay === "heavy" ? "Mờ đậm" : "Mờ vừa"}
                   </span>
                 </div>
@@ -1245,7 +1249,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       <button
                         key={level}
                         onClick={() => handleUpdateReminder({ blurOverlay: level })}
-                        className={`py-2 px-2 rounded-xl text-xs font-semibold transition-all text-center ${isSelected
+                        className={`min-h-10 py-2 px-2 rounded-xl text-xs font-semibold transition-all text-center ${isSelected
                             ? "bg-indigo-600 text-white shadow-sm shadow-indigo-600/30"
                             : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-indigo-500"
                           }`}
@@ -1255,7 +1259,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     );
                   })}
                 </div>
-                <div className="flex items-center gap-1.5 text-[11px] text-emerald-700 dark:text-emerald-400 pt-1">
+                <div className="flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-400 pt-1">
                   <VolumeX className="w-3.5 h-3.5 shrink-0" />
                   <span>Đã tắt âm thanh tự động khi hiển thị từ để không làm phiền bạn.</span>
                 </div>
@@ -1270,8 +1274,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         id="display"
         icon={<Palette className="w-5 h-5" />}
         title="Giao diện, âm thanh & giọng đọc"
-        description="Chế độ đơn giản, chế độ mất gốc, cỡ chữ, âm thanh phản hồi, giọng đọc tiếng Anh."
-        defaultOpen={false}
+        description="Cỡ chữ, chế độ đơn giản, cuộc đua xếp hạng, âm thanh phản hồi, giọng đọc tiếng Anh."
       >
         <DisplaySettings />
       </SettingsSection>
@@ -1293,7 +1296,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div
                 className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${cliStatus?.installed
                     ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/60"
-                    : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400 border-slate-200 dark:border-zinc-700"
+                    : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 border-slate-200 dark:border-zinc-700"
                   }`}
               >
                 {cliStatus?.installed ? <CheckCircle2 className="w-5 h-5" /> : <Terminal className="w-5 h-5" />}
@@ -1312,12 +1315,12 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     {cliStatus === null ? "○ ĐANG KIỂM TRA" : cliStatus.installed ? "● ĐÃ KẾT NỐI" : "○ CHƯA KẾT NỐI"}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-zinc-400">
+                <p className="text-xs text-slate-600 dark:text-zinc-400">
                   {cliStatus?.installed
                     ? "Sẵn sàng cho các tính năng AI."
                     : "Bạn vẫn học bình thường khi chưa có. Chỉ các tính năng AI (như Viết và sửa lỗi) cần API key hoặc AI CLI."}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-zinc-400 font-mono">
+                <p className="text-xs text-slate-600 dark:text-zinc-400 font-mono">
                   Đường dẫn:{" "}
                   <span className="text-slate-800 dark:text-zinc-200 font-bold">
                     {cliStatus?.path || "~/.gemini/antigravity-cli"}
@@ -1327,7 +1330,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">✓ {cliStatus.details}</p>
                 )}
                 {cliStatus?.error && (
-                  <p className="text-xs text-slate-500 dark:text-zinc-400">Chi tiết: {cliStatus.error}</p>
+                  <p className="text-xs text-slate-600 dark:text-zinc-400">Chi tiết: {cliStatus.error}</p>
                 )}
               </div>
             </div>
@@ -1456,7 +1459,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 </button>
               )}
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
               Đang dùng: <code className="font-mono">{apiKeyStatus?.model ?? "gemini-3.8-flash"}</code>
               {apiKeyStatus?.modelFromEnv ? " (đặt bởi biến môi trường MYENGLISH_AI_MODEL)" : ""}. Để trống ô để dùng model mặc
               định. Nếu Google ngừng model cũ và báo lỗi 404, hãy nhập tên model mới (xem tại AI Studio) rồi bấm Đổi model.
@@ -1470,7 +1473,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 {apiKeyMessage.text}
               </p>
             )}
-            <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+            <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
               Có key thì app dùng key, không dùng CLI. Gói miễn phí có giới hạn số lượt gọi mỗi phút và mỗi ngày. {IS_MOBILE ? "" : "Phần cài CLI bên dưới chỉ dành cho ai muốn dùng cách đăng nhập Google."}
             </p>
           </div>
@@ -1490,7 +1493,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <button
                       type="button"
                       onClick={handleResetCustomPath}
-                      className="text-[11px] text-slate-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-colors"
+                      className="text-xs text-slate-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-colors"
                     >
                       Đặt lại mặc định
                     </button>
@@ -1528,7 +1531,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     )}
                   </button>
                 </form>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
                   Hệ thống tự động tìm trong <code className="font-mono text-cyan-600 dark:text-cyan-400">.gemini\antigravity-cli</code>, <code className="font-mono text-cyan-600 dark:text-cyan-400">.gemini\bin</code>, và biến môi trường PATH. Nếu bạn cài đặt ở đường dẫn riêng, hãy dán đường dẫn thư mục hoặc file <code className="font-mono text-cyan-600 dark:text-cyan-400">agy.exe</code> vào ô trên.
                 </p>
               </div>
@@ -1538,7 +1541,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <button
                     type="button"
                     onClick={() => setSelectedOs("macos")}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${selectedOs === "macos"
+                    className={`min-h-10 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${selectedOs === "macos"
                         ? "bg-white dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200/80 dark:border-zinc-700 shadow-md"
                         : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
                       }`}
@@ -1552,7 +1555,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <button
                     type="button"
                     onClick={() => setSelectedOs("windows")}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${selectedOs === "windows"
+                    className={`min-h-10 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${selectedOs === "windows"
                         ? "bg-white dark:bg-zinc-900 text-cyan-600 dark:text-cyan-400 border border-slate-200/80 dark:border-zinc-700 shadow-md"
                         : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
                       }`}
@@ -1564,7 +1567,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </button>
                 </div>
 
-                <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-200/60 dark:bg-zinc-700/50 text-[11px] font-mono text-slate-600 dark:text-zinc-300">
+                <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-200/60 dark:bg-zinc-700/50 text-xs font-mono text-slate-600 dark:text-zinc-300">
                   <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
                   <span>Đang chọn: {selectedOs === "macos" ? "macOS" : "Windows"}</span>
                 </div>
@@ -1602,7 +1605,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       </span>
                       <span>Quy trình cài đặt & Kết nối Antigravity CLI trên macOS</span>
                     </h3>
-                    <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400">
+                    <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400">
                       Binary: ~/.gemini/bin/agy
                     </span>
                   </div>
@@ -1611,7 +1614,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           1
                         </span>
                         Tải & Cài đặt Antigravity CLI
@@ -1631,7 +1634,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>curl -fsSL https://antigravity.google/install.sh | bash</code>
                     </div>
-                    <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
+                    <div className="text-xs text-slate-600 dark:text-zinc-400 space-y-1">
                       <p>• Hoặc nếu máy bạn đã có Node.js / npm, có thể chạy lệnh: <code className="text-cyan-600 dark:text-cyan-400 font-mono">npm install -g @google/antigravity-cli</code></p>
                       <p>• Script sẽ tự động tải binary và đặt vào thư mục người dùng: <code className="text-cyan-600 dark:text-cyan-400 font-mono">~/.gemini/bin/agy</code></p>
                     </div>
@@ -1641,7 +1644,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           2
                         </span>
                         Cấp quyền thực thi & Đưa vào biến môi trường PATH
@@ -1663,7 +1666,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>chmod +x ~/.gemini/bin/agy &amp;&amp; echo 'export PATH="$HOME/.gemini/bin:$PATH"' &gt;&gt; ~/.zshrc &amp;&amp; source ~/.zshrc</code>
                     </div>
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                    <p className="text-xs text-slate-600 dark:text-zinc-400">
                       Lệnh này đảm bảo binary có quyền chạy trên macOS và bạn có thể gõ trực tiếp lệnh <code className="text-cyan-600 dark:text-cyan-400 font-mono">agy</code> trong mọi cửa sổ Terminal.
                     </p>
                   </div>
@@ -1672,7 +1675,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           3
                         </span>
                         Đăng nhập tài khoản Google (Xác thực 1 lần duy nhất)
@@ -1692,7 +1695,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>~/.gemini/bin/agy auth login</code>
                     </div>
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                    <p className="text-xs text-slate-600 dark:text-zinc-400">
                       Mở Terminal và dán lệnh trên. Trình duyệt Safari/Chrome sẽ tự động mở trang xác thực của Google. Bạn chỉ cần chọn tài khoản Gmail và bấm <strong>Cho phép (Allow)</strong>.
                     </p>
                   </div>
@@ -1701,7 +1704,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           4
                         </span>
                         Kiểm tra phản hồi & Kết nối với MyEnglish
@@ -1723,7 +1726,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>~/.gemini/bin/agy --dangerously-skip-permissions --model gemini-3.8-flash-low -p "Hello, world!"</code>
                     </div>
-                    <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
+                    <div className="text-xs text-slate-600 dark:text-zinc-400 space-y-1">
                       <p>• Khi lệnh in ra câu chào phản hồi từ Gemini, CLI đã hoạt động hoàn toàn chính xác.</p>
                       <p>• <strong>Trong app MyEnglish</strong>: Ứng dụng tự động phát hiện đường dẫn <code className="text-cyan-600 dark:text-cyan-400 font-mono">~/.gemini/bin/agy</code>. Bạn chỉ cần nhấn nút <strong>"Kiểm tra lại kết nối"</strong> ở banner trên để thấy trạng thái xanh lá.</p>
                     </div>
@@ -1745,7 +1748,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       </span>
                       <span>Quy trình cài đặt & Kết nối Antigravity CLI trên Windows (10 / 11)</span>
                     </h3>
-                    <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400">
+                    <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400">
                       Binary: agy.exe
                     </span>
                   </div>
@@ -1754,7 +1757,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           1
                         </span>
                         Cài đặt Antigravity CLI qua PowerShell (Khuyên dùng)
@@ -1774,8 +1777,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>iwr -useb https://antigravity.google/install.ps1 | iex</code>
                     </div>
-                    <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
-                      <p>• Nhấn phím <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-[10px]">Win</kbd> + <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-[10px]">X</kbd>, chọn <strong>Terminal</strong> hoặc <strong>PowerShell</strong> và dán lệnh trên.</p>
+                    <div className="text-xs text-slate-600 dark:text-zinc-400 space-y-1">
+                      <p>• Nhấn phím <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-xs">Win</kbd> + <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border text-xs">X</kbd>, chọn <strong>Terminal</strong> hoặc <strong>PowerShell</strong> và dán lệnh trên.</p>
                       <p>• Hoặc nếu máy bạn đã có Node.js: <code className="text-cyan-600 dark:text-cyan-400 font-mono">npm install -g @google/antigravity-cli</code></p>
                       <p>• Thư mục cài đặt mặc định trên Windows: <code className="text-cyan-600 dark:text-cyan-400 font-mono">%USERPROFILE%\.gemini\antigravity-cli\agy.exe</code></p>
                     </div>
@@ -1785,7 +1788,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           2
                         </span>
                         Đăng nhập tài khoản Google (OAuth Web Login)
@@ -1805,7 +1808,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>agy auth login</code>
                     </div>
-                    <div className="text-[11px] text-slate-500 dark:text-zinc-400 space-y-1">
+                    <div className="text-xs text-slate-600 dark:text-zinc-400 space-y-1">
                       <p>• Nếu PowerShell báo chưa tìm thấy lệnh, hãy dùng đường dẫn đầy đủ: <code className="text-cyan-600 dark:text-cyan-400 font-mono">&amp; "$env:USERPROFILE\.gemini\antigravity-cli\agy.exe" auth login</code></p>
                       <p>• Trình duyệt Edge/Chrome sẽ mở trang đăng nhập Google để bạn xác thực tài khoản Gmail (miễn phí hoặc Plus).</p>
                     </div>
@@ -1815,7 +1818,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           3
                         </span>
                         Chạy thử nghiệm lệnh phân tích trên PowerShell
@@ -1837,7 +1840,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <div className="p-3 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs overflow-x-auto select-all">
                       <code>agy --dangerously-skip-permissions --model gemini-3.8-flash-low -p "Hello, world!"</code>
                     </div>
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                    <p className="text-xs text-slate-600 dark:text-zinc-400">
                       Khi nhận được phản hồi câu chào từ Gemini, CLI đã hoạt động thành công trên máy Windows của bạn.
                     </p>
                   </div>
@@ -1846,7 +1849,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-[11px] font-mono">
+                        <span className="w-5 h-5 rounded-full bg-cyan-600 text-white flex items-center justify-center text-xs font-mono">
                           4
                         </span>
                         Cấu hình & Kết nối trong MyEnglish (Windows)
@@ -1856,13 +1859,13 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       <p>
                         Ứng dụng MyEnglish tự động quét các vị trí cài đặt phổ biến trên Windows:
                       </p>
-                      <ul className="list-disc pl-5 space-y-1 font-mono text-[11px] text-cyan-700 dark:text-cyan-400">
+                      <ul className="list-disc pl-5 space-y-1 font-mono text-xs text-cyan-700 dark:text-cyan-400">
                         <li>%USERPROFILE%\.gemini\antigravity-cli\agy.exe</li>
                         <li>%LOCALAPPDATA%\Programs\antigravity\agy.exe</li>
                         <li>%APPDATA%\npm\agy.cmd (nếu cài qua npm)</li>
                         <li>Biến môi trường PATH hệ thống (lệnh where agy.exe)</li>
                       </ul>
-                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700 space-y-1.5 text-[11px]">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700 space-y-1.5 text-xs">
                         <p className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
                           <Sliders className="w-3.5 h-3.5 text-cyan-600" />
                           Nếu bạn cài đặt ở thư mục tùy chỉnh (Ví dụ ổ D:\tools\agy.exe):
@@ -1871,7 +1874,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                           Hãy dán đường dẫn file <code className="font-mono text-cyan-600 dark:text-cyan-400">agy.exe</code> vào ô <strong>"Đường dẫn CLI tùy chỉnh"</strong> ở trên và bấm <strong>"Lưu &amp; Kiểm tra"</strong>.
                         </p>
                       </div>
-                      <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                      <p className="text-xs text-slate-600 dark:text-zinc-400">
                         💡 <em>Lưu ý: Trên Windows, ứng dụng MyEnglish đã được tích hợp cờ <code className="font-mono text-slate-700 dark:text-zinc-300">CREATE_NO_WINDOW</code>, bảo đảm hoàn toàn không xuất hiện cửa sổ Command Prompt màu đen nhấp nháy khi bạn tra từ.</em>
                       </p>
                     </div>
@@ -1889,24 +1892,20 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         id="algorithm"
         tone="muted"
         icon={<Brain className="w-5 h-5" />}
-        title="Thuật toán lịch ôn (nâng cao)"
-        description="Mục tiêu ghi nhớ, từ khó, tối ưu tham số FSRS. Mặc định đã tốt, ít khi cần đổi."
+        title="Lịch ôn thông minh (nâng cao)"
+        description="Mục tiêu ghi nhớ, khoảng ôn dài nhất, tối ưu theo trí nhớ của bạn. Mặc định đã tốt, ít khi cần đổi."
         summary={`Mục tiêu ghi nhớ ${Math.round(fsrsSettings.requestRetention * 100)}%`}
         defaultOpen={false}
       >
         <div className="space-y-6">
           <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
             <div className="flex items-center justify-between gap-3 flex-wrap">
-              <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-bold text-xs uppercase tracking-wider font-mono">
+              <div className="flex items-center gap-2 text-indigo-700 dark:text-indigo-400 font-bold text-sm">
                 <Zap className="w-4 h-4 text-amber-500" />
-                <Jargon
-                  term="Thuật toán Spaced Repetition Thế Hệ Mới: FSRS"
-                  plain="Thuật toán lịch ôn thông minh"
-                  hint="FSRS: tính ngày ôn lại theo độ khó, độ bền và khả năng nhớ của từng từ"
-                />
+                <span>Lịch ôn thông minh</span>
               </div>
-              <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-mono font-bold">
-                <Jargon term="FSRS-6 Active (DSR Model)" plain="Đang bật" hint="Phiên bản FSRS-6 đang chạy trong app" />
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 font-bold">
+                Đang bật
               </span>
             </div>
 
@@ -1915,9 +1914,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white">
-                    Mục tiêu ghi nhớ (Desired Retention)
+                    Mục tiêu ghi nhớ
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                  <p className="text-xs text-slate-600 dark:text-zinc-400">
                     Xác suất bạn muốn nhớ được từ khi đến ngày hẹn ôn tập. Mặc định 90% (tối ưu nhất).
                   </p>
                 </div>
@@ -1932,9 +1931,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     onClick={() => {
                       saveFSRSSettings({ requestRetention: val });
                       setFsrsSettings((prev) => ({ ...prev, requestRetention: val }));
-                      setNotifFeedback(`Đã cập nhật mục tiêu ghi nhớ FSRS thành ${Math.round(val * 100)}%!`);
+                      setNotifFeedback(`Đã cập nhật mục tiêu ghi nhớ thành ${Math.round(val * 100)}%!`);
                     }}
-                    className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${fsrsSettings.requestRetention === val
+                    className={`min-h-10 py-2 rounded-lg text-xs font-mono font-medium transition-all ${fsrsSettings.requestRetention === val
                         ? "bg-cyan-600 text-white shadow-sm font-bold"
                         : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
                       }`}
@@ -1945,27 +1944,24 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               </div>
             </div>
 
-            <AdvancedLearningSettings onWordsChanged={onRefreshWords} />
+            <AdvancedLearningSettings />
 
             <div className="text-xs text-slate-700 dark:text-zinc-300 space-y-2 leading-relaxed">
               <p>
-                <strong>
-                  1.{" "}
-                  <Jargon
-                    term='Khắc phục "Ease Hell" của SM-2'
-                    plain="Không bị kẹt ở chu kỳ ngắn"
-                    hint="SM-2 là thuật toán cũ: sau nhiều lần quên, hệ số ôn bị hạ mãi nên từ hiện quá dày"
-                  />
-                  :
-                </strong>{" "}
-                FSRS không dùng hệ số cố định mà mô hình hóa trí nhớ theo 3 biến số <strong>DSR (Độ khó - Độ bền - Khả năng nhớ lại)</strong>. Khi bạn bấm quên một từ, thuật toán sẽ tự cân bằng lại chứ không phạt kẹt từ ở chu kỳ ngắn vĩnh viễn.
+                <strong>1. Không bị kẹt ở chu kỳ ngắn:</strong> Khi bạn quên một từ, app tự tính lại khoảng ôn cho từ đó theo độ khó và độ chắc của nó, chứ không bắt từ đó lặp lại dày mãi.
               </p>
               <p>
-                <strong>2. Giảm 20% – 30% số lượt ôn tập:</strong> Khoảng cách ôn được tính toán toán học chính xác theo đường cong quên Ebbinghaus hiện đại, giúp bạn nhớ lâu hơn nhưng tốn ít thời gian lặp lại hơn.
+                <strong>2. Ít lượt ôn hơn:</strong> Khoảng cách ôn được tính theo đường cong quên của trí nhớ, giúp bạn nhớ lâu hơn mà tốn ít thời gian lặp lại hơn.
               </p>
               <p>
-                <strong>3. Tiến trình quét ngầm thông minh:</strong> Khi ứng dụng MyEnglish đang mở (hoặc thu nhỏ ở Dock/Tray), tiến trình ngầm sẽ tự động quét cơ sở dữ liệu định kỳ theo số phút bạn cấu hình ở trên để nhắc bạn ôn tập kịp thời.
+                <strong>3. Nhắc ôn khi app đang mở:</strong> Khi MyEnglish đang mở (hoặc thu nhỏ), app tự kiểm tra định kỳ theo số phút bạn chọn ở phần Nhắc học để nhắc bạn ôn kịp lúc.
               </p>
+              <details className="pt-1">
+                <summary className="cursor-pointer select-none min-h-10 inline-flex items-center font-semibold text-slate-700 dark:text-zinc-300">Tên kỹ thuật (cho người muốn tìm hiểu thêm)</summary>
+                <p className="pt-1 text-slate-600 dark:text-zinc-400">
+                  Thuật toán là FSRS: nó mô hình hóa trí nhớ bằng 3 chỉ số (độ khó, độ bền, khả năng nhớ lại), thay cho hệ số cố định của thuật toán cũ SM-2 vốn hay làm từ khó bị lặp dày mãi.
+                </p>
+              </details>
             </div>
           </div>
         </div>
@@ -1977,24 +1973,25 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         tone="muted"
         icon={<Database className="w-5 h-5" />}
         title="Dữ liệu & đặt lại"
-        description="Xoá toàn bộ quá trình học để bắt đầu lại như bản cài mới."
+        description="Sao lưu, khôi phục tiến trình học, hoặc xóa hết để bắt đầu lại."
         defaultOpen={false}
       >
+        <BackupRestoreSettings onWordsChanged={onRefreshWords} />
         <div className="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="space-y-1 max-w-xl">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-rose-500" />
-                <span>Đặt lại ứng dụng từ đầu (Reset Data)</span>
+                <span>Đặt lại ứng dụng từ đầu</span>
               </h3>
               <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-                Xóa toàn bộ quá trình học, lịch sử ôn tập FSRS, từ vựng cá nhân, chuỗi Streak và điểm XP.
+                Xóa toàn bộ quá trình học, lịch sử ôn tập, từ vựng cá nhân, chuỗi ngày học liên tiếp và điểm XP.
                 Ứng dụng sẽ tự động nạp lại trọn bộ 5.000 từ vựng Oxford và 31 chương ngữ pháp, sau đó mở lại màn hình khảo sát ban đầu (chọn trình độ, thì bắt đầu học, kế hoạch mỗi ngày).
               </p>
             </div>
             <button
               onClick={() => setShowResetModal(true)}
-              className="px-4 py-2.5 rounded-xl border border-rose-300 dark:border-rose-900/60 bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300 text-xs font-bold flex items-center gap-2 shrink-0 transition-all shadow-sm"
+              className="min-h-11 px-4 py-2.5 rounded-xl border border-rose-300 dark:border-rose-900/60 bg-rose-50/70 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-900/50 text-rose-700 dark:text-rose-300 text-xs font-bold flex items-center gap-2 shrink-0 transition-all shadow-sm"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Đặt lại dữ liệu...</span>
@@ -2004,6 +2001,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       </SettingsSection>
 
       {/* 7. CÔNG CỤ CHO NHÀ PHÁT TRIỂN: thu gọn, người học không cần dùng */}
+      {SHOW_DEV_TOOLS && (
       <details className="rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 bg-slate-50/60 dark:bg-zinc-950/40 p-4">
         <summary className="cursor-pointer select-none text-xs font-bold text-slate-600 dark:text-zinc-400">
           Công cụ cho nhà phát triển (kiểm thử thông báo, tạo từ đến hạn)
@@ -2024,7 +2022,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                       <Zap className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                       <span>Test 1: Pop-up Quiz toàn màn hình</span>
                     </div>
-                    <p className="text-[11px] text-slate-600 dark:text-zinc-400 leading-snug pt-1">
+                    <p className="text-xs text-slate-600 dark:text-zinc-400 leading-snug pt-1">
                       Bật ngay cửa sổ làm mờ toàn màn hình. Bạn có thể nhấn <strong>Esc</strong> để tắt nhanh, dùng phím <strong>1-4</strong> để chọn, hoặc <strong>S</strong> để hoãn.
                     </p>
                   </div>
@@ -2046,7 +2044,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <Bell className="w-4 h-4 text-indigo-500" />
                     <span>Test 2: Gửi thông báo thử</span>
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-snug pt-1">
+                  <p className="text-xs text-slate-600 dark:text-zinc-400 leading-snug pt-1">
                     Gửi một thông báo thử lên màn hình hệ thống (trên macOS kèm tiếng chuông "Glass").
                   </p>
                 </div>
@@ -2067,7 +2065,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <Flame className="w-4 h-4 text-orange-500" />
                     <span>Test 3: Tạo từ đến hạn ôn tập thật</span>
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-snug pt-1">
+                  <p className="text-xs text-slate-600 dark:text-zinc-400 leading-snug pt-1">
                     Đặt 1 từ trong SQLite về quá hạn để kiểm tra thuật toán tự động nhận diện từ đến hạn.
                   </p>
                 </div>
@@ -2085,6 +2083,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           </div>
         </div>
       </details>
+      )}
 
       <ResetAppDataModal
         isOpen={showResetModal}

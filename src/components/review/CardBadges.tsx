@@ -3,6 +3,7 @@ import type { ReviewCard } from "@/types/database";
 import { getRetrievabilityInfo, isLeech, type ExerciseType, type XPReward } from "@/services/smartReview";
 import type { StudyMode } from "@/hooks/useReviewSession";
 import { isSimpleMode } from "@/services/learnerProfile";
+import { memoryLabel, topicLabel } from "@/utils/labels";
 import { EXERCISE_LABEL_VN } from "./exerciseLabels";
 
 interface CardBadgesProps {
@@ -13,7 +14,7 @@ interface CardBadgesProps {
   mode: StudyMode;
 }
 
-/** Card top badges: part of speech, topic, FSRS state, leech, retrievability, XP popup, exercise type */
+/** Card top badges: part of speech, topic, memory state, often-forgotten flag, recall chance, XP popup, exercise type */
 export default function CardBadges({
   currentWord,
   showXPPopup,
@@ -33,13 +34,13 @@ export default function CardBadges({
         )}
         <span className="text-[10px] font-medium text-cyan-800 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-800/40 px-2 py-0.5 rounded-full flex items-center gap-1">
           <Tag className="w-2.5 h-2.5" />
-          {currentWord.topic || "General Tech"}
+          {topicLabel(currentWord.topic)}
         </span>
         {!simple && (
-          <span className="text-[10px] font-mono text-slate-500 dark:text-zinc-400 bg-slate-100 dark:bg-zinc-800/80 px-2 py-0.5 rounded border border-slate-200 dark:border-zinc-700/50">
+          <span className="text-[11px] font-mono text-slate-600 dark:text-zinc-400 bg-slate-100 dark:bg-zinc-800/80 px-2 py-0.5 rounded border border-slate-200 dark:border-zinc-700/50">
             {currentWord.srs.stability && currentWord.srs.stability > 0
-              ? `FSRS: S=${currentWord.srs.stability}d • D=${currentWord.srs.difficulty || 5}`
-              : `FSRS: Mới (New)`}
+              ? `${memoryLabel(currentWord.srs.stability)} • độ khó ${currentWord.srs.difficulty || 5}/10`
+              : memoryLabel(0)}
           </span>
         )}
         {simple && (currentWord.srs.reps ?? 0) === 0 && (
@@ -54,7 +55,7 @@ export default function CardBadges({
             className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300/70 dark:border-amber-700/60 flex items-center gap-1"
           >
             <Bug className="w-2.5 h-2.5" />
-            {simple ? "Từ hay quên" : "Leech"}
+            Từ hay quên
           </span>
         )}
         {/* Retrievability Mini Bar */}
@@ -81,9 +82,9 @@ export default function CardBadges({
             +{lastXPReward.totalXP} XP
           </span>
         )}
-        <span className="text-[11px] text-slate-400 dark:text-zinc-500 shrink-0">
+        <span className="text-xs text-slate-600 dark:text-zinc-400 shrink-0">
           {EXERCISE_LABEL_VN[effectiveExerciseType]}
-          {mode === "mixed" && !simple && " • FSRS"}
+          {mode === "mixed" && !simple && " • Thích ứng"}
         </span>
       </div>
     </div>

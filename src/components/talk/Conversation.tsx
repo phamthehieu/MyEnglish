@@ -1,5 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ArrowLeftRight, Eraser, Headphones, Keyboard, Waves, Lightbulb, ListChecks, Mic, Puzzle, RotateCcw, Send, Volume2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowLeftRight,
+  Eraser,
+  Headphones,
+  CircleHelp,
+  Keyboard,
+  Waves,
+  Lightbulb,
+  ListChecks,
+  Mic,
+  Puzzle,
+  RotateCcw,
+  Send,
+  Shuffle,
+  SlidersHorizontal,
+  Trophy,
+  Turtle,
+  Volume2,
+} from "lucide-react";
 import type { DialogueNode, Situation, SituationLine } from "@/types/situation";
 import { englishVoices, getTtsSettings, handleSpeak } from "@/components/review/speech";
 import { turnVariants } from "@/data/situations/variants";
@@ -460,12 +479,57 @@ function ConversationChat({
   const methods: Method[] = canSpeak ? ["choose", "tiles", "say", "type"] : ["choose", "tiles", "type"];
   const levels = (Object.keys(LEVEL_LABEL) as Level[]).filter((l) => canSpeak || l !== "say");
   const notChosen = bank.filter((t) => !chosen.some((c) => c.id === t.id));
+  // Everything that changes how the talk goes, in one panel, each with what it does
+  const options: Array<{ label: string; hint: string; on: boolean; icon: typeof Mic; flip: () => void }> = [
+    {
+      label: "Chỉ nghe (ẩn chữ)",
+      hint: "Giấu lời của người kia, bạn nghe rồi trả lời. Chạm để xem chữ.",
+      on: listenOnly,
+      icon: Headphones,
+      flip: () => {
+        writeFlag(LISTEN_KEY, !listenOnly);
+        setListenOnly(!listenOnly);
+      },
+    },
+    { label: "Đổi vai", hint: "Bạn đóng vai người kia và nói lại từ đầu.", on: swap, icon: ArrowLeftRight, flip: () => onSwap(!swap) },
+    {
+      label: "Thử thách ⭐",
+      hint: "Không gợi ý, phải nói (hoặc gõ), được chấm sao theo cả bài.",
+      on: challenge,
+      icon: Trophy,
+      flip: () => {
+        writeFlag(CHALLENGE_KEY, !challenge);
+        setChallenge(!challenge);
+        challengeRef.current = !challenge;
+        // A challenge starts from the top: it is scored on the whole talk
+        restart();
+      },
+    },
+    { label: "Nói chậm", hint: "Người kia nói chậm hơn cho dễ nghe.", on: slow, icon: Turtle, flip: () => { writeFlag(SLOW_KEY, !slow); setSlow(!slow); } },
+    {
+      label: "Hỏi lại bất ngờ",
+      hint: "Thỉnh thoảng người kia hỏi \"Bạn nói lại được không?\" như ngoài đời.",
+      on: surprise,
+      icon: CircleHelp,
+      flip: () => { writeFlag(SURPRISE_KEY, !surprise); setSurprise(!surprise); },
+    },
+    {
+      label: "Giọng ngẫu nhiên",
+      hint: "Mỗi lần nói chuyện, người kia dùng một giọng khác.",
+      on: voiceMix,
+      icon: Shuffle,
+      flip: () => { writeFlag(VOICE_KEY, !voiceMix); setVoiceMix(!voiceMix); },
+    },
+    ...(canSpeak
+      ? [{ label: "Rảnh tay", hint: "Micro tự mở sau khi người kia nói, bạn không cần bấm.", on: handsFree, icon: Waves, flip: toggleHandsFree }]
+      : []),
+  ];
 
   return (
     <div className="flex flex-col h-full min-h-0">
       {/* Header */}
       <div className="shrink-0 flex items-center gap-3 px-3 py-2 border-b border-slate-200 dark:border-zinc-800">
-        <button onClick={onBack} className="p-1 text-slate-600 dark:text-zinc-400" aria-label="Về danh sách">
+        <button onClick={onBack} className="w-10 h-10 -ml-1 inline-flex items-center justify-center text-slate-600 dark:text-zinc-400" aria-label="Về danh sách">
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-lg">
@@ -473,104 +537,58 @@ function ConversationChat({
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{partnerName}</p>
-          <p className="text-[11px] text-slate-500 dark:text-zinc-400 truncate">{situation.title_vi}</p>
+          <p className="text-xs text-slate-600 dark:text-zinc-400 truncate">{situation.title_vi}</p>
         </div>
         <button
-          onClick={() => {
-            writeFlag(LISTEN_KEY, !listenOnly);
-            setListenOnly(!listenOnly);
-          }}
-          aria-pressed={listenOnly}
-          aria-label="Chỉ nghe, ẩn chữ"
-          className={`p-1.5 rounded-full ${listenOnly ? "bg-violet-600 text-white" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300"}`}
-        >
-          <Headphones className="w-4 h-4" />
-        </button>
-        <button
-          onClick={() => onSwap(!swap)}
-          aria-pressed={swap}
-          aria-label="Đổi vai"
-          className={`p-1.5 rounded-full ${swap ? "bg-violet-600 text-white" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300"}`}
-        >
-          <ArrowLeftRight className="w-4 h-4" />
-        </button>
-        <button
           onClick={() => setLevelOpen((o) => !o)}
-          className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+          className="shrink-0 min-h-[40px] inline-flex items-center gap-1.5 text-xs font-semibold px-3 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
           aria-expanded={levelOpen}
         >
-          {LEVEL_LABEL[level]} ▾
+          <SlidersHorizontal className="w-4 h-4" /> Tùy chọn
         </button>
       </div>
       {levelOpen && (
-        <div className="shrink-0 bg-slate-50 dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800">
-        <div role="radiogroup" aria-label="Cấp độ" className="flex gap-1 p-2">
-          {levels.map((l) => (
-            <button
-              key={l}
-              role="radio"
-              aria-checked={level === l}
-              onClick={() => changeLevel(l)}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-semibold ${
-                level === l ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
-              }`}
-            >
-              {LEVEL_LABEL[l]}
-            </button>
-          ))}
-        </div>
-        <div className="flex gap-1.5 px-2 pb-2">
-          <button
-            onClick={() => {
-              writeFlag(LISTEN_KEY, !listenOnly);
-              setListenOnly(!listenOnly);
-            }}
-            aria-pressed={listenOnly}
-            className={`flex-1 py-1.5 rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1.5 ${
-              listenOnly ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
-            }`}
-          >
-            <Headphones className="w-3.5 h-3.5" /> Chỉ nghe (ẩn chữ)
-          </button>
-          <button
-            onClick={() => onSwap(!swap)}
-            aria-pressed={swap}
-            className={`flex-1 py-1.5 rounded-lg text-xs font-semibold inline-flex items-center justify-center gap-1.5 ${
-              swap ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
-            }`}
-          >
-            <ArrowLeftRight className="w-3.5 h-3.5" /> Đổi vai
-          </button>
-        </div>
-        <div className="flex flex-wrap gap-1.5 px-2 pb-2">
-          {([
-            [
-              "Thử thách ⭐",
-              challenge,
-              () => {
-                writeFlag(CHALLENGE_KEY, !challenge);
-                setChallenge(!challenge);
-                challengeRef.current = !challenge;
-                // A challenge starts from the top: it is scored on the whole talk
-                restart();
-              },
-            ],
-            ["Nói chậm", slow, () => { writeFlag(SLOW_KEY, !slow); setSlow(!slow); }],
-            ["Hỏi lại bất ngờ", surprise, () => { writeFlag(SURPRISE_KEY, !surprise); setSurprise(!surprise); }],
-            ["Giọng ngẫu nhiên", voiceMix, () => { writeFlag(VOICE_KEY, !voiceMix); setVoiceMix(!voiceMix); }],
-          ] as const).map(([label, on, flip]) => (
-            <button
-              key={label}
-              onClick={flip}
-              aria-pressed={on}
-              className={`flex-1 min-w-[40%] py-1.5 rounded-lg text-xs font-semibold ${
-                on ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <div className="shrink-0 max-h-[55%] overflow-y-auto bg-slate-50 dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800 p-2 space-y-3">
+          <div className="space-y-1">
+            <p className="px-1 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Cách trả lời</p>
+            <div role="radiogroup" aria-label="Cách trả lời" className="flex flex-wrap gap-1">
+              {levels.map((l) => (
+                <button
+                  key={l}
+                  role="radio"
+                  aria-checked={level === l}
+                  onClick={() => changeLevel(l)}
+                  className={`flex-1 min-w-[4.5rem] min-h-[44px] rounded-lg text-sm font-semibold ${
+                    level === l ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+                  }`}
+                >
+                  {LEVEL_LABEL[l]}
+                </button>
+              ))}
+            </div>
+            <p className="px-1 text-xs text-slate-600 dark:text-zinc-400">Tự động: app đổi cách trả lời theo mức bạn đã quen câu đó.</p>
+          </div>
+          <div className="space-y-1">
+            <p className="px-1 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Tùy chọn khác</p>
+            {options.map((o) => (
+              <button
+                key={o.label}
+                onClick={o.flip}
+                role="switch"
+                aria-checked={o.on}
+                className={`w-full min-h-[48px] flex items-center gap-3 rounded-lg px-3 py-2 text-left ${
+                  o.on ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+                }`}
+              >
+                <o.icon className="w-4 h-4 shrink-0" />
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-semibold">{o.label}</span>
+                  <span className={`block text-xs ${o.on ? "text-violet-100" : "text-slate-600 dark:text-zinc-400"}`}>{o.hint}</span>
+                </span>
+                <span className="shrink-0 text-xs font-bold">{o.on ? "Bật" : "Tắt"}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -605,12 +623,12 @@ function ConversationChat({
                         <span className="block text-[15px] font-medium text-slate-900 dark:text-white">
                           <TapText text={spoken.en} unlearned={words.unlearned} onWord={(w) => words.open(w, spoken.en)} tone="light" />
                         </span>
-                        <span className="block text-xs text-slate-500 dark:text-zinc-400">{spoken.vi}</span>
+                        <span className="block text-xs text-slate-600 dark:text-zinc-400">{spoken.vi}</span>
                       </>
                     )}
                   </button>
                   {concealed && (
-                    <button onClick={() => setPeeked(key)} className="text-xs font-semibold text-violet-700 dark:text-violet-300 pb-2">
+                    <button onClick={() => setPeeked(key)} className="min-h-[40px] text-xs font-semibold text-violet-700 dark:text-violet-300">
                       Xem chữ
                     </button>
                   )}
@@ -712,7 +730,7 @@ function ConversationChat({
                 </ul>
               ) : (
                 !challenge && (
-                  <button onClick={() => setHint(true)} className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-violet-700 dark:text-violet-300">
+                  <button onClick={() => setHint(true)} className="mt-1 min-h-[40px] inline-flex items-center gap-1 text-xs font-semibold text-violet-700 dark:text-violet-300">
                     <Lightbulb className="w-3.5 h-3.5" /> Xem gợi ý
                   </button>
                 )
@@ -749,7 +767,7 @@ function ConversationChat({
                   <button
                     key={t.id}
                     onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))}
-                    className="px-3 py-1.5 rounded-lg bg-violet-600 text-white text-sm font-semibold"
+                    className="px-3 min-h-[40px] rounded-lg bg-violet-600 text-white text-sm font-semibold"
                   >
                     {t.text}
                   </button>
@@ -763,7 +781,7 @@ function ConversationChat({
                       setFeedback(null);
                       setChosen((c) => [...c, t]);
                     }}
-                    className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-white"
+                    className="px-3 min-h-[40px] rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-white"
                   >
                     {t.text}
                   </button>
@@ -773,7 +791,7 @@ function ConversationChat({
                 <button
                   onClick={() => setChosen([])}
                   disabled={chosen.length === 0}
-                  className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 disabled:opacity-40"
+                  className="px-4 min-h-[44px] rounded-xl border border-slate-300 dark:border-zinc-700 disabled:opacity-40"
                   aria-label="Xóa hết"
                 >
                   <Eraser className="w-4 h-4" />
@@ -834,12 +852,12 @@ function ConversationChat({
               <p>{feedback}</p>
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold">
                 {method === "say" && (
-                  <button onClick={playRecording} className="underline underline-offset-2 inline-flex items-center gap-1">
+                  <button onClick={playRecording} className="min-h-[40px] underline underline-offset-2 inline-flex items-center gap-1">
                     <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
                   </button>
                 )}
                 {fails >= SHOW_ANSWER_AFTER && (
-                  <button onClick={showAnswer} className="underline underline-offset-2">
+                  <button onClick={showAnswer} className="min-h-[40px] underline underline-offset-2">
                     Xem đáp án
                   </button>
                 )}
@@ -855,27 +873,16 @@ function ConversationChat({
                   key={m}
                   onClick={() => changeMethod(m)}
                   aria-pressed={method === m}
-                  className={`px-2.5 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
+                  className={`px-3 min-h-[40px] rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
                     method === m
                       ? "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300"
-                      : "text-slate-500 dark:text-zinc-400"
+                      : "text-slate-600 dark:text-zinc-400"
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" /> {LEVEL_LABEL[m]}
                 </button>
               );
             })}
-            {canSpeak && (
-              <button
-                onClick={toggleHandsFree}
-                aria-pressed={handsFree}
-                className={`px-2.5 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
-                  handsFree ? "bg-emerald-600 text-white" : "text-slate-500 dark:text-zinc-400"
-                }`}
-              >
-                <Waves className="w-3.5 h-3.5" /> Rảnh tay
-              </button>
-            )}
           </div>
         </div>
       )}

@@ -385,29 +385,61 @@ export function wordsInDictionary(words: string[]): string[] {
   }
 }
 
-/** Start recording; false when the phone refused (no permission, microphone busy) */
-export function startListening(): boolean {
+let stopWatching: (() => void) | null = null;
+let finishing: Promise<AsrResult> | null = null;
+
+function unwatchSpeechEnd(): void {
+  stopWatching?.();
+  stopWatching = null;
+}
+
+/**
+ * Start recording; false when the phone refused (no permission, microphone busy).
+ * `onSpeechEnd` is called once when the learner has spoken and then gone quiet: the caller finishes the
+ * recording there, so nobody has to press stop.
+ */
+export function startListening(onSpeechEnd?: () => void): boolean {
   try {
-    return bridge()?.start() ?? false;
+    unwatchSpeechEnd();
+    const started = bridge()?.start() ?? false;
+    if (started && onSpeechEnd) {
+      const handler = () => {
+        unwatchSpeechEnd();
+        onSpeechEnd();
+      };
+      window.addEventListener("myenglish-asr-endpoint", handler);
+      stopWatching = () => window.removeEventListener("myenglish-asr-endpoint", handler);
+    }
+    return started;
   } catch {
     return false;
   }
 }
 
-/** Stop recording and recognize against the word list */
-export async function finishListening(grammar: string[]): Promise<AsrResult> {
+/** Stop recording and recognize against the word list (a second call while the first is running gets the same answer) */
+export function finishListening(grammar: string[]): Promise<AsrResult> {
+  unwatchSpeechEnd();
+  if (finishing) return finishing;
   const asr = bridge();
-  if (!asr) return { ok: false, error: "no-bridge" };
-  try {
-    const result = waitFor("myenglish-asr-result", 20_000, (d) => JSON.parse(d) as AsrResult);
-    asr.stop(JSON.stringify(grammar));
-    return await result;
-  } catch (err) {
-    return { ok: false, error: String(err) };
-  }
+  if (!asr) return Promise.resolve({ ok: false, error: "no-bridge" });
+  const run = (async (): Promise<AsrResult> => {
+    try {
+      const result = waitFor("myenglish-asr-result", 20_000, (d) => JSON.parse(d) as AsrResult);
+      asr.stop(JSON.stringify(grammar));
+      return await result;
+    } catch (err) {
+      return { ok: false, error: String(err) };
+    }
+  })();
+  finishing = run;
+  void run.finally(() => {
+    if (finishing === run) finishing = null;
+  });
+  return run;
 }
 
 export function cancelListening(): void {
+  unwatchSpeechEnd();
   try {
     bridge()?.cancel();
   } catch {

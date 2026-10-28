@@ -61,13 +61,13 @@ const NEAR_MISS_EDITS = 2;
 // Small helpers
 
 const LINK_BTN =
-  "text-xs font-semibold text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 transition flex items-center gap-1 disabled:opacity-50";
+  "min-h-[40px] px-3 rounded-xl border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 transition flex items-center gap-1.5 disabled:opacity-50";
 const PRIMARY_BTN =
   "w-full sm:w-auto px-6 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold shadow-md shadow-cyan-600/20 transition active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-1.5";
 const SECONDARY_BTN =
   "px-4 py-2 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 text-sm font-semibold hover:border-slate-300 dark:hover:border-zinc-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5";
 const CARD = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-4 sm:p-5 space-y-4";
-const LABEL = "text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-zinc-500";
+const LABEL = "text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400";
 
 const TONE_BOX: Record<Tone, string> = {
   idle: "border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/60",
@@ -204,7 +204,7 @@ function PlayerHeader({
               Câu {progress.index + 1}/{progress.total}
             </span>
             {badge && (
-              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 truncate">
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 truncate">
                 {badge}
               </span>
             )}
@@ -227,7 +227,7 @@ function PlayerHeader({
 function FeedbackRow({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="space-y-0.5">
-      <div className="text-[11px] font-bold uppercase tracking-wide opacity-70">{label}</div>
+      <div className="text-xs font-bold uppercase tracking-wide opacity-80">{label}</div>
       <div className="text-sm leading-relaxed whitespace-pre-line break-words">{children}</div>
     </div>
   );
@@ -321,7 +321,7 @@ function Feedback({
         <div className="space-y-2 rounded-xl bg-white/70 dark:bg-black/25 px-3 py-2.5">
           {formula && (
             <div className="space-y-1">
-              <div className="text-[11px] font-bold uppercase tracking-wide opacity-70">Công thức{lessonName ? ` · ${lessonName}` : ""}</div>
+              <div className="text-xs font-bold uppercase tracking-wide opacity-80">Công thức{lessonName ? ` · ${lessonName}` : ""}</div>
               <p className="text-sm leading-relaxed whitespace-pre-line break-words">{formula}</p>
             </div>
           )}
@@ -644,7 +644,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
                 onClick={() => pickOption(i)}
                 className={`p-3 rounded-xl border-2 text-sm font-semibold text-left flex items-start gap-2.5 transition active:scale-[0.99] ${style}`}
               >
-                <span className="shrink-0 w-6 h-6 rounded-md bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400 text-[11px] font-bold flex items-center justify-center">
+                <span className="shrink-0 w-6 h-6 rounded-md bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-xs font-bold flex items-center justify-center">
                   {i + 1}
                 </span>
                 <span className="min-w-0 break-words leading-6">{option}</span>
@@ -727,7 +727,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
             tone === "idle" ? "border-slate-300 dark:border-zinc-700 focus:border-cyan-500" : tone === "ok" ? "border-emerald-500" : "border-rose-500"
           }`}
         />
-        <p className="text-[11px] text-slate-400 dark:text-zinc-500">Enter để kiểm tra · Shift+Enter để xuống dòng</p>
+        <p className="desktop-only text-xs text-slate-600 dark:text-zinc-400">Enter để kiểm tra · Shift+Enter để xuống dòng</p>
       </>
     );
   };
@@ -899,12 +899,12 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
 
       {confirmHide && !answered && (
         <div role="group" aria-label="Xác nhận ẩn câu" className="flex flex-col gap-2.5 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/70 dark:bg-rose-950/30 p-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-rose-900 dark:text-rose-200">Ẩn câu này khỏi bài tập và ôn tập? Bạn có thể hoàn tác ngay sau đó.</p>
+          <p className="text-sm text-rose-900 dark:text-rose-200">Câu này bị lỗi? Mình sẽ ẩn nó khỏi bài tập và ôn tập. Bạn có thể hoàn tác ngay sau đó.</p>
           <div className="flex shrink-0 gap-2">
-            <button type="button" data-own-enter disabled={busy} onClick={onHide} className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition disabled:opacity-50">
+            <button type="button" data-own-enter disabled={busy} onClick={onHide} className="min-h-[40px] px-4 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition disabled:opacity-50">
               Ẩn câu này
             </button>
-            <button type="button" data-own-enter onClick={() => setConfirmHide(false)} className={SECONDARY_BTN + " !py-1.5 !text-xs"}>
+            <button type="button" data-own-enter onClick={() => setConfirmHide(false)} className={SECONDARY_BTN + " !min-h-[40px] !py-1.5 !text-xs"}>
               Thôi
             </button>
           </div>
@@ -912,13 +912,13 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
       )}
 
       <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div className="flex flex-wrap items-center gap-2">
           {canHint && (
             <button
               type="button"
               data-own-enter
               onClick={useHint}
-              className="px-3 py-1.5 rounded-xl border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-50 dark:hover:bg-amber-950/30 transition flex items-center gap-1"
+              className="min-h-[40px] px-3 rounded-xl border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-50 dark:hover:bg-amber-950/30 transition flex items-center gap-1.5"
               title="Chuyển sang dạng dễ hơn (câu này sẽ được ôn lại)"
             >
               <Lightbulb className="w-3.5 h-3.5" />
@@ -931,7 +931,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
               data-own-enter
               disabled={busy}
               onClick={giveUp}
-              className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800 transition flex items-center gap-1 disabled:opacity-50"
+              className="min-h-[40px] px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800 transition flex items-center gap-1.5 disabled:opacity-50"
               title="Xem đáp án của câu này (tính là sai)"
             >
               <CircleHelp className="w-3.5 h-3.5" />
@@ -945,24 +945,24 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
               disabled={busy}
               onClick={() => setConfirmHide(true)}
               className={LINK_BTN}
-              title="Ẩn câu này khỏi bài tập và ôn tập"
+              title="Câu này sai hoặc khó hiểu? Ẩn nó khỏi bài tập và ôn tập"
             >
-              <EyeOff className="w-3 h-3" />
-              Ẩn câu này (dữ liệu lỗi)
+              <EyeOff className="w-3.5 h-3.5" />
+              Báo câu này bị lỗi
             </button>
           )}
           <button type="button" data-own-enter disabled={busy} onClick={onFinishEarly} className={LINK_BTN} title="Dừng ở đây và xem kết quả các câu đã làm">
-            <Flag className="w-3 h-3" />
+            <Flag className="w-3.5 h-3.5" />
             Kết thúc sớm
           </button>
         </div>
         {answered ? (
           <button type="button" disabled={busy} onClick={next} className={PRIMARY_BTN}>
             <span>Tiếp tục</span>
-            <span className="text-[11px] opacity-75 font-normal">
+            <span className="text-xs opacity-90 font-normal">
               {outcome?.correct ? "(đã ghi nhận tiến độ)" : "(gặp lại ở cuối bài)"}
             </span>
-            <span className="font-mono text-xs">↵</span>
+            <span className="desktop-only font-mono text-xs">↵</span>
           </button>
         ) : showCheck ? (
           <button type="button" disabled={!canCheck} onClick={check} className={PRIMARY_BTN}>
@@ -1220,7 +1220,7 @@ function Summary({
                 className="rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/60 dark:bg-rose-950/20 px-3 py-2 text-sm text-slate-800 dark:text-zinc-100 break-words"
               >
                 {r.entry.task.full || r.entry.task.prompt}
-                {r.hinted && <span className="ml-2 text-[11px] text-amber-600 dark:text-amber-400">(dùng gợi ý)</span>}
+                {r.hinted && <span className="ml-2 text-xs text-amber-700 dark:text-amber-400">(dùng gợi ý)</span>}
               </li>
             ))}
           </ul>

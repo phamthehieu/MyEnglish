@@ -66,6 +66,8 @@ export default function ReflexChallengeModal({
   const [secondChanceUsed, setSecondChanceUsed] = useState(false);
   const [secondChanceTier, setSecondChanceTier] = useState<ReflexTier | null>(null);
   const [tiersCleared, setTiersCleared] = useState(0);
+  // The top-left X asks first: one stray tap must not end a run
+  const [confirmExit, setConfirmExit] = useState(false);
 
   // Detailed answer records for post-game review
   const [answerRecords, setAnswerRecords] = useState<ReflexAnswerRecord[]>([]);
@@ -123,6 +125,7 @@ export default function ReflexChallengeModal({
     setFeedback(null);
     setSelectedOptionIdx(null);
     setIsLocked(false);
+    setConfirmExit(false);
     setPhase("ready");
   }, []);
 
@@ -417,6 +420,11 @@ export default function ReflexChallengeModal({
     }
   }, [phase, summary, onXPUpdated]);
 
+  // The question is over (time up, finished): the question is gone, so is its exit question
+  useEffect(() => {
+    if (phase !== "playing") setConfirmExit(false);
+  }, [phase]);
+
   // Keyboard shortcut listeners
   useEffect(() => {
     if (!isOpen) return;
@@ -438,7 +446,7 @@ export default function ReflexChallengeModal({
         return;
       }
 
-      if (phase === "playing" && currentQ && !isLocked) {
+      if (phase === "playing" && currentQ && !isLocked && !confirmExit) {
         if (currentQ.type === "choice" && currentQ.options) {
           const keyNum = parseInt(e.key, 10);
           if (keyNum >= 1 && keyNum <= currentQ.options.length) {
@@ -467,7 +475,7 @@ export default function ReflexChallengeModal({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, phase, currentQ, isLocked, disabledOptionIndices, wrongTrueFalse]);
+  }, [isOpen, phase, currentQ, isLocked, disabledOptionIndices, wrongTrueFalse, confirmExit]);
 
   if (!isOpen) return null;
 
@@ -499,7 +507,7 @@ export default function ReflexChallengeModal({
 
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-3 py-1 rounded-full">
-              Chế độ Duolingo Ramp Up
+              Thử thách phản xạ
             </span>
             <h2 className="text-2xl font-black mt-2 text-white">Thử Thách Phản Xạ 3 Chặng</h2>
             <p className="text-sm text-slate-400 mt-1">
@@ -548,14 +556,15 @@ export default function ReflexChallengeModal({
 
       {/* ── PHASE 2: PLAYING GAME ── */}
       {phase === "playing" && currentQ && (
-        <div className="w-full max-w-xl flex flex-col h-full max-h-[640px] justify-between">
+        <div className="relative w-full max-w-xl flex flex-col h-full max-h-[640px] justify-between">
           {/* Header Bar */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <button
-                onClick={() => setPhase("game_over")}
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors"
+                onClick={() => setConfirmExit(true)}
+                className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/80 transition-colors"
                 title="Dừng thử thách"
+                aria-label="Dừng thử thách"
               >
                 <X className="w-6 h-6" />
               </button>
@@ -588,7 +597,7 @@ export default function ReflexChallengeModal({
                       ? "bg-emerald-500/20 border-emerald-500 text-emerald-400 font-black"
                       : activeTier > 1
                         ? "bg-slate-800/40 border-slate-700 text-emerald-400 line-through"
-                        : "bg-slate-900 border-slate-800 text-slate-500"
+                        : "bg-slate-900 border-slate-800 text-slate-400"
                   )}
                 >
                   ⚡ Chặng 1 (+15 XP)
@@ -600,7 +609,7 @@ export default function ReflexChallengeModal({
                       ? "bg-cyan-500/20 border-cyan-500 text-cyan-400 font-black"
                       : activeTier > 2
                         ? "bg-slate-800/40 border-slate-700 text-cyan-400 line-through"
-                        : "bg-slate-900 border-slate-800 text-slate-500"
+                        : "bg-slate-900 border-slate-800 text-slate-400"
                   )}
                 >
                   ⚡ Chặng 2 (+25 XP)
@@ -610,7 +619,7 @@ export default function ReflexChallengeModal({
                     "py-1 rounded-lg border",
                     activeTier === 3
                       ? "bg-amber-500/20 border-amber-500 text-amber-400 font-black"
-                      : "bg-slate-900 border-slate-800 text-slate-500"
+                      : "bg-slate-900 border-slate-800 text-slate-400"
                   )}
                 >
                   ⚡ Chặng 3 (+40 XP)
@@ -651,8 +660,9 @@ export default function ReflexChallengeModal({
                 {currentQ.direction === "en_to_vn" && (
                   <button
                     onClick={() => handleSpeak(currentQ.word)}
-                    className="p-2 rounded-full text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors"
+                    className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full text-slate-300 hover:text-cyan-400 hover:bg-slate-800 transition-colors"
                     title="Nghe phát âm"
+                    aria-label="Nghe phát âm"
                   >
                     <Volume2 className="w-5 h-5" />
                   </button>
@@ -684,8 +694,9 @@ export default function ReflexChallengeModal({
                   )}
                   <button
                     onClick={() => handleSpeak(currentQ.word)}
-                    className="p-1 rounded-full text-slate-400 hover:text-cyan-400 hover:bg-slate-800 transition-colors"
+                    className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full text-slate-300 hover:text-cyan-400 hover:bg-slate-800 transition-colors"
                     title="Nghe phát âm"
+                    aria-label="Nghe phát âm"
                   >
                     <Volume2 className="w-3.5 h-3.5" />
                   </button>
@@ -693,7 +704,7 @@ export default function ReflexChallengeModal({
 
                 {/* Sleek, instant bridge indicator */}
                 <div className="flex items-center justify-center">
-                  <span className="px-2.5 py-0.5 rounded-full bg-slate-950/80 border border-slate-800 text-[10px] font-bold text-slate-400 flex items-center gap-1 shadow-inner">
+                  <span className="px-2.5 py-0.5 rounded-full bg-slate-950/80 border border-slate-800 text-[11px] font-bold text-slate-400 flex items-center gap-1 shadow-inner">
                     <ArrowDown className="w-2.5 h-2.5 text-amber-400" />
                     <span>nghĩa là</span>
                   </span>
@@ -737,14 +748,14 @@ export default function ReflexChallengeModal({
                       disabled={isLocked || isDisabled}
                       onClick={() => handleAnswer(isCorrect, opt, correctText, idx)}
                       className={cn(
-                        "relative flex items-center gap-3 p-4 rounded-2xl border text-left font-semibold text-base transition-all duration-150 transform active:scale-95 shadow-md",
+                        "relative flex items-center gap-3 min-h-14 p-4 rounded-2xl border text-left font-semibold text-base transition-all duration-150 transform active:scale-95 shadow-md",
                         btnStyle
                       )}
                     >
                       <span className="w-7 h-7 rounded-xl bg-slate-950/60 text-slate-300 font-mono text-xs font-bold flex items-center justify-center border border-slate-800 shrink-0">
                         {idx + 1}
                       </span>
-                      <span className="flex-1 min-w-0 truncate">{opt}</span>
+                      <span className="flex-1 min-w-0 break-words leading-snug">{opt}</span>
                     </button>
                   );
                 })}
@@ -805,6 +816,38 @@ export default function ReflexChallengeModal({
               </div>
             )}
           </div>
+
+          {confirmExit && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Dừng thử thách"
+              className="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4"
+            >
+              <div className="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-700 p-5 space-y-4 text-center shadow-2xl">
+                <p className="text-base font-bold text-white">Dừng thử thách?</p>
+                <p className="text-sm text-slate-300">Đồng hồ vẫn chạy. Dừng bây giờ thì bạn xem kết quả ngay, phần chưa làm không được tính.</p>
+                <div className="flex flex-col gap-2">
+                  <button
+                    autoFocus
+                    onClick={() => setConfirmExit(false)}
+                    className="h-12 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-sm"
+                  >
+                    Chơi tiếp
+                  </button>
+                  <button
+                    onClick={() => {
+                      setConfirmExit(false);
+                      setPhase("game_over");
+                    }}
+                    className="h-11 rounded-xl border border-slate-600 text-slate-200 text-sm font-semibold hover:bg-slate-800"
+                  >
+                    Dừng và xem kết quả
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -929,7 +972,7 @@ export default function ReflexChallengeModal({
                   +{summary.totalXP} <span className="text-xs text-amber-500/80">XP</span>
                 </span>
                 {summary.perfectBonus && (
-                  <span className="text-[10px] text-emerald-400 font-bold block mt-0.5">
+                  <span className="text-[11px] text-emerald-400 font-bold block mt-0.5">
                     ✨ +10 XP Perfect!
                   </span>
                 )}
@@ -954,24 +997,24 @@ export default function ReflexChallengeModal({
             {/* Accuracy & Correct / Wrong Counter */}
             <div className="bg-slate-950/50 rounded-2xl p-3 border border-slate-800/80 flex justify-around text-xs">
               <div>
-                <span className="text-slate-500 block">Số câu đúng</span>
+                <span className="text-slate-400 block">Số câu đúng</span>
                 <span className="font-bold text-emerald-400 text-sm">
                   {summary.totalCorrect} câu
                 </span>
               </div>
               <div className="border-r border-slate-800" />
               <div>
-                <span className="text-slate-500 block">Số câu sai</span>
+                <span className="text-slate-400 block">Số câu sai</span>
                 <span className="font-bold text-rose-400 text-sm">{summary.totalWrong} câu</span>
               </div>
               <div className="border-r border-slate-800" />
               <div>
-                <span className="text-slate-500 block">Độ chính xác</span>
+                <span className="text-slate-400 block">Độ chính xác</span>
                 <span className="font-bold text-white text-sm">{summary.accuracy}%</span>
               </div>
               <div className="border-r border-slate-800" />
               <div>
-                <span className="text-slate-500 block">Combo max</span>
+                <span className="text-slate-400 block">Combo max</span>
                 <span className="font-bold text-amber-400 text-sm">{maxCombo}x</span>
               </div>
             </div>
@@ -1000,15 +1043,16 @@ export default function ReflexChallengeModal({
                             </span>
                           )}
                           {item.category && WORD_CATEGORY_LABELS[item.category] && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                            <span className="text-[11px] px-1.5 py-0.5 rounded-full font-medium bg-slate-800 text-slate-300 border border-slate-700">
                               {WORD_CATEGORY_LABELS[item.category]}
                             </span>
                           )}
                         </div>
                         <button
                           onClick={() => handleSpeak(item.word)}
-                          className="p-1 rounded-full text-slate-400 hover:text-cyan-400 hover:bg-slate-800"
+                          className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full text-slate-300 hover:text-cyan-400 hover:bg-slate-800"
                           title="Nghe phát âm"
+                          aria-label="Nghe phát âm"
                         >
                           <Volume2 className="w-3.5 h-3.5" />
                         </button>
@@ -1018,7 +1062,7 @@ export default function ReflexChallengeModal({
                         <div className="flex items-start gap-1 text-rose-400">
                           <XCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                           <div>
-                            <span className="text-slate-500 block text-[10px]">Bạn chọn:</span>
+                            <span className="text-slate-400 block text-[11px]">Bạn chọn:</span>
                             <span className="font-semibold line-through">{item.userAnswer}</span>
                           </div>
                         </div>
@@ -1026,7 +1070,7 @@ export default function ReflexChallengeModal({
                         <div className="flex items-start gap-1 text-emerald-400">
                           <CheckCircle2 className="w-3.5 h-3.5 shrink-0 mt-0.5" />
                           <div>
-                            <span className="text-slate-500 block text-[10px]">Đáp án đúng:</span>
+                            <span className="text-slate-400 block text-[11px]">Đáp án đúng:</span>
                             <span className="font-semibold">{item.correctAnswer}</span>
                           </div>
                         </div>

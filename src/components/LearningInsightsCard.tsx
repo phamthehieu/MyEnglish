@@ -16,7 +16,7 @@ function RetentionTile({ label, value, count, target }: { label: string; value: 
   const enough = count >= MIN_RETENTION_SAMPLE && value != null;
   const delta = enough ? (value as number) - target : 0;
   const tone = !enough
-    ? "text-slate-400 dark:text-zinc-500"
+    ? "text-slate-600 dark:text-zinc-400"
     : Math.abs(delta) <= 0.03
     ? "text-emerald-600 dark:text-emerald-400"
     : delta < 0
@@ -24,9 +24,9 @@ function RetentionTile({ label, value, count, target }: { label: string; value: 
     : "text-sky-600 dark:text-sky-400";
   return (
     <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800">
-      <div className="text-[11px] text-slate-500 dark:text-zinc-400">{label}</div>
+      <div className="text-xs text-slate-600 dark:text-zinc-400">{label}</div>
       <div className={`text-xl font-bold font-mono ${tone}`}>{pct(value)}</div>
-      <div className="text-[10px] text-slate-400 dark:text-zinc-500">
+      <div className="text-xs text-slate-600 dark:text-zinc-400">
         {count} lượt ôn{count < MIN_RETENTION_SAMPLE ? " · chưa đủ dữ liệu" : ""}
       </div>
     </div>
@@ -35,7 +35,7 @@ function RetentionTile({ label, value, count, target }: { label: string; value: 
 
 /**
  * How well the schedule fits this learner: true retention (answers to cards in Review state, the number
- * FSRS aims at the target), predicted vs actual recall, and the review load of the next 30 days.
+ * the schedule aims at the target), predicted vs actual recall, and the review load of the next 30 days.
  */
 export default function LearningInsightsCard() {
   const [insights, setInsights] = useState<LearningInsights | null>(null);
@@ -66,9 +66,9 @@ export default function LearningInsightsCard() {
   if (r.count >= MIN_RETENTION_SAMPLE && r.trueRetention != null) {
     if (r.trueRetention < r.targetRetention - 0.05) {
       advice =
-        "Bạn đang nhớ ít hơn mục tiêu: khoảng ôn hiện dài hơn trí nhớ thật. Nên giảm số từ mới mỗi ngày, và khi đủ dữ liệu hãy chạy tối ưu tham số FSRS.";
+        "Bạn đang nhớ ít hơn mục tiêu: khoảng ôn hiện dài hơn trí nhớ thật. Nên giảm số từ mới mỗi ngày, và khi đủ dữ liệu hãy chạy mục Tối ưu theo trí nhớ của bạn trong Cài đặt.";
     } else if (r.trueRetention > r.targetRetention + 0.05) {
-      advice = "Bạn nhớ tốt hơn mục tiêu: có thể ôn thưa hơn (tối ưu tham số FSRS sẽ kéo dài khoảng ôn cho đúng với bạn).";
+      advice = "Bạn nhớ tốt hơn mục tiêu: có thể ôn thưa hơn (mục Tối ưu theo trí nhớ của bạn trong Cài đặt sẽ kéo dài khoảng ôn cho đúng với bạn).";
     }
   }
 
@@ -77,7 +77,7 @@ export default function LearningInsightsCard() {
       <div className="flex items-center gap-2">
         <Target className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
         <h3 className="text-sm font-bold text-slate-900 dark:text-white">Hiệu quả ghi nhớ (30 ngày)</h3>
-        <span className="ml-auto text-[11px] text-slate-400 dark:text-zinc-500">
+        <span className="ml-auto text-xs text-slate-600 dark:text-zinc-400">
           Mục tiêu: {pct(r.targetRetention)} · {insights.minutesPerActiveDay.toFixed(1)} phút trả lời/ngày học
         </span>
       </div>
@@ -89,8 +89,8 @@ export default function LearningInsightsCard() {
         <RetentionTile label="Tự nhớ ra từ" value={r.production.retention} count={r.production.count} target={r.targetRetention} />
         <RetentionTile label="Từ còn non (< 21 ngày)" value={r.young.retention} count={r.young.count} target={r.targetRetention} />
       </div>
-      <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-        Chỉ tính lượt ôn đúng lịch của thẻ đã thuộc (không tính từ mới, luyện thêm hay làm lại) — đây là con số FSRS
+      <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
+        Chỉ tính lượt ôn đúng lịch của thẻ đã thuộc (không tính từ mới, luyện thêm hay làm lại) — đây là con số lịch ôn
         nhắm tới mục tiêu. Gần mục tiêu ±3% là lịch ôn đang khớp với trí nhớ của bạn.
       </p>
       {advice && (
@@ -103,14 +103,14 @@ export default function LearningInsightsCard() {
       {/* Calibration */}
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-zinc-300">
-          <Gauge className="w-3.5 h-3.5" /> Dự đoán của FSRS so với thực tế
+          <Gauge className="w-3.5 h-3.5" /> Dự đoán của app so với thực tế
         </div>
         {insights.calibration.length === 0 ? (
-          <p className="text-[11px] text-slate-400 dark:text-zinc-500">Chưa có lượt ôn nào của thẻ đã thuộc kể từ khi bắt đầu ghi dữ liệu này.</p>
+          <p className="text-xs text-slate-600 dark:text-zinc-400">Chưa có lượt ôn nào của thẻ đã thuộc kể từ khi bắt đầu ghi dữ liệu này.</p>
         ) : (
-          <table className="w-full text-[11px]">
+          <table className="w-full text-xs">
             <thead>
-              <tr className="text-slate-500 dark:text-zinc-400 text-left">
+              <tr className="text-slate-600 dark:text-zinc-400 text-left">
                 <th className="font-medium py-1">Khả năng nhớ dự đoán</th>
                 <th className="font-medium py-1 text-right">Dự đoán</th>
                 <th className="font-medium py-1 text-right">Thực tế</th>
@@ -123,7 +123,7 @@ export default function LearningInsightsCard() {
                   <td className="py-1.5 font-mono text-slate-700 dark:text-zinc-300">{b.label}</td>
                   <td className="py-1.5 text-right font-mono text-slate-600 dark:text-zinc-400">{pct(b.predicted)}</td>
                   <td className="py-1.5 text-right font-mono font-semibold text-slate-900 dark:text-white">{pct(b.actual)}</td>
-                  <td className="py-1.5 text-right font-mono text-slate-400 dark:text-zinc-500">{b.count}</td>
+                  <td className="py-1.5 text-right font-mono text-slate-600 dark:text-zinc-400">{b.count}</td>
                 </tr>
               ))}
             </tbody>
@@ -135,7 +135,7 @@ export default function LearningInsightsCard() {
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-zinc-300">
           <CalendarClock className="w-3.5 h-3.5" /> Lượt ôn đến hạn 30 ngày tới
-          <span className="ml-auto font-normal text-slate-500 dark:text-zinc-400">
+          <span className="ml-auto font-normal text-slate-600 dark:text-zinc-400">
             TB 7 ngày tới: {forecast.upcomingPerDay.toFixed(1)}/ngày · 1 phiên = {forecast.maxSessionSize} thẻ
           </span>
         </div>
@@ -161,14 +161,14 @@ export default function LearningInsightsCard() {
           ))}
           {hovered !== null && (
             <div
-              className="absolute -top-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-mono pointer-events-none whitespace-nowrap"
+              className="absolute -top-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-mono pointer-events-none whitespace-nowrap"
               style={{ left: `min(calc(${(hovered / forecast.days.length) * 100}% ), calc(100% - 110px))` }}
             >
               {hovered === 0 ? "Hôm nay (gồm quá hạn)" : forecast.days[hovered].date}: {forecast.days[hovered].reviews} lượt
             </div>
           )}
         </div>
-        <div className="flex justify-between text-[10px] text-slate-400 dark:text-zinc-500 font-mono">
+        <div className="flex justify-between text-xs text-slate-600 dark:text-zinc-400 font-mono">
           <span>Hôm nay</span>
           <span>+15 ngày</span>
           <span>+30 ngày</span>
@@ -185,13 +185,13 @@ export default function LearningInsightsCard() {
                 setApplied(`Đã đặt ${suggestedNew} từ mới/ngày`);
                 load();
               }}
-              className="shrink-0 px-2.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-semibold"
+              className="shrink-0 min-h-10 px-3 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-semibold"
             >
               Áp dụng
             </button>
           </div>
         )}
-        {applied && <p className="text-[11px] text-emerald-600 dark:text-emerald-400">{applied}</p>}
+        {applied && <p className="text-xs text-emerald-600 dark:text-emerald-400">{applied}</p>}
       </div>
     </div>
   );

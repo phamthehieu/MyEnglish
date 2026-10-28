@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowRight, BookOpen, Check, ChevronDown, Clock, CircleAlert, Eye, GraduationCap, Layers, Loader2, RefreshCw, RotateCcw, Sparkles, Trash2, Upload, Wrench } from "lucide-react";
+import { SHOW_DEV_TOOLS } from "@/lib/devTools";
 import type { GrammarBookFile } from "@/types/grammarBook";
 import {
   ensureGrammarBookSeeded,
@@ -272,24 +273,26 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
               <GraduationCap className="h-6 w-6 shrink-0 text-cyan-600 dark:text-cyan-400" />
               <span>Ngữ pháp</span>
             </h1>
-            <p className="text-xs text-slate-500 dark:text-zinc-400 sm:text-sm">
-              Phần đầu giải thích ngữ pháp của từng chặng nói. Phần sau là sách ngữ pháp đầy đủ: mỗi ngày một bài mới, ôn lại đúng lúc sắp quên.
+            <p className="text-xs text-slate-600 dark:text-zinc-400 sm:text-sm">
+              Mỗi ngày học một bài mới, và ôn lại những bài sắp quên.
             </p>
           </div>
 
           {/* Importing exercises is occasional: a quiet button, the learning actions stay the loud ones */}
-          <button
-            type="button"
-            onClick={() => setExerciseImportOpen(true)}
-            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-cyan-300 hover:text-cyan-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-cyan-800 dark:hover:text-cyan-300 shrink-0"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Nhập bài tập AI & Lịch sử</span>
-          </button>
+          {SHOW_DEV_TOOLS && (
+            <button
+              type="button"
+              onClick={() => setExerciseImportOpen(true)}
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-cyan-300 hover:text-cyan-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-cyan-800 dark:hover:text-cyan-300 shrink-0"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Nhập bài tập AI & Lịch sử</span>
+            </button>
+          )}
         </div>
 
-        {/* Grammar for speaking: the first thing here, and it needs no book */}
-        <SpeakingGrammar onOpenLesson={hasBook ? openLesson : undefined} />
+        {/* Grammar for speaking needs no book: with no book it is all there is, so it opens; otherwise it sits folded under "Tiếp theo" */}
+        {!hasBook && !loading && <SpeakingGrammar defaultOpen />}
 
         {loading && !hasBook ? (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-slate-500 dark:text-zinc-400">
@@ -324,20 +327,32 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
             <div className="mx-auto max-w-md space-y-1.5">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">Chưa có dữ liệu sách ngữ pháp</h2>
               <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
-                Dữ liệu lấy từ chính cuốn sách của bạn: nhờ AI chuyển từng chương sang file JSON bằng prompt có sẵn, rồi nhập các file vào đây.
+                {SHOW_DEV_TOOLS
+                  ? "Dữ liệu lấy từ chính cuốn sách của bạn: nhờ AI chuyển từng chương sang file JSON bằng prompt có sẵn, rồi nhập các file vào đây."
+                  : "Dữ liệu ngữ pháp chưa sẵn sàng. Hãy thử lại, hoặc khởi động lại ứng dụng."}
               </p>
             </div>
             <div className="flex flex-col items-stretch justify-center gap-2.5 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                onClick={() => setExerciseImportOpen(true)}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
-              >
-                <Sparkles className="h-4 w-4" />
-                Nhập bài tập AI / Lịch sử
-              </button>
+              {SHOW_DEV_TOOLS ? (
+                <button
+                  type="button"
+                  onClick={() => setExerciseImportOpen(true)}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Nhập bài tập AI / Lịch sử
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={retryLoad}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Thử lại
+                </button>
+              )}
             </div>
-            <p className="text-xs text-slate-500 dark:text-zinc-500">Các file chỉ được lưu trên máy này, không gửi đi đâu.</p>
           </div>
         ) : (
           <>
@@ -350,6 +365,8 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
               onPractice={openPractice}
             />
 
+            <SpeakingGrammar onOpenLesson={openLesson} />
+
             <div ref={pickerRef} className="scroll-mt-2">
               <PathPicker
                 chapters={chapters}
@@ -360,17 +377,19 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
               />
             </div>
 
-            <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 border-t border-slate-200 pt-4 text-xs dark:border-zinc-800">
-              <button
-                type="button"
-                onClick={() => setImportOpen(true)}
-                className="inline-flex items-center gap-1.5 text-slate-400 transition hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-400"
-                title="Nhập dữ liệu gốc từ sách PDF"
-              >
-                <Upload className="h-3 w-3" />
-                <span>Nhập dữ liệu sách</span>
-              </button>
-            </div>
+            {SHOW_DEV_TOOLS && (
+              <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 border-t border-slate-200 pt-4 text-xs dark:border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setImportOpen(true)}
+                  className="inline-flex items-center gap-1.5 text-slate-400 transition hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  title="Nhập dữ liệu gốc từ sách PDF"
+                >
+                  <Upload className="h-3 w-3" />
+                  <span>Nhập dữ liệu sách</span>
+                </button>
+              </div>
+            )}
 
             <ManagedItemsPanel managed={managed} onRestoreHidden={restoreHidden} onRemoveAccepted={removeAccepted} />
           </>
@@ -587,7 +606,7 @@ function TodayPanel({
             type="button"
             onClick={primary.action ?? undefined}
             disabled={starting && primary.key === "review"}
-            className="inline-flex items-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-bold !text-white shadow-sm shadow-cyan-600/30 transition hover:bg-cyan-500 disabled:opacity-60"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-bold !text-white shadow-sm shadow-cyan-600/30 transition hover:bg-cyan-500 disabled:opacity-60"
           >
             {starting && primary.key === "review" ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             {primary.actionText}
@@ -599,7 +618,7 @@ function TodayPanel({
               <div className="h-full bg-emerald-500 transition-all duration-300" style={{ width: pct(mastered) }} />
               <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: pct(learning) }} />
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-slate-600 dark:text-zinc-400">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-slate-600 dark:text-zinc-400">
               <span>
                 <b className="font-mono text-slate-900 dark:text-white">{mastered + learning}/{total}</b> bài đã học
               </span>
@@ -630,12 +649,12 @@ function TodayPanel({
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-semibold text-slate-900 dark:text-white">{step.label}</span>
-                <span className="block truncate text-xs text-slate-500 dark:text-zinc-400" title={step.detail}>
+                <span className="block truncate text-xs text-slate-600 dark:text-zinc-400" title={step.detail}>
                   {step.done && step.action ? step.actionText : step.detail}
                 </span>
               </span>
               {isPrimary ? (
-                <span className="shrink-0 rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-bold text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-300">Tiếp theo</span>
+                <span className="shrink-0 rounded-full bg-cyan-100 px-2 py-0.5 text-xs font-bold text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-300">Tiếp theo</span>
               ) : clickable ? (
                 <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" />
               ) : null}

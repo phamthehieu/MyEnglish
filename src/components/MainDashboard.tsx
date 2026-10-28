@@ -1235,7 +1235,7 @@ export default function MainDashboard({
       {startNotice && (
         <div
           role="status"
-          className="fixed top-5 right-5 z-50 max-w-sm w-[calc(100%-2.5rem)] bg-white dark:bg-zinc-900 border-2 border-cyan-500/80 rounded-2xl shadow-2xl p-4 flex items-start gap-3 animate-in slide-in-from-top-4 duration-300"
+          className="fixed top-[calc(env(safe-area-inset-top)+0.75rem)] inset-x-3 mx-auto max-w-sm md:inset-x-auto md:right-5 md:mx-0 md:w-full z-50 bg-white dark:bg-zinc-900 border-2 border-cyan-500/80 rounded-2xl shadow-2xl p-4 flex items-start gap-3 animate-in slide-in-from-top-4 duration-300"
         >
           <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center shrink-0">
             <Layers className="w-5 h-5" />
@@ -1248,7 +1248,7 @@ export default function MainDashboard({
                 setStartNotice(null);
                 setActiveTab("capture");
               }}
-              className="mt-2.5 w-full py-1.5 px-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-zinc-950 font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors select-none"
+              className="mt-2.5 w-full min-h-10 py-2 px-3 rounded-lg bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-zinc-950 font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors select-none"
             >
               <Layers className="w-3.5 h-3.5" />
               <span>{AI_VOCAB_ENABLED ? "Mở Thêm từ bằng AI" : "Mở Lộ trình từ vựng"}</span>
@@ -1257,7 +1257,7 @@ export default function MainDashboard({
           <button
             onClick={() => setStartNotice(null)}
             aria-label="Đóng thông báo"
-            className="text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-200 p-1"
+            className="-mr-1 -mt-1 shrink-0 w-10 h-10 inline-flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200"
           >
             <X className="w-4 h-4" />
           </button>

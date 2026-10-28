@@ -66,7 +66,7 @@ function GoalPicker({ current, onPick, onLater }: { current: RoadmapGoal | null;
             }`}
           >
             <span className="block text-sm font-bold">{GOAL_LABEL[g]}</span>
-            <span className={`block text-[11px] ${current === g ? "text-violet-100" : "text-slate-500 dark:text-zinc-400"}`}>{GOAL_HINT[g]}</span>
+            <span className={`block text-xs ${current === g ? "text-violet-100" : "text-slate-600 dark:text-zinc-400"}`}>{GOAL_HINT[g]}</span>
           </button>
         ))}
       </div>
@@ -263,10 +263,19 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                 </p>
                 <p className="text-lg font-bold text-emerald-950 dark:text-emerald-100">{current.title}</p>
               </div>
-              <button onClick={() => setChangingGoal(true)} className="shrink-0 text-xs font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
+              <button onClick={() => setChangingGoal(true)} className="shrink-0 min-h-[40px] px-1 text-xs font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
                 Đổi mục tiêu
               </button>
             </div>
+            {plan.tasks.length > 0 ? (
+              <button onClick={startDay} className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold inline-flex items-center justify-center gap-2">
+                <Play className="w-4 h-4" /> Bắt đầu hôm nay (~{plan.minutes} phút)
+              </button>
+            ) : (
+              <p className="rounded-xl bg-white/70 dark:bg-zinc-900/60 px-3 py-2 text-sm text-emerald-900 dark:text-emerald-100">
+                {plan.complete ? "Chặng này đã đủ điều kiện hoàn thành: bấm vào chặng ở dưới để đóng lại." : "Hôm nay bạn đã xong phần của chặng này. Quay lại vào ngày mai để làm bước tiếp theo (mỗi bước cách nhau một ngày để nhớ lâu)."}
+              </p>
+            )}
             <div className="h-2 rounded-full bg-emerald-200 dark:bg-emerald-900 overflow-hidden" aria-label="Tiến độ lộ trình">
               <div className="h-full bg-emerald-600 transition-[width] duration-500 ease-out motion-reduce:transition-none" style={{ width: `${(finishedCount / Math.max(1, stages.length)) * 100}%` }} />
             </div>
@@ -310,15 +319,6 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                   Đã vững {current.level}? Nhảy lên cấp {upperLevel}
                 </button>
               ))}
-            {plan.tasks.length > 0 ? (
-              <button onClick={startDay} className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold inline-flex items-center justify-center gap-2">
-                <Play className="w-4 h-4" /> Bắt đầu hôm nay (~{plan.minutes} phút)
-              </button>
-            ) : (
-              <p className="rounded-xl bg-white/70 dark:bg-zinc-900/60 px-3 py-2 text-sm text-emerald-900 dark:text-emerald-100">
-                {plan.complete ? "Chặng này đã đủ điều kiện hoàn thành: bấm vào chặng ở dưới để đóng lại." : "Hôm nay bạn đã xong phần của chặng này. Quay lại vào ngày mai để làm bước tiếp theo (mỗi bước cách nhau một ngày để nhớ lâu)."}
-              </p>
-            )}
           </div>
         ) : (
           <p className="rounded-xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-3 text-sm text-emerald-900 dark:text-emerald-100">
@@ -390,7 +390,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                             <StepDots step={s.step} />
                           </span>
                           <span className="block text-sm text-slate-600 dark:text-zinc-400">{p.frame_vi}</span>
-                          <span className="block text-xs text-slate-500 dark:text-zinc-500">
+                          <span className="block text-xs text-slate-600 dark:text-zinc-400">
                             {s.step >= STEPS ? "Đã thuộc · bấm để hỏi đáp nhanh" : s.step === 0 ? "Chưa học" : `Tiếp theo: ${STEP_LABELS[s.step]}`}
                             {avg !== null ? ` · trả lời trung bình ${(avg / 1000).toFixed(1)} giây` : ""}
                           </span>
@@ -400,12 +400,12 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                     {status !== "done" && status !== "skipped" && (
                       <div className="flex gap-2 pt-1">
                         {status !== "current" && (
-                          <button onClick={() => setFocus(stage.id)} className="flex-1 py-2 rounded-xl border border-emerald-400 text-emerald-800 dark:text-emerald-200 text-sm font-semibold">
+                          <button onClick={() => setFocus(stage.id)} className="flex-1 min-h-[44px] rounded-xl border border-emerald-400 text-emerald-800 dark:text-emerald-200 text-sm font-semibold">
                             Học chặng này
                           </button>
                         )}
-                        <button onClick={() => setSkipTest(stage)} className="flex-1 py-2 rounded-xl border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-semibold inline-flex items-center justify-center gap-1.5">
-                          <SkipForward className="w-4 h-4" /> Mình đã biết rồi
+                        <button onClick={() => setSkipTest(stage)} className="flex-1 min-h-[44px] px-2 rounded-xl border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-semibold inline-flex items-center justify-center gap-1.5">
+                          <SkipForward className="w-4 h-4" /> Làm bài kiểm tra để bỏ qua
                         </button>
                       </div>
                     )}

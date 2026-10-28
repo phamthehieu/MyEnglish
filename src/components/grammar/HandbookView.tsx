@@ -67,7 +67,7 @@ export default function HandbookView({
             className="my-3 p-4 rounded-xl bg-violet-50/70 dark:bg-violet-950/30 border border-violet-200/80 dark:border-violet-800/50 shadow-sm"
           >
             {txt(block.label) && (
-              <span className="inline-block px-2 py-0.5 mb-2 text-[11px] font-bold uppercase tracking-wider rounded bg-violet-200/70 dark:bg-violet-900/60 text-violet-800 dark:text-violet-200">
+              <span className="inline-block px-2 py-0.5 mb-2 text-xs font-bold uppercase tracking-wider rounded bg-violet-200/70 dark:bg-violet-900/60 text-violet-800 dark:text-violet-200">
                 {txt(block.label)}
               </span>
             )}
@@ -95,7 +95,8 @@ export default function HandbookView({
             </div>
             <button
               onClick={() => speakText(txt(block.en))}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-200/60 dark:hover:bg-zinc-800 transition shrink-0"
+              className="w-10 h-10 inline-flex items-center justify-center rounded-lg text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-200/60 dark:hover:bg-zinc-800 transition shrink-0"
+              aria-label="Phát âm tiếng Anh"
               title="Phát âm tiếng Anh"
             >
               <Volume2 className="w-4 h-4" />
@@ -170,10 +171,11 @@ export default function HandbookView({
                 </div>
                 <button
                   onClick={() => speakText(txt(item!.en))}
-                  className="p-1 text-slate-400 hover:text-cyan-600 transition"
+                  className="w-10 h-10 inline-flex items-center justify-center text-slate-500 hover:text-cyan-600 transition"
+                  aria-label="Phát âm"
                   title="Phát âm"
                 >
-                  <Volume2 className="w-3.5 h-3.5" />
+                  <Volume2 className="w-4 h-4" />
                 </button>
               </div>
             ))}
@@ -207,7 +209,7 @@ export default function HandbookView({
       {/* Chapter Notes if present */}
       {safeNotes.length > 0 && (
         <div className="mt-8 pt-6 border-t border-slate-200 dark:border-zinc-800">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500 mb-3">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-zinc-400 mb-3">
             Ghi nhớ chung của chương
           </h4>
           <div className="p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40 space-y-2">

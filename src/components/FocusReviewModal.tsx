@@ -152,7 +152,7 @@ export function getPosLabel(pos?: string | null): string | null {
 }
 
 /** Shown after an answer: the user reads the feedback and moves on themselves */
-const NEXT_HINT = isMobilePlatform() ? "Bấm Tiếp tục để sang câu sau." : "Nhấn Enter hoặc Tiếp tục để sang câu sau.";
+const NEXT_HINT = isMobilePlatform() ? "Bấm Tiếp tục để sang câu sau." : "Bấm Tiếp tục để sang câu sau.";
 
 /**
  * Correct answer(s) for display, with equivalent contracted/full forms,
@@ -1381,7 +1381,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
-                  {currentGrammar ? "Grammar-Quiz" : "Flash-Quiz"}
+                  {currentGrammar ? "Câu hỏi ngữ pháp" : "Câu hỏi từ vựng"}
                 </span>
 
                 {queue.length > 0 && currentItem && (
@@ -1393,7 +1393,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 {/* Tag phân biệt Từ vựng vs Ngữ pháp */}
                 {currentWord && (
                   <span
-                    className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${
+                    className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${
                       new Date(currentWord.srs.next_review_date) <= new Date()
                         ? "bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800"
                         : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
@@ -1409,7 +1409,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 )}
 
                 {currentGrammar && (
-                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-800 flex items-center gap-1">
+                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-800 flex items-center gap-1">
                     <span>{currentGrammar.lesson.category}</span>
                   </span>
                 )}
@@ -1422,7 +1422,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
             <button
               onClick={() => handleSnooze()}
               title={`Hoãn nhắc nhở ${settings.snoozeMinutes} phút (Phím S)`}
-              className="px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
+              className="px-3 min-h-11 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
             >
               <Clock className="w-3.5 h-3.5 text-amber-500" />
               <span className="hidden sm:inline">Hoãn</span>
@@ -1433,7 +1433,8 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
             <button
               onClick={handleClose}
               title="Đóng cửa sổ (Phím Esc)"
-              className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+              aria-label="Đóng"
+              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-xl text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1474,12 +1475,12 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                       )}
                       <span className="font-semibold text-slate-800 dark:text-zinc-200 truncate flex-1">{it.label}</span>
                       {it.milestone === "mastered" && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 font-semibold shrink-0">
+                        <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 font-semibold shrink-0">
                           🎉 Nhớ dài hạn
                         </span>
                       )}
                       {it.milestone === "rescued" && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-md bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 font-semibold shrink-0">
+                        <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 font-semibold shrink-0">
                           🧠 Cứu kịp
                         </span>
                       )}
@@ -1492,10 +1493,10 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               )}
               <button
                 onClick={handleClose}
-                className="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold flex items-center justify-center gap-2"
+                className="w-full h-12 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold flex items-center justify-center gap-2"
               >
                 Đóng
-                <kbd className="px-1.5 py-0.5 bg-white/20 dark:bg-black/20 rounded text-[10px] font-mono">Enter</kbd>
+                <kbd className="px-1.5 py-0.5 bg-white/20 dark:bg-black/20 rounded text-[11px] font-mono">Enter</kbd>
               </button>
             </div>
           ) : !currentItem ? (
@@ -1509,7 +1510,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               </p>
               <button
                 onClick={handleClose}
-                className="mt-2 px-5 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold"
+                className="mt-2 px-6 h-11 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold"
               >
                 Đóng lại
               </button>
@@ -1544,7 +1545,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     onClick={handleManualSpeak}
                     title="Nghe phát âm"
                     aria-label="Nghe phát âm"
-                    className="p-2 rounded-full text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                    className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                   >
                     <Volume2 className="w-5 h-5" />
                   </button>
@@ -1564,16 +1565,16 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               <button
                 onClick={finishIntro}
                 autoFocus
-                className="w-full py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm"
+                className="w-full h-12 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <span>Đã đọc, kiểm tra tôi</span>
                 <ArrowRight className="w-4 h-4" />
-                <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[10px] font-mono">Enter</kbd>
+                <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[11px] font-mono">Enter</kbd>
               </button>
               {currentWord.direction !== "production" && (currentWord.srs?.reps ?? 0) === 0 && (
                 <button
                   onClick={markIntroKnown}
-                  className="w-full py-2 rounded-xl border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                  className="w-full min-h-11 rounded-xl border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
                 >
                   ✓ Đã biết từ này (hỏi lại sau khoảng một tuần)
                 </button>
@@ -1793,7 +1794,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                         <button
                           type="button"
                           onClick={handleDontRemember}
-                          className="px-4 py-3 rounded-xl border border-slate-200 dark:border-zinc-800 text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs font-semibold transition-all shrink-0"
+                          className="px-4 py-3 rounded-xl border border-slate-200 dark:border-zinc-800 text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs font-semibold transition-all shrink-0"
                           title="Xem đáp án và học lại từ này"
                         >
                           Không nhớ
@@ -1842,7 +1843,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     <button
                       onClick={handleManualSpeak}
                       title="Nghe phát âm (Nhấp để nghe)"
-                      className="p-1.5 rounded-full text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                      className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                     >
                       <Volume2 className="w-5 h-5" />
                     </button>
@@ -1882,19 +1883,19 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     </div>
                   )}
 
-                  <div className="pt-1 flex justify-end">
+                  <div className="pt-1 flex">
                     <button
                       onClick={advanceNextItem}
-                      className="px-4 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-slate-900 font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs"
+                      className="w-full h-12 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-slate-900 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-sm"
                     >
                       <span>Tiếp tục</span>
                       {nextReviewText && (
-                        <span className="text-[11px] font-normal opacity-75">
+                        <span className="text-xs font-normal opacity-80">
                           ({nextReviewText.startsWith("ở") ? `gặp lại ${nextReviewText}` : nextReviewText.startsWith("sau") ? `gặp lại ${nextReviewText}` : nextReviewText.includes("luyện tập") || nextReviewText.includes("tiến độ") ? nextReviewText : `gặp lại sau ${nextReviewText}`})
                         </span>
                       )}
                       <ArrowRight className="w-3.5 h-3.5" />
-                      <kbd className="px-1 py-0.2 bg-white/20 dark:bg-black/20 rounded text-[9px] font-mono">
+                      <kbd className="px-1 py-0.2 bg-white/20 dark:bg-black/20 rounded text-[11px] font-mono">
                         Enter
                       </kbd>
                     </button>
@@ -2025,7 +2026,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                         <button
                           type="button"
                           onClick={handleSkipGrammar}
-                          className="text-xs text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+                          className="text-xs text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition flex items-center gap-1.5 min-h-11 px-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
                           title="Bỏ qua câu hỏi này nếu bạn chưa biết đáp án"
                         >
                           <SkipForward className="w-3.5 h-3.5" />
@@ -2081,7 +2082,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                           disabled={!typedInput.trim()}
                           className="flex-1 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white text-xs font-bold transition-all shadow-sm shadow-violet-600/20"
                         >
-                          Kiểm tra đáp án (Enter)
+                          Kiểm tra đáp án
                         </button>
                         <button
                           type="button"
@@ -2131,7 +2132,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                       <button
                         onClick={handleManualSpeak}
                         title="Nghe phát âm cả câu tiếng Anh (Nhấp để nghe)"
-                        className="p-2 rounded-full text-slate-500 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors shrink-0"
+                        className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors shrink-0"
                       >
                         <Volume2 className="w-5 h-5" />
                       </button>
@@ -2155,19 +2156,19 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                       </div>
                     )}
 
-                    <div className="pt-1 flex justify-end">
+                    <div className="pt-1 flex">
                       <button
                         onClick={advanceNextItem}
-                        className="px-4 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-slate-900 font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs"
+                        className="w-full h-12 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-slate-900 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-sm"
                       >
                         <span>Tiếp tục</span>
                         {nextReviewText && (
-                          <span className="text-[11px] font-normal opacity-75">
+                          <span className="text-xs font-normal opacity-80">
                             ({nextReviewText.startsWith("ở") ? `gặp lại ${nextReviewText}` : nextReviewText.startsWith("sau") ? `gặp lại ${nextReviewText}` : nextReviewText.includes("luyện tập") || nextReviewText.includes("tiến độ") ? nextReviewText : `gặp lại sau ${nextReviewText}`})
                           </span>
                         )}
                         <ArrowRight className="w-3.5 h-3.5" />
-                        <kbd className="px-1 py-0.2 bg-white/20 dark:bg-black/20 rounded text-[9px] font-mono">
+                        <kbd className="px-1 py-0.2 bg-white/20 dark:bg-black/20 rounded text-[11px] font-mono">
                           Enter
                         </kbd>
                       </button>
@@ -2184,7 +2185,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
           <div className="flex items-center gap-3">
             {isAnswered ? (
               <span className="flex items-center gap-1.5 text-slate-800 dark:text-zinc-200 font-semibold">
-                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[10px] text-slate-700 dark:text-zinc-300">
+                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[11px] text-slate-700 dark:text-zinc-300">
                   Enter
                 </kbd>
                 <span>Tiếp tục</span>
@@ -2196,14 +2197,14 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               </span>
             ) : activeMode === "multiple_choice" ? (
               <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[10px] text-slate-700 dark:text-zinc-300">
+                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[11px] text-slate-700 dark:text-zinc-300">
                   1-4
                 </kbd>
                 <span>Chọn đáp án</span>
               </span>
             ) : (
               <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[10px] text-slate-700 dark:text-zinc-300">
+                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[11px] text-slate-700 dark:text-zinc-300">
                   Enter
                 </kbd>
                 <span>Kiểm tra</span>
@@ -2211,7 +2212,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
             )}
             {(showIntro || activeMode === "multiple_choice") && !isAnswered && (
               <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[10px] text-slate-700 dark:text-zinc-300">
+                <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[11px] text-slate-700 dark:text-zinc-300">
                   S
                 </kbd>
                 <span>Hoãn {settings.snoozeMinutes}p</span>
@@ -2220,7 +2221,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
           </div>
 
           <div className="flex items-center gap-1">
-            <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[10px] text-slate-700 dark:text-zinc-300">
+            <kbd className="px-1.5 py-0.5 rounded bg-slate-200/80 dark:bg-zinc-800 font-mono text-[11px] text-slate-700 dark:text-zinc-300">
               Esc
             </kbd>
             <span>Tắt nhanh</span>

@@ -11,6 +11,7 @@ import { getStudyLimits } from "@/services/srs";
 import { minutesFor } from "@/services/comeback";
 import { getFocusSettings } from "@/services/focusSettings";
 import { CEFR_LEVELS } from "@/services/knownWords";
+import { memoryLabel } from "@/utils/labels";
 
 interface ReviewTabProps {
   dueCount: number;
@@ -95,7 +96,7 @@ export default function ReviewTab({
         <div className="min-w-0 space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Ôn tập</h2>
-            <p className="text-xs text-slate-500 dark:text-zinc-400">Lịch ôn tự điều chỉnh theo trí nhớ của bạn: từ được hỏi lại ngay khi sắp quên.</p>
+            <p className="text-xs text-slate-600 dark:text-zinc-400">Lịch ôn tự điều chỉnh theo trí nhớ của bạn: từ được hỏi lại ngay khi sắp quên.</p>
           </div>
 
           {comeback && <ComebackCard comeback={comeback} onStart={() => handleStartReview(true)} />}
@@ -127,30 +128,34 @@ export default function ReviewTab({
                   onClick={() => handleStartReview(true)}
                   disabled={words.length === 0}
                   autoFocus
-                  className="basis-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 !text-white text-sm font-bold shadow-lg shadow-orange-500/20 transition-all disabled:opacity-40"
+                  className="basis-full inline-flex items-center justify-center gap-2 min-h-12 px-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 !text-white text-sm font-bold shadow-lg shadow-orange-500/20 transition-all disabled:opacity-40"
                 >
                   {dueCount > 0 ? <Play className="w-4 h-4 fill-white" /> : isCapped ? <RotateCcw className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
                   {startLabel}
                   {dueCount > 0 && <span className="px-1.5 rounded-md bg-black/15 font-mono text-xs">{dueCount}</span>}
                 </button>
                 {onStartFocus && (
-                  <button
-                    onClick={() => onStartFocus(focusMinutes)}
-                    disabled={words.length === 0}
-                    title="Phiên tập trung: ẩn mọi thứ khác, tắt nhắc nhở"
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold shadow-sm shadow-violet-600/30 disabled:opacity-40"
-                  >
-                    <Crosshair className="w-4 h-4" /> Tập trung {focusMinutes}′
-                  </button>
+                  <div className="flex-1 min-w-[140px] space-y-1">
+                    <button
+                      onClick={() => onStartFocus(focusMinutes)}
+                      disabled={words.length === 0}
+                      className="w-full inline-flex items-center justify-center gap-1.5 min-h-12 px-4 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold shadow-sm shadow-violet-600/30 disabled:opacity-40"
+                    >
+                      <Crosshair className="w-4 h-4" /> Tập trung {focusMinutes} phút
+                    </button>
+                    <p className="text-xs text-slate-600 dark:text-zinc-400 text-center">Chỉ học, tắt nhắc nhở và mọi thứ khác.</p>
+                  </div>
                 )}
-                <button
-                  onClick={() => handleStartReview(false)}
-                  disabled={words.length === 0}
-                  title="Luyện thêm mọi từ, không ảnh hưởng lịch ôn"
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white/70 dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-medium disabled:opacity-40"
-                >
-                  <Dumbbell className="w-4 h-4" /> Luyện tất cả
-                </button>
+                <div className="flex-1 min-w-[140px] space-y-1">
+                  <button
+                    onClick={() => handleStartReview(false)}
+                    disabled={words.length === 0}
+                    className="w-full inline-flex items-center justify-center gap-1.5 min-h-12 px-4 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white/70 dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-medium disabled:opacity-40"
+                  >
+                    <Dumbbell className="w-4 h-4" /> Luyện tất cả
+                  </button>
+                  <p className="text-xs text-slate-600 dark:text-zinc-400 text-center">Ôn thêm mọi từ, không đổi lịch ôn.</p>
+                </div>
               </div>
 
               {dueCount === 0 && isCapped && (
@@ -168,6 +173,9 @@ export default function ReviewTab({
               <h3 className="flex items-center gap-1.5 text-sm font-bold text-slate-800 dark:text-zinc-200">
                 <Layers className="w-4 h-4 text-cyan-500" /> Theo cấp độ
               </h3>
+              <p className="text-xs text-slate-600 dark:text-zinc-400">
+                Ôn: chỉ các từ đến hạn của cấp độ này, tính vào lịch ôn. Luyện: ôn thêm mọi từ của cấp độ, không đổi lịch.
+              </p>
               <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 divide-y divide-slate-100 dark:divide-zinc-800">
                 {levels.map((top) => {
                   const { total, due } = libraryStats.perTopic[top.trim().toLowerCase()] || { total: 0, due: 0 };
@@ -178,7 +186,7 @@ export default function ReviewTab({
                         {top}
                       </span>
                       <div className="flex-1 min-w-[140px] space-y-1">
-                        <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400">
+                        <div className="flex items-center justify-between text-xs text-slate-600 dark:text-zinc-400">
                           <span>{total} từ</span>
                           <span className={due > 0 ? "text-orange-600 dark:text-orange-400 font-semibold" : ""}>
                             {due > 0 ? `${due} đến hạn` : "không có từ đến hạn"}
@@ -192,15 +200,14 @@ export default function ReviewTab({
                         {due > 0 && (
                           <button
                             onClick={() => handleStartReview(true, top)}
-                            className="px-2.5 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 dark:bg-orange-500/15 dark:hover:bg-orange-500/25 text-orange-700 dark:text-orange-300 text-xs font-semibold inline-flex items-center gap-1"
+                            className="px-3 min-h-10 rounded-lg bg-orange-50 hover:bg-orange-100 dark:bg-orange-500/15 dark:hover:bg-orange-500/25 text-orange-700 dark:text-orange-300 text-xs font-semibold inline-flex items-center gap-1"
                           >
                             <Play className="w-3 h-3 fill-current" /> Ôn {due}
                           </button>
                         )}
                         <button
                           onClick={() => handleStartReview(false, top)}
-                          title={`Luyện thêm ${total} từ ${top}, không ảnh hưởng lịch ôn`}
-                          className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-medium"
+                          className="px-3 min-h-10 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-medium"
                         >
                           Luyện
                         </button>
@@ -220,7 +227,7 @@ export default function ReviewTab({
                   Từ đang chờ ôn <span className="font-normal text-slate-400 dark:text-zinc-500">({dueWordCount})</span>
                 </h3>
                 {onOpenDueWords && (
-                  <button onClick={onOpenDueWords} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline inline-flex items-center gap-1">
+                  <button onClick={onOpenDueWords} className="min-h-10 px-2 text-xs text-cyan-700 dark:text-cyan-400 hover:underline inline-flex items-center gap-1">
                     Xem tất cả <ArrowRight className="w-3 h-3" />
                   </button>
                 )}
@@ -232,14 +239,14 @@ export default function ReviewTab({
                     <button
                       key={w.id}
                       onClick={() => setSelectedWord(w)}
-                      title={simple || !reviewed ? w.meaning_vn : `${w.meaning_vn} · độ bền ${Number(w.srs.stability).toFixed(1)} ngày`}
+                      title={simple || !reviewed ? w.meaning_vn : `${w.meaning_vn} · ${memoryLabel(w.srs.stability)}`}
                       className="text-left px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-cyan-400 dark:hover:border-cyan-600 transition-colors min-w-0"
                     >
                       <div className="flex items-center gap-1.5">
                         <span className="text-sm font-bold text-slate-900 dark:text-white truncate">{w.word}</span>
-                        {!reviewed && <span className="text-[9px] font-bold px-1 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 shrink-0">MỚI</span>}
+                        {!reviewed && <span className="text-[11px] font-bold px-1 rounded bg-cyan-100 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 shrink-0">MỚI</span>}
                       </div>
-                      <div className="text-[11px] text-slate-500 dark:text-zinc-400 truncate">{w.meaning_vn}</div>
+                      <div className="text-xs text-slate-600 dark:text-zinc-400 truncate">{w.meaning_vn}</div>
                     </button>
                   );
                 })}
@@ -284,17 +291,17 @@ export default function ReviewTab({
                             : `${d.date}: ${d.reviews} thẻ ôn (đã có lịch, sẽ tăng thêm khi bạn học)`
                         }
                       >
-                        <span className="text-[10px] font-mono text-slate-500 dark:text-zinc-400">{d.reviews || ""}</span>
+                        <span className="text-[11px] font-mono text-slate-600 dark:text-zinc-400">{d.reviews || ""}</span>
                         <div
                           className={`w-full rounded-t-md ${i === 0 ? "bg-orange-400" : "bg-cyan-400/70 dark:bg-cyan-500/60"}`}
                           style={{ height: `${d.reviews > 0 ? Math.max(6, (d.reviews / maxDay) * 64) : 2}px` }}
                         />
-                        <span className={`text-[10px] ${i === 0 ? "font-bold text-slate-700 dark:text-zinc-200" : "text-slate-400 dark:text-zinc-500"}`}>{day}</span>
+                        <span className={`text-[11px] ${i === 0 ? "font-bold text-slate-700 dark:text-zinc-200" : "text-slate-600 dark:text-zinc-400"}`}>{day}</span>
                       </div>
                     );
                   })}
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                <p className="text-xs text-slate-600 dark:text-zinc-400">
                   Mỗi từ tối đa 1 thẻ ôn một ngày, như trong phiên ôn. Trung bình {Math.round(forecast.upcomingPerDay)} thẻ/ngày trong 7 ngày tới.
                   {forecast.overloaded ? " Lịch đang dày: nên giảm số từ mới mỗi ngày." : ""}
                 </p>
@@ -315,7 +322,7 @@ function Pill({ tone, label, value }: { tone: "orange" | "cyan" | "slate"; label
   return (
     <span className={`inline-flex flex-col items-center min-w-[64px] px-3 py-1.5 rounded-xl border ${cls}`}>
       <span className="text-base font-bold font-mono leading-tight">{value ?? "…"}</span>
-      <span className="text-[10px]">{label}</span>
+      <span className="text-[11px]">{label}</span>
     </span>
   );
 }

@@ -93,7 +93,7 @@ export default function WeeklyProgressCard({ words, compact = false }: { words: 
           tone={!enoughData ? undefined : lowRetention ? "warn" : "good"}
         />
       </div>
-      <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+      <p className="text-xs text-slate-600 dark:text-zinc-400">
         Bạn đang nhớ chắc <span className="font-semibold text-slate-700 dark:text-zinc-200">{week.masteredWords}</span> từ
         (sẽ không quên trong ít nhất 3 tuần).
         {lowRetention && " Tỉ lệ nhớ đang thấp hơn mục tiêu: hãy ôn đúng hạn hoặc giảm số từ mới mỗi ngày."}
@@ -116,7 +116,7 @@ function Stat({ label, value, tone }: { label: string; value: string; tone?: "go
   return (
     <div className="rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200/70 dark:border-zinc-800 px-3 py-2">
       <div className={`text-lg font-extrabold ${color}`}>{value}</div>
-      <div className="text-[10px] text-slate-500 dark:text-zinc-400 leading-tight">{label}</div>
+      <div className="text-xs text-slate-600 dark:text-zinc-400 leading-tight">{label}</div>
     </div>
   );
 }
@@ -151,7 +151,7 @@ function WeeklyChallenges({
           {doneCount === list.length ? <Trophy className="w-3.5 h-3.5 text-amber-500" /> : <Target className="w-3.5 h-3.5 text-indigo-500" />}
           Thử thách tuần
         </span>
-        <span className="text-[11px] text-slate-500 dark:text-zinc-400">
+        <span className="text-xs text-slate-600 dark:text-zinc-400">
           {doneCount}/{list.length} · tối đa {total} XP
         </span>
       </div>
@@ -163,14 +163,14 @@ function WeeklyChallenges({
           return (
             <li key={c.kind} className="space-y-1">
               <div className="flex items-start gap-2 text-xs">
-                <span className={`shrink-0 mt-px px-1.5 py-0.5 rounded text-[10px] font-bold ${style.badge}`}>{TIER_LABEL[c.tier]}</span>
+                <span className={`shrink-0 mt-px px-1.5 py-0.5 rounded text-xs font-bold ${style.badge}`}>{TIER_LABEL[c.tier]}</span>
                 {/* Hover or focus: what counts and where to do it, and why the target is this size */}
                 <span className="group relative flex-1 min-w-0">
                   <span
                     tabIndex={0}
                     aria-describedby={`howto-${c.kind}`}
                     className={`leading-snug cursor-help underline decoration-dotted decoration-slate-300 dark:decoration-zinc-600 underline-offset-2 outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-sm ${
-                      done ? "text-slate-500 dark:text-zinc-400 line-through" : "text-slate-800 dark:text-zinc-200"
+                      done ? "text-slate-600 dark:text-zinc-400 line-through" : "text-slate-800 dark:text-zinc-200"
                     }`}
                   >
                     {challengeTitle(c)}
@@ -178,7 +178,7 @@ function WeeklyChallenges({
                   <span
                     id={`howto-${c.kind}`}
                     role="tooltip"
-                    className="pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1.5 z-30 w-72 max-w-[85vw] rounded-xl bg-slate-900 dark:bg-zinc-800 text-white p-3 shadow-xl space-y-1.5 text-[11px] leading-relaxed"
+                    className="pointer-events-none invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 transition-opacity duration-150 absolute left-0 top-full mt-1.5 z-30 w-72 max-w-[85vw] rounded-xl bg-slate-900 dark:bg-zinc-800 text-white p-3 shadow-xl space-y-1.5 text-xs leading-relaxed"
                   >
                     <span className="block font-semibold">{challengeTitle(c)}</span>
                     <span className="block text-slate-200">{challengeHowTo(c, { dailyGoal, lastWeek: lastWeek ? lastWeek[c.kind] : null })}</span>
@@ -192,10 +192,10 @@ function WeeklyChallenges({
                   </span>
                 </span>
                 <span className="shrink-0 text-right">
-                  <span className="block font-mono text-[11px] text-slate-500 dark:text-zinc-400">
+                  <span className="block font-mono text-xs text-slate-600 dark:text-zinc-400">
                     {progress}/{c.target}
                   </span>
-                  <span className={`block text-[10px] font-semibold ${done ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
+                  <span className={`block text-xs font-semibold ${done ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
                     {done ? <Check className="inline w-3 h-3 -mt-0.5" /> : "+"}
                     {TIER_XP[c.tier]} XP
                   </span>
@@ -208,7 +208,7 @@ function WeeklyChallenges({
           );
         })}
       </ul>
-      <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+      <p className="text-xs text-slate-600 dark:text-zinc-400">
         {justRewarded
           ? `Vừa nhận +${justRewarded.xp} XP${justRewarded.bonus ? " (có thưởng hoàn thành cả 3)" : ""} 🎉`
           : state.bonusRewarded

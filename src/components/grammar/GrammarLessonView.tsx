@@ -15,6 +15,7 @@ import {
   type SessionEntry,
 } from "@/services/grammarSession";
 import { getBookChapter } from "@/services/grammarBook";
+import { SHOW_DEV_TOOLS } from "@/lib/devTools";
 import { formatNextReviewRelative } from "@/utils/reviewSchedule";
 import HandbookView from "./HandbookView";
 import GrammarPlayer from "./GrammarPlayer";
@@ -192,7 +193,7 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
         mode: lessonExerciseMode(lesson.id),
         title: `Bài tập: ${name}`,
         subtitle: !studied
-          ? `${entries.length} câu luyện tập tự do · Làm "Kiểm tra ngay" để tính % tiến độ`
+          ? `${entries.length} câu luyện tập tự do · Làm vài câu kiểm tra để tính % tiến độ`
           : `${entries.length} câu chỉ dùng ${name}`,
         onFinish: () => {},
       });
@@ -261,91 +262,46 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <LessonStatusChip status={status} />
-          <span className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-zinc-300">
-            Thuộc
-            <MasteryBar mastery={progress.mastery} className="w-16" />
-            <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">{progress.mastery}%</span>
-          </span>
+          {studied ? (
+            <span className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-zinc-300">
+              Thuộc
+              <MasteryBar mastery={progress.mastery} className="w-16" />
+              <span className="font-mono font-bold text-cyan-700 dark:text-cyan-400">{progress.mastery}%</span>
+            </span>
+          ) : (
+            <span className="text-xs text-slate-600 dark:text-zinc-300">Chưa kiểm tra</span>
+          )}
           {nextReview && (
-            <span className="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-zinc-400">
+            <span className="inline-flex items-center gap-1 text-xs text-slate-600 dark:text-zinc-400">
               <Clock className="h-3.5 w-3.5" />
               Ôn lại: {nextReview.label}
             </span>
           )}
-          <button
-            type="button"
-            onClick={() => setImportModalOpen(true)}
-            className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-cyan-200 bg-cyan-50/70 hover:bg-cyan-100/80 px-2.5 py-1.5 text-xs font-semibold text-cyan-700 transition dark:border-cyan-800 dark:bg-cyan-950/40 dark:text-cyan-300 dark:hover:bg-cyan-900/50 cursor-pointer"
-            title="Thêm bài tập bằng AI cho riêng bài học này"
+          {SHOW_DEV_TOOLS && (
+            <button
+              type="button"
+              onClick={() => setImportModalOpen(true)}
+              className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-cyan-200 bg-cyan-50/70 hover:bg-cyan-100/80 px-2.5 py-1.5 text-xs font-semibold text-cyan-700 transition dark:border-cyan-800 dark:bg-cyan-950/40 dark:text-cyan-300 dark:hover:bg-cyan-900/50 cursor-pointer"
+              title="Thêm bài tập bằng AI cho riêng bài học này"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+              <span>Thêm bài tập AI</span>
+            </button>
+          )}
+          <label
+            title="Bật: bài này nằm trong lịch học hằng ngày. Tắt: bỏ qua bài này."
+            className="inline-flex min-h-[40px] cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 dark:border-zinc-800 dark:text-zinc-300"
           >
-            <Sparkles className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span>Thêm bài tập AI</span>
-          </button>
-          <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:border-zinc-800 dark:text-zinc-300">
             <input
               type="checkbox"
               checked={onPath}
               onChange={() => toggleLessonSelection(lesson.id)}
               className="h-4 w-4 accent-cyan-600"
             />
-            Trên lộ trình
+            Trên lộ trình (lịch học hằng ngày)
           </label>
         </div>
       </header>
-
-      {/* Nút to / Banner nổi bật: Kiểm tra ngay */}
-      {!noQuestions && (
-        <div
-          className={`rounded-2xl border p-4 sm:p-5 transition-all shadow-sm ${
-            !studied
-              ? "border-cyan-300 bg-gradient-to-r from-cyan-50/90 via-sky-50/80 to-blue-50/70 dark:border-cyan-800 dark:from-cyan-950/40 dark:via-sky-950/30 dark:to-blue-950/30 ring-1 ring-cyan-200/50 dark:ring-cyan-900/40"
-              : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900/80"
-          }`}
-        >
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-1.5 min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-cyan-600 text-white shadow-sm">
-                  <Zap className="h-4 w-4 fill-current" />
-                </span>
-                <h2 className="text-sm font-bold text-slate-900 dark:text-white sm:text-base">
-                  {!studied ? "Kiểm tra nhanh để kích hoạt & tính % tiến độ" : "Kiểm tra & Cập nhật độ thuộc"}
-                </h2>
-                {!studied ? (
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                    Chưa kích hoạt · 0%
-                  </span>
-                ) : (
-                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
-                    Đã học · {progress.mastery}%
-                  </span>
-                )}
-              </div>
-              <p className="text-xs leading-relaxed text-slate-600 dark:text-zinc-400">
-                {!studied
-                  ? "Làm bài kiểm tra ngắn (tối đa 8 câu) để hệ thống đánh giá trình độ ban đầu, tính % độ thuộc và đưa thì này vào lịch ôn tập giãn cách FSRS."
-                  : `Điểm kiểm tra gần nhất: ${progress.score}% · Độ thuộc: ${progress.mastery}%. Làm lại bài kiểm tra để cập nhật điểm số và lịch ôn tập.`}
-              </p>
-            </div>
-
-            <div className="flex shrink-0 items-center gap-2">
-              <button
-                type="button"
-                onClick={startQuickCheck}
-                disabled={starting !== null}
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-xl bg-cyan-600 px-6 py-3 text-sm font-bold !text-white shadow-md shadow-cyan-600/25 transition hover:bg-cyan-500 hover:shadow-lg hover:shadow-cyan-600/30 active:scale-[0.98] disabled:opacity-50"
-              >
-                {starting === "learn" ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <Play className="h-4 w-4 fill-current" />
-                )}
-                <span>Kiểm tra ngay (tối đa 8 câu)</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="grid grid-cols-3 gap-1 rounded-xl border border-slate-200/80 bg-slate-100 p-1 dark:border-zinc-700 dark:bg-zinc-800">
         {TABS.map(({ id, label, icon: Icon }) => (
@@ -353,7 +309,7 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
             key={id}
             type="button"
             onClick={() => goTab(id)}
-            className={`flex items-center justify-center gap-1.5 rounded-lg px-1.5 py-2 text-center text-xs font-semibold leading-tight transition ${
+            className={`flex items-center justify-center gap-1.5 min-h-[40px] rounded-lg px-1.5 py-2 text-center text-xs font-semibold leading-tight transition ${
               tab === id
                 ? "bg-white text-cyan-700 shadow-sm dark:bg-zinc-900 dark:text-cyan-400"
                 : "text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -377,16 +333,16 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
               <p className="flex-1 text-sm text-slate-700 dark:text-zinc-300">
                 {studied
                   ? "Đọc xong rồi? Làm bài tập của riêng thì này để nhớ lâu hơn."
-                  : "Đọc xong sổ tay rồi? Làm vài câu kiểm tra nhanh để bắt đầu học bài này."}
+                  : "Đọc xong sổ tay rồi? Làm vài câu kiểm tra (tối đa 8 câu) để bắt đầu học bài này."}
               </p>
               <button
                 type="button"
                 onClick={() => (studied ? void startExercises() : void startQuickCheck())}
                 disabled={starting !== null}
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
+                className="inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
               >
                 {starting ? <Loader2 className="h-4 w-4 animate-spin" /> : studied ? <Layers className="h-4 w-4" /> : <Zap className="h-4 w-4" />}
-                {studied ? "Làm bài tập" : "Làm kiểm tra nhanh"}
+                {studied ? "Làm bài tập" : "Làm vài câu kiểm tra"}
               </button>
             </div>
           )}
@@ -404,13 +360,13 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
               <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
                 {studied
                   ? "Làm lại để xem bạn còn nhớ bài này đến đâu. Kết quả cập nhật độ thuộc và lịch ôn."
-                  : "Lần đầu, bài kiểm tra này sẽ đưa bài vào lịch ôn giãn cách (FSRS): kết quả quyết định khi nào bạn gặp lại bài. Nên đọc Sổ tay trước."}
+                  : "Lần đầu, kết quả bài kiểm tra này quyết định khi nào bạn gặp lại bài để ôn. Nên đọc Sổ tay trước."}
               </p>
             </div>
           </div>
           {studied && progress.lastAttemptDate && (
             <p className="text-xs text-slate-500 dark:text-zinc-400">
-              Điểm gần nhất: <strong className="font-mono text-slate-800 dark:text-zinc-200">{progress.score}%</strong>
+              Điểm gần nhất: <strong className="font-mono text-slate-800 dark:text-zinc-200">{progress.score}%</strong> · Độ thuộc: {progress.mastery}%
             </p>
           )}
           {message && <Notice text={message} tone={message.startsWith("Đã ghi nhận") ? "ok" : "warn"} />}
@@ -421,7 +377,7 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
               type="button"
               onClick={startQuickCheck}
               disabled={starting !== null}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-600 px-6 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500 disabled:opacity-50 sm:w-auto"
+              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-cyan-600 px-6 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500 disabled:opacity-50 sm:w-auto"
             >
               {starting === "learn" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4 fill-current" />}
               Bắt đầu

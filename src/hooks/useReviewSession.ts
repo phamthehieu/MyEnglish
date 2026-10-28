@@ -848,7 +848,7 @@ export function useReviewSession({
       if (shakeTimerRef.current) clearTimeout(shakeTimerRef.current);
       shakeTimerRef.current = setTimeout(() => setIsShaking(false), 350);
       setFeedbackMessage({
-        text: "Vui lòng nhập từ trước khi nhấn Enter!",
+        text: "Hãy gõ từ rồi mới kiểm tra nhé.",
         type: "info",
       });
       inputRef.current?.focus();
@@ -893,8 +893,8 @@ export function useReviewSession({
       setFeedbackMessage({
         text:
           clozeSentence && typedForm !== expectedForm.toLowerCase()
-            ? `Đúng từ rồi! Trong câu này dùng dạng "${expectedForm}". Nhấn Enter hoặc Tiếp tục.`
-            : "Chính xác! 🎉 Đọc lại đáp án rồi nhấn Enter hoặc Tiếp tục.",
+            ? `Đúng từ rồi! Trong câu này dùng dạng "${expectedForm}". Bấm Tiếp tục.`
+            : "Chính xác! 🎉 Đọc lại đáp án rồi bấm Tiếp tục.",
         type: "success",
       });
       handleSpeak(currentWord.word);
@@ -911,7 +911,7 @@ export function useReviewSession({
       });
       if (match === "near") {
         setFeedbackMessage({
-          text: `Gần đúng! Từ chính xác là "${expectedForm}" (tính là Khó). Nhấn Enter hoặc Tiếp tục.`,
+          text: `Gần đúng! Từ chính xác là "${expectedForm}" (tính là Khó). Bấm Tiếp tục.`,
           type: "info",
         });
       }

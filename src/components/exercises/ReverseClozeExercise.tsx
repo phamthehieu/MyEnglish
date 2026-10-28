@@ -154,14 +154,14 @@ export default function ReverseClozeExercise({
           <button
             onClick={() => onSpeak(example.sentence_en)}
             type="button"
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 min-h-10 rounded-full text-xs font-medium text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 transition-colors"
           >
             <Volume2 className="w-3.5 h-3.5 text-cyan-500" />
             <span>Nghe câu ví dụ</span>
           </button>
         </div>
 
-        <p className="text-xs text-slate-400 dark:text-zinc-500 border-t border-slate-100 dark:border-zinc-800 pt-3">
+        <p className="text-xs text-slate-600 dark:text-zinc-400 border-t border-slate-100 dark:border-zinc-800 pt-3">
           Từ được gạch chân mang nghĩa là gì trong câu trên?
         </p>
       </div>
@@ -175,7 +175,7 @@ export default function ReverseClozeExercise({
           const showFail = isSelected && !opt.isCorrect;
 
           let btnClasses =
-            "rounded-xl border p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
+            "min-h-12 rounded-xl border p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
           if (showSuccess) {
             btnClasses +=
               "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30";
@@ -202,7 +202,7 @@ export default function ReverseClozeExercise({
                     ? "bg-emerald-500 text-white"
                     : showFail
                     ? "bg-rose-500 text-white"
-                    : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400"
+                    : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                 }`}
               >
                 {idx + 1}
@@ -222,11 +222,11 @@ export default function ReverseClozeExercise({
       {/* Bottom Status - constant height h-7 so it NEVER jumps */}
       <div className="h-7 min-h-[28px] flex items-center justify-center text-xs">
         {wrongAttempts > 0 && !isAnswered ? (
-          <p className="text-center text-xs text-amber-500 dark:text-amber-400 font-semibold animate-in fade-in duration-150">
+          <p className="text-center text-xs text-amber-700 dark:text-amber-400 font-semibold animate-in fade-in duration-150">
             Chưa đúng, thử phương án khác nhé!
           </p>
         ) : (
-          <span className="text-center text-[11px] text-slate-400 dark:text-zinc-500">
+          <span className="text-center text-[11px] text-slate-600 dark:text-zinc-400">
             Chọn phương án đúng nhất theo ngữ cảnh câu
           </span>
         )}

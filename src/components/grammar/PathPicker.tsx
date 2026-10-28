@@ -65,7 +65,7 @@ const LEGEND_ORDER: LessonStatus[] = ["new", "learning", "due", "mastered"];
 export function LessonStatusChip({ status }: { status: LessonStatus }) {
   const s = STATUS_STYLE[status];
   return (
-    <span className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${s.className}`}>
+    <span className={`inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-xs font-semibold ${s.className}`}>
       {s.label}
     </span>
   );
@@ -166,13 +166,13 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
   const dimmed = !isPractice && !onPath;
 
   return (
-    <div role="group" aria-label={name} className="relative h-full min-w-0">
+    <div role="group" aria-label={name} className="relative flex h-full min-w-0 flex-col">
       <button
         type="button"
         onClick={isPractice ? onToggle : onOpen}
         aria-pressed={isPractice ? picked : undefined}
         title={showEn ? `${name} · ${lesson.title}` : name}
-        className={`relative flex h-full min-h-[96px] w-full flex-col overflow-hidden rounded-xl border px-2.5 pb-2.5 pt-3.5 text-left shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${style.surface} ${
+        className={`relative flex min-h-[96px] w-full flex-1 flex-col overflow-hidden rounded-xl border px-2.5 pb-2.5 pt-3.5 text-left shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${style.surface} ${
           picked ? "ring-2 ring-cyan-500 dark:ring-cyan-400" : ""
         } ${dimmed ? "opacity-60 hover:opacity-100" : ""}`}
       >
@@ -192,20 +192,20 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
         )}
 
         {/* Room on the right for the switch / check in the corner */}
-        <span className="line-clamp-2 break-words pr-7 text-[13px] font-semibold leading-snug text-slate-900 dark:text-white">
+        <span className={`line-clamp-2 break-words text-sm font-semibold leading-snug text-slate-900 dark:text-white ${isPractice ? "pr-7" : ""}`}>
           {name}
         </span>
-        {showEn && <span className="mt-0.5 block truncate text-[11px] text-slate-500 dark:text-zinc-400">{lesson.title}</span>}
+        {showEn && <span className="mt-0.5 block truncate text-xs text-slate-600 dark:text-zinc-400">{lesson.title}</span>}
 
         {/* Wraps when the card is narrow: the review date drops under the gauge */}
-        <span className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-2 text-[11px]">
+        <span className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-2 text-xs">
           <span className="inline-flex items-center gap-1.5">
             <ProgressRing value={mastery} />
             <span className="font-mono text-slate-600 dark:text-zinc-300">{Math.round(mastery)}%</span>
           </span>
           <span
             className={`max-w-full truncate ${
-              status === "due" ? "font-semibold text-amber-700 dark:text-amber-400" : "text-slate-500 dark:text-zinc-400"
+              status === "due" ? "font-semibold text-amber-700 dark:text-amber-400" : "text-slate-600 dark:text-zinc-400"
             }`}
           >
             {status === "new" ? "Mới" : row.reviewText}
@@ -220,32 +220,28 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
           role="switch"
           aria-checked={onPath}
           aria-label="Trên lộ trình"
-          title={onPath ? "Trên lộ trình" : "Không học: bài này không có trong lộ trình"}
+          title={onPath ? "Bài này nằm trong lịch học hằng ngày" : "Không học: bài này không có trong lộ trình"}
           onClick={(e) => {
             e.stopPropagation();
             onToggle();
           }}
-          className="absolute right-1 top-1.5 flex h-7 w-9 items-center justify-center rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+          className="mt-1 flex min-h-[40px] w-full items-center gap-2 rounded-lg px-1.5 text-left text-xs font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-zinc-300"
         >
-          <span className={`relative h-4 w-7 rounded-full transition-colors ${onPath ? "bg-cyan-600" : "bg-slate-300 dark:bg-zinc-600"}`}>
+          <span className={`relative h-4 w-7 shrink-0 rounded-full transition-colors ${onPath ? "bg-cyan-600" : "bg-slate-300 dark:bg-zinc-600"}`}>
             <span
               className={`absolute left-0.5 top-0.5 h-3 w-3 rounded-full bg-white shadow transition-transform ${
                 onPath ? "translate-x-3" : ""
               }`}
             />
           </span>
+          <span className="min-w-0 truncate">{onPath ? "Trên lộ trình" : "Không học"}</span>
         </button>
       )}
 
       {isNext && (
-        <span className="pointer-events-none absolute -top-2 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-cyan-600 px-2 py-0.5 text-[10px] font-bold !text-white shadow-sm">
+        <span className="pointer-events-none absolute -top-2 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-cyan-600 px-2 py-0.5 text-xs font-bold !text-white shadow-sm">
           <ArrowRight className="h-2.5 w-2.5" strokeWidth={3} />
           Tiếp theo
-        </span>
-      )}
-      {dimmed && (
-        <span className="pointer-events-none absolute -top-2 left-3 z-10 rounded-full border border-slate-300 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-400">
-          Không học
         </span>
       )}
     </div>
@@ -257,7 +253,7 @@ type TenseItem = { id: string; title: string; row: LessonRow };
 function SubHeading({ children }: { children: ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-0.5">
-      <span className="text-[11px] font-bold uppercase tracking-wide text-slate-500 dark:text-zinc-400">{children}</span>
+      <span className="text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">{children}</span>
       <span className="h-px flex-1 bg-slate-200 dark:bg-zinc-800" />
     </div>
   );
@@ -267,9 +263,9 @@ function SubHeading({ children }: { children: ReactNode }) {
 const TABLE_MIN_WIDTH = 680;
 
 const COLUMN_HEAD =
-  "flex items-end justify-center px-1 pb-0.5 text-center text-[11px] font-semibold leading-tight text-slate-500 dark:text-zinc-400";
+  "flex items-end justify-center px-1 pb-0.5 text-center text-xs font-semibold leading-tight text-slate-600 dark:text-zinc-400";
 const ROW_HEAD =
-  "flex items-center justify-center rounded-xl bg-slate-100 px-1 text-center text-[11px] font-bold leading-tight text-slate-600 dark:bg-zinc-800/70 dark:text-zinc-300";
+  "flex items-center justify-center rounded-xl bg-slate-100 px-1 text-center text-xs font-bold leading-tight text-slate-600 dark:bg-zinc-800/70 dark:text-zinc-300";
 
 /** The lessons of one chapter: the tense table for a tense chapter, a grid of cards otherwise */
 function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row: LessonRow) => ReactNode }) {
@@ -501,7 +497,7 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
                 role="tab"
                 aria-selected={mode === m}
                 onClick={() => changeMode(m)}
-                className={`rounded-md px-3 py-1 text-xs font-semibold transition-colors ${
+                className={`min-h-[40px] rounded-md px-3 py-1 text-xs font-semibold transition-colors ${
                   mode === m
                     ? "bg-white text-cyan-700 shadow-sm dark:bg-zinc-800 dark:text-cyan-300"
                     : "text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -512,13 +508,13 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
             ))}
           </div>
         </div>
-        <p className="text-xs leading-relaxed text-slate-500 dark:text-zinc-400">
+        <p className="text-xs leading-relaxed text-slate-600 dark:text-zinc-400">
           {isPractice
             ? "Chọn 1 thì, 2 thì hoặc nhiều thì: app lấy các câu chỉ dùng những thì này."
-            : "Bật hoặc tắt bài và chương bạn muốn học trên lộ trình; bài mới đến theo thứ tự sách, mỗi ngày một bài."}
+            : "Công tắc \"Trên lộ trình\" ở mỗi bài: bật là bài đó nằm trong lịch học hằng ngày, tắt là bỏ qua. Bài mới đến theo thứ tự sách, mỗi ngày một bài."}
         </p>
         {!isPractice && pathNote && <p className="text-xs text-amber-600 dark:text-amber-400">{pathNote}</p>}
-        <ul className="flex flex-wrap items-center gap-x-3.5 gap-y-1 pt-1 text-[11px] text-slate-500 dark:text-zinc-400">
+        <ul className="flex flex-wrap items-center gap-x-3.5 gap-y-1 pt-1 text-xs text-slate-600 dark:text-zinc-400">
           {LEGEND_ORDER.map((s) => (
             <li key={s} className="inline-flex items-center gap-1.5">
               <span aria-hidden="true" className={`h-2 w-2 rounded-full ${CARD_STYLE[s].dot}`} />
@@ -561,7 +557,7 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
                     <button
                       type="button"
                       onClick={() => toggleChapter(ids)}
-                      className="shrink-0 rounded-lg border border-cyan-200 px-2.5 py-1 text-xs font-semibold text-cyan-700 transition hover:bg-cyan-50 dark:border-cyan-900 dark:text-cyan-400 dark:hover:bg-cyan-950/40"
+                      className="shrink-0 min-h-[40px] rounded-lg border border-cyan-200 px-2.5 py-1 text-xs font-semibold text-cyan-700 transition hover:bg-cyan-50 dark:border-cyan-900 dark:text-cyan-400 dark:hover:bg-cyan-950/40"
                     >
                       {allChecked ? "Bỏ cả chương" : "Chọn cả chương"}
                     </button>

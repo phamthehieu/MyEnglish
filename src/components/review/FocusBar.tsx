@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Eye, EyeOff, Pause, Timer, X, Check } from "lucide-react";
 import type { FocusPause } from "@/hooks/useFocusSession";
 import { getFocusSettings, saveFocusSettings } from "@/services/focusSession";
+import { useBackButton } from "@/hooks/useBackButton";
 
 function mmss(ms: number): string {
   const s = Math.ceil(ms / 1000);
@@ -58,6 +59,9 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
     return () => window.removeEventListener("keydown", onKey, true);
   }, []);
 
+  // Android Back asks the same question as Esc; pressed again it goes back to studying
+  useBackButton(true, () => setConfirming(!confirmingRef.current));
+
   const toggleClock = () => {
     const next = !hideClock;
     setHideClock(next);
@@ -68,7 +72,7 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
 
   return (
     <div className="w-full shrink-0 mb-3">
-      <div className="flex items-center gap-3 text-xs">
+      <div className="flex items-center flex-wrap gap-x-3 text-xs">
         <span className="inline-flex items-center gap-1.5 font-semibold text-violet-700 dark:text-violet-300">
           <Timer className="w-4 h-4" /> Phiên tập trung
         </span>
@@ -78,25 +82,26 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
         <button
           onClick={toggleClock}
           title={hideClock ? "Hiện đồng hồ" : "Ẩn đồng hồ (đỡ áp lực khi thấy đếm ngược)"}
-          className="p-1 rounded text-slate-400 hover:text-slate-700 dark:text-zinc-500 dark:hover:text-zinc-200"
+          aria-label={hideClock ? "Hiện đồng hồ" : "Ẩn đồng hồ"}
+          className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200"
         >
-          {hideClock ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+          {hideClock ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
         </button>
-        <span className="text-slate-500 dark:text-zinc-400">{cards} thẻ</span>
+        <span className="text-slate-600 dark:text-zinc-400">{cards} thẻ</span>
         {timeUp ? (
           <span className="text-amber-600 dark:text-amber-400">Làm nốt câu này là xong</span>
         ) : paused ? (
-          <span className="inline-flex items-center gap-1 text-slate-500 dark:text-zinc-400">
+          <span className="inline-flex items-center gap-1 text-slate-600 dark:text-zinc-400">
             <Pause className="w-3 h-3" />
             {paused === "away" ? "Tạm dừng khi bạn rời cửa sổ" : paused === "dialog" ? "Đã tạm dừng" : "Tạm dừng, thao tác để tiếp tục"}
           </span>
         ) : null}
         <button
           onClick={leave}
-          className={`ml-auto inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-medium transition-colors ${
+          className={`ml-auto inline-flex items-center gap-1 px-3 min-h-10 rounded-lg font-medium transition-colors ${
             canFinish
               ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-              : "text-slate-500 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white"
+              : "text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-white"
           }`}
         >
           {canFinish ? <Check className="w-3.5 h-3.5" /> : <X className="w-3.5 h-3.5" />}
@@ -120,7 +125,7 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-sm font-bold text-slate-900 dark:text-white">Thoát phiên tập trung?</p>
-            <p className="text-xs text-slate-600 dark:text-zinc-300">
+            <p className="text-sm text-slate-600 dark:text-zinc-300">
               {canFinish
                 ? "Bạn đã học gần hết thời gian, phiên này vẫn được tính là hoàn thành."
                 : `Đồng hồ đang tạm dừng, còn ${mmss(remainingMs)}. Thoát bây giờ thì phiên tính là chưa xong và không được thưởng XP. Các câu đã trả lời vẫn được lưu.`}
@@ -129,7 +134,7 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
               <button
                 autoFocus
                 onClick={() => setConfirming(false)}
-                className="px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold"
+                className="px-4 h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold"
               >
                 Học tiếp
               </button>
@@ -139,7 +144,7 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
                   if (canFinish) onDone();
                   else onExit();
                 }}
-                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-xs"
+                className="px-4 h-11 rounded-lg border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-sm"
               >
                 Thoát
               </button>

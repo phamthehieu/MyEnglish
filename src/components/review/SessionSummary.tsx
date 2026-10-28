@@ -9,6 +9,7 @@ import { minutesFor } from "@/services/comeback";
 import { isSimpleMode } from "@/services/learnerProfile";
 import { dayCloseStatus, nextReviewText, type NextReview } from "@/services/dayClose";
 import { RankDelta } from "../dashboard/RankWidgets";
+import { memoryLabel } from "@/utils/labels";
 
 interface SessionSummaryProps {
   wordsToReview: Array<WordDetail | ReviewCard>;
@@ -191,11 +192,11 @@ export default function SessionSummary({
       <RankDelta />
 
       {!simple && lastResult && (
-        <div className="w-full p-3 rounded-xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800 text-xs text-slate-600 dark:text-zinc-400 flex flex-wrap justify-between gap-2 font-mono">
-          <span>Thẻ cuối: S={lastResult.stability}d</span>
-          <span>D={lastResult.difficulty}/10</span>
-          <span>Chu kỳ {lastResult.interval}d</span>
-          <span>{lastResult.repetitions} lần ôn</span>
+        <div className="w-full p-3 rounded-xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800 text-xs text-slate-600 dark:text-zinc-400 flex flex-wrap justify-between gap-2">
+          <span>Thẻ cuối: {memoryLabel(lastResult.stability)}</span>
+          <span>Độ khó {lastResult.difficulty}/10</span>
+          <span>Hỏi lại sau {lastResult.interval} ngày</span>
+          <span>Đã ôn {lastResult.repetitions} lần</span>
         </div>
       )}
 
@@ -203,12 +204,12 @@ export default function SessionSummary({
         <button
           onClick={onFinish}
           autoFocus
-          className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 !text-white text-sm font-semibold shadow-lg shadow-cyan-500/25 transition-all inline-flex items-center gap-2"
+          className="px-6 min-h-12 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 !text-white text-sm font-semibold shadow-lg shadow-cyan-500/25 transition-all inline-flex items-center gap-2"
         >
           <Sparkles className="w-4 h-4" /> Hoàn tất
         </button>
         {comingBack > 0 && (
-          <span className="self-center text-xs text-slate-500 dark:text-zinc-400 inline-flex items-center gap-1">
+          <span className="self-center text-xs text-slate-600 dark:text-zinc-400 inline-flex items-center gap-1">
             <RotateCcw className="w-3.5 h-3.5" /> Từ chưa nhớ đã được hẹn lại
           </span>
         )}

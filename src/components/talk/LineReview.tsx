@@ -137,7 +137,7 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
       <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2">
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Nói câu này bằng tiếng Anh:</p>
         <p className="text-lg font-bold text-slate-900 dark:text-white">«{card.line.vi}»</p>
-        {card.line.note && <p className="text-xs text-slate-500 dark:text-zinc-400">{card.line.note}</p>}
+        {card.line.note && <p className="text-xs text-slate-600 dark:text-zinc-400">{card.line.note}</p>}
         {(done !== null || fails >= 2) && (
           <p className="text-[15px] font-semibold text-violet-700 dark:text-violet-300 inline-flex items-center gap-2">
             {card.line.en}
@@ -160,7 +160,7 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
             <>
               <div className="min-h-[3rem] rounded-xl border-2 border-dashed border-slate-300 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
                 {chosen.map((t) => (
-                  <button key={t.id} onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))} className="px-3 py-1.5 rounded-lg bg-violet-600 text-white text-sm font-semibold">
+                  <button key={t.id} onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))} className="px-3 min-h-[40px] rounded-lg bg-violet-600 text-white text-sm font-semibold">
                     {t.text}
                   </button>
                 ))}
@@ -173,7 +173,7 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
                       setFeedback(null);
                       setChosen((c) => [...c, t]);
                     }}
-                    className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-white"
+                    className="px-3 min-h-[40px] rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-white"
                   >
                     {t.text}
                   </button>
@@ -246,8 +246,8 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
                       setMethod(m);
                     }}
                     aria-pressed={method === m}
-                    className={`px-2.5 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
-                      method === m ? "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300" : "text-slate-500 dark:text-zinc-400"
+                    className={`px-3 min-h-[40px] rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
+                      method === m ? "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300" : "text-slate-600 dark:text-zinc-400"
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" /> {METHOD_LABEL[m]}

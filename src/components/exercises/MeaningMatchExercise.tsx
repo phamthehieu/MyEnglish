@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { CheckCircle2, Link2, Eye } from "lucide-react";
+import GiveUpButton from "../review/GiveUpButton";
 import { Rating } from "@/services/srs";
 import { shuffle } from "@/lib/utils";
 import type { WordDetail } from "@/types/database";
@@ -136,14 +137,14 @@ export default function MeaningMatchExercise({
           <Link2 className="w-3 h-3" />
           <span>Nối từ với nghĩa</span>
         </div>
-        <p className="text-xs text-slate-500 dark:text-zinc-400">
+        <p className="text-xs text-slate-600 dark:text-zinc-400">
           Chọn một từ tiếng Anh ở cột trái rồi chọn nghĩa tiếng Việt tương ứng ở cột phải.
         </p>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2.5">
-          <h4 className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider px-1">Từ vựng</h4>
+          <h4 className="text-xs font-semibold text-slate-600 dark:text-zinc-400 px-1">Từ vựng</h4>
           {pairs.map((p) => {
             const state = matched.has(p.wordId)
               ? "matched"
@@ -157,9 +158,9 @@ export default function MeaningMatchExercise({
                 key={p.wordId}
                 onClick={() => handleWordClick(p.wordId)}
                 disabled={done || matched.has(p.wordId)}
-                className={`w-full p-3.5 rounded-xl border text-left transition-all flex items-center justify-between shadow-sm ${cell(state)}`}
+                className={`w-full min-h-12 p-3.5 rounded-xl border text-left transition-all flex items-center justify-between shadow-sm ${cell(state)}`}
               >
-                <span className="text-sm font-bold font-mono">{p.word}</span>
+                <span className="text-sm font-bold">{p.word}</span>
                 {matched.has(p.wordId) && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
               </button>
             );
@@ -167,7 +168,7 @@ export default function MeaningMatchExercise({
         </div>
 
         <div className="space-y-2.5">
-          <h4 className="text-xs font-semibold text-slate-500 dark:text-zinc-400 uppercase tracking-wider px-1">Nghĩa tiếng Việt</h4>
+          <h4 className="text-xs font-semibold text-slate-600 dark:text-zinc-400 px-1">Nghĩa tiếng Việt</h4>
           {meanings.map((m) => {
             const state = matched.has(m.wordId) ? "matched" : wrongFlash?.meaningId === m.wordId ? "wrong" : "idle";
             return (
@@ -175,7 +176,7 @@ export default function MeaningMatchExercise({
                 key={m.wordId}
                 onClick={() => handleMeaningClick(m.wordId)}
                 disabled={done || matched.has(m.wordId)}
-                className={`w-full p-3.5 rounded-xl border text-left transition-all shadow-sm text-xs font-medium leading-relaxed ${cell(state)} ${
+                className={`w-full min-h-12 p-3.5 rounded-xl border text-left transition-all shadow-sm text-sm font-medium leading-relaxed ${cell(state)} ${
                   selectedWordId && state === "idle" ? "border-dashed border-cyan-300 dark:border-cyan-700" : ""
                 }`}
               >
@@ -193,23 +194,15 @@ export default function MeaningMatchExercise({
             {targetMistakes === 0 && !byElimination
               ? `Chính xác! "${word.word}" đã được nối đúng ngay.`
               : targetMistakes === 0
-              ? `Đã nối xong. "${word.word}" là cặp cuối còn lại nên nối theo loại trừ, chưa tính là nhớ chắc.`
+              ? `Đã nối xong. "${word.word}" là cặp cuối còn lại (không cần nhớ cũng nối được) nên chưa tính là nhớ chắc.`
               : `Đã nối xong. "${word.word}" cần ôn lại sớm.`}
           </span>
         ) : (
           <>
-            <span className="text-slate-400 dark:text-zinc-500">
-              Chỉ cặp của từ <strong>{word.word}</strong> được tính điểm.
+            <span className="text-slate-600 dark:text-zinc-400">
+              Chỉ cặp của từ <strong>{word.word}</strong> được tính vào kết quả.
             </span>
-            <button
-              type="button"
-              onClick={handleGiveUp}
-              className="inline-flex items-center gap-1 text-xs text-rose-500 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 font-semibold transition-colors"
-              title="Xem đáp án các cặp nối"
-            >
-              <Eye className="w-3.5 h-3.5" />
-              <span>Không nhớ</span>
-            </button>
+            <GiveUpButton onConfirm={handleGiveUp} label="Không nhớ" icon={<Eye className="w-3.5 h-3.5" />} />
           </>
         )}
       </div>

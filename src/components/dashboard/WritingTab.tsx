@@ -21,10 +21,12 @@ import { recordDailyActivity } from "@/services/streak";
 import { getActiveCefrLevel } from "@/services/pipeline";
 import { bankStatus } from "@/services/reading";
 import { shuffle } from "@/lib/utils";
+import { isMobilePlatform } from "@/lib/platform";
 import { PAGE_CONTAINER } from "./shared";
 import MistakeReview from "./MistakeReview";
 
 const DRAFT_KEY = "myenglish_standup_draft_v1";
+const IS_MOBILE = isMobilePlatform();
 
 interface WritingTabProps {
   onOpenGrammarLesson: (lessonId: string) => void;
@@ -137,7 +139,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       reload();
     } catch (err) {
       setError(
-        `Không sửa được bằng AI: ${err instanceof Error ? err.message : String(err)}. Cần cài AI CLI (Claude hoặc Gemini), xem tab Cài đặt ở thanh bên.`
+        `Không sửa được bằng AI: ${err instanceof Error ? err.message : String(err)}. Vào Cài đặt để nhập khóa Gemini${IS_MOBILE ? "" : " (hoặc cài AI CLI)"}, rồi thử lại.`
       );
     } finally {
       setBusy(false);
@@ -167,7 +169,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       <div className="p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 space-y-3 shadow-sm">
         <div className="flex items-center justify-between">
           <span className="text-sm font-bold text-slate-900 dark:text-white">Standup hôm nay</span>
-          <span className="text-[11px] font-mono text-slate-400">
+          <span className="text-xs font-mono text-slate-500 dark:text-zinc-400">
             {used}/{STANDUP_PER_DAY} lượt sửa hôm nay
           </span>
         </div>
@@ -175,7 +177,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           Hôm qua bạn làm gì, hôm nay làm gì, có gì đang bị chặn? 2–4 câu là đủ.
         </p>
         {suggestions.length > 0 && (
-          <div className="flex items-center gap-1.5 flex-wrap text-[11px] text-slate-500 dark:text-zinc-400">
+          <div className="flex items-center gap-1.5 flex-wrap text-xs text-slate-500 dark:text-zinc-400">
             <span>Thử dùng từ đang học:</span>
             {suggestions.map((w) => (
               <span key={w.id} title={w.meaning_vn} className="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-300 font-mono">
@@ -201,7 +203,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           className="w-full p-3 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-sm text-slate-800 dark:text-zinc-200 leading-relaxed focus:outline-none focus:border-cyan-500 resize-y"
         />
         <div className="flex items-center justify-between">
-          <span className={`text-[11px] ${len > 600 ? "text-rose-500" : "text-slate-400"}`}>{len}/600 ký tự</span>
+          <span className={`text-xs ${len > 600 ? "text-rose-500" : "text-slate-500 dark:text-zinc-400"}`}>{len}/600 ký tự</span>
           <button
             onClick={send}
             disabled={!canSend}
@@ -213,7 +215,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
         </div>
         {cliReady === false && (
           <p className="text-xs text-amber-700 dark:text-amber-400">
-            Cần cài AI CLI (Claude hoặc Gemini) để nhờ AI sửa. Bạn vẫn viết và ôn lại lỗi đã lưu bình thường. Xem tab Cài đặt ở thanh bên.
+            Để nhờ AI sửa, vào Cài đặt nhập khóa Gemini{IS_MOBILE ? "" : " (hoặc cài AI CLI)"}. Bạn vẫn viết và ôn lại lỗi đã lưu bình thường.
           </p>
         )}
         {error && <p className="text-xs text-rose-600 dark:text-rose-400">{error}</p>}
@@ -288,45 +290,46 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           <>
             {reviewResult && <p className="text-xs text-emerald-700 dark:text-emerald-400">{reviewResult}</p>}
             <div className="space-y-1.5">
-              <div className="text-[11px] text-slate-500 dark:text-zinc-400">
+              <div className="text-xs text-slate-500 dark:text-zinc-400">
                 {summary.total} lỗi đã lưu · {summary.due} cần ôn hôm nay · Bạn hay sai nhất:
               </div>
               {summary.byCategory.slice(0, 4).map(({ category, count }) => {
                 const lesson = categoryLessons[category];
                 const max = summary.byCategory[0].count;
                 return (
-                  <div key={category} className="flex items-center gap-3 text-xs">
-                    <span className="w-48 shrink-0 text-slate-700 dark:text-zinc-300">{MISTAKE_CATEGORY_LABEL[category]}</span>
-                    <div className="flex-1 h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
-                      <div className="h-full bg-rose-400/80" style={{ width: `${Math.round((count / max) * 100)}%` }} />
+                  <div key={category} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 text-xs">
+                    <span className="sm:w-48 sm:shrink-0 text-slate-700 dark:text-zinc-300">{MISTAKE_CATEGORY_LABEL[category]}</span>
+                    <div className="flex flex-1 min-w-0 items-center gap-3">
+                      <div className="flex-1 h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
+                        <div className="h-full bg-rose-400/80" style={{ width: `${Math.round((count / max) * 100)}%` }} />
+                      </div>
+                      <span className="w-6 text-right font-mono text-slate-500">{count}</span>
                     </div>
-                    <span className="w-6 text-right font-mono text-slate-500">{count}</span>
-                    {lesson ? (
-                      <button onClick={() => onOpenGrammarLesson(lesson.id)} className="w-28 text-left text-[11px] text-cyan-700 dark:text-cyan-400 hover:underline truncate">
+                    {lesson && (
+                      <button onClick={() => onOpenGrammarLesson(lesson.id)} className="sm:w-28 min-h-[40px] sm:min-h-0 text-left text-xs text-cyan-700 dark:text-cyan-400 hover:underline truncate">
                         Bài: {lesson.title}
                       </button>
-                    ) : (
-                      <span className="w-28" />
                     )}
                   </div>
                 );
               })}
             </div>
             <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-zinc-800">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Gần đây</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">Gần đây</div>
               {recent.map((m) => (
                 <div key={m.id} className="group flex items-start justify-between gap-3 text-xs">
                   <span className="text-slate-700 dark:text-zinc-300">
                     <span className="line-through text-rose-600/80 dark:text-rose-400/80">{m.wrong_text}</span> →{" "}
                     <strong>{m.right_text}</strong>
-                    {m.occurrences > 1 && <span className="ml-1.5 text-[10px] text-rose-500">sai {m.occurrences} lần</span>}
+                    {m.occurrences > 1 && <span className="ml-1.5 text-xs text-rose-500">sai {m.occurrences} lần</span>}
                   </span>
                   <button
                     onClick={() => deleteMistake(m.id).then(reload)}
                     title="Xóa khỏi sổ (AI sửa sai, hoặc không cần ôn)"
-                    className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-500 transition-opacity"
+                    aria-label="Xóa khỏi sổ"
+                    className="shrink-0 -my-2 -mr-2 w-10 h-10 inline-flex items-center justify-center opacity-0 group-hover:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100 text-slate-400 hover:text-rose-500 transition-opacity"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
               ))}

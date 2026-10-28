@@ -16,13 +16,13 @@ import { useSimpleMode } from "../Jargon";
 
 const BOX = "p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2.5";
 const BTN =
-  "px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed";
+  "min-h-10 px-3 py-2 rounded-lg text-xs font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed";
 
 /**
- * FSRS settings that need care: personal parameters (optimizer), the longest interval, and data
- * backup / restore. Shown under the retention and daily-limit settings.
+ * Review-schedule settings that need care: personal parameters (optimizer) and the longest interval.
+ * Shown under the retention setting. Backup / restore lives in BackupRestoreSettings, next to the reset.
  */
-export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsChanged?: () => void }) {
+export default function AdvancedLearningSettings() {
   const [data, setData] = useState<{ reviewCount: number; cardCount: number } | null>(null);
   const [stored, setStored] = useState(getStoredWeights);
   const [running, setRunning] = useState(false);
@@ -30,7 +30,6 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
   const [message, setMessage] = useState<string | null>(null);
   const [maxInterval, setMaxInterval] = useState(() => getFSRSSettings().maximumInterval);
   const simple = useSimpleMode();
-  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadTrainingItems()
@@ -59,19 +58,18 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
 
   return (
     <div className="space-y-3">
-      {/* Personal FSRS parameters: advanced, hidden in simple mode */}
+      {/* Personal schedule parameters: advanced, hidden in simple mode */}
       {!simple && <div className={BOX}>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <Cpu className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-          <div className="text-xs font-bold text-slate-900 dark:text-white">Tối ưu theo trí nhớ của bạn</div>
-          <span className="ml-auto text-[11px] font-mono text-slate-500 dark:text-zinc-400">
+          <div className="text-sm font-bold text-slate-900 dark:text-white">Tối ưu theo trí nhớ của bạn</div>
+          <span className="sm:ml-auto text-xs font-mono text-slate-600 dark:text-zinc-400">
             {stored ? `Đang dùng tham số riêng (${new Date(stored.computedAt).toLocaleDateString("vi-VN")})` : "Đang dùng tham số mặc định"}
           </span>
         </div>
-        <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-          FSRS dùng 21 tham số (hệ số mô tả cách bạn quên theo thời gian). Có thể học lại chúng từ lịch sử ôn của bạn
-          (chỉ lượt ôn đúng lịch), để khoảng ôn khớp với tốc độ quên thật: ít lượt ôn thừa hơn mà vẫn giữ mục tiêu ghi nhớ.
-          Cần ít nhất {MIN_OPTIMIZER_REVIEWS} lượt ôn trên {MIN_OPTIMIZER_CARDS} thẻ.
+        <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
+          App có thể học cách bạn quên từ chính lịch sử ôn của bạn (chỉ tính lượt ôn đúng lịch), để khoảng ôn khớp với tốc độ
+          quên thật: ít lượt ôn thừa hơn mà vẫn giữ mục tiêu ghi nhớ. Cần ít nhất {MIN_OPTIMIZER_REVIEWS} lượt ôn trên {MIN_OPTIMIZER_CARDS} thẻ.
         </p>
         {data && (
           <div className="space-y-1">
@@ -81,7 +79,7 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
                 style={{ width: `${Math.min(100, (data.reviewCount / MIN_OPTIMIZER_REVIEWS) * 100)}%` }}
               />
             </div>
-            <div className="text-[10px] font-mono text-slate-500 dark:text-zinc-400">
+            <div className="text-xs font-mono text-slate-600 dark:text-zinc-400">
               {data.reviewCount}/{MIN_OPTIMIZER_REVIEWS} lượt ôn · {data.cardCount}/{MIN_OPTIMIZER_CARDS} thẻ
             </div>
           </div>
@@ -108,10 +106,10 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
           )}
         </div>
         {result && (
-          <div className="p-3 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-[11px] space-y-2">
+          <div className="p-3 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-xs space-y-2">
             <table className="w-full font-mono">
               <thead>
-                <tr className="text-slate-500 dark:text-zinc-400 text-left">
+                <tr className="text-slate-600 dark:text-zinc-400 text-left">
                   <th className="font-medium">Sai số (thấp hơn = khớp hơn)</th>
                   <th className="font-medium text-right">Mặc định</th>
                   <th className="font-medium text-right">Của bạn</th>
@@ -120,21 +118,21 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
               <tbody className="text-slate-800 dark:text-zinc-200">
                 <tr>
                   <td>
-                    Log loss <span className="font-sans text-slate-500 dark:text-zinc-400">(độ lệch dự đoán)</span>
+                    <span className="font-sans">Độ lệch dự đoán</span>
                   </td>
                   <td className="text-right">{fmt(result.default_metrics.log_loss)}</td>
                   <td className="text-right font-bold">{fmt(result.new_metrics.log_loss)}</td>
                 </tr>
                 <tr>
                   <td>
-                    RMSE <span className="font-sans text-slate-500 dark:text-zinc-400">(sai số trung bình)</span>
+                    <span className="font-sans">Sai số trung bình</span>
                   </td>
                   <td className="text-right">{fmt(result.default_metrics.rmse)}</td>
                   <td className="text-right font-bold">{fmt(result.new_metrics.rmse)}</td>
                 </tr>
               </tbody>
             </table>
-            <p className={improves ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}>
+            <p className={improves ? "text-emerald-700 dark:text-emerald-400" : "text-amber-700 dark:text-amber-400"}>
               {improves
                 ? "Tham số riêng dự đoán trí nhớ của bạn tốt hơn mặc định — nên áp dụng."
                 : "Tham số riêng không tốt hơn mặc định — nên giữ mặc định và thử lại khi có thêm dữ liệu."}
@@ -163,10 +161,10 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
       <div className={BOX}>
         <div className="flex items-center gap-2">
           <CalendarRange className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-          <div className="text-xs font-bold text-slate-900 dark:text-white">Khoảng ôn dài nhất</div>
-          <span className="ml-auto text-sm font-bold text-cyan-600 dark:text-cyan-400 font-mono">{maxInterval} ngày</span>
+          <div className="text-sm font-bold text-slate-900 dark:text-white">Khoảng ôn dài nhất</div>
+          <span className="ml-auto text-sm font-bold text-cyan-700 dark:text-cyan-400 font-mono">{maxInterval} ngày</span>
         </div>
-        <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+        <p className="text-xs text-slate-600 dark:text-zinc-400">
           Từ đã thuộc rất chắc vẫn được hỏi lại ít nhất một lần trong khoảng này. Dài hơn = ít lượt ôn hơn cho từ đã vững.
         </p>
         <div className="grid grid-cols-4 gap-2">
@@ -177,7 +175,7 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
                 saveFSRSSettings({ maximumInterval: val });
                 setMaxInterval(val);
               }}
-              className={`py-1.5 rounded-lg text-xs font-mono font-medium transition-all ${
+              className={`min-h-10 py-2 rounded-lg text-xs font-mono font-medium transition-all ${
                 maxInterval === val
                   ? "bg-cyan-600 text-white shadow-sm font-bold"
                   : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
@@ -189,65 +187,73 @@ export default function AdvancedLearningSettings({ onWordsChanged }: { onWordsCh
         </div>
       </div>
 
-      {/* Backup */}
-      <div className={BOX}>
-        <div className="text-xs font-bold text-slate-900 dark:text-white">Sao lưu & khôi phục dữ liệu</div>
-        <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-          File được lưu vào thư mục Downloads. Khôi phục chỉ thêm dữ liệu mới, không ghi đè từ và tiến độ đang có.
-        </p>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() =>
-              exportBackupJson()
-                .then((p) => setMessage(`Đã sao lưu toàn bộ dữ liệu: ${p}`))
-                .catch((e) => setMessage(`Sao lưu lỗi: ${e}`))
-            }
-            className={`${BTN} bg-slate-900 dark:bg-white text-white dark:text-slate-900 inline-flex items-center gap-1`}
-          >
-            <Download className="w-3 h-3" /> Sao lưu (JSON)
-          </button>
-          <button
-            onClick={() =>
-              exportWordsCsv()
-                .then((p) => setMessage(`Đã xuất danh sách từ: ${p}`))
-                .catch((e) => setMessage(`Xuất CSV lỗi: ${e}`))
-            }
-            className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1`}
-          >
-            <Download className="w-3 h-3" /> Danh sách từ (CSV)
-          </button>
-          <button
-            onClick={() => fileRef.current?.click()}
-            className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1`}
-          >
-            <Upload className="w-3 h-3" /> Khôi phục từ file...
-          </button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept=".json,application/json"
-            className="hidden"
-            onChange={async (e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (!file) return;
-              try {
-                const report = await importBackup(parseBackup(await file.text()));
-                const added = report.inserted.words ?? 0;
-                setMessage(
-                  `Đã khôi phục ${added} từ mới (${report.inserted.review_logs ?? 0} lượt ôn)` +
-                    (report.skippedExistingWords > 0 ? `, bỏ qua ${report.skippedExistingWords} từ đã có.` : ".")
-                );
-                onWordsChanged?.();
-              } catch (err) {
-                setMessage(`Không khôi phục được: ${err instanceof Error ? err.message : String(err)}`);
-              }
-            }}
-          />
-        </div>
-      </div>
+      {message && <p className="text-xs text-cyan-700 dark:text-cyan-300 break-words">{message}</p>}
+    </div>
+  );
+}
 
-      {message && <p className="text-[11px] text-cyan-700 dark:text-cyan-300 break-all">{message}</p>}
+/** Back up the learner's data to a file, and restore it from one (shown in "Dữ liệu & đặt lại", beside the reset) */
+export function BackupRestoreSettings({ onWordsChanged }: { onWordsChanged?: () => void }) {
+  const [message, setMessage] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div className={BOX}>
+      <div className="text-sm font-bold text-slate-900 dark:text-white">Sao lưu & khôi phục dữ liệu</div>
+      <p className="text-xs text-slate-600 dark:text-zinc-400">
+        Nên sao lưu trước khi đặt lại hoặc đổi máy. File được lưu vào thư mục Downloads. Khôi phục chỉ thêm dữ liệu mới, không ghi đè từ và tiến độ đang có.
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() =>
+            exportBackupJson()
+              .then((p) => setMessage(`Đã sao lưu toàn bộ dữ liệu: ${p}`))
+              .catch((e) => setMessage(`Sao lưu lỗi: ${e}`))
+          }
+          className={`${BTN} bg-slate-900 dark:bg-white text-white dark:text-slate-900 inline-flex items-center gap-1`}
+        >
+          <Download className="w-3.5 h-3.5" /> Sao lưu toàn bộ
+        </button>
+        <button
+          onClick={() =>
+            exportWordsCsv()
+              .then((p) => setMessage(`Đã xuất danh sách từ: ${p}`))
+              .catch((e) => setMessage(`Xuất danh sách lỗi: ${e}`))
+          }
+          className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1`}
+        >
+          <Download className="w-3.5 h-3.5" /> Danh sách từ (bảng tính)
+        </button>
+        <button
+          onClick={() => fileRef.current?.click()}
+          className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1`}
+        >
+          <Upload className="w-3.5 h-3.5" /> Khôi phục từ file...
+        </button>
+        <input
+          ref={fileRef}
+          type="file"
+          accept=".json,application/json"
+          className="hidden"
+          onChange={async (e) => {
+            const file = e.target.files?.[0];
+            e.target.value = "";
+            if (!file) return;
+            try {
+              const report = await importBackup(parseBackup(await file.text()));
+              const added = report.inserted.words ?? 0;
+              setMessage(
+                `Đã khôi phục ${added} từ mới (${report.inserted.review_logs ?? 0} lượt ôn)` +
+                  (report.skippedExistingWords > 0 ? `, bỏ qua ${report.skippedExistingWords} từ đã có.` : ".")
+              );
+              onWordsChanged?.();
+            } catch (err) {
+              setMessage(`Không khôi phục được: ${err instanceof Error ? err.message : String(err)}`);
+            }
+          }}
+        />
+      </div>
+      {message && <p className="text-xs text-cyan-700 dark:text-cyan-300 break-words">{message}</p>}
     </div>
   );
 }

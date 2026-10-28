@@ -12,10 +12,11 @@ import {
 } from "@/services/learnerProfile";
 import { englishVoices, getTtsSettings, handleSpeak, onVoicesChanged, saveTtsSettings, type TtsVoice } from "../review/speech";
 import { getSoundSettings, playSound, saveSoundSettings } from "@/services/sound";
+import { useStandingStore } from "@/stores/standingStore";
 
 const SCALE_LABEL: Record<UiScale, string> = { 1: "Vừa", 1.1: "Lớn", 1.25: "Rất lớn" };
 
-/** Settings for beginners: simple mode, foundation mode, text size, answer sounds, voice and speaking speed */
+/** Settings for beginners: text size, simple mode, foundation mode, rank widgets, answer sounds, voice and speaking speed */
 export default function DisplaySettings() {
   const [simple, setSimple] = useState(isSimpleMode);
   const [foundation, setFoundation] = useState(isFoundationMode);
@@ -23,6 +24,7 @@ export default function DisplaySettings() {
   const [tts, setTts] = useState(getTtsSettings);
   const [sound, setSound] = useState(getSoundSettings);
   const [voices, setVoices] = useState<TtsVoice[]>(englishVoices);
+  const rankWidgets = useStandingStore((s) => s.enabled);
 
   useEffect(() => {
     const load = () => setVoices(englishVoices());
@@ -31,21 +33,41 @@ export default function DisplaySettings() {
   }, []);
 
   const toggle = (label: string, hint: string, checked: boolean, onChange: (v: boolean) => void) => (
-    <label className="flex items-start justify-between gap-3 cursor-pointer">
+    <label className="flex items-start justify-between gap-3 cursor-pointer min-h-10">
       <div>
-        <div className="text-xs font-bold text-slate-900 dark:text-white">{label}</div>
-        <p className="text-[11px] text-slate-500 dark:text-zinc-400">{hint}</p>
+        <div className="text-sm font-bold text-slate-900 dark:text-white">{label}</div>
+        <p className="text-xs text-slate-600 dark:text-zinc-400">{hint}</p>
       </div>
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="mt-1 accent-cyan-600" />
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="mt-0.5 w-5 h-5 shrink-0 accent-cyan-600" />
     </label>
   );
 
   return (
     <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-3">
-      <div className="text-xs font-bold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Giao diện, âm thanh & giọng đọc</div>
+      <div className="text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Giao diện, âm thanh & giọng đọc</div>
+      <div className="space-y-1.5 pb-3 border-b border-slate-200 dark:border-zinc-800">
+        <div className="text-sm font-bold text-slate-900 dark:text-white">Cỡ chữ</div>
+        <div className="flex flex-wrap gap-2">
+          {UI_SCALES.map((s) => (
+            <button
+              key={s}
+              onClick={() => {
+                setUiScale(s);
+                setScale(s);
+              }}
+              className={`min-h-10 px-4 py-2 rounded-lg text-sm font-semibold border ${scale === s
+                ? "bg-cyan-600 text-white border-cyan-600"
+                : "border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300"
+                }`}
+            >
+              {SCALE_LABEL[s]}
+            </button>
+          ))}
+        </div>
+      </div>
       {toggle(
         "Chế độ đơn giản",
-        "Ẩn thuật ngữ kỹ thuật của thuật toán (FSRS, độ bền S/D…), nút chấm bằng tiếng Việt, ít lựa chọn hơn trên màn hình.",
+        "Ít nút và ít chữ khó hơn trên màn hình, nút chấm bằng tiếng Việt dễ hiểu.",
         simple,
         (v) => {
           setSimpleMode(v);
@@ -61,26 +83,12 @@ export default function DisplaySettings() {
           setFoundation(v);
         }
       )}
-      <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-zinc-800">
-        <div className="text-xs font-bold text-slate-900 dark:text-white">Cỡ chữ</div>
-        <div className="flex gap-2">
-          {UI_SCALES.map((s) => (
-            <button
-              key={s}
-              onClick={() => {
-                setUiScale(s);
-                setScale(s);
-              }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${scale === s
-                ? "bg-cyan-600 text-white border-cyan-600"
-                : "border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300"
-                }`}
-            >
-              {SCALE_LABEL[s]}
-            </button>
-          ))}
-        </div>
-      </div>
+      {toggle(
+        "Hiện cuộc đua xếp hạng (XP)",
+        "Thẻ \"Cuộc đua tuần này\" ở màn Hôm nay, dòng hạng ở menu và hạng mới sau mỗi phiên ôn (cần đăng nhập). Tắt nếu bạn thấy áp lực: bảng xếp hạng vẫn xem được ở mục Xếp hạng.",
+        rankWidgets,
+        (v) => useStandingStore.getState().setEnabled(v)
+      )}
       <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-zinc-800">
         {toggle(
           "Âm thanh phản hồi",
@@ -109,7 +117,7 @@ export default function DisplaySettings() {
             </label>
             <button
               onClick={() => playSound("combo")}
-              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 text-xs"
+              className="inline-flex items-center gap-1 min-h-10 px-3 py-2 rounded-lg border border-slate-300 dark:border-zinc-700 text-xs"
             >
               <Volume2 className="w-3.5 h-3.5" /> Nghe thử
             </button>
@@ -117,12 +125,12 @@ export default function DisplaySettings() {
         )}
       </div>
       <div className="space-y-1.5 pt-2 border-t border-slate-200 dark:border-zinc-800">
-        <div className="text-xs font-bold text-slate-900 dark:text-white">Giọng đọc tiếng Anh</div>
+        <div className="text-sm font-bold text-slate-900 dark:text-white">Giọng đọc tiếng Anh</div>
         <div className="flex flex-wrap items-center gap-2">
           <select
             value={tts.voiceURI}
             onChange={(e) => setTts(saveTtsSettings({ voiceURI: e.target.value }))}
-            className="text-xs rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 py-1.5 max-w-[16rem]"
+            className="text-sm min-h-10 rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 py-1.5 max-w-full sm:max-w-[16rem]"
           >
             <option value="">Mặc định của máy</option>
             {voices.map((v) => (
@@ -146,12 +154,12 @@ export default function DisplaySettings() {
           </label>
           <button
             onClick={() => handleSpeak("Hello. I fixed the bug and pushed the code.")}
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 text-xs"
+            className="inline-flex items-center gap-1 min-h-10 px-3 py-2 rounded-lg border border-slate-300 dark:border-zinc-700 text-xs"
           >
             <Volume2 className="w-3.5 h-3.5" /> Nghe thử
           </button>
         </div>
-        <p className="desktop-only text-[11px] text-slate-500 dark:text-zinc-400">
+        <p className="desktop-only text-xs text-slate-600 dark:text-zinc-400">
           Giọng "Enhanced"/"Premium" trên macOS nghe tự nhiên hơn (tải thêm trong Cài đặt hệ thống → Trợ năng → Nội dung được đọc).
         </p>
       </div>

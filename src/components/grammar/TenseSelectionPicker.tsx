@@ -193,7 +193,7 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
             {value.length} / {TENSE_OPTIONS.length} thì
           </span>
           {value.length === 1 && value.includes("ch01-l01") && (
-            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
               (Thì hiện tại đơn - Tối ưu cho người mất gốc)
             </span>
           )}
@@ -220,13 +220,13 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
           return (
             <div key={key} className="space-y-2">
               <div className="flex items-center justify-between px-1">
-                <span className="text-[11px] font-bold tracking-wide text-slate-500 dark:text-zinc-400">
+                <span className="text-xs font-bold tracking-wide text-slate-500 dark:text-zinc-400">
                   {title}
                 </span>
                 <button
                   type="button"
                   onClick={() => selectGroup(key)}
-                  className="text-[11px] font-medium text-cyan-600 dark:text-cyan-400 hover:underline"
+                  className="text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:underline"
                 >
                   {allInGroupSelected ? "Bỏ chọn nhóm" : "Chọn cả nhóm"}
                 </button>
@@ -267,7 +267,7 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
                             {item.titleVn}
                           </span>
                           {item.recommendedBadge && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 text-[10px] font-bold px-2 py-0.2">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-2 py-0.2">
                               <Sparkles className="w-2.5 h-2.5" />
                               {item.recommendedBadge}
                             </span>
@@ -278,13 +278,13 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
                           {item.titleEn}
                         </span>
 
-                        <div className="pt-0.5 flex flex-wrap items-center gap-x-2 text-[11px] text-slate-600 dark:text-zinc-300 font-mono">
+                        <div className="pt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-slate-600 dark:text-zinc-300 font-mono">
                           <span className="font-semibold text-cyan-800 dark:text-cyan-300">
                             {item.formula}
                           </span>
                         </div>
 
-                        <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight pt-0.5 line-clamp-1">
+                        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-tight pt-0.5 line-clamp-1">
                           {item.hint}
                         </p>
                       </div>

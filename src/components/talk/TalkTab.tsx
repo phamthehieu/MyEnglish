@@ -14,6 +14,8 @@ import { aiReady, generateSituation } from "@/services/talk/generateAi";
 import { batchAvailable, batchStatus, cancelBatch, importPending, startBatch, topUpBatch, type BatchStatus } from "@/services/talk/situationBatch";
 import { getActiveCefrLevel } from "@/services/pipeline";
 import { isFoundationMode } from "@/services/learnerProfile";
+import { isMobilePlatform } from "@/lib/platform";
+import { asrAvailable } from "@/services/pronunciationCheck";
 import { PAGE_CONTAINER } from "../dashboard/shared";
 import Conversation from "./Conversation";
 import WarmUp from "./WarmUp";
@@ -50,22 +52,26 @@ function SituationCard({
   learning,
   onWarmUp,
   onChat,
+  suggested = false,
 }: {
   situation: Situation;
   /** Words of it the learner is still learning */
   learning: number;
   onWarmUp: () => void;
   onChat: () => void;
+  /** The lesson picked for today: shown first, with a label */
+  suggested?: boolean;
 }) {
   const s = summarize(situation);
   const stars = getSituationProgress(situation.id).bestStars ?? 0;
   const [confirmDelete, setConfirmDelete] = useState(false);
   return (
-    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+    <div className={`rounded-2xl border bg-white dark:bg-zinc-900 p-4 space-y-3 ${suggested ? "border-2 border-emerald-400 dark:border-emerald-700" : "border-slate-200 dark:border-zinc-800"}`}>
+      {suggested && <p className="text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">Bài gợi ý hôm nay</p>}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h3 className="font-bold text-slate-900 dark:text-white">{situation.title_vi}</h3>
-          <p className="text-xs text-slate-500 dark:text-zinc-400">
+          <p className="text-xs text-slate-600 dark:text-zinc-400">
             {situation.title_en} · {situation.cefr}
             {situation.ai && (
               <span className="ml-1.5 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 font-semibold">
@@ -74,12 +80,12 @@ function SituationCard({
             )}
           </p>
         </div>
-        <span className={`shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full ${STATUS_TONE[s.status]}`}>
+        <span className={`shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${STATUS_TONE[s.status]}`}>
           {STATUS_LABEL[s.status]}
         </span>
       </div>
       <p className="text-sm text-slate-700 dark:text-zinc-300">Mục tiêu: {situation.goal_vi}</p>
-      <p className="text-xs text-slate-500 dark:text-zinc-400">
+      <p className="text-xs text-slate-600 dark:text-zinc-400">
         Đã nói được {s.linesSaid}/{s.totalLines} câu · đã trò chuyện {s.runs} lần
         {stars > 0 && <span className="ml-1.5">· Thử thách {"⭐".repeat(stars)}</span>}
       </p>
@@ -89,15 +95,15 @@ function SituationCard({
       <div className="flex gap-2">
         <button
           onClick={onWarmUp}
-          className="flex-1 py-2.5 rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 text-sm font-semibold inline-flex items-center justify-center gap-2"
+          className="flex-1 min-h-[44px] rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 text-sm font-semibold inline-flex items-center justify-center gap-2"
         >
-          <PlayCircle className="w-4 h-4" /> Khởi động
+          <PlayCircle className="w-4 h-4" /> Học câu trước
         </button>
         <button
           onClick={onChat}
-          className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
+          className="flex-1 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
         >
-          <MessageCircle className="w-4 h-4" /> Trò chuyện
+          <MessageCircle className="w-4 h-4" /> Nói thử
         </button>
       </div>
       {situation.ai && (
@@ -105,18 +111,18 @@ function SituationCard({
           {confirmDelete ? (
             <span className="text-xs text-slate-600 dark:text-zinc-400">
               Xóa hội thoại này?{" "}
-              <button onClick={() => removeGenerated(situation.id)} className="font-semibold text-rose-600 dark:text-rose-400 underline underline-offset-2">
+              <button onClick={() => removeGenerated(situation.id)} className="min-h-[40px] px-2 font-semibold text-rose-600 dark:text-rose-400 underline underline-offset-2">
                 Xóa
               </button>{" "}
               ·{" "}
-              <button onClick={() => setConfirmDelete(false)} className="font-semibold underline underline-offset-2">
+              <button onClick={() => setConfirmDelete(false)} className="min-h-[40px] px-2 font-semibold underline underline-offset-2">
                 Giữ lại
               </button>
             </span>
           ) : (
             <button
               onClick={() => setConfirmDelete(true)}
-              className="text-xs text-slate-500 dark:text-zinc-400 inline-flex items-center gap-1"
+              className="min-h-[40px] px-2 text-xs text-slate-600 dark:text-zinc-400 inline-flex items-center gap-1"
             >
               <Trash2 className="w-3.5 h-3.5" /> Xóa
             </button>
@@ -249,7 +255,7 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
             key={n}
             onClick={() => setCount(n)}
             disabled={busy || writing}
-            className={`px-3 py-1 rounded-lg border font-semibold ${count === n ? "border-violet-500 bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300" : "border-slate-200 dark:border-zinc-700"}`}
+            className={`min-w-[44px] min-h-[40px] px-3 rounded-lg border font-semibold ${count === n ? "border-violet-500 bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300" : "border-slate-200 dark:border-zinc-700"}`}
           >
             {n}
           </button>
@@ -288,7 +294,7 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
       )}
       {ready === false && (
         <p className="text-xs text-amber-700 dark:text-amber-300">
-          Chưa có AI. Vào Cài đặt để nhập khóa Gemini (hoặc cài AI CLI), rồi quay lại đây.
+          Chưa có AI. Vào Cài đặt để nhập khóa Gemini{isMobilePlatform() ? "" : " (hoặc cài AI CLI)"}, rồi quay lại đây.
         </p>
       )}
       {made && <p className="text-xs text-emerald-700 dark:text-emerald-300">Đã tạo {made.split(", ").length} bài: {made}. Xem ở nhóm bên dưới.</p>}
@@ -344,6 +350,14 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
   const all = allSituations();
   const inLevel = (s: Situation) => level === "all" || s.cefr === level;
   const due = dueLines().length;
+  // Today's suggestion: the one being learned, else the easiest new one that uses the most words the learner is learning
+  const statusOf = (s: Situation) => summarize(s).status;
+  const suggested =
+    all.find((s) => statusOf(s) === "learning") ??
+    [...all]
+      .filter((s) => statusOf(s) === "new")
+      .sort((a, b) => LEVELS.indexOf(a.cefr) - LEVELS.indexOf(b.cefr) || learningWordsIn(b, formIndex) - learningWordsIn(a, formIndex))[0];
+  const showSuggested = !!suggested && level === "all";
   return (
     <div className={PAGE_CONTAINER}>
       {view.kind === "review" ? (
@@ -360,9 +374,19 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white">Trò chuyện tình huống</h2>
             <p className="text-sm text-slate-600 dark:text-zinc-400">
-              Học vài câu cần dùng, rồi trò chuyện thử như ngoài đời. Chọn câu hoặc tự nói, máy sẽ nghe và báo lại.
+              Học vài câu cần dùng, rồi nói thử như ngoài đời. Chọn câu hoặc tự nói, máy sẽ nghe và báo lại.
             </p>
+            {!asrAvailable() && <p className="mt-1 text-xs text-slate-600 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>}
           </div>
+          {showSuggested && (
+            <SituationCard
+              suggested
+              situation={suggested}
+              learning={learningWordsIn(suggested, formIndex)}
+              onWarmUp={() => setView({ kind: "warmup", id: suggested.id })}
+              onChat={() => setView({ kind: "chat", id: suggested.id })}
+            />
+          )}
           {due > 0 && (
             <button
               onClick={() => setView({ kind: "review" })}
@@ -375,7 +399,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
               </span>
             </button>
           )}
-          <GenerateCard onCreated={() => setTick((t) => t + 1)} />
+          <p className="text-xs text-slate-600 dark:text-zinc-400">Cấp độ: A1 dễ → C2 khó.</p>
           <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
             {(["all", ...LEVELS] as const).map((l) => {
               const count = l === "all" ? all.length : all.filter((s) => s.cefr === l).length;
@@ -387,14 +411,14 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
                   role="tab"
                   aria-selected={level === l}
                   onClick={() => setLevel(l)}
-                  className={`shrink-0 px-3 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+                  className={`shrink-0 px-3 min-h-[40px] rounded-full text-sm font-semibold border transition-colors ${
                     level === l
                       ? "bg-emerald-600 border-emerald-600 text-white"
                       : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:border-emerald-400"
                   }`}
                 >
                   {l === "all" ? "Tất cả" : l}
-                  <span className={`ml-1.5 text-xs font-normal ${level === l ? "text-emerald-100" : "text-slate-400 dark:text-zinc-500"}`}>{count}</span>
+                  <span className={`ml-1.5 text-xs font-normal ${level === l ? "text-emerald-100" : "text-slate-600 dark:text-zinc-400"}`}>{count}</span>
                 </button>
               );
             })}
@@ -402,9 +426,10 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
           {GROUPS.map((g) => {
             // The ones the AI wrote for the learner first (newest on top), then the ones that come with the app,
             // easiest level first
-            const made = all.filter((s) => s.group === g.id && s.ai && inLevel(s)).sort((a, b) => b.ai!.createdAt - a.ai!.createdAt);
+            const notSuggested = (s: Situation) => !(showSuggested && s.id === suggested.id);
+            const made = all.filter((s) => s.group === g.id && s.ai && inLevel(s) && notSuggested(s)).sort((a, b) => b.ai!.createdAt - a.ai!.createdAt);
             const builtIn = all
-              .filter((s) => s.group === g.id && !s.ai && inLevel(s))
+              .filter((s) => s.group === g.id && !s.ai && inLevel(s) && notSuggested(s))
               .sort(
                 (a, b) =>
                   LEVELS.indexOf(a.cefr) - LEVELS.indexOf(b.cefr) || learningWordsIn(b, formIndex) - learningWordsIn(a, formIndex)
@@ -413,7 +438,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
             if (list.length === 0) return null;
             return (
               <section key={g.id} className="space-y-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">{g.label}</h3>
+                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-zinc-400">{g.label}</h3>
                 {list.map((s) => (
                   <SituationCard
                     key={s.id}
@@ -426,6 +451,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
               </section>
             );
           })}
+          <GenerateCard onCreated={() => setTick((t) => t + 1)} />
         </div>
       )}
     </div>

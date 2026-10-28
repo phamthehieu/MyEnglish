@@ -10,6 +10,19 @@
   }
 }
 
+/* Text under 11px is hard to read on a phone held at arm's length: lift the tiniest sizes one step on touch screens */
+@media (hover: none) and (pointer: coarse) {
+  .text-\[9px\],
+  .text-\[10px\] {
+    font-size: 11px;
+    line-height: 1.35;
+  }
+  .text-\[11px\] {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

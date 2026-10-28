@@ -88,6 +88,9 @@ export default function GrammarExerciseImportModal({
   const [historyList, setHistoryList] = useState<GrammarExerciseImportRecord[]>([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [revertingId, setRevertingId] = useState<string | null>(null);
+  const [armed, setArmed] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
+  const [copiedJson, setCopiedJson] = useState(false);
   const [previewRawJson, setPreviewRawJson] = useState<string | null>(null);
 
   // Prompt State
@@ -321,30 +324,42 @@ export default function GrammarExerciseImportModal({
     }
   };
 
-  const handleRevert = async (batchId: string) => {
-    if (!window.confirm("Bạn có chắc chắn muốn hoàn tác và XÓA toàn bộ các câu bài tập của đợt này?")) {
-      return;
+  // window.confirm / alert are not reliable in the webview: a destructive button asks for a second click
+  const confirmTwice = (key: string): boolean => {
+    if (armed === key) {
+      setArmed(null);
+      return true;
     }
+    setArmed(key);
+    window.setTimeout(() => setArmed((cur) => (cur === key ? null : cur)), 4000);
+    return false;
+  };
+
+  const handleRevert = async (batchId: string) => {
+    // Second click confirms: this deletes every exercise of the batch
+    if (!confirmTwice(`revert:${batchId}`)) return;
     setRevertingId(batchId);
+    setActionError(null);
     try {
       await revertCustomExerciseBatch(batchId);
       await reloadHistory();
       if (onImportComplete) onImportComplete();
     } catch (err) {
-      alert(`Không thể hoàn tác: ${err instanceof Error ? err.message : String(err)}`);
+      setActionError(`Không thể hoàn tác: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setRevertingId(null);
     }
   };
 
   const handleDeleteRecord = async (batchId: string) => {
-    if (!window.confirm("Bạn có chắc muốn xóa bản ghi lịch sử này?")) return;
+    if (!confirmTwice(`delete:${batchId}`)) return;
+    setActionError(null);
     try {
       await deleteExerciseImportRecord(batchId);
       await reloadHistory();
       if (onImportComplete) onImportComplete();
     } catch (err) {
-      alert(`Lỗi khi xóa: ${err instanceof Error ? err.message : String(err)}`);
+      setActionError(`Lỗi khi xóa: ${err instanceof Error ? err.message : String(err)}`);
     }
   };
 
@@ -388,10 +403,10 @@ export default function GrammarExerciseImportModal({
         </div>
 
         {/* Tab switcher */}
-        <div className="flex items-center px-6 border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 gap-1 shrink-0">
+        <div className="flex items-center px-3 sm:px-6 border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 gap-1 shrink-0 overflow-x-auto">
           <button
             onClick={() => setActiveTab("import")}
-            className={`py-3 px-4 text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`py-3 px-4 min-h-11 shrink-0 whitespace-nowrap text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
               activeTab === "import"
                 ? "border-cyan-600 text-cyan-600 dark:text-cyan-400"
                 : "border-transparent text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
@@ -403,7 +418,7 @@ export default function GrammarExerciseImportModal({
 
           <button
             onClick={() => setActiveTab("history")}
-            className={`py-3 px-4 text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`py-3 px-4 min-h-11 shrink-0 whitespace-nowrap text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
               activeTab === "history"
                 ? "border-cyan-600 text-cyan-600 dark:text-cyan-400"
                 : "border-transparent text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
@@ -412,7 +427,7 @@ export default function GrammarExerciseImportModal({
             <History className="w-3.5 h-3.5" />
             <span>Lịch sử & Hoàn tác</span>
             {historyList.filter((h) => h.status === "active").length > 0 && (
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-cyan-100 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 font-mono font-semibold">
+              <span className="px-1.5 py-0.5 rounded-full text-xs bg-cyan-100 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300 font-mono font-semibold">
                 {historyList.filter((h) => h.status === "active").length}
               </span>
             )}
@@ -420,7 +435,7 @@ export default function GrammarExerciseImportModal({
 
           <button
             onClick={() => setActiveTab("prompt")}
-            className={`py-3 px-4 text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
+            className={`py-3 px-4 min-h-11 shrink-0 whitespace-nowrap text-xs font-bold border-b-2 transition-all flex items-center gap-2 ${
               activeTab === "prompt"
                 ? "border-cyan-600 text-cyan-600 dark:text-cyan-400"
                 : "border-transparent text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
@@ -698,17 +713,18 @@ export default function GrammarExerciseImportModal({
                                 ) : (
                                   <RotateCcw className="w-3 h-3" />
                                 )}
-                                <span>Hoàn tác (Xóa đợt này)</span>
+                                <span>{armed === `revert:${rec.id}` ? "Bấm lần nữa để xóa đợt này" : "Hoàn tác (Xóa đợt này)"}</span>
                               </button>
                             )}
 
                             {!isActive && (
                               <button
                                 onClick={() => handleDeleteRecord(rec.id)}
-                                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition-colors"
+                                className="p-1.5 rounded-lg text-slate-600 hover:text-rose-500 transition-colors flex items-center gap-1.5 text-xs font-semibold"
                                 title="Xóa bản ghi này khỏi lịch sử"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
+                                {armed === `delete:${rec.id}` && <span>Bấm lần nữa để xóa</span>}
                               </button>
                             )}
                           </div>
@@ -717,6 +733,12 @@ export default function GrammarExerciseImportModal({
                     );
                   })}
                 </div>
+              )}
+
+              {actionError && (
+                <p className="text-xs text-rose-600 dark:text-rose-400 break-words" role="alert">
+                  {actionError}
+                </p>
               )}
 
               {/* JSON preview modal */}
@@ -728,11 +750,12 @@ export default function GrammarExerciseImportModal({
                       <button
                         onClick={async () => {
                           await navigator.clipboard.writeText(previewRawJson);
-                          alert("Đã sao chép JSON vào clipboard!");
+                          setCopiedJson(true);
+                          window.setTimeout(() => setCopiedJson(false), 1500);
                         }}
                         className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white font-medium"
                       >
-                        Sao chép
+                        {copiedJson ? "Đã sao chép" : "Sao chép"}
                       </button>
                       <button
                         onClick={() => setPreviewRawJson(null)}

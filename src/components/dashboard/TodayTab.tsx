@@ -1,6 +1,6 @@
 import { RankPanel, useRankPanelVisible } from "./RankWidgets";
 import { useEffect, useMemo, useState } from "react";
-import { BookOpenText, Bug, ChevronRight, Flame, Layers, Target, Zap } from "lucide-react";
+import { BookOpenText, Bug, ChevronDown, ChevronRight, Flame, Layers, Target, Zap } from "lucide-react";
 import type { WordDetail } from "@/types/database";
 import type { TodayWork } from "@/services/smartReview";
 import { getUnmasteredWords, youngWordCap } from "@/services/smartReview";
@@ -251,6 +251,9 @@ export default function TodayTab({
 
   const showQuests = !loading && !empty;
   const twoColumns = showQuests || showRank || !!onStartReflex;
+  // Closed on a phone until "Xem thêm" is pressed; always shown on wide windows
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreClass = moreOpen ? "" : "hidden min-[1000px]:block";
   const statCard = "flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2.5 sm:px-3 py-2 min-w-0";
 
   return (
@@ -262,7 +265,7 @@ export default function TodayTab({
             <h2 className="text-xl font-bold text-slate-900 dark:text-white leading-tight truncate">
               {greeting(now.getHours(), signedIn ? displayName : null)} 👋
             </h2>
-            <p className="text-xs text-slate-500 dark:text-zinc-400">
+            <p className="text-xs text-slate-600 dark:text-zinc-400">
               {now.toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "long" })}
             </p>
           </div>
@@ -271,7 +274,7 @@ export default function TodayTab({
               <Flame className="w-5 h-5 text-orange-500 shrink-0" />
               <div className="min-w-0">
                 <div className="text-sm font-bold text-slate-900 dark:text-white whitespace-nowrap">{streakStats.currentStreak} ngày</div>
-                <div className={`text-[11px] leading-tight sm:truncate ${streakStats.goalReached ? "text-emerald-600 dark:text-emerald-400" : "text-slate-500 dark:text-zinc-400"}`}>
+                <div className={`text-xs leading-tight sm:truncate ${streakStats.goalReached ? "text-emerald-600 dark:text-emerald-400" : "text-slate-600 dark:text-zinc-400"}`}>
                   {streakStats.todayCount === 0
                     ? "Hôm nay chưa học"
                     : `Hôm nay ${streakStats.todayCount}/${streakStats.dailyGoal} câu${streakStats.goalReached ? " ✓" : ""}`}
@@ -282,9 +285,9 @@ export default function TodayTab({
               <Target className="w-5 h-5 text-emerald-500 shrink-0" />
               <div className="min-w-0">
                 <div className="text-sm font-bold text-slate-900 dark:text-white whitespace-nowrap">
-                  {status.rememberedLong} <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">{WORD_STATUS_LABELS.remembered_long.toLowerCase()}</span>
+                  {status.rememberedLong} <span className="text-xs font-semibold text-slate-600 dark:text-zinc-400">{WORD_STATUS_LABELS.remembered_long.toLowerCase()}</span>
                 </div>
-                <div className="text-[11px] leading-tight text-slate-500 dark:text-zinc-400 sm:truncate">
+                <div className="text-xs leading-tight text-slate-600 dark:text-zinc-400 sm:truncate">
                   {status.learning} từ {WORD_STATUS_LABELS.learning.toLowerCase()}
                 </div>
               </div>
@@ -298,7 +301,7 @@ export default function TodayTab({
                 <div className="text-sm font-bold text-slate-900 dark:text-white whitespace-nowrap">
                   {gain ? (
                     <>
-                      <span className="text-xs font-semibold text-slate-400 dark:text-zinc-500">{gain.from}% → </span>
+                      <span className="text-xs font-semibold text-slate-600 dark:text-zinc-400">{gain.from}% → </span>
                       {gain.to}%
                     </>
                   ) : coverage ? (
@@ -307,7 +310,7 @@ export default function TodayTab({
                     "…"
                   )}
                 </div>
-                <div className="text-[11px] leading-tight text-slate-500 dark:text-zinc-400 sm:truncate">hiểu tài liệu IT</div>
+                <div className="text-xs leading-tight text-slate-600 dark:text-zinc-400 sm:truncate">hiểu tài liệu IT</div>
               </div>
             </div>
           </div>
@@ -322,13 +325,7 @@ export default function TodayTab({
             {/* A new version of the app (Android) */}
             {!loading && <AppUpdateBanner />}
 
-            {/* The learner's levels, with the way to change them */}
-            {!loading && <StudyLevelBar />}
-
-            {/* The path to speaking: where the learner is on it, and today's work in one button */}
-            {!loading && <RoadmapTodayCard setActiveTab={setActiveTab} showStart={empty} />}
-
-            {/* The one thing to do now */}
+            {/* The one thing to do now: first on a phone, before the levels and the path */}
             {loading ? (
               <div className="h-40 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900/60 animate-pulse" />
             ) : empty ? (
@@ -342,7 +339,7 @@ export default function TodayTab({
                 <button
                   onClick={() => setActiveTab("capture")}
                   autoFocus
-                  className="px-6 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 active:scale-[0.98] text-white text-sm font-bold shadow-md shadow-cyan-600/30 inline-flex items-center gap-2 transition-all"
+                  className="min-h-11 px-6 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-700 active:scale-[0.98] text-white text-sm font-bold shadow-md shadow-cyan-600/30 inline-flex items-center gap-2 transition-all"
                 >
                   <Layers className="w-4 h-4" /> Mở {pathLabel}
                 </button>
@@ -399,10 +396,27 @@ export default function TodayTab({
                 quiet={primary?.id === "vocab"}
               />
             )}
+
+            {/* The learner's levels, with the way to change them */}
+            {!loading && <StudyLevelBar />}
+
+            {/* The path to speaking: where the learner is on it (its button only when the list is not shown) */}
+            {!loading && <RoadmapTodayCard setActiveTab={setActiveTab} showStart={empty} />}
           </div>
 
+          {/* Phones: everything that is not today's main action sits behind one button; wide windows show it all */}
+          <button
+            type="button"
+            onClick={() => setMoreOpen((v) => !v)}
+            aria-expanded={moreOpen}
+            className="min-[1000px]:hidden w-full min-h-11 flex items-center justify-between gap-2 px-4 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm font-semibold text-slate-700 dark:text-zinc-200"
+          >
+            <span>{moreOpen ? "Ẩn bớt" : "Xem thêm: nhiệm vụ, tiến độ tuần"}</span>
+            <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${moreOpen ? "rotate-180" : ""}`} />
+          </button>
+
           {twoColumns && (
-            <aside className="min-w-0 space-y-4 min-[1000px]:col-start-2 min-[1000px]:row-start-1 min-[1000px]:row-span-2">
+            <aside className={`min-w-0 space-y-4 ${moreClass} min-[1000px]:col-start-2 min-[1000px]:row-start-1 min-[1000px]:row-span-2`}>
               {showQuests && (
                 <DailyQuestsCard
                   words={words}
@@ -429,21 +443,21 @@ export default function TodayTab({
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[9px] font-black uppercase tracking-wider bg-white/20 px-1.5 py-0.5 rounded-full text-white">
-                          Ramp Up
+                        <span className="text-xs font-bold bg-white/20 px-1.5 py-0.5 rounded-full text-white">
+                          Tốc độ
                         </span>
                         <h4 className="font-extrabold text-sm text-white truncate">
-                          Luyện Phản Xạ
+                          Luyện phản xạ
                         </h4>
                       </div>
-                      <p className="text-[11px] text-amber-100 mt-0.5 line-clamp-2">
-                        Tăng tốc phản xạ, nhận tới <strong className="text-white font-bold">+80 XP</strong> bứt phá bảng xếp hạng!
+                      <p className="text-xs text-white/95 mt-0.5 line-clamp-2">
+                        Trả lời nhanh các từ đã học để phản xạ tốt hơn, nhận thêm <strong className="text-white font-bold">+80 XP</strong>.
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={onStartReflex}
-                    className="mt-3 w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 text-amber-400 font-bold text-xs shadow-md transition-all transform active:scale-95"
+                    className="mt-3 w-full min-h-11 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 text-amber-400 font-bold text-sm shadow-md transition-all transform active:scale-95"
                   >
                     <Zap className="w-3.5 h-3.5 fill-amber-400" />
                     <span>Bắt đầu luyện phản xạ</span>
@@ -453,7 +467,7 @@ export default function TodayTab({
             </aside>
           )}
 
-          <div className={`min-w-0 space-y-4 ${twoColumns ? "min-[1000px]:col-start-1 min-[1000px]:row-start-2" : ""}`}>
+          <div className={`min-w-0 space-y-4 ${moreClass} ${twoColumns ? "min-[1000px]:col-start-1 min-[1000px]:row-start-2" : ""}`}>
             <TodayRoadmapCard simple={simpleMode} milestone={milestone.show} onOpenPath={() => setActiveTab("capture")} />
             <WeeklySummaryCard simple={simpleMode} now={fixedNow} />
           </div>

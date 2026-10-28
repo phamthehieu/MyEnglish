@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { PenLine, Sparkles, CheckCircle2, AlertCircle, Lightbulb } from "lucide-react";
+import GiveUpButton from "../review/GiveUpButton";
 import { Rating } from "@/services/srs";
 import type { WordDetail } from "@/types/database";
 import { gradeSentenceWithAI, type SentenceGrade } from "@/services/ai";
@@ -83,9 +84,9 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
           Viết <strong>một câu tiếng Anh</strong> dùng từ có nghĩa:
         </p>
         <p className="text-base font-semibold text-slate-900 dark:text-white">{getConciseMeaning(word.meaning_vn, word.word)}</p>
-        {word.part_of_speech && <p className="text-[11px] text-slate-500 dark:text-zinc-400">({word.part_of_speech})</p>}
+        {word.part_of_speech && <p className="text-xs text-slate-600 dark:text-zinc-400">({word.part_of_speech})</p>}
         {hintShown && (
-          <p className="text-xs font-mono text-amber-700 dark:text-amber-300">
+          <p className="text-xs text-amber-700 dark:text-amber-300">
             Gợi ý: {word.word.charAt(0).toUpperCase()}
             {word.word.slice(1).replace(/[a-z]/gi, " _")}
           </p>
@@ -124,24 +125,17 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
             type="button"
             onClick={() => setHintShown(true)}
             disabled={hintShown || grading}
-            className="text-xs text-slate-400 hover:text-amber-600 inline-flex items-center gap-1 disabled:opacity-40"
+            className="min-h-10 px-2 text-xs text-slate-600 hover:text-amber-700 inline-flex items-center gap-1 disabled:opacity-40"
           >
             <Lightbulb className="w-3.5 h-3.5" /> Gợi ý chữ cái đầu (tính là Khó)
           </button>
           <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => onComplete(false, 1, Rating.Again)}
-              disabled={grading}
-              className="px-3 py-2 rounded-xl text-xs text-slate-500 hover:text-rose-600"
-            >
-              Không nhớ ra từ
-            </button>
+            <GiveUpButton onConfirm={() => onComplete(false, 1, Rating.Again)} disabled={grading} label="Không nhớ ra từ" />
             <button
               type="button"
               onClick={submit}
               disabled={grading || sentence.trim().length < 3}
-              className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold disabled:opacity-40 inline-flex items-center gap-1.5"
+              className="px-4 min-h-11 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold disabled:opacity-40 inline-flex items-center gap-1.5"
             >
               {grading ? <Sparkles className="w-3.5 h-3.5 animate-spin" /> : null}
               {grading ? "AI đang chấm..." : "Chấm câu"}
@@ -186,7 +180,7 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
             type="button"
             autoFocus
             onClick={() => onComplete(ok, ok ? 0 : 1, rating as Rating)}
-            className="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold"
+            className="w-full h-12 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold"
           >
             Tiếp tục
           </button>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Check, ChevronDown, Lightbulb, Mic, Volume2, X } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, Lightbulb, Volume2, X } from "lucide-react";
 import type { PronunciationItem, PronunciationLesson } from "@/types/pronunciation";
 import { CONFUSABLE_PHONEME_PAIRS, type ConfusablePhonemePair } from "@/services/phonemeMatcher";
 import { recordPronunciationQuiz, recordSayAloud } from "@/services/pronunciation";
@@ -236,11 +236,11 @@ export default function SoundSession({
 
   const header = (
     <div className="flex items-center justify-between gap-3">
-      <button onClick={onBack} className="text-sm text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 inline-flex items-center gap-1">
+      <button onClick={onBack} className="min-h-[40px] pr-3 text-sm text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 inline-flex items-center gap-1">
         <ArrowLeft className="w-4 h-4" /> {pair ? "Quay lại" : "Bảng âm"}
       </button>
       {onFree && (
-        <button onClick={onFree} className="text-xs text-slate-500 dark:text-zinc-400 underline underline-offset-2">
+        <button onClick={onFree} className="min-h-[40px] px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm font-semibold text-slate-700 dark:text-zinc-200">
           Học tự do
         </button>
       )}
@@ -354,7 +354,7 @@ export default function SoundSession({
           <MicCheck lesson={lesson} item={task.item} compact />
           <div className="grid grid-cols-2 gap-2">
             <button onClick={() => rateSaid(true)} className="py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold inline-flex items-center justify-center gap-2">
-              <Mic className="w-4 h-4" /> Đã đọc
+              <Check className="w-4 h-4" /> Đã đọc
             </button>
             <button onClick={() => rateSaid(false)} className="py-3.5 rounded-2xl border-2 border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 font-semibold">
               Chưa chắc

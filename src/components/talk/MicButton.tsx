@@ -15,9 +15,9 @@ export default function MicButton({
     return (
       <button
         onClick={mic.stop}
-        className="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2 animate-pulse"
+        className="w-full min-h-[48px] py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2 animate-pulse"
       >
-        <Square className="w-4 h-4 fill-white" /> Đang nghe… nói xong thì bấm để dừng
+        <Square className="w-4 h-4 shrink-0 fill-white" /> <span>Đang nghe… Đọc xong thì dừng lại, máy sẽ tự chấm (hoặc bấm để dừng)</span>
       </button>
     );
   }
@@ -26,12 +26,12 @@ export default function MicButton({
     <button
       onClick={onStart}
       disabled={busy}
-      className="w-full py-3 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
+      className="w-full min-h-[48px] py-3 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
     >
       {busy ? (
         <>
           <Loader2 className="w-4 h-4 animate-spin" />
-          {mic.phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang nghe lại…"}
+          {mic.phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang chấm…"}
         </>
       ) : (
         <>

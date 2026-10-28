@@ -165,7 +165,7 @@ export default function DailyQuestsCard({
     >
       <div className="flex items-center justify-between gap-2">
         <h3 className="text-sm font-bold text-slate-900 dark:text-white">Nhiệm vụ hôm nay</h3>
-        <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">
+        <span className="text-xs font-semibold text-slate-600 dark:text-zinc-400">
           {doneCount}/{state.quests.length} xong
         </span>
       </div>
@@ -191,10 +191,10 @@ export default function DailyQuestsCard({
                 </span>
                 <span className="flex-1 min-w-0">
                   <span className="flex items-center justify-between gap-2">
-                    <span className={`text-sm truncate ${done ? "text-slate-500 dark:text-zinc-400 line-through" : "text-slate-800 dark:text-zinc-100 font-medium"}`}>
+                    <span className={`text-sm truncate ${done ? "text-slate-600 dark:text-zinc-400 line-through" : "text-slate-800 dark:text-zinc-100 font-medium"}`}>
                       {questTitle(q)}
                     </span>
-                    <span className="text-xs tabular-nums text-slate-500 dark:text-zinc-400 shrink-0">
+                    <span className="text-xs tabular-nums text-slate-600 dark:text-zinc-400 shrink-0">
                       {value}/{q.target}
                     </span>
                   </span>
@@ -247,7 +247,7 @@ export default function DailyQuestsCard({
           {opening ? "Đang mở…" : "Mở rương phần thưởng"}
         </button>
       ) : (
-        <div className="flex items-center gap-2 rounded-xl bg-slate-50 dark:bg-zinc-800/50 px-3 py-2 text-xs text-slate-500 dark:text-zinc-400">
+        <div className="flex items-center gap-2 rounded-xl bg-slate-50 dark:bg-zinc-800/50 px-3 py-2 text-xs text-slate-600 dark:text-zinc-400">
           <Lock className="w-4 h-4 shrink-0" />
           Xong cả {state.quests.length} để mở rương: tới {CHEST_XP_MAX} XP, có khi kèm 1 ngày đóng băng chuỗi.
         </div>

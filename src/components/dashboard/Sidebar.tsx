@@ -1,12 +1,11 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   BookOpen,
   Sparkles,
   X,
   Flame,
-  Code2,
+  Settings,
   BarChart3,
-  Terminal,
   Sun,
   Moon,
   Laptop,
@@ -30,6 +29,7 @@ import {
   Bug,
   BadgeCheck,
   Zap,
+  Menu,
 } from "lucide-react";
 import type { PipelineItem } from "@/services/pipeline";
 import type { calculateStreakAndGoal } from "@/services/streak";
@@ -42,7 +42,7 @@ import { AI_VOCAB_ENABLED } from "@/services/features";
 import { useAuthStore } from "@/stores/authStore";
 import { RankLine } from "./RankWidgets";
 import Avatar from "../Avatar";
-import { SIMPLE_NAV_GROUPS, type DashboardTab, type LibraryStats, type NavGroupId } from "./shared";
+import { SIMPLE_NAV_GROUPS, navGroupOf, type DashboardTab, type LibraryStats, type NavGroupId } from "./shared";
 
 interface SidebarProps {
   activeTab: DashboardTab;
@@ -111,6 +111,23 @@ export default function Sidebar({
     setTheme(mode);
   };
 
+  // A closed drawer is off screen on phones: keep it out of the tab order and away from screen readers
+  const asideRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = asideRef.current;
+    if (!el || typeof window.matchMedia !== "function") return;
+    const wide = window.matchMedia("(min-width: 768px)");
+    const sync = () => {
+      const hidden = !navOpen && !wide.matches;
+      el.inert = hidden;
+      if (hidden) el.setAttribute("aria-hidden", "true");
+      else el.removeAttribute("aria-hidden");
+    };
+    sync();
+    wide.addEventListener("change", sync);
+    return () => wide.removeEventListener("change", sync);
+  }, [navOpen]);
+
   useEffect(() => {
     const toggle = () => setNavOpen((open) => !open);
     window.addEventListener("myenglish-toggle-nav", toggle);
@@ -151,7 +168,7 @@ export default function Sidebar({
   const countBadge = (n: number, highlight = false) =>
     n > 0 ? (
       <span
-        className={`text-[11px] font-mono px-1.5 py-0.5 rounded-full font-semibold ${highlight
+        className={`text-xs font-mono px-1.5 py-0.5 rounded-full font-semibold ${highlight
           ? "bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-800"
           : "bg-slate-200 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
           }`}
@@ -190,7 +207,7 @@ export default function Sidebar({
         }
       : { tab: "capture", label: "Lộ trình từ vựng", icon: Layers, iconClass: "text-cyan-500" },
     { tab: "analytics", label: "Tiến độ", icon: BarChart3, iconClass: "text-emerald-400" },
-    { tab: "guide", label: "Cài đặt", icon: Terminal, iconClass: "text-cyan-500" },
+    { tab: "guide", label: "Cài đặt", icon: Settings, iconClass: "text-cyan-500" },
   ];
 
   // Simple mode: one entry per group of tabs; an entry opens its first tab
@@ -204,7 +221,7 @@ export default function Sidebar({
     shadowing: { icon: Clapperboard, iconClass: "text-violet-500" },
     practice: { icon: Dumbbell, iconClass: "text-cyan-500" },
     quick: { icon: Zap, iconClass: "text-amber-500" },
-    settings: { icon: Terminal, iconClass: "text-cyan-500" },
+    settings: { icon: Settings, iconClass: "text-cyan-500" },
     account: { icon: UserRound },
   };
   const visibleItems: Array<{ key: string; label: string; icon: typeof BookOpen; iconClass?: string; badge?: ReactNode; active: boolean; onClick: () => void }> =
@@ -244,15 +261,23 @@ export default function Sidebar({
     };
   }, []);
 
-  // Bottom tab bar on phones: the simple mode's entries without "Luyện thêm" and "Cài đặt", which stay in the ☰ menu
-  const BOTTOM_HIDDEN: NavGroupId[] = ["account", "quick", "practice", "settings"];
-  const bottomItems = SIMPLE_NAV_GROUPS.filter((g) => !BOTTOM_HIDDEN.includes(g.id)).map((g) => ({
-    key: g.id,
-    label: g.label,
-    ...groupLook[g.id],
-    active: g.tabs.some((t) => t.tab === activeTab),
-    onClick: () => setActiveTab(g.tabs[0].tab),
-  }));
+  // Bottom tab bar on phones: four entries and "Thêm", which opens the drawer with everything else (Mẫu câu, Phát âm,
+  // Shadowing, Luyện thêm, Cài đặt...). Ngữ pháp opens its own tab, not the "Mẫu câu" entry it shares a group with.
+  const bottomItems: Array<{ key: string; label: string; icon: typeof BookOpen; iconClass?: string; badge?: ReactNode; active: boolean; onClick: () => void }> = [
+    { key: "today", label: "Hôm nay", ...groupLook.today, active: navGroupOf(activeTab).id === "today", onClick: () => setActiveTab("today") },
+    { key: "vocab", label: "Từ vựng", ...groupLook.vocab, active: navGroupOf(activeTab).id === "vocab", onClick: () => setActiveTab("review") },
+    {
+      key: "grammar",
+      label: "Ngữ pháp",
+      icon: GraduationCap,
+      iconClass: "text-cyan-500",
+      badge: countBadge(grammarDueCount, true),
+      active: activeTab === "grammar",
+      onClick: () => setActiveTab("grammar"),
+    },
+    { key: "talk", label: "Hội thoại", ...groupLook.talk, active: activeTab === "talk", onClick: () => setActiveTab("talk") },
+  ];
+  const moreActive = navOpen || !bottomItems.some((i) => i.active);
 
   // "Truy cập nhanh": two tiles under the list, in both modes
   const quickItems: Array<{ tab: DashboardTab; label: string; icon: typeof BookOpen; tone: string; activeTone: string; badge?: ReactNode; title: string }> = [
@@ -269,7 +294,7 @@ export default function Sidebar({
       badge:
         forgottenCount > 0 ? (
           <span
-            className={`text-[10px] font-mono px-1.5 rounded-full font-bold ${
+            className={`text-xs font-mono px-1.5 rounded-full font-bold ${
               forgottenDue > 0 ? "bg-rose-500 text-white" : "bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300"
             }`}
           >
@@ -298,13 +323,14 @@ export default function Sidebar({
       <div className="popup-backdrop-enter md:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setNavOpen(false)} aria-hidden="true" />
     )}
     <aside
+      ref={asideRef}
       className={`min-h-0 border-r border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 md:dark:bg-zinc-900/50 flex flex-col shrink-0 select-none fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] pt-[env(safe-area-inset-top)] transition-transform duration-200 md:static md:z-auto md:w-64 md:max-w-none md:pt-0 md:translate-x-0 ${navOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
       {/* Logo & App title (always visible) */}
       <div className="px-4 pt-4 pb-3 shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 text-white font-bold">
-            <Code2 className="w-5 h-5 text-white" />
+            <GraduationCap className="w-5 h-5 text-white" />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 flex-wrap">
@@ -316,7 +342,7 @@ export default function Sidebar({
               {updateStatus === "checking" ? (
                 <span
                   title="Đang kiểm tra..."
-                  className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-950/80 border border-cyan-200 dark:border-cyan-800 text-cyan-600 dark:text-cyan-400 shrink-0"
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-950/80 border border-cyan-200 dark:border-cyan-800 text-cyan-600 dark:text-cyan-400 shrink-0"
                 >
                   <RotateCw className="w-2.5 h-2.5 animate-spin" />
                   <span>Đang kiểm tra...</span>
@@ -324,7 +350,7 @@ export default function Sidebar({
               ) : updateStatus === "up-to-date" ? (
                 <span
                   title={`Bản mới nhất (v${CURRENT_VERSION})`}
-                  className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300/80 dark:border-emerald-700/80 text-emerald-600 dark:text-emerald-400 shrink-0 animate-in fade-in zoom-in-95 duration-200"
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-300/80 dark:border-emerald-700/80 text-emerald-600 dark:text-emerald-400 shrink-0 animate-in fade-in zoom-in-95 duration-200"
                 >
                   <Check className="w-2.5 h-2.5" />
                   <span>Bản mới nhất</span>
@@ -336,7 +362,7 @@ export default function Sidebar({
                     checkForUpdates(true);
                   }}
                   title={errorMessage || "Lỗi kiểm tra"}
-                  className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/80 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors shrink-0 cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/80 border border-rose-300 dark:border-rose-800 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/60 transition-colors shrink-0 cursor-pointer"
                 >
                   <AlertCircle className="w-2.5 h-2.5" />
                   <span>Lỗi kiểm tra</span>
@@ -348,7 +374,7 @@ export default function Sidebar({
                     downloadAndInstall();
                   }}
                   title={`Đã có bản cập nhật mới: v${newVersion}`}
-                  className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-600 text-white shadow-sm shadow-cyan-600/30 hover:bg-cyan-700 transition-all shrink-0 cursor-pointer animate-pulse [animation-iteration-count:3]"
+                  className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-cyan-600 text-white shadow-sm shadow-cyan-600/30 hover:bg-cyan-700 transition-all shrink-0 cursor-pointer animate-pulse [animation-iteration-count:3]"
                 >
                   <Sparkles className="w-2.5 h-2.5" />
                   <span>v{newVersion}</span>
@@ -356,7 +382,7 @@ export default function Sidebar({
               ) : updateStatus === "downloading" ? (
                 <span
                   title={`Đang tải... ${downloadProgress}%`}
-                  className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-950/80 border border-cyan-200 dark:border-cyan-800 text-cyan-600 dark:text-cyan-400 shrink-0"
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-950/80 border border-cyan-200 dark:border-cyan-800 text-cyan-600 dark:text-cyan-400 shrink-0"
                 >
                   <Loader2 className="w-2.5 h-2.5 animate-spin" />
                   <span>{downloadProgress}%</span>
@@ -368,7 +394,7 @@ export default function Sidebar({
                     restartApp();
                   }}
                   title="Khởi động lại ngay để hoàn tất cập nhật"
-                  className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white shadow-sm shadow-emerald-600/30 hover:bg-emerald-700 transition-all shrink-0 cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white shadow-sm shadow-emerald-600/30 hover:bg-emerald-700 transition-all shrink-0 cursor-pointer"
                 >
                   <CheckCircle2 className="w-2.5 h-2.5" />
                   <span>Khởi động lại</span>
@@ -380,15 +406,23 @@ export default function Sidebar({
                     checkForUpdates(true);
                   }}
                   title={`Kiểm tra bản cập nhật (v${CURRENT_VERSION})`}
-                  className="group/badge inline-flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-950/80 border border-cyan-200/60 dark:border-cyan-800/60 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-100/80 dark:hover:bg-cyan-900/60 hover:border-cyan-300/80 dark:hover:border-cyan-700/80 active:scale-95 transition-all shrink-0 cursor-pointer"
+                  className="group/badge inline-flex items-center gap-1 text-xs font-semibold px-1.5 py-0.5 rounded-full bg-cyan-50 dark:bg-cyan-950/80 border border-cyan-200/60 dark:border-cyan-800/60 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-100/80 dark:hover:bg-cyan-900/60 hover:border-cyan-300/80 dark:hover:border-cyan-700/80 active:scale-95 transition-all shrink-0 cursor-pointer"
                 >
                   <span>v{CURRENT_VERSION}</span>
                   <RotateCw className="w-2.5 h-2.5 opacity-50 group-hover/badge:opacity-100 group-hover/badge:rotate-180 transition-all duration-300" />
                 </button>
               )}
             </div>
-            <p className="text-[11px] text-slate-500 dark:text-zinc-400">Tiếng Anh cho dân IT</p>
+            <p className="text-xs text-slate-600 dark:text-zinc-400">Tiếng Anh mỗi ngày</p>
           </div>
+          <button
+            type="button"
+            onClick={() => setNavOpen(false)}
+            aria-label="Đóng menu"
+            className="md:hidden shrink-0 w-10 h-10 -mr-2 inline-flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
       </div>
 
@@ -424,10 +458,11 @@ export default function Sidebar({
                 </div>
                 <button
                   onClick={dismissUpdate}
-                  className="text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 p-0.5 rounded transition-colors shrink-0 cursor-pointer"
-                  title="Bỏ qua"
+                  className="-m-2 w-10 h-10 inline-flex items-center justify-center text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200 rounded-lg transition-colors shrink-0 cursor-pointer"
+                  title="Ẩn thông báo này"
+                  aria-label="Ẩn thông báo cập nhật"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
 
@@ -480,7 +515,7 @@ export default function Sidebar({
                 key={item.key}
                 onClick={item.onClick}
                 aria-current={item.active ? "page" : undefined}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] font-medium transition-all ${item.active
+                className={`w-full min-h-11 flex items-center justify-between px-3 py-2 rounded-lg text-sm md:text-[13px] font-medium transition-all ${item.active
                   ? "bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-500/20 shadow-sm"
                   : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/50"
                   }`}
@@ -497,7 +532,7 @@ export default function Sidebar({
 
         {/* Quick access: the words to fix and the race, one click from anywhere */}
         <div className="space-y-1.5">
-          <div className="px-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-zinc-500">Truy cập nhanh</div>
+          <div className="px-1 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-zinc-400">Truy cập nhanh</div>
           <div className="grid grid-cols-2 gap-2">
             {quickItems.map((item) => {
               const Icon = item.icon;
@@ -508,7 +543,7 @@ export default function Sidebar({
                   onClick={() => setActiveTab(item.tab)}
                   aria-current={active ? "page" : undefined}
                   title={item.title}
-                  className={`relative flex flex-col items-start gap-1 px-2.5 py-2 rounded-xl border text-left text-xs font-semibold transition-all active:scale-[0.97] ${item.tone} ${
+                  className={`relative min-h-11 flex flex-col items-start gap-1 px-2.5 py-2 rounded-xl border text-left text-xs font-semibold transition-all active:scale-[0.97] ${item.tone} ${
                     active ? item.activeTone : ""
                   }`}
                 >
@@ -529,7 +564,7 @@ export default function Sidebar({
           onClick={() => setActiveTab("analytics")}
           title={`${streakStats.todayCount > 0 ? "Hôm nay đã giữ chuỗi ✓" : "Hôm nay chưa học: chỉ cần 1 câu là giữ được chuỗi"}${
             streakStats.freezesAvailable > 0
-              ? ` • ${streakStats.freezesAvailable} lượt giữ chuỗi: nếu lỡ 1 ngày, chuỗi vẫn được giữ`
+              ? ` • ${streakStats.freezesAvailable} lượt đóng băng chuỗi: nếu lỡ 1 ngày, chuỗi vẫn được giữ`
               : ""
           } • Bấm để xem tiến độ`}
           className="w-full text-left rounded-xl border border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/60 hover:bg-slate-50 dark:hover:bg-zinc-800/50 px-3 py-2.5 space-y-1.5 shadow-sm transition-colors"
@@ -554,15 +589,15 @@ export default function Sidebar({
               style={{ width: `${streakStats.goalPercentage}%` }}
             />
           </div>
-          <div className="flex items-center justify-between gap-2 text-[11px] text-slate-500 dark:text-zinc-400">
+          <div className="flex items-center justify-between gap-2 text-xs text-slate-600 dark:text-zinc-400">
             <span className="truncate">
               Đang học <span className="font-semibold text-slate-800 dark:text-zinc-200">{libraryStats.learningCount}</span>
               {" · "}
               Nhớ lâu <span className="font-semibold text-emerald-600 dark:text-emerald-400">{libraryStats.rememberedLongCount}</span>
             </span>
             {!simpleMode && (
-              <span className="shrink-0 font-mono text-amber-700 dark:text-amber-300" title={`${xpState.rank} • ${xpState.totalXP} XP`}>
-                {xpState.rankEmoji} Lv.{xpState.level}
+              <span className="shrink-0 font-mono text-amber-700 dark:text-amber-300" title={`${xpState.rank} • ${xpState.totalXP} điểm XP`}>
+                {xpState.rankEmoji} Cấp {xpState.level}
               </span>
             )}
           </div>
@@ -579,7 +614,7 @@ export default function Sidebar({
           onClick={() => setActiveTab("account")}
           aria-current={activeTab === "account" ? "page" : undefined}
           title={accountUser ? `Đã đăng nhập: ${accountUser.email}` : "Đăng nhập để đồng bộ tiến trình và đua XP"}
-          className={`min-w-0 flex-1 flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border transition-colors text-left shadow-sm ${
+          className={`min-w-0 flex-1 min-h-11 flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-lg border transition-colors text-left shadow-sm ${
             activeTab === "account"
               ? "bg-cyan-50 dark:bg-cyan-500/10 border-cyan-200 dark:border-cyan-500/20 text-cyan-700 dark:text-cyan-400"
               : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950/80 hover:bg-slate-100 dark:hover:bg-zinc-800/60 text-slate-800 dark:text-zinc-200"
@@ -628,12 +663,12 @@ export default function Sidebar({
                 title={t.title}
                 aria-label={t.title}
                 aria-pressed={currentTheme === t.mode}
-                className={`p-1.5 rounded-md transition-all ${currentTheme === t.mode
+                className={`w-10 h-10 md:w-8 md:h-8 inline-flex items-center justify-center rounded-md transition-all ${currentTheme === t.mode
                   ? t.on
-                  : "border border-transparent text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
+                  : "border border-transparent text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
                   }`}
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className="w-4 h-4" />
               </button>
             );
           })}
@@ -654,18 +689,31 @@ export default function Sidebar({
             type="button"
             onClick={item.onClick}
             aria-current={item.active ? "page" : undefined}
-            className={`flex-1 min-w-0 flex flex-col items-center gap-0.5 py-2 text-[10px] font-medium active:bg-slate-100 dark:active:bg-zinc-800 ${
-              item.active ? "text-cyan-600 dark:text-cyan-400" : "text-slate-500 dark:text-zinc-400"
+            className={`flex-1 min-w-0 min-h-14 flex flex-col items-center justify-center gap-0.5 py-1.5 text-[11px] font-medium active:bg-slate-100 dark:active:bg-zinc-800 ${
+              item.active && !navOpen ? "text-cyan-700 dark:text-cyan-400" : "text-slate-600 dark:text-zinc-400"
             }`}
           >
             <span className="relative">
-              <Icon className={`w-5 h-5 ${item.active ? "" : item.iconClass ?? ""}`} />
+              <Icon className={`w-5 h-5 ${item.active && !navOpen ? "" : item.iconClass ?? ""}`} />
               {item.badge && <span className="absolute -top-1.5 -right-4">{item.badge}</span>}
             </span>
             <span className="truncate max-w-full px-0.5">{item.label}</span>
           </button>
         );
       })}
+      {/* Everything else (Mẫu câu, Phát âm, Shadowing, Luyện thêm, Cài đặt, Tài khoản): the drawer */}
+      <button
+        type="button"
+        onClick={() => setNavOpen((open) => !open)}
+        aria-expanded={navOpen}
+        aria-label="Thêm: mở menu đầy đủ"
+        className={`flex-1 min-w-0 min-h-14 flex flex-col items-center justify-center gap-0.5 py-1.5 text-[11px] font-medium active:bg-slate-100 dark:active:bg-zinc-800 ${
+          moreActive ? "text-cyan-700 dark:text-cyan-400" : "text-slate-600 dark:text-zinc-400"
+        }`}
+      >
+        <Menu className="w-5 h-5" />
+        <span className="truncate max-w-full px-0.5">Thêm</span>
+      </button>
     </nav>
     </>
   );

@@ -21,17 +21,17 @@ export default function SoundIntro({
   return (
     <div className="max-w-md mx-auto space-y-5">
       <div className="flex items-center justify-between gap-3">
-        <button onClick={onBack} className="text-sm text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 inline-flex items-center gap-1">
+        <button onClick={onBack} className="min-h-[40px] pr-3 text-sm text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 inline-flex items-center gap-1">
           <ArrowLeft className="w-4 h-4" /> Bảng âm
         </button>
-        <button onClick={onFree} className="text-xs text-slate-500 dark:text-zinc-400 underline underline-offset-2">
+        <button onClick={onFree} className="min-h-[40px] px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm font-semibold text-slate-700 dark:text-zinc-200">
           Học tự do
         </button>
       </div>
 
       <div className="text-center space-y-1">
         <div className="text-6xl font-bold text-slate-900 dark:text-white">/{sym}/</div>
-        <p className="text-sm text-slate-500 dark:text-zinc-400">{lesson.title.replace(/^Âm\s*\/.+?\/\s*/, "")}</p>
+        <p className="text-sm text-slate-600 dark:text-zinc-400">{lesson.title.replace(/^Âm\s*\/.+?\/\s*/, "")}</p>
       </div>
 
       {video && <video key={video} src={video} className="w-full rounded-2xl bg-black" autoPlay loop playsInline controls />}
@@ -53,7 +53,7 @@ export default function SoundIntro({
             <span className="flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">
               <Volume2 className="w-3.5 h-3.5 text-violet-500" /> {ex.text}
             </span>
-            <span className="font-mono text-xs text-slate-500 dark:text-zinc-400">{ex.ipa}</span>
+            <span className="font-mono text-xs text-slate-600 dark:text-zinc-400">{ex.ipa}</span>
           </button>
         ))}
       </div>

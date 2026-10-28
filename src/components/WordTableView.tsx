@@ -5,7 +5,7 @@ import { Volume2, Trash2, ArrowUpDown, ChevronRight, Tag, Sparkles, Clock } from
 import type { WordDetail } from "@/types/database";
 import type { ReviewTimeRelativeInfo } from "@/utils/reviewSchedule";
 import ReviewTrajectoryModal from "./review/ReviewTrajectoryModal";
-import Jargon from "./Jargon";
+import { topicLabel } from "@/utils/labels";
 
 interface WordTableViewProps {
   words: WordDetail[];
@@ -64,7 +64,7 @@ export default function WordTableView({
       if (sortField === "word") {
         cmp = a.word.localeCompare(b.word);
       } else if (sortField === "topic") {
-        cmp = (a.topic || "General Tech").localeCompare(b.topic || "General Tech");
+        cmp = topicLabel(a.topic).localeCompare(topicLabel(b.topic));
       } else if (sortField === "created_at") {
         cmp = new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
       } else if (sortField === "next_review") {
@@ -112,7 +112,73 @@ export default function WordTableView({
   return (
     <>
       <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
+        {/* Phones: one stacked card per word instead of the wide table */}
+        <ul className="md:hidden divide-y divide-slate-100 dark:divide-zinc-800/60">
+          {visibleWords.map((item) => {
+            const relative = rowMeta.get(item.id)?.relative;
+            return (
+              <li
+                key={item.id}
+                onClick={() => onSelectWord(item)}
+                className="px-3 py-2.5 cursor-pointer active:bg-slate-50 dark:active:bg-zinc-800/40"
+              >
+                <div className="flex items-start gap-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-mono font-bold text-base text-slate-900 dark:text-white break-words">{item.word}</span>
+                      {item.phonetic && (
+                        <span className="text-xs font-mono text-cyan-700 dark:text-cyan-400/80">{item.phonetic}</span>
+                      )}
+                    </div>
+                    <p className="mt-0.5 text-sm text-slate-700 dark:text-zinc-300 leading-snug line-clamp-2">{item.meaning_vn}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(e) => handleSpeak(item.word, e)}
+                    aria-label={`Nghe phát âm ${item.word}`}
+                    className="shrink-0 w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 active:bg-slate-100 dark:active:bg-zinc-800"
+                  >
+                    <Volume2 className="w-5 h-5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => onDeleteWord(item.id, item.word, e)}
+                    aria-label={`Xoá từ ${item.word}`}
+                    className="shrink-0 w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 active:bg-rose-50 dark:active:bg-rose-950/40"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="mt-1.5 flex items-center gap-2 flex-wrap">
+                  <span
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border ${
+                      relative?.badgeClass || "bg-slate-100 text-slate-600"
+                    }`}
+                  >
+                    <Clock className="w-3 h-3 opacity-70" />
+                    Ôn: {relative?.label}
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-xs text-slate-600 dark:text-zinc-400">
+                    <Tag className="w-3 h-3 opacity-70" />
+                    {topicLabel(item.topic)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setTrajectoryWord(item);
+                    }}
+                    aria-label="Xem lộ trình các lần ôn tiếp theo"
+                    className="ml-auto w-10 h-10 -my-2 flex items-center justify-center rounded-lg text-cyan-600 dark:text-cyan-400"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
               <tr className="border-b border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950/70 text-slate-600 dark:text-zinc-400 font-mono text-[11px] select-none">
@@ -121,7 +187,7 @@ export default function WordTableView({
                   className="py-3 px-4 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <div className="flex items-center gap-1.5">
-                    <span>Vocabulary Word</span>
+                    <span>Từ vựng</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
@@ -130,17 +196,17 @@ export default function WordTableView({
                   className="py-3 px-4 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <div className="flex items-center gap-1.5">
-                    <span>Topic</span>
+                    <span>Chủ đề</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
-                <th className="py-3 px-4">Vietnamese Meaning</th>
+                <th className="py-3 px-4">Nghĩa tiếng Việt</th>
                 <th
                   onClick={() => handleSort("repetitions")}
                   className="py-3 px-4 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors text-center"
                 >
                   <div className="flex items-center justify-center gap-1.5">
-                    <span>Lịch Sử (Đúng/Sai)</span>
+                    <span>Đúng / Sai</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
@@ -149,23 +215,25 @@ export default function WordTableView({
                   className="py-3 px-4 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors text-center"
                 >
                   <div className="flex items-center justify-center gap-1.5">
-                    <span>Độ bền (S)</span>
+                    <span>
+                      <span title="Số ngày thuật toán dự đoán bạn còn nhớ từ này">Mức nhớ</span>
+                    </span>
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
                 <th className="py-3 px-4 text-center">
-                  <Jargon term="Interval" plain="Ôn lại sau" hint="Số ngày từ lần ôn trước đến lần ôn kế tiếp" />
+                  <span title="Số ngày từ lần ôn trước đến lần ôn kế tiếp">Ôn lại sau</span>
                 </th>
                 <th
                   onClick={() => handleSort("next_review")}
                   className="py-3 px-4 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <div className="flex items-center gap-1.5">
-                    <span>Lịch Nhắc Lại</span>
+                    <span>Lần ôn kế tiếp</span>
                     <ArrowUpDown className="w-3 h-3" />
                   </div>
                 </th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3 px-4 text-right">Thao tác</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
@@ -198,7 +266,7 @@ export default function WordTableView({
                         )}
                         <button
                           onClick={(e) => handleSpeak(item.word, e)}
-                          title="Listen"
+                          title="Nghe phát âm"
                           className="text-slate-400 hover:text-cyan-600 dark:text-zinc-500 dark:hover:text-cyan-400 p-0.5 rounded transition-colors"
                         >
                           <Volume2 className="w-3.5 h-3.5" />
@@ -210,7 +278,7 @@ export default function WordTableView({
                     <td className="py-3 px-4 whitespace-nowrap">
                       <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-cyan-50 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/50">
                         <Tag className="w-2.5 h-2.5 opacity-70" />
-                        {item.topic || "General Tech"}
+                        {topicLabel(item.topic)}
                       </span>
                     </td>
 
@@ -259,13 +327,13 @@ export default function WordTableView({
                     {/* Stability / Ease Factor */}
                     <td className="py-3 px-4 text-center font-mono text-slate-700 dark:text-zinc-300">
                       {item.srs.stability && item.srs.stability > 0
-                        ? `${Number(item.srs.stability).toFixed(1)}d`
-                        : `${item.srs.interval}d`}
+                        ? `${Number(item.srs.stability).toFixed(1)} ngày`
+                        : `${item.srs.interval} ngày`}
                     </td>
 
                     {/* Interval */}
                     <td className="py-3 px-4 text-center font-mono text-slate-500 dark:text-zinc-400">
-                      {item.srs.interval}d
+                      {item.srs.interval} ngày
                     </td>
 
                     {/* Next Review Status & Countdown */}
@@ -302,7 +370,7 @@ export default function WordTableView({
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={(e) => onDeleteWord(item.id, item.word, e)}
-                          title="Delete word"
+                          title="Xoá từ này"
                           className="text-slate-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400 p-1 rounded transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />

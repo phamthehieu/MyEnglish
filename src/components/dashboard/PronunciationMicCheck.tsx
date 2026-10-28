@@ -66,7 +66,10 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
   // that is too few, other words of the lesson so that it does not accept any sound as the target
   const confusables = isCheckableWord(target) ? confusablesFor(lesson, target) : [];
   const mates = isCheckableWord(target) ? focusMates(lesson, target) : [];
-  if (!asrAvailable() || !canCheck(lesson, target)) return null;
+  if (!asrAvailable()) {
+    return compact ? null : <p className="w-full pt-3 text-xs text-center text-slate-600 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>;
+  }
+  if (!canCheck(lesson, target)) return null;
   const decoys = decoysFor(lesson, target, [...confusables, ...mates]);
 
   const chooseLevel = (next: CheckLevel) => {
@@ -114,7 +117,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
       return;
     }
     grammar.current = list;
-    if (!startListening()) {
+    if (!startListening(finish)) {
       setProblem("Không bật được micro (có thể app khác đang dùng). Thử lại nhé.");
       setPhase("idle");
       return;
@@ -131,7 +134,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
       aria-checked={level === id}
       onClick={() => chooseLevel(id)}
       disabled={phase !== "idle"}
-      className={`flex-1 py-1.5 px-2 rounded-lg text-xs font-semibold transition-colors ${
+      className={`flex-1 min-h-[40px] px-2 rounded-lg text-sm font-semibold transition-colors ${
         level === id
           ? "bg-white dark:bg-zinc-900 text-violet-700 dark:text-violet-300 shadow-sm"
           : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
@@ -149,25 +152,25 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
             {levelButton("focus", "Trung bình")}
             {levelButton("word", "Khó")}
           </div>
-          <p className="text-[11px] text-center text-slate-500 dark:text-zinc-400">
+          <p className="text-xs text-center text-slate-600 dark:text-zinc-400">
             {level === "focus"
               ? `Trung bình: đúng âm đang học${focusLabel(lesson, item) ? ` (${focusLabel(lesson, item)})` : ""} là đạt.`
-              : "Khó: phải đúng cả từ, và máy nghe thật rõ."}
+              : "Khó: phải đọc đúng cả từ, và máy nghe thật rõ."}
           </p>
         </div>
       )}
       {phase === "listening" ? (
         <button
           onClick={finish}
-          className="w-full py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2 animate-pulse"
+          className="w-full min-h-[48px] py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2 animate-pulse"
         >
-          <Square className="w-4 h-4 fill-white" /> Đang nghe… đọc "{target}" rồi bấm để dừng
+          <Square className="w-4 h-4 shrink-0 fill-white" /> <span>Đang nghe… đọc "{target}". Đọc xong thì dừng lại, máy sẽ tự chấm (hoặc bấm để dừng)</span>
         </button>
       ) : (
         <button
           onClick={begin}
           disabled={phase !== "idle"}
-          className="w-full py-2.5 rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/30 disabled:opacity-60 text-sm font-semibold inline-flex items-center justify-center gap-2"
+          className="w-full min-h-[48px] py-2.5 rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/30 disabled:opacity-60 text-sm font-semibold inline-flex items-center justify-center gap-2"
         >
           {phase === "idle" ? (
             <>
@@ -176,7 +179,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
           ) : (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              {phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang nghe lại…"}
+              {phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang chấm…"}
             </>
           )}
         </button>
@@ -189,7 +192,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
           )}
           <p>{verdict.message}</p>
           {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
-            <button onClick={playRecording} className="text-xs font-semibold underline underline-offset-2 inline-flex items-center gap-1">
+            <button onClick={playRecording} className="min-h-[40px] text-xs font-semibold underline underline-offset-2 inline-flex items-center gap-1">
               <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
             </button>
           )}

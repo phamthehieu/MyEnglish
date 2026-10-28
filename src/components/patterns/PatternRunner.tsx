@@ -14,8 +14,10 @@ import { useKeepVisible } from "./useKeepVisible";
 import { IpaLine, IpaToggle } from "./Ipa";
 
 /** How long a rapid-fire answer may take: speaking is quick, typing is slower */
-const WINDOW_SAY_MS = 8000;
-const WINDOW_TYPE_MS = 20000;
+const WINDOW_SAY_MS = 10000;
+const WINDOW_TYPE_MS = 30000;
+/** Extra time given for the one retry after a spoken answer that did not match */
+const RETRY_BONUS_MS = 5000;
 
 type Outcome = Omit<TaskResult, "patternId" | "kind">;
 
@@ -38,7 +40,7 @@ function Blank({ frame, fill }: { frame: string; fill?: string }) {
 
 function Speaker({ text, label = "Nghe" }: { text: string; label?: string }) {
   return (
-    <button onClick={() => handleSpeak(text)} aria-label={label} className="shrink-0 p-1.5 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300">
+    <button onClick={() => handleSpeak(text)} aria-label={label} className="shrink-0 w-10 h-10 inline-flex items-center justify-center rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300">
       <Volume2 className="w-4 h-4" />
     </button>
   );
@@ -72,7 +74,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
       </div>
 
       <div className={CARD}>
-        <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Nghe và nhắc lại:</p>
+        <p className="text-xs font-semibold text-slate-600 dark:text-zinc-400">Nghe và nhắc lại: <span className="font-normal">(IPA = ký hiệu cách đọc)</span></p>
         {pattern.slots.slice(0, 4).map((s) => {
           const f = fillPattern(pattern, s);
           return (
@@ -270,7 +272,8 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
   const [mode, setMode] = useState<"say" | "type">(canSpeak ? "say" : "type");
   const modeRef = useRef(mode);
   modeRef.current = mode;
-  const windowFor = () => (modeRef.current === "type" ? WINDOW_TYPE_MS : WINDOW_SAY_MS);
+  const bonusMs = useRef(0);
+  const windowFor = () => (modeRef.current === "type" ? WINDOW_TYPE_MS : WINDOW_SAY_MS) + bonusMs.current;
   const mic = useMic();
   const line = useMemo(() => lineOfSlot(pattern, item.slot), [pattern, item.slot]);
   const [typed, setTyped] = useState("");
@@ -280,12 +283,16 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
   const { area, input } = useKeepVisible<HTMLDivElement, HTMLInputElement>();
   const readyAt = useRef(0);
   const settled = useRef(false);
+  const retried = useRef(false);
+  const [retryNote, setRetryNote] = useState<string | null>(null);
+  // The clock runs from the moment the microphone is really listening (or the learner types), not from the question
+  const [started, setStarted] = useState(false);
 
   const settle = (ok: boolean, message: string) => {
     if (settled.current) return;
     settled.current = true;
     mic.cancel();
-    const ms = Math.min(windowFor(), Date.now() - readyAt.current);
+    const ms = started ? Math.min(windowFor(), Date.now() - readyAt.current) : windowFor();
     setVerdict({ ok, ms, message });
     setState("done");
     handleSpeak(item.en);
@@ -295,7 +302,6 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
   useEffect(() => {
     handleSpeak(item.ask.en);
     const wait = window.setTimeout(() => {
-      readyAt.current = Date.now();
       setState("answering");
       if (canSpeak) void say();
     }, speechMs(item.ask.en));
@@ -304,9 +310,18 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Start the clock once: typing, a microphone that is listening, or a microphone that cannot start (then the learner types)
+  useEffect(() => {
+    if (state !== "answering" || started) return;
+    if (mode === "type" || mic.phase === "listening" || mic.problem) {
+      readyAt.current = Date.now();
+      setStarted(true);
+    }
+  }, [state, started, mode, mic.phase, mic.problem]);
+
   // Time runs out
   useEffect(() => {
-    if (state !== "answering") return;
+    if (state !== "answering" || !started) return;
     const tick = window.setInterval(() => {
       const e = Date.now() - readyAt.current;
       setElapsed(e);
@@ -314,7 +329,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
     }, 100);
     return () => window.clearInterval(tick);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  }, [state, started]);
 
   const say = () =>
     mic.begin(
@@ -323,7 +338,15 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
       (result, grammar) => {
         const v = judgeSpoken(result, grammar, new Set([line.id]));
         if (v.kind === "ok") settle(true, "Đúng rồi!");
-        else if (!settled.current) settle(false, v.message);
+        else if (!settled.current) {
+          // One more try before the answer counts as wrong
+          if (!retried.current && modeRef.current === "say") {
+            retried.current = true;
+            bonusMs.current = RETRY_BONUS_MS;
+            setRetryNote(`${v.message} Bạn còn một lần nói lại.`);
+            void say();
+          } else settle(false, v.message);
+        }
       },
       WINDOW_SAY_MS
     );
@@ -369,7 +392,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
                   key={m}
                   onClick={() => switchTo(m)}
                   aria-pressed={mode === m}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1.5 border ${
+                  className={`px-4 min-h-[40px] rounded-full text-sm font-semibold inline-flex items-center gap-1.5 border ${
                     mode === m ? "bg-violet-600 border-violet-600 text-white" : "border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300"
                   }`}
                 >
@@ -381,7 +404,9 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
           {mode === "say" ? (
             <>
               <MicButton mic={mic} onStart={() => void say()} idleLabel="Bấm để nói" />
-              {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem}</p>}
+              {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem} Bạn có thể bấm "Gõ" để trả lời.</p>}
+              {retryNote && !mic.problem && <p className="text-sm text-amber-800 dark:text-amber-300">{retryNote}</p>}
+              {!started && !mic.problem && <p className="text-xs text-slate-500 dark:text-zinc-400">Đồng hồ sẽ chạy khi micro sẵn sàng.</p>}
             </>
           ) : (
             <form
@@ -403,8 +428,8 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
                 placeholder="Gõ câu tiếng Anh…"
                 className="flex-1 min-w-0 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-[15px] text-slate-900 dark:text-white"
               />
-              <button type="submit" disabled={!typed.trim()} className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white" aria-label="Gửi">
-                <Keyboard className="w-4 h-4" />
+              <button type="submit" disabled={!typed.trim()} className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white min-w-[48px]" aria-label="Gửi">
+                <Send className="w-4 h-4 mx-auto" />
               </button>
             </form>
           )}

@@ -421,20 +421,20 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                   </span>
                   <div className="flex items-center gap-1.5 shrink-0">
                     {secondsLeft !== null && (
-                      <span className="text-[10.5px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60 tabular-nums">
+                      <span className="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/80 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60 tabular-nums">
                         {secondsLeft}s
                       </span>
                     )}
                     <button
                       onClick={() => finish("snooze")}
-                      className="text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 p-0.5 rounded transition-colors"
+                      className="min-w-10 min-h-10 -m-2 inline-flex items-center justify-center text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 rounded transition-colors"
                       aria-label="Đóng"
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <X className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
-                <div className="text-[11.5px] text-slate-600 dark:text-zinc-300 line-clamp-2 mt-0.5 leading-snug">
+                <div className="text-xs text-slate-600 dark:text-zinc-300 line-clamp-2 mt-0.5 leading-snug">
                   {message}
                 </div>
               </div>
@@ -446,7 +446,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                 onClick={() => finish("start")}
                 aria-label="Học ngay"
                 title="Học ngay (Enter)"
-                className="flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 !text-white text-[12px] font-bold shadow-sm whitespace-nowrap transition-all active:scale-[0.98]"
+                className="flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-3 min-h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 !text-white text-[13px] font-bold shadow-sm whitespace-nowrap transition-all active:scale-[0.98]"
               >
                 <Play className="w-3.5 h-3.5 fill-white shrink-0" />
                 Học ngay
@@ -456,7 +456,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                   onClick={switchToQuiz}
                   aria-label="Trả lời 1 câu nhanh"
                   title="Trả lời 1 câu ngay tại đây, không mở app"
-                  className="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60 text-[12px] font-semibold whitespace-nowrap transition-all active:scale-[0.98]"
+                  className="shrink-0 inline-flex items-center gap-1 px-3 min-h-11 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60 text-[13px] font-semibold whitespace-nowrap transition-all active:scale-[0.98]"
                 >
                   <Zap className="w-3.5 h-3.5 text-indigo-500 fill-indigo-500 shrink-0" />
                   1 câu
@@ -467,30 +467,30 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                   onClick={switchToPhoneme}
                   aria-label="Luyện phân biệt âm"
                   title="Luyện phân biệt âm thanh nhanh ngay tại đây"
-                  className="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-purple-50 dark:bg-purple-950/50 hover:bg-purple-100 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 text-[12px] font-semibold whitespace-nowrap transition-all active:scale-[0.98]"
+                  className="shrink-0 inline-flex items-center gap-1 px-3 min-h-11 rounded-xl bg-purple-50 dark:bg-purple-950/50 hover:bg-purple-100 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 text-[13px] font-semibold whitespace-nowrap transition-all active:scale-[0.98]"
                 >
                   <Ear className="w-3.5 h-3.5 text-purple-500 shrink-0" />
                   Luyện âm
                 </button>
               ) : null}
             </div>
-            <div className="flex items-center justify-between gap-2 -mt-0.5 text-[11px] whitespace-nowrap">
+            <div className="flex items-center justify-between gap-2 -mt-0.5 text-xs whitespace-nowrap">
               <button
                 onClick={() => finish("focus")}
                 aria-label={`Phiên tập trung ${getFocusSettings().minutes} phút`}
                 title="Mở app và học trọn vài phút, tắt nhắc nhở (phím F)"
-                className="inline-flex items-center gap-1 px-1 py-0.5 rounded text-violet-600 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300 hover:underline font-medium"
+                className="inline-flex items-center gap-1 px-2 min-h-10 rounded text-violet-700 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300 hover:underline font-medium"
               >
-                <Crosshair className="w-3 h-3" />
+                <Crosshair className="w-3.5 h-3.5" />
                 Tập trung {getFocusSettings().minutes} phút
               </button>
               <button
                 onClick={() => finish("snooze")}
                 aria-label={`Hoãn nhắc ôn tập ${payload.snoozeMinutes} phút`}
                 title="Hoãn (Esc)"
-                className="inline-flex items-center gap-1 px-1 py-0.5 rounded text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 hover:underline font-medium"
+                className="inline-flex items-center gap-1 px-2 min-h-10 rounded text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 hover:underline font-medium"
               >
-                <Clock className="w-3 h-3" />
+                <Clock className="w-3.5 h-3.5" />
                 Hoãn {payload.snoozeMinutes} phút
               </button>
             </div>
@@ -500,7 +500,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
           <div className="p-3.5 flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 min-w-0">
-                <span className="px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <span className="px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
                   <Zap className="w-3 h-3 fill-indigo-500 text-indigo-500" />
                   1 câu nhanh
                 </span>
@@ -510,16 +510,16 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
               </div>
               <div className="flex items-center gap-1.5">
                 {secondsLeft !== null && (
-                  <span className="text-[10px] text-slate-400 dark:text-zinc-500 tabular-nums font-mono">
+                  <span className="text-[11px] text-slate-500 dark:text-zinc-400 tabular-nums font-mono">
                     {secondsLeft}s
                   </span>
                 )}
                 <button
                   onClick={() => finish("quiz-done")}
-                  className="text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 p-0.5 rounded transition-colors"
+                  className="min-w-10 min-h-10 -m-2 inline-flex items-center justify-center text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 rounded transition-colors"
                   aria-label="Đóng"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -529,7 +529,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
               <div className="flex flex-col gap-0.5">
                 {payload.microQuiz.direction === "production" ? (
                   <div>
-                    <span className="text-[10px] font-semibold text-indigo-600 dark:text-indigo-400 block uppercase tracking-wider">
+                    <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 block uppercase tracking-wider">
                       Nghĩa tiếng Việt:
                     </span>
                     <span className="text-sm font-bold text-slate-900 dark:text-white leading-snug block line-clamp-2">
@@ -542,12 +542,12 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                       {payload.microQuiz.promptTitle || payload.microQuiz.word}
                     </span>
                     {payload.microQuiz.phonetic && (
-                      <span className="text-[11px] text-slate-400 dark:text-zinc-500 font-mono">
+                      <span className="text-[11px] text-slate-500 dark:text-zinc-400 font-mono">
                         {payload.microQuiz.phonetic}
                       </span>
                     )}
                     {payload.microQuiz.partOfSpeech && (
-                      <span className="text-[10px] px-1 py-0.2 rounded bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400 font-medium">
+                      <span className="text-[11px] px-1 py-0.2 rounded bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400 font-medium">
                         {payload.microQuiz.partOfSpeech}
                       </span>
                     )}
@@ -583,7 +583,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                     key={opt.id}
                     disabled={isAnswered}
                     onClick={() => handleAnswerQuiz(opt.id)}
-                    className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-[11.5px] transition-all text-left ${btnStyle} active:scale-98`}
+                    className={`w-full min-h-10 flex items-center justify-between px-3 py-1.5 rounded-lg border text-xs transition-all text-left ${btnStyle} active:scale-98`}
                   >
                     <div className="flex items-center gap-1.5 min-w-0">
                       <span className="truncate">{opt.text}</span>
@@ -619,7 +619,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                 {!quizResult.isCorrect && (
                   <button
                     onClick={() => finish("quiz-done")}
-                    className="shrink-0 ml-2 px-2 py-0.5 rounded bg-white/70 dark:bg-zinc-800/80 text-[10px] font-semibold hover:bg-white dark:hover:bg-zinc-700"
+                    className="shrink-0 ml-2 px-3 min-h-9 rounded bg-white/70 dark:bg-zinc-800/80 text-xs font-semibold hover:bg-white dark:hover:bg-zinc-700"
                   >
                     Đóng
                   </button>
@@ -632,7 +632,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
           <div className="p-3.5 flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 min-w-0">
-                <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
                   <Ear className="w-3 h-3 text-purple-500" />
                   Luyện phân biệt âm
                 </span>
@@ -642,16 +642,16 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
               </div>
               <div className="flex items-center gap-1.5">
                 {secondsLeft !== null && (
-                  <span className="text-[10px] text-slate-400 dark:text-zinc-500 tabular-nums font-mono">
+                  <span className="text-[11px] text-slate-500 dark:text-zinc-400 tabular-nums font-mono">
                     {secondsLeft}s
                   </span>
                 )}
                 <button
                   onClick={() => finish("quiz-done")}
-                  className="text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 p-0.5 rounded transition-colors"
+                  className="min-w-10 min-h-10 -m-2 inline-flex items-center justify-center text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 rounded transition-colors"
                   aria-label="Đóng"
                 >
-                  <X className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -671,7 +671,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                     <span className="text-[11.5px] font-bold text-slate-800 dark:text-white block">
                       Nghe từ: "{phonemeQuiz.spokenWord}"
                     </span>
-                    <span className="text-[10px] text-slate-500 dark:text-zinc-400">
+                    <span className="text-[11px] text-slate-500 dark:text-zinc-400">
                       Bạn nghe thấy âm nào dưới đây?
                     </span>
                   </div>
@@ -706,7 +706,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                     key={opt.id}
                     disabled={isAnswered}
                     onClick={() => handleAnswerPhoneme(opt.id, opt.isCorrect)}
-                    className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg border text-[11.5px] transition-all text-left ${btnStyle} active:scale-98`}
+                    className={`w-full min-h-10 flex items-center justify-between px-3 py-1.5 rounded-lg border text-xs transition-all text-left ${btnStyle} active:scale-98`}
                   >
                     <span className="truncate">{opt.text}</span>
                     {isAnswered && isCorrect && (
@@ -740,7 +740,7 @@ export default function ReviewNudge({ onDone, inApp, initialPayload }: ReviewNud
                 {!phonemeResult.isCorrect && (
                   <button
                     onClick={() => finish("quiz-done")}
-                    className="shrink-0 ml-2 px-2 py-0.5 rounded bg-white/70 dark:bg-zinc-800/80 text-[10px] font-semibold hover:bg-white dark:hover:bg-zinc-700"
+                    className="shrink-0 ml-2 px-3 min-h-9 rounded bg-white/70 dark:bg-zinc-800/80 text-xs font-semibold hover:bg-white dark:hover:bg-zinc-700"
                   >
                     Đóng
                   </button>

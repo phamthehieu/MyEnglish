@@ -10,10 +10,10 @@ import { AVATARS } from "@/services/avatars";
 type Mode = "signin" | "signup" | "forgot";
 
 const field =
-  "w-full px-3 py-2 rounded-lg text-sm border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-slate-400";
-const primary = "px-4 py-2 rounded-lg text-sm font-semibold bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white inline-flex items-center gap-2";
+  "w-full min-h-11 px-3 py-2 rounded-lg text-base sm:text-sm border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-slate-500";
+const primary = "min-h-11 px-4 py-2 rounded-lg text-sm font-semibold bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white inline-flex items-center gap-2";
 const secondary =
-  "px-3 py-2 rounded-lg text-xs font-semibold border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800 disabled:opacity-50 inline-flex items-center gap-1.5";
+  "min-h-10 px-3 py-2 rounded-lg text-xs font-semibold border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800 disabled:opacity-50 inline-flex items-center gap-1.5";
 
 function formatTime(iso: string | null): string {
   if (!iso) return "chưa lần nào";
@@ -47,11 +47,10 @@ export default function AccountSettings() {
   if (!configured) {
     return shell(
       <div className="flex items-start gap-3 text-xs text-slate-600 dark:text-zinc-400">
-        <CloudOff className="w-5 h-5 shrink-0 text-slate-400" />
+        <CloudOff className="w-5 h-5 shrink-0 text-slate-500" />
         <p className="leading-relaxed">
-          Đăng nhập, đồng bộ giữa các máy và bảng xếp hạng cần một dự án Supabase. Bản này chưa được cấu hình
-          (thiếu <span className="font-mono">VITE_SUPABASE_URL</span> / <span className="font-mono">VITE_SUPABASE_ANON_KEY</span>);
-          ứng dụng vẫn dùng bình thường ngoại tuyến. Xem <span className="font-mono">supabase/README.md</span>.
+          Tính năng đăng nhập, đồng bộ giữa các máy và bảng xếp hạng chưa dùng được trong bản này. Bạn vẫn học bình
+          thường, dữ liệu được lưu ngay trên máy.
         </p>
       </div>
     );
@@ -59,7 +58,7 @@ export default function AccountSettings() {
 
   if (!ready) {
     return shell(
-      <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-zinc-400">
+      <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-zinc-400">
         <Loader2 className="w-4 h-4 animate-spin" /> Đang kiểm tra tài khoản…
       </div>
     );
@@ -78,7 +77,7 @@ export default function AccountSettings() {
         <div className="flex items-start gap-3">
           <Cloud className="w-5 h-5 shrink-0 text-cyan-600 dark:text-cyan-400 mt-0.5" />
           <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
-            Đăng nhập để giữ tiến trình học giữa các máy và đua XP với bạn bè. Dữ liệu vẫn nằm trên máy; tài khoản chỉ đồng bộ bản sao.
+            Đăng nhập để giữ tiến trình học giữa các máy và thi đua với bạn bè. Dữ liệu vẫn nằm trên máy; tài khoản chỉ đồng bộ bản sao.
             Sách ngữ pháp của bạn không bao giờ được tải lên.
           </p>
         </div>
@@ -89,7 +88,7 @@ export default function AccountSettings() {
               key={m}
               onClick={() => setMode(m)}
               className={cn(
-                "px-3 py-1.5 rounded-lg text-xs font-semibold border",
+                "min-h-10 px-4 py-2 rounded-lg text-sm font-semibold border",
                 mode === m ? "bg-cyan-600 border-cyan-600 text-white" : "border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300"
               )}
             >
@@ -121,12 +120,12 @@ export default function AccountSettings() {
             {mode === "signin" ? "Đăng nhập" : mode === "signup" ? "Tạo tài khoản" : "Gửi thư đặt lại mật khẩu"}
           </button>
           {mode === "signin" && (
-            <button type="button" onClick={() => setMode("forgot")} className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-zinc-200 underline">
+            <button type="button" onClick={() => setMode("forgot")} className="min-h-10 px-1 text-xs text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 underline">
               Quên mật khẩu?
             </button>
           )}
           {mode === "forgot" && (
-            <button type="button" onClick={() => setMode("signin")} className="text-xs text-slate-500 hover:text-slate-700 dark:hover:text-zinc-200 underline">
+            <button type="button" onClick={() => setMode("signin")} className="min-h-10 px-1 text-xs text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 underline">
               Quay lại
             </button>
           )}
@@ -145,16 +144,16 @@ export default function AccountSettings() {
             title="Đổi ảnh đại diện"
             aria-expanded={pickingAvatar}
             onClick={() => setPickingAvatar((v) => !v)}
-            className="relative rounded-full shrink-0 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 hover:ring-2 hover:ring-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500 transition"
+            className="relative rounded-full shrink-0 p-1 -m-1 ring-offset-2 ring-offset-white dark:ring-offset-zinc-900 hover:ring-2 hover:ring-cyan-500 focus-visible:ring-2 focus-visible:ring-cyan-500 transition"
           >
             <Avatar id={profile?.avatar} name={profile?.displayName ?? user.email} size="lg" />
-            <span className="absolute -bottom-0.5 -right-0.5 px-1 rounded-full bg-cyan-600 text-white text-[9px] font-semibold leading-4">Đổi</span>
+            <span className="absolute -bottom-0.5 -right-0.5 px-1.5 rounded-full bg-cyan-600 text-white text-xs font-semibold leading-4">Đổi</span>
           </button>
           <div className="min-w-0">
             {editName === null ? (
               <div className="text-sm font-bold text-slate-900 dark:text-white truncate">
                 {profile?.displayName ?? "…"}
-                <button onClick={() => setEditName(profile?.displayName ?? "")} className="ml-2 text-[11px] font-normal text-cyan-600 hover:underline">
+                <button onClick={() => setEditName(profile?.displayName ?? "")} className="ml-2 min-h-10 px-1 text-xs font-normal text-cyan-700 dark:text-cyan-400 hover:underline">
                   Đổi tên
                 </button>
               </div>
@@ -166,12 +165,12 @@ export default function AccountSettings() {
                   if (await store().updateDisplayName(editName)) setEditName(null);
                 }}
               >
-                <input className={cn(field, "py-1")} minLength={3} maxLength={20} value={editName} onChange={(e) => setEditName(e.target.value)} autoFocus />
+                <input className={field} minLength={3} maxLength={20} value={editName} onChange={(e) => setEditName(e.target.value)} autoFocus />
                 <button className={secondary} disabled={busy}>Lưu</button>
                 <button type="button" className={secondary} onClick={() => setEditName(null)}>Hủy</button>
               </form>
             )}
-            <div className="text-xs text-slate-500 dark:text-zinc-400 truncate">{user.email}</div>
+            <div className="text-xs text-slate-600 dark:text-zinc-400 truncate">{user.email}</div>
           </div>
         </div>
         <button className={secondary} disabled={busy || syncing} onClick={() => void store().signOut()}>
@@ -194,7 +193,7 @@ export default function AccountSettings() {
                   if (await store().updateAvatar(a.id)) setPickingAvatar(false);
                 }}
                 className={cn(
-                  "rounded-full p-0.5 border-2 transition disabled:opacity-50",
+                  "rounded-full p-1 min-w-10 min-h-10 inline-flex items-center justify-center border-2 transition disabled:opacity-50",
                   profile?.avatar === a.id ? "border-cyan-500" : "border-transparent hover:border-slate-300 dark:hover:border-zinc-600"
                 )}
               >
@@ -225,7 +224,7 @@ export default function AccountSettings() {
             </button>
             {confirmWipe ? (
               <button
-                className="px-4 py-2 rounded-lg text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-white"
+                className="min-h-11 px-4 py-2 rounded-lg text-sm font-semibold bg-rose-600 hover:bg-rose-500 text-white"
                 onClick={() => void resolveAccountMismatch("wipe")}
               >
                 Chắc chắn: xóa dữ liệu trên máy
@@ -249,10 +248,10 @@ export default function AccountSettings() {
                 <><CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> Tiến trình được đồng bộ</>
               )}
             </div>
-            <div className="text-slate-500 dark:text-zinc-400">Lần gần nhất: {formatTime(sync.lastSyncAt)}</div>
+            <div className="text-slate-600 dark:text-zinc-400">Lần gần nhất: {formatTime(sync.lastSyncAt)}</div>
             {sync.error && <div className="text-rose-600 dark:text-rose-400">{sync.error}</div>}
             {sync.lastReport && !syncing && (sync.lastReport.pushed > 0 || sync.lastReport.applied > 0) && (
-              <div className="text-slate-500 dark:text-zinc-400">
+              <div className="text-slate-600 dark:text-zinc-400">
                 Gửi lên {sync.lastReport.pushed} mục · nhận về {sync.lastReport.applied} thay đổi
               </div>
             )}
@@ -264,15 +263,15 @@ export default function AccountSettings() {
       )}
       <label className="flex items-start justify-between gap-3 cursor-pointer">
         <div>
-          <div className="text-xs font-bold text-slate-900 dark:text-white">Hiện thứ hạng XP trong ứng dụng</div>
-          <p className="text-[11px] text-slate-500 dark:text-zinc-400">
-            Thẻ "Cuộc đua tuần này" ở màn Hôm nay, dòng hạng ở thanh bên và hạng mới sau mỗi phiên ôn. Tắt đi nếu bạn thấy áp lực: bảng xếp hạng vẫn xem được ở tab Xếp hạng.
+          <div className="text-sm font-bold text-slate-900 dark:text-white">Hiện cuộc đua xếp hạng (XP)</div>
+          <p className="text-xs text-slate-600 dark:text-zinc-400">
+            Thẻ "Cuộc đua tuần này" ở màn Hôm nay, dòng hạng ở menu và hạng mới sau mỗi phiên ôn. Đang tắt thì bạn không bị so sánh với ai: bảng xếp hạng vẫn xem được ở mục Xếp hạng. Cũng chỉnh được ở Cài đặt, phần Giao diện.
           </p>
         </div>
-        <input type="checkbox" checked={rankWidgets} onChange={(e) => useStandingStore.getState().setEnabled(e.target.checked)} className="mt-1 accent-cyan-600" />
+        <input type="checkbox" checked={rankWidgets} onChange={(e) => useStandingStore.getState().setEnabled(e.target.checked)} className="mt-0.5 w-5 h-5 shrink-0 accent-cyan-600" />
       </label>
-      <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-relaxed">
-        Đồng bộ: từ vựng và lịch ôn, lịch sử ôn tập, sổ lỗi, điểm ngữ pháp, XP, chuỗi ngày và các cài đặt học. Không đồng bộ: nội dung sách ngữ pháp
+      <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
+        Đồng bộ: từ vựng và lịch ôn, lịch sử ôn tập, sổ lỗi, điểm ngữ pháp, điểm XP, chuỗi ngày và các cài đặt học. Không đồng bộ: nội dung sách ngữ pháp
         bạn nhập, khóa API, đường dẫn máy.
       </p>
     </>

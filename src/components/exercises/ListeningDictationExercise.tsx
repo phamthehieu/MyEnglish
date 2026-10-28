@@ -115,7 +115,7 @@ export default function ListeningDictationExercise({
             title="Nghe tốc độ thường (Phím R)"
           >
             <Volume2 className="w-8 h-8 mb-0.5" />
-            <span className="text-[10px] font-semibold uppercase tracking-wider">Nghe</span>
+            <span className="text-[11px] font-semibold">Nghe</span>
           </button>
         </div>
 
@@ -123,13 +123,13 @@ export default function ListeningDictationExercise({
           <button
             onClick={() => playAudio(SLOW_RATE)}
             type="button"
-            className="px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            className="px-4 min-h-11 rounded-lg text-xs font-medium bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
             title="Nghe chậm (Phím S)"
           >
             <Snail className="w-3.5 h-3.5 text-amber-500" />
             <span>Nghe chậm</span>
           </button>
-          <span className="desktop-only text-[11px] text-slate-400 dark:text-zinc-500">Phím R: nghe lại · S: nghe chậm · 1–4: chọn</span>
+          <span className="desktop-only text-[11px] text-slate-600 dark:text-zinc-400">Phím R: nghe lại · S: nghe chậm · 1–4: chọn</span>
         </div>
 
         <div className="min-h-[28px] text-sm">
@@ -138,7 +138,7 @@ export default function ListeningDictationExercise({
               {word.word} {word.phonetic ? <span className="font-mono text-cyan-600 dark:text-cyan-400 text-xs">{word.phonetic}</span> : null}
             </span>
           ) : (
-            <span className="text-[11px] text-slate-400 dark:text-zinc-500">Từ sẽ hiện sau khi bạn trả lời</span>
+            <span className="text-[11px] text-slate-600 dark:text-zinc-400">Từ sẽ hiện sau khi bạn trả lời</span>
           )}
         </div>
       </div>

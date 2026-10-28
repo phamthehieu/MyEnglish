@@ -1,8 +1,9 @@
 import type { RefObject } from "react";
-import { Volume2, CheckCircle2, Eye, FileCode, HelpCircle, RotateCcw, AlertCircle, SkipForward } from "lucide-react";
+import { Volume2, CheckCircle2, Eye, TextCursorInput, HelpCircle, RotateCcw, AlertCircle, SkipForward } from "lucide-react";
 import type { ReviewCard, WordExample } from "@/types/database";
 import type { FeedbackMessage } from "@/hooks/useReviewSession";
 import RevealedWordContent from "./RevealedWordContent";
+import GiveUpButton from "./GiveUpButton";
 import { highlightWord } from "./highlightWord";
 import { handleSpeak } from "./speech";
 import { getExampleSenseMeaning, maskTargetInMeaning } from "@/utils/exerciseHints";
@@ -60,22 +61,24 @@ export default function ClozeCard({
         <div className="flex-1 min-h-0 flex flex-col justify-between py-2 overflow-y-auto pr-1 scrollbar-thin">
           <div className="my-auto space-y-4 w-full">
             <div className="text-center space-y-1 shrink-0">
-              <span className="text-xs font-mono uppercase tracking-wider text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center gap-1.5">
-                <FileCode className="w-4 h-4" />
-                Điền từ tiếng Anh còn thiếu vào ngữ cảnh
+              <span className="text-sm text-indigo-700 dark:text-indigo-400 font-bold flex items-center justify-center gap-1.5">
+                <TextCursorInput className="w-4 h-4" />
+                Điền từ tiếng Anh còn thiếu vào câu
               </span>
-              <p className="text-xs text-slate-500 dark:text-zinc-400">
-                Gõ từ và nhấn Enter. Đúng thì xem lại đáp án rồi nhấn Enter để sang câu mới; sai thì nhập lại.
+              <p className="text-xs text-slate-600 dark:text-zinc-400">
+                Gõ từ còn thiếu vào ô bên dưới. Đúng thì xem lại đáp án rồi sang câu mới; sai thì nhập lại.
               </p>
             </div>
 
-            {/* Context Code Card */}
+            {/* Example sentence card */}
             <div className="p-4 md:p-5 rounded-2xl bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3 shadow-inner shrink-0">
-              <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 dark:text-zinc-400">
+              <div className="flex items-center justify-between text-xs text-slate-600 dark:text-zinc-400">
                 <span>Câu ví dụ</span>
-                <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{currentWord.topic || "Dev Tech"}</span>
+                {currentWord.topic && currentWord.topic !== "General Tech" && (
+                  <span className="text-indigo-600 dark:text-indigo-400 font-semibold">{currentWord.topic}</span>
+                )}
               </div>
-              <p className="text-sm md:text-base font-medium text-slate-900 dark:text-zinc-100 leading-relaxed font-mono">
+              <p className="text-base font-medium text-slate-900 dark:text-zinc-100 leading-relaxed">
                 {clozeDisplaySentence}
               </p>
 
@@ -113,8 +116,8 @@ export default function ClozeCard({
                   data-lpignore="true"
                   data-1p-ignore="true"
                   data-form-type="other"
-                  placeholder={lengthRevealed ? `Gõ từ còn thiếu (${answerForm.length} ký tự) và nhấn Enter ↵` : "Gõ từ còn thiếu và nhấn Enter ↵"}
-                  className={`w-full bg-white dark:bg-zinc-900 border-2 rounded-xl px-4 py-3 text-base font-mono text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none text-center tracking-wide shadow-sm transition-all ${
+                  placeholder={lengthRevealed ? `Gõ từ còn thiếu (${answerForm.length} ký tự) rồi xác nhận` : "Gõ từ còn thiếu rồi xác nhận"}
+                  className={`w-full bg-white dark:bg-zinc-900 border-2 rounded-xl px-4 py-3 text-base font-mono text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-zinc-400 focus:outline-none text-center tracking-wide shadow-sm transition-all ${
                     isCorrect
                       ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 text-emerald-900 dark:text-emerald-100 ring-4 ring-emerald-500/10 font-bold"
                       : isShaking
@@ -145,7 +148,7 @@ export default function ClozeCard({
                       ) : (
                         <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
                       )}
-                      <span className="truncate">{feedbackMessage.text}</span>
+                      <span className="line-clamp-2 leading-tight">{feedbackMessage.text}</span>
                     </div>
                     {(showHint || wrongAttempts >= 2) && (
                       <span className="text-[11px] font-mono font-bold text-amber-700 dark:text-amber-300 shrink-0 ml-2">
@@ -157,7 +160,7 @@ export default function ClozeCard({
                   <div className="w-full h-full px-3.5 rounded-xl bg-amber-50/90 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 text-xs flex items-center justify-between gap-2 shadow-xs animate-in fade-in duration-150">
                     <div className="flex items-center gap-2 min-w-0">
                       <HelpCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                      <span className="truncate">
+                      <span className="line-clamp-2 leading-tight">
                         Gợi ý: Bắt đầu bằng{" "}
                         <span className="font-mono font-bold text-amber-800 dark:text-amber-300">
                           "{answerForm[0].toUpperCase()}"
@@ -175,8 +178,8 @@ export default function ClozeCard({
                     )}
                   </div>
                 ) : (
-                  <div className="w-full h-full rounded-xl border border-dashed border-slate-200 dark:border-zinc-800/80 flex items-center justify-center text-[11px] text-slate-400 dark:text-zinc-500 font-medium select-none px-3">
-                    <span>Gõ từ tiếng Anh còn thiếu rồi nhấn Enter ↵</span>
+                  <div className="w-full h-full rounded-xl border border-dashed border-slate-200 dark:border-zinc-800/80 flex items-center justify-center text-xs text-slate-600 dark:text-zinc-400 font-medium select-none px-3">
+                    <span>Gõ từ tiếng Anh còn thiếu vào ô bên trên</span>
                   </div>
                 )}
               </div>
@@ -188,26 +191,18 @@ export default function ClozeCard({
                     <button
                       type="button"
                       onClick={() => setShowHint(true)}
-                      className="text-slate-500 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 text-xs font-medium"
+                      className="min-h-[40px] px-2 text-slate-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5 text-xs font-medium"
                     >
                       <HelpCircle className="w-3.5 h-3.5" />
                       <span>Gợi ý chữ cái đầu</span>
                     </button>
 
-                    <div className="flex items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={handleSkip}
-                        className="text-slate-400 hover:text-slate-700 dark:text-zinc-500 dark:hover:text-zinc-300 text-xs flex items-center gap-1 transition-colors"
-                        title="Bỏ qua từ này (đánh giá: Quên)"
-                      >
-                        <SkipForward className="w-3.5 h-3.5" />
-                        <span>Bỏ qua</span>
-                      </button>
+                    <div className="flex items-center gap-1">
+                      <GiveUpButton onConfirm={handleSkip} label="Không nhớ" icon={<SkipForward className="w-3.5 h-3.5" />} />
                       <button
                         type="button"
                         onClick={handleShowAnswer}
-                        className="text-slate-400 hover:text-indigo-600 dark:text-zinc-500 dark:hover:text-indigo-400 text-xs underline transition-colors"
+                        className="min-h-[40px] px-3 text-slate-600 hover:text-indigo-600 dark:text-zinc-400 dark:hover:text-indigo-400 text-xs underline transition-colors"
                       >
                         Xem đáp án
                       </button>
@@ -215,21 +210,18 @@ export default function ClozeCard({
                   </>
                 ) : (
                   <div className="w-full grid grid-cols-2 gap-2.5 animate-in fade-in duration-200">
-                    <button
-                      type="button"
-                      onClick={handleSkip}
-                      className="py-2.5 px-3 rounded-xl border border-slate-300 dark:border-zinc-700 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
-                      title="Bỏ qua từ này (chuyển sang từ tiếp theo và đánh giá: Quên)"
-                    >
-                      <SkipForward className="w-4 h-4 text-slate-500 dark:text-zinc-400" />
-                      <span>Bỏ qua từ này</span>
-                    </button>
+                    <GiveUpButton
+                      onConfirm={handleSkip}
+                      label="Không nhớ từ này"
+                      icon={<SkipForward className="w-4 h-4" />}
+                      className="min-h-[44px] rounded-xl border border-slate-300 dark:border-zinc-700 bg-slate-100 dark:bg-zinc-800"
+                    />
 
                     <button
                       type="button"
                       onClick={handleShowAnswer}
-                      className="py-2.5 px-3 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
-                      title="Xem chi tiết đáp án & giải thích ngữ pháp"
+                      className="min-h-[44px] px-3 rounded-xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                      title="Xem đáp án và phân tích ngữ pháp"
                     >
                       <Eye className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                       <span>Xem kết quả</span>
@@ -265,15 +257,16 @@ export default function ClozeCard({
               </div>
               <button
                 onClick={() => handleSpeak(currentWord.word)}
-                className="p-1 rounded hover:bg-slate-200 dark:hover:bg-zinc-800 transition-colors"
+                className="min-w-10 min-h-10 inline-flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-zinc-800 transition-colors"
                 title="Nghe phát âm"
+                aria-label="Nghe phát âm"
               >
                 <Volume2 className="w-4 h-4" />
               </button>
             </div>
 
             {/* Context Sentence with Highlighted Answer */}
-            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-xs md:text-sm font-mono leading-relaxed text-slate-800 dark:text-zinc-100">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-sm md:text-base leading-relaxed text-slate-800 dark:text-zinc-100">
               {highlightWord(originalSentence, currentWord.word)}
             </div>
           </div>

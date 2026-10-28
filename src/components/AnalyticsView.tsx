@@ -190,7 +190,7 @@ export default function AnalyticsView({
               <Activity className="w-5 h-5 text-cyan-500" />
               <span>Tiến độ</span>
             </h2>
-            <p className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">{PROGRESS_TABS.find((t) => t.id === tab)?.hint}</p>
+            <p className="text-xs text-slate-600 dark:text-zinc-400 mt-0.5">{PROGRESS_TABS.find((t) => t.id === tab)?.hint}</p>
           </div>
           <button
             type="button"
@@ -203,7 +203,7 @@ export default function AnalyticsView({
               <span className="block text-xs font-bold text-amber-600 dark:text-amber-400">
                 Cấp {xpState.level} · {xpState.rank}
               </span>
-              <span className="block text-[11px] font-mono text-slate-500 dark:text-zinc-400">
+              <span className="block text-xs font-mono text-slate-600 dark:text-zinc-400">
                 {xpState.totalXP.toLocaleString()} XP · +{xpState.todayXP} hôm nay
               </span>
             </span>
@@ -221,16 +221,16 @@ export default function AnalyticsView({
                 role="tab"
                 aria-selected={selected}
                 onClick={() => setTab(t.id)}
-                className={`shrink-0 inline-flex items-center gap-1.5 px-3 py-2 -mb-px border-b-2 text-sm font-medium transition-colors ${
+                className={`shrink-0 inline-flex items-center gap-1.5 px-3 min-h-11 -mb-px border-b-2 text-sm font-medium transition-colors ${
                   selected
                     ? "border-cyan-500 text-cyan-700 dark:text-cyan-300"
-                    : "border-transparent text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
+                    : "border-transparent text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
                 }`}
               >
                 <Icon className="w-4 h-4" />
                 {t.label}
                 {t.id === "badges" && (
-                  <span className="text-[10px] font-mono px-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
+                  <span className="text-xs font-mono px-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
                     {unlockedCount}/{achievements.length}
                   </span>
                 )}
@@ -247,7 +247,7 @@ export default function AnalyticsView({
         {/* Retention Health */}
         <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">
+            <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">
               Khả năng ghi nhớ
             </span>
             <Brain className="w-4 h-4 text-emerald-500" />
@@ -256,7 +256,7 @@ export default function AnalyticsView({
             <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
               {Math.round(stats.avgRetrievability * 100)}%
             </span>
-            <span className="text-[11px] text-slate-400 dark:text-zinc-500">trung bình</span>
+            <span className="text-xs text-slate-600 dark:text-zinc-400">trung bình</span>
           </div>
           <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
             <div
@@ -269,8 +269,8 @@ export default function AnalyticsView({
         {/* Mastered Words */}
         <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">
-              Nhớ lâu (21 ngày+)
+            <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">
+              Nhớ lâu (từ 21 ngày)
             </span>
             <CheckCircle2 className="w-4 h-4 text-cyan-500" />
           </div>
@@ -278,11 +278,11 @@ export default function AnalyticsView({
             <span className="text-2xl font-black text-cyan-600 dark:text-cyan-400 font-mono">
               {stats.masteredCount}
             </span>
-            <span className="text-[11px] text-slate-400 dark:text-zinc-500">
+            <span className="text-xs text-slate-600 dark:text-zinc-400">
               / {stats.totalWords} từ
             </span>
           </div>
-          <p className="text-[11px] text-slate-400 dark:text-zinc-500">
+          <p className="text-xs text-slate-600 dark:text-zinc-400">
             {stats.totalWords > 0
               ? `${Math.round((stats.masteredCount / stats.totalWords) * 100)}% tổng kho từ`
               : "Chưa có từ"}
@@ -292,16 +292,16 @@ export default function AnalyticsView({
         {/* Streak */}
         <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">Chuỗi ngày học</span>
+            <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">Chuỗi ngày học</span>
             <Flame className="w-4 h-4 text-amber-500" />
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-black text-amber-500 font-mono">
               {streakStats.currentStreak}
             </span>
-            <span className="text-[11px] text-slate-400 dark:text-zinc-500">ngày liên tục</span>
+            <span className="text-xs text-slate-600 dark:text-zinc-400">ngày liên tục</span>
           </div>
-          <p className="text-[11px] text-slate-400 dark:text-zinc-500">
+          <p className="text-xs text-slate-600 dark:text-zinc-400">
             Kỷ lục cao nhất: {streakStats.longestStreak} ngày
           </p>
         </div>
@@ -309,19 +309,19 @@ export default function AnalyticsView({
         {/* Words often forgotten: the count here, the list and the leech settings in their own section */}
         <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">Từ hay quên</span>
+            <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">Từ hay quên</span>
             <Bug className="w-4 h-4 text-rose-500" />
           </div>
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-black text-rose-500 font-mono">{forgottenCount ?? "…"}</span>
-            <span className="text-[11px] text-slate-400 dark:text-zinc-500">từ</span>
+            <span className="text-xs text-slate-600 dark:text-zinc-400">từ</span>
           </div>
           {onOpenForgotten ? (
-            <button onClick={onOpenForgotten} className="text-[11px] font-semibold text-rose-600 dark:text-rose-400 hover:underline">
+            <button onClick={onOpenForgotten} className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline">
               {forgottenCount ? "Mở mục Từ hay quên →" : "Chưa có từ nào hay quên →"}
             </button>
           ) : (
-            <p className="text-[11px] text-slate-400 dark:text-zinc-500">
+            <p className="text-xs text-slate-600 dark:text-zinc-400">
               {forgottenCount ? "Sẽ được ôn kèm mẹo nhớ" : "Tuyệt vời, chưa có từ nào hay quên!"}
             </p>
           )}
@@ -355,25 +355,25 @@ export default function AnalyticsView({
           {/* The days ahead in one line, then the calibration of the scheduler */}
           <div className={`${card} p-4 grid grid-cols-1 sm:grid-cols-3 gap-3`}>
             <div className="space-y-0.5">
-              <span className="text-xs text-slate-500 dark:text-zinc-400">Mai phải ôn</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">Mai phải ôn</span>
               <p className="text-2xl font-black font-mono text-slate-900 dark:text-white">{forecast ? `~${forecast.days[1]?.reviews ?? 0}` : "…"}</p>
-              <span className="text-[11px] text-slate-400 dark:text-zinc-500">thẻ</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">thẻ</span>
             </div>
             <div className="space-y-0.5">
-              <span className="text-xs text-slate-500 dark:text-zinc-400">7 ngày tới</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">7 ngày tới</span>
               <p className="text-2xl font-black font-mono text-slate-900 dark:text-white">{nextWeekReviews === null ? "…" : `~${nextWeekReviews}`}</p>
-              <span className="text-[11px] text-slate-400 dark:text-zinc-500">thẻ, chưa tính từ mới</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">thẻ, chưa tính từ mới</span>
             </div>
             <div className="space-y-0.5">
-              <span className="text-xs text-slate-500 dark:text-zinc-400">Trung bình mỗi ngày</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">Trung bình mỗi ngày</span>
               <p className="text-2xl font-black font-mono text-cyan-600 dark:text-cyan-400">
                 {nextWeekReviews === null ? "…" : `~${Math.round(nextWeekReviews / 7)}`}
               </p>
-              <span className="text-[11px] text-slate-400 dark:text-zinc-500">thẻ ôn trong tuần tới</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">thẻ ôn trong tuần tới</span>
             </div>
           </div>
           {simple && (
-            <p className="text-xs text-slate-500 dark:text-zinc-400 px-1">
+            <p className="text-xs text-slate-600 dark:text-zinc-400 px-1">
               Phần dưới là số liệu kỹ thuật của thuật toán ôn tập, không cần đọc để học tốt.
             </p>
           )}
@@ -400,19 +400,19 @@ export default function AnalyticsView({
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
             <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800">
-              <span className="text-[11px] text-slate-500 dark:text-zinc-400">Tổng lượt ôn tập</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">Tổng lượt ôn tập</span>
               <p className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">
                 {reviewAnalytics.totalReviews}
               </p>
             </div>
             <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800">
-              <span className="text-[11px] text-slate-500 dark:text-zinc-400">Trả lời đúng</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">Trả lời đúng</span>
               <p className="text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1">
                 {reviewAnalytics.correctReviews} ({reviewAnalytics.accuracyRate}%)
               </p>
             </div>
             <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800">
-              <span className="text-[11px] text-slate-500 dark:text-zinc-400">Tốc độ phản xạ trung bình</span>
+              <span className="text-xs text-slate-600 dark:text-zinc-400">Tốc độ phản xạ trung bình</span>
               <p className="text-xl font-bold font-mono text-cyan-600 dark:text-cyan-400 mt-1">
                 {(reviewAnalytics.averageResponseTimeMs / 1000).toFixed(1)}s
               </p>
@@ -436,7 +436,7 @@ export default function AnalyticsView({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-zinc-400 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-slate-400 inline-block" />
-                  Mới thêm (New)
+                  Mới thêm
                 </span>
                 <span className="font-mono font-bold text-slate-700 dark:text-zinc-300">
                   {stats.newCount} ({stats.totalWords ? Math.round((stats.newCount / stats.totalWords) * 100) : 0}%)
@@ -455,7 +455,7 @@ export default function AnalyticsView({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-zinc-400 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
-                  Đang học (Learning)
+                  Đang học
                 </span>
                 <span className="font-mono font-bold text-amber-600 dark:text-amber-400">
                   {stats.learningCount} ({stats.totalWords ? Math.round((stats.learningCount / stats.totalWords) * 100) : 0}%)
@@ -474,7 +474,7 @@ export default function AnalyticsView({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-zinc-400 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" />
-                  Ôn định kỳ (Review)
+                  Đang ôn định kỳ
                 </span>
                 <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
                   {stats.reviewCount - stats.masteredCount} ({stats.totalWords ? Math.round(((stats.reviewCount - stats.masteredCount) / stats.totalWords) * 100) : 0}%)
@@ -493,7 +493,7 @@ export default function AnalyticsView({
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-zinc-400 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
-                  Khắc sâu (Mastered 21d+)
+                  Nhớ lâu (từ 21 ngày)
                 </span>
                 <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
                   {stats.masteredCount} ({stats.totalWords ? Math.round((stats.masteredCount / stats.totalWords) * 100) : 0}%)
@@ -508,7 +508,7 @@ export default function AnalyticsView({
             </div>
           </div>
 
-          <p className="text-[11px] text-slate-400 dark:text-zinc-500 pt-2 border-t border-slate-100 dark:border-zinc-800">
+          <p className="text-xs text-slate-600 dark:text-zinc-400 pt-2 border-t border-slate-100 dark:border-zinc-800">
             App tự tính thời điểm ôn lại từng từ, dựa trên việc bạn nhớ từ đó chắc đến đâu và nó khó với bạn thế nào.
           </p>
         </div>
@@ -522,7 +522,7 @@ export default function AnalyticsView({
 
           <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1">
             {topicMastery.length === 0 ? (
-              <p className="text-xs text-slate-400">Chưa có cấp độ nào.</p>
+              <p className="text-xs text-slate-600 dark:text-zinc-400">Chưa có cấp độ nào.</p>
             ) : (
               topicMastery.map((item) => (
                 <div key={item.topic} className="space-y-1">
@@ -530,7 +530,7 @@ export default function AnalyticsView({
                     <span className="text-slate-700 dark:text-zinc-300 font-medium truncate max-w-[200px]">
                       {item.topic}
                     </span>
-                    <span className="font-mono text-slate-500 dark:text-zinc-400">
+                    <span className="font-mono text-slate-600 dark:text-zinc-400">
                       {item.mastered}/{item.total} ({item.percent}%)
                     </span>
                   </div>
@@ -561,7 +561,7 @@ export default function AnalyticsView({
             <p className="text-base font-bold text-slate-900 dark:text-white">
               Cấp {xpState.level} · <span className="text-amber-600 dark:text-amber-400">{xpState.rank}</span>
             </p>
-            <p className="text-xs font-mono text-slate-500 dark:text-zinc-400">
+            <p className="text-xs font-mono text-slate-600 dark:text-zinc-400">
               {xpState.totalXP.toLocaleString()} XP tổng · {xpState.todayXP} XP hôm nay
             </p>
             <WeeklyRankBadge />
@@ -575,7 +575,7 @@ export default function AnalyticsView({
               Danh hiệu
             </h3>
           </div>
-          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-zinc-400">
+          <span className="text-xs font-mono font-semibold text-slate-600 dark:text-zinc-400">
             Đã mở {unlockedCount}/{achievements.length} danh hiệu
           </span>
         </div>
@@ -607,19 +607,19 @@ export default function AnalyticsView({
                       {badge.title}
                     </h4>
                     {badge.isUnlocked && (
-                      <span className="text-[10px] text-amber-500 font-bold">✓</span>
+                      <span className="text-xs text-amber-500 font-bold">✓</span>
                     )}
                   </div>
-                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-snug">
+                  <p className="text-xs text-slate-600 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-snug">
                     {badge.description}
                   </p>
 
-                  <div className="mt-2 flex items-center justify-between text-[10px]">
+                  <div className="mt-2 flex items-center justify-between text-xs">
                     <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
                       +{badge.xpBonus} XP
                     </span>
                     {!badge.isUnlocked && (
-                      <span className="text-slate-400 dark:text-zinc-500 font-mono">
+                      <span className="text-slate-600 dark:text-zinc-400 font-mono">
                         {badge.currentValue}/{badge.targetValue}
                       </span>
                     )}

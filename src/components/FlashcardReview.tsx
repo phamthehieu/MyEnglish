@@ -26,6 +26,7 @@ import FocusBar from "./review/FocusBar";
 import FocusSummary from "./review/FocusSummary";
 import FocusTip from "./review/FocusTip";
 import { useFocusSession } from "@/hooks/useFocusSession";
+import { useBackButton } from "@/hooks/useBackButton";
 import { nextReviewPeek, type FocusPlan } from "@/services/focusSession";
 import { useWordsStore } from "@/stores/wordsStore";
 import type { DashboardTab } from "./dashboard/shared";
@@ -161,6 +162,12 @@ export default function FlashcardReview({
     window.addEventListener("keydown", onKey, true);
     return () => window.removeEventListener("keydown", onKey, true);
   }, [focus, active, sessionCompleted]);
+
+  // Android Back asks the same question as Esc and the "Thoát" button (a focus session's bar asks its own)
+  useBackButton(active && !focus, () => {
+    if (sessionCompleted) onFinish();
+    else setConfirmingExit(!confirmingExitRef.current);
+  });
 
   const leave = () => {
     if (sessionCompleted) {
@@ -310,7 +317,8 @@ export default function FlashcardReview({
             ? () => {
                 // Selecting text (to copy the meaning) must not flip the card back
                 if (window.getSelection?.()?.toString()) return;
-                setIsFlipped((prev) => !prev);
+                // Front to back only: a tap on the answer side must not hide it ("Lật lại" is the way back)
+                setIsFlipped(true);
               }
             : undefined
         }
@@ -355,7 +363,7 @@ export default function FlashcardReview({
           </div>
         ) : quizRightAfterIntro ? (
           <div className="mt-1 text-center text-[11px] text-cyan-700 dark:text-cyan-300">
-            Vừa xem từ này xong nên câu này chỉ để luyện — từ sẽ được hỏi lại ở cuối phiên (hoặc lần ôn sau) để chấm điểm.
+            Vừa xem từ này xong nên câu này chỉ để luyện — từ sẽ được hỏi lại ở cuối phiên (hoặc lần ôn sau) để tính vào lịch ôn.
           </div>
         ) : !practiceMode && !exerciseCountsForSchedule ? (
           <div className="mt-1 text-center text-[11px] text-amber-700 dark:text-amber-300">
@@ -594,14 +602,14 @@ export default function FlashcardReview({
             onClick={(e) => e.stopPropagation()}
           >
             <p className="text-sm font-bold text-slate-900 dark:text-white">Thoát bài đang học?</p>
-            <p className="text-xs text-slate-600 dark:text-zinc-300">
+            <p className="text-sm text-slate-600 dark:text-zinc-300">
               Bạn có muốn thoát phiên học đang diễn ra không? Các câu đã trả lời vẫn được lưu.
             </p>
             <div className="flex gap-2 justify-end">
               <button
                 autoFocus
                 onClick={() => setConfirmingExit(false)}
-                className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold transition-colors"
+                className="px-4 h-11 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold transition-colors"
               >
                 Học tiếp
               </button>
@@ -610,7 +618,7 @@ export default function FlashcardReview({
                   setConfirmingExit(false);
                   onExit();
                 }}
-                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-xs hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+                className="px-4 h-11 rounded-lg border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-sm hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
               >
                 Thoát
               </button>

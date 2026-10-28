@@ -94,7 +94,7 @@ export function useMic(): MicHandle {
       }
       grammar.current = g;
       callback.current = onResult;
-      if (!startListening()) {
+      if (!startListening(finish)) {
         grammar.current = null;
         callback.current = null;
         setProblem("Không bật được micro (có thể app khác đang dùng). Thử lại nhé.");

@@ -55,8 +55,13 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
     handleSpeak(item.en);
   };
 
+  // The clock waits while the microphone is still being prepared for the first time
+  const preparing = useRef(false);
+  preparing.current = mic.phase === "preparing";
+
   useEffect(() => {
     const tick = window.setInterval(() => {
+      if (preparing.current) startedAt.current += 100;
       const e = Date.now() - startedAt.current;
       setElapsed(e);
       if (e >= limit) settle(false, "Hết giờ rồi.");
@@ -113,7 +118,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
     // The bottom padding leaves room to scroll the box above the keyboard
     <div ref={area} className="space-y-3 pb-[45vh]">
       <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
-        <p className="text-[11px] font-bold tracking-wide text-slate-500 dark:text-zinc-400">NGHĨA TIẾNG VIỆT:</p>
+        <p className="text-xs font-bold tracking-wide text-slate-500 dark:text-zinc-400">NGHĨA TIẾNG VIỆT:</p>
         <p className="text-xl font-bold text-slate-900 dark:text-white">{item.vi}</p>
 
         {level !== "none" && (
@@ -177,7 +182,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
           />
           {feedback && <p className="rounded-xl border border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm">{feedback}</p>}
           <div className="flex gap-2">
-            <button onClick={hint} className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm font-semibold text-slate-700 dark:text-zinc-200 inline-flex items-center gap-1.5">
+            <button onClick={hint} className="px-4 min-h-[44px] rounded-xl border border-slate-300 dark:border-zinc-700 text-sm font-semibold text-slate-700 dark:text-zinc-200 inline-flex items-center gap-1.5">
               <Lightbulb className="w-4 h-4" /> Gợi ý
             </button>
             <button onClick={check} disabled={!typed.trim()} className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-sm font-semibold inline-flex items-center justify-center gap-2">
@@ -190,7 +195,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
               {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem}</p>}
             </>
           )}
-          <p className="text-[11px] text-slate-500 dark:text-zinc-500">Mỗi gợi ý trừ 25 điểm, mỗi lần sai trừ 12 điểm. Bấm vào ô chấm để mở đúng từ đó.</p>
+          <p className="text-xs text-slate-500 dark:text-zinc-400">Mỗi gợi ý trừ 25 điểm, mỗi lần sai trừ 12 điểm. Bấm vào ô chấm để mở đúng từ đó.</p>
         </>
       ) : (
         <>

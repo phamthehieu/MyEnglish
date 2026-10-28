@@ -112,16 +112,16 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
               type="button"
               onClick={() => setHint(true)}
               disabled={hint}
-              className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-amber-600 disabled:text-amber-600"
+              className="inline-flex items-center gap-1 min-h-[40px] text-xs text-slate-600 hover:text-amber-600 disabled:text-amber-600"
             >
               <Lightbulb className="w-3.5 h-3.5" />
               {hint ? `Loại lỗi: ${MISTAKE_CATEGORY_LABEL[m.category ?? "other"]}` : "Gợi ý loại lỗi"}
             </button>
             <div className="flex items-center gap-2">
-              <button type="button" onClick={() => setResult(Rating.Again)} className="text-[11px] text-slate-500 hover:text-slate-800 dark:hover:text-zinc-200">
+              <button type="button" onClick={() => setResult(Rating.Again)} className="min-h-[40px] px-2 text-xs text-slate-600 hover:text-slate-800 dark:hover:text-zinc-200">
                 Không nhớ
               </button>
-              <button type="submit" disabled={!input.trim()} className="py-2 px-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-xs font-semibold disabled:opacity-40">
+              <button type="submit" disabled={!input.trim()} className="min-h-[44px] px-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-xs font-semibold disabled:opacity-40">
                 Kiểm tra
               </button>
             </div>
@@ -145,7 +145,7 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
             {!ok && input.trim() && (
               <button
                 onClick={() => next(Rating.Hard)}
-                className="py-2 px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-xs text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                className="min-h-[44px] px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-xs text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
               >
                 Tôi chỉ gõ nhầm
               </button>
@@ -153,7 +153,7 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
             <button
               onClick={() => next(ok ? Rating.Good : Rating.Again)}
               autoFocus
-              className="inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold"
+              className="inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold"
             >
               Tiếp
               <ArrowRight className="w-3.5 h-3.5" />

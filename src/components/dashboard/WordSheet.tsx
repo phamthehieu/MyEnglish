@@ -103,7 +103,7 @@ export default function WordSheet({
             <h3 className="text-4xl font-bold leading-tight text-slate-900 dark:text-white break-words" style={{ fontFamily }}>
               {shown}
             </h3>
-            {entry && entry.word.toLowerCase() !== shown && <p className="text-sm text-slate-500 dark:text-zinc-400">dạng của "{entry.word}"</p>}
+            {entry && entry.word.toLowerCase() !== shown && <p className="text-sm text-slate-600 dark:text-zinc-400">dạng của "{entry.word}"</p>}
           </div>
           <button
             onClick={() => handleSpeak(shown)}
@@ -115,7 +115,7 @@ export default function WordSheet({
         </div>
 
         {entry === undefined && (
-          <p className="mt-4 inline-flex items-center gap-2 text-sm text-slate-500 dark:text-zinc-400">
+          <p className="mt-4 inline-flex items-center gap-2 text-sm text-slate-600 dark:text-zinc-400">
             <Loader2 className="w-4 h-4 animate-spin" /> Đang tra từ…
           </p>
         )}
@@ -124,7 +124,7 @@ export default function WordSheet({
           <>
             <p className="mt-1 flex flex-wrap items-center gap-x-2 text-base text-slate-600 dark:text-zinc-300">
               {ipa && <span>{ipa}</span>}
-              {entry.pos && <span className="italic text-slate-500 dark:text-zinc-400">· {entry.pos.split(",")[0]}</span>}
+              {entry.pos && <span className="italic text-slate-600 dark:text-zinc-400">· {entry.pos.split(",")[0]}</span>}
               {level && (
                 <span className="inline-flex items-center gap-1.5 font-bold text-slate-900 dark:text-white">
                   <span className={`h-2.5 w-2.5 rounded-full ${LEVEL_DOT[level] ?? "bg-slate-400"}`} aria-hidden="true" />
@@ -139,7 +139,7 @@ export default function WordSheet({
         )}
 
         {entry === null && (
-          <p className="mt-3 text-sm text-slate-500 dark:text-zinc-400">Từ này chưa có trong bộ 5.000 từ Oxford của app nên chưa có nghĩa để hiện.</p>
+          <p className="mt-3 text-sm text-slate-600 dark:text-zinc-400">Từ này chưa có trong bộ 5.000 từ Oxford của app nên chưa có nghĩa để hiện.</p>
         )}
 
         {/* The sentence the word was met in, with the word lit, and a button that reads it aloud */}
@@ -163,7 +163,7 @@ export default function WordSheet({
         {examples[0] && (
           <div className="mt-5 space-y-0.5" style={{ fontFamily }}>
             <p className="text-lg text-slate-800 dark:text-zinc-100">{examples[0].en}</p>
-            <p className="text-lg text-slate-500 dark:text-zinc-400">{examples[0].vi}</p>
+            <p className="text-lg text-slate-600 dark:text-zinc-400">{examples[0].vi}</p>
           </div>
         )}
 
@@ -171,11 +171,11 @@ export default function WordSheet({
           <div className="mt-5 space-y-4 text-slate-700 dark:text-zinc-300">
             {otherSenses.length > 0 && (
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-zinc-500">Nghĩa khác</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-zinc-400">Nghĩa khác</p>
                 <ul className="mt-1.5 space-y-1">
                   {otherSenses.map((s, i) => (
                     <li key={i} className="text-base">
-                      <span className="italic text-slate-500 dark:text-zinc-400">{s.pos}</span> · {s.vn}
+                      <span className="italic text-slate-600 dark:text-zinc-400">{s.pos}</span> · {s.vn}
                     </li>
                   ))}
                 </ul>
@@ -183,14 +183,14 @@ export default function WordSheet({
             )}
             {forms.length > 0 && (
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-zinc-500">Dạng khác</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-zinc-400">Dạng khác</p>
                 <p className="mt-1.5 text-base">{forms.join(" · ")}</p>
               </div>
             )}
             {examples.slice(1, 3).map((ex, i) => (
               <div key={i} className="space-y-0.5" style={{ fontFamily }}>
                 <p className="text-base text-slate-800 dark:text-zinc-100">{ex.en}</p>
-                <p className="text-base text-slate-500 dark:text-zinc-400">{ex.vi}</p>
+                <p className="text-base text-slate-600 dark:text-zinc-400">{ex.vi}</p>
               </div>
             ))}
           </div>

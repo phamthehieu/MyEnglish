@@ -60,7 +60,8 @@ interface StandingState {
 }
 
 export const useStandingStore = create<StandingState>((set, get) => ({
-  enabled: read<boolean>(ENABLED_KEY) !== false,
+  // Off until the learner turns it on: the race is not for everyone (Cài đặt > Giao diện)
+  enabled: read<boolean>(ENABLED_KEY) === true,
   scopePref: read<string>(SCOPE_KEY),
   groups: [],
   standing: null,

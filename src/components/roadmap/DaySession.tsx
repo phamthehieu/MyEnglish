@@ -95,7 +95,7 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
             <p className="text-sm text-emerald-900 dark:text-emerald-100">Phần tiếp theo của chặng sẽ sẵn sàng vào ngày mai. Mỗi bước cần cách nhau một ngày để nhớ lâu hơn.</p>
           )}
         </div>
-        <button onClick={onExit} className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
+        <button onClick={onExit} className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
           Xong
         </button>
       </div>
@@ -104,7 +104,7 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
 
   const label = `Chặng: ${stage.title} · phần ${Math.min(index + 1, screens.length)}/${screens.length}`;
 
-  if (blocked) return <p className="text-sm text-slate-500 dark:text-zinc-400">Đang chuyển…</p>;
+  if (blocked) return <p className="text-sm text-slate-600 dark:text-zinc-400">Đang chuyển…</p>;
 
   if (screen.kind === "tip") {
     const tip = tipForStage(stage.id)!;
@@ -121,11 +121,11 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
             markTipSeen(stage.id);
             next();
           }}
-          className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold"
+          className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold"
         >
           Đã hiểu, học tiếp
         </button>
-        <button onClick={next} className="w-full text-xs font-semibold underline underline-offset-2 text-slate-600 dark:text-zinc-400">
+        <button onClick={next} className="w-full min-h-11 text-xs font-semibold underline underline-offset-2 text-slate-600 dark:text-zinc-400">
           Để sau, vào học luôn
         </button>
       </div>
@@ -183,7 +183,7 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
   if (!situation) return null;
   return (
     <div className="space-y-2">
-      <p className="text-xs text-slate-500 dark:text-zinc-400">{label}</p>
+      <p className="text-xs text-slate-600 dark:text-zinc-400">{label}</p>
       <div className="flex flex-col h-[calc(100dvh-11rem)] min-h-[26rem] rounded-2xl border border-slate-200 dark:border-zinc-800 overflow-hidden">
         <Conversation
           key={index}

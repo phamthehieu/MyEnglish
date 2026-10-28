@@ -244,7 +244,14 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
     };
   }, [text]);
 
-  if (!asrAvailable()) return null;
+  if (!asrAvailable()) {
+    return (
+      <div className="space-y-3">
+        <p className="text-xs text-center text-slate-600 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>
+        {trailing && <div className="flex justify-end">{trailing}</div>}
+      </div>
+    );
+  }
 
   const finish = async () => {
     const mine = run.current;
@@ -276,7 +283,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
       setPhase("idle");
       return;
     }
-    if (!startListening()) {
+    if (!startListening(finish)) {
       setProblem("Không bật được micro (có thể app khác đang dùng). Thử lại nhé.");
       setPhase("idle");
       return;
@@ -288,7 +295,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
 
   const busy = phase === "preparing" || phase === "checking";
   const label =
-    phase === "listening" ? "Đang nghe… bấm để dừng" : phase === "preparing" ? "Đang chuẩn bị…" : phase === "checking" ? "Đang chấm…" : result ? "Ghi lại" : "Ghi âm";
+    phase === "listening" ? "Đang nghe… đọc xong thì dừng, máy sẽ tự chấm (hoặc bấm để dừng)" : phase === "preparing" ? "Đang chuẩn bị…" : phase === "checking" ? "Đang chấm…" : result ? "Ghi lại" : "Ghi âm";
 
   return (
     <div className="space-y-4">
@@ -308,7 +315,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
           >
             {busy ? <Loader2 className="w-8 h-8 animate-spin" /> : phase === "listening" ? <Square className="w-7 h-7 fill-white" /> : <Mic className="w-8 h-8" />}
           </button>
-          <span className="text-sm text-slate-500 dark:text-zinc-400 text-center">{label}</span>
+          <span className="text-sm text-slate-600 dark:text-zinc-400 text-center max-w-[16rem]">{label}</span>
         </div>
         <div className="justify-self-end">{trailing}</div>
       </div>
@@ -337,7 +344,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
               </p>
             ))}
           {result.words.some((w) => w.status === "missing") && <p className="text-xs text-rose-600 dark:text-rose-400">Gạch ngang: chưa nghe thấy từ đó.</p>}
-          <button onClick={playRecording} className="text-xs font-semibold text-slate-600 dark:text-zinc-300 underline underline-offset-2 inline-flex items-center gap-1">
+          <button onClick={playRecording} className="min-h-[40px] text-xs font-semibold text-slate-600 dark:text-zinc-300 underline underline-offset-2 inline-flex items-center gap-1">
             <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
           </button>
         </div>
@@ -403,15 +410,16 @@ function ShadowCard({
 
       {seg.ipa && (
         <div className="flex items-start gap-3">
-          {showIpa ? <p className="min-w-0 flex-1 text-center text-[15px] leading-snug text-slate-500 dark:text-zinc-400 break-words">{seg.ipa}</p> : <span className="flex-1" />}
+          {showIpa ? <p className="min-w-0 flex-1 text-center text-[15px] leading-snug text-slate-600 dark:text-zinc-400 break-words">{seg.ipa}</p> : <span className="flex-1" />}
           <button
             onClick={onToggleIpa}
             aria-pressed={showIpa}
             aria-label={showIpa ? "Ẩn phiên âm" : "Hiện phiên âm"}
-            className={`h-10 shrink-0 rounded-xl border px-3 text-sm font-bold ${
+            title="IPA = ký hiệu cách đọc"
+            className={`h-11 shrink-0 rounded-xl border px-3 text-sm font-bold ${
               showIpa
                 ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
-                : "border-slate-200 dark:border-zinc-700 text-slate-500 dark:text-zinc-400"
+                : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-400"
             }`}
           >
             IPA
@@ -434,9 +442,9 @@ function ShadowCard({
           onClick={onLoop}
           aria-pressed={loop}
           aria-label={loop ? "Đang lặp lại câu này. Bấm để tắt" : "Lặp lại câu này"}
-          className={`${pill} w-14 ${loop ? "bg-violet-500/20 text-violet-600 dark:text-violet-300 ring-1 ring-violet-400/60" : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400"}`}
+          className={`${pill} gap-1.5 px-4 ${loop ? "bg-violet-500/20 text-violet-600 dark:text-violet-300 ring-1 ring-violet-400/60" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"}`}
         >
-          <Repeat className="w-5 h-5" />
+          <Repeat className="w-5 h-5" /> Lặp
         </button>
       </div>
 
@@ -450,7 +458,7 @@ function ShadowCard({
           <button
             onClick={onNext}
             disabled={index >= total - 1}
-            className="inline-flex items-center gap-1.5 text-base font-semibold text-violet-600 dark:text-violet-300 disabled:opacity-40"
+            className="inline-flex min-h-[44px] items-center gap-1.5 text-base font-semibold text-violet-600 dark:text-violet-300 disabled:opacity-40"
           >
             Tiếp <ArrowRight className="w-5 h-5" />
           </button>
@@ -486,7 +494,7 @@ function FontSheet({ index, onPick, onClose }: { index: number; onPick: (i: numb
         <button onClick={onClose} className="mx-auto block h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" aria-label="Đóng" />
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cỡ chữ</h3>
         <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 px-4 py-3">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 dark:text-zinc-500">Xem trước</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-zinc-400">Xem trước</p>
           <p className="mt-1 font-medium text-slate-900 dark:text-white" style={{ ...SENTENCE_FONT, fontSize: (SENTENCE_PX * pct) / 100 }}>
             It's 1780 in Paris
           </p>
@@ -735,13 +743,13 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
     (kind === "dictation" ? setDoneDictation : setDoneCloze)((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
 
   const tool = (on: boolean) =>
-    `h-9 shrink-0 rounded-xl border inline-flex items-center justify-center gap-1.5 text-xs font-semibold transition-colors ${
+    `h-11 shrink-0 rounded-xl border inline-flex items-center justify-center gap-1.5 text-xs font-semibold transition-colors ${
       on
         ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
-        : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-500 dark:text-zinc-400"
+        : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-400"
     }`;
   const tab = (on: boolean) =>
-    `shrink-0 px-4 py-2 rounded-full border text-sm font-semibold inline-flex items-center gap-2 transition-colors ${
+    `shrink-0 px-4 min-h-[44px] rounded-full border text-sm font-semibold inline-flex items-center gap-2 transition-colors ${
       on
         ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
         : "border-slate-200 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60 text-slate-600 dark:text-zinc-300"
@@ -783,12 +791,12 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
         <div className="px-3 md:px-0 pt-3 space-y-3">
           {!compact && (
             <div className="flex items-center gap-2">
-              <button onClick={onBack} className="p-1.5 -ml-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 shrink-0" aria-label="Danh sách">
+              <button onClick={onBack} className="w-11 h-11 -ml-2 inline-flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 shrink-0" aria-label="Danh sách">
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="min-w-0 flex-1">
                 <h2 className="text-base font-bold text-slate-900 dark:text-white truncate">{lesson.title}</h2>
-                <p className="text-[11px] text-slate-500 dark:text-zinc-400 tabular-nums">
+                <p className="text-xs text-slate-600 dark:text-zinc-400 tabular-nums">
                   {lesson.level} · {Math.floor(lesson.duration / 60)}:{String(lesson.duration % 60).padStart(2, "0")} · câu {index + 1}/{segments.length}
                 </p>
               </div>
@@ -800,7 +808,7 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
               <button role="tab" aria-selected={view === "subtitles"} onClick={() => setView("subtitles")} className={tab(view === "subtitles")}>
                 <Captions className="w-4 h-4" /> Phụ đề
               </button>
-              {/* The microphone check only exists on the phone */}
+              {/* The microphone check only exists on the phone (the line under the tabs says so elsewhere) */}
               {canShadow && (
                 <button role="tab" aria-selected={view === "shadow"} onClick={() => setView("shadow")} className={tab(view === "shadow")}>
                   <Mic className="w-4 h-4" /> Shadowing
@@ -814,35 +822,47 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
               </button>
             </div>
           )}
+          {!compact && (
+            <p className="text-xs text-slate-600 dark:text-zinc-400">
+              {view === "subtitles"
+                ? "Chạm một câu để nghe lại. Bật \"Cuộn theo\" để danh sách tự chạy theo video."
+                : view === "shadow"
+                  ? "Shadowing: nghe một câu rồi đọc theo, máy chấm từng từ."
+                  : view === "dictation"
+                    ? "Chính tả: nghe rồi gõ lại cả câu."
+                    : "Điền từ: điền các từ còn thiếu trong câu."}
+              {!canShadow && " Chấm giọng chỉ có trên điện thoại Android."}
+            </p>
+          )}
 
           {/* Tools: square buttons and a fold button; the row scrolls sideways when the screen is narrow. Only for the
               subtitles: the practice tabs have their own controls on their card. */}
           <div className={`${view !== "subtitles" ? "hidden" : "flex"} items-center gap-2 overflow-x-auto pb-0.5 -mx-3 px-3 md:mx-0 md:px-0 ${SCROLLBAR_HIDDEN}`}>
-            <button onClick={() => setFontOpen(true)} className={`${tool(fontOpen)} w-9`} aria-haspopup="dialog" aria-label="Cỡ chữ" title="Cỡ chữ">
+            <button onClick={() => setFontOpen(true)} className={`${tool(fontOpen)} w-11`} aria-haspopup="dialog" aria-label="Cỡ chữ" title="Cỡ chữ">
               <Type className="w-4 h-4" />
             </button>
             {/* Lit: the list follows the sentence being played. Dim: it stays where the learner scrolls it. */}
             <button
               onClick={() => setFollow((v) => !v)}
-              className={`${tool(follow)} w-9`}
+              className={`${tool(follow)} px-3`}
               aria-pressed={follow}
               aria-label={follow ? "Đang tự cuộn theo câu đang phát. Bấm để cuộn thủ công" : "Đang cuộn thủ công. Bấm để tự cuộn theo câu đang phát"}
               title={follow ? "Tự cuộn theo câu đang phát" : "Cuộn thủ công"}
             >
-              <RefreshCw className="w-4 h-4" />
+              <RefreshCw className="w-4 h-4" /> Cuộn theo
             </button>
             {hasVi && (
-              <button onClick={() => setShowVi((v) => !v)} className={`${tool(showVi)} w-9`} aria-pressed={showVi} aria-label="Nghĩa tiếng Việt" title="Nghĩa tiếng Việt">
+              <button onClick={() => setShowVi((v) => !v)} className={`${tool(showVi)} w-11`} aria-pressed={showVi} aria-label="Nghĩa tiếng Việt" title="Nghĩa tiếng Việt">
                 <Languages className="w-4 h-4" />
               </button>
             )}
-            <button onClick={() => setCaptions((v) => !v)} className={`${tool(captions)} w-9`} aria-pressed={captions} aria-label="Phụ đề trên video" title="Phụ đề trên video">
+            <button onClick={() => setCaptions((v) => !v)} className={`${tool(captions)} w-11`} aria-pressed={captions} aria-label="Phụ đề trên video" title="Phụ đề trên video">
               <Subtitles className="w-4 h-4" />
             </button>
             {divider}
             <button
               onClick={() => setCompact((v) => !v)}
-              className={`${tool(false)} w-9`}
+              className={`${tool(false)} w-11`}
               aria-pressed={compact}
               aria-label={compact ? "Hiện tiêu đề và tab" : "Ẩn tiêu đề và tab"}
               title={compact ? "Hiện tiêu đề và tab" : "Ẩn tiêu đề và tab, giữ video"}
@@ -1022,7 +1042,7 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
     return (
       <div className={PAGE_CONTAINER}>
         <div className="max-w-3xl mx-auto space-y-4">
-          <button onClick={() => setOpenId(null)} className="p-1.5 -ml-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200" aria-label="Danh sách">
+          <button onClick={() => setOpenId(null)} className="w-11 h-11 -ml-2 inline-flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200" aria-label="Danh sách">
             <ArrowLeft className="w-5 h-5" />
           </button>
           {failed ? (
@@ -1042,11 +1062,13 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
       <div className="max-w-3xl mx-auto space-y-5">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Shadowing</h2>
-          <p className="text-sm text-slate-500 dark:text-zinc-400">Xem video, bấm vào câu nào là video nhảy tới câu đó, nghe rồi nói theo.</p>
+          <p className="text-sm text-slate-600 dark:text-zinc-400">Xem video, bấm vào câu nào là video nhảy tới câu đó, nghe rồi nói theo.</p>
+          <p className="text-xs text-slate-600 dark:text-zinc-400 mt-1">Có 4 cách học: Phụ đề (xem), Shadowing (nghe rồi đọc theo), Chính tả (nghe rồi gõ lại), Điền từ (điền từ còn thiếu).</p>
         </div>
 
         {entries.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có video nào.</p>}
 
+        {levels.length > 0 && <p className="text-xs text-slate-600 dark:text-zinc-400 -mb-2">Cấp độ: A1 dễ → C2 khó.</p>}
         {levels.length > 0 && (
           <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
             {levels.map((l) => {
@@ -1057,14 +1079,14 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
                   role="tab"
                   aria-selected={on}
                   onClick={() => setLevel(l)}
-                  className={`shrink-0 px-3.5 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+                  className={`shrink-0 px-3.5 min-h-[40px] rounded-full text-sm font-semibold border transition-colors ${
                     on
                       ? "bg-violet-600 border-violet-600 text-white"
                       : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:border-violet-400"
                   }`}
                 >
                   {l}
-                  <span className={`ml-1.5 text-xs font-normal ${on ? "text-violet-200" : "text-slate-400 dark:text-zinc-500"}`}>
+                  <span className={`ml-1.5 text-xs font-normal ${on ? "text-violet-200" : "text-slate-600 dark:text-zinc-400"}`}>
                     {entries.filter((e) => e.level === l).length}
                   </span>
                 </button>
@@ -1077,7 +1099,7 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
           <section key={name} className="space-y-2">
             <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">
               {name}
-              <span className="ml-2 font-normal normal-case tracking-normal text-slate-400 dark:text-zinc-500">{items.length} bài</span>
+              <span className="ml-2 font-normal normal-case tracking-normal text-slate-600 dark:text-zinc-400">{items.length} bài</span>
             </h3>
             {items.map((l) => (
               <button

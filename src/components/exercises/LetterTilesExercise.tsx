@@ -466,7 +466,7 @@ export default function LetterTilesExercise({
             type="button"
             onClick={clear}
             disabled={picked.length === 0}
-            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:pointer-events-none transition-colors font-medium cursor-pointer"
+            className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:pointer-events-none transition-colors font-medium cursor-pointer"
             title="Làm lại từ đầu"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -476,7 +476,7 @@ export default function LetterTilesExercise({
             <button
               type="button"
               onClick={() => setHint(true)}
-              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors font-medium cursor-pointer"
+              className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors font-medium cursor-pointer"
               title="Hiện chữ cái đầu tiên làm gợi ý (từ này sẽ được chấm Khó)"
             >
               <HelpCircle className="w-3.5 h-3.5" />
@@ -532,7 +532,7 @@ export default function LetterTilesExercise({
         ) : picked.length === letterCount ? (
           <span className="font-medium text-cyan-700 dark:text-cyan-400">Đã đủ chữ, bấm Kiểm tra</span>
         ) : (
-          <span className="font-mono text-slate-400 dark:text-zinc-500">
+          <span className="font-mono text-slate-600 dark:text-zinc-400">
             {picked.length}/{letterCount} chữ
           </span>
         )}
@@ -557,10 +557,10 @@ export default function LetterTilesExercise({
             <button
               type="button"
               onClick={() => (confirmGiveUp ? giveUp() : setConfirmGiveUp(true))}
-              className={`inline-flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                 confirmGiveUp
                   ? "border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300"
-                  : "text-slate-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400"
+                  : "text-slate-600 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400"
               }`}
               title="Xem đáp án và học lại từ này (tính là chưa nhớ)"
             >

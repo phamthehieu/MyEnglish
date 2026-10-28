@@ -46,7 +46,8 @@ export function IpaToggle() {
       onClick={() => set(!on)}
       aria-pressed={on}
       aria-label="Hiện cách đọc IPA"
-      className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-bold border ${
+      title="IPA = ký hiệu cách đọc"
+      className={`shrink-0 px-3 min-h-[40px] rounded-full text-xs font-bold border ${
         on ? "bg-violet-600 border-violet-600 text-white" : "border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300"
       }`}
     >

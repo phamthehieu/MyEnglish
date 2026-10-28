@@ -113,7 +113,7 @@ export default function MarkLevelKnownModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="mark-level-title"
-        className="popup-card-enter w-full max-w-lg overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-6 space-y-5"
+        className="popup-card-enter w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-6 space-y-5"
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
@@ -122,7 +122,7 @@ export default function MarkLevelKnownModal({
               <CheckCheck className="w-5 h-5 text-emerald-500 shrink-0" />
               Đánh dấu toàn bộ cấp {level} là đã biết
             </h2>
-            <p className="text-xs text-slate-500 dark:text-zinc-400">
+            <p className="text-xs text-slate-600 dark:text-zinc-400">
               {level} · {LEVEL_NAMES[level]} (tổng cộng {total.toLocaleString("vi-VN")} từ Oxford)
             </p>
           </div>
@@ -130,7 +130,7 @@ export default function MarkLevelKnownModal({
             type="button"
             disabled={busy}
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:opacity-40"
+            className="shrink-0 w-10 h-10 -mt-2 -mr-2 flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:opacity-40"
             aria-label="Đóng"
           >
             <X className="w-5 h-5" />
@@ -140,15 +140,15 @@ export default function MarkLevelKnownModal({
         {/* Stats card */}
         <div className="grid grid-cols-3 gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200/80 dark:border-zinc-800 text-center">
           <div>
-            <span className="block text-[11px] text-slate-500 dark:text-zinc-400">Tổng số từ</span>
+            <span className="block text-xs text-slate-600 dark:text-zinc-400">Tổng số từ</span>
             <span className="text-base font-bold text-slate-900 dark:text-white">{total.toLocaleString("vi-VN")}</span>
           </div>
           <div>
-            <span className="block text-[11px] text-slate-500 dark:text-zinc-400">Đã học trước</span>
+            <span className="block text-xs text-slate-600 dark:text-zinc-400">Đã học trước</span>
             <span className="text-base font-bold text-cyan-600 dark:text-cyan-400">{alreadyMet.toLocaleString("vi-VN")}</span>
           </div>
           <div>
-            <span className="block text-[11px] text-slate-500 dark:text-zinc-400">Sẽ đánh dấu</span>
+            <span className="block text-xs text-slate-600 dark:text-zinc-400">Sẽ đánh dấu</span>
             <span className="text-base font-bold text-emerald-600 dark:text-emerald-400">
               {loadingCount ? "..." : countToMark.toLocaleString("vi-VN")}
             </span>
@@ -163,14 +163,14 @@ export default function MarkLevelKnownModal({
               <p>
                 <b>{countToMark.toLocaleString("vi-VN")} từ</b> chưa học sẽ được chuyển thẳng vào mục <b>"Đã biết"</b> và không còn xuất hiện trong phần học từ mới.
               </p>
-              <p className="text-[11px] text-emerald-800 dark:text-emerald-300">
+              <p className="text-xs text-emerald-800 dark:text-emerald-300">
                 Để chắc chắn bạn không quên, app sẽ phân bổ lịch kiểm tra nhẹ nhàng sau <b>4 đến 21 ngày</b> (rải đều các ngày, không dồn dập).
               </p>
             </div>
           </div>
 
           {alreadyMet > 0 && (
-            <p className="text-[11px] text-slate-500 dark:text-zinc-400 italic">
+            <p className="text-xs text-slate-600 dark:text-zinc-400 italic">
               * {alreadyMet} từ bạn đã học thật trước đây sẽ được giữ nguyên lịch ôn tập hiện tại, không bị ghi đè.
             </p>
           )}
@@ -190,7 +190,7 @@ export default function MarkLevelKnownModal({
               <span className="font-semibold text-slate-900 dark:text-white">
                 Mở thêm cấp {nextLevel} · {LEVEL_NAMES[nextLevel]} vào lộ trình học
               </span>
-              <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+              <p className="text-xs text-slate-600 dark:text-zinc-400">
                 Sau khi bỏ qua cấp {level}, bạn có thể bắt đầu nhận từ mới của cấp {nextLevel} ngay từ buổi học tiếp theo.
               </p>
             </div>
@@ -225,12 +225,12 @@ export default function MarkLevelKnownModal({
         )}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-2">
+        <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
           <button
             type="button"
             onClick={onClose}
             disabled={busy}
-            className="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
+            className="px-4 min-h-11 rounded-xl text-sm font-medium text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
           >
             Huỷ
           </button>
@@ -238,7 +238,7 @@ export default function MarkLevelKnownModal({
             type="button"
             onClick={handleConfirm}
             disabled={busy || countToMark === 0}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 min-h-11 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold shadow-sm transition-colors disabled:opacity-50"
           >
             {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
             {countToMark === 0

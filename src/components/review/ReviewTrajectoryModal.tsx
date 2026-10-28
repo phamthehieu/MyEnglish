@@ -21,6 +21,8 @@ import {
   formatNextReviewRelative,
   type ReviewStepProjection,
 } from "@/utils/reviewSchedule";
+import { isSimpleMode } from "@/services/learnerProfile";
+import { memoryLabel } from "@/utils/labels";
 import { getWordReviewLogs, type ReviewLogEntry } from "@/services/smartReview";
 
 function formatPastTime(
@@ -193,6 +195,8 @@ export default function ReviewTrajectoryModal({
   // Stability & Difficulty
   const stability = word ? word.srs.stability : grammarLesson?.progress?.stability;
   const difficulty = word ? word.srs.difficulty : grammarLesson?.progress?.difficulty;
+  // Simple mode: only how long the word is remembered, in plain words
+  const simple = isSimpleMode();
 
   return (
     <div
@@ -212,8 +216,8 @@ export default function ReviewTrajectoryModal({
               <span className="p-1.5 rounded-lg bg-cyan-100 dark:bg-cyan-950/80 text-cyan-600 dark:text-cyan-400">
                 <Brain className="w-4 h-4" />
               </span>
-              <span className="text-xs font-semibold text-cyan-700 dark:text-cyan-400 tracking-wide uppercase">
-                Lộ Trình Nhắc Lại Theo Thuật Toán FSRS
+              <span className="text-xs font-semibold text-cyan-700 dark:text-cyan-400">
+                Lịch ôn lại
               </span>
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -234,7 +238,7 @@ export default function ReviewTrajectoryModal({
           <button
             onClick={onClose}
             aria-label="Đóng"
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
+            className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-700 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -244,7 +248,7 @@ export default function ReviewTrajectoryModal({
           {/* Stats Bar */}
           <div className="grid grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 text-center">
             <div className="space-y-0.5">
-              <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-zinc-400">
+              <span className="text-[11px] font-semibold text-slate-600 dark:text-zinc-400">
                 Số lần xuất hiện
               </span>
               <div className="text-base font-extrabold text-slate-900 dark:text-white font-mono">
@@ -253,7 +257,7 @@ export default function ReviewTrajectoryModal({
             </div>
 
             <div className="space-y-0.5 border-x border-slate-200 dark:border-zinc-800">
-              <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-zinc-400">
+              <span className="text-[11px] font-semibold text-slate-600 dark:text-zinc-400">
                 Đúng / Sai
               </span>
               <div className="text-sm font-bold font-mono flex items-center justify-center gap-1.5 pt-0.5">
@@ -270,7 +274,7 @@ export default function ReviewTrajectoryModal({
             </div>
 
             <div className="space-y-0.5">
-              <span className="text-[10px] uppercase font-semibold text-slate-500 dark:text-zinc-400">
+              <span className="text-[11px] font-semibold text-slate-600 dark:text-zinc-400">
                 Tỷ lệ chính xác
               </span>
               <div className="text-base font-extrabold text-cyan-600 dark:text-cyan-400 font-mono">
@@ -279,15 +283,17 @@ export default function ReviewTrajectoryModal({
             </div>
           </div>
 
-          {/* FSRS Memory State Tags */}
-          <div className="flex items-center gap-2 flex-wrap text-[11px]">
-            <span className="text-slate-500 dark:text-zinc-400 font-medium">Chỉ số trí nhớ:</span>
-            <span className="px-2 py-0.5 rounded-md bg-cyan-50 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/60 font-mono">
-              Độ bền (S): {stability ? `${Number(stability).toFixed(1)}d` : "0d"}
+          {/* Memory state in plain words; the difficulty number is for advanced mode */}
+          <div className="flex items-center gap-2 flex-wrap text-xs">
+            <span className="text-slate-600 dark:text-zinc-400 font-medium">Trí nhớ của bạn:</span>
+            <span className="px-2 py-0.5 rounded-md bg-cyan-50 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/60">
+              {memoryLabel(stability)}
             </span>
-            <span className="px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 font-mono">
-              Độ khó (D): {difficulty ? `${Number(difficulty).toFixed(1)}/10` : "Mặc định"}
-            </span>
+            {!simple && (
+              <span className="px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60">
+                Độ khó: {difficulty ? `${Number(difficulty).toFixed(1)}/10` : "chưa rõ"}
+              </span>
+            )}
           </div>
 
           {/* Recent Learning History */}
@@ -298,7 +304,7 @@ export default function ReviewTrajectoryModal({
                 Lịch sử học gần nhất:
               </span>
               <span
-                className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full border ${
+                className={`text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full border ${
                   pastInfo.isPast
                     ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800"
                     : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400 border-slate-200 dark:border-zinc-700"
@@ -321,23 +327,23 @@ export default function ReviewTrajectoryModal({
                   {logs[0] && (
                     <div className="flex items-center gap-1">
                       {logs[0].isCorrect ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                           <CheckCircle2 className="w-3 h-3" />
                           Đúng
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
                           <XCircle className="w-3 h-3" />
                           Chưa đúng
                         </span>
                       )}
                       {RATING_NAME_MAP[logs[0].rating] && (
                         <span
-                          className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+                          className={`text-[11px] font-bold px-1.5 py-0.5 rounded border ${
                             RATING_NAME_MAP[logs[0].rating].badgeClass
                           }`}
                         >
-                          FSRS: {RATING_NAME_MAP[logs[0].rating].label}
+                          Bạn chọn: {RATING_NAME_MAP[logs[0].rating].label}
                         </span>
                       )}
                     </div>
@@ -346,11 +352,11 @@ export default function ReviewTrajectoryModal({
 
                 {logs[0] && (
                   <div className="flex items-center gap-2 flex-wrap text-[11px] text-slate-600 dark:text-zinc-400 pt-1.5 border-t border-indigo-100/70 dark:border-indigo-900/40">
-                    <span className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-[10.5px]">
+                    <span className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-[11px]">
                       Dạng bài: <strong>{EXERCISE_NAME_MAP[logs[0].exerciseType] || logs[0].exerciseType}</strong>
                     </span>
                     {logs[0].direction && (
-                      <span className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-[10.5px]">
+                      <span className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-[11px]">
                         Chiều:{" "}
                         <strong>
                           {logs[0].direction === "production" ? "Gợi nhớ (Vn → En)" : "Nhận diện (En → Vn)"}
@@ -358,12 +364,12 @@ export default function ReviewTrajectoryModal({
                       </span>
                     )}
                     {logs[0].responseTimeMs > 0 && (
-                      <span className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-[10.5px] font-mono">
+                      <span className="px-1.5 py-0.5 rounded bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-[11px] font-mono">
                         ⚡ {(logs[0].responseTimeMs / 1000).toFixed(1)}s
                       </span>
                     )}
                     {logs[0].xpEarned > 0 && (
-                      <span className="px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 text-amber-700 dark:text-amber-300 text-[10.5px] font-bold">
+                      <span className="px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/60 text-amber-700 dark:text-amber-300 text-[11px] font-bold">
                         +{logs[0].xpEarned} XP
                       </span>
                     )}
@@ -397,7 +403,7 @@ export default function ReviewTrajectoryModal({
                           return (
                             <div
                               key={log.id}
-                              className="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-white/80 dark:bg-zinc-900/80 border border-slate-200/60 dark:border-zinc-800 text-[10.5px]"
+                              className="flex items-center justify-between gap-2 p-1.5 rounded-lg bg-white/80 dark:bg-zinc-900/80 border border-slate-200/60 dark:border-zinc-800 text-[11px]"
                             >
                               <div className="flex items-center gap-1.5 min-w-0">
                                 {log.isCorrect ? (
@@ -408,7 +414,7 @@ export default function ReviewTrajectoryModal({
                                 <span className="font-mono text-slate-700 dark:text-zinc-300 truncate">
                                   {logTime.exact}
                                 </span>
-                                <span className="text-slate-400 dark:text-zinc-500 text-[9.5px]">
+                                <span className="text-slate-500 dark:text-zinc-400 text-[11px]">
                                   ({logTime.relative})
                                 </span>
                               </div>
@@ -418,7 +424,7 @@ export default function ReviewTrajectoryModal({
                                   {EXERCISE_NAME_MAP[log.exerciseType] || log.exerciseType}
                                 </span>
                                 {ratingBadge && (
-                                  <span className={`px-1 py-0.2 rounded text-[9px] font-bold border ${ratingBadge.badgeClass}`}>
+                                  <span className={`px-1 py-0.2 rounded text-[11px] font-bold border ${ratingBadge.badgeClass}`}>
                                     {ratingBadge.label}
                                   </span>
                                 )}
@@ -434,7 +440,7 @@ export default function ReviewTrajectoryModal({
             ) : (
               <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-950/40 border border-slate-200/60 dark:border-zinc-800 text-xs text-slate-500 dark:text-zinc-400 flex items-center gap-2">
                 <RotateCcw className="w-4 h-4 text-slate-400 shrink-0" />
-                <span>Từ này chưa có lịch sử ôn tập. FSRS sẽ ghi nhận sau lần làm bài đầu tiên.</span>
+                <span>Từ này chưa có lịch sử ôn tập. App sẽ ghi lại sau lần làm bài đầu tiên.</span>
               </div>
             )}
           </div>
@@ -446,7 +452,7 @@ export default function ReviewTrajectoryModal({
                 <Calendar className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                 Dự báo 4 mốc nhắc lại tiếp theo:
               </span>
-              <span className="text-[10px] text-slate-500 dark:text-zinc-400">
+              <span className="text-[11px] text-slate-500 dark:text-zinc-400">
                 (Giả định hoàn thành đúng)
               </span>
             </div>
@@ -458,7 +464,7 @@ export default function ReviewTrajectoryModal({
                   <div key={item.step} className="relative flex items-start justify-between gap-3 group">
                     {/* Circle Node */}
                     <div
-                      className={`absolute -left-6 top-1 w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] font-bold shadow-sm ${
+                      className={`absolute -left-6 top-1 w-5 h-5 rounded-full border-2 flex items-center justify-center text-[11px] font-bold shadow-sm ${
                         isFirst
                           ? "bg-cyan-600 border-white dark:border-zinc-900 text-white animate-pulse"
                           : "bg-white dark:bg-zinc-800 border-cyan-500 text-cyan-700 dark:text-cyan-300"
@@ -473,7 +479,7 @@ export default function ReviewTrajectoryModal({
                           {item.label}
                         </span>
                         {isFirst && (
-                          <span className="px-1.5 py-0.2 rounded text-[9px] font-semibold bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300">
+                          <span className="px-1.5 py-0.2 rounded text-[11px] font-semibold bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300">
                             Hiện tại
                           </span>
                         )}
@@ -514,7 +520,7 @@ export default function ReviewTrajectoryModal({
         <div className="p-4 bg-slate-50 dark:bg-zinc-950/80 border-t border-slate-100 dark:border-zinc-800/80 flex justify-end">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-xs font-semibold shadow-sm transition"
+            className="px-6 min-h-11 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-zinc-900 text-sm font-semibold shadow-sm transition"
           >
             Đóng
           </button>

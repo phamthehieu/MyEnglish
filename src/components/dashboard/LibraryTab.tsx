@@ -106,12 +106,12 @@ export default function LibraryTab({
             data-lpignore="true"
             data-1p-ignore="true"
             data-form-type="other"
-            className="w-full bg-white dark:bg-zinc-900/90 border border-slate-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 sm:pr-14 py-2 text-xs text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500/50 transition-colors shadow-sm"
+            className="w-full bg-white dark:bg-zinc-900/90 border border-slate-200 dark:border-zinc-800 rounded-xl pl-9 pr-10 sm:pr-14 py-2.5 text-sm text-slate-900 dark:text-zinc-100 placeholder:text-slate-500 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500/50 transition-colors shadow-sm"
           />
           {searchQuery ? (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300 p-1"
+              className="absolute right-0.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-300 w-10 h-10 flex items-center justify-center"
               aria-label="Xóa tìm kiếm"
             >
               <X className="w-3.5 h-3.5" />
@@ -134,28 +134,28 @@ export default function LibraryTab({
             onClick={() => setViewMode("gallery")}
             title="Dạng lưới thẻ"
             aria-label="Xem dạng lưới"
-            className={`p-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
+            className={`px-2.5 min-h-10 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
               viewMode === "gallery"
                 ? "bg-white dark:bg-zinc-800 text-cyan-600 dark:text-cyan-400 shadow-sm font-semibold border border-slate-200/80 dark:border-transparent"
                 : "text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
             }`}
           >
             <LayoutGrid className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Lưới</span>
+            <span>Lưới</span>
           </button>
           <button
             type="button"
             onClick={() => setViewMode("table")}
             title="Dạng bảng chi tiết"
             aria-label="Xem dạng bảng"
-            className={`p-1.5 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
+            className={`px-2.5 min-h-10 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
               viewMode === "table"
                 ? "bg-white dark:bg-zinc-800 text-cyan-600 dark:text-cyan-400 shadow-sm font-semibold border border-slate-200/80 dark:border-transparent"
                 : "text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
             }`}
           >
             <List className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Bảng</span>
+            <span>Bảng</span>
           </button>
         </div>
       </div>

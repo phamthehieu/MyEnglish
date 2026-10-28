@@ -19,7 +19,10 @@ export default function RoadmapTodayCard({ setActiveTab, showStart = false }: { 
     setActiveTab("patterns");
   };
 
-  const box = "rounded-2xl border-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 p-4 space-y-2";
+  // A quiet card: the main action of the screen is the checklist, not this
+  const box = "rounded-2xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/60 dark:bg-emerald-950/20 p-4 space-y-2";
+  // Secondary button: outlined, so it does not compete with the screen's main one
+  const outlineBtn = "w-full min-h-11 py-2.5 rounded-xl border border-emerald-600 dark:border-emerald-500 bg-white dark:bg-zinc-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-sm font-bold inline-flex items-center justify-center gap-2";
 
   // The list of today has the path as its first item (and its button): this card only shows where the learner is
   // on it, unless the list is not shown
@@ -31,7 +34,7 @@ export default function RoadmapTodayCard({ setActiveTab, showStart = false }: { 
           <Footprints className="w-5 h-5" /> Lộ trình nói
         </p>
         <p className="text-sm text-emerald-900 dark:text-emerald-200">Chọn mục tiêu của bạn (du lịch, đi làm, đời sống, kết bạn) để có lộ trình học nói từng chặng.</p>
-        <button onClick={() => open(false)} className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold">
+        <button onClick={() => open(false)} className={outlineBtn}>
           Chọn mục tiêu
         </button>
       </div>
@@ -42,7 +45,7 @@ export default function RoadmapTodayCard({ setActiveTab, showStart = false }: { 
     return (
       <div className={box}>
         <p className="font-bold text-emerald-950 dark:text-emerald-100">🎉 Bạn đã đi hết lộ trình nói hiện có!</p>
-        <button onClick={() => open(false)} className="text-sm font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
+        <button onClick={() => open(false)} className="min-h-11 text-sm font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
           Xem lại lộ trình
         </button>
       </div>
@@ -56,9 +59,9 @@ export default function RoadmapTodayCard({ setActiveTab, showStart = false }: { 
           <p className="text-xs font-semibold text-emerald-800 dark:text-emerald-300">
             Lộ trình nói · chặng {stages.indexOf(current) + 1}/{stages.length} · {GOAL_LABEL[road.goal]}
           </p>
-          <p className="text-lg font-bold text-emerald-950 dark:text-emerald-100">{current.title}</p>
+          <p className="text-base font-bold text-emerald-950 dark:text-emerald-100">{current.title}</p>
         </div>
-        <button onClick={() => open(false)} className="shrink-0 text-xs font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
+        <button onClick={() => open(false)} className="shrink-0 min-h-10 px-1 text-xs font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
           Xem lộ trình
         </button>
       </div>
@@ -69,7 +72,7 @@ export default function RoadmapTodayCard({ setActiveTab, showStart = false }: { 
         Đã xong {finishedCount}/{stages.length} chặng · còn {etaText} nếu học {minutes} phút mỗi ngày
       </p>
       {showStart && plan.tasks.length > 0 && (
-        <button onClick={() => open(true)} className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold inline-flex items-center justify-center gap-2">
+        <button onClick={() => open(true)} className={outlineBtn}>
           <Play className="w-4 h-4" /> Bắt đầu hôm nay (~{plan.minutes} phút)
         </button>
       )}

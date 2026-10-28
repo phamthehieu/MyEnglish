@@ -40,12 +40,12 @@ function PracticeBar({ index, total, speed, loop, onPlay, onSpeed, onLoop }: Pra
           onClick={onLoop}
           aria-pressed={loop}
           aria-label={loop ? "Đang lặp lại câu này. Bấm để tắt" : "Lặp lại câu này"}
-          className={`${pill} w-14 ${loop ? "bg-violet-500/20 text-violet-600 dark:text-violet-300 ring-1 ring-violet-400/60" : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400"}`}
+          className={`${pill} gap-1.5 px-4 ${loop ? "bg-violet-500/20 text-violet-600 dark:text-violet-300 ring-1 ring-violet-400/60" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"}`}
         >
-          <Repeat className="w-5 h-5" />
+          <Repeat className="w-5 h-5" /> Lặp
         </button>
         <span className="ml-auto text-lg font-bold tabular-nums text-slate-900 dark:text-white">
-          {index + 1} <span className="font-normal text-slate-400 dark:text-zinc-500">/ {total}</span>
+          {index + 1} <span className="font-normal text-slate-600 dark:text-zinc-400">/ {total}</span>
         </span>
       </div>
       <div
@@ -85,10 +85,10 @@ function Actions({
       <button onClick={onCheck} disabled={!canCheck} className={CHECK_BUTTON}>
         Kiểm tra
       </button>
-      <button onClick={onReveal} aria-label="Xem đáp án" title="Xem đáp án" className="h-12 w-12 shrink-0 rounded-full text-slate-500 dark:text-zinc-400 inline-flex items-center justify-center">
-        <Eye className="w-6 h-6" />
+      <button onClick={onReveal} title="Xem đáp án" className="h-12 shrink-0 rounded-full px-2 gap-1.5 text-sm font-semibold text-slate-600 dark:text-zinc-400 inline-flex items-center justify-center">
+        <Eye className="w-5 h-5" /> Xem đáp án
       </button>
-      <button onClick={onNext} disabled={last} className="inline-flex shrink-0 items-center gap-1.5 text-base font-semibold text-violet-600 dark:text-violet-300 disabled:opacity-40">
+      <button onClick={onNext} disabled={last} className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 text-base font-semibold text-violet-600 dark:text-violet-300 disabled:opacity-40">
         Tiếp <ArrowRight className="w-5 h-5" />
       </button>
     </div>
@@ -162,7 +162,7 @@ export function DictationCard({
 
       {revealed && (
         <p role="status" className="text-lg leading-snug text-slate-900 dark:text-white" style={SENTENCE_FONT}>
-          <span className="block text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-zinc-500">Đáp án</span>
+          <span className="block text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-zinc-400">Đáp án</span>
           {sentence.text}
         </p>
       )}
@@ -296,7 +296,7 @@ export function ClozeCard({
       <Actions canCheck={answers.some((a) => a.trim() !== "")} onCheck={check} onReveal={reveal} onNext={onNext} last={index >= total - 1} />
 
       {allRight && !revealed && <p role="status" className="text-base font-semibold text-emerald-600 dark:text-emerald-400">✓ Chính xác!</p>}
-      {revealed && <p role="status" className="text-sm text-slate-500 dark:text-zinc-400">Đây là đáp án của câu này.</p>}
+      {revealed && <p role="status" className="text-sm text-slate-600 dark:text-zinc-400">Đây là đáp án của câu này.</p>}
       {graded && !allRight && (
         <p role="status" className="text-sm text-rose-600 dark:text-rose-400">
           Đúng {rightCount}/{blanks.length} chỗ trống. Sửa lại các ô đỏ rồi kiểm tra tiếp.

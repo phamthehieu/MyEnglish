@@ -29,6 +29,64 @@ interface VoskDictionary : Library {
 }
 
 /**
+ * Tells when the learner has stopped talking: speech began, then a stretch of quiet. The level of the room is
+ * measured over the first moments of the recording, so a noisy room does not count as speech and a quiet one
+ * does not need a loud voice.
+ */
+class SpeechEndpoint {
+  private val calibrationMs = 300
+  private val minSpeechMs = 200
+  private val silenceMs = 800
+
+  private var elapsedMs = 0.0
+  private var noiseSum = 0.0
+  private var noiseCount = 0
+  private var speechMs = 0.0
+  private var quietMs = 0.0
+  private var started = false
+  private var ended = false
+
+  /** Feed one chunk of 16-bit little-endian mono PCM; true once, when the speech has ended */
+  fun feed(data: ByteArray, length: Int): Boolean {
+    val samples = length / 2
+    if (ended || samples == 0) return false
+    var sum = 0.0
+    var i = 0
+    while (i + 1 < length) {
+      val s = ((data[i + 1].toInt() shl 8) or (data[i].toInt() and 0xff)).toShort().toInt() / 32768.0
+      sum += s * s
+      i += 2
+    }
+    val rms = Math.sqrt(sum / samples)
+    val chunkMs = samples * 1000.0 / 16000
+
+    if (elapsedMs < calibrationMs) {
+      elapsedMs += chunkMs
+      noiseSum += rms
+      noiseCount++
+      return false
+    }
+    elapsedMs += chunkMs
+
+    val floor = if (noiseCount > 0) noiseSum / noiseCount else 0.0
+    val loud = rms > maxOf(0.02, floor * 3)
+    val quiet = rms < maxOf(0.012, floor * 1.8)
+    if (loud) {
+      speechMs += chunkMs
+      quietMs = 0.0
+      if (speechMs >= minSpeechMs) started = true
+    } else if (started && quiet) {
+      quietMs += chunkMs
+      if (quietMs >= silenceMs) {
+        ended = true
+        return true
+      }
+    }
+    return false
+  }
+}
+
+/**
  * Offline word recognition for the pronunciation lessons, exposed to the page as `window.AndroidASR`.
  *
  * It records the learner (16 kHz mono) and runs Vosk with a grammar made of the target word, the words it is
@@ -39,6 +97,7 @@ interface VoskDictionary : Library {
  *   myenglish-asr-permission  detail: "true" | "false"
  *   myenglish-asr-ready       detail: JSON { ok, error? }
  *   myenglish-asr-result      detail: JSON { ok, text, words: [{ word, conf }], peak, error? }
+ *   myenglish-asr-endpoint    while recording: the learner spoke, then went quiet (the page may call stop)
  */
 class AsrBridge(
   private val activity: MainActivity,
@@ -189,9 +248,17 @@ class AsrBridge(
     recordThread = Thread {
       val buffer = ByteArray(minBuffer)
       val limit = SAMPLE_RATE * 2 * MAX_SECONDS
+      val endpoint = SpeechEndpoint()
+      var announced = false
       while (recording && pcm.size() < limit) {
         val n = rec.read(buffer, 0, buffer.size)
-        if (n > 0) synchronized(pcm) { pcm.write(buffer, 0, n) } else if (n < 0) break
+        if (n > 0) {
+          synchronized(pcm) { pcm.write(buffer, 0, n) }
+          if (!announced && endpoint.feed(buffer, n)) {
+            announced = true
+            emit("myenglish-asr-endpoint", "")
+          }
+        } else if (n < 0) break
       }
     }.also { it.start() }
     return true

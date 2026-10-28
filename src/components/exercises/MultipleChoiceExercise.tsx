@@ -136,8 +136,9 @@ export default function MultipleChoiceExercise({
             <button
               onClick={() => onSpeak(word.word)}
               type="button"
-              className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-400 hover:text-cyan-500 transition-colors"
+              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-cyan-600 transition-colors"
               title="Phát âm"
+              aria-label="Phát âm"
             >
               <Volume2 className="w-5 h-5" />
             </button>
@@ -146,13 +147,13 @@ export default function MultipleChoiceExercise({
 
         {/* Never under a Vietnamese prompt: the IPA of the answer would give it away */}
         {questionData.phonetic && questionData.promptType === "en_to_vn" && (
-          <p className="text-sm font-mono text-slate-400 dark:text-zinc-500">
+          <p className="text-sm font-mono text-slate-600 dark:text-zinc-400">
             {questionData.phonetic}
           </p>
         )}
 
         {questionData.partOfSpeech && (
-          <p className="text-xs italic text-slate-400 dark:text-zinc-500">
+          <p className="text-xs italic text-slate-600 dark:text-zinc-400">
             {questionData.partOfSpeech}
           </p>
         )}
@@ -167,7 +168,7 @@ export default function MultipleChoiceExercise({
           const showFail = isSelected && !opt.isCorrect;
 
           let btnClasses =
-            "rounded-xl border p-3 md:p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
+            "min-h-12 rounded-xl border p-3 md:p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
           if (showSuccess) {
             btnClasses +=
               "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30";
@@ -196,7 +197,7 @@ export default function MultipleChoiceExercise({
                     ? "bg-emerald-500 text-white"
                     : showFail
                     ? "bg-rose-500 text-white"
-                    : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400"
+                    : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                 }`}
               >
                 {idx + 1}
@@ -219,17 +220,17 @@ export default function MultipleChoiceExercise({
       </div>
 
       {/* Helpful Hint - fixed height h-7 so it NEVER jumps */}
-      <div className="flex items-center justify-between gap-3 text-xs text-slate-400 dark:text-zinc-500 px-2 min-h-[20px] md:min-h-[28px]">
+      <div className="flex items-center justify-between gap-3 text-xs text-slate-600 dark:text-zinc-400 px-2 min-h-[20px] md:min-h-[28px]">
         <span className="desktop-only flex items-center gap-1">
           <HelpCircle className="w-3.5 h-3.5" />
-          Phím tắt: bấm <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[10px] font-mono">1</kbd> - <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[10px] font-mono">4</kbd>
+          Phím tắt: bấm <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[11px] font-mono">1</kbd> - <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[11px] font-mono">4</kbd>
         </span>
         {wrongNote && !isAnswered ? (
           <span className="text-amber-600 dark:text-amber-400 font-semibold animate-in fade-in duration-150 text-right">
             {wrongNote}
           </span>
         ) : (
-          <span className="text-[11px] text-slate-400 dark:text-zinc-500">
+          <span className="text-[11px] text-slate-600 dark:text-zinc-400">
             Chọn 1 trong 4 đáp án
           </span>
         )}
