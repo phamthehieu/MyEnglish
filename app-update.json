@@ -1,6 +1,6 @@
 {
-  "version": "0.3.9",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.3.9/MyEnglish-v0.3.9.apk",
-  "notes": "Thử tải trong app",
-  "sha256": "297031504193ce3d2e8ddc2ff476433ef99d362e87c4ab4ef8fcb9a246175307"
+  "version": "0.3.10",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.3.10/MyEnglish-v0.3.10.apk",
+  "notes": "Giao diện dễ dùng hơn trên điện thoại: nút to hơn, chữ rõ hơn, thanh điều hướng mới; mic tự dừng khi bạn đọc xong.",
+  "sha256": "b6042a4a7a7127cbc2c658784f0f043fbd25c8dce8ef768c2de09b1d91be000e"
 }
