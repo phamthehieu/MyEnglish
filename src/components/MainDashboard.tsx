@@ -1284,18 +1284,14 @@ export default function MainDashboard({
       <Sidebar
         activeTab={activeTab}
         setActiveTab={handleSelectTab}
-        pipelineQueue={pipelineQueue}
         dueCount={dueCount}
         streakStats={streakStats}
         libraryStats={libraryStats}
-        simpleMode={simpleMode}
-        forgottenCount={forgottenCount}
-        forgottenDue={forgottenDue}
       />
       )}
 
       {/* MAIN CONTENT AREA */}
-      <main className={`flex-1 flex flex-col min-w-0 overflow-hidden bg-slate-50 dark:bg-zinc-950 ${focusing ? "" : "pb-[calc(3.5rem+env(safe-area-inset-bottom))] md:pb-0"}`}>
+      <main className={`flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f7f8fa] dark:bg-zinc-950 ${focusing ? "" : "pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"}`}>
         {/* Top App Bar */}
         {!focusing && (
         <DashboardHeader
@@ -1311,7 +1307,6 @@ export default function MainDashboard({
           forgottenCount={forgottenCount}
           forgottenDue={forgottenDue}
           isReviewing={isReviewing}
-          simpleMode={simpleMode}
         />
         )}
 

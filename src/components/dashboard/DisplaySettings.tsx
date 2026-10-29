@@ -13,6 +13,7 @@ import {
 import { englishVoices, getTtsSettings, handleSpeak, onVoicesChanged, saveTtsSettings, type TtsVoice } from "../review/speech";
 import { getSoundSettings, playSound, saveSoundSettings } from "@/services/sound";
 import { useStandingStore } from "@/stores/standingStore";
+import { getSavedTheme, setTheme, type ThemeMode } from "@/services/theme";
 
 const SCALE_LABEL: Record<UiScale, string> = { 1: "Vừa", 1.1: "Lớn", 1.25: "Rất lớn" };
 
@@ -21,6 +22,7 @@ export default function DisplaySettings() {
   const [simple, setSimple] = useState(isSimpleMode);
   const [foundation, setFoundation] = useState(isFoundationMode);
   const [scale, setScale] = useState<UiScale>(getUiScale);
+  const [themeMode, setThemeMode] = useState<ThemeMode>(getSavedTheme);
   const [tts, setTts] = useState(getTtsSettings);
   const [sound, setSound] = useState(getSoundSettings);
   const [voices, setVoices] = useState<TtsVoice[]>(englishVoices);
@@ -45,6 +47,33 @@ export default function DisplaySettings() {
   return (
     <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-3">
       <div className="text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Giao diện, âm thanh & giọng đọc</div>
+      <div className="space-y-1.5">
+        <div className="text-sm font-bold text-slate-900 dark:text-white">Màu giao diện</div>
+        <div className="flex flex-wrap gap-2">
+          {(
+            [
+              { mode: "light", label: "Sáng" },
+              { mode: "dark", label: "Tối" },
+              { mode: "system", label: "Theo máy" },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.mode}
+              onClick={() => {
+                setTheme(t.mode);
+                setThemeMode(t.mode);
+              }}
+              aria-pressed={themeMode === t.mode}
+              className={`min-h-10 px-4 py-2 rounded-lg text-sm font-semibold border ${themeMode === t.mode
+                ? "bg-cyan-600 text-white border-cyan-600"
+                : "border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300"
+                }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="space-y-1.5 pb-3 border-b border-slate-200 dark:border-zinc-800">
         <div className="text-sm font-bold text-slate-900 dark:text-white">Cỡ chữ</div>
         <div className="flex flex-wrap gap-2">

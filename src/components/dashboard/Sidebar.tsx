@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import {
   BookOpen,
   Sparkles,
   X,
-  Flame,
-  Settings,
-  BarChart3,
   Sun,
   Moon,
   Laptop,
@@ -16,67 +13,43 @@ import {
   CheckCircle2,
   Download,
   GraduationCap,
-  BookOpenText,
-  NotebookPen,
-  Sunrise,
-  AudioLines,
-  Clapperboard,
-  MessageCircle,
-  Layers,
-  Dumbbell,
-  Trophy,
+  CalendarCheck,
+  MessagesSquare,
+  SpellCheck,
+  CircleUserRound,
   UserRound,
-  Bug,
-  BadgeCheck,
-  Zap,
-  Menu,
 } from "lucide-react";
-import type { PipelineItem } from "@/services/pipeline";
 import type { calculateStreakAndGoal } from "@/services/streak";
 import { getSavedTheme, setTheme, type ThemeMode } from "@/services/theme";
 import { CURRENT_VERSION, useUpdateStore } from "@/services/updateService";
-import { getXPState, isKnownOnly, type XPState } from "@/services/smartReview";
+import { getXPState, type XPState } from "@/services/smartReview";
 import { getDueGrammarLessons } from "@/services/grammarService";
-import { useWordsStore } from "@/stores/wordsStore";
-import { AI_VOCAB_ENABLED } from "@/services/features";
 import { useAuthStore } from "@/stores/authStore";
 import { RankLine } from "./RankWidgets";
 import Avatar from "../Avatar";
-import { SIMPLE_NAV_GROUPS, navGroupOf, type DashboardTab, type LibraryStats, type NavGroupId } from "./shared";
+import { NAV_SECTIONS, navSectionOf, type DashboardTab, type LibraryStats, type NavSectionId } from "./shared";
 
 interface SidebarProps {
   activeTab: DashboardTab;
   setActiveTab: (tab: DashboardTab) => void;
-  pipelineQueue: PipelineItem[];
   dueCount: number;
   streakStats: ReturnType<typeof calculateStreakAndGoal>;
   libraryStats: LibraryStats;
-  /** Simple mode: five entries (Hôm nay · Từ vựng · Ngữ pháp · Luyện thêm · Cài đặt) instead of ten tabs */
-  simpleMode?: boolean;
-  /** Words often forgotten, and those of them due now (badge of "Từ hay quên") */
-  forgottenCount?: number;
-  forgottenDue?: number;
 }
 
-/** LEFT SIDEBAR: logo + update badge, navigation, learning stats, account & theme switcher */
-export default function Sidebar({
-  activeTab,
-  setActiveTab,
-  pipelineQueue,
-  dueCount,
-  streakStats,
-  libraryStats,
-  simpleMode = false,
-  forgottenCount = 0,
-  forgottenDue = 0,
-}: SidebarProps) {
-  const words = useWordsStore((s) => s.words);
-  const knownWaitingCount = useMemo(() => words.filter((w) => isKnownOnly(w.srs)).length, [words]);
+const SECTION_ICON: Record<NavSectionId, typeof BookOpen> = {
+  today: CalendarCheck,
+  vocab: BookOpen,
+  speak: MessagesSquare,
+  grammar: SpellCheck,
+  me: CircleUserRound,
+};
+
+/** The five sections: a sidebar on a computer (logo + update badge, sections, stats, account & theme), a tab bar on a phone */
+export default function Sidebar({ activeTab, setActiveTab, dueCount, streakStats, libraryStats }: SidebarProps) {
   const [grammarDueCount, setGrammarDueCount] = useState<number>(0);
   const [currentTheme, setCurrentTheme] = useState<ThemeMode>(getSavedTheme);
   const [xpState, setXpState] = useState<XPState>(getXPState);
-  // Phones: the sidebar is a drawer opened from the header's menu button
-  const [navOpen, setNavOpen] = useState(false);
   const accountUser = useAuthStore((s) => s.user);
   const accountName = useAuthStore((s) => s.profile?.displayName);
   const accountAvatar = useAuthStore((s) => s.profile?.avatar);
@@ -93,51 +66,10 @@ export default function Sidebar({
   const checkForUpdates = useUpdateStore((s) => s.checkForUpdates);
   const errorMessage = useUpdateStore((s) => s.errorMessage);
 
-  // Words met so far, once per words change (not on every render of the sidebar)
-  const libraryWordCount = useMemo(
-    () =>
-      words.filter(
-        (w) =>
-          !w.catalog_id ||
-          (w.srs?.reps ?? 0) > 0 ||
-          (w.srs?.state ?? 0) > 0 ||
-          Boolean(w.srs?.last_review)
-      ).length,
-    [words]
-  );
-
   const handleThemeChange = (mode: ThemeMode) => {
     setCurrentTheme(mode);
     setTheme(mode);
   };
-
-  // A closed drawer is off screen on phones: keep it out of the tab order and away from screen readers
-  const asideRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const el = asideRef.current;
-    if (!el || typeof window.matchMedia !== "function") return;
-    const wide = window.matchMedia("(min-width: 768px)");
-    const sync = () => {
-      const hidden = !navOpen && !wide.matches;
-      el.inert = hidden;
-      if (hidden) el.setAttribute("aria-hidden", "true");
-      else el.removeAttribute("aria-hidden");
-    };
-    sync();
-    wide.addEventListener("change", sync);
-    return () => wide.removeEventListener("change", sync);
-  }, [navOpen]);
-
-  useEffect(() => {
-    const toggle = () => setNavOpen((open) => !open);
-    window.addEventListener("myenglish-toggle-nav", toggle);
-    return () => window.removeEventListener("myenglish-toggle-nav", toggle);
-  }, []);
-
-  // Picking a destination closes the drawer
-  useEffect(() => {
-    setNavOpen(false);
-  }, [activeTab]);
 
   useEffect(() => {
     const onXPUpdate = () => setXpState(getXPState());
@@ -165,78 +97,9 @@ export default function Sidebar({
     return () => window.removeEventListener("myenglish-theme-changed", onThemeChanged);
   }, []);
 
-  const countBadge = (n: number, highlight = false) =>
-    n > 0 ? (
-      <span
-        className={`text-xs font-mono px-1.5 py-0.5 rounded-full font-semibold ${highlight
-          ? "bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-800"
-          : "bg-slate-200 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
-          }`}
-      >
-        {n}
-      </span>
-    ) : null;
-
-  const navItems: Array<{ tab: DashboardTab; label: string; icon: typeof BookOpen; iconClass?: string; badge?: ReactNode }> = [
-    { tab: "today", label: "Hôm nay", icon: Sunrise, iconClass: "text-amber-500" },
-    { tab: "review", label: "Ôn tập", icon: Flame, iconClass: "text-orange-400", badge: countBadge(dueCount, true) },
-    // Words met so far (the words waiting to be introduced are not the learner's yet)
-    {
-      tab: "library",
-      label: "Từ đã học",
-      icon: BookOpen,
-      badge: countBadge(libraryWordCount),
-    },
-    // Words marked "Đã biết", still waiting for their one check
-    { tab: "known", label: "Đã biết", icon: BadgeCheck, iconClass: "text-emerald-500", badge: countBadge(knownWaitingCount) },
-    { tab: "grammar", label: "Ngữ pháp", icon: GraduationCap, iconClass: "text-cyan-500", badge: countBadge(grammarDueCount, true) },
-    { tab: "patterns", label: "Mẫu câu", icon: Layers, iconClass: "text-emerald-500" },
-    { tab: "talk", label: "Hội thoại", icon: MessageCircle, iconClass: "text-emerald-500" },
-    { tab: "pronunciation", label: "Phát âm", icon: AudioLines, iconClass: "text-violet-500" },
-    { tab: "shadowing", label: "Shadowing", icon: Clapperboard, iconClass: "text-violet-500" },
-    { tab: "reading", label: "Đọc", icon: BookOpenText },
-    { tab: "writing", label: "Viết & sổ lỗi", icon: NotebookPen },
-    AI_VOCAB_ENABLED
-      ? {
-          tab: "capture",
-          label: "Thêm từ bằng AI",
-          icon: Sparkles,
-          badge: pipelineQueue.some((i) => i.status === "analyzing") ? (
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-          ) : null,
-        }
-      : { tab: "capture", label: "Lộ trình từ vựng", icon: Layers, iconClass: "text-cyan-500" },
-    { tab: "analytics", label: "Tiến độ", icon: BarChart3, iconClass: "text-emerald-400" },
-    { tab: "guide", label: "Cài đặt", icon: Settings, iconClass: "text-cyan-500" },
-  ];
-
-  // Simple mode: one entry per group of tabs; an entry opens its first tab
-  const groupLook: Record<NavGroupId, { icon: typeof BookOpen; iconClass?: string; badge?: ReactNode }> = {
-    today: { icon: Sunrise, iconClass: "text-amber-500" },
-    vocab: { icon: BookOpen, iconClass: "text-orange-400", badge: countBadge(dueCount, true) },
-    // Grammar lives here: its due lessons show on the entry
-    patterns: { icon: Layers, iconClass: "text-emerald-500", badge: countBadge(grammarDueCount, true) },
-    talk: { icon: MessageCircle, iconClass: "text-emerald-500" },
-    pronunciation: { icon: AudioLines, iconClass: "text-violet-500" },
-    shadowing: { icon: Clapperboard, iconClass: "text-violet-500" },
-    practice: { icon: Dumbbell, iconClass: "text-cyan-500" },
-    quick: { icon: Zap, iconClass: "text-amber-500" },
-    settings: { icon: Settings, iconClass: "text-cyan-500" },
-    account: { icon: UserRound },
-  };
-  const visibleItems: Array<{ key: string; label: string; icon: typeof BookOpen; iconClass?: string; badge?: ReactNode; active: boolean; onClick: () => void }> =
-    simpleMode
-      ? SIMPLE_NAV_GROUPS.filter((g) => g.id !== "account" && g.id !== "quick").map((g) => {
-          const active = g.tabs.some((t) => t.tab === activeTab);
-          return {
-            key: g.id,
-            label: g.label,
-            ...groupLook[g.id],
-            active,
-            onClick: () => setActiveTab(g.tabs[0].tab),
-          };
-        })
-      : navItems.map((item) => ({ ...item, key: item.tab, active: activeTab === item.tab, onClick: () => setActiveTab(item.tab) }));
+  // What waits in a section: the cards due (Từ vựng), the grammar lessons due (Ngữ pháp)
+  const waiting: Partial<Record<NavSectionId, number>> = { vocab: dueCount, grammar: grammarDueCount };
+  const sections = NAV_SECTIONS.map((s) => ({ ...s, icon: SECTION_ICON[s.id], count: waiting[s.id] ?? 0, active: navSectionOf(activeTab).id === s.id }));
 
   // While a text box has the focus the keyboard covers the bottom of the screen: the tab bar steps aside to leave room
   const [typing, setTyping] = useState(false);
@@ -261,57 +124,6 @@ export default function Sidebar({
     };
   }, []);
 
-  // Bottom tab bar on phones: four entries and "Thêm", which opens the drawer with everything else (Mẫu câu, Phát âm,
-  // Shadowing, Luyện thêm, Cài đặt...). Ngữ pháp opens its own tab, not the "Mẫu câu" entry it shares a group with.
-  const bottomItems: Array<{ key: string; label: string; icon: typeof BookOpen; iconClass?: string; badge?: ReactNode; active: boolean; onClick: () => void }> = [
-    { key: "today", label: "Hôm nay", ...groupLook.today, active: navGroupOf(activeTab).id === "today", onClick: () => setActiveTab("today") },
-    { key: "vocab", label: "Từ vựng", ...groupLook.vocab, active: navGroupOf(activeTab).id === "vocab", onClick: () => setActiveTab("review") },
-    {
-      key: "grammar",
-      label: "Ngữ pháp",
-      icon: GraduationCap,
-      iconClass: "text-cyan-500",
-      badge: countBadge(grammarDueCount, true),
-      active: activeTab === "grammar",
-      onClick: () => setActiveTab("grammar"),
-    },
-    { key: "talk", label: "Hội thoại", ...groupLook.talk, active: activeTab === "talk", onClick: () => setActiveTab("talk") },
-  ];
-  const moreActive = navOpen || !bottomItems.some((i) => i.active);
-
-  // "Truy cập nhanh": two tiles under the list, in both modes
-  const quickItems: Array<{ tab: DashboardTab; label: string; icon: typeof BookOpen; tone: string; activeTone: string; badge?: ReactNode; title: string }> = [
-    {
-      tab: "forgotten",
-      label: "Từ hay quên",
-      icon: Bug,
-      tone: "text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-900/50 hover:bg-rose-100 dark:hover:bg-rose-950/60",
-      activeTone: "ring-2 ring-rose-400 dark:ring-rose-500/60",
-      title:
-        forgottenCount > 0
-          ? `${forgottenCount} từ hay quên${forgottenDue > 0 ? `, ${forgottenDue} từ đang đến hạn ôn` : ", chưa từ nào đến hạn"}`
-          : "Những từ bạn hay trả lời sai",
-      badge:
-        forgottenCount > 0 ? (
-          <span
-            className={`text-xs font-mono px-1.5 rounded-full font-bold ${
-              forgottenDue > 0 ? "bg-rose-500 text-white" : "bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-300"
-            }`}
-          >
-            {forgottenCount}
-          </span>
-        ) : null,
-    },
-    {
-      tab: "leaderboard",
-      label: "Xếp hạng",
-      icon: Trophy,
-      tone: "text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-900/50 hover:bg-amber-100 dark:hover:bg-amber-950/60",
-      activeTone: "ring-2 ring-amber-400 dark:ring-amber-500/60",
-      title: "Bảng xếp hạng XP tuần, tháng và chuỗi ngày học",
-    },
-  ];
-
   const goalText =
     streakStats.goalReached && streakStats.dueRemaining === 0 && streakStats.todayCount < streakStats.dailyGoal
       ? "Đã ôn hết ✓"
@@ -319,13 +131,7 @@ export default function Sidebar({
 
   return (
     <>
-    {navOpen && (
-      <div className="popup-backdrop-enter md:hidden fixed inset-0 z-30 bg-black/50" onClick={() => setNavOpen(false)} aria-hidden="true" />
-    )}
-    <aside
-      ref={asideRef}
-      className={`min-h-0 border-r border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900 md:dark:bg-zinc-900/50 flex flex-col shrink-0 select-none fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] pt-[env(safe-area-inset-top)] transition-transform duration-200 md:static md:z-auto md:w-64 md:max-w-none md:pt-0 md:translate-x-0 ${navOpen ? "translate-x-0" : "-translate-x-full"}`}
-    >
+    <aside className="hidden md:flex min-h-0 w-64 border-r border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/50 flex-col shrink-0 select-none">
       {/* Logo & App title (always visible) */}
       <div className="px-4 pt-4 pb-3 shrink-0">
         <div className="flex items-center gap-3">
@@ -415,14 +221,6 @@ export default function Sidebar({
             </div>
             <p className="text-xs text-slate-600 dark:text-zinc-400">Tiếng Anh mỗi ngày</p>
           </div>
-          <button
-            type="button"
-            onClick={() => setNavOpen(false)}
-            aria-label="Đóng menu"
-            className="md:hidden shrink-0 w-10 h-10 -mr-2 inline-flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
-          >
-            <X className="w-5 h-5" />
-          </button>
         </div>
       </div>
 
@@ -506,57 +304,34 @@ export default function Sidebar({
             </div>
           )}
 
-        {/* Navigation Links: Vietnamese labels, today first */}
+        {/* The five sections; a section opens its first tab */}
         <nav className="space-y-1">
-          {visibleItems.map((item) => {
-            const Icon = item.icon;
+          {sections.map((s) => {
+            const Icon = s.icon;
             return (
               <button
-                key={item.key}
-                onClick={item.onClick}
-                aria-current={item.active ? "page" : undefined}
-                className={`w-full min-h-11 flex items-center justify-between px-3 py-2 rounded-lg text-sm md:text-[13px] font-medium transition-all ${item.active
-                  ? "bg-cyan-50 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 border border-cyan-200 dark:border-cyan-500/20 shadow-sm"
-                  : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/50"
-                  }`}
+                key={s.id}
+                onClick={() => setActiveTab(s.tabs[0].tab)}
+                aria-current={s.active ? "page" : undefined}
+                className={`w-full min-h-12 flex items-center justify-between px-3 rounded-xl text-[15px] font-semibold transition-colors ${
+                  s.active
+                    ? "bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300"
+                    : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/50"
+                }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <Icon className={`w-4 h-4 ${item.iconClass ?? ""}`} />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge}
+                <span className="flex items-center gap-3">
+                  <Icon className="w-5 h-5" />
+                  {s.label}
+                </span>
+                {s.count > 0 && (
+                  <span className="min-w-6 px-1.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300 text-xs font-bold text-center">
+                    {s.count}
+                  </span>
+                )}
               </button>
             );
           })}
         </nav>
-
-        {/* Quick access: the words to fix and the race, one click from anywhere */}
-        <div className="space-y-1.5">
-          <div className="px-1 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-zinc-400">Truy cập nhanh</div>
-          <div className="grid grid-cols-2 gap-2">
-            {quickItems.map((item) => {
-              const Icon = item.icon;
-              const active = activeTab === item.tab;
-              return (
-                <button
-                  key={item.tab}
-                  onClick={() => setActiveTab(item.tab)}
-                  aria-current={active ? "page" : undefined}
-                  title={item.title}
-                  className={`relative min-h-11 flex flex-col items-start gap-1 px-2.5 py-2 rounded-xl border text-left text-xs font-semibold transition-all active:scale-[0.97] ${item.tone} ${
-                    active ? item.activeTone : ""
-                  }`}
-                >
-                  <div className="w-full flex items-center justify-between">
-                    <Icon className="w-4 h-4" />
-                    {item.badge}
-                  </div>
-                  <span>{item.label}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
         {/* Compact stats: streak + today's goal, then the two word tiers (click: Tiến độ) */}
         <button
@@ -595,11 +370,9 @@ export default function Sidebar({
               {" · "}
               Nhớ lâu <span className="font-semibold text-emerald-600 dark:text-emerald-400">{libraryStats.rememberedLongCount}</span>
             </span>
-            {!simpleMode && (
-              <span className="shrink-0 font-mono text-amber-700 dark:text-amber-300" title={`${xpState.rank} • ${xpState.totalXP} điểm XP`}>
-                {xpState.rankEmoji} Cấp {xpState.level}
-              </span>
-            )}
+            <span className="shrink-0 font-mono text-amber-700 dark:text-amber-300" title={`${xpState.rank} • ${xpState.totalXP} điểm XP`}>
+              {xpState.rankEmoji} Cấp {xpState.level}
+            </span>
           </div>
         </button>
 
@@ -681,39 +454,30 @@ export default function Sidebar({
       aria-label="Điều hướng chính"
       className={`md:hidden fixed bottom-0 inset-x-0 z-30 flex transition-transform duration-200 ease-out motion-reduce:transition-none ${typing ? "translate-y-full pointer-events-none" : "translate-y-0"} border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 pb-[env(safe-area-inset-bottom)] select-none`}
     >
-      {bottomItems.map((item) => {
-        const Icon = item.icon;
+      {sections.map((s) => {
+        const Icon = s.icon;
         return (
           <button
-            key={item.key}
+            key={s.id}
             type="button"
-            onClick={item.onClick}
-            aria-current={item.active ? "page" : undefined}
-            className={`flex-1 min-w-0 min-h-14 flex flex-col items-center justify-center gap-0.5 py-1.5 text-[11px] font-medium active:bg-slate-100 dark:active:bg-zinc-800 ${
-              item.active && !navOpen ? "text-cyan-700 dark:text-cyan-400" : "text-slate-600 dark:text-zinc-400"
+            onClick={() => setActiveTab(s.tabs[0].tab)}
+            aria-current={s.active ? "page" : undefined}
+            className={`flex-1 min-w-0 min-h-16 flex flex-col items-center justify-center gap-1 py-2 text-xs font-semibold active:bg-slate-100 dark:active:bg-zinc-800 ${
+              s.active ? "text-teal-700 dark:text-teal-300" : "text-slate-500 dark:text-zinc-400"
             }`}
           >
-            <span className="relative">
-              <Icon className={`w-5 h-5 ${item.active && !navOpen ? "" : item.iconClass ?? ""}`} />
-              {item.badge && <span className="absolute -top-1.5 -right-4">{item.badge}</span>}
+            <span className={`relative flex items-center justify-center w-14 h-8 rounded-full transition-colors ${s.active ? "bg-teal-50 dark:bg-teal-400/10" : ""}`}>
+              <Icon className="w-[22px] h-[22px]" strokeWidth={s.active ? 2.25 : 2} />
+              {s.count > 0 && (
+                <span className="absolute -top-1 right-1 min-w-5 h-5 px-1 rounded-full bg-amber-500 text-white text-[11px] font-bold leading-5 text-center">
+                  {s.count > 99 ? "99+" : s.count}
+                </span>
+              )}
             </span>
-            <span className="truncate max-w-full px-0.5">{item.label}</span>
+            <span className="truncate max-w-full px-0.5">{s.label}</span>
           </button>
         );
       })}
-      {/* Everything else (Mẫu câu, Phát âm, Shadowing, Luyện thêm, Cài đặt, Tài khoản): the drawer */}
-      <button
-        type="button"
-        onClick={() => setNavOpen((open) => !open)}
-        aria-expanded={navOpen}
-        aria-label="Thêm: mở menu đầy đủ"
-        className={`flex-1 min-w-0 min-h-14 flex flex-col items-center justify-center gap-0.5 py-1.5 text-[11px] font-medium active:bg-slate-100 dark:active:bg-zinc-800 ${
-          moreActive ? "text-cyan-700 dark:text-cyan-400" : "text-slate-600 dark:text-zinc-400"
-        }`}
-      >
-        <Menu className="w-5 h-5" />
-        <span className="truncate max-w-full px-0.5">Thêm</span>
-      </button>
     </nav>
     </>
   );

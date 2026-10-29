@@ -41,72 +41,68 @@ export interface LibraryStats {
 }
 
 /**
- * Simple mode's sidebar: five entries (plus the account button at its bottom) instead of ten. An entry with several tabs opens its first tab, and
- * while one of its tabs is shown the header has a small bar to switch between them. Tab ids are unchanged
- * (other screens call setActiveTab("…")); every tab belongs to exactly one entry.
+ * The five sections of the app (bottom tab bar on phones, sidebar on a computer). A section opens its first tab, and
+ * while one of its tabs is shown a row of chips under the header switches between them. Tab ids are unchanged
+ * (other screens call setActiveTab("…")); every tab belongs to exactly one section.
  */
-export type NavGroupId = "today" | "vocab" | "patterns" | "talk" | "pronunciation" | "shadowing" | "practice" | "quick" | "settings" | "account";
-export interface NavGroup {
-  id: NavGroupId;
+export type NavSectionId = "today" | "vocab" | "speak" | "grammar" | "me";
+export interface NavSection {
+  id: NavSectionId;
   label: string;
   tabs: Array<{ tab: DashboardTab; label: string }>;
 }
-export const SIMPLE_NAV_GROUPS: NavGroup[] = [
-  {
-    id: "today",
-    label: "Hôm nay",
-    tabs: [
-      { tab: "today", label: "Hôm nay" },
-      { tab: "analytics", label: "Tiến độ" },
-    ],
-  },
+export const NAV_SECTIONS: NavSection[] = [
+  { id: "today", label: "Hôm nay", tabs: [{ tab: "today", label: "Hôm nay" }] },
   {
     id: "vocab",
     label: "Từ vựng",
     tabs: [
       { tab: "review", label: "Ôn tập" },
-      { tab: "library", label: "Từ đã học" },
+      { tab: "library", label: "Kho từ" },
+      { tab: "forgotten", label: "Từ hay quên" },
       { tab: "known", label: "Đã biết" },
-      { tab: "capture", label: AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Lộ trình từ vựng" },
+      { tab: "capture", label: AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Lộ trình" },
     ],
   },
-  // Grammar sits with the sentence patterns: the grammar behind a sentence is one tab away from it
   {
-    id: "patterns",
-    label: "Mẫu câu",
+    id: "speak",
+    label: "Luyện nói",
     tabs: [
       { tab: "patterns", label: "Mẫu câu" },
-      { tab: "grammar", label: "Ngữ pháp" },
+      { tab: "talk", label: "Hội thoại" },
+      { tab: "pronunciation", label: "Phát âm" },
+      { tab: "shadowing", label: "Shadowing" },
     ],
   },
-  { id: "talk", label: "Hội thoại", tabs: [{ tab: "talk", label: "Hội thoại" }] },
-  { id: "pronunciation", label: "Phát âm", tabs: [{ tab: "pronunciation", label: "Phát âm" }] },
-  { id: "shadowing", label: "Shadowing", tabs: [{ tab: "shadowing", label: "Shadowing" }] },
   {
-    id: "practice",
-    label: "Luyện thêm",
+    id: "grammar",
+    label: "Ngữ pháp",
     tabs: [
+      { tab: "grammar", label: "Ngữ pháp" },
       { tab: "reading", label: "Đọc" },
       { tab: "writing", label: "Viết" },
     ],
   },
-  // Not in the list of entries either: the sidebar shows its tabs one by one in "Truy cập nhanh", under the list
   {
-    id: "quick",
-    label: "Truy cập nhanh",
+    id: "me",
+    label: "Tôi",
     tabs: [
-      { tab: "forgotten", label: "Từ hay quên" },
+      { tab: "analytics", label: "Tiến độ" },
       { tab: "leaderboard", label: "Xếp hạng" },
+      { tab: "account", label: "Tài khoản" },
+      { tab: "guide", label: "Cài đặt" },
     ],
   },
-  { id: "settings", label: "Cài đặt", tabs: [{ tab: "guide", label: "Cài đặt" }] },
-  // Not in the list of entries: the sidebar shows it at its bottom, next to the theme switcher
-  { id: "account", label: "Tài khoản", tabs: [{ tab: "account", label: "Tài khoản" }] },
 ];
 
-/** The simple-mode entry a tab belongs to */
-export function navGroupOf(tab: DashboardTab): NavGroup {
-  return SIMPLE_NAV_GROUPS.find((g) => g.tabs.some((t) => t.tab === tab)) ?? SIMPLE_NAV_GROUPS[0];
+/** The section a tab belongs to */
+export function navSectionOf(tab: DashboardTab): NavSection {
+  return NAV_SECTIONS.find((s) => s.tabs.some((t) => t.tab === tab)) ?? NAV_SECTIONS[0];
+}
+
+/** The name of a tab inside its section ("Kho từ", "Cài đặt") */
+export function tabLabel(tab: DashboardTab): string {
+  return navSectionOf(tab).tabs.find((t) => t.tab === tab)?.label ?? "";
 }
 
 /** Text-To-Speech Pronunciation (module-level, so its identity is stable for memoized cards) */

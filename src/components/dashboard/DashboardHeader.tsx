@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Sparkles, RefreshCw, Plus, X, Flame, Target, Loader2, Zap, Crosshair, BellOff, Menu } from "lucide-react";
+import { Sparkles, RefreshCw, Plus, X, Flame, Loader2, Zap, Crosshair, BellOff, UserRound } from "lucide-react";
 import type { calculateStreakAndGoal } from "@/services/streak";
 import { triggerAutoReplenish } from "@/services/autoReplenish";
 import { useWordsStore } from "@/stores/wordsStore";
+import { useAuthStore } from "@/stores/authStore";
+import Avatar from "../Avatar";
+import { SubTabs } from "../ui/kit";
 import type { GlobalToastData } from "./DashboardBanners";
-import { navGroupOf, type DashboardTab } from "./shared";
+import { navSectionOf, type DashboardTab } from "./shared";
 import { AI_VOCAB_ENABLED } from "@/services/features";
 import type { TodayWork } from "@/services/smartReview";
 import { vocabDetail } from "./todayPlan";
@@ -23,11 +26,9 @@ interface DashboardHeaderProps {
   onStartReview?: () => void;
   /** A review session is in progress (maybe kept behind another tab): the button goes back to it */
   isReviewing?: boolean;
-  /** Simple mode: a small bar under the header switches between the tabs of the current sidebar entry */
-  simpleMode?: boolean;
   /** Start a focus session (the last chosen length), from any tab */
   onStartFocus?: () => void;
-  /** "Từ hay quên": how many words, and how many of them are due (count on its tab in simple mode) */
+  /** "Từ hay quên": how many words, and how many of them are due (count on its tab) */
   forgottenCount?: number;
   forgottenDue?: number;
 }
@@ -43,13 +44,15 @@ export default function DashboardHeader({
   setGlobalToast,
   onStartReview,
   isReviewing = false,
-  simpleMode = false,
   onStartFocus,
   forgottenCount = 0,
   forgottenDue = 0,
 }: DashboardHeaderProps) {
   const loading = useWordsStore((s) => s.loading);
   const refreshWords = useWordsStore((s) => s.refreshWords);
+  const accountUser = useAuthStore((s) => s.user);
+  const accountName = useAuthStore((s) => s.profile?.displayName);
+  const accountAvatar = useAuthStore((s) => s.profile?.avatar);
   const [isQuickReplenishing, setIsQuickReplenishing] = useState(false);
   const snooze = useReminderSnooze();
   const isMobile = typeof window !== "undefined" && !!(window as any).AndroidReminders;
@@ -78,47 +81,26 @@ export default function DashboardHeader({
     }
   };
 
-  // Simple mode groups several tabs under one sidebar entry: their bar is hidden during a session on screen
-  const group = simpleMode ? navGroupOf(activeTab) : null;
-  const subTabs = group && group.tabs.length > 1 && !(isReviewing && activeTab === "review") ? group.tabs : null;
+  // The tabs of the current section, as chips under the header (hidden while a review session is on screen)
+  const section = navSectionOf(activeTab);
+  const inSession = isReviewing && activeTab === "review";
+  const subTabs = section.tabs.length > 1 && !inSession ? section.tabs : null;
+  const countChip = (n: number, tone: "amber" | "red" | "neutral") =>
+    n > 0 ? (
+      <span
+        className={`min-w-5 px-1.5 rounded-full text-xs font-bold text-center ${
+          tone === "amber" ? "bg-amber-500 text-white" : tone === "red" ? "bg-red-600 text-white" : "bg-slate-200 text-slate-700 dark:bg-zinc-700 dark:text-zinc-200"
+        }`}
+      >
+        {n}
+      </span>
+    ) : undefined;
 
   return (
     <>
-    <header className="min-h-14 py-2 pt-[calc(env(safe-area-inset-top)+0.5rem)] md:pt-2 border-b border-slate-200 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/40 px-3 md:px-6 flex items-center justify-between gap-3 shrink-0 backdrop-blur-md">
-      {/* Phones: opens the sidebar drawer */}
-      <button
-        type="button"
-        onClick={() => window.dispatchEvent(new Event("myenglish-toggle-nav"))}
-        aria-label="Mở menu"
-        className="md:hidden shrink-0 w-11 h-11 -ml-2 inline-flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800 active:scale-95 transition"
-      >
-        <Menu className="w-6 h-6" />
-      </button>
-
-      {/* Center: Streak & Daily Goal Indicator */}
-      <div className="flex-1 min-w-0 flex items-center">
-        <button
-          onClick={() => setActiveTab("analytics")}
-          title={`Chuỗi: ${streakStats.currentStreak} ngày • Hôm nay: ${streakStats.todayCount}/${streakStats.dailyGoal} câu (bấm để xem tiến độ)`}
-          aria-label={`Chuỗi ${streakStats.currentStreak} ngày, hôm nay ${streakStats.todayCount} trên ${streakStats.dailyGoal} câu. Bấm để xem tiến độ`}
-          className="inline-flex items-center gap-2 min-h-10 px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700 text-xs transition-colors shadow-sm shrink-0"
-        >
-          <div className="flex items-center gap-1 font-mono font-bold text-orange-600 dark:text-orange-400">
-            <Flame className="w-4 h-4" />
-            <span>{streakStats.currentStreak}</span>
-          </div>
-          <div className="w-[1px] h-3 bg-slate-200 dark:bg-zinc-800" />
-          <div className="flex items-center gap-1.5 font-mono text-slate-700 dark:text-zinc-300">
-            <Target className="w-3 h-3 text-cyan-600 dark:text-cyan-400" />
-            <span>
-              {streakStats.todayCount}/{streakStats.dailyGoal}
-            </span>
-            {streakStats.goalReached && (
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            )}
-          </div>
-        </button>
-      </div>
+    <header className="min-h-14 py-2 pt-[calc(env(safe-area-inset-top)+0.5rem)] md:pt-2 border-b border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 px-4 md:px-6 flex items-center justify-between gap-3 shrink-0">
+      {/* The section's name; on a computer the sidebar shows it, so the name is the tab's */}
+      <h1 className="flex-1 min-w-0 truncate text-xl font-bold tracking-tight text-slate-900 dark:text-white">{section.label}</h1>
 
       {/* Right Header Controls: strictly 1 row on mobile and desktop without staircase wrapping */}
       <div className="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
@@ -187,7 +169,7 @@ export default function DashboardHeader({
           <button
             onClick={onStartFocus}
             title="Phiên tập trung: học trọn vài phút, ẩn mọi thứ khác và tắt nhắc nhở"
-            className="inline-flex items-center justify-center gap-1.5 min-h-10 px-3 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-xs font-semibold shadow-sm shadow-violet-600/30 transition-all active:scale-95 shrink-0"
+            className="hidden sm:inline-flex items-center justify-center gap-1.5 min-h-10 px-3 rounded-xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 text-sm font-semibold transition-colors shrink-0"
           >
             <Crosshair className="w-4 h-4" />
             <span>Tập trung</span>
@@ -197,7 +179,7 @@ export default function DashboardHeader({
         {/* Quick Review Button (the Today screen has its own, single main button). During a session it only
             goes back to it: starting another one would restart from card 0 and grade cards twice. Only while
             something is due or a session waits: otherwise the focus button above is the one action. */}
-        {onStartReview && activeTab !== "today" && (isReviewing || dueCount > 0) && !(isReviewing && activeTab === "review") && (
+        {onStartReview && activeTab !== "today" && activeTab !== "review" && (isReviewing || dueCount > 0) && (
           <button
             onClick={isReviewing ? () => setActiveTab("review") : onStartReview}
             title={
@@ -209,15 +191,15 @@ export default function DashboardHeader({
                     : `Học nhanh ${dueCount} thẻ`
                   : "Bắt đầu buổi ôn tập nhanh (Flashcards & Bài tập)"
             }
-            className="inline-flex items-center justify-center gap-1.5 min-h-10 px-3 rounded-lg bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold shadow-sm transition-all active:scale-95 shrink-0"
+            className="inline-flex items-center justify-center gap-1.5 min-h-10 px-3 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-sm font-semibold shadow-sm transition-colors shrink-0"
           >
-            <Zap className="w-4 h-4 fill-white text-white" />
+            <Zap className="w-4 h-4" />
             <span>
               {isReviewing ? "Tiếp tục ôn" : "Ôn tập"}
               {!isReviewing && <span className="hidden sm:inline"> ngay</span>}
             </span>
             {!isReviewing && (
-              <span className="text-xs bg-black/25 text-white px-1.5 py-0.5 rounded font-mono font-bold leading-none">
+              <span className="text-xs bg-white/20 text-white px-1.5 py-0.5 rounded-full font-bold leading-none">
                 {dueCount}
               </span>
             )}
@@ -229,12 +211,35 @@ export default function DashboardHeader({
         <button
           onClick={() => setActiveTab("capture")}
           title={AI_VOCAB_ENABLED ? "Thêm từ mới" : "Tìm một từ trong bộ Oxford để học sớm"}
-          className="inline-flex items-center justify-center gap-1.5 min-h-10 min-w-10 sm:px-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-semibold shadow-sm transition-all shrink-0 active:scale-95"
+          className="inline-flex items-center justify-center gap-1.5 min-h-10 min-w-10 sm:px-3 rounded-xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 text-sm font-semibold transition-colors shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">{AI_VOCAB_ENABLED ? "Thêm từ" : "Từ Oxford"}</span>
         </button>
         )}
+
+        {/* Streak and today's goal: one chip (opens Tiến độ) */}
+        <button
+          onClick={() => setActiveTab("analytics")}
+          title={`Chuỗi: ${streakStats.currentStreak} ngày • Hôm nay: ${streakStats.todayCount}/${streakStats.dailyGoal} câu (bấm để xem tiến độ)`}
+          aria-label={`Chuỗi ${streakStats.currentStreak} ngày, hôm nay ${streakStats.todayCount} trên ${streakStats.dailyGoal} câu. Bấm để xem tiến độ`}
+          className="inline-flex items-center gap-1.5 min-h-10 px-3 rounded-full bg-orange-50 text-orange-700 dark:bg-orange-500/10 dark:text-orange-300 text-sm font-bold shrink-0"
+        >
+          <Flame className="w-4 h-4" />
+          <span>{streakStats.currentStreak}</span>
+          <span className="hidden sm:inline font-semibold">ngày</span>
+          {streakStats.goalReached && <span className="w-1.5 h-1.5 rounded-full bg-green-600" aria-hidden="true" />}
+        </button>
+
+        {/* Phones: the account (a computer has it at the bottom of the sidebar) */}
+        <button
+          type="button"
+          onClick={() => setActiveTab("account")}
+          aria-label={accountUser ? "Tài khoản" : "Đăng nhập"}
+          className="md:hidden shrink-0 w-10 h-10 inline-flex items-center justify-center rounded-full bg-teal-700 text-white overflow-hidden"
+        >
+          {accountUser ? <Avatar id={accountAvatar} name={accountName ?? accountUser.email} size="sm" /> : <UserRound className="w-5 h-5" />}
+        </button>
       </div>
     </header>
  
@@ -270,49 +275,19 @@ export default function DashboardHeader({
       </div>
     )}
 
-    {/* Simple mode: the tabs of the current sidebar entry (e.g. Ôn tập · Từ đã học · Lộ trình từ vựng) */}
-    {group && subTabs && (
-      <div className="min-h-12 py-1 shrink-0 border-b border-slate-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/30 px-3 md:px-6 flex items-center overflow-x-auto scrollbar-none gap-2">
-        <div
-          role="tablist"
-          aria-label={group.label}
-          className="inline-flex items-center gap-0.5 bg-slate-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-slate-200 dark:border-zinc-800 shrink-0"
-        >
-          {subTabs.map((t) => {
-            const selected = t.tab === activeTab;
-            return (
-              <button
-                key={t.tab}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                onClick={() => setActiveTab(t.tab)}
-                className={`min-h-10 px-3 py-1 rounded-md text-sm md:text-xs font-medium transition-colors flex items-center gap-1.5 whitespace-nowrap ${selected
-                  ? "bg-white dark:bg-zinc-800 text-cyan-700 dark:text-cyan-400 shadow-sm border border-slate-200 dark:border-transparent"
-                  : "border border-transparent text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
-                  }`}
-              >
-                <span>{t.label}</span>
-                {t.tab === "review" && dueCount > 0 && (
-                  <span className="text-xs font-mono font-semibold px-1.5 rounded-full bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-400">
-                    {dueCount}
-                  </span>
-                )}
-                {t.tab === "forgotten" && forgottenCount > 0 && (
-                  <span
-                    className={`text-xs font-mono font-semibold px-1.5 rounded-full ${
-                      forgottenDue > 0
-                        ? "bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-400"
-                        : "bg-slate-200 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
-                    }`}
-                  >
-                    {forgottenCount}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
+    {/* The tabs of the current section (e.g. Ôn tập · Kho từ · Từ hay quên · Đã biết · Lộ trình) */}
+    {subTabs && (
+      <div className="shrink-0 border-b border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 px-4 md:px-6 py-2">
+        <SubTabs
+          label={section.label}
+          value={activeTab}
+          onChange={setActiveTab}
+          items={subTabs.map((t) => ({
+            id: t.tab,
+            label: t.label,
+            badge: t.tab === "review" ? countChip(dueCount, "amber") : t.tab === "forgotten" ? countChip(forgottenCount, forgottenDue > 0 ? "red" : "neutral") : undefined,
+          }))}
+        />
       </div>
     )}
     </>

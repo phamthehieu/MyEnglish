@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { countWordStatus, isLearning, isRememberedLong, wordStatus, WORD_STATUS_LABELS } from "@/services/wordStatus";
-import { SIMPLE_NAV_GROUPS, navGroupOf, type DashboardTab } from "@/components/dashboard/shared";
+import { NAV_SECTIONS, navSectionOf, tabLabel, type DashboardTab } from "@/components/dashboard/shared";
 import { makeWord, reviewSrs } from "./helpers";
 
 /** "Đã biết" from a tap only: Review after one rep, no lapse, never reviewed for real */
@@ -49,31 +49,25 @@ describe("one definition of 'đã thuộc': Đang học / Nhớ lâu (U9)", () =
   });
 });
 
-describe("simple mode's five sidebar entries (U15)", () => {
+describe("the five sections of the app", () => {
   const ALL_TABS: DashboardTab[] = [
     "today", "library", "known", "capture", "reading", "writing", "review", "forgotten", "analytics", "guide", "grammar", "talk", "patterns", "pronunciation", "shadowing", "leaderboard", "account",
   ];
 
-  it("has six entries in order, and every tab belongs to exactly one", () => {
-    expect(SIMPLE_NAV_GROUPS.map((g) => g.label)).toEqual(["Hôm nay", "Từ vựng", "Mẫu câu", "Hội thoại", "Phát âm", "Shadowing", "Luyện thêm", "Truy cập nhanh", "Cài đặt", "Tài khoản"]);
-    const tabs = SIMPLE_NAV_GROUPS.flatMap((g) => g.tabs.map((t) => t.tab));
+  it("has five sections in order, and every tab belongs to exactly one", () => {
+    expect(NAV_SECTIONS.map((s) => s.label)).toEqual(["Hôm nay", "Từ vựng", "Luyện nói", "Ngữ pháp", "Tôi"]);
+    const tabs = NAV_SECTIONS.flatMap((s) => s.tabs.map((t) => t.tab));
     expect([...tabs].sort()).toEqual([...ALL_TABS].sort());
   });
 
-  it("Từ vựng opens Ôn tập first and holds the library and the vocabulary path; Ngữ pháp is a tab of Mẫu câu; Phát âm has its own entry", () => {
-    expect(navGroupOf("library").id).toBe("vocab");
-    expect(navGroupOf("capture").id).toBe("vocab");
-    // Quick access: both tabs one click away, and a bar to switch between them
-    expect(navGroupOf("forgotten").id).toBe("quick");
-    expect(navGroupOf("leaderboard").tabs.map((t) => t.tab)).toEqual(["forgotten", "leaderboard"]);
-    expect(navGroupOf("review").tabs[0].tab).toBe("review");
-    expect(navGroupOf("writing").tabs.map((t) => t.tab)).toEqual(["reading", "writing"]);
-    // Grammar is with the sentence patterns, one tab away
-    expect(navGroupOf("grammar").id).toBe("patterns");
-    expect(navGroupOf("patterns").tabs.map((t) => t.tab)).toEqual(["patterns", "grammar"]);
-    expect(navGroupOf("pronunciation").tabs.map((t) => t.tab)).toEqual(["pronunciation"]);
-    // Shadowing runs on its own, like Phát âm and Hội thoại
-    expect(navGroupOf("shadowing").tabs.map((t) => t.tab)).toEqual(["shadowing"]);
-    expect(navGroupOf("analytics").id).toBe("today");
+  it("each section opens its main tab and holds the tabs that belong with it", () => {
+    expect(navSectionOf("review").tabs[0].tab).toBe("review");
+    expect(navSectionOf("forgotten").id).toBe("vocab");
+    expect(navSectionOf("capture").id).toBe("vocab");
+    expect(navSectionOf("patterns").tabs.map((t) => t.tab)).toEqual(["patterns", "talk", "pronunciation", "shadowing"]);
+    expect(navSectionOf("writing").tabs.map((t) => t.tab)).toEqual(["grammar", "reading", "writing"]);
+    expect(navSectionOf("leaderboard").id).toBe("me");
+    expect(navSectionOf("guide").tabs[0].tab).toBe("analytics");
+    expect(tabLabel("library")).toBe("Kho từ");
   });
 });
