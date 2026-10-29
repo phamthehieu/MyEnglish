@@ -14,6 +14,16 @@ interface LetterTilesExerciseProps {
   onSpeak: (text: string) => void;
   hideHeader?: boolean;
   hideHints?: boolean;
+  /**
+   * Given: the "Kiểm tra" button is drawn by the parent (in the bar under the card, where "Tiếp tục" comes), so this
+   * reports what it needs: whether every letter is placed, and how to check. null once the word is answered.
+   */
+  onAction?: (action: LetterTilesAction | null) => void;
+}
+
+export interface LetterTilesAction {
+  canCheck: boolean;
+  check: () => void;
 }
 
 /** Characters placed automatically (the learner only builds the letters) */
@@ -133,6 +143,7 @@ export default function LetterTilesExercise({
   onSpeak,
   hideHeader = false,
   hideHints = hideHeader,
+  onAction,
 }: LetterTilesExerciseProps) {
   const target = word.word.trim();
   const slots = useMemo(() => [...target.toLowerCase()], [target]);
@@ -222,6 +233,15 @@ export default function LetterTilesExercise({
     },
     [tiles, slots, onSpeak, target, onComplete, wrongAttempts, hint, letterCount, state]
   );
+
+  // The parent draws "Kiểm tra": tell it whether the word is complete, and how to check it
+  const answered = state === "correct" || state === "give_up";
+  const canCheck = state !== "wrong" && picked.length === letterCount;
+  useEffect(() => {
+    if (!onAction) return;
+    onAction(answered ? null : { canCheck, check: () => check(picked) });
+  }, [onAction, answered, canCheck, check, picked]);
+  useEffect(() => () => onAction?.(null), [onAction]);
 
   const pick = useCallback(
     (id: number) => {
@@ -461,7 +481,7 @@ export default function LetterTilesExercise({
 
       {/* Helpers sit under the answer being built, away from the main button: a hint costs the word a grade (Hard) */}
       {state !== "correct" && state !== "give_up" && (
-        <div className="flex items-center justify-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
           <button
             type="button"
             onClick={clear}
@@ -483,6 +503,20 @@ export default function LetterTilesExercise({
               <span>Gợi ý chữ đầu</span>
             </button>
           )}
+          {/* Giving up counts the word as forgotten: it asks twice */}
+          <button
+            type="button"
+            onClick={() => (confirmGiveUp ? giveUp() : setConfirmGiveUp(true))}
+            className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-xl font-medium transition-colors cursor-pointer ${
+              confirmGiveUp
+                ? "border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-300"
+                : "text-slate-600 hover:text-red-700 hover:bg-red-50 dark:text-zinc-400 dark:hover:text-red-400 dark:hover:bg-red-500/10"
+            }`}
+            title="Xem đáp án và học lại từ này (tính là chưa nhớ)"
+          >
+            <Eye className="w-3.5 h-3.5" />
+            <span>{confirmGiveUp ? "Bấm lần nữa để xem" : "Không nhớ"}</span>
+          </button>
         </div>
       )}
 
@@ -538,40 +572,18 @@ export default function LetterTilesExercise({
         )}
       </div>
 
-      {state !== "correct" && state !== "give_up" && (
-        <>
-          {/* The main button: wide and tall, under the tiles. It stays pinned to the bottom of the card while the card
-              scrolls, so it never has to be scrolled to. It sleeps until every letter is placed, so a tap that comes
-              too early does nothing */}
-          <div className="sticky bottom-0 z-10 -mx-1 bg-white/95 px-1 pb-1 pt-2 backdrop-blur-sm dark:bg-zinc-900/95">
-          <button
-            type="button"
-            onClick={() => check(picked)}
-            disabled={state === "wrong" || picked.length !== letterCount}
-            className="w-full min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 disabled:pointer-events-none text-white font-semibold text-base shadow-sm transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <span>Kiểm tra</span>
-            <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[10px] font-mono leading-none">Enter</kbd>
-          </button>
-          </div>
-
-          {/* Giving up counts the word as forgotten: a quiet link, well away from the main button, that asks twice */}
-          <div className="flex justify-center pt-4">
-            <button
-              type="button"
-              onClick={() => (confirmGiveUp ? giveUp() : setConfirmGiveUp(true))}
-              className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
-                confirmGiveUp
-                  ? "border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-300"
-                  : "text-slate-600 hover:text-red-700 dark:text-zinc-400 dark:hover:text-red-400"
-              }`}
-              title="Xem đáp án và học lại từ này (tính là chưa nhớ)"
-            >
-              <Eye className="w-3.5 h-3.5" />
-              <span>{confirmGiveUp ? "Bấm lần nữa để xem đáp án" : "Không nhớ, xem đáp án"}</span>
-            </button>
-          </div>
-        </>
+      {/* The main button, when the parent does not draw it in its own bar. It sleeps until every letter is placed, so a
+          tap that comes too early does nothing */}
+      {!onAction && state !== "correct" && state !== "give_up" && (
+        <button
+          type="button"
+          onClick={() => check(picked)}
+          disabled={!canCheck}
+          className="w-full min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 disabled:pointer-events-none text-white font-semibold text-base shadow-sm transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
+        >
+          <span>Kiểm tra</span>
+          <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[10px] font-mono leading-none">Enter</kbd>
+        </button>
       )}
     </div>
   );

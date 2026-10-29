@@ -4,6 +4,7 @@ import type { ExerciseType } from "@/services/smartReview";
 import { isSimpleMode } from "@/services/learnerProfile";
 import { EXERCISE_LABEL_VN } from "./exerciseLabels";
 import GiveUpButton from "./GiveUpButton";
+import type { LetterTilesAction } from "../exercises/LetterTilesExercise";
 
 interface GradingBarProps {
   effectiveExerciseType: ExerciseType;
@@ -30,6 +31,8 @@ interface GradingBarProps {
   introLocked?: boolean;
   /** Practice mode: does not move FSRS schedule */
   isPractice?: boolean;
+  /** The letter tiles' check, shown here instead of on the card */
+  tilesAction?: LetterTilesAction | null;
 }
 
 /** BOTTOM ACTION BAR - at least h-14 in every state (it only grows for the grades and their caption) */
@@ -52,6 +55,7 @@ export default function GradingBar({
   onIntroDone,
   introLocked = false,
   isPractice = false,
+  tilesAction = null,
 }: GradingBarProps) {
   // Simple mode: Vietnamese labels only (no Again/Hard/Good/Easy, no exercise code names)
   const simple = isSimpleMode();
@@ -99,8 +103,22 @@ export default function GradingBar({
     },
   ].filter((g) => (onlyAgain ? g.rating === Rating.Again : g.rating !== Rating.Easy || allowEasy));
 
-  // The letter tiles carry their own buttons and name: an empty bar under them would only take room from the card
-  if (effectiveExerciseType === "letter_tiles" && !introMode && pendingRating === null) return null;
+  // The letter tiles: their "Kiểm tra" here, in the place and look of "Tiếp tục" (their other buttons are on the card)
+  if (effectiveExerciseType === "letter_tiles" && !introMode && pendingRating === null) {
+    if (!tilesAction) return null;
+    return (
+      <div className="w-full mt-3 shrink-0">
+        <button
+          onClick={tilesAction.check}
+          disabled={!tilesAction.canCheck || isAdvancing}
+          className="w-full h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 text-white text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
+        >
+          <span>Kiểm tra</span>
+          <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full mt-3 min-h-14 shrink-0 flex items-center justify-center">

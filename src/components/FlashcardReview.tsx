@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { parseTerms, type WordDetail, type ReviewCard } from "@/types/database";
-import LetterTilesExercise from "./exercises/LetterTilesExercise";
+import LetterTilesExercise, { type LetterTilesAction } from "./exercises/LetterTilesExercise";
 import MultipleChoiceExercise from "./exercises/MultipleChoiceExercise";
 import SentenceBuilderExercise from "./exercises/SentenceBuilderExercise";
 import ContextMatchExercise from "./exercises/ContextMatchExercise";
@@ -139,6 +139,8 @@ export default function FlashcardReview({
     onSessionCompleted?.(sessionCompleted);
   }, [sessionCompleted, onSessionCompleted]);
   const [confirmingExit, setConfirmingExit] = useState(false);
+  // The letter tiles' "Kiểm tra", drawn in the bar under the card (where "Tiếp tục" comes)
+  const [tilesAction, setTilesAction] = useState<LetterTilesAction | null>(null);
   const confirmingExitRef = useRef(false);
   confirmingExitRef.current = confirmingExit;
 
@@ -402,6 +404,7 @@ export default function FlashcardReview({
                 holdExerciseAnswer(gradeExercise("letter_tiles", attempts, rating), "letter_tiles", attempts);
               }}
               onSpeak={(t) => handleSpeak(t)}
+              onAction={setTilesAction}
             />
           </div>
         )}
@@ -587,6 +590,7 @@ export default function FlashcardReview({
         onIntroDone={handleIntroDone}
         introLocked={isIntroCard && !introSayPassed}
         isPractice={practiceMode}
+        tilesAction={effectiveExerciseType === "letter_tiles" ? tilesAction : null}
       />}
 
       {confirmingExit && (
