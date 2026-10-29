@@ -99,6 +99,9 @@ export default function GradingBar({
     },
   ].filter((g) => (onlyAgain ? g.rating === Rating.Again : g.rating !== Rating.Easy || allowEasy));
 
+  // The letter tiles carry their own buttons and name: an empty bar under them would only take room from the card
+  if (effectiveExerciseType === "letter_tiles" && !introMode && pendingRating === null) return null;
+
   return (
     <div className="w-full mt-3 min-h-14 shrink-0 flex items-center justify-center">
       {introMode ? (

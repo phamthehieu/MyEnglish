@@ -322,7 +322,7 @@ export default function FlashcardReview({
               }
             : undefined
         }
-        className={`w-full flex-1 min-h-[200px] max-h-[620px] my-auto overflow-y-auto overflow-x-hidden rounded-2xl border bg-white dark:bg-zinc-900 p-5 md:p-6 shadow-[0_4px_12px_rgba(15,23,42,0.06)] flex flex-col justify-between transition-all relative ${
+        className={`w-full flex-1 min-h-[200px] md:max-h-[620px] my-auto overflow-y-auto overflow-x-hidden rounded-2xl border bg-white dark:bg-zinc-900 p-5 md:p-6 shadow-[0_4px_12px_rgba(15,23,42,0.06)] flex flex-col justify-between transition-all relative ${
           answerShown ? "select-text" : ""
         } ${
           effectiveExerciseType === "flip" ? "cursor-pointer hover:border-slate-400 dark:hover:border-zinc-700/80" : ""

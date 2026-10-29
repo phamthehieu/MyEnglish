@@ -539,9 +539,11 @@ export default function LetterTilesExercise({
       </div>
 
       {state !== "correct" && state !== "give_up" && (
-        <div className="space-y-6">
-          {/* The main button: wide and tall, under the tiles, always in the same place. It sleeps until every letter is
-              placed, so a tap that comes too early does nothing */}
+        <>
+          {/* The main button: wide and tall, under the tiles. It stays pinned to the bottom of the card while the card
+              scrolls, so it never has to be scrolled to. It sleeps until every letter is placed, so a tap that comes
+              too early does nothing */}
+          <div className="sticky bottom-0 z-10 -mx-1 bg-white/95 px-1 pb-1 pt-2 backdrop-blur-sm dark:bg-zinc-900/95">
           <button
             type="button"
             onClick={() => check(picked)}
@@ -551,9 +553,10 @@ export default function LetterTilesExercise({
             <span>Kiểm tra</span>
             <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[10px] font-mono leading-none">Enter</kbd>
           </button>
+          </div>
 
           {/* Giving up counts the word as forgotten: a quiet link, well away from the main button, that asks twice */}
-          <div className="flex justify-center">
+          <div className="flex justify-center pt-4">
             <button
               type="button"
               onClick={() => (confirmGiveUp ? giveUp() : setConfirmGiveUp(true))}
@@ -568,7 +571,7 @@ export default function LetterTilesExercise({
               <span>{confirmGiveUp ? "Bấm lần nữa để xem đáp án" : "Không nhớ, xem đáp án"}</span>
             </button>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
