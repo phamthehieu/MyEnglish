@@ -1296,12 +1296,12 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
   const overlayStyle = useMemo(() => {
     switch (settings.blurOverlay) {
       case "heavy":
-        return { backgroundColor: "rgba(0, 0, 0, 0.85)" };
+        return { backgroundColor: "rgba(15, 23, 42, 0.85)" };
       case "light":
-        return { backgroundColor: "rgba(0, 0, 0, 0.48)" };
+        return { backgroundColor: "rgba(15, 23, 42, 0.5)" };
       case "medium":
       default:
-        return { backgroundColor: "rgba(0, 0, 0, 0.68)" };
+        return { backgroundColor: "rgba(15, 23, 42, 0.68)" };
     }
   }, [settings.blurOverlay]);
 
@@ -1358,34 +1358,28 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
       }}
     >
       <div
-        className={`w-full max-w-xl min-h-[500px] max-h-full bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800/80 rounded-3xl shadow-2xl overflow-y-auto flex flex-col justify-between ${
+        className={`w-full max-w-xl min-h-[500px] max-h-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-y-auto flex flex-col justify-between ${
           isNudging ? "animate-shake" : hasEntered ? "" : "popup-card-enter"
         }`}
       >
         {/* Top Header Bar */}
-        <div className="px-6 py-3.5 bg-slate-50/80 dark:bg-zinc-950/60 border-b border-slate-200/80 dark:border-zinc-800/80 flex items-center justify-between gap-3">
+        <div className="px-6 py-3.5 bg-white dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <span
-              className={`flex items-center justify-center w-7 h-7 rounded-xl text-white shadow-sm ${
-                currentGrammar
-                  ? "bg-gradient-to-tr from-violet-600 to-indigo-600 shadow-violet-500/30"
-                  : "bg-gradient-to-tr from-cyan-500 to-indigo-500 shadow-cyan-500/30"
-              }`}
-            >
+            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-teal-50 dark:bg-teal-400/10 text-teal-700 dark:text-teal-300">
               {currentGrammar ? (
-                <GraduationCap className="w-4 h-4 fill-white" />
+                <GraduationCap className="w-4 h-4" />
               ) : (
-                <Zap className="w-4 h-4 fill-white" />
+                <Zap className="w-4 h-4 fill-current" />
               )}
             </span>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white">
+                <span className="text-sm font-bold text-slate-900 dark:text-white">
                   {currentGrammar ? "Câu hỏi ngữ pháp" : "Câu hỏi từ vựng"}
                 </span>
 
                 {queue.length > 0 && currentItem && (
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 font-bold border border-slate-200 dark:border-zinc-700">
+                  <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 font-semibold">
                     Câu {currentIndex + 1} / {queue.length}
                   </span>
                 )}
@@ -1393,10 +1387,10 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 {/* Tag phân biệt Từ vựng vs Ngữ pháp */}
                 {currentWord && (
                   <span
-                    className={`text-[11px] font-medium px-2 py-0.5 rounded-full border ${
+                    className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                       new Date(currentWord.srs.next_review_date) <= new Date()
-                        ? "bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-400 border-orange-200 dark:border-orange-800"
-                        : "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800"
+                        ? "bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-300"
+                        : "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
                     }`}
                   >
                     {needsIntro(currentWord)
@@ -1409,7 +1403,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 )}
 
                 {currentGrammar && (
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-400 border border-violet-200 dark:border-violet-800 flex items-center gap-1">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300 flex items-center gap-1">
                     <span>{currentGrammar.lesson.category}</span>
                   </span>
                 )}
@@ -1422,9 +1416,9 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
             <button
               onClick={() => handleSnooze()}
               title={`Hoãn nhắc nhở ${settings.snoozeMinutes} phút (Phím S)`}
-              className="px-3 min-h-11 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-xs"
+              className="px-3 min-h-11 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800 text-sm font-semibold flex items-center gap-1.5 transition-colors"
             >
-              <Clock className="w-3.5 h-3.5 text-amber-500" />
+              <Clock className="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" />
               <span className="hidden sm:inline">Hoãn</span>
               <span>{settings.snoozeMinutes}p</span>
             </button>
@@ -1445,47 +1439,49 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
         <div className="p-6 space-y-5">
           {loading ? (
             <div className="py-12 flex flex-col items-center justify-center space-y-3">
-              <div className="w-8 h-8 border-3 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-              <p className="text-xs text-slate-500 dark:text-zinc-400 font-medium">
+              <div className="w-8 h-8 border-3 border-teal-700 dark:border-teal-400 border-t-transparent dark:border-t-transparent rounded-full animate-spin" />
+              <p className="text-sm text-slate-500 dark:text-zinc-400 font-medium">
                 Đang chuẩn bị câu hỏi ôn tập song song...
               </p>
             </div>
           ) : summary ? (
             <div className="py-4 space-y-4">
               <div className="text-center space-y-1.5">
-                <CheckCircle2 className="w-11 h-11 text-emerald-500 mx-auto" />
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">Hoàn thành phiên ôn tập!</h3>
-                <p className="text-xs text-slate-500 dark:text-zinc-400">
+                <div className="w-16 h-16 rounded-full bg-green-50 dark:bg-green-500/10 flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-9 h-9 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">Hoàn thành phiên ôn tập!</h3>
+                <p className="text-sm text-slate-600 dark:text-zinc-400">
                   Đúng ngay lần đầu <span className="font-bold text-slate-800 dark:text-zinc-200">{summary.correct}/{summary.total}</span> câu
                 </p>
                 {newBadges.length > 0 && (
-                  <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">
+                  <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
                     Huy hiệu mới: {newBadges.join(", ")}
                   </p>
                 )}
               </div>
               {summary.items.length > 0 && (
-                <ul className="rounded-2xl border border-slate-200 dark:border-zinc-800 divide-y divide-slate-100 dark:divide-zinc-800 text-xs max-h-60 overflow-y-auto">
+                <ul className="rounded-2xl border border-slate-200 dark:border-zinc-800 divide-y divide-slate-100 dark:divide-zinc-800 text-sm max-h-60 overflow-y-auto">
                   {summary.items.map((it) => (
-                    <li key={it.key} className="px-3.5 py-2 flex items-center gap-2.5">
+                    <li key={it.key} className="px-3.5 py-2.5 flex items-center gap-2.5">
                       {it.correct ? (
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0" />
                       ) : (
-                        <AlertCircle className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                        <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
                       )}
                       <span className="font-semibold text-slate-800 dark:text-zinc-200 truncate flex-1">{it.label}</span>
                       {it.milestone === "mastered" && (
-                        <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 font-semibold shrink-0">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-300 font-semibold shrink-0">
                           🎉 Nhớ dài hạn
                         </span>
                       )}
                       {it.milestone === "rescued" && (
-                        <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 font-semibold shrink-0">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300 font-semibold shrink-0">
                           🧠 Cứu kịp
                         </span>
                       )}
                       {it.again && (
-                        <span className="text-[11px] text-slate-500 dark:text-zinc-400 shrink-0">Gặp lại sau {it.again}</span>
+                        <span className="text-xs text-slate-500 dark:text-zinc-400 shrink-0">Gặp lại sau {it.again}</span>
                       )}
                     </li>
                   ))}
@@ -1493,24 +1489,26 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               )}
               <button
                 onClick={handleClose}
-                className="w-full h-12 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold flex items-center justify-center gap-2"
+                className="w-full min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors"
               >
                 Đóng
-                <kbd className="px-1.5 py-0.5 bg-white/20 dark:bg-black/20 rounded text-[11px] font-mono">Enter</kbd>
+                <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[11px] font-mono">Enter</kbd>
               </button>
             </div>
           ) : !currentItem ? (
             <div className="py-10 text-center space-y-3">
-              <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+              <div className="w-16 h-16 rounded-full bg-teal-50 dark:bg-teal-400/10 flex items-center justify-center mx-auto">
+                <CheckCircle2 className="w-9 h-9 text-teal-700 dark:text-teal-300" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 Chưa có câu hỏi ôn tập phù hợp!
               </h3>
-              <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm mx-auto">
+              <p className="text-sm text-slate-600 dark:text-zinc-400 max-w-sm mx-auto">
                 Hãy thêm từ vựng mới hoặc kiểm tra cấu hình cấp độ ôn tập ngữ pháp trong phần Cài đặt nhé.
               </p>
               <button
                 onClick={handleClose}
-                className="mt-2 px-6 h-11 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold"
+                className="mt-2 px-6 min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm transition-colors"
               >
                 Đóng lại
               </button>
@@ -1522,21 +1520,21 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
             /* Từ mới: giới thiệu từ trước khi hỏi */
             <div className="space-y-4">
               {pretestResult && <PretestFeedback result={pretestResult} />}
-              <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[11px] text-amber-600 dark:text-amber-400">
+              <div className="flex items-center gap-1.5 font-semibold text-sm text-amber-700 dark:text-amber-400">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Từ mới · Đọc kỹ rồi trả lời câu hỏi</span>
               </div>
-              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-zinc-950/80 border border-slate-200/80 dark:border-zinc-800/80 space-y-3">
+              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-800 space-y-3">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-baseline gap-2.5 flex-wrap">
-                    <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                    <span className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
                       {currentWord.word}
                     </span>
                     {currentWord.phonetic && (
-                      <span className="font-mono text-cyan-600 dark:text-cyan-400 text-sm">{currentWord.phonetic}</span>
+                      <span className="font-mono text-teal-700 dark:text-teal-300 text-sm">{currentWord.phonetic}</span>
                     )}
                     {posLabel && (
-                      <span className="px-2 py-0.5 rounded-full bg-slate-200/70 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 font-semibold text-[11px]">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-200/70 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 font-semibold text-xs">
                         {posLabel}
                       </span>
                     )}
@@ -1545,7 +1543,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     onClick={handleManualSpeak}
                     title="Nghe phát âm"
                     aria-label="Nghe phát âm"
-                    className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                    className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors"
                   >
                     <Volume2 className="w-5 h-5" />
                   </button>
@@ -1554,10 +1552,10 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                   {conciseMeaning || currentWord.meaning_vn}
                 </p>
                 {primaryExample?.sentence_en && (
-                  <div className="text-sm text-slate-700 dark:text-zinc-300 pl-3 border-l-2 border-cyan-500/60 space-y-0.5">
+                  <div className="text-sm text-slate-700 dark:text-zinc-300 pl-3 border-l-2 border-teal-700/40 dark:border-teal-400/40 space-y-0.5">
                     <p className="italic">"{highlightWord(primaryExample.sentence_en, currentWord.word)}"</p>
                     {primaryExample.sentence_vn && (
-                      <p className="text-xs text-slate-500 dark:text-zinc-400">{primaryExample.sentence_vn}</p>
+                      <p className="text-sm text-slate-500 dark:text-zinc-400">{primaryExample.sentence_vn}</p>
                     )}
                   </div>
                 )}
@@ -1565,7 +1563,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               <button
                 onClick={finishIntro}
                 autoFocus
-                className="w-full h-12 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm"
+                className="w-full min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
               >
                 <span>Đã đọc, kiểm tra tôi</span>
                 <ArrowRight className="w-4 h-4" />
@@ -1574,7 +1572,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               {currentWord.direction !== "production" && (currentWord.srs?.reps ?? 0) === 0 && (
                 <button
                   onClick={markIntroKnown}
-                  className="w-full min-h-11 rounded-xl border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                  className="w-full min-h-12 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-sm font-semibold transition-colors"
                 >
                   ✓ Đã biết từ này (hỏi lại sau khoảng một tuần)
                 </button>
@@ -1588,14 +1586,14 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               <div className="space-y-3">
                 {/* Header Tags */}
                 <div className="flex items-center justify-between gap-2 flex-wrap text-xs">
-                  <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[11px] text-cyan-600 dark:text-cyan-400">
+                  <div className="flex items-center gap-1.5 font-semibold text-sm text-teal-700 dark:text-teal-300">
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>{wordPrompt ? "Từ tiếng Anh:" : "Nghĩa tiếng Việt:"}</span>
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {currentWord?.topic && (
-                      <span className="px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-semibold text-[11px] border border-indigo-200 dark:border-indigo-800/60">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 font-semibold text-xs">
                         {currentWord.topic}
                       </span>
                     )}
@@ -1603,14 +1601,14 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 </div>
 
                 {/* Từ tiếng Anh (trắc nghiệm chọn nghĩa) hoặc nghĩa tiếng Việt */}
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-zinc-950/80 border border-slate-200/80 dark:border-zinc-800/80 text-center">
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-800 text-center">
                   {wordPrompt ? (
                     <div className="flex items-baseline justify-center gap-2.5 flex-wrap">
-                      <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                      <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
                         {currentWord?.word}
                       </h2>
                       {currentWord?.phonetic && (
-                        <span className="font-mono text-cyan-600 dark:text-cyan-400 text-xs font-medium">
+                        <span className="font-mono text-teal-700 dark:text-teal-300 text-sm font-medium">
                           {currentWord.phonetic}
                         </span>
                       )}
@@ -1624,15 +1622,15 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
 
                 {/* Câu ví dụ có từ (không kèm bản dịch: bản dịch lộ nghĩa) */}
                 {wordPrompt && currentWord && primaryExample?.sentence_en && (
-                  <p className="px-1 text-xs italic text-slate-600 dark:text-zinc-300">
+                  <p className="px-1 text-sm italic text-slate-600 dark:text-zinc-300">
                     "{highlightWord(primaryExample.sentence_en, currentWord.word)}"
                   </p>
                 )}
 
                 {/* Ngữ cảnh trong câu với chỗ trống */}
                 {!wordPrompt && maskedSentence && (
-                  <div className="p-3.5 rounded-2xl bg-cyan-50/40 dark:bg-cyan-950/20 border border-cyan-200/60 dark:border-cyan-800/50 text-xs leading-relaxed space-y-1">
-                    <div className="flex items-center gap-1.5 text-[11px] font-semibold text-cyan-700 dark:text-cyan-400">
+                  <div className="p-3.5 rounded-2xl bg-teal-50/60 dark:bg-teal-400/5 border border-teal-700/15 dark:border-teal-400/20 text-sm leading-relaxed space-y-1">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-teal-700 dark:text-teal-300">
                       <HelpCircle className="w-3.5 h-3.5" />
                       <span>Ngữ cảnh trong câu:</span>
                     </div>
@@ -1640,7 +1638,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                       "{maskedSentence}"
                     </p>
                     {primaryExample?.sentence_vn && (
-                      <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                      <p className="text-xs text-slate-500 dark:text-zinc-400">
                         ({primaryExample.sentence_vn})
                       </p>
                     )}
@@ -1651,7 +1649,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               {/* Trắc nghiệm từ vựng */}
               {activeMode === "multiple_choice" && (
                 <div className="space-y-3 pt-1">
-                  <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-zinc-400">
+                  <div className="flex items-center justify-between text-sm font-semibold text-slate-600 dark:text-zinc-400">
                     <span>{wordPrompt ? "Chọn nghĩa đúng:" : "Chọn từ tiếng Anh chính xác:"}</span>
                     <span className="desktop-only text-[11px] font-mono text-slate-400">Nhấn phím 1 - 4</span>
                   </div>
@@ -1660,22 +1658,22 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     {choices.map((choice, idx) => {
                       const isSelected = selectedChoiceId === choice.id;
                       let btnStyle =
-                        "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 hover:border-cyan-500 hover:bg-cyan-50/40 dark:hover:bg-cyan-950/20 shadow-xs";
+                        "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 hover:border-teal-700/40 hover:bg-teal-50/50 dark:hover:bg-zinc-800";
                       let badgeStyle =
                         "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300";
 
                       if (isAnswered) {
                         if (choice.isCorrect) {
                           btnStyle =
-                            "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-100 ring-2 ring-emerald-500/30";
-                          badgeStyle = "bg-emerald-500 text-white font-bold";
+                            "border-green-600 bg-green-50 dark:bg-green-500/10 text-green-900 dark:text-green-100";
+                          badgeStyle = "bg-green-600 text-white font-bold";
                         } else if (isSelected && !choice.isCorrect) {
                           btnStyle =
-                            "border-rose-500 bg-rose-50 dark:bg-rose-950/50 text-rose-900 dark:text-rose-100";
-                          badgeStyle = "bg-rose-500 text-white font-bold";
+                            "border-red-600 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-100";
+                          badgeStyle = "bg-red-600 text-white font-bold";
                         } else {
                           btnStyle =
-                            "border-slate-200 dark:border-zinc-800 opacity-40 bg-white dark:bg-zinc-900";
+                            "border-slate-200 dark:border-zinc-800 opacity-50 bg-white dark:bg-zinc-900";
                         }
                       }
 
@@ -1684,21 +1682,21 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                           key={choice.id}
                           disabled={isAnswered}
                           onClick={() => handleSelectChoice(choice)}
-                          className={`w-full p-3.5 rounded-2xl border text-left flex items-center gap-3 transition-all duration-150 ${btnStyle}`}
+                          className={`w-full min-h-14 p-3.5 rounded-2xl border text-left flex items-center gap-3 transition-colors duration-150 ${btnStyle}`}
                         >
                           <span
-                            className={`w-6 h-6 shrink-0 rounded-lg flex items-center justify-center font-mono text-xs font-bold ${badgeStyle}`}
+                            className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center font-mono text-xs font-bold ${badgeStyle}`}
                           >
                             {idx + 1}
                           </span>
-                          <span className="text-sm sm:text-base font-bold flex-1 tracking-tight">
+                          <span className="text-base font-semibold flex-1">
                             {choice.word}
                           </span>
                           {isAnswered && choice.isCorrect && (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                            <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" />
                           )}
                           {isAnswered && isSelected && !choice.isCorrect && (
-                            <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+                            <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
                           )}
                         </button>
                       );
@@ -1723,7 +1721,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               {activeMode === "typing" && currentWord && (
                 <form onSubmit={handleTypingSubmit} autoComplete="off" className="space-y-3.5 pt-1">
                   <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-xs font-semibold text-slate-600 dark:text-zinc-400">
+                    <div className="flex justify-between items-center text-sm font-semibold text-slate-600 dark:text-zinc-400">
                       <span>Nhập từ tiếng Anh tương ứng:</span>
 
                       {/* Gợi ý (chỉ hiện khi hover vào icon) */}
@@ -1732,7 +1730,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                           tabIndex={0}
                           onMouseEnter={() => (hintUsedRef.current = true)}
                           onFocus={() => (hintUsedRef.current = true)}
-                          className="p-1 rounded-full text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 cursor-pointer transition-colors focus:outline-none"
+                          className="p-1 rounded-full text-teal-700 hover:text-teal-800 dark:text-teal-300 dark:hover:text-teal-200 hover:bg-teal-50 dark:hover:bg-teal-400/10 cursor-pointer transition-colors focus:outline-none"
                           title={`Gợi ý: ${currentWord.word[0].toUpperCase()}${" · ".repeat(Math.max(0, currentWord.word.length - 1))} (${currentWord.word.length} chữ cái)`}
                         >
                           <HelpCircle className="w-4 h-4 shrink-0" />
@@ -1740,13 +1738,13 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
 
                         {/* Tooltip gợi ý xuất hiện khi hover vào icon */}
                         <div className="absolute right-0 bottom-full mb-1.5 hidden group-hover:flex group-focus-within:flex flex-col items-end z-30 pointer-events-none w-max max-w-[280px] sm:max-w-xs animate-in fade-in zoom-in-95 duration-150">
-                          <div className="px-3 py-1.5 rounded-xl bg-cyan-50 dark:bg-cyan-950/95 border border-cyan-300 dark:border-cyan-800 text-cyan-900 dark:text-cyan-200 text-xs font-mono font-bold shadow-lg text-center leading-snug">
+                          <div className="px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-slate-900 dark:text-zinc-100 text-sm font-mono font-bold shadow-lg text-center leading-snug">
                             <span>
                               Gợi ý: {currentWord.word[0].toUpperCase()}
                               {" · ".repeat(Math.max(0, currentWord.word.length - 1))} ({currentWord.word.length} chữ cái)
                             </span>
                           </div>
-                          <div className="w-2 h-2 -mt-1 mr-2 rotate-45 bg-cyan-50 dark:bg-cyan-950/95 border-r border-b border-cyan-300 dark:border-cyan-800" />
+                          <div className="w-2 h-2 -mt-1 mr-2 rotate-45 bg-white dark:bg-zinc-900 border-r border-b border-slate-200 dark:border-zinc-700" />
                         </div>
                       </div>
                     </div>
@@ -1769,12 +1767,12 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                         value={typedInput}
                         onChange={(e) => setTypedInput(e.target.value)}
                         placeholder="Gõ từ tiếng Anh vào đây..."
-                        className="w-full px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-base font-bold text-slate-900 dark:text-white placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 transition-all shadow-xs"
+                        className="w-full min-h-12 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-base font-bold text-slate-900 dark:text-white placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 dark:focus:border-teal-400 dark:focus:ring-teal-400/20 transition-colors"
                       />
                     </div>
 
                     {!isAnswered && feedbackMsg && (
-                      <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 text-xs font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-150">
+                      <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-amber-900 dark:text-amber-200 text-sm font-medium flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-150">
                         <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
                         <span>{feedbackMsg}</span>
                       </div>
@@ -1786,7 +1784,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                       <button
                         type="submit"
                         disabled={!typedInput.trim()}
-                        className="flex-1 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 text-white text-xs font-bold transition-all shadow-sm shadow-cyan-600/20"
+                        className="flex-1 min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-50 text-white text-base font-semibold transition-colors shadow-sm"
                       >
                         Kiểm tra đáp án
                       </button>
@@ -1794,7 +1792,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                         <button
                           type="button"
                           onClick={handleDontRemember}
-                          className="px-4 py-3 rounded-xl border border-slate-200 dark:border-zinc-800 text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 text-xs font-semibold transition-all shrink-0"
+                          className="px-4 min-h-12 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold transition-colors shrink-0"
                           title="Xem đáp án và học lại từ này"
                         >
                           Không nhớ
@@ -1808,33 +1806,33 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               {/* Kết quả & Thẻ ghi nhớ từ vựng */}
               {isAnswered && currentWord && (
                 <div
-                  className={`p-4 rounded-2xl border text-xs leading-relaxed space-y-3 animate-in fade-in duration-200 ${
+                  className={`p-4 rounded-2xl border text-sm leading-relaxed space-y-3 animate-in fade-in duration-200 ${
                     isCorrect
-                      ? "bg-emerald-50/70 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100"
-                      : "bg-rose-50/70 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-950 dark:text-rose-100"
+                      ? "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/30 text-green-950 dark:text-green-100"
+                      : "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30 text-red-950 dark:text-red-100"
                   }`}
                 >
                   {feedbackMsg && (
-                    <div className="flex items-center gap-1.5 font-bold text-xs">
+                    <div className="flex items-center gap-1.5 font-bold text-sm">
                       {isCorrect ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0" />
                       ) : (
-                        <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+                        <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
                       )}
                       <span>{feedbackMsg}</span>
                     </div>
                   )}
                   {practiceNote && (
-                    <p className="text-[11px] text-slate-500 dark:text-zinc-400">{practiceNote}</p>
+                    <p className="text-xs text-slate-500 dark:text-zinc-400">{practiceNote}</p>
                   )}
 
                   <div className="pt-2 border-t border-black/5 dark:border-white/5 flex items-center justify-between gap-3">
                     <div className="flex items-baseline gap-2.5 flex-wrap">
-                      <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                      <span className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
                         {currentWord.word}
                       </span>
                       {currentWord.phonetic && (
-                        <span className="font-mono text-cyan-600 dark:text-cyan-400 text-xs font-medium">
+                        <span className="font-mono text-teal-700 dark:text-teal-300 text-sm font-medium">
                           {currentWord.phonetic}
                         </span>
                       )}
@@ -1843,14 +1841,14 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     <button
                       onClick={handleManualSpeak}
                       title="Nghe phát âm (Nhấp để nghe)"
-                      className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                      className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors"
                     >
                       <Volume2 className="w-5 h-5" />
                     </button>
                   </div>
 
                   {!isCorrect && wrongPick && (
-                    <div className="text-[11px] text-slate-700 dark:text-zinc-300">
+                    <div className="text-sm text-slate-700 dark:text-zinc-300">
                       {mcDirection === "en_to_vn" ? (
                         <>
                           Bạn chọn "{wrongPick.meaning}", đó là nghĩa của từ <span className="font-bold">{wrongPick.word}</span>.
@@ -1863,13 +1861,13 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     </div>
                   )}
                   {!isCorrect && activeMode === "typing" && typedInput.trim() && (
-                    <div className="text-[11px] text-slate-700 dark:text-zinc-300">
-                      Bạn gõ: <span className="font-mono font-bold line-through decoration-rose-500/70">{typedInput.trim()}</span>
+                    <div className="text-sm text-slate-700 dark:text-zinc-300">
+                      Bạn gõ: <span className="font-mono font-bold line-through decoration-red-500/70">{typedInput.trim()}</span>
                     </div>
                   )}
 
                   {primaryExample && (
-                    <div className="text-[11px] text-slate-600 dark:text-zinc-300 pl-2 border-l-2 border-cyan-500/50 space-y-0.5">
+                    <div className="text-sm text-slate-600 dark:text-zinc-300 pl-2 border-l-2 border-teal-700/40 dark:border-teal-400/40 space-y-0.5">
                       <p className="italic">"{highlightWord(primaryExample.sentence_en, currentWord.word)}"</p>
                       {!isCorrect && primaryExample.sentence_vn && (
                         <p className="text-slate-500 dark:text-zinc-400">{primaryExample.sentence_vn}</p>
@@ -1878,7 +1876,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                   )}
 
                   {mnemonic && (
-                    <div className="text-[11px] text-amber-800 dark:text-amber-200 bg-amber-50 dark:bg-amber-950/40 border border-amber-200/70 dark:border-amber-800/50 rounded-xl px-2.5 py-1.5">
+                    <div className="text-sm text-amber-800 dark:text-amber-200 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 rounded-xl px-2.5 py-1.5">
                       💡 {mnemonic}
                     </div>
                   )}
@@ -1886,16 +1884,16 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                   <div className="pt-1 flex">
                     <button
                       onClick={advanceNextItem}
-                      className="w-full h-12 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-slate-900 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-sm"
+                      className="w-full min-h-12 px-4 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white font-semibold text-base flex items-center justify-center gap-2 transition-colors shadow-sm"
                     >
                       <span>Tiếp tục</span>
                       {nextReviewText && (
-                        <span className="text-xs font-normal opacity-80">
+                        <span className="text-sm font-normal opacity-90">
                           ({nextReviewText.startsWith("ở") ? `gặp lại ${nextReviewText}` : nextReviewText.startsWith("sau") ? `gặp lại ${nextReviewText}` : nextReviewText.includes("luyện tập") || nextReviewText.includes("tiến độ") ? nextReviewText : `gặp lại sau ${nextReviewText}`})
                         </span>
                       )}
                       <ArrowRight className="w-3.5 h-3.5" />
-                      <kbd className="px-1 py-0.2 bg-white/20 dark:bg-black/20 rounded text-[11px] font-mono">
+                      <kbd className="px-1 py-0.5 bg-white/20 rounded text-[11px] font-mono">
                         Enter
                       </kbd>
                     </button>
@@ -1911,7 +1909,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
               <>
                 <div className="space-y-3">
                   {/* Header Grammar Type */}
-                  <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[11px] text-violet-600 dark:text-violet-400">
+                  <div className="flex items-center gap-1.5 font-semibold text-sm text-teal-700 dark:text-teal-300">
                     <GraduationCap className="w-3.5 h-3.5" />
                     <span>
                       Bài tập ngữ pháp (
@@ -1927,7 +1925,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                   </div>
 
                   {/* Câu bài tập tiếng Anh chính */}
-                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-zinc-950/80 border border-slate-200/80 dark:border-zinc-800/80 text-center">
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-800 text-center">
                     <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-relaxed tracking-tight">
                       {currentGrammar.exercise.promptEn}
                     </h2>
@@ -1935,7 +1933,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
 
                   {/* Dịch nghĩa tiếng Việt */}
                   {currentGrammar.exercise.promptVn && (
-                    <div className="p-3 rounded-2xl bg-violet-50/30 dark:bg-violet-950/20 border border-violet-200/50 dark:border-violet-800/40 text-xs text-center">
+                    <div className="p-3 rounded-2xl bg-teal-50/60 dark:bg-teal-400/5 border border-teal-700/15 dark:border-teal-400/20 text-sm text-center">
                       <p className="font-medium text-slate-700 dark:text-zinc-300">
                         {currentGrammar.exercise.promptVn}
                       </p>
@@ -1947,17 +1945,17 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     <div className="flex items-center justify-center">
                       <div
                         tabIndex={0}
-                        className="relative group inline-flex items-center justify-center cursor-pointer p-1 rounded-full text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-colors focus:outline-none"
+                        className="relative group inline-flex items-center justify-center cursor-pointer p-1 rounded-full text-amber-600 hover:text-amber-700 dark:text-amber-400 dark:hover:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-500/10 transition-colors focus:outline-none"
                         title={`Gợi ý: ${currentGrammar.exercise.hint}`}
                       >
                         <HelpCircle className="w-4 h-4 shrink-0" />
 
                         {/* Tooltip gợi ý màu vàng chỉ hiện khi hover hoặc focus vào icon */}
                         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex group-focus:flex flex-col items-center z-30 pointer-events-none w-max max-w-[280px] sm:max-w-xs animate-in fade-in zoom-in-95 duration-150">
-                          <div className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/95 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs font-semibold shadow-lg text-center leading-snug">
+                          <div className="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-zinc-900 border border-amber-200 dark:border-amber-500/40 text-amber-900 dark:text-amber-200 text-sm font-semibold shadow-lg text-center leading-snug">
                             <span>Gợi ý: {currentGrammar.exercise.hint}</span>
                           </div>
-                          <div className="w-2 h-2 -mt-1 rotate-45 bg-amber-50 dark:bg-amber-950/95 border-r border-b border-amber-300 dark:border-amber-800" />
+                          <div className="w-2 h-2 -mt-1 rotate-45 bg-amber-50 dark:bg-zinc-900 border-r border-b border-amber-200 dark:border-amber-500/40" />
                         </div>
                       </div>
                     </div>
@@ -1967,7 +1965,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 {/* Trắc nghiệm ngữ pháp */}
                 {activeMode === "multiple_choice" && (
                   <div className="space-y-3 pt-1">
-                    <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-zinc-400">
+                    <div className="flex items-center justify-between text-sm font-semibold text-slate-600 dark:text-zinc-400">
                       <span>Chọn đáp án ngữ pháp chính xác:</span>
                       <span className="desktop-only text-[11px] font-mono text-slate-400">Nhấn phím 1 - 4</span>
                     </div>
@@ -1976,22 +1974,22 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                       {choices.map((choice, idx) => {
                         const isSelected = selectedChoiceId === choice.id;
                         let btnStyle =
-                          "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 hover:border-violet-500 hover:bg-violet-50/40 dark:hover:bg-violet-950/20 shadow-xs";
+                          "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-200 hover:border-teal-700/40 hover:bg-teal-50/50 dark:hover:bg-zinc-800";
                         let badgeStyle =
                           "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300";
 
                         if (isAnswered) {
                           if (choice.isCorrect) {
                             btnStyle =
-                              "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-100 ring-2 ring-emerald-500/30";
-                            badgeStyle = "bg-emerald-500 text-white font-bold";
+                              "border-green-600 bg-green-50 dark:bg-green-500/10 text-green-900 dark:text-green-100";
+                            badgeStyle = "bg-green-600 text-white font-bold";
                           } else if (isSelected && !choice.isCorrect) {
                             btnStyle =
-                              "border-rose-500 bg-rose-50 dark:bg-rose-950/50 text-rose-900 dark:text-rose-100";
-                            badgeStyle = "bg-rose-500 text-white font-bold";
+                              "border-red-600 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-100";
+                            badgeStyle = "bg-red-600 text-white font-bold";
                           } else {
                             btnStyle =
-                              "border-slate-200 dark:border-zinc-800 opacity-40 bg-white dark:bg-zinc-900";
+                              "border-slate-200 dark:border-zinc-800 opacity-50 bg-white dark:bg-zinc-900";
                           }
                         }
 
@@ -2000,21 +1998,21 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                             key={choice.id}
                             disabled={isAnswered}
                             onClick={() => handleSelectChoice(choice)}
-                            className={`w-full p-3.5 rounded-2xl border text-left flex items-center gap-3 transition-all duration-150 ${btnStyle}`}
+                            className={`w-full min-h-14 p-3.5 rounded-2xl border text-left flex items-center gap-3 transition-colors duration-150 ${btnStyle}`}
                           >
                             <span
-                              className={`w-6 h-6 shrink-0 rounded-lg flex items-center justify-center font-mono text-xs font-bold ${badgeStyle}`}
+                              className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center font-mono text-xs font-bold ${badgeStyle}`}
                             >
                               {idx + 1}
                             </span>
-                            <span className="text-sm sm:text-base font-bold flex-1 tracking-tight">
+                            <span className="text-base font-semibold flex-1">
                               {choice.word}
                             </span>
                             {isAnswered && choice.isCorrect && (
-                              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                              <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" />
                             )}
                             {isAnswered && isSelected && !choice.isCorrect && (
-                              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+                              <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />
                             )}
                           </button>
                         );
@@ -2026,7 +2024,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                         <button
                           type="button"
                           onClick={handleSkipGrammar}
-                          className="text-xs text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition flex items-center gap-1.5 min-h-11 px-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5"
+                          className="text-sm font-medium text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 transition flex items-center gap-1.5 min-h-11 px-3 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800"
                           title="Bỏ qua câu hỏi này nếu bạn chưa biết đáp án"
                         >
                           <SkipForward className="w-3.5 h-3.5" />
@@ -2041,9 +2039,9 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 {activeMode === "typing" && (
                   <form onSubmit={handleTypingSubmit} autoComplete="off" className="space-y-3.5 pt-1">
                     <div className="space-y-1.5">
-                      <div className="flex justify-between items-center text-xs font-semibold text-slate-600 dark:text-zinc-400">
+                      <div className="flex justify-between items-center gap-2 text-sm font-semibold text-slate-600 dark:text-zinc-400">
                         <span>Nhập đáp án hoặc dạng đúng của từ:</span>
-                        <span className="text-[11px] font-mono text-violet-600 dark:text-violet-400 font-bold">
+                        <span className="text-xs text-teal-700 dark:text-teal-300 font-semibold">
                           {currentGrammar.exercise.type === "sentence_transform"
                             ? "Ví dụ: viết lại câu hoàn chỉnh"
                             : currentGrammar.exercise.type === "error_spotting"
@@ -2070,7 +2068,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                           value={typedInput}
                           onChange={(e) => setTypedInput(e.target.value)}
                           placeholder="Nhập từ hoặc đáp án chính xác..."
-                          className="w-full px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-base font-bold text-slate-900 dark:text-white placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 transition-all shadow-xs"
+                          className="w-full min-h-12 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-base font-bold text-slate-900 dark:text-white placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 dark:focus:border-teal-400 dark:focus:ring-teal-400/20 transition-colors"
                         />
                       </div>
                     </div>
@@ -2080,14 +2078,14 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                         <button
                           type="submit"
                           disabled={!typedInput.trim()}
-                          className="flex-1 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white text-xs font-bold transition-all shadow-sm shadow-violet-600/20"
+                          className="flex-1 min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-50 text-white text-base font-semibold transition-colors shadow-sm"
                         >
                           Kiểm tra đáp án
                         </button>
                         <button
                           type="button"
                           onClick={handleSkipGrammar}
-                          className="px-4 py-3 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-600 dark:text-zinc-300 text-xs font-bold transition-all shrink-0 flex items-center gap-1.5"
+                          className="px-4 min-h-12 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold transition-colors shrink-0 flex items-center gap-1.5"
                           title="Bỏ qua câu hỏi này nếu bạn chưa biết đáp án"
                         >
                           <SkipForward className="w-3.5 h-3.5" />
@@ -2101,18 +2099,18 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 {/* Kết quả & Thẻ củng cố ngữ pháp khi đã trả lời */}
                 {isAnswered && (
                   <div
-                    className={`p-4 rounded-2xl border text-xs leading-relaxed space-y-3 animate-in fade-in duration-200 ${
+                    className={`p-4 rounded-2xl border text-sm leading-relaxed space-y-3 animate-in fade-in duration-200 ${
                       isCorrect
-                        ? "bg-emerald-50/70 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-950 dark:text-emerald-100"
-                        : "bg-rose-50/70 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-950 dark:text-rose-100"
+                        ? "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/30 text-green-950 dark:text-green-100"
+                        : "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30 text-red-950 dark:text-red-100"
                     }`}
                   >
                     {feedbackMsg && (
-                      <div className="flex items-center gap-1.5 font-bold text-xs">
+                      <div className="flex items-center gap-1.5 font-bold text-sm">
                         {isCorrect ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0" />
                         ) : (
-                          <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+                          <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
                         )}
                         <span>{feedbackMsg}</span>
                       </div>
@@ -2121,7 +2119,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     {/* Câu hoàn chỉnh sau khi điền đáp án chuẩn */}
                     <div className="pt-2 border-t border-black/5 dark:border-white/5 flex items-center justify-between gap-3">
                       <div className="flex-1">
-                        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 block mb-1">
+                        <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400 block mb-1">
                           Câu tiếng Anh chuẩn xác:
                         </span>
                         <p className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-relaxed">
@@ -2132,7 +2130,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                       <button
                         onClick={handleManualSpeak}
                         title="Nghe phát âm cả câu tiếng Anh (Nhấp để nghe)"
-                        className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-black/5 dark:hover:bg-white/5 transition-colors shrink-0"
+                        className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors shrink-0"
                       >
                         <Volume2 className="w-5 h-5" />
                       </button>
@@ -2140,15 +2138,15 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
 
                     {/* Giải thích ngữ pháp */}
                     {currentGrammar.exercise.explanation && (
-                      <div className="text-[11px] text-slate-700 dark:text-zinc-300 bg-white/60 dark:bg-zinc-900/60 p-2.5 rounded-xl border border-black/5 dark:border-white/5">
-                        <span className="font-bold text-violet-700 dark:text-violet-400">💡 Giải thích: </span>
+                      <div className="text-sm text-slate-700 dark:text-zinc-300 bg-white dark:bg-zinc-900 p-2.5 rounded-xl border border-slate-200 dark:border-zinc-800">
+                        <span className="font-bold text-teal-700 dark:text-teal-300">💡 Giải thích: </span>
                         <span>{currentGrammar.exercise.explanation}</span>
                       </div>
                     )}
 
                     {/* Công thức ngữ pháp */}
                     {currentGrammar.lesson.formula?.positive && (
-                      <div className="text-[11px] text-slate-600 dark:text-zinc-400 font-mono">
+                      <div className="text-sm text-slate-600 dark:text-zinc-400 font-mono">
                         <span>Cấu trúc: </span>
                         <span className="font-semibold text-slate-800 dark:text-zinc-200">
                           {currentGrammar.lesson.formula.positive}
@@ -2159,16 +2157,16 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                     <div className="pt-1 flex">
                       <button
                         onClick={advanceNextItem}
-                        className="w-full h-12 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-slate-900 font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-sm"
+                        className="w-full min-h-12 px-4 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white font-semibold text-base flex items-center justify-center gap-2 transition-colors shadow-sm"
                       >
                         <span>Tiếp tục</span>
                         {nextReviewText && (
-                          <span className="text-xs font-normal opacity-80">
+                          <span className="text-sm font-normal opacity-90">
                             ({nextReviewText.startsWith("ở") ? `gặp lại ${nextReviewText}` : nextReviewText.startsWith("sau") ? `gặp lại ${nextReviewText}` : nextReviewText.includes("luyện tập") || nextReviewText.includes("tiến độ") ? nextReviewText : `gặp lại sau ${nextReviewText}`})
                           </span>
                         )}
                         <ArrowRight className="w-3.5 h-3.5" />
-                        <kbd className="px-1 py-0.2 bg-white/20 dark:bg-black/20 rounded text-[11px] font-mono">
+                        <kbd className="px-1 py-0.5 bg-white/20 rounded text-[11px] font-mono">
                           Enter
                         </kbd>
                       </button>
@@ -2181,7 +2179,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
         </div>
 
         {/* Bottom Keyboard Hint Bar */}
-        <div className="desktop-only px-6 py-3 bg-slate-50/60 dark:bg-zinc-950/40 border-t border-slate-200/60 dark:border-zinc-800/60 flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400 font-medium">
+        <div className="desktop-only px-6 py-3 bg-slate-50 dark:bg-zinc-950/40 border-t border-slate-200 dark:border-zinc-800 flex items-center justify-between text-xs text-slate-500 dark:text-zinc-400 font-medium">
           <div className="flex items-center gap-3">
             {isAnswered ? (
               <span className="flex items-center gap-1.5 text-slate-800 dark:text-zinc-200 font-semibold">
@@ -2190,7 +2188,7 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
                 </kbd>
                 <span>Tiếp tục</span>
                 {nextReviewText && (
-                  <span className="text-[11px] text-cyan-600 dark:text-cyan-400 font-medium">
+                  <span className="text-xs text-teal-700 dark:text-teal-300 font-medium">
                     · Gặp lại: {nextReviewText}
                   </span>
                 )}

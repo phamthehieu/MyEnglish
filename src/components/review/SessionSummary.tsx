@@ -80,13 +80,13 @@ export default function SessionSummary({
       <div className="space-y-1">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Xong phiên học! 🎉</h2>
         <p className="text-sm text-slate-600 dark:text-zinc-400">
-          Bạn vừa học <span className="text-emerald-600 dark:text-emerald-400 font-bold">{reviewCount}</span> câu.
+          Bạn vừa học <span className="text-green-700 dark:text-green-400 font-bold">{reviewCount}</span> câu.
         </p>
         {sessionStats.day && (
           <p className="text-sm font-semibold text-orange-700 dark:text-orange-300">
             🔥 Chuỗi {sessionStats.day.streak} ngày · {sessionStats.day.todayCount}/{sessionStats.day.dailyGoal} câu hôm nay
             {sessionStats.day.goalReachedNow && (
-              <span className="block text-xs font-medium text-emerald-700 dark:text-emerald-400">Bạn vừa đạt mục tiêu hôm nay!</span>
+              <span className="block text-sm font-medium text-green-700 dark:text-green-400">Bạn vừa đạt mục tiêu hôm nay!</span>
             )}
           </p>
         )}
@@ -101,7 +101,7 @@ export default function SessionSummary({
             </div>
             <div className="min-w-0">
               <p className="text-xl font-extrabold tracking-tight">{close.title}</p>
-              <p className="text-sm text-emerald-50">{close.note}</p>
+              <p className="text-sm text-green-50">{close.note}</p>
             </div>
           </div>
           {nextReview !== undefined && (
@@ -116,16 +116,16 @@ export default function SessionSummary({
       {header}
 
       {/* What went well, first */}
-      <div className="w-full p-4 rounded-2xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/30 text-left space-y-2">
-        <div className="text-base font-bold text-emerald-800 dark:text-emerald-200">{headline}</div>
+      <div className="w-full p-4 rounded-2xl border border-green-200 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10 text-left space-y-2">
+        <div className="text-base font-bold text-green-800 dark:text-green-200">{headline}</div>
         <p className="text-sm text-slate-700 dark:text-zinc-300">{headlineNote}</p>
         <div className="grid grid-cols-3 gap-2 pt-1">
           <div className="p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/60">
-            <div className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{remembered}</div>
+            <div className="text-xl font-bold text-green-700 dark:text-green-400">{remembered}</div>
             <div className="text-xs text-slate-500 dark:text-zinc-400">từ nhớ được</div>
           </div>
           <div className="p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/60">
-            <div className="text-xl font-bold text-cyan-600 dark:text-cyan-400">{newWords}</div>
+            <div className="text-xl font-bold text-teal-700 dark:text-teal-300">{newWords}</div>
             <div className="text-xs text-slate-500 dark:text-zinc-400">từ mới đã gặp</div>
           </div>
           <div className="p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/60">
@@ -134,17 +134,17 @@ export default function SessionSummary({
           </div>
         </div>
         {sessionStats.masteredWords.length > 0 && (
-          <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">
+          <div className="text-sm font-semibold text-green-800 dark:text-green-200">
             🎉 {sessionStats.masteredWords.length} từ vào trí nhớ dài hạn: {sessionStats.masteredWords.join(", ")}
           </div>
         )}
         {sessionStats.rescuedCount > 0 && (
-          <div className="text-xs text-emerald-700 dark:text-emerald-300">
+          <div className="text-sm text-green-700 dark:text-green-300">
             🧠 Nhớ lại kịp {sessionStats.rescuedCount} từ đang phai dần: đây là những lượt ôn giá trị nhất.
           </div>
         )}
         {sessionStats.leechesSlain > 0 && (
-          <div className="text-xs text-emerald-700 dark:text-emerald-300">
+          <div className="text-sm text-green-700 dark:text-green-300">
             💪 Nhớ được {sessionStats.leechesSlain} từ trước đây hay quên.
           </div>
         )}
@@ -152,7 +152,7 @@ export default function SessionSummary({
 
       {/* Close the day */}
       <div className="w-full p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-left flex items-start gap-3">
-        <CalendarCheck className="w-5 h-5 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
+        <CalendarCheck className="w-5 h-5 text-teal-700 dark:text-teal-300 shrink-0 mt-0.5" />
         <div className="text-sm text-slate-700 dark:text-zinc-300 space-y-1">
           {close && !close.done && <p className="font-semibold text-slate-900 dark:text-white">{close.note}</p>}
           {!close?.done && nextReview !== undefined && <p className="font-semibold">{nextReviewText(nextReview)}</p>}

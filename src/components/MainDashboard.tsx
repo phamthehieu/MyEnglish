@@ -1652,30 +1652,30 @@ export default function MainDashboard({
           role="dialog"
           aria-modal="true"
           aria-label={confirmExitNav.title || "Thoát bài đang học"}
-          className="popup-backdrop-enter fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+          className="popup-backdrop-enter fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
           onClick={cancelExit}
         >
           <div
-            className="popup-card-enter w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 space-y-3 shadow-xl"
+            className="popup-card-enter w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-6 space-y-3 shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="text-sm font-bold text-slate-900 dark:text-white">
+            <p className="text-lg font-bold text-slate-900 dark:text-white">
               {confirmExitNav.title || "Thoát bài đang học?"}
             </p>
-            <p className="text-xs text-slate-600 dark:text-zinc-300">
+            <p className="text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">
               {confirmExitNav.body || "Bạn có muốn thoát phiên học đang diễn ra không? Các câu đã trả lời vẫn được lưu."}
             </p>
-            <div className="flex gap-2 justify-end">
+            <div className="flex flex-col gap-2 pt-2">
               <button
                 autoFocus
                 onClick={cancelExit}
-                className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold transition-colors"
+                className="w-full min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm transition-colors"
               >
                 {confirmExitNav.pendingStart ? "Học tiếp bài cũ" : "Học tiếp"}
               </button>
               <button
                 onClick={handleConfirmExit}
-                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-xs hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+                className="w-full min-h-12 px-5 rounded-2xl border border-red-200 bg-white text-red-700 hover:bg-red-50 dark:border-red-500/40 dark:bg-transparent dark:text-red-300 dark:hover:bg-red-500/10 text-base font-semibold transition-colors"
               >
                 {confirmExitNav.confirmText || "Thoát"}
               </button>

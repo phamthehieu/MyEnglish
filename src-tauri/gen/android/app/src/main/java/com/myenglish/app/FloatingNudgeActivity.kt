@@ -194,7 +194,7 @@ class FloatingNudgeActivity : Activity() {
       )
       background = GradientDrawable(
         GradientDrawable.Orientation.LEFT_RIGHT,
-        intArrayOf(Color.parseColor("#10b981"), Color.parseColor("#059669"))
+        intArrayOf(Color.parseColor("#0f766e"), Color.parseColor("#0f766e"))
       )
       pivotX = 0f
     }
@@ -250,7 +250,7 @@ class FloatingNudgeActivity : Activity() {
       }
       background = GradientDrawable(
         GradientDrawable.Orientation.TL_BR,
-        intArrayOf(Color.parseColor("#10b981"), Color.parseColor("#0d9488"))
+        intArrayOf(Color.parseColor("#0f766e"), Color.parseColor("#115e59"))
       ).apply {
         cornerRadius = dpToPx(12).toFloat()
       }
@@ -286,7 +286,7 @@ class FloatingNudgeActivity : Activity() {
     timerBadge = TextView(this).apply {
       val secs = Math.ceil(remainingMs / 1000.0).toInt().coerceAtLeast(0)
       text = "${secs}s"
-      setTextColor(Color.parseColor("#34d399"))
+      setTextColor(Color.parseColor("#5eead4"))
       textSize = 11.5f
       setTypeface(Typeface.MONOSPACE, Typeface.BOLD)
       gravity = Gravity.CENTER
@@ -297,9 +297,9 @@ class FloatingNudgeActivity : Activity() {
         marginEnd = dpToPx(6)
       }
       background = GradientDrawable().apply {
-        setColor(Color.parseColor("#064e3b"))
+        setColor(Color.parseColor("#134e4a"))
         cornerRadius = dpToPx(6).toFloat()
-        setStroke(dpToPx(1), Color.parseColor("#059669"))
+        setStroke(dpToPx(1), Color.parseColor("#0f766e"))
       }
       setPadding(dpToPx(6), dpToPx(2), dpToPx(6), dpToPx(2))
     }
@@ -332,9 +332,9 @@ class FloatingNudgeActivity : Activity() {
 
     // Primary Button: "▶ Học ngay" -> Opens Flash-Quiz dialog session right on this floating card over the screen!
     val primaryBg = RippleDrawable(
-      ColorStateList.valueOf(Color.parseColor("#34d399")),
+      ColorStateList.valueOf(Color.parseColor("#5eead4")),
       GradientDrawable().apply {
-        setColor(Color.parseColor("#059669"))
+        setColor(Color.parseColor("#0f766e"))
         cornerRadius = dpToPx(12).toFloat()
       },
       null
@@ -355,7 +355,7 @@ class FloatingNudgeActivity : Activity() {
 
     // Secondary Button: "⚡ 1 câu" -> Opens single question quiz dialog
     val quizBtnBg = RippleDrawable(
-      ColorStateList.valueOf(Color.parseColor("#4338ca")),
+      ColorStateList.valueOf(Color.parseColor("#115e59")),
       GradientDrawable().apply {
         setColor(Color.parseColor("#27272a"))
         cornerRadius = dpToPx(12).toFloat()
@@ -365,7 +365,7 @@ class FloatingNudgeActivity : Activity() {
     )
     val quizBtn = TextView(this).apply {
       text = "⚡ 10 câu"
-      setTextColor(Color.parseColor("#a5b4fc"))
+      setTextColor(Color.parseColor("#99f6e4"))
       textSize = 12f
       setTypeface(typeface, Typeface.BOLD)
       gravity = Gravity.CENTER
@@ -394,7 +394,7 @@ class FloatingNudgeActivity : Activity() {
 
     val focusLink = TextView(this).apply {
       text = "🎯 Tập trung 10 phút"
-      setTextColor(Color.parseColor("#a78bfa"))
+      setTextColor(Color.parseColor("#5eead4"))
       textSize = 11f
       setTypeface(typeface, Typeface.BOLD)
       setOnClickListener {
@@ -512,7 +512,7 @@ class FloatingNudgeActivity : Activity() {
       }
       background = GradientDrawable(
         GradientDrawable.Orientation.TL_BR,
-        intArrayOf(Color.parseColor("#06b6d4"), Color.parseColor("#6366f1"))
+        intArrayOf(Color.parseColor("#0f766e"), Color.parseColor("#115e59"))
       ).apply {
         cornerRadius = dpToPx(8).toFloat()
       }
@@ -529,7 +529,7 @@ class FloatingNudgeActivity : Activity() {
 
     val counterBadge = TextView(this).apply {
       text = "Câu ${currentQuizIndex + 1} / $totalQuestionsInSession"
-      setTextColor(Color.parseColor("#38bdf8"))
+      setTextColor(Color.parseColor("#5eead4"))
       textSize = 10.5f
       setTypeface(Typeface.MONOSPACE, Typeface.BOLD)
       background = GradientDrawable().apply {
@@ -590,14 +590,14 @@ class FloatingNudgeActivity : Activity() {
     // Button to return to Nudge card
     val backNudgeBtn = TextView(this).apply {
       text = "🦉 Nhắc"
-      setTextColor(Color.parseColor("#34d399"))
+      setTextColor(Color.parseColor("#5eead4"))
       textSize = 11f
       setTypeface(typeface, Typeface.BOLD)
       gravity = Gravity.CENTER
       background = GradientDrawable().apply {
-        setColor(Color.parseColor("#064e3b"))
+        setColor(Color.parseColor("#134e4a"))
         cornerRadius = dpToPx(8).toFloat()
-        setStroke(dpToPx(1), Color.parseColor("#059669"))
+        setStroke(dpToPx(1), Color.parseColor("#0f766e"))
       }
       setPadding(dpToPx(8), dpToPx(4), dpToPx(8), dpToPx(4))
       layoutParams = LinearLayout.LayoutParams(
@@ -662,7 +662,7 @@ class FloatingNudgeActivity : Activity() {
     if (phonetic.isNotBlank() && direction != "production") {
       val phoneticView = TextView(this).apply {
         text = phonetic
-        setTextColor(Color.parseColor("#38bdf8"))
+        setTextColor(Color.parseColor("#5eead4"))
         textSize = 12f
         setTypeface(Typeface.MONOSPACE, Typeface.NORMAL)
         setPadding(dpToPx(8), 0, 0, 0)
@@ -779,18 +779,18 @@ class FloatingNudgeActivity : Activity() {
 
           if (thisIsCorrect) {
             btn.background = GradientDrawable().apply {
-              setColor(Color.parseColor("#064e3b"))
+              setColor(Color.parseColor("#134e4a"))
               cornerRadius = dpToPx(12).toFloat()
-              setStroke(dpToPx(2), Color.parseColor("#10b981"))
+              setStroke(dpToPx(2), Color.parseColor("#0f766e"))
             }
             lbl?.setTextColor(Color.WHITE)
             num?.setTextColor(Color.WHITE)
             num?.background = GradientDrawable().apply {
-              setColor(Color.parseColor("#059669"))
+              setColor(Color.parseColor("#0f766e"))
               cornerRadius = dpToPx(6).toFloat()
             }
             icon?.text = "✓"
-            icon?.setTextColor(Color.parseColor("#34d399"))
+            icon?.setTextColor(Color.parseColor("#5eead4"))
           } else if (btn == optRow && !isCorrect) {
             btn.background = GradientDrawable().apply {
               setColor(Color.parseColor("#450a0a"))
@@ -849,7 +849,7 @@ class FloatingNudgeActivity : Activity() {
 
     val titleView = TextView(this).apply {
       text = "Hoàn thành phiên Flash-Quiz!"
-      setTextColor(Color.parseColor("#34d399"))
+      setTextColor(Color.parseColor("#5eead4"))
       textSize = 15f
       setTypeface(typeface, Typeface.BOLD)
       gravity = Gravity.CENTER
@@ -885,7 +885,7 @@ class FloatingNudgeActivity : Activity() {
       gravity = Gravity.CENTER
       layoutParams = LinearLayout.LayoutParams(dpToPx(140), dpToPx(40))
       background = GradientDrawable().apply {
-        setColor(Color.parseColor("#059669"))
+        setColor(Color.parseColor("#0f766e"))
         cornerRadius = dpToPx(12).toFloat()
       }
       setOnClickListener { finish() }
@@ -975,8 +975,8 @@ class FloatingNudgeActivity : Activity() {
       isPaused = false
       countdownAnimator?.resume()
       if (::timerBadge.isInitialized) {
-        timerBadge.setTextColor(Color.parseColor("#34d399"))
-        (timerBadge.background as? GradientDrawable)?.setColor(Color.parseColor("#064e3b"))
+        timerBadge.setTextColor(Color.parseColor("#5eead4"))
+        (timerBadge.background as? GradientDrawable)?.setColor(Color.parseColor("#134e4a"))
       }
     }
   }

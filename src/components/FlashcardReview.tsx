@@ -250,8 +250,11 @@ export default function FlashcardReview({
   if (!currentWord) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-4">
-        <p className="text-slate-500 dark:text-zinc-400 text-xs">Không có thẻ nào cần ôn tập hôm nay.</p>
-        <button onClick={leave} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline">
+        <div aria-hidden="true" className="w-20 h-20 rounded-full bg-teal-50 dark:bg-teal-400/10 flex items-center justify-center text-4xl">
+          ☕
+        </div>
+        <p className="text-slate-700 dark:text-zinc-300 text-base font-semibold">Không có thẻ nào cần ôn tập hôm nay.</p>
+        <button onClick={leave} className="min-h-12 px-6 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold transition-colors">
           Quay lại
         </button>
       </div>

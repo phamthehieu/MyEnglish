@@ -184,16 +184,16 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
   ];
 
   return (
-    <div className={`space-y-4 ${className}`}>
+    <div className={`space-y-5 ${className}`}>
       {/* Top summary & fast action */}
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-slate-50 dark:bg-zinc-800/50 p-2.5 px-3 border border-slate-200/80 dark:border-zinc-800">
-        <div className="flex items-center gap-2 text-xs text-slate-700 dark:text-zinc-300">
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex flex-wrap items-center gap-2 py-1.5 text-sm text-slate-700 dark:text-zinc-300">
           <span className="font-semibold">Đã chọn:</span>
-          <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full font-bold bg-cyan-100 text-cyan-800 dark:bg-cyan-950/80 dark:text-cyan-300">
+          <span className="inline-flex items-center justify-center rounded-full bg-teal-50 px-2.5 py-0.5 text-sm font-bold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
             {value.length} / {TENSE_OPTIONS.length} thì
           </span>
           {value.length === 1 && value.includes("ch01-l01") && (
-            <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+            <span className="text-sm font-medium text-green-700 dark:text-green-400">
               (Thì hiện tại đơn - Tối ưu cho người mất gốc)
             </span>
           )}
@@ -203,36 +203,36 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
           <button
             type="button"
             onClick={selectOnlyDefault}
-            className="inline-flex items-center gap-1.5 text-xs text-cyan-700 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300 font-medium underline-offset-2 hover:underline transition-colors"
+            className="-mr-2 inline-flex min-h-12 items-center gap-1.5 rounded-xl px-2 text-sm font-semibold text-teal-700 transition-colors hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="h-4 w-4" />
             Về mặc định (chỉ Hiện tại đơn)
           </button>
         )}
       </div>
 
       {/* Groups */}
-      <div className="space-y-4">
+      <div className="space-y-5">
         {groups.map(({ key, title }) => {
           const items = TENSE_OPTIONS.filter((t) => t.group === key);
           const allInGroupSelected = items.every((t) => selectedSet.has(t.id));
 
           return (
             <div key={key} className="space-y-2">
-              <div className="flex items-center justify-between px-1">
-                <span className="text-xs font-bold tracking-wide text-slate-500 dark:text-zinc-400">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-semibold tracking-wide text-slate-600 dark:text-zinc-400">
                   {title}
                 </span>
                 <button
                   type="button"
                   onClick={() => selectGroup(key)}
-                  className="text-xs font-medium text-cyan-600 dark:text-cyan-400 hover:underline"
+                  className="-mr-2 min-h-12 shrink-0 rounded-xl px-2 text-sm font-semibold text-teal-700 transition-colors hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
                 >
                   {allInGroupSelected ? "Bỏ chọn nhóm" : "Chọn cả nhóm"}
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-3">
                 {items.map((item) => {
                   const isChecked = selectedSet.has(item.id);
 
@@ -243,51 +243,51 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
                       role="checkbox"
                       aria-checked={isChecked}
                       onClick={() => toggle(item.id)}
-                      className={`relative flex items-start gap-3 p-3 rounded-xl border text-left transition-all ${
+                      className={`relative flex min-h-16 w-full items-start gap-3 rounded-2xl border p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40 ${
                         isChecked
-                          ? "border-cyan-500 bg-cyan-50/70 dark:bg-cyan-950/30 ring-1 ring-cyan-500 shadow-sm"
-                          : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-slate-300 dark:hover:border-zinc-700"
+                          ? "border-teal-700 bg-teal-50 dark:border-teal-400 dark:bg-teal-400/10"
+                          : "border-slate-200 bg-white hover:border-slate-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
                       }`}
                     >
-                      {/* Checkbox indicator */}
-                      <span
-                        aria-hidden="true"
-                        className={`mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded border transition-colors ${
-                          isChecked
-                            ? "border-cyan-600 bg-cyan-600 !text-white"
-                            : "border-slate-300 bg-white dark:border-zinc-600 dark:bg-zinc-800"
-                        }`}
-                      >
-                        {isChecked && <Check className="h-3 w-3" strokeWidth={3} />}
-                      </span>
-
-                      <div className="min-w-0 flex-1 space-y-0.5">
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <span className={`text-base font-semibold ${isChecked ? "text-teal-800 dark:text-teal-200" : "text-slate-900 dark:text-white"}`}>
                             {item.titleVn}
                           </span>
                           {item.recommendedBadge && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-2 py-0.2">
-                              <Sparkles className="w-2.5 h-2.5" />
+                            <span className="inline-flex items-center gap-1 rounded-full bg-teal-700 px-2.5 py-0.5 text-xs font-semibold text-white dark:bg-teal-500 dark:text-zinc-950">
+                              <Sparkles className="h-3 w-3" />
                               {item.recommendedBadge}
                             </span>
                           )}
                         </div>
 
-                        <span className="block text-xs text-slate-500 dark:text-zinc-400">
+                        <span className="block text-sm text-slate-600 dark:text-zinc-400">
                           {item.titleEn}
                         </span>
 
-                        <div className="pt-0.5 flex flex-wrap items-center gap-x-2 text-xs text-slate-600 dark:text-zinc-300 font-mono">
-                          <span className="font-semibold text-cyan-800 dark:text-cyan-300">
+                        <div className="flex flex-wrap items-center gap-x-2 pt-0.5">
+                          <span className={`inline-block rounded-lg px-2 py-1 font-mono text-sm font-semibold text-teal-800 dark:text-teal-300 ${isChecked ? "bg-white dark:bg-zinc-900" : "bg-slate-50 dark:bg-zinc-800"}`}>
                             {item.formula}
                           </span>
                         </div>
 
-                        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-tight pt-0.5 line-clamp-1">
+                        <p className="pt-0.5 text-sm leading-snug text-slate-600 dark:text-zinc-400">
                           {item.hint}
                         </p>
                       </div>
+
+                      {/* Check indicator */}
+                      <span
+                        aria-hidden="true"
+                        className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-colors ${
+                          isChecked
+                            ? "bg-teal-700 text-white dark:bg-teal-500 dark:text-zinc-950"
+                            : "border-2 border-slate-200 dark:border-zinc-700"
+                        }`}
+                      >
+                        {isChecked && <Check className="h-3.5 w-3.5" strokeWidth={3} />}
+                      </span>
                     </button>
                   );
                 })}
@@ -297,7 +297,7 @@ export default function TenseSelectionPicker({ value, onChange, className = "" }
         })}
       </div>
 
-      <p className="text-xs text-slate-500 dark:text-zinc-400 text-center pt-1">
+      <p className="pt-1 text-center text-sm text-slate-600 dark:text-zinc-400">
         💡 Bạn có thể bật/tắt thêm các thì và 30 chương ngữ pháp khác trong tab <b>Ngữ pháp</b> bất cứ lúc nào.
       </p>
     </div>

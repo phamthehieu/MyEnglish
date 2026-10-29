@@ -11,10 +11,13 @@ import {
 import { PLACEMENT_A0_VOCAB, PLACEMENT_GRAMMAR, PLACEMENT_LISTENING } from "@/data/placementBank";
 import type { LevelChoice } from "@/services/onboarding";
 import { handleSpeak, SLOW_RATE, AUTO_SPEAK_DELAY_MS } from "./review/speech";
+import { Button, Card, ProgressBar } from "./ui/kit";
 
 const DONT_KNOW = "Tôi không biết";
 const BANK = { grammar: PLACEMENT_GRAMMAR, listening: PLACEMENT_LISTENING, a0: PLACEMENT_A0_VOCAB };
 const KIND_LABEL: Record<AdaptiveQuestion["kind"], string> = { vocab: "Từ vựng", grammar: "Ngữ pháp", listening: "Nghe" };
+/** The test usually ends within 6–12 questions; the bar is measured against the longest run */
+const TYPICAL_MAX_QUESTIONS = 12;
 
 const RESULT_TEXT: Record<PlacementBlockLevel, string> = {
   A0: "Mất gốc (A0): bắt đầu từ các từ A1 của bộ Oxford (từ IT trước), phát âm và ngữ pháp cơ bản. Đi chậm mà chắc.",
@@ -65,57 +68,77 @@ export default function PlacementTest({ onDone, onClose }: { onDone: (level: Lev
   };
 
   return (
-    <div className="popup-backdrop-enter fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="popup-card-enter w-full max-w-md rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white">Kiểm tra trình độ</h3>
-          <button type="button" aria-label="Đóng" onClick={onClose} className="text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200 p-1 rounded-lg">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-        {!result && q ? (
-          <>
-            <div className="text-[11px] text-slate-500 dark:text-zinc-400">
-              Câu {asked + 1} · {KIND_LABEL[q.kind]} · Không chắc thì chọn "Tôi không biết", đừng đoán.
+    <div className="popup-backdrop-enter fixed inset-0 z-50 overflow-y-auto bg-[#F7F8FA] dark:bg-zinc-950">
+      <div className="mx-auto flex min-h-full w-full max-w-xl flex-col px-4">
+        <div className="sticky top-0 z-10 -mx-4 bg-[#F7F8FA]/95 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+0.5rem)] backdrop-blur dark:bg-zinc-950/95">
+          <div className="grid min-h-12 grid-cols-[1fr_auto_1fr] items-center gap-2">
+            <div>
+              <button
+                type="button"
+                aria-label="Đóng"
+                onClick={onClose}
+                className="-ml-2 inline-flex h-12 w-12 items-center justify-center rounded-full text-slate-700 hover:bg-slate-200/60 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            {q.kind === "listening" ? (
-              <div className="flex items-center justify-center gap-2 py-2">
-                <button onClick={() => handleSpeak(q.say!)} className="px-4 py-2 rounded-xl bg-cyan-600 text-white text-sm font-semibold inline-flex items-center gap-1.5">
-                  <Volume2 className="w-4 h-4" /> Nghe lại
-                </button>
-                <button onClick={() => handleSpeak(q.say!, SLOW_RATE)} className="px-3 py-2 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm inline-flex items-center gap-1.5">
-                  <Snail className="w-4 h-4" /> Chậm
-                </button>
-              </div>
-            ) : (
-              <div className={`text-center text-slate-900 dark:text-white py-2 ${q.kind === "vocab" ? "text-2xl font-bold font-mono" : "text-base font-semibold"}`}>
-                {q.prompt}
-              </div>
-            )}
-            <p className="text-xs text-slate-600 dark:text-zinc-400 text-center">{q.question}</p>
-            <div className="grid gap-2">
-              {[...q.options, DONT_KNOW].map((opt) => (
+            <h3 className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 dark:text-zinc-400">Kiểm tra trình độ</h3>
+            <div />
+          </div>
+          <ProgressBar value={result ? 100 : (asked / TYPICAL_MAX_QUESTIONS) * 100} className="mt-2 h-1.5" />
+        </div>
+
+        {!result && q ? (
+          <div className="flex-1 space-y-5 pb-6 pt-3">
+            <p className="text-sm text-slate-600 dark:text-zinc-400">
+              Câu {asked + 1} · {KIND_LABEL[q.kind]} · Không chắc thì chọn "Tôi không biết", đừng đoán.
+            </p>
+            <Card className="space-y-3 py-6 md:py-6">
+              {q.kind === "listening" ? (
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <Button onClick={() => handleSpeak(q.say!)}>
+                    <Volume2 className="h-5 w-5" /> Nghe lại
+                  </Button>
+                  <Button variant="secondary" onClick={() => handleSpeak(q.say!, SLOW_RATE)}>
+                    <Snail className="h-5 w-5" /> Chậm
+                  </Button>
+                </div>
+              ) : (
+                <div className={`text-center text-slate-900 dark:text-white ${q.kind === "vocab" ? "text-3xl font-bold font-mono" : "text-lg font-semibold leading-snug"}`}>
+                  {q.prompt}
+                </div>
+              )}
+              <p className="text-center text-sm text-slate-600 dark:text-zinc-400">{q.question}</p>
+            </Card>
+            <div className="space-y-3">
+              {q.options.map((opt) => (
                 <button
                   key={opt}
                   onClick={() => answer(opt)}
-                  className={`w-full p-3 rounded-xl border text-left text-sm transition-colors ${opt === DONT_KNOW
-                    ? "border-dashed border-slate-300 dark:border-zinc-700 text-slate-500 dark:text-zinc-400"
-                    : "border-slate-200 dark:border-zinc-800 hover:border-cyan-400 text-slate-800 dark:text-zinc-200"
-                    }`}
+                  className="flex min-h-16 w-full items-center rounded-2xl border border-slate-200 bg-white p-4 text-left text-base font-medium text-slate-900 transition-colors hover:border-teal-700 hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-teal-400 dark:hover:bg-teal-400/10"
                 >
                   {opt}
                 </button>
               ))}
+              <Button variant="ghost" block onClick={() => answer(DONT_KNOW)} className="text-slate-600 dark:text-zinc-400">
+                {DONT_KNOW}
+              </Button>
+            </div>
+          </div>
+        ) : result ? (
+          <>
+            <div className="flex-1 space-y-4 pb-6 pt-3">
+              <Card className="space-y-3 text-base leading-relaxed text-slate-800 dark:text-zinc-200">
+                <p>{RESULT_TEXT[result]}</p>
+              </Card>
+              <p className="text-sm text-slate-600 dark:text-zinc-400">Có thể đổi trình độ bất cứ lúc nào trong phần Cài đặt.</p>
+            </div>
+            <div className="sticky bottom-0 z-10 -mx-4 border-t border-slate-200 bg-[#F7F8FA]/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+              <Button size="lg" block onClick={() => onDone(result)}>
+                Học theo trình độ này
+              </Button>
             </div>
           </>
-        ) : result ? (
-          <div className="space-y-3 text-sm text-slate-700 dark:text-zinc-300">
-            <p>{RESULT_TEXT[result]}</p>
-            <p className="text-xs text-slate-500 dark:text-zinc-400">Có thể đổi trình độ bất cứ lúc nào trong phần Cài đặt.</p>
-            <button onClick={() => onDone(result)} className="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold">
-              Học theo trình độ này
-            </button>
-          </div>
         ) : null}
       </div>
     </div>

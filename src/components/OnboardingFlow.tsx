@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { ArrowLeft, Bell, Check, ChevronDown, ChevronRight, ClipboardCheck, Loader2 } from "lucide-react";
 import { isMobilePlatform } from "@/lib/platform";
 import type { StudyLevel } from "@/services/vocabCatalog";
 import { defaultStudyLevelsFor, setStudyLevels, topUpNewWords } from "@/services/vocabFeed";
@@ -17,6 +17,7 @@ import { DEFAULT_INITIAL_TENSE_IDS, saveInitialTenses } from "@/services/grammar
 import TenseSelectionPicker from "./grammar/TenseSelectionPicker";
 import PlacementTest from "./PlacementTest";
 import { LevelPicker, mixDescription } from "./dashboard/VocabTab";
+import { Button, ProgressBar } from "./ui/kit";
 
 const TRIGGER_OPTIONS: Array<{ value: ReminderTrigger; title: string; desc: string }> = [
   { value: "due_only", title: "Chỉ từ đến hạn ôn", desc: "Hết từ thì dừng nhắc" },
@@ -32,6 +33,28 @@ const LEVELS: Array<{ level: LevelChoice; label: string; hint: string }> = [
   { level: "B2", label: "Khá", hint: "Đọc tài liệu tiếng Anh mà ít phải tra từ" },
   { level: "C1", label: "Thành thạo", hint: "Đọc, viết, họp khá tự nhiên" },
 ];
+
+/** A large selectable card: white, or teal-tinted with a teal border when chosen */
+const choiceCard = (on: boolean) =>
+  `w-full rounded-2xl border text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40 ${
+    on
+      ? "border-teal-700 bg-teal-50 dark:border-teal-400 dark:bg-teal-400/10"
+      : "border-slate-200 bg-white hover:border-slate-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
+  }`;
+
+/** The round tick on the right of a choice card */
+function CheckDot({ on, small = false }: { on: boolean; small?: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`flex shrink-0 items-center justify-center rounded-full transition-colors ${small ? "h-5 w-5" : "h-6 w-6"} ${
+        on ? "bg-teal-700 text-white dark:bg-teal-500 dark:text-zinc-950" : "border-2 border-slate-200 dark:border-zinc-700"
+      }`}
+    >
+      {on && <Check className={small ? "h-3 w-3" : "h-3.5 w-3.5"} strokeWidth={3} />}
+    </span>
+  );
+}
 
 interface OnboardingFlowProps {
   /** startNow = open the first session right after the words are added */
@@ -107,241 +130,272 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
   };
 
   return (
-    <div className="popup-backdrop-enter fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 dark:bg-black/60 backdrop-blur-sm p-4">
-      <div className="popup-card-enter w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-6 space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            {[1, 2, 3, 4].map((s) => (
-              <span
-                key={s}
-                className={`h-1.5 rounded-full transition-all ${s === step ? "w-8 bg-cyan-500" : s < step ? "w-4 bg-cyan-300 dark:bg-cyan-700" : "w-4 bg-slate-200 dark:bg-zinc-700"}`}
-              />
-            ))}
-            <span className="ml-2 text-xs text-slate-600 dark:text-zinc-400">Bước {step}/4</span>
+    <div className="popup-backdrop-enter fixed inset-0 z-50 overflow-y-auto bg-[#F7F8FA] dark:bg-zinc-950">
+      <div className="mx-auto flex min-h-full w-full max-w-xl flex-col px-4">
+        {/* Top: back, "Bước n/4", skip, one progress bar */}
+        <div className="sticky top-0 z-10 -mx-4 bg-[#F7F8FA]/95 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+0.5rem)] backdrop-blur dark:bg-zinc-950/95">
+          <div className="grid min-h-12 grid-cols-[1fr_auto_1fr] items-center gap-2">
+            <div>
+              {step > 1 && (
+                <button
+                  type="button"
+                  aria-label="Quay lại"
+                  onClick={() => setStep(step - 1)}
+                  disabled={step === 4 && busy}
+                  className="-ml-2 inline-flex h-12 w-12 items-center justify-center rounded-full text-slate-700 hover:bg-slate-200/60 disabled:opacity-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                </button>
+              )}
+            </div>
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 dark:text-zinc-400">Bước {step}/4</span>
+            <div className="flex justify-end">
+              <button
+                onClick={skipAll}
+                disabled={busy}
+                className="-mr-2 inline-flex min-h-12 items-center gap-1.5 rounded-xl px-2 text-right text-sm font-medium leading-tight text-slate-600 hover:bg-slate-200/60 hover:text-slate-900 disabled:opacity-50 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+              >
+                {busy && <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />}
+                Bỏ qua phần thiết lập
+              </button>
+            </div>
           </div>
-          <button
-            onClick={skipAll}
-            disabled={busy}
-            className="min-h-11 px-3 -mr-2 rounded-lg text-sm font-medium text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800 hover:text-slate-900 dark:hover:text-zinc-100 disabled:opacity-50 inline-flex items-center gap-1.5"
-          >
-            {busy && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-            Bỏ qua phần thiết lập
-          </button>
+          <ProgressBar value={step * 25} className="mt-2 h-1.5" />
         </div>
-        {error && step !== 4 && <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>}
 
-        {step === 1 && (
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Tiếng Anh của bạn đang ở mức nào?</h2>
-              <p className="text-sm text-slate-600 dark:text-zinc-400">
-                Không sao nếu bạn đã quên gần hết: app sẽ bắt đầu từ những từ và mẫu câu cơ bản nhất, đi chậm mà chắc.
-              </p>
-            </div>
-            <button
-              onClick={() => setPlacementOpen(true)}
-              className="w-full min-h-11 p-4 rounded-xl border border-cyan-300 dark:border-cyan-700 bg-cyan-50 dark:bg-cyan-500/10 text-left space-y-1 hover:bg-cyan-100 dark:hover:bg-cyan-500/20 transition-colors"
-            >
-              <span className="block text-sm font-semibold text-cyan-800 dark:text-cyan-200">
-                {placementDone && level ? `Kết quả kiểm tra: ${level} · làm lại` : "Kiểm tra nhanh (2–4 phút)"}
-              </span>
-              <span className="block text-xs text-cyan-700/80 dark:text-cyan-300/80">
-                Từ vựng, ngữ pháp và nghe; câu hỏi tự dễ hơn hoặc khó hơn theo câu trả lời của bạn.
-              </span>
-            </button>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {LEVELS.map((l) => (
-                <button
-                  key={l.level}
-                  onClick={() => {
-                    setLevel(l.level);
-                    setPlacementDone(false);
-                  }}
-                  className={`min-h-11 p-3 rounded-xl border text-left transition-all ${level === l.level ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 ring-1 ring-cyan-500" : "border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700"}`}
-                >
-                  <span className="block text-sm font-bold text-slate-900 dark:text-white">
-                    {l.level} · {l.label}
-                  </span>
-                  <span className="block text-xs text-slate-600 dark:text-zinc-400 leading-tight mt-0.5">{l.hint}</span>
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center justify-end gap-3 pt-1">
-              {!level && (
-                <button onClick={goToLevels} className="min-h-11 px-3 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800">
-                  Chưa rõ, bỏ qua
-                </button>
-              )}
-              <button
-                onClick={goToLevels}
-                disabled={!level}
-                className="min-h-11 py-2.5 px-5 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-sm font-semibold disabled:opacity-40"
-              >
-                Tiếp
-              </button>
-            </div>
-          </div>
-        )}
+        <div className="flex-1 space-y-6 pb-6 pt-3">
+          {error && step !== 4 && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
-        {step === 2 && (
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Bạn muốn học từ vựng cấp nào?</h2>
-              <p className="text-sm text-slate-600 dark:text-zinc-400">
-                5.004 từ Oxford 3000 và 5000, có nghĩa tiếng Việt, câu ví dụ và phát âm. Việc học luôn bắt đầu từ A1; chọn thêm cấp cao hơn để trộn vào. Từ nào bạn đã biết thì bấm "Đã biết" là bỏ qua được.
-              </p>
-            </div>
-            <LevelPicker value={studyLevels} onChange={setStudyLevelsState} />
-            <p className="text-xs text-slate-600 dark:text-zinc-400">{mixDescription(studyLevels)}</p>
-            <div className="flex items-center justify-between pt-1">
-              <button onClick={() => setStep(1)} className="min-h-11 px-3 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800">
-                Quay lại
-              </button>
-              <button
-                onClick={() => setStep(3)}
-                className="min-h-11 py-2.5 px-5 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-sm font-semibold"
-              >
-                Tiếp
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Chọn thì bạn muốn bắt đầu học</h2>
-              <p className="text-sm text-slate-600 dark:text-zinc-400">
-                Mặc định là <b>Thì hiện tại đơn</b> — khởi đầu lý tưởng cho người mất gốc để xây chắc nền tảng mà không bị ngợp. Bạn có thể tích chọn thêm nhiều thì nếu muốn, và luôn có thể đổi lại trong tab Ngữ pháp sau này.
-              </p>
-            </div>
-
-            <TenseSelectionPicker value={selectedTenses} onChange={setSelectedTenses} />
-
-            <div className="flex items-center justify-between pt-1">
-              <button
-                onClick={() => setStep(2)}
-                className="min-h-11 px-3 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800"
-              >
-                Quay lại
-              </button>
-              <button
-                onClick={() => setStep(4)}
-                disabled={selectedTenses.length === 0}
-                className="min-h-11 py-2.5 px-5 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-sm font-semibold disabled:opacity-40"
-              >
-                Tiếp
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Mỗi ngày bạn học bao lâu, vào lúc nào?</h2>
-              <p className="text-sm text-slate-600 dark:text-zinc-400">
-                Ít mà đều đặn nhớ lâu hơn học dồn. Gắn việc học vào một lúc cố định trong ngày giúp tạo thói quen nhanh nhất.
-              </p>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {([5, 10, 15] as DailyMinutes[]).map((m) => {
-                const p = DAILY_PLANS[m];
-                return (
-                  <button
-                    key={m}
-                    onClick={() => setMinutes(m)}
-                    className={`p-4 rounded-xl border text-left transition-all ${minutes === m ? "border-cyan-500 bg-cyan-50 dark:bg-cyan-500/10 ring-1 ring-cyan-500" : "border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700"}`}
-                  >
-                    <span className="block text-lg font-extrabold text-slate-900 dark:text-white">{m} phút</span>
-                    <span className="block text-xs text-slate-600 dark:text-zinc-400">{p.newCardsPerDay} từ mới/ngày</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="space-y-2 p-3 rounded-xl border border-slate-200 dark:border-zinc-800">
-              <label className="flex items-center gap-3 min-h-11 cursor-pointer">
-                <input type="checkbox" checked={reminders} onChange={(e) => setReminders(e.target.checked)} className="w-5 h-5 accent-cyan-600" />
-                <span className="text-sm font-medium text-slate-800 dark:text-zinc-200">Nhắc tôi học mỗi ngày</span>
-              </label>
-              {reminders && (
-                <div className="pl-8 space-y-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowMore((v) => !v)}
-                    aria-expanded={showMore}
-                    className="min-h-11 -ml-2 px-2 rounded-lg text-sm font-medium text-cyan-700 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-500/10 inline-flex items-center gap-1"
-                  >
-                    {showMore ? "Ẩn bớt" : "Tùy chỉnh thêm"}
-                    <ChevronDown className={`w-4 h-4 transition-transform ${showMore ? "rotate-180" : ""}`} />
-                  </button>
-                  {showMore && (
-                    <div className="space-y-1">
-                      <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300 block">Nhắc vào lúc nào?</span>
-                      {(Object.keys(ANCHOR_TIMES) as PresetAnchor[]).map((a) => (
-                        <label key={a} className="flex items-center gap-3 min-h-11 text-sm text-slate-700 dark:text-zinc-300 cursor-pointer">
-                          <input type="checkbox" checked={anchors.includes(a)} onChange={() => toggleAnchor(a)} className="w-5 h-5 accent-cyan-600" />
-                          {ANCHOR_TIMES[a].label}
-                        </label>
-                      ))}
-                      {!isMobilePlatform() && (
-                        <label className="flex items-center gap-3 min-h-11 text-sm text-slate-700 dark:text-zinc-300 cursor-pointer">
-                          <input type="checkbox" checked={transitions} onChange={(e) => setTransitions(e.target.checked)} className="w-5 h-5 accent-cyan-600" />
-                          Lúc mở máy buổi sáng, hoặc vừa xong cuộc họp
-                        </label>
-                      )}
-
-                      <div className="pt-2 border-t border-slate-100 dark:border-zinc-800/80 space-y-2">
-                        <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300 block">Nhắc những từ nào?</span>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                          {TRIGGER_OPTIONS.map((o) => (
-                            <button
-                              key={o.value}
-                              type="button"
-                              onClick={() => setTriggerCondition(o.value)}
-                              aria-pressed={triggerCondition === o.value}
-                              className={`min-h-11 p-2.5 rounded-xl border text-left flex flex-col gap-0.5 transition-all ${
-                                triggerCondition === o.value
-                                  ? "border-cyan-500 bg-cyan-50/60 dark:bg-cyan-950/30 text-cyan-900 dark:text-cyan-200 ring-1 ring-cyan-500"
-                                  : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
-                              }`}
-                            >
-                              <span className="text-sm font-bold">{o.title}</span>
-                              <span className="text-xs text-slate-600 dark:text-zinc-400">{o.desc}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {!isMobilePlatform() && (
-                        <p className="text-xs text-slate-600 dark:text-zinc-400">Một thẻ nhỏ ở góc màn hình, không chiếm bàn phím. Không nhắc ban đêm.</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>            {error && <p className="text-sm text-rose-600 dark:text-rose-400">{error}</p>}
-            <div className="flex items-center justify-between pt-1">
-              <button onClick={() => setStep(3)} disabled={busy} className="min-h-11 px-3 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800">
-                Quay lại
-              </button>
-              <div className="flex items-center gap-3">
-                <button onClick={() => finish(false)} disabled={busy} className="min-h-11 px-3 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800">
-                  Để sau
-                </button>
-                <button
-                  onClick={() => finish(true)}
-                  disabled={busy}
-                  className="inline-flex items-center gap-2 min-h-11 py-2.5 px-5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 !text-white text-sm font-semibold shadow-lg shadow-orange-500/20 disabled:opacity-60"
-                >
-                  {busy && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-                  {busy ? "Đang chuẩn bị từ vựng…" : `Học ${DAILY_PLANS[minutes].newCardsPerDay} từ đầu tiên ngay`}
-                </button>
+          {step === 1 && (
+            <>
+              <div className="space-y-2">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Tiếng Anh của bạn đang ở mức nào?</h1>
+                <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
+                  Không sao nếu bạn đã quên gần hết: app sẽ bắt đầu từ những từ và mẫu câu cơ bản nhất, đi chậm mà chắc.
+                </p>
               </div>
-            </div>
-          </div>
-        )}
+              <div className="space-y-3">
+                {LEVELS.map((l) => {
+                  const on = level === l.level;
+                  return (
+                    <button
+                      key={l.level}
+                      aria-pressed={on}
+                      onClick={() => {
+                        setLevel(l.level);
+                        setPlacementDone(false);
+                      }}
+                      className={`${choiceCard(on)} flex min-h-16 items-center gap-4 p-4`}
+                    >
+                      <span
+                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-lg font-bold ${
+                          on ? "bg-teal-700 text-white dark:bg-teal-500 dark:text-zinc-950" : "bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300"
+                        }`}
+                      >
+                        {l.level}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className={`block text-base font-semibold ${on ? "text-teal-800 dark:text-teal-200" : "text-slate-900 dark:text-white"}`}>{l.label}</span>
+                        <span className="mt-0.5 block text-sm leading-snug text-slate-600 dark:text-zinc-400">{l.hint}</span>
+                      </span>
+                      <CheckDot on={on} />
+                    </button>
+                  );
+                })}
+              </div>
+              <button
+                onClick={() => setPlacementOpen(true)}
+                className="flex min-h-16 w-full items-center gap-4 rounded-2xl border border-teal-700/20 bg-teal-50 p-4 text-left transition-colors hover:bg-teal-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40 dark:border-teal-400/20 dark:bg-teal-400/10 dark:hover:bg-teal-400/15"
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-teal-700 dark:bg-zinc-900 dark:text-teal-300">
+                  <ClipboardCheck className="h-6 w-6" />
+                </span>
+                <span className="min-w-0 flex-1 space-y-0.5">
+                  <span className="block text-base font-semibold text-teal-900 dark:text-teal-100">
+                    {placementDone && level ? `Kết quả kiểm tra: ${level} · làm lại` : "Kiểm tra nhanh (2–4 phút)"}
+                  </span>
+                  <span className="block text-sm leading-snug text-teal-800/80 dark:text-teal-200/80">
+                    Từ vựng, ngữ pháp và nghe; câu hỏi tự dễ hơn hoặc khó hơn theo câu trả lời của bạn.
+                  </span>
+                </span>
+                <ChevronRight className="h-5 w-5 shrink-0 text-teal-700 dark:text-teal-300" />
+              </button>
+            </>
+          )}
+
+          {step === 2 && (
+            <>
+              <div className="space-y-2">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Bạn muốn học từ vựng cấp nào?</h1>
+                <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
+                  5.004 từ Oxford 3000 và 5000, có nghĩa tiếng Việt, câu ví dụ và phát âm. Việc học luôn bắt đầu từ A1; chọn thêm cấp cao hơn để trộn vào. Từ nào bạn đã biết thì bấm "Đã biết" là bỏ qua được.
+                </p>
+              </div>
+              <LevelPicker value={studyLevels} onChange={setStudyLevelsState} />
+              <p className="text-sm text-slate-600 dark:text-zinc-400">{mixDescription(studyLevels)}</p>
+            </>
+          )}
+
+          {step === 3 && (
+            <>
+              <div className="space-y-2">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Chọn thì bạn muốn bắt đầu học</h1>
+                <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
+                  Mặc định là <b>Thì hiện tại đơn</b> — khởi đầu lý tưởng cho người mất gốc để xây chắc nền tảng mà không bị ngợp. Bạn có thể tích chọn thêm nhiều thì nếu muốn, và luôn có thể đổi lại trong tab Ngữ pháp sau này.
+                </p>
+              </div>
+
+              <TenseSelectionPicker value={selectedTenses} onChange={setSelectedTenses} />
+            </>
+          )}
+
+          {step === 4 && (
+            <>
+              <div className="space-y-2">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Mỗi ngày bạn học bao lâu, vào lúc nào?</h1>
+                <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
+                  Ít mà đều đặn nhớ lâu hơn học dồn. Gắn việc học vào một lúc cố định trong ngày giúp tạo thói quen nhanh nhất.
+                </p>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                {([5, 10, 15] as DailyMinutes[]).map((m) => {
+                  const p = DAILY_PLANS[m];
+                  const on = minutes === m;
+                  return (
+                    <button key={m} aria-pressed={on} onClick={() => setMinutes(m)} className={`${choiceCard(on)} min-h-20 p-3.5 sm:p-4`}>
+                      <span className="flex items-start justify-between gap-1">
+                        <span className={`block text-lg font-bold ${on ? "text-teal-800 dark:text-teal-200" : "text-slate-900 dark:text-white"}`}>{m} phút</span>
+                        <CheckDot on={on} small />
+                      </span>
+                      <span className="mt-1 block text-sm leading-snug text-slate-600 dark:text-zinc-400">{p.newCardsPerDay} từ mới/ngày</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+                <label className="flex min-h-12 cursor-pointer items-center gap-3">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+                    <Bell className="h-5 w-5" />
+                  </span>
+                  <span className="flex-1 text-base font-semibold text-slate-900 dark:text-zinc-100">Nhắc tôi học mỗi ngày</span>
+                  <input type="checkbox" checked={reminders} onChange={(e) => setReminders(e.target.checked)} className="peer sr-only" />
+                  <span
+                    aria-hidden="true"
+                    className="relative h-7 w-12 shrink-0 rounded-full bg-slate-300 transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-6 after:w-6 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:bg-teal-700 peer-checked:after:translate-x-5 peer-focus-visible:ring-2 peer-focus-visible:ring-teal-600/40 dark:bg-zinc-700 dark:peer-checked:bg-teal-500"
+                  />
+                </label>
+                {reminders && (
+                  <div className="mt-3 space-y-3 border-t border-slate-100 pt-2 dark:border-zinc-800">
+                    <button
+                      type="button"
+                      onClick={() => setShowMore((v) => !v)}
+                      aria-expanded={showMore}
+                      className="-ml-2 inline-flex min-h-12 items-center gap-1 rounded-xl px-2 text-sm font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
+                    >
+                      {showMore ? "Ẩn bớt" : "Tùy chỉnh thêm"}
+                      <ChevronDown className={`h-4 w-4 transition-transform ${showMore ? "rotate-180" : ""}`} />
+                    </button>
+                    {showMore && (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <span className="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Nhắc vào lúc nào?</span>
+                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                            {(Object.keys(ANCHOR_TIMES) as PresetAnchor[]).map((a) => {
+                              const on = anchors.includes(a);
+                              return (
+                                <label
+                                  key={a}
+                                  className={`${choiceCard(on)} flex min-h-12 cursor-pointer items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus-within:ring-2 focus-within:ring-teal-600/40 dark:text-zinc-200`}
+                                >
+                                  <input type="checkbox" checked={on} onChange={() => toggleAnchor(a)} className="sr-only" />
+                                  <span className="flex-1">{ANCHOR_TIMES[a].label}</span>
+                                  <CheckDot on={on} small />
+                                </label>
+                              );
+                            })}
+                            {!isMobilePlatform() && (
+                              <label
+                                className={`${choiceCard(transitions)} flex min-h-12 cursor-pointer items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus-within:ring-2 focus-within:ring-teal-600/40 dark:text-zinc-200 sm:col-span-2`}
+                              >
+                                <input type="checkbox" checked={transitions} onChange={(e) => setTransitions(e.target.checked)} className="sr-only" />
+                                <span className="flex-1">Lúc mở máy buổi sáng, hoặc vừa xong cuộc họp</span>
+                                <CheckDot on={transitions} small />
+                              </label>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="space-y-2 border-t border-slate-100 pt-3 dark:border-zinc-800">
+                          <span className="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Nhắc những từ nào?</span>
+                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                            {TRIGGER_OPTIONS.map((o) => {
+                              const on = triggerCondition === o.value;
+                              return (
+                                <button
+                                  key={o.value}
+                                  type="button"
+                                  onClick={() => setTriggerCondition(o.value)}
+                                  aria-pressed={on}
+                                  className={`${choiceCard(on)} flex min-h-12 flex-col gap-0.5 p-3`}
+                                >
+                                  <span className={`text-sm font-semibold ${on ? "text-teal-800 dark:text-teal-200" : "text-slate-900 dark:text-zinc-100"}`}>{o.title}</span>
+                                  <span className="text-sm leading-snug text-slate-600 dark:text-zinc-400">{o.desc}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {!isMobilePlatform() && (
+                          <p className="text-sm text-slate-600 dark:text-zinc-400">Một thẻ nhỏ ở góc màn hình, không chiếm bàn phím. Không nhắc ban đêm.</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+            </>
+          )}
+        </div>
+
+        {/* The main action, fixed at the bottom */}
+        <div className="sticky bottom-0 z-10 -mx-4 space-y-1 border-t border-slate-200 bg-[#F7F8FA]/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+          {step === 1 && (
+            <>
+              <Button size="lg" block onClick={goToLevels} disabled={!level}>
+                Tiếp
+              </Button>
+              {!level && (
+                <Button variant="ghost" block onClick={goToLevels}>
+                  Chưa rõ, bỏ qua
+                </Button>
+              )}
+            </>
+          )}
+          {step === 2 && (
+            <Button size="lg" block onClick={() => setStep(3)}>
+              Tiếp
+            </Button>
+          )}
+          {step === 3 && (
+            <Button size="lg" block onClick={() => setStep(4)} disabled={selectedTenses.length === 0}>
+              Tiếp
+            </Button>
+          )}
+          {step === 4 && (
+            <>
+              <Button size="lg" block onClick={() => finish(true)} disabled={busy}>
+                {busy && <Loader2 className="h-4 w-4 animate-spin" />}
+                {busy ? "Đang chuẩn bị từ vựng…" : `Học ${DAILY_PLANS[minutes].newCardsPerDay} từ đầu tiên ngay`}
+              </Button>
+              <Button variant="ghost" block onClick={() => finish(false)} disabled={busy}>
+                Để sau
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {placementOpen && (

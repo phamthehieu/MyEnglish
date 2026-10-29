@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BookOpen, Sparkles, CheckCircle2 } from "lucide-react";
 import { DEFAULT_INITIAL_TENSE_IDS, saveInitialTenses } from "@/services/grammarPath";
 import TenseSelectionPicker from "./TenseSelectionPicker";
+import { Button } from "../ui/kit";
 
 interface GrammarTenseSetupModalProps {
   onDone: () => void;
@@ -23,47 +24,41 @@ export default function GrammarTenseSetupModal({ onDone }: GrammarTenseSetupModa
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 dark:bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="popup-card-enter w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl p-6 space-y-5">
-        {/* Header */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-cyan-100 dark:bg-cyan-950/80 text-cyan-700 dark:text-cyan-300">
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                Chọn thì bắt đầu học
-              </h2>
-              <span className="text-xs text-cyan-700 dark:text-cyan-400 font-medium inline-flex items-center gap-1">
-                <Sparkles className="w-3 h-3" /> Lộ trình ngữ pháp tinh gọn cho người mất gốc
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#F7F8FA] dark:bg-zinc-950 animate-in fade-in duration-200">
+      <div className="mx-auto flex min-h-full w-full max-w-xl flex-col px-4 pt-[calc(env(safe-area-inset-top)+1.5rem)]">
+        <div className="flex-1 space-y-6 pb-6">
+          {/* Header */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+                <BookOpen className="h-6 w-6" />
               </span>
+              <div className="min-w-0">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Chọn thì bắt đầu học</h1>
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-teal-700 dark:text-teal-300">
+                  <Sparkles className="h-3.5 w-3.5" /> Lộ trình ngữ pháp tinh gọn cho người mất gốc
+                </span>
+              </div>
             </div>
+
+            <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
+              Trước đây app tự động bật toàn bộ các chương và các thì, dễ gây ngợp khi làm bài và kiểm tra. Giờ đây bạn có thể chọn thì mình muốn tập trung học trước — mặc định là <b>Thì hiện tại đơn</b>.
+            </p>
           </div>
 
-          <p className="text-sm text-slate-600 dark:text-zinc-300 leading-relaxed pt-1">
-            Trước đây app tự động bật toàn bộ các chương và các thì, dễ gây ngợp khi làm bài và kiểm tra. Giờ đây bạn có thể chọn thì mình muốn tập trung học trước — mặc định là <b>Thì hiện tại đơn</b>.
-          </p>
+          {/* Tense picker */}
+          <TenseSelectionPicker value={selectedTenses} onChange={setSelectedTenses} />
         </div>
 
-        {/* Tense picker */}
-        <TenseSelectionPicker value={selectedTenses} onChange={setSelectedTenses} />
-
         {/* Bottom actions */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-zinc-800">
-          <span className="text-xs text-slate-500 dark:text-zinc-400">
+        <div className="sticky bottom-0 z-10 -mx-4 space-y-2 border-t border-slate-200 bg-[#F7F8FA]/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95">
+          <Button size="lg" block onClick={handleConfirm} disabled={saving || selectedTenses.length === 0}>
+            <CheckCircle2 className="h-5 w-5" />
+            Xác nhận & Bắt đầu học
+          </Button>
+          <span className="block text-center text-sm text-slate-600 dark:text-zinc-400">
             Có thể thay đổi bất cứ lúc nào trong tab <b>Ngữ pháp</b>
           </span>
-
-          <button
-            type="button"
-            onClick={handleConfirm}
-            disabled={saving || selectedTenses.length === 0}
-            className="inline-flex items-center gap-2 py-2.5 px-6 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-sm font-semibold transition-colors disabled:opacity-50 shadow-sm"
-          >
-            <CheckCircle2 className="w-4 h-4" />
-            Xác nhận & Bắt đầu học
-          </button>
         </div>
       </div>
     </div>
