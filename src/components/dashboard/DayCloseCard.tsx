@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AlarmClock, ArrowRight, Check, Flame, Timer } from "lucide-react";
+import { Button, Card } from "../ui/kit";
 import type { StreakStats } from "@/services/streak";
 import { loadWorkloadForecast } from "@/services/progress";
 import { minutesFor } from "@/services/comeback";
@@ -14,7 +15,7 @@ function GoalRing({ percent, reached }: { percent: number; reached: boolean }) {
   return (
     <div className="relative w-16 h-16 shrink-0">
       <svg viewBox="0 0 64 64" className="w-16 h-16 -rotate-90">
-        <circle cx="32" cy="32" r={r} fill="none" strokeWidth="6" className="stroke-emerald-100 dark:stroke-emerald-950" />
+        <circle cx="32" cy="32" r={r} fill="none" strokeWidth="6" className="stroke-slate-100 dark:stroke-zinc-800" />
         <circle
           cx="32"
           cy="32"
@@ -24,12 +25,12 @@ function GoalRing({ percent, reached }: { percent: number; reached: boolean }) {
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={c * (1 - p / 100)}
-          className="stroke-emerald-500 transition-[stroke-dashoffset] duration-700"
+          className="stroke-teal-700 dark:stroke-teal-500 transition-[stroke-dashoffset] duration-700"
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         {reached ? (
-          <Check className="w-6 h-6 text-emerald-600 dark:text-emerald-400" strokeWidth={3} />
+          <Check className="w-6 h-6 text-green-600" strokeWidth={3} />
         ) : (
           <span className="text-xs font-bold text-slate-700 dark:text-zinc-200">{p}%</span>
         )}
@@ -106,75 +107,68 @@ export default function DayCloseCard({
   );
 
   return (
-    <div className="rounded-2xl border border-emerald-200 dark:border-emerald-800/50 bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-950/30 dark:to-zinc-900 shadow-sm overflow-hidden">
+    <Card className="space-y-4">
       {status.done ? (
-        // The loud part: the learner must know for sure they can stop
-        <div className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-5 space-y-3" data-testid="day-done">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-white/20 ring-4 ring-white/30 flex items-center justify-center shrink-0">
-              <Check className="w-8 h-8" strokeWidth={3} />
-            </div>
-            <div className="min-w-0">
-              <p className="text-2xl font-extrabold tracking-tight">{status.title}</p>
-              <p className="text-sm text-emerald-50">{status.note}</p>
-            </div>
+        // The learner must know for sure they can stop
+        <div className="flex items-center gap-4" data-testid="day-done">
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-green-600 text-white">
+            <Check className="h-8 w-8" strokeWidth={3} />
+          </span>
+          <div className="min-w-0">
+            <p className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{status.title}</p>
+            <p className="text-slate-600 dark:text-zinc-300">{status.note}</p>
           </div>
-          <p className="flex items-center gap-2 rounded-xl bg-white/15 px-3 py-2 text-sm font-semibold">
-            <AlarmClock className="w-4 h-4 shrink-0" />
-            {nextReviewText(nextReview, now)}
-          </p>
         </div>
       ) : (
-        <div className="p-5 pb-0 flex items-center gap-4">
+        <div className="flex items-center gap-4">
           <GoalRing percent={streakStats.goalPercentage} reached={reached} />
           <div className="min-w-0 space-y-1">
             <p className="text-lg font-bold text-slate-900 dark:text-white">{status.title}</p>
-            <p className="text-sm text-slate-700 dark:text-zinc-300">{status.note}</p>
+            <p className="text-slate-600 dark:text-zinc-300">{status.note}</p>
           </div>
         </div>
       )}
 
-      <div className="p-5 space-y-3">
-        <p className="text-sm text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1.5 flex-wrap">{streakLine}</p>
-        {!status.done && (
-          <p className="flex items-center gap-2 text-sm font-semibold text-slate-800 dark:text-zinc-100">
-            <AlarmClock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            {nextReviewText(nextReview, now)}
-          </p>
-        )}
-        <p className="text-sm text-slate-600 dark:text-zinc-300">
-          {tomorrowLine ?? "Mai quay lại nhé, app sẽ nhắc đúng lúc cần ôn."}
-          {laterToday > 0 && ` ${hour >= 17 ? "Tối nay" : "Lát nữa"} còn ~${laterToday} thẻ ôn lại cho chắc.`}
-        </p>
+      <p className="inline-flex flex-wrap items-center gap-1.5 text-slate-700 dark:text-zinc-300">{streakLine}</p>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          {studied ? (
-            <button
-              onClick={() => onNextStep(nextStep)}
-              className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-sm font-semibold shadow-md shadow-emerald-600/20 inline-flex items-center gap-2 transition"
-            >
-              {nextStep.label} <ArrowRight className="w-4 h-4" />
-            </button>
-          ) : (
-            <button
-              onClick={onQuickStart}
-              className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white text-sm font-semibold shadow-md shadow-emerald-600/20 inline-flex items-center gap-2 transition"
-            >
-              <Timer className="w-4 h-4" /> Chỉ 1 phút: ôn nhanh 3 thẻ
-            </button>
-          )}
+      {/* What comes next: the next review, and tomorrow */}
+      <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3 dark:bg-zinc-800/50">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+          <AlarmClock className="h-5 w-5" />
+        </span>
+        <div className="min-w-0 text-sm">
+          <p className="font-semibold text-slate-900 dark:text-white">{nextReviewText(nextReview, now)}</p>
+          <p className="text-slate-600 dark:text-zinc-400">
+            {tomorrowLine ?? "Mai quay lại nhé, app sẽ nhắc đúng lúc cần ôn."}
+            {laterToday > 0 && ` ${hour >= 17 ? "Tối nay" : "Lát nữa"} còn ~${laterToday} thẻ ôn lại cho chắc.`}
+          </p>
+        </div>
+      </div>
+
+      {studied ? (
+        <Button block size="lg" variant={status.done ? "secondary" : "primary"} onClick={() => onNextStep(nextStep)}>
+          {nextStep.label} <ArrowRight className="h-5 w-5" />
+        </Button>
+      ) : (
+        <Button block size="lg" onClick={onQuickStart}>
+          <Timer className="h-5 w-5" /> Chỉ 1 phút: ôn nhanh 3 thẻ
+        </Button>
+      )}
+
+      {(more || (status.done && onFeedback)) && (
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
           {more && (
-            <button onClick={more.onClick} className="text-xs font-medium text-slate-500 dark:text-zinc-400 hover:text-cyan-700 dark:hover:text-cyan-300 underline-offset-2 hover:underline">
+            <button onClick={more.onClick} className="min-h-10 rounded-lg px-2 font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10">
               Muốn học thêm? {more.label}
             </button>
           )}
           {status.done && onFeedback && (
-            <button onClick={onFeedback} className="text-xs font-medium text-slate-500 dark:text-zinc-400 hover:text-cyan-700 dark:hover:text-cyan-300 underline-offset-2 hover:underline">
+            <button onClick={onFeedback} className="min-h-10 rounded-lg px-2 text-slate-500 underline-offset-2 hover:underline dark:text-zinc-400">
               Góp ý cho app
             </button>
           )}
         </div>
-      </div>
-    </div>
+      )}
+    </Card>
   );
 }

@@ -1,4 +1,5 @@
-import { AlarmClock, AudioLines, BookOpen, Check, CheckCircle2, ChevronRight, Circle, Crosshair, Flame, Footprints, GraduationCap, Play, Timer, Zap } from "lucide-react";
+import { AlarmClock, ArrowRight, AudioLines, BookOpen, Check, Flame, Footprints, GraduationCap, Zap } from "lucide-react";
+import { Button, Card, Badge, ProgressBar } from "../ui/kit";
 import type { TodayTask, TodayTaskId } from "./todayPlan";
 
 const TASK_ICON: Record<TodayTaskId, typeof BookOpen> = {
@@ -28,7 +29,7 @@ interface TodayChecklistProps {
   streak: number;
   /** Starts everything not done as one flow (the main button, when more than one thing is left) */
   onStartFlow?: () => void;
-  /** Same words as a timed focus session (shown when the first thing to do is the words) */
+  /** A timed focus session on the words */
   onFocus?: () => void;
   focusMinutes?: number;
   /** The daily goal is reached: what is left on the list is extra, and the learner may stop */
@@ -38,9 +39,9 @@ interface TodayChecklistProps {
 }
 
 /**
- * Today as a short list (at most 3 things), each with its status, its minutes and a way straight into it.
- * One main button: the first thing not done yet. "Chỉ 1 phút" (3 cards) keeps the streak on a busy day.
- * Once the daily goal is reached, a green strip on top says so: the rest is optional, the learner may stop.
+ * Today as a short list, each thing with its status, its minutes and a way straight into it, then how much is done
+ * and ONE main button (everything left, one after the other). "Chỉ 1 phút" (3 cards) keeps the streak on a busy day;
+ * in the evening, with nothing studied yet, it comes up top as a warning.
  */
 export default function TodayChecklist({
   tasks,
@@ -57,23 +58,38 @@ export default function TodayChecklist({
   nextReviewLine,
 }: TodayChecklistProps) {
   const left = tasks.filter((t) => !t.done);
+  const doneCount = tasks.length - left.length;
   const minutesLeft = left.reduce((sum, t) => sum + t.minutes, 0);
-  const firstIndex = tasks.indexOf(primary);
+  const percent = tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0;
+  const flow = !!onStartFlow && left.length > 1;
+  const label = flow ? (doneCount > 0 ? "Tiếp tục hôm nay" : "Bắt đầu hôm nay") : primaryLabel(primary, tasks.indexOf(primary) === 0);
 
   return (
-    <div className="rounded-2xl border border-cyan-200 dark:border-cyan-800/50 bg-gradient-to-br from-cyan-50 to-white dark:from-cyan-950/40 dark:to-zinc-900 p-4 shadow-sm space-y-3">
+    <Card className="space-y-4">
+      {quickMode === "urgent" && (
+        <div className="-mx-1 flex items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 dark:border-amber-500/30 dark:bg-amber-500/10">
+          <Flame className="h-5 w-5 shrink-0 text-amber-600" />
+          <p className="min-w-0 flex-1 text-sm font-semibold text-amber-900 dark:text-amber-100">
+            {streak > 0 ? `Sắp mất chuỗi ${streak} ngày, chỉ cần 1 phút` : "Tối rồi, 1 phút là đủ bắt đầu chuỗi ngày học"}
+          </p>
+          <Button size="sm" onClick={onQuickStart} className="bg-amber-600 hover:bg-amber-700 dark:bg-amber-600 dark:hover:bg-amber-500">
+            Học 1 phút
+          </Button>
+        </div>
+      )}
+
       {goalReached && (
-        <div className="-mx-1 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 py-2.5 flex items-center gap-3" data-testid="goal-reached">
-          <span className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-            <Check className="w-5 h-5" strokeWidth={3} />
+        <div className="-mx-1 flex items-center gap-3 rounded-xl bg-green-50 px-3 py-2.5 dark:bg-green-500/10" data-testid="goal-reached">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-600 text-white">
+            <Check className="h-5 w-5" strokeWidth={3} />
           </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-sm font-bold">Đạt mục tiêu hôm nay ✓ Dừng ở đây cũng được.</span>
-            <span className="block text-xs text-emerald-50">
-              {left.length > 0 ? "Phần còn lại bên dưới là thêm nếu bạn muốn." : null}
+          <span className="min-w-0 flex-1 text-sm">
+            <span className="block font-bold text-green-800 dark:text-green-200">Đạt mục tiêu hôm nay. Dừng ở đây cũng được.</span>
+            <span className="block text-green-700 dark:text-green-300">
+              {left.length > 0 ? "Phần còn lại bên dưới là thêm nếu bạn muốn. " : null}
               {nextReviewLine && (
-                <span className="inline-flex items-center gap-1 ml-1">
-                  <AlarmClock className="w-3 h-3" /> {nextReviewLine}
+                <span className="inline-flex items-center gap-1">
+                  <AlarmClock className="h-3.5 w-3.5" /> {nextReviewLine}
                 </span>
               )}
             </span>
@@ -81,50 +97,58 @@ export default function TodayChecklist({
         </div>
       )}
 
-      <div className="flex items-baseline justify-between gap-3">
-        <p className="text-sm font-semibold text-cyan-800 dark:text-cyan-300">{heading}</p>
-        <p className="text-xs text-slate-500 dark:text-zinc-400 shrink-0">
-          {tasks.length - left.length}/{tasks.length} việc · còn ~{minutesLeft} phút
-        </p>
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white">{heading}</h2>
+        <Badge tone="teal" className="shrink-0">
+          {doneCount}/{tasks.length} việc
+        </Badge>
       </div>
 
-      <ol className="space-y-1.5">
+      <ol className="space-y-2">
         {tasks.map((task) => {
           const Icon = TASK_ICON[task.id];
           const isPrimary = task === primary;
           const body = (
             <>
-              {task.done ? (
-                <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-500" />
-              ) : (
-                <Circle className={`w-5 h-5 shrink-0 ${isPrimary ? "text-cyan-500" : "text-slate-300 dark:text-zinc-600"}`} />
-              )}
-              <Icon className={`w-4 h-4 shrink-0 ${task.done ? "text-slate-400 dark:text-zinc-500" : "text-cyan-600 dark:text-cyan-400"}`} />
+              <span
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                  task.done ? "bg-slate-100 text-slate-400 dark:bg-zinc-800 dark:text-zinc-500" : "bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300"
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
               <span className="min-w-0 flex-1">
                 <span
-                  className={`block text-sm font-semibold ${
-                    task.done ? "text-slate-500 dark:text-zinc-400 line-through decoration-slate-300 dark:decoration-zinc-600" : "text-slate-800 dark:text-zinc-100"
+                  className={`block font-semibold leading-snug ${
+                    task.done ? "text-slate-500 line-through decoration-slate-300 dark:text-zinc-500 dark:decoration-zinc-600" : "text-slate-900 dark:text-zinc-100"
                   }`}
                 >
                   {task.title}
                 </span>
-                {task.detail && <span className="block text-xs text-slate-500 dark:text-zinc-400 truncate">{task.detail}</span>}
+                <span className="block text-sm text-slate-500 dark:text-zinc-400">
+                  {task.done ? "Đã xong" : [task.detail, `~${task.minutes} phút`].filter(Boolean).join(" · ")}
+                </span>
               </span>
-              <span className="text-xs text-slate-500 dark:text-zinc-400 shrink-0">{task.done ? "Xong" : `~${task.minutes} phút`}</span>
-              {!task.done && <ChevronRight className="w-4 h-4 shrink-0 text-slate-400 dark:text-zinc-500" />}
+              {task.done ? (
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal-700 text-white dark:bg-teal-600">
+                  <Check className="h-4 w-4" strokeWidth={3} />
+                </span>
+              ) : (
+                <span className={`h-7 w-7 shrink-0 rounded-full border-2 ${isPrimary ? "border-teal-600" : "border-slate-300 dark:border-zinc-600"}`} />
+              )}
             </>
           );
           return (
             <li key={task.id}>
               {task.done ? (
-                <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white/50 dark:bg-zinc-900/30">{body}</div>
+                <div className="flex min-h-16 items-center gap-3 rounded-xl bg-slate-50 px-3 py-2 dark:bg-zinc-800/40">{body}</div>
               ) : (
                 <button
                   onClick={() => onRun(task)}
-                  className={`w-full text-left flex items-center gap-3 rounded-xl px-3 py-2 border transition ${
+                  className={`flex min-h-16 w-full items-center gap-3 rounded-xl border px-3 py-2 text-left transition-colors ${
                     isPrimary
-                      ? "bg-white dark:bg-zinc-900 border-cyan-300 dark:border-cyan-700/70"
-                      : "bg-white/70 dark:bg-zinc-900/50 border-slate-200 dark:border-zinc-800 hover:border-cyan-300 dark:hover:border-cyan-700"
+                      ? "border-teal-600/60 bg-white dark:border-teal-500/50 dark:bg-zinc-900"
+                      : "border-slate-200 bg-white hover:border-teal-600/40 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-teal-500/40"
                   }`}
                 >
                   {body}
@@ -135,47 +159,40 @@ export default function TodayChecklist({
         })}
       </ol>
 
-      <div className="flex flex-wrap items-center gap-2">
-        {/* More than one thing left: one button for all of them, one after the other */}
-        <button
-          onClick={() => (onStartFlow && left.length > 1 ? onStartFlow() : onRun(primary))}
-          autoFocus
-          className="basis-full px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 active:scale-[0.98] text-white text-sm font-bold shadow-md shadow-cyan-600/30 inline-flex items-center justify-center gap-2 transition-all"
-        >
-          <Play className="w-4 h-4 fill-white" />
-          {onStartFlow && left.length > 1 ? `Bắt đầu hôm nay: ${left.length} việc (~${minutesLeft} phút)` : primaryLabel(primary, firstIndex === 0)}
-        </button>
-        {onFocus && primary.id === "vocab" && (
-          <button
-            onClick={onFocus}
-            title="Học các thẻ này trong một phiên có hẹn giờ: ẩn mọi thứ khác, tắt nhắc nhở"
-            className="flex-1 justify-center px-3.5 py-2.5 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 bg-violet-600 hover:bg-violet-700 text-white shadow-md shadow-violet-600/30 transition active:scale-[0.98]"
-          >
-            <Crosshair className="w-4 h-4" /> Tập trung {focusMinutes ?? 10}′
-          </button>
-        )}
-        {quickMode !== "hidden" && (
-          <button
-            onClick={onQuickStart}
-            title="3 thẻ ôn nhanh, đủ để giữ chuỗi ngày học"
-            className={`flex-1 justify-center px-3.5 py-2.5 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 border transition ${
-              quickMode === "urgent"
-                ? "border-amber-400 dark:border-amber-500/60 bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-500/20"
-                : "border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
-            }`}
-          >
-            <Timer className="w-4 h-4" /> Chỉ 1 phút
-          </button>
-        )}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between gap-3 text-sm">
+          <span className="text-slate-600 dark:text-zinc-400">
+            {doneCount}/{tasks.length} việc · còn ~{minutesLeft} phút
+          </span>
+          <span className="font-semibold text-teal-700 dark:text-teal-300">{percent}% hoàn thành</span>
+        </div>
+        <ProgressBar value={percent} />
       </div>
-      {quickMode === "urgent" ? (
-        <p className="text-xs text-amber-800 dark:text-amber-200 inline-flex items-center gap-1.5">
-          <Flame className="w-3.5 h-3.5 text-orange-500" />
-          {streak > 0
-            ? `Tối rồi mà hôm nay chưa học: 3 thẻ trong 1 phút là giữ được chuỗi ${streak} ngày.`
-            : "Tối rồi: 3 thẻ trong 1 phút là đủ bắt đầu chuỗi ngày học."}
-        </p>
-      ) : null}
-    </div>
+
+      <Button size="lg" block onClick={() => (flow ? onStartFlow!() : onRun(primary))}>
+        {label}
+        <ArrowRight className="h-5 w-5" />
+      </Button>
+
+      {(quickMode !== "hidden" || onFocus) && (
+        <div className="flex items-center justify-center gap-2 text-sm">
+          {quickMode !== "hidden" && (
+            <button onClick={onQuickStart} title="3 thẻ ôn nhanh, đủ để giữ chuỗi ngày học" className="min-h-10 rounded-lg px-3 font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10">
+              Chỉ 1 phút
+            </button>
+          )}
+          {quickMode !== "hidden" && onFocus && <span className="text-slate-300 dark:text-zinc-600">·</span>}
+          {onFocus && (
+            <button
+              onClick={onFocus}
+              title="Học trong một phiên có hẹn giờ: ẩn mọi thứ khác, tắt nhắc nhở"
+              className="min-h-10 rounded-lg px-3 font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
+            >
+              Tập trung {focusMinutes ?? 10} phút
+            </button>
+          )}
+        </div>
+      )}
+    </Card>
   );
 }

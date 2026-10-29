@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GraduationCap, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { StudyLevel } from "@/services/vocabCatalog";
 import { changeStudyLevels, getStudyLevels, levelAbove } from "@/services/vocabFeed";
 import { useWordsStore } from "@/stores/wordsStore";
@@ -36,14 +36,18 @@ export default function StudyLevelBar() {
 
   return (
     <>
-      <div className="flex items-center justify-between gap-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-sm">
-        <span className="flex items-center gap-2 min-w-0 text-slate-700 dark:text-zinc-300">
-          <GraduationCap className="w-4 h-4 shrink-0 text-cyan-500" />
-          <span className="truncate">
-            Cấp của bạn: <b className="text-slate-900 dark:text-white">{rangeText(levels)}</b>
-          </span>
+      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <span className="flex h-12 min-w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 px-2 text-lg font-bold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
+          {levels[0]}
         </span>
-        <button onClick={() => setOpen(true)} className="shrink-0 text-xs font-semibold text-cyan-700 dark:text-cyan-300 hover:underline">
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold text-slate-900 dark:text-white">Cấp của bạn: {rangeText(levels)}</span>
+          <span className="block text-sm text-slate-500 dark:text-zinc-400">Từ mới và lộ trình nói theo cấp này</span>
+        </span>
+        <button
+          onClick={() => setOpen(true)}
+          className="min-h-10 shrink-0 rounded-xl bg-teal-50 px-3 text-sm font-semibold text-teal-800 hover:bg-teal-100 dark:bg-teal-400/10 dark:text-teal-300 dark:hover:bg-teal-400/20"
+        >
           Đổi cấp
         </button>
       </div>
