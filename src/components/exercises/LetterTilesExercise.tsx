@@ -412,7 +412,7 @@ export default function LetterTilesExercise({
           <div className="text-xs font-semibold text-teal-700 dark:text-teal-300">Xếp chữ cái thành từ tiếng Anh có nghĩa:</div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{maskTargetInMeaning(getConciseMeaning(word.meaning_vn, target, example), target)}</h2>
           {word.part_of_speech && <p className="text-sm italic text-slate-600 dark:text-zinc-400">{word.part_of_speech}</p>}
-          {example?.sentence_vn && <p className="text-sm text-slate-600 dark:text-zinc-400">Ví dụ: {example.sentence_vn}</p>}
+          {/* No example sentence: in Vietnamese alone it says nothing about the English word to build */}
         </div>
       ) : (
         <div className="flex items-center justify-between text-sm font-semibold text-slate-600 dark:text-zinc-400 pt-1">
