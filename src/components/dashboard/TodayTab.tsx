@@ -266,10 +266,10 @@ export default function TodayTab({
         {/* The greeting, and the day's goal as a ring */}
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">
+            <h2 className="truncate text-lg font-semibold leading-snug text-slate-900 dark:text-white">
               {greeting(now.getHours(), signedIn ? displayName : null)}
             </h2>
-            <p className="mt-0.5 text-slate-600 first-letter:uppercase dark:text-zinc-400">
+            <p className="text-sm text-slate-500 first-letter:uppercase dark:text-zinc-400">
               {now.toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "long" })}
             </p>
           </div>
