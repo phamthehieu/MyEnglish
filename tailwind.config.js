@@ -1,4 +1,6 @@
 import animate from "tailwindcss-animate";
+import colors from "tailwindcss/colors";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -16,7 +18,13 @@ export default {
       },
     },
     extend: {
+      // Be Vietnam Pro draws every Vietnamese tone mark cleanly (bundled in main.tsx, works offline)
+      fontFamily: {
+        sans: ['"Be Vietnam Pro"', ...defaultTheme.fontFamily.sans],
+      },
       colors: {
+        // The v2 look is teal (#0F766E = teal-700): "cyan", the accent of the whole app, is drawn in teal
+        cyan: colors.teal,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_blank" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;min-height:100vh;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-bright": "#faf8ff", "surface": "#faf8ff", "on-primary-fixed-variant": "#00504a", "background": "#faf8ff", "on-tertiary-fixed": "#2f1500", "on-surface-variant": "#3e4947", "on-secondary-fixed-variant": "#224e47", "secondary-container": "#bdece2", "on-primary": "#ffffff", "primary-fixed-dim": "#80d5cb", "inverse-on-surface": "#eef0ff", "tertiary-fixed-dim": "#ffb77d", "on-error": "#ffffff", "on-tertiary-fixed-variant": "#6e3900", "surface-variant": "#dae2fd", "primary-container": "#0f766e", "surface-container": "#eaedff", "on-error-container": "#93000a", "on-secondary-fixed": "#00201c", "on-secondary": "#ffffff", "secondary": "#3b665f", "outline-variant": "#bdc9c6", "primary-fixed": "#9cf2e8", "error-container": "#ffdad6", "on-tertiary-container": "#ffe6d5", "outline": "#6e7977", "on-surface": "#131b2e", "on-background": "#131b2e", "primary": "#005c55", "surface-tint": "#006a63", "surface-dim": "#d2d9f4", "inverse-surface": "#283044", "on-secondary-container": "#416c65", "tertiary-fixed": "#ffdcc3", "on-tertiary": "#ffffff", "secondary-fixed": "#bdece2", "surface-container-lowest": "#ffffff", "on-primary-container": "#a3faef", "surface-container-high": "#e2e7ff", "on-primary-fixed": "#00201d", "tertiary": "#7d4200", "surface-container-highest": "#dae2fd", "error": "#ba1a1a", "inverse-primary": "#80d5cb", "tertiary-container": "#a15600", "surface-container-low": "#f2f3ff", "secondary-fixed-dim": "#a2d0c6" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xs": "0.25rem", "gutter": "1rem", "gutter-tablet": "1.5rem", "margin-tablet": "2rem", "space-md": "1rem", "space-lg": "1.5rem", "space-xl": "2rem", "margin": "1rem", "space-sm": "0.5rem" }, "fontFamily": { "title-md": ["Be Vietnam Pro"], "headline-lg": ["Be Vietnam Pro"], "body-lg-medium": ["Be Vietnam Pro"], "label-md": ["Be Vietnam Pro"], "body-md": ["Be Vietnam Pro"], "body-md-medium": ["Be Vietnam Pro"], "headline-md": ["Be Vietnam Pro"], "headline-xl": ["Be Vietnam Pro"], "body-lg": ["Be Vietnam Pro"], "caption": ["Be Vietnam Pro"] }, "fontSize": { "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-lg-medium": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-md-medium": ["14px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><main class="flex-1 flex flex-col relative w-full bg-surface pt-safe pb-safe"><div class="flex flex-col w-full relative">
+<!-- Dimmed In-Progress Study Session Screen (Background Context) -->
+<div aria-hidden="true" class="w-full px-margin flex flex-col gap-space-md opacity-35 filter blur-[1px] select-none pointer-events-none">
+<!-- Top Progress Bar & Session Metadata -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">close</span>
+<span class="font-label-md text-label-md">Thương lượng Chiến lược</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">7/20 thẻ</span>
+</div>
+</div>
+<!-- Linear Progress Track -->
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 35%;"></div>
+</div>
+<!-- Active Flashcard Exercise Placeholder -->
+<div class="w-full bg-surface-container-lowest rounded-xl shadow-sm p-space-lg flex flex-col gap-space-lg mt-space-xs">
+<div class="flex justify-between items-center">
+<span class="bg-surface-container text-on-surface-variant px-2.5 py-1 rounded font-label-md text-label-md">Thuật ngữ cốt lõi</span>
+<span class="material-symbols-outlined text-primary text-[20px]">volume_up</span>
+</div>
+<div class="flex flex-col gap-space-xs py-space-md">
+<span class="font-headline-md text-headline-md text-on-surface">Concession Strategy</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Chiến lược nhượng bộ có điều kiện</span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-lg flex flex-col gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Ngữ cảnh đàm phán</span>
+<p class="font-body-md text-body-md text-on-surface">"Always frame concessions as conditional trade-offs rather than unconditional compromises."</p>
+</div>
+</div>
+<!-- Rating / Recall Actions Simulated Base -->
+<div class="grid grid-cols-3 gap-space-sm pt-space-xs">
+<div class="h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-body-md-medium text-body-md-medium text-on-surface-variant">Khó</div>
+<div class="h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-body-md-medium text-body-md-medium text-on-surface-variant">Nhớ vừa</div>
+<div class="h-12 rounded-xl bg-surface-container-high flex items-center justify-center font-body-md-medium text-body-md-medium text-on-surface-variant">Dễ</div>
+</div>
+</div>
+<!-- Modal Backdrop Overlay & Centered Dialog Container -->
+<div aria-describedby="dialog-desc" aria-labelledby="dialog-title" aria-modal="true" class="fixed inset-0 z-50 flex items-center justify-center px-margin bg-on-surface/50 backdrop-blur-[2px] transition-opacity duration-200" id="confirm-exit-dialog" role="dialog">
+<!-- White Dialog Card Surface -->
+<div class="w-full max-w-sm bg-surface-container-lowest rounded-xl shadow-xl p-6 flex flex-col items-center text-center transform transition-transform duration-200 scale-100">
+<!-- Icon Badge: Calm Slate / Teal Pause Glyph -->
+<div class="w-12 h-12 rounded-full bg-secondary-container/40 flex items-center justify-center mb-space-md text-primary">
+<span class="material-symbols-outlined text-[24px]">pause_circle</span>
+</div>
+<!-- Dialog Header -->
+<h2 class="font-title-md text-title-md text-on-surface mb-2 tracking-tight" id="dialog-title">
+        Thoát phiên học?
+      </h2>
+<!-- Dialog Body -->
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-md" id="dialog-desc">
+        Bạn đã làm <span class="font-body-md-medium text-body-md-medium text-on-surface">7/20 thẻ</span>, phần đã làm vẫn được lưu.
+      </p>
+<!-- Sub-Detail Info Box (Spaced Repetition Sync Notice) -->
+<div class="w-full bg-surface-container-low rounded-lg p-3.5 mb-6 text-left flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5 shrink-0">sync_saved_locally</span>
+<p class="font-caption text-caption text-on-surface-variant leading-relaxed">
+          Kết quả 7 thẻ vừa học đã được đồng bộ vào thuật toán lặp lại ngắt quãng. Bạn có thể quay lại học tiếp 13 thẻ còn lại bất cứ lúc nào.
+        </p>
+</div>
+<!-- Action Button Row -->
+<div class="w-full flex items-center gap-3">
+<!-- Secondary / Cancel Action -->
+<button class="flex-1 h-12 rounded-xl bg-surface-container-high hover:bg-surface-container-highest active:scale-[0.98] transition-all flex items-center justify-center font-body-md-medium text-body-md-medium text-on-surface-variant focus:outline-none" id="btn-exit" type="button">
+          Thoát
+        </button>
+<!-- Primary Action -->
+<button class="flex-1 h-12 rounded-xl bg-primary-container hover:bg-primary active:scale-[0.98] transition-all flex items-center justify-center font-body-md-medium text-body-md-medium text-on-primary shadow-sm focus:outline-none" id="btn-resume" type="button">
+          Học tiếp
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const dialog = document.getElementById('confirm-exit-dialog');
+    const resumeBtn = document.getElementById('btn-resume');
+    const exitBtn = document.getElementById('btn-exit');
+
+    if (resumeBtn && dialog) {
+      resumeBtn.addEventListener('click', () => {
+        dialog.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          dialog.remove();
+        }, 200);
+      });
+    }
+
+    if (exitBtn) {
+      exitBtn.addEventListener('click', () => {
+        // Understated departure feedback
+        exitBtn.setAttribute('disabled', 'true');
+        exitBtn.textContent = 'Đang lưu...';
+        setTimeout(() => {
+          if (window.history.length > 1) {
+            window.history.back();
+          }
+        }, 250);
+      });
+    }
+  })();
+</script></main></body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "error-container": "#ffdad6", "on-background": "#131b2e", "on-primary-fixed": "#00201d", "inverse-on-surface": "#eef0ff", "surface-variant": "#dae2fd", "surface": "#faf8ff", "surface-container-lowest": "#ffffff", "on-surface": "#131b2e", "on-error-container": "#93000a", "error": "#ba1a1a", "surface-tint": "#006a63", "on-tertiary-fixed": "#2f1500", "on-tertiary-fixed-variant": "#6e3900", "surface-container-high": "#e2e7ff", "on-secondary-fixed": "#00201c", "background": "#faf8ff", "inverse-primary": "#80d5cb", "on-primary-container": "#a3faef", "on-secondary-fixed-variant": "#224e47", "surface-container-low": "#f2f3ff", "tertiary": "#7d4200", "secondary-fixed": "#bdece2", "tertiary-fixed-dim": "#ffb77d", "on-tertiary": "#ffffff", "surface-container-highest": "#dae2fd", "secondary": "#3b665f", "on-secondary-container": "#416c65", "on-tertiary-container": "#ffe6d5", "outline-variant": "#bdc9c6", "surface-dim": "#d2d9f4", "surface-bright": "#faf8ff", "secondary-fixed-dim": "#a2d0c6", "primary-fixed": "#9cf2e8", "on-primary": "#ffffff", "on-surface-variant": "#3e4947", "surface-container": "#eaedff", "primary": "#005c55", "primary-container": "#0f766e", "tertiary-container": "#a15600", "inverse-surface": "#283044", "outline": "#6e7977", "primary-fixed-dim": "#80d5cb", "on-primary-fixed-variant": "#00504a", "tertiary-fixed": "#ffdcc3", "secondary-container": "#bdece2", "on-secondary": "#ffffff", "on-error": "#ffffff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-xs": "0.25rem", "space-xl": "2rem", "margin": "1rem", "margin-tablet": "2rem", "space-md": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "gutter-tablet": "1.5rem", "gutter": "1rem" }, fontFamily: { "body-md": ["Be Vietnam Pro"], "headline-lg": ["Be Vietnam Pro"], "body-md-medium": ["Be Vietnam Pro"], "headline-xl": ["Be Vietnam Pro"], "title-md": ["Be Vietnam Pro"], "headline-md": ["Be Vietnam Pro"], "caption": ["Be Vietnam Pro"], "label-md": ["Be Vietnam Pro"], "body-lg": ["Be Vietnam Pro"], "body-lg-medium": ["Be Vietnam Pro"] }, fontSize: { "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-md-medium": ["14px", { "lineHeight": "20px", "fontWeight": "500" }], "headline-xl": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "title-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-lg-medium": ["16px", { "lineHeight": "24px", "fontWeight": "500" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-space-sm flex items-center justify-between"><div class="flex items-center gap-space-xs"><button aria-label="Quay lại" class="w-11 h-11 flex items-center justify-center rounded-full text-on-surface hover:bg-surface-container-high transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><h1 class="font-title-md text-title-md text-on-surface truncate">Phiên Học Từ Vựng Tập Trung</h1></div><div class="flex items-center gap-space-sm px-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-safe bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pb-space-lg select-none">
+<!-- Session Status & Control Bar -->
+<div class="flex items-center justify-between gap-space-sm pt-space-xs pb-space-md">
+<button aria-label="Đóng phiên học" class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container text-on-surface hover:bg-surface-container-high active:scale-95 transition-all" onclick="window.history.back()" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+<div class="flex flex-col flex-1 px-space-xs">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-md text-label-md text-on-surface-variant">Thẻ 4/20</span>
+<span class="font-label-md text-label-md text-primary font-semibold">20%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full w-1/5 transition-all duration-500 ease-out"></div>
+</div>
+</div>
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+<span class="font-label-md text-label-md font-semibold">Chuỗi 3</span>
+</div>
+</div>
+<!-- Primary Flashcard Card: Front View -->
+<div class="w-full my-auto py-space-sm">
+<div class="relative w-full bg-surface-container-lowest rounded-2xl shadow-md p-space-lg flex flex-col items-center justify-between text-center min-h-[380px] transition-transform active:scale-[0.99] duration-150 cursor-pointer" id="flashcard-front">
+<!-- Card Context Pill -->
+<div class="w-full flex items-center justify-between">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+          Tiếng Anh văn phòng · A2
+        </span>
+<span class="material-symbols-outlined text-outline-variant text-[20px]">bookmark_border</span>
+</div>
+<!-- Core Word & Phonetics -->
+<div class="flex flex-col items-center justify-center my-space-lg">
+<h2 class="font-headline-xl text-headline-xl text-on-surface tracking-tight mb-2">
+          deadline
+        </h2>
+<p class="font-title-md text-title-md text-secondary font-medium tracking-normal mb-space-md">
+          /ˈdedlaɪn/
+        </p>
+<!-- Audio Controllers -->
+<div class="flex items-center justify-center gap-space-sm mt-space-xs" onclick="event.stopPropagation()">
+<button class="h-11 px-4 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-2 transition-all active:scale-95 shadow-sm" id="btn-audio-normal" type="button">
+<span class="material-symbols-outlined text-[20px] text-primary">volume_up</span>
+<span class="font-body-md-medium text-body-md-medium">Bình thường</span>
+</button>
+<button class="h-11 px-3.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center gap-1.5 transition-all active:scale-95 shadow-sm" id="btn-audio-slow" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">speed</span>
+<span class="font-body-md-medium text-body-md-medium">0.8x</span>
+</button>
+</div>
+</div>
+<!-- Subtle Flip Cue -->
+<div class="w-full pt-space-xs flex items-center justify-center gap-1.5 text-on-surface-variant/70">
+<span class="material-symbols-outlined text-[18px] text-primary/70">sync</span>
+<span class="font-caption text-caption">Chạm vào thẻ hoặc bấm nút dưới để xem nghĩa</span>
+</div>
+</div>
+</div>
+<!-- Bottom Action Section -->
+<div class="w-full pt-space-md">
+<button class="w-full h-14 bg-primary-container text-on-primary rounded-xl font-body-lg-medium text-body-lg-medium flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-all" id="btn-flip" type="button">
+<span class="material-symbols-outlined text-[22px]">flip</span>
+<span>Lật thẻ</span>
+</button>
+<div class="flex justify-center items-center gap-4 mt-space-sm text-outline font-caption text-caption">
+<span>Đã thuộc 3 thẻ</span>
+<span>•</span>
+<span>Cần ôn 1 thẻ</span>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const card = document.getElementById('flashcard-front');
+    const flipBtn = document.getElementById('btn-flip');
+    const audioNorm = document.getElementById('btn-audio-normal');
+    const audioSlow = document.getElementById('btn-audio-slow');
+
+    function playAudioTone(rate) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(rate === 0.8 ? 392 : 523.25, ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.28);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+      } catch (e) {}
+    }
+
+    if (audioNorm) {
+      audioNorm.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playAudioTone(1.0);
+      });
+    }
+
+    if (audioSlow) {
+      audioSlow.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playAudioTone(0.8);
+      });
+    }
+
+    function triggerFlip() {
+      if (card) {
+        card.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+        card.style.transform = 'scale(0.97)';
+        card.style.opacity = '0.7';
+        setTimeout(() => {
+          card.style.transform = 'scale(1)';
+          card.style.opacity = '1';
+        }, 150);
+      }
+    }
+
+    if (flipBtn) flipBtn.addEventListener('click', triggerFlip);
+    if (card) card.addEventListener('click', triggerFlip);
+  })();
+</script></main></body></html>
