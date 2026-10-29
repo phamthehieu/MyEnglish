@@ -75,9 +75,10 @@ interface TodayTabProps {
 const FORGOTTEN_HINT_MIN = 3;
 
 function greeting(hour: number, name?: string | null): string {
-  const base = hour < 11 ? "Chào buổi sáng" : hour < 14 ? "Chào buổi trưa" : hour < 18 ? "Chào buổi chiều" : "Chào buổi tối";
+  // Short and in English, the language the learner is here for
+  const base = hour < 12 ? "Morning" : hour < 18 ? "Hi" : "Evening";
   const clean = name?.trim();
-  return clean ? `${base}, ${clean}` : base;
+  return clean ? `${base}, ${clean} 👋` : `${base} 👋`;
 }
 
 /** Minutes for today's words: a new word costs an introduction and a quiz, about two reviews */
