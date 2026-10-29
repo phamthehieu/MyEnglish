@@ -56,6 +56,8 @@ interface DayCloseCardProps {
   dueNow: number;
   /** Fixed clock for previews */
   now?: Date;
+  /** Opens the feedback form; shown only once the day is done, never while studying */
+  onFeedback?: () => void;
 }
 
 /**
@@ -74,6 +76,7 @@ export default function DayCloseCard({
   nextReview,
   dueNow,
   now,
+  onFeedback,
 }: DayCloseCardProps) {
   const [tomorrow, setTomorrow] = useState<number | null>(null);
   useEffect(() => {
@@ -163,6 +166,11 @@ export default function DayCloseCard({
           {more && (
             <button onClick={more.onClick} className="text-xs font-medium text-slate-500 dark:text-zinc-400 hover:text-cyan-700 dark:hover:text-cyan-300 underline-offset-2 hover:underline">
               Muốn học thêm? {more.label}
+            </button>
+          )}
+          {status.done && onFeedback && (
+            <button onClick={onFeedback} className="text-xs font-medium text-slate-500 dark:text-zinc-400 hover:text-cyan-700 dark:hover:text-cyan-300 underline-offset-2 hover:underline">
+              Góp ý cho app
             </button>
           )}
         </div>

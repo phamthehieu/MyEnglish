@@ -162,6 +162,11 @@ export function evaluateMotivationState(params: MotivationEvaluationParams): Duo
         message: `Như bạn đã hẹn: ôn ~${minutes} phút để khép lại ngày học.`,
         quiz: false,
       },
+      anchor_custom: {
+        title: "Đến giờ học bạn đã hẹn ⏰",
+        message: `Vài thẻ thôi, khoảng ${minutes} phút.`,
+        quiz: false,
+      },
     };
     const m = moments[params.moment];
     return { tone: "level_1_encouraging", title: m.title, message: m.message, mascotMood: "happy", isMicroQuizPreferred: m.quiz };

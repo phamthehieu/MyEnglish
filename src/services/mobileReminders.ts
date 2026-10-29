@@ -1,7 +1,7 @@
 import { cancel, isPermissionGranted, pending, requestPermission } from "@tauri-apps/plugin-notification";
 import { isMobilePlatform } from "@/lib/platform";
 import { getReminderSettings, NIGHT_QUIET_END, NIGHT_QUIET_START, type ReminderSettings } from "./reminderSettings";
-import { ANCHOR_TIMES } from "./reminderMoments";
+import { anchorTimesOf } from "./reminderMoments";
 import { getActivityLogs, getDailyGoal, getLocalDateString } from "./streak";
 import { countTodayWork } from "./todayWork";
 import { getDueWordsLite, getWordsLite } from "./db";
@@ -183,9 +183,9 @@ export function planReminders(
       }
     }
     // The study times the learner chose ("after lunch") are reminded too
-    for (const anchor of settings.anchors) {
-      const a = ANCHOR_TIMES[anchor];
-      if (a) times.push(at(a.hour, a.minute));
+    for (const time of anchorTimesOf(settings.anchors)) {
+      const [hour, minute] = time.split(":").map(Number);
+      times.push(at(hour, minute));
     }
     times = times.filter((t) => t >= dayStart && t < dayEnd && t > now.getTime() + 60_000).sort((x, y) => x - y);
     times = times.filter((t, i) => i === 0 || t - times[i - 1] >= MIN_SPACING_MS);
@@ -211,7 +211,7 @@ export function planReminders(
 export function reminderRule(settings: ReminderSettings): Record<string, unknown> | null {
   if (!settings.enabled) return null;
   const gap = reminderGapMinutes(settings);
-  const anchors = settings.anchors.map((a) => ANCHOR_TIMES[a]).filter(Boolean).map((a) => [a.hour, a.minute]);
+  const anchors = anchorTimesOf(settings.anchors).map((t) => t.split(":").map(Number));
   if (gap === 0 && anchors.length === 0) return null;
   const { startHour, endHour } = reminderWindow(settings);
   return { title: TITLE, bodies: MESSAGES, gapMin: gap, startHour, endHour, cap: settings.maxNudgesPerDay, anchors };

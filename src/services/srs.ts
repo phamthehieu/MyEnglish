@@ -680,7 +680,7 @@ import {
   detectMoment,
   dueAnchor,
   markAnchorFired,
-  ANCHOR_TIMES,
+  anchorTime,
   type ReminderAnchor,
   getQuietHours,
   refreshQuietHours,
@@ -939,7 +939,7 @@ class SRSBackgroundWorker {
         // A study time the learner chose is not cut by the daily cap (N4)
         if (pause && !(pause === "daily_cap" && anchor)) return idle();
         // Read after the pauses: the first reading after one compares with nothing, as at launch
-        const moment = anchor ? ANCHOR_TIMES[anchor].moment : settings.contextMoments ? await this.observeMoment(now) : null;
+        const moment = anchor ? (anchorTime(anchor)?.moment ?? "anchor_custom") : settings.contextMoments ? await this.observeMoment(now) : null;
 
         const lastDisplay = getLastPopupDisplayTime();
 

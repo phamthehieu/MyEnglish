@@ -9,7 +9,7 @@ import {
 import { setUserOverrideLevel } from "@/services/userProficiency";
 import { analyzeText } from "@/services/reading";
 import { FUNCTION_WORDS } from "@/data/commonWords";
-import { dueAnchor, markAnchorFired, ANCHOR_WINDOW_MS } from "@/services/reminderMoments";
+import { dueAnchor, markAnchorFired, ANCHOR_WINDOW_MS, anchorTime, anchorTimesOf } from "@/services/reminderMoments";
 import { applyLevelChoice } from "@/services/onboarding";
 import { getPronunciationProgress, nextPronunciationLesson, recordPronunciationQuiz } from "@/services/pronunciation";
 import { PRONUNCIATION_LESSONS } from "@/data/pronunciation";
@@ -60,6 +60,16 @@ describe("study-time anchors", () => {
     expect(dueAnchor(at(13, 40), ["after_lunch"])).toBeNull();
     expect(dueAnchor(at(17, 45), ["after_lunch", "end_of_day"])).toBe("end_of_day");
     expect(dueAnchor(new Date(2026, 9, 13, 13, 20), ["after_lunch"])).toBe("after_lunch"); // next day
+  });
+
+  it("a time the learner picked works like a preset, with its own message", () => {
+    const at = (h: number, m: number) => new Date(2026, 9, 14, h, m);
+    expect(dueAnchor(at(20, 10), ["20:00"])).toBe("20:00");
+    expect(dueAnchor(at(19, 50), ["20:00"])).toBeNull();
+    expect(anchorTime("20:00")).toMatchObject({ hour: 20, minute: 0, moment: "anchor_custom" });
+    expect(anchorTime("13:15")?.moment).toBe("anchor_lunch");
+    expect(anchorTime("25:00")).toBeNull();
+    expect(anchorTimesOf(["end_of_day", "07:30", "17:30"])).toEqual(["07:30", "17:30"]);
   });
 });
 

@@ -4,8 +4,10 @@ import SettingsSection, { OPEN_SETTINGS_SECTION_EVENT } from "./dashboard/Settin
 import { FOCUS_DURATIONS, getFocusSettings, saveFocusSettings } from "@/services/focusSettings";
 import AdvancedLearningSettings, { BackupRestoreSettings } from "./dashboard/AdvancedLearningSettings";
 import ResetAppDataModal from "./dashboard/ResetAppDataModal";
+import FeedbackForm from "./dashboard/FeedbackForm";
 import { isPretestEnabled, setPretestEnabled } from "@/services/pretest";
-import { ANCHOR_TIMES, getQuietHours, type ReminderAnchor } from "@/services/reminderMoments";
+import { getQuietHours } from "@/services/reminderMoments";
+import StudyTimesField from "./dashboard/StudyTimesField";
 import { getActivityLogs, getDailyGoal, getLocalDateString, setDailyGoal } from "@/services/streak";
 import { isMainSessionActive } from "@/services/activeSession";
 import { useState, useEffect } from "react";
@@ -39,6 +41,7 @@ import {
   Database,
   Target,
   Timer,
+  MessageSquareHeart,
 } from "lucide-react";
 import {
   getSavedAutostartPreference,
@@ -470,7 +473,6 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
     checkCli(undefined);
   };
 
-  const anchorsActive = reminderSettings.enabled && reminderSettings.intervalMinutes > 0;
   // Why the clock reminder is not showing right now, or null
   const pauseReason =
     reminderSettings.enabled && reminderSettings.intervalMinutes > 0 ? getPauseReason(reminderSettings, goalMet) : null;
@@ -502,6 +504,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             ["ai", "AI"],
             ["algorithm", "Lịch ôn thông minh"],
             ["data", "Dữ liệu"],
+            ["feedback", "Góp ý"],
           ] as const
         ).map(([id, label]) => (
           <button
@@ -744,7 +747,9 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     Lịch nhắc và câu hỏi nhanh
                   </h3>
                   <p className="text-xs text-slate-600 dark:text-zinc-400">
-                    Tùy chỉnh tần suất nhắc, thời gian hoãn, dạng câu hỏi và độ mờ màn hình
+                    {IS_MOBILE
+                      ? "Tùy chỉnh tần suất nhắc, giờ học cố định và giờ yên tĩnh"
+                      : "Tùy chỉnh tần suất nhắc, thời gian hoãn, dạng câu hỏi và độ mờ màn hình"}
                   </p>
                 </div>
               </div>
@@ -813,6 +818,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
                 </div>
 
+                {/* Trying the popup: desktop only (on a phone, for the developer) */}
+                {(!IS_MOBILE || SHOW_DEV_TOOLS) && (
                 <div className="flex items-center gap-2 shrink-0 flex-wrap">
                   <button
                     onClick={handleTestNudge}
@@ -831,6 +838,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <span>{testingPopup ? "Đang mở..." : "Toàn màn hình"}</span>
                   </button>
                 </div>
+                )}
               </div>
             )}
 
@@ -861,6 +869,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <span className="text-sm">✓</span>
                   <span>Đã bật quyền hiển thị thẻ nhắc nổi trên các ứng dụng khác</span>
                 </div>
+                {SHOW_DEV_TOOLS && (
                 <div className="flex items-center gap-1.5 shrink-0 flex-wrap">
                   <button
                     onClick={() => handleTestNudgeIn(5)}
@@ -877,6 +886,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     {testingNudge ? "Đang mở..." : "Thử popup ngay"}
                   </button>
                 </div>
+                )}
               </div>
             )}
 
@@ -935,7 +945,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 </p>
               </div>
 
-              {/* Field 2: Snooze Duration */}
+              {/* Field 2: Snooze Duration (the desktop popup's "Hoãn" button) */}
+              {!IS_MOBILE && (
               <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
@@ -967,52 +978,18 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   Khi đang bận, bạn chỉ cần bấm nút <strong>Hoãn [S]</strong> trên pop-up để dời thời điểm ôn.
                 </p>
               </div>
+              )}
 
               {/* Field: fixed study times, e.g. after lunch (the reminder worker only acts on them when the popup is on) */}
-              <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
-                <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-                  Giờ học cố định:
-                </span>
-                <p className="text-xs text-slate-600 dark:text-zinc-400 leading-snug">
-                  Nhắc đúng lúc bạn hay học trong ngày, mỗi mốc một lần mỗi ngày. Mốc này không bị giới hạn số lần nhắc tối đa.
-                </p>
-                <div className="space-y-1.5">
-                  {(Object.keys(ANCHOR_TIMES) as ReminderAnchor[]).map((anchor) => {
-                    const chosen = (reminderSettings.anchors ?? []).includes(anchor);
-                    return (
-                      <label
-                        key={anchor}
-                        className={`flex items-center gap-2 text-xs ${anchorsActive
-                            ? "cursor-pointer text-slate-700 dark:text-zinc-300"
-                            : "text-slate-600 dark:text-zinc-400"
-                          }`}
-                      >
-                        <input
-                          type="checkbox"
-                          className="h-5 w-5 accent-cyan-600"
-                          checked={chosen}
-                          disabled={!anchorsActive}
-                          onChange={(e) => {
-                            const current = reminderSettings.anchors ?? [];
-                            handleUpdateReminder({
-                              anchors: e.target.checked ? [...current, anchor] : current.filter((a) => a !== anchor),
-                            });
-                          }}
-                        />
-                        <span>{ANCHOR_TIMES[anchor].label}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-                {!anchorsActive && (
-                  <p className="text-xs text-amber-700 dark:text-amber-400 leading-snug">
-                    Chỉ có tác dụng khi bật pop-up và chọn một khoảng thời gian nhắc (không phải &quot;Tắt tự động&quot;).
-                  </p>
-                )}
-              </div>
+              <StudyTimesField
+                anchors={reminderSettings.anchors ?? []}
+                active={reminderSettings.enabled}
+                nightQuiet={reminderSettings.nightQuiet}
+                onChange={(anchors) => handleUpdateReminder({ anchors })}
+              />
 
-              {/* Field 3: Trigger Condition */}
+              {/* Field 3: Trigger Condition (desktop popup worker only; Android plans its own notifications) */}
+              {!IS_MOBILE && (
               <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                   Điều kiện kích hoạt hiển thị:
@@ -1052,9 +1029,12 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </button>
                 </div>
               </div>
+              )}
 
               {/* Field 3b: Do not disturb */}
+              {/* On a phone only the last three apply (mobileReminders.ts): the others watch the desktop */}
               <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80">
+                {!IS_MOBILE && (<>
                 <label className="flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
@@ -1136,7 +1116,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     onChange={(e) => handleUpdateReminder({ avoidQuietHours: e.target.checked })}
                   />
                 </label>
-                <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
+                </>)}
+                <label className="mt-3 pt-3 border-t first:mt-0 first:pt-0 first:border-t-0 border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
                     <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                       Xong mục tiêu ngày thì thôi nhắc
@@ -1191,7 +1172,8 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                 </div>
               </div>
 
-              {/* Field 4: Words per Session */}
+              {/* Field 4: Words per Session and Field 5: blur — the desktop popup only */}
+              {!IS_MOBILE && (<>
               <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
@@ -1265,6 +1247,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <span>Đã tắt âm thanh tự động khi hiển thị từ để không làm phiền bạn.</span>
                 </div>
               </div>
+              </>)}
             </div>
           </div>
         </div>
@@ -1321,7 +1304,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     ? "Sẵn sàng cho các tính năng AI."
                     : "Bạn vẫn học bình thường khi chưa có. Chỉ các tính năng AI (như Viết và sửa lỗi) cần API key hoặc AI CLI."}
                 </p>
-                <p className="text-xs text-slate-600 dark:text-zinc-400 font-mono">
+                <p className={`text-xs text-slate-600 dark:text-zinc-400 font-mono ${IS_MOBILE ? "hidden" : ""}`}>
                   Đường dẫn:{" "}
                   <span className="text-slate-800 dark:text-zinc-200 font-bold">
                     {cliStatus?.path || "~/.gemini/antigravity-cli"}
@@ -2001,7 +1984,18 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         </div>
       </SettingsSection>
 
-      {/* 7. CÔNG CỤ CHO NHÀ PHÁT TRIỂN: thu gọn, người học không cần dùng */}
+      {/* 7. GÓP Ý: nhắn cho người làm app (lỗi, nội dung sai, ý tưởng) */}
+      <SettingsSection
+        id="feedback"
+        icon={<MessageSquareHeart className="w-5 h-5" />}
+        title="Góp ý cho app"
+        description="Gặp lỗi, thấy bài sai, hay muốn app có thêm gì? Nhắn thẳng cho người làm app."
+        defaultOpen={false}
+      >
+        <FeedbackForm />
+      </SettingsSection>
+
+      {/* 8. CÔNG CỤ CHO NHÀ PHÁT TRIỂN: thu gọn, người học không cần dùng */}
       {SHOW_DEV_TOOLS && (
       <details className="rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 bg-slate-50/60 dark:bg-zinc-950/40 p-4">
         <summary className="cursor-pointer select-none text-xs font-bold text-slate-600 dark:text-zinc-400">

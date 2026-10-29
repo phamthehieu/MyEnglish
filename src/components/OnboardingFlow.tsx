@@ -11,7 +11,7 @@ import {
   type DailyMinutes,
   type LevelChoice,
 } from "@/services/onboarding";
-import { ANCHOR_TIMES, type ReminderAnchor } from "@/services/reminderMoments";
+import { ANCHOR_TIMES, type PresetAnchor, type ReminderAnchor } from "@/services/reminderMoments";
 import type { ReminderTrigger } from "@/services/reminderSettings";
 import { DEFAULT_INITIAL_TENSE_IDS, saveInitialTenses } from "@/services/grammarPath";
 import TenseSelectionPicker from "./grammar/TenseSelectionPicker";
@@ -279,7 +279,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
                   {showMore && (
                     <div className="space-y-1">
                       <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300 block">Nhắc vào lúc nào?</span>
-                      {(Object.keys(ANCHOR_TIMES) as ReminderAnchor[]).map((a) => (
+                      {(Object.keys(ANCHOR_TIMES) as PresetAnchor[]).map((a) => (
                         <label key={a} className="flex items-center gap-3 min-h-11 text-sm text-slate-700 dark:text-zinc-300 cursor-pointer">
                           <input type="checkbox" checked={anchors.includes(a)} onChange={() => toggleAnchor(a)} className="w-5 h-5 accent-cyan-600" />
                           {ANCHOR_TIMES[a].label}

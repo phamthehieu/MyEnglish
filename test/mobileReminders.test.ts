@@ -123,6 +123,13 @@ describe("reminderRule", () => {
     expect(reminderRule(settings({ intervalMinutes: 0, anchors: [] }))).toBeNull();
   });
 
+  it("takes study times the learner typed, sorted, a preset and its own time counted once", () => {
+    const rule = reminderRule(settings({ intervalMinutes: 0, anchors: ["21:00", "after_lunch", "13:15", "07:30", "bad"] }))!;
+    expect(rule.anchors).toEqual([[7, 30], [13, 15], [21, 0]]);
+    const plan = planReminders(new Date(2026, 9, 21, 6, 0, 0), settings({ intervalMinutes: 0, anchors: ["07:30", "21:00"] }), open);
+    expect(plan.filter((p) => dayOf(p.at) === 21).map((p) => hm(p.at))).toEqual([7 * 60 + 30, 21 * 60]);
+  });
+
   it("keeps the study times when the interval reminders are off", () => {
     const rule = reminderRule(settings({ intervalMinutes: 0, anchors: ["end_of_day"] }))!;
     expect(rule.gapMin).toBe(0);

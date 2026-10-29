@@ -22,18 +22,61 @@ export type ReminderMoment =
   | "after_fullscreen"
   /** The time the learner chose to study at: after lunch / at the end of the work day */
   | "anchor_lunch"
-  | "anchor_evening";
+  | "anchor_evening"
+  /** Any other study time the learner picked ("HH:MM") */
+  | "anchor_custom";
 
 /**
  * Study times the learner picks at onboarding ("after lunch, I review"). Tying a habit to an existing
  * routine works better than a reminder every N minutes. Each anchor fires at most once a day, within
  * ANCHOR_WINDOW_MS of its time.
  */
-export type ReminderAnchor = "after_lunch" | "end_of_day";
-export const ANCHOR_TIMES: Record<ReminderAnchor, { hour: number; minute: number; moment: ReminderMoment; label: string }> = {
+export type PresetAnchor = "after_lunch" | "end_of_day";
+/** A preset id ("after_lunch", kept for settings saved before custom times) or a time the learner picked, "HH:MM" */
+export type ReminderAnchor = PresetAnchor | string;
+export interface AnchorTime {
+  hour: number;
+  minute: number;
+  moment: ReminderMoment;
+  label: string;
+}
+export const ANCHOR_TIMES: Record<PresetAnchor, AnchorTime> = {
   after_lunch: { hour: 13, minute: 15, moment: "anchor_lunch", label: "Sau bữa trưa (13:15)" },
   end_of_day: { hour: 17, minute: 30, moment: "anchor_evening", label: "Cuối ngày làm việc (17:30)" },
 };
+
+/** Times offered with one tap in Settings; any other time can be typed */
+export const ANCHOR_SUGGESTIONS: ReadonlyArray<{ time: string; label: string }> = [
+  { time: "07:30", label: "Sáng sớm" },
+  { time: "12:30", label: "Nghỉ trưa" },
+  { time: "17:30", label: "Cuối giờ làm" },
+  { time: "20:00", label: "Buổi tối" },
+  { time: "21:30", label: "Trước khi ngủ" },
+];
+/** More study times than this stop being a routine and become one more interval reminder */
+export const MAX_ANCHORS = 4;
+
+const HHMM = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+export const anchorKey = (hour: number, minute: number) => `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+
+/** When an anchor reminds, or null for a value that is neither a preset nor "HH:MM" */
+export function anchorTime(anchor: ReminderAnchor): AnchorTime | null {
+  if (anchor in ANCHOR_TIMES) return ANCHOR_TIMES[anchor as PresetAnchor];
+  const m = HHMM.exec(anchor);
+  if (!m) return null;
+  const hour = Number(m[1]);
+  const minute = Number(m[2]);
+  // The presets' own times keep their message ("Giờ học sau bữa trưa")
+  const preset = Object.values(ANCHOR_TIMES).find((t) => t.hour === hour && t.minute === minute);
+  return { hour, minute, moment: preset?.moment ?? "anchor_custom", label: anchor };
+}
+
+/** The chosen times as "HH:MM", earliest first, one per time of day (a preset and its "HH:MM" are the same) */
+export function anchorTimesOf(anchors: readonly ReminderAnchor[]): string[] {
+  const keys = anchors.map(anchorTime).filter((t): t is AnchorTime => t !== null).map((t) => anchorKey(t.hour, t.minute));
+  return [...new Set(keys)].sort();
+}
 export const ANCHOR_WINDOW_MS = 90 * 60 * 1000;
 const ANCHOR_FIRED_KEY = "myenglish_anchor_fired_v1";
 
@@ -50,7 +93,7 @@ function firedToday(now: Date): ReminderAnchor[] {
 export function dueAnchor(now: Date, anchors: ReminderAnchor[]): ReminderAnchor | null {
   const done = firedToday(now);
   for (const a of anchors) {
-    const t = ANCHOR_TIMES[a];
+    const t = anchorTime(a);
     if (!t || done.includes(a)) continue;
     const at = new Date(now.getFullYear(), now.getMonth(), now.getDate(), t.hour, t.minute).getTime();
     if (now.getTime() >= at && now.getTime() < at + ANCHOR_WINDOW_MS) return a;

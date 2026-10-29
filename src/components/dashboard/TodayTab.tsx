@@ -1,5 +1,5 @@
 import { RankPanel, useRankPanelVisible } from "./RankWidgets";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { BookOpenText, Bug, ChevronDown, ChevronRight, Flame, Layers, Target, Zap } from "lucide-react";
 import type { WordDetail } from "@/types/database";
 import type { TodayWork } from "@/services/smartReview";
@@ -33,6 +33,8 @@ import {
 } from "./todayPlan";
 import TodayChecklist from "./TodayChecklist";
 import DayCloseCard from "./DayCloseCard";
+import { FeedbackDialog } from "./FeedbackForm";
+import { isCloudConfigured } from "@/services/supabase";
 import TodayRoadmapCard from "./TodayRoadmapCard";
 import StudyLevelBar from "./StudyLevelBar";
 import AppUpdateBanner from "./AppUpdateBanner";
@@ -115,6 +117,8 @@ export default function TodayTab({
   const [pron, setPron] = useState<TodayTaskInput["pronunciation"]>(null);
   const [grammar, setGrammar] = useState<TodayTaskInput["grammar"]>(null);
   const [reflexDone, setReflexDone] = useState(() => isReflexPracticedToday(now));
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const closeFeedback = useCallback(() => setFeedbackOpen(false), []);
 
   useEffect(() => {
     const onReflexUpdate = () => setReflexDone(isReflexPracticedToday(fixedNow ?? new Date()));
@@ -371,6 +375,7 @@ export default function TodayTab({
                 nextReview={nextReview}
                 dueNow={todayWork.reviews}
                 now={fixedNow}
+                onFeedback={isCloudConfigured() ? () => setFeedbackOpen(true) : undefined}
               />
             )}
 
@@ -473,6 +478,7 @@ export default function TodayTab({
           </div>
         </div>
       </div>
+      <FeedbackDialog open={feedbackOpen} onClose={closeFeedback} />
     </div>
   );
 }
