@@ -63,7 +63,17 @@ export default function ReviewTopBar({
 
         <div className="min-w-0 flex-1 space-y-1">
           <div className="flex items-center justify-between text-xs font-semibold">
-            <span className="text-slate-500 dark:text-zinc-400">{practiceMode ? "Luyện thêm (không đổi lịch)" : "Tiến độ"}</span>
+            <span
+              className="truncate text-slate-500 dark:text-zinc-400"
+              title={
+                currentWord?.direction === "production"
+                  ? "Tự nhớ ra từ tiếng Anh từ nghĩa tiếng Việt (lịch ôn riêng)"
+                  : "Hiểu nghĩa khi gặp từ tiếng Anh (lịch ôn riêng)"
+              }
+            >
+              {currentWord ? (currentWord.direction === "production" ? "Tự nhớ ra từ" : "Hiểu nghĩa") : "Tiến độ"}
+              {practiceMode && " · Luyện thêm"}
+            </span>
             <span className="text-teal-800 dark:text-teal-300">
               Thẻ {currentIndex + 1}/{queue.length}
             </span>
@@ -85,8 +95,9 @@ export default function ReviewTopBar({
         )}
       </div>
 
+      {!simple && (
       <div className="flex flex-wrap items-center gap-2 text-xs">
-        {!simple && (
+        {(
           <label className="relative inline-flex items-center">
             <span className="sr-only">Dạng bài</span>
             <select
@@ -104,19 +115,8 @@ export default function ReviewTopBar({
             <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-slate-500" />
           </label>
         )}
-        {currentWord && (
-          <span
-            className="rounded-full bg-slate-100 px-2.5 py-1.5 font-semibold text-slate-600 dark:bg-zinc-800 dark:text-zinc-300"
-            title={
-              currentWord.direction === "production"
-                ? "Tự nhớ ra từ tiếng Anh từ nghĩa tiếng Việt (lịch ôn riêng)"
-                : "Hiểu nghĩa khi gặp từ tiếng Anh (lịch ôn riêng)"
-            }
-          >
-            {currentWord.direction === "production" ? "Tự nhớ ra từ" : "Hiểu nghĩa"}
-          </span>
-        )}
       </div>
+      )}
     </div>
   );
 }

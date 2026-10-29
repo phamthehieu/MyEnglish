@@ -424,7 +424,7 @@ export default function LetterTilesExercise({
       )}
 
       {/* Slots */}
-      <div className={`flex flex-wrap justify-center items-center gap-1.5 min-h-[52px] py-1 ${state === "wrong" ? "animate-shake" : ""}`}>
+      <div className={`flex flex-wrap justify-center items-center gap-1 sm:gap-1.5 min-h-[48px] py-1 ${state === "wrong" ? "animate-shake" : ""}`}>
         {slots.map((slotChar, i) => {
           const isFixed = FIXED.test(slotChar);
           if (isFixed) {
@@ -447,7 +447,7 @@ export default function LetterTilesExercise({
                 type="button"
                 onClick={() => unpickAt(nonFixedIdx)}
                 title="Bấm để xóa chữ này"
-                className={`w-10 h-12 rounded-xl border-2 flex items-center justify-center text-xl font-bold font-mono transition-colors cursor-pointer select-none group ${
+                className={`w-8 h-11 sm:w-10 sm:h-12 rounded-lg sm:rounded-xl border-2 flex items-center justify-center text-lg sm:text-xl font-bold font-mono transition-colors cursor-pointer select-none group ${
                   state === "wrong"
                     ? "border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-200 hover:border-red-600 hover:bg-red-50"
                     : "border-teal-700 bg-teal-50 text-teal-800 dark:border-teal-400 dark:bg-teal-400/10 dark:text-teal-200 hover:border-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:border-red-500 dark:hover:bg-red-500/10 dark:hover:text-red-300 active:scale-95"
@@ -461,7 +461,7 @@ export default function LetterTilesExercise({
           return (
             <span
               key={i}
-              className={`w-10 h-12 rounded-xl border-2 flex items-center justify-center text-xl font-bold font-mono select-none ${
+              className={`w-8 h-11 sm:w-10 sm:h-12 rounded-lg sm:rounded-xl border-2 flex items-center justify-center text-lg sm:text-xl font-bold font-mono select-none ${
                 state === "correct"
                   ? "border-green-600 bg-green-50 text-green-800 dark:bg-green-500/10 dark:border-green-500 dark:text-green-200"
                   : state === "give_up"
