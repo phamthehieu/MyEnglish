@@ -173,6 +173,8 @@ export default function MainDashboard({
   // Focus session of the review on screen (null: a normal session)
   const [focusPlan, setFocusPlan] = useState<FocusPlan | null>(null);
   const focusing = !!focusPlan && isReviewing;
+  // A session on screen takes the whole screen: no sidebar, header or tab bar, only the card (leave with its close button)
+  const sessionOnScreen = focusing || (isReviewing && activeTab === "review");
   const [reflexChallengeOpen, setReflexChallengeOpen] = useState(false);
   const [confirmExitNav, setConfirmExitNav] = useState<{
     targetTab?: DashboardTab;
@@ -1280,7 +1282,7 @@ export default function MainDashboard({
       )}
 
       {/* LEFT SIDEBAR (hidden in a focus session: only the card is on screen) */}
-      {!focusing && (
+      {!sessionOnScreen && (
       <Sidebar
         activeTab={activeTab}
         setActiveTab={handleSelectTab}
@@ -1291,9 +1293,9 @@ export default function MainDashboard({
       )}
 
       {/* MAIN CONTENT AREA */}
-      <main className={`flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f7f8fa] dark:bg-zinc-950 ${focusing ? "" : "pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"}`}>
+      <main className={`flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f7f8fa] dark:bg-zinc-950 ${sessionOnScreen ? "pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]" : "pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"}`}>
         {/* Top App Bar */}
-        {!focusing && (
+        {!sessionOnScreen && (
         <DashboardHeader
           activeTab={activeTab}
           setActiveTab={handleSelectTab}
@@ -1311,7 +1313,7 @@ export default function MainDashboard({
         )}
 
         {/* The day's flow: where the learner is in it, and one button to the next thing (every tab) */}
-        {!focusing && (
+        {!sessionOnScreen && (
           <DayFlowBar
             onRun={(id) => {
               flowRunRef.current = true;

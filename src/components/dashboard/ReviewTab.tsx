@@ -121,7 +121,7 @@ export default function ReviewTab({
               <div className="grid grid-cols-2 gap-2">
                 {onStartFocus && (
                   <Button variant="secondary" onClick={() => onStartFocus(focusMinutes)} disabled={words.length === 0} title="Chỉ học, tắt nhắc nhở và mọi thứ khác">
-                    <Crosshair className="h-4 w-4" /> Tập trung {focusMinutes}p
+                    <Crosshair className="h-4 w-4" /> Tập trung
                   </Button>
                 )}
                 <Button
