@@ -266,7 +266,7 @@ export default function TodayTab({
         {/* The greeting, and the day's goal as a ring */}
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <h2 className="truncate text-lg font-semibold leading-snug text-slate-900 dark:text-white">
+            <h2 className="text-lg font-semibold leading-snug text-slate-900 dark:text-white">
               {greeting(now.getHours(), signedIn ? displayName : null)}
             </h2>
             <p className="text-sm text-slate-500 first-letter:uppercase dark:text-zinc-400">
@@ -277,20 +277,16 @@ export default function TodayTab({
             type="button"
             onClick={() => setActiveTab("analytics")}
             title="Mục tiêu hôm nay (bấm để xem tiến độ)"
-            className="flex shrink-0 items-center gap-3 rounded-2xl border border-slate-200 bg-white py-2 pl-2 pr-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900"
+            className="flex shrink-0 items-center gap-2 rounded-2xl border border-slate-200 bg-white py-1.5 pl-1.5 pr-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900"
           >
-            <ProgressRing value={streakStats.goalPercentage} size={48} stroke={5} done={streakStats.goalReached}>
-              {streakStats.goalReached ? (
-                <Check className="h-5 w-5 text-green-600" strokeWidth={3} />
-              ) : (
-                <span className="text-xs font-bold text-teal-800 dark:text-teal-300">{Math.round(streakStats.goalPercentage)}%</span>
-              )}
+            <ProgressRing value={streakStats.goalPercentage} size={36} stroke={4} done={streakStats.goalReached}>
+              {streakStats.goalReached && <Check className="h-4 w-4 text-green-600" strokeWidth={3} />}
             </ProgressRing>
-            <span className="text-left">
+            <span className="text-left leading-tight">
               <span className="block text-sm font-bold text-slate-900 dark:text-white">
                 {streakStats.todayCount}/{streakStats.dailyGoal} câu
               </span>
-              <span className="block text-xs text-slate-500 dark:text-zinc-400">Mục tiêu ngày</span>
+              <span className="block text-xs text-slate-500 dark:text-zinc-400">Mục tiêu</span>
             </span>
           </button>
         </div>
