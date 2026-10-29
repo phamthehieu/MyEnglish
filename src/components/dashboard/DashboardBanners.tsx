@@ -37,6 +37,7 @@ export function GlobalToast({ globalToast, handleOpenReview, setGlobalToast }: G
         <p className="text-xs text-slate-600 dark:text-zinc-300 mt-1 leading-snug">{globalToast.body}</p>
         <div className="mt-2.5">
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               handleOpenReview(true);
@@ -49,6 +50,7 @@ export function GlobalToast({ globalToast, handleOpenReview, setGlobalToast }: G
         </div>
       </div>
       <button
+        type="button"
         onClick={(e) => {
           e.stopPropagation();
           setGlobalToast(null);
@@ -89,6 +91,7 @@ export function AutoReplenishBanner({
         </p>
         <div className="mt-2.5 flex flex-wrap items-center gap-2">
           <button
+            type="button"
             onClick={() => {
               setActiveTab("library");
               setAutoReplenishBanner(null);
@@ -99,6 +102,7 @@ export function AutoReplenishBanner({
             <span>Xem kho từ vựng</span>
           </button>
           <button
+            type="button"
             onClick={() => {
               setActiveTab("analytics");
               setAutoReplenishBanner(null);
@@ -109,7 +113,7 @@ export function AutoReplenishBanner({
           </button>
         </div>
       </div>
-      <button onClick={() => setAutoReplenishBanner(null)} aria-label="Đóng thông báo" className={CLOSE_BUTTON}>
+      <button type="button" onClick={() => setAutoReplenishBanner(null)} aria-label="Đóng thông báo" className={CLOSE_BUTTON}>
         <X className="w-4 h-4" />
       </button>
     </div>

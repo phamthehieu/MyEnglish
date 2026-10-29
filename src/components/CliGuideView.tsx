@@ -1,4 +1,5 @@
 import DisplaySettings from "./dashboard/DisplaySettings";
+import type { DashboardTab } from "./dashboard/shared";
 import SettingsSection, { OPEN_SETTINGS_SECTION_EVENT } from "./dashboard/SettingsSection";
 import { FOCUS_DURATIONS, getFocusSettings, saveFocusSettings } from "@/services/focusSettings";
 import AdvancedLearningSettings, { BackupRestoreSettings } from "./dashboard/AdvancedLearningSettings";
@@ -110,7 +111,7 @@ interface ApiKeyStatus {
 
 interface CliGuideViewProps {
   onRefreshWords?: () => void;
-  onNavigateTab?: (tab: "library" | "capture" | "review" | "analytics" | "guide" | "grammar") => void;
+  onNavigateTab?: (tab: DashboardTab) => void;
 }
 
 export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuideViewProps) {
@@ -825,7 +826,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <button
                     onClick={handleTestPopupQuiz}
                     disabled={testingPopup}
-                    className="min-h-10 px-3 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-semibold transition-all border border-slate-300 dark:border-zinc-700 flex items-center gap-1.5 shrink-0"
+                    className={`min-h-10 px-3 py-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs font-semibold transition-all border border-slate-300 dark:border-zinc-700 items-center gap-1.5 shrink-0 ${IS_MOBILE ? "hidden" : "flex"}`}
                   >
                     <span>{testingPopup ? "Đang mở..." : "Toàn màn hình"}</span>
                   </button>

@@ -326,6 +326,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
                   <button
                     onClick={() => deleteMistake(m.id).then(reload)}
                     title="Xóa khỏi sổ (AI sửa sai, hoặc không cần ôn)"
+                    type="button"
                     aria-label="Xóa khỏi sổ"
                     className="shrink-0 -my-2 -mr-2 w-10 h-10 inline-flex items-center justify-center opacity-0 group-hover:opacity-100 focus-visible:opacity-100 [@media(hover:none)]:opacity-100 text-slate-400 hover:text-rose-500 transition-opacity"
                   >

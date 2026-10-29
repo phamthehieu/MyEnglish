@@ -103,7 +103,8 @@ const WordCard = memo(function WordCard({
           <button
             onClick={(e) => onDelete(item.id, item.word, e)}
             title="Xoá từ này"
-            aria-label="Xoá từ này"
+            type="button"
+            aria-label={`Xoá từ ${item.word}`}
             className="shrink-0 w-10 h-10 -mt-1 -mr-1 flex items-center justify-center rounded-lg text-slate-500 hover:text-rose-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors opacity-0 group-hover:opacity-100 [@media(hover:none)]:opacity-100"
           >
             <Trash2 className="w-4 h-4" />

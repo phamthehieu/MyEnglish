@@ -138,6 +138,8 @@ export default function LibraryFilterToolbar({
     onSelectBucket("all");
   };
 
+  const topicDueCount = bucketCounts.due || 0;
+
   return (
     <div className="relative z-20 rounded-xl bg-slate-100/70 dark:bg-zinc-900/60 border border-slate-200/80 dark:border-zinc-800/80 backdrop-blur-sm text-xs">
       <div className="flex flex-col sm:flex-row sm:items-center gap-2 p-1.5">
@@ -229,16 +231,20 @@ export default function LibraryFilterToolbar({
         )}
       </div>
 
-      {/* Quick Action: Start Review for this topic if filtered */}
+      {/* Quick Action: Start Review (due words) or Practice (all words) for this topic if filtered */}
       {isTopicFiltered && (
         <button
           type="button"
-          onClick={() => handleStartReview(false, selectedTopic)}
+          onClick={() => handleStartReview(topicDueCount > 0, selectedTopic)}
           className="inline-flex items-center gap-1 px-3 min-h-10 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-300/80 dark:border-orange-500/40 text-xs font-semibold transition-all shadow-sm shrink-0 active:scale-95"
-          title={`Ôn ${topicStats[selectedTopic] || 0} từ cấp ${topicLabel(selectedTopic)}`}
+          title={
+            topicDueCount > 0
+              ? `Ôn ${topicDueCount} từ đến hạn cấp ${topicLabel(selectedTopic)}`
+              : `Luyện ${topicStats[selectedTopic] || 0} từ cấp ${topicLabel(selectedTopic)} (không đổi lịch ôn)`
+          }
         >
           <Play className="w-3 h-3 fill-orange-500 text-orange-500 dark:fill-orange-400 dark:text-orange-400" />
-          <span>Ôn {topicLabel(selectedTopic)}</span>
+          <span>{topicDueCount > 0 ? `Ôn ${topicLabel(selectedTopic)} (${topicDueCount})` : `Luyện ${topicLabel(selectedTopic)}`}</span>
         </button>
       )}
 

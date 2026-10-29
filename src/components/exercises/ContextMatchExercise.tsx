@@ -230,7 +230,7 @@ export default function ContextMatchExercise({
                     : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-slate-300 text-slate-800 dark:text-zinc-200"
                 }`}
               >
-                <div>
+                <div className="min-w-0 flex-1 pr-2">
                   <p className="text-sm font-bold">{p.word}</p>
                   <p className="text-xs text-slate-600 dark:text-zinc-400 line-clamp-1">
                     {p.meaningVN}
@@ -238,7 +238,7 @@ export default function ContextMatchExercise({
                 </div>
                 {matchedSentenceId && (
                   <span
-                    className={`w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold ${colorConfig.badge}`}
+                    className={`w-5 h-5 shrink-0 rounded-full flex items-center justify-center text-[11px] font-bold ${colorConfig.badge}`}
                   >
                     ✓
                   </span>
