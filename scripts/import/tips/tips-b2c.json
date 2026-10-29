@@ -1,0 +1,170 @@
+[
+  {
+    "stage": "b2-complaining",
+    "title": "Khiếu nại lịch sự mà vẫn rõ ràng",
+    "points": [
+      "Theo ba bước: nói vấn đề, đưa bằng chứng, rồi nêu điều bạn muốn như refund, replacement hay discount.",
+      "Complain about + vấn đề: I'd like to complain about the noise. Không nói complain the noise.",
+      "Giữ giọng bình tĩnh, dùng I'm afraid hoặc Could you để lời phàn nàn nghe chuyên nghiệp hơn.",
+      "Hỏi lý do bằng Could you explain why, sau why là câu kể bình thường, không đảo ngữ."
+    ],
+    "examples": [
+      { "en": "This isn't what I ordered.", "vi": "Đây không phải món tôi đã gọi." },
+      { "en": "I'd like a refund for the cancelled flight.", "vi": "Tôi muốn được hoàn tiền cho chuyến bay bị hủy." },
+      { "en": "Could you explain why my card was charged twice?", "vi": "Bạn có thể giải thích vì sao thẻ của tôi bị trừ tiền hai lần không?" }
+    ],
+    "mistake": {
+      "wrong": "I want to complain the room.",
+      "right": "I'd like to complain about the room.",
+      "why": "Complain cần có about trước điều bạn phàn nàn. I'd like to cũng lịch sự hơn I want to."
+    },
+    "lessons": ["ch13-l37"]
+  },
+  {
+    "stage": "b2-trouble-abroad",
+    "title": "Xử lý sự cố khi ở nước ngoài",
+    "points": [
+      "Report dùng khi trình báo: I need to report a stolen phone. Nhớ xin police report để làm bảo hiểm.",
+      "Miss là lỡ chuyến, lose là làm mất đồ. I missed my flight, I lost my passport.",
+      "Cover trong bảo hiểm nghĩa là chi trả. Make a claim là làm hồ sơ đòi bồi thường.",
+      "Khi không biết gọi ai, nhờ người khác: Could you put me in touch with the embassy?"
+    ],
+    "examples": [
+      { "en": "I need to report a lost passport.", "vi": "Tôi cần trình báo việc mất hộ chiếu." },
+      { "en": "Does my insurance cover hospital bills?", "vi": "Bảo hiểm của tôi có chi trả viện phí không?" },
+      { "en": "I've missed my connection to Seoul.", "vi": "Tôi bị lỡ chuyến bay nối tiếp đi Seoul." }
+    ],
+    "mistake": {
+      "wrong": "I lost my flight to Seoul.",
+      "right": "I missed my flight to Seoul.",
+      "why": "Tiếng Việt nói mất chuyến bay, nhưng tiếng Anh dùng miss. Lose chỉ dùng khi làm mất đồ vật."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-small-talk",
+    "title": "Giữ mạch chuyện khi nói chuyện xã giao",
+    "points": [
+      "Hỏi câu mở thay vì câu có hoặc không: What made you move here? giúp người kia kể thêm.",
+      "Nối chuyện bằng That reminds me of hoặc Speaking of để cuộc trò chuyện chảy tự nhiên.",
+      "By the way và Anyway dùng để chuyển chủ đề nhẹ nhàng, không bị đột ngột.",
+      "Câu hỏi đuôi như isn't it, don't you mời người kia đồng tình và nói tiếp."
+    ],
+    "examples": [
+      { "en": "So, how do you know the host?", "vi": "Thế bạn quen chủ nhà thế nào?" },
+      { "en": "Oh really? What made you learn Japanese?", "vi": "Ồ thật à? Điều gì khiến bạn học tiếng Nhật?" },
+      { "en": "Great party, isn't it?", "vi": "Bữa tiệc vui nhỉ?" }
+    ],
+    "mistake": {
+      "wrong": "What made you to choose this job?",
+      "right": "What made you choose this job?",
+      "why": "Sau make cộng người, động từ để nguyên mẫu không có to."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-storytelling",
+    "title": "Kể chuyện: quá khứ tiếp diễn và quá khứ đơn",
+    "points": [
+      "Quá khứ tiếp diễn tả bối cảnh, quá khứ đơn là sự việc chen vào: I was cooking when the phone rang.",
+      "Dùng All of a sudden, Just then để tạo bất ngờ, In the end hoặc To cut a long story short để kết.",
+      "Mở đầu gây tò mò: You'll never guess what happened. Sau what là câu kể, không đảo ngữ.",
+      "Trong khi kể, dùng thì quá khứ cho đồng bộ, đừng nhảy qua lại với hiện tại."
+    ],
+    "examples": [
+      { "en": "I was just leaving the house when the phone rang.", "vi": "Tôi vừa ra khỏi nhà thì điện thoại reo." },
+      { "en": "All of a sudden, the lights went out.", "vi": "Đột nhiên, đèn tắt phụt." },
+      { "en": "To cut a long story short, we got lost.", "vi": "Nói ngắn gọn thì chúng tôi bị lạc." }
+    ],
+    "mistake": {
+      "wrong": "I cooked dinner when the phone was ringing.",
+      "right": "I was cooking dinner when the phone rang.",
+      "why": "Việc đang diễn ra dài hơn dùng quá khứ tiếp diễn. Việc ngắn chen ngang dùng quá khứ đơn."
+    },
+    "lessons": ["ch01-l06", "ch01-l05"]
+  },
+  {
+    "stage": "b2-predicting",
+    "title": "Dự đoán: likely, bound to, I doubt, a good chance",
+    "points": [
+      "Từ chắc đến không chắc: bound to, likely to, there's a good chance, I doubt.",
+      "Be likely to và be bound to đi với động từ nguyên mẫu: It's likely to rain.",
+      "I doubt mang nghĩa phủ định sẵn, phía sau là câu khẳng định: I doubt he'll come.",
+      "I'd be surprised if cộng quá khứ đơn là cách khéo léo nói việc khó xảy ra."
+    ],
+    "examples": [
+      { "en": "It's likely to take longer.", "vi": "Nhiều khả năng là sẽ mất nhiều thời gian hơn." },
+      { "en": "There's a good chance she'll get the job.", "vi": "Rất có thể cô ấy sẽ được nhận vào làm." },
+      { "en": "I doubt they'll agree.", "vi": "Tôi không nghĩ là họ sẽ đồng ý." }
+    ],
+    "mistake": {
+      "wrong": "I doubt he won't come.",
+      "right": "I doubt he'll come.",
+      "why": "I doubt đã có nghĩa là tôi nghĩ là không, thêm not sẽ thành phủ định hai lần và sai nghĩa."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-cause-effect",
+    "title": "Nói nguyên nhân và hệ quả",
+    "points": [
+      "Nguyên nhân là danh từ: due to, because of, thanks to. Nguyên nhân là mệnh đề: because, since.",
+      "Thanks to dùng cho kết quả tốt. Kết quả xấu thì dùng because of hoặc due to.",
+      "Nêu hệ quả: As a result hoặc Therefore ở đầu câu, This has led to cộng danh từ.",
+      "Lead to, result in, cause đều đi trực tiếp với danh từ: This led to higher prices."
+    ],
+    "examples": [
+      { "en": "This is mainly due to rising costs.", "vi": "Việc này chủ yếu là do chi phí tăng." },
+      { "en": "As a result, the project was delayed.", "vi": "Vì vậy, dự án bị chậm." },
+      { "en": "Thanks to your help, we finished on time.", "vi": "Nhờ có sự giúp đỡ của bạn, chúng tôi đã xong đúng hạn." }
+    ],
+    "mistake": {
+      "wrong": "Because of it rained, the match was cancelled.",
+      "right": "Because it rained, the match was cancelled.",
+      "why": "Because of chỉ đi với danh từ. Trước cả một mệnh đề có chủ ngữ và động từ thì dùng because."
+    },
+    "lessons": ["ch07-l02", "ch22-l03", "ch06-l01"]
+  },
+  {
+    "stage": "b2-trends",
+    "title": "Mô tả số liệu: rise, fall, level off",
+    "points": [
+      "Động từ: rise, rose, risen; fall, fell, fallen; level off là chững lại; peak là chạm đỉnh.",
+      "Trạng từ cho động từ: rose sharply, fell slightly. Tính từ cho danh từ: a sharp rise, a slight fall.",
+      "Rise to là tăng lên đến mức nào. Rise by là tăng thêm một lượng bao nhiêu.",
+      "Danh từ rise, increase, drop đi với in: a steady rise in prices."
+    ],
+    "examples": [
+      { "en": "Sales rose sharply in March.", "vi": "Doanh số tăng mạnh vào tháng Ba." },
+      { "en": "The number of users fell slightly to ten thousand.", "vi": "Số người dùng giảm nhẹ, xuống còn mười nghìn." },
+      { "en": "There's been a steady rise in online orders.", "vi": "Thời gian qua, số đơn hàng trực tuyến tăng đều." }
+    ],
+    "mistake": {
+      "wrong": "Sales were increased sharply last year.",
+      "right": "Sales increased sharply last year.",
+      "why": "Increase, rise, fall ở đây là nội động từ, không dùng bị động. Doanh số tự tăng chứ không bị ai tăng."
+    },
+    "lessons": ["ch18-l07"]
+  },
+  {
+    "stage": "b2-declining-politely",
+    "title": "Từ chối khéo mà không mất lòng",
+    "points": [
+      "Cảm ơn hoặc tỏ ra quý lời mời trước: Thanks for asking hoặc I'd love to, rồi mới nói but.",
+      "Lý do ngắn và thật là đủ, không cần giải thích dài dòng.",
+      "Can I take a rain check là xin dời sang dịp khác, cho thấy bạn vẫn muốn đi.",
+      "Trong công việc, I'm afraid và Unfortunately làm lời từ chối mềm và chuyên nghiệp hơn."
+    ],
+    "examples": [
+      { "en": "I'd love to, but I'm working that day.", "vi": "Mình rất muốn, nhưng hôm đó mình phải làm." },
+      { "en": "Can I take a rain check on dinner?", "vi": "Mình hẹn bữa tối hôm khác được không?" },
+      { "en": "I'm afraid I must say no to the offer.", "vi": "Tôi e là tôi phải từ chối lời đề nghị này." }
+    ],
+    "mistake": {
+      "wrong": "No, I don't want. I'm busy.",
+      "right": "I'd love to, but I'm a bit busy.",
+      "why": "Từ chối thẳng nghe cộc lốc trong tiếng Anh. Nên tỏ ra quý lời mời trước rồi mới từ chối."
+    },
+    "lessons": []
+  }
+]

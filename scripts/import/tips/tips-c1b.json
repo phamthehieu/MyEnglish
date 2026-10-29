@@ -1,0 +1,170 @@
+[
+  {
+    "stage": "c1-signposting",
+    "title": "Dẫn dắt người nghe khi trình bày",
+    "points": [
+      "Let me now turn to và moving on to báo hiệu bạn chuyển sang phần mới, giúp người nghe không bị lạc.",
+      "To put it another way, in other words, put simply dùng để nói lại một ý theo cách dễ hiểu hơn.",
+      "Which brings me to nối ý vừa nói với ý tiếp theo, nghe mạch lạc hơn nhiều so với and next.",
+      "Bị hỏi giữa chừng, nói I'll come back to that in a moment để giữ mạch mà vẫn lịch sự."
+    ],
+    "examples": [
+      { "en": "Let me now turn to the main risks.", "vi": "Giờ tôi xin chuyển sang những rủi ro chính." },
+      { "en": "To put it another way, we're losing money.", "vi": "Nói cách khác, chúng ta đang lỗ." },
+      { "en": "Which brings me to my next point.", "vi": "Điều này đưa tôi đến với ý tiếp theo." }
+    ],
+    "mistake": {
+      "wrong": "Let me now turn to talk about the budget.",
+      "right": "Let me now turn to the budget.",
+      "why": "Turn to ở đây đi với danh từ, không cần thêm talk about vì nghĩa đã là chuyển sang nói về."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-cleft-sentences",
+    "title": "Câu chẻ: What I need is, It was ... who",
+    "points": [
+      "Câu chẻ tách một câu thành hai vế để dồn sự chú ý vào một phần: What worries me most is the deadline.",
+      "It was cộng phần cần nhấn cộng who hoặc that: It was Lan who found the mistake. Với người dùng who, với vật dùng that.",
+      "All I want is và the last thing we need is cũng là câu chẻ, nghe nhấn mạnh và giàu cảm xúc hơn câu thường.",
+      "Sau All I did was, All you have to do is có thể dùng động từ nguyên mẫu không to: All I did was ask."
+    ],
+    "examples": [
+      { "en": "What worries me most is the hidden costs.", "vi": "Điều làm tôi lo nhất là các chi phí ẩn." },
+      { "en": "It was my mentor who made the difference.", "vi": "Chính người hướng dẫn của tôi đã tạo nên sự khác biệt." },
+      { "en": "The last thing we need is another delay.", "vi": "Điều chúng ta không hề muốn lúc này là thêm một lần trì hoãn." }
+    ],
+    "mistake": {
+      "wrong": "What I need it is more time.",
+      "right": "What I need is more time.",
+      "why": "Vế What I need đã là chủ ngữ, thêm it nữa là thừa chủ ngữ, lỗi rất hay gặp khi dịch từ tiếng Việt."
+    },
+    "lessons": ["ch14-l02"]
+  },
+  {
+    "stage": "c1-constructive-criticism",
+    "title": "Góp ý khéo mà vẫn rõ ràng",
+    "points": [
+      "I'd question whether nêu nghi ngờ lịch sự, thay cho câu nói thẳng như This is wrong.",
+      "It might be worth cộng động từ thêm ing gợi ý một cách sửa, người nghe thấy được tôn trọng.",
+      "There's room for improvement nghĩa là đã ổn nhưng vẫn có thể tốt hơn, nhẹ nhàng hơn It's not good enough.",
+      "My only concern would be cho thấy nhìn chung bạn đồng ý, chỉ còn một điểm nhỏ cần xem lại."
+    ],
+    "examples": [
+      { "en": "I'd question whether the budget is realistic.", "vi": "Tôi hơi băn khoăn liệu ngân sách có thực tế không." },
+      { "en": "It might be worth getting a second opinion.", "vi": "Có lẽ cũng nên hỏi thêm ý kiến người khác." },
+      { "en": "There's room for a clearer structure.", "vi": "Bố cục vẫn còn có thể rõ ràng hơn." }
+    ],
+    "mistake": {
+      "wrong": "It might be worth to check the figures again.",
+      "right": "It might be worth checking the figures again.",
+      "why": "Sau worth luôn dùng động từ thêm ing, không dùng to cộng động từ."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-past-criticism",
+    "title": "Trách móc và tiếc nuối chuyện đã qua",
+    "points": [
+      "Should have và ought to have cộng quá khứ phân từ: lẽ ra phải làm nhưng đã không làm.",
+      "Needn't have done: đã làm nhưng hóa ra không cần. Didn't need to do: không cần nên thường là đã không làm.",
+      "Was supposed to nói về điều đã hẹn hoặc dự kiến nhưng không thành: We were supposed to finish by Friday.",
+      "Could at least have trách nhẹ rằng người kia không làm cả điều tối thiểu: You could at least have said sorry."
+    ],
+    "examples": [
+      { "en": "You really ought to have told me sooner.", "vi": "Lẽ ra bạn phải nói với tôi sớm hơn mới đúng." },
+      { "en": "You needn't have gone to all that trouble.", "vi": "Bạn đâu cần phải cất công như vậy." },
+      { "en": "You could at least have sent a message.", "vi": "Ít ra bạn cũng nên nhắn một tin chứ." }
+    ],
+    "mistake": {
+      "wrong": "You should told me earlier.",
+      "right": "You should have told me earlier.",
+      "why": "Nói về quá khứ phải dùng should have cộng quá khứ phân từ, không bỏ have."
+    },
+    "lessons": ["ch20-l22"]
+  },
+  {
+    "stage": "c1-probability",
+    "title": "Nói mức độ chắc chắn tinh tế",
+    "points": [
+      "In all likelihood và the odds are that: rất có thể. In all likelihood trang trọng hơn, the odds are that thân mật hơn.",
+      "There's every chance nghĩa là khả năng rất cao, thường mang ý lạc quan. A slim chance là khả năng rất thấp.",
+      "It's highly unlikely that phủ nhận khả năng một cách khách quan, nghe lịch sự hơn I don't think.",
+      "Ghép đúng cặp: highly likely, highly unlikely. Không nói very much likely."
+    ],
+    "examples": [
+      { "en": "In all likelihood, they'll say yes.", "vi": "Rất có thể là họ sẽ đồng ý." },
+      { "en": "There's every chance you'll get the job.", "vi": "Hoàn toàn có khả năng bạn sẽ được nhận." },
+      { "en": "It's highly unlikely that anyone will complain.", "vi": "Rất khó có chuyện ai đó phàn nàn." }
+    ],
+    "mistake": {
+      "wrong": "There's a big chance it'll rain.",
+      "right": "There's a good chance it'll rain.",
+      "why": "Tiếng Anh nói a good chance hoặc a strong chance, không nói a big chance như dịch từ khả năng lớn."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-feelings",
+    "title": "Bày tỏ cảm xúc một cách tinh tế",
+    "points": [
+      "I can't help feeling cộng tính từ hoặc mệnh đề: cảm giác không kìm được. Sau help dùng động từ thêm ing.",
+      "I must admit, I have to say, to be honest giúp thừa nhận cảm xúc khó nói một cách chân thành.",
+      "It's been weighing on me hoặc playing on my mind: một chuyện cứ đè nặng trong lòng suốt một thời gian.",
+      "I'd be lying if I said I wasn't nervous là cách thú nhận gián tiếp, mềm hơn I'm nervous."
+    ],
+    "examples": [
+      { "en": "I can't help feeling a bit let down.", "vi": "Tôi không khỏi cảm thấy hơi thất vọng." },
+      { "en": "I must admit I'm quite impressed.", "vi": "Phải thú thật là tôi khá ấn tượng." },
+      { "en": "I'd be lying if I said I wasn't tempted.", "vi": "Nói là không xiêu lòng thì là nói dối." }
+    ],
+    "mistake": {
+      "wrong": "I can't help to feel worried.",
+      "right": "I can't help feeling worried.",
+      "why": "Cấu trúc can't help luôn đi với động từ thêm ing, không dùng to cộng động từ."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-pros-cons",
+    "title": "Cân nhắc ưu và nhược điểm",
+    "points": [
+      "On the upside, on the plus side giới thiệu mặt tốt. The downside is, the main drawback is nêu mặt hạn chế.",
+      "The catch is dùng cho điểm bất lợi bị giấu kín, thường đi kèm một lời mời hấp dẫn.",
+      "What it boils down to is hoặc it all comes down to rút mọi thứ về một yếu tố cốt lõi.",
+      "Chốt lại bằng outweigh: The benefits outweigh the costs nghĩa là lợi nhiều hơn hại."
+    ],
+    "examples": [
+      { "en": "On the upside, there's no commute.", "vi": "Mặt tích cực là không phải đi lại." },
+      { "en": "The downside is that it takes longer.", "vi": "Điểm trừ là nó mất nhiều thời gian hơn." },
+      { "en": "What it boils down to is trust.", "vi": "Rốt cuộc thì mọi chuyện nằm ở lòng tin." }
+    ],
+    "mistake": {
+      "wrong": "The benefits are outweigh the costs.",
+      "right": "The benefits outweigh the costs.",
+      "why": "Outweigh là động từ, không đi cùng are. Lỗi này hay gặp do nhầm với cấu trúc are greater than."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-summarising",
+    "title": "Tóm tắt và chốt lại ý chính",
+    "points": [
+      "In a nutshell, long story short, basically dùng khi kể lại ngắn gọn, nghe thân mật.",
+      "The bottom line is that và at the end of the day nêu điều quan trọng nhất, bỏ qua chi tiết phụ.",
+      "All things considered và on the whole đưa ra kết luận sau khi đã cân nhắc cả hai mặt.",
+      "The key takeaway is that là cách chốt thông điệp cuối buổi họp, rất hay dùng trong công việc."
+    ],
+    "examples": [
+      { "en": "In a nutshell, we need more time.", "vi": "Nói gọn lại thì chúng ta cần thêm thời gian." },
+      { "en": "The bottom line is that we can't afford it.", "vi": "Điều cốt lõi là chúng ta không đủ tiền." },
+      { "en": "All things considered, it went well.", "vi": "Xét mọi mặt thì mọi việc diễn ra tốt." }
+    ],
+    "mistake": {
+      "wrong": "In conclusion, I think that's all.",
+      "right": "All things considered, it was a success.",
+      "why": "Câu kết cần nêu kết luận thật, không chỉ báo là đã hết. In conclusion cũng quá trang trọng khi nói."
+    },
+    "lessons": []
+  }
+]

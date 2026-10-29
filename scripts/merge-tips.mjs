@@ -20,8 +20,15 @@ const drafts = fs
   .filter((f) => /^tips-.*\.json$/.test(f))
   .flatMap((f) => JSON.parse(fs.readFileSync(path.join(draftsDir, f), "utf8")));
 
+// Every level that has sentence patterns (src/data/patterns/<level>.json), so a new level needs no change here
+const levels = fs
+  .readdirSync(path.join(root, "src/data/patterns"))
+  .filter((f) => /^[a-c][12]\.json$/.test(f))
+  .map((f) => f.replace(".json", ""))
+  .sort();
+
 const byLevel = new Map();
-for (const level of ["a1", "a2", "b1"]) {
+for (const level of levels) {
   const patterns = JSON.parse(fs.readFileSync(path.join(root, `src/data/patterns/${level}.json`), "utf8"));
   const order = [...new Set(patterns.map((p) => p.topic))];
   const tips = order

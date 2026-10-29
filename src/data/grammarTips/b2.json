@@ -1,0 +1,823 @@
+[
+  {
+    "stage": "b2-speculating-past",
+    "title": "Đoán về quá khứ: must have, might have, can't have",
+    "points": [
+      "Modal + have + quá khứ phân từ dùng để đoán chuyện đã xảy ra: must have gone, might have forgotten.",
+      "Must have: gần như chắc chắn. Might have hoặc could have: có thể, không chắc. Can't have: chắc chắn là không.",
+      "Phủ định của must have là can't have, không phải mustn't have. Mustn't nghĩa là cấm.",
+      "Sau have luôn là quá khứ phân từ: gone, been, left, không dùng động từ nguyên mẫu."
+    ],
+    "examples": [
+      {
+        "en": "She must have missed the bus.",
+        "vi": "Chắc hẳn cô ấy đã lỡ xe buýt."
+      },
+      {
+        "en": "He might have been stuck in traffic.",
+        "vi": "Có thể anh ấy đã bị kẹt xe."
+      },
+      {
+        "en": "It can't have been cheap.",
+        "vi": "Chắc chắn là không rẻ đâu."
+      }
+    ],
+    "mistake": {
+      "wrong": "He mustn't have seen my message.",
+      "right": "He can't have seen my message.",
+      "why": "Mustn't nghĩa là cấm. Muốn nói chắc chắn đã không xảy ra thì dùng can't have."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-regrets",
+    "title": "Tiếc nuối: wish + had, should have, if only",
+    "points": [
+      "Tiếc về quá khứ: I wish hoặc If only + had + quá khứ phân từ. Thì lùi một bậc so với sự việc thật.",
+      "Should have + quá khứ phân từ: lẽ ra nên làm. Shouldn't have: lẽ ra không nên làm.",
+      "If only mạnh hơn I wish và thường đứng một mình như một câu cảm thán.",
+      "It would have been better to + động từ nguyên mẫu là cách nói nhẹ nhàng khi nhìn lại."
+    ],
+    "examples": [
+      {
+        "en": "I wish I had studied harder.",
+        "vi": "Giá mà tôi đã học chăm hơn."
+      },
+      {
+        "en": "We should have left earlier.",
+        "vi": "Lẽ ra chúng ta nên đi sớm hơn."
+      },
+      {
+        "en": "If only I hadn't said that.",
+        "vi": "Giá như tôi đã không nói điều đó."
+      }
+    ],
+    "mistake": {
+      "wrong": "I wish I studied harder at school.",
+      "right": "I wish I had studied harder at school.",
+      "why": "Tiếc chuyện ở quá khứ thì dùng had cộng quá khứ phân từ. Studied chỉ dùng khi ước về hiện tại."
+    },
+    "lessons": [
+      {
+        "id": "ch04-l03",
+        "title": "Ao ước ở quá khứ"
+      },
+      {
+        "id": "ch28-l11",
+        "title": "Quá khứ giả định"
+      }
+    ]
+  },
+  {
+    "stage": "b2-third-conditional",
+    "title": "Điều kiện loại ba và câu điều kiện hỗn hợp",
+    "points": [
+      "Loại ba nói về quá khứ không có thật: If + had + quá khứ phân từ, would have + quá khứ phân từ.",
+      "Không dùng would trong vế if. Viết tắt I'd ở vế if là I had, ở vế sau là I would.",
+      "Hỗn hợp: quá khứ dẫn tới hiện tại. If I had taken that job, I would be rich now.",
+      "Trang trọng hơn: bỏ if và đảo had lên đầu. Had I known, I would have come."
+    ],
+    "examples": [
+      {
+        "en": "If I had known, I would have helped you.",
+        "vi": "Nếu tôi biết thì tôi đã giúp bạn rồi."
+      },
+      {
+        "en": "If we had left earlier, we wouldn't be so late now.",
+        "vi": "Nếu đi sớm hơn thì giờ chúng ta đã không muộn thế này."
+      },
+      {
+        "en": "Had she asked, I would have explained.",
+        "vi": "Nếu cô ấy hỏi, tôi đã giải thích rồi."
+      }
+    ],
+    "mistake": {
+      "wrong": "If I would have known, I would have come.",
+      "right": "If I had known, I would have come.",
+      "why": "Vế if của câu điều kiện loại ba dùng had cộng quá khứ phân từ, không dùng would have."
+    },
+    "lessons": [
+      {
+        "id": "ch03-l01",
+        "title": "Ba loại câu điều kiện"
+      },
+      {
+        "id": "ch03-l03",
+        "title": "Đảo ngữ trong câu điều kiện"
+      }
+    ]
+  },
+  {
+    "stage": "b2-hypotheticals",
+    "title": "Giả định: what if, suppose, I'd rather you",
+    "points": [
+      "What if, suppose, imagine if + thì quá khứ đặt ra một tình huống tưởng tượng ở hiện tại hoặc tương lai.",
+      "Câu hỏi đi kèm dùng would: Suppose you won the lottery, what would you do?",
+      "I'd rather you + thì quá khứ là nhờ hoặc phản đối lịch sự: I'd rather you didn't smoke here.",
+      "Với cùng một người thì dùng động từ nguyên mẫu: I'd rather stay. Khác người mới cần thì quá khứ."
+    ],
+    "examples": [
+      {
+        "en": "What if we moved the meeting to Friday?",
+        "vi": "Nếu mình dời cuộc họp sang thứ Sáu thì sao?"
+      },
+      {
+        "en": "Suppose you lost your job, what would you do?",
+        "vi": "Giả sử bạn mất việc, bạn sẽ làm gì?"
+      },
+      {
+        "en": "I'd rather you called me first.",
+        "vi": "Tôi mong bạn gọi cho tôi trước thì hơn."
+      }
+    ],
+    "mistake": {
+      "wrong": "I'd rather you don't tell anyone.",
+      "right": "I'd rather you didn't tell anyone.",
+      "why": "Sau I'd rather you dùng thì quá khứ dù ý vẫn nói về hiện tại."
+    },
+    "lessons": [
+      {
+        "id": "ch09-l17",
+        "title": "Mệnh đề sau WOULD RATHER"
+      },
+      {
+        "id": "ch20-l15",
+        "title": "WOULD RATHER"
+      },
+      {
+        "id": "ch28-l11",
+        "title": "Quá khứ giả định"
+      }
+    ]
+  },
+  {
+    "stage": "b2-arguing-a-point",
+    "title": "Giữ vững quan điểm: the thing is, my point is",
+    "points": [
+      "The thing is hoặc The problem is mở đầu lý do chính. Sau đó là một mệnh đề đầy đủ.",
+      "What I'm getting at is hoặc My point is giúp kéo cuộc nói chuyện về đúng ý chính của bạn.",
+      "Let's not forget that nhắc lại một sự thật để lập luận vững hơn, nghe lịch sự hơn You forget that.",
+      "That's exactly why biến lý lẽ của người kia thành lý do ủng hộ bạn."
+    ],
+    "examples": [
+      {
+        "en": "The thing is, we don't have the budget.",
+        "vi": "Vấn đề là chúng ta không có ngân sách."
+      },
+      {
+        "en": "My point is that time is limited.",
+        "vi": "Ý tôi là thời gian có hạn."
+      },
+      {
+        "en": "That's exactly why we need a plan.",
+        "vi": "Chính vì vậy mà chúng ta cần một kế hoạch."
+      }
+    ],
+    "mistake": {
+      "wrong": "The thing is that, we have no time.",
+      "right": "The thing is, we have no time.",
+      "why": "Dùng the thing is that không có dấu phẩy, hoặc the thing is có dấu phẩy. Không dùng cả hai."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-contrasting",
+    "title": "Đối lập: whereas, despite, even though",
+    "points": [
+      "Whereas nối hai ý trái ngược trong cùng một câu, trước nó thường có dấu phẩy.",
+      "Despite và in spite of đi với danh từ hoặc động từ thêm ing. Although và even though đi với mệnh đề.",
+      "Even though nhấn mạnh hơn although. Không dùng thêm but trong cùng câu.",
+      "On the other hand đưa ra mặt còn lại khi so sánh ưu và nhược điểm."
+    ],
+    "examples": [
+      {
+        "en": "Despite the delays, we finished on time.",
+        "vi": "Dù bị chậm trễ, chúng tôi vẫn xong đúng hạn."
+      },
+      {
+        "en": "Even though it was expensive, I enjoyed it.",
+        "vi": "Mặc dù đắt, tôi vẫn thấy thích."
+      },
+      {
+        "en": "I like mornings, whereas she likes evenings.",
+        "vi": "Tôi thích buổi sáng, còn cô ấy thích buổi tối."
+      }
+    ],
+    "mistake": {
+      "wrong": "Although it was late, but she called back.",
+      "right": "Although it was late, she called back.",
+      "why": "Tiếng Việt nói Dù... nhưng..., còn tiếng Anh chỉ dùng although hoặc but, không dùng cả hai."
+    },
+    "lessons": [
+      {
+        "id": "ch09-l01",
+        "title": "Although his English was good, he wasn’t chosen."
+      },
+      {
+        "id": "ch09-l10",
+        "title": "Although Mary was sad, she managed to smile."
+      }
+    ]
+  },
+  {
+    "stage": "b2-emphasis",
+    "title": "Nhấn mạnh: What I need is, It was... that",
+    "points": [
+      "Câu chẻ với what đẩy ý chính xuống cuối: What I need is more time.",
+      "It was + phần nhấn mạnh + that hoặc who chỉ rõ đúng người, đúng nguyên nhân: It was Linh who found it.",
+      "Thêm do, does, did trước động từ nguyên mẫu để khẳng định mạnh: I do care. She did call.",
+      "The reason is that hoặc The reason I'm calling is giúp nói lý do rõ ràng ngay từ đầu."
+    ],
+    "examples": [
+      {
+        "en": "What I really need is a long holiday.",
+        "vi": "Điều tôi thật sự cần là một kỳ nghỉ dài."
+      },
+      {
+        "en": "It was the update that caused the problem.",
+        "vi": "Chính bản cập nhật đã gây ra sự cố."
+      },
+      {
+        "en": "I do understand the risk.",
+        "vi": "Tôi có hiểu rủi ro thật mà."
+      }
+    ],
+    "mistake": {
+      "wrong": "I do cares about it.",
+      "right": "I do care about it.",
+      "why": "Sau do, does, did nhấn mạnh thì động từ giữ nguyên mẫu, không thêm s hay ed."
+    },
+    "lessons": [
+      {
+        "id": "ch14-l02",
+        "title": "Nhấn mạnh trong cách viết"
+      }
+    ]
+  },
+  {
+    "stage": "b2-hedging",
+    "title": "Nói giảm cho lịch sự: it seems, I'd tend to think",
+    "points": [
+      "It seems that, it appears that, it looks like làm tin xấu nghe nhẹ hơn và cho thấy bạn chưa chắc chắn.",
+      "I'd tend to think, I'd say đưa ý kiến mà vẫn để ngỏ cho người khác bàn thêm.",
+      "It might be a good idea to + động từ thay cho you should khi góp ý với cấp trên hoặc khách hàng.",
+      "Not entirely, not quite làm lời phản đối mềm hơn: I'm not entirely sure."
+    ],
+    "examples": [
+      {
+        "en": "It seems that there's been a mistake.",
+        "vi": "Có vẻ như đã có nhầm lẫn."
+      },
+      {
+        "en": "I'd tend to think it's too early.",
+        "vi": "Tôi thiên về nghĩ là còn quá sớm."
+      },
+      {
+        "en": "It might be a good idea to check again.",
+        "vi": "Có lẽ sẽ tốt nếu mình kiểm tra lại."
+      }
+    ],
+    "mistake": {
+      "wrong": "It seems that the server is down, I am sure.",
+      "right": "It seems that the server is down.",
+      "why": "It seems đã có nghĩa là chưa chắc chắn, thêm I am sure làm câu tự mâu thuẫn."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-persuading",
+    "title": "Thuyết phục khéo: câu hỏi phủ định và worth",
+    "points": [
+      "Câu hỏi phủ định như Wouldn't it be better to hoặc Isn't it safer to gợi ý nhẹ nhàng mà vẫn có sức nặng.",
+      "Worth đi với danh từ hoặc động từ thêm ing: worth the money, worth trying. Không dùng worth to try.",
+      "Regret cộng động từ thêm ing nói về việc đã làm: You won't regret trying it.",
+      "Nêu lợi ích cụ thể thay vì chỉ nói nó tốt: The great thing about it is it saves time."
+    ],
+    "examples": [
+      {
+        "en": "Wouldn't it be better to book in advance?",
+        "vi": "Chẳng phải đặt trước sẽ tốt hơn sao?"
+      },
+      {
+        "en": "Trust me, it's worth the extra money.",
+        "vi": "Tin tôi đi, bỏ thêm tiền rất đáng đấy."
+      },
+      {
+        "en": "You won't regret coming with us.",
+        "vi": "Bạn sẽ không hối hận khi đi cùng chúng tôi đâu."
+      }
+    ],
+    "mistake": {
+      "wrong": "This course is worth to try.",
+      "right": "This course is worth trying.",
+      "why": "Sau worth là động từ thêm ing hoặc danh từ, không dùng to cộng động từ."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-negotiating",
+    "title": "Điều kiện khi thương lượng: provided that, as long as",
+    "points": [
+      "Provided that, providing, as long as, on condition that đều nghĩa là với điều kiện là, thay cho if.",
+      "Sau các từ này dùng thì hiện tại dù nói về tương lai: provided that you pay in advance.",
+      "Điều kiện loại một hợp để chốt: If you can lower the price, we'll sign today.",
+      "In return hoặc in exchange giúp bạn đưa ra nhượng bộ để đổi lấy điều mình cần."
+    ],
+    "examples": [
+      {
+        "en": "We can agree, provided that delivery is on time.",
+        "vi": "Chúng tôi có thể đồng ý, với điều kiện giao hàng đúng hạn."
+      },
+      {
+        "en": "As long as the price is right, it's a deal.",
+        "vi": "Miễn là giá hợp lý thì chốt nhé."
+      },
+      {
+        "en": "We could offer free delivery in return.",
+        "vi": "Đổi lại, chúng tôi có thể miễn phí giao hàng."
+      }
+    ],
+    "mistake": {
+      "wrong": "We agree, provided that you will pay in advance.",
+      "right": "We agree, provided that you pay in advance.",
+      "why": "Giống vế if, sau provided that không dùng will mà dùng thì hiện tại."
+    },
+    "lessons": [
+      {
+        "id": "ch03-l04",
+        "title": "Các liên từ khác thay thế IF"
+      },
+      {
+        "id": "ch03-l01",
+        "title": "Ba loại câu điều kiện"
+      }
+    ]
+  },
+  {
+    "stage": "b2-giving-feedback",
+    "title": "Góp ý mềm mỏng và nhận góp ý",
+    "points": [
+      "Bắt đầu bằng điểm tốt cụ thể: What I really liked was the clear structure.",
+      "Nêu điểm cần sửa nhẹ nhàng: One thing you could improve is, hoặc It would be even better if.",
+      "Sau It would be even better if dùng thì quá khứ vì đó là điều giả định: if you added a chart.",
+      "Feedback và advice là danh từ không đếm được: không nói a feedback hay feedbacks."
+    ],
+    "examples": [
+      {
+        "en": "What I really liked was your opening.",
+        "vi": "Điều tôi thật sự thích là phần mở đầu của bạn."
+      },
+      {
+        "en": "It would be even better if it were shorter.",
+        "vi": "Sẽ còn tốt hơn nữa nếu nó ngắn hơn."
+      },
+      {
+        "en": "Thanks for the feedback, I'll work on that.",
+        "vi": "Cảm ơn góp ý nhé, tôi sẽ cải thiện điểm đó."
+      }
+    ],
+    "mistake": {
+      "wrong": "Thank you for your feedbacks.",
+      "right": "Thank you for your feedback.",
+      "why": "Feedback là danh từ không đếm được nên không thêm s. Muốn đếm thì nói a piece of feedback."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-solving-problems",
+    "title": "Xử lý sự cố: giải pháp, tạm thời, phòng ngừa",
+    "points": [
+      "Đưa giải pháp trước: The quickest fix would be to restart the server.",
+      "Cách tạm thời trong lúc chờ: In the meantime, we can handle orders manually.",
+      "Phòng ngừa: To prevent this happening again, cộng một kế hoạch cụ thể.",
+      "Sau once, as soon as, when nói về tương lai thì dùng hiện tại, không dùng will."
+    ],
+    "examples": [
+      {
+        "en": "The quickest fix would be to clear the cache.",
+        "vi": "Cách khắc phục nhanh nhất là xóa bộ nhớ đệm."
+      },
+      {
+        "en": "In the meantime, we can use the old version.",
+        "vi": "Trong lúc chờ, chúng ta có thể dùng bản cũ."
+      },
+      {
+        "en": "I'll get back to you once it's fixed.",
+        "vi": "Tôi sẽ báo lại cho bạn ngay khi lỗi được sửa xong."
+      }
+    ],
+    "mistake": {
+      "wrong": "I'll call you once I will finish checking.",
+      "right": "I'll call you once I've finished checking.",
+      "why": "Vế sau once nói về tương lai nhưng dùng hiện tại hoặc hiện tại hoàn thành, không dùng will."
+    },
+    "lessons": [
+      {
+        "id": "ch02-l02",
+        "title": "Sự phối hợp thì trong mệnh đề chính và mệnh đề trạng ng…"
+      }
+    ]
+  },
+  {
+    "stage": "b2-running-meetings",
+    "title": "Điều phối họp: mở đầu, mời nói, gác lại, chốt",
+    "points": [
+      "Mở đầu bằng mục tiêu: The aim today is to agree on the budget.",
+      "Mời người khác nói: Let's hear from Minh first, hoặc Lan, would you like to add anything?",
+      "Gác chủ đề lạc đề: Can we park that for now? Hoặc Let's take that offline.",
+      "Kết thúc bằng điều đã chốt: So we've all agreed to, rồi nói ai làm gì."
+    ],
+    "examples": [
+      {
+        "en": "The aim today is to plan the launch.",
+        "vi": "Mục tiêu hôm nay là lên kế hoạch ra mắt."
+      },
+      {
+        "en": "Can we park the budget issue for now?",
+        "vi": "Mình tạm gác vấn đề ngân sách lại nhé?"
+      },
+      {
+        "en": "So we've all agreed to meet again on Friday.",
+        "vi": "Vậy là mọi người đã thống nhất họp lại vào thứ Sáu."
+      }
+    ],
+    "mistake": {
+      "wrong": "We discussed about the budget.",
+      "right": "We discussed the budget.",
+      "why": "Discuss là ngoại động từ, theo sau là tân ngữ luôn, không thêm about. Talk about thì có about."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-formal-emails",
+    "title": "Email trang trọng: mở, nhờ, kết",
+    "points": [
+      "Mở thư: I am writing with regard to, hoặc I am writing to. Thư trang trọng ít viết tắt.",
+      "Nhờ lịch sự: I would be grateful if you could, cộng động từ nguyên mẫu.",
+      "Kết thư: Please do not hesitate to contact me, rồi I look forward to hearing from you.",
+      "Look forward to: to là giới từ nên theo sau là động từ thêm ing hoặc danh từ."
+    ],
+    "examples": [
+      {
+        "en": "I am writing with regard to your recent order.",
+        "vi": "Tôi viết thư này liên quan đến đơn hàng gần đây của quý vị."
+      },
+      {
+        "en": "I would be grateful if you could confirm by Friday.",
+        "vi": "Tôi rất biết ơn nếu quý vị có thể xác nhận trước thứ Sáu."
+      },
+      {
+        "en": "I look forward to hearing from you.",
+        "vi": "Tôi rất mong nhận được hồi âm của quý vị."
+      }
+    ],
+    "mistake": {
+      "wrong": "I look forward to hear from you.",
+      "right": "I look forward to hearing from you.",
+      "why": "To trong look forward to là giới từ, nên động từ phía sau phải thêm ing."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-it-is-said",
+    "title": "Bị động tường thuật: It is said that, is thought to",
+    "points": [
+      "Cách một: It is said, believed, reported that cộng một mệnh đề đầy đủ.",
+      "Cách hai: chủ ngữ cộng is said, thought, believed to cộng động từ nguyên mẫu: He is said to be rich.",
+      "Việc đang xảy ra dùng to be đang làm. Việc đã xảy ra dùng to have cộng quá khứ phân từ.",
+      "Hay gặp trong tin tức khi không muốn hoặc không thể nêu nguồn cụ thể."
+    ],
+    "examples": [
+      {
+        "en": "It is said that this place is haunted.",
+        "vi": "Người ta nói rằng nơi này có ma."
+      },
+      {
+        "en": "He is thought to be living abroad.",
+        "vi": "Nhiều người cho rằng anh ấy đang sống ở nước ngoài."
+      },
+      {
+        "en": "The singer is reported to have left the band.",
+        "vi": "Theo báo chí, ca sĩ đó đã rời ban nhạc."
+      }
+    ],
+    "mistake": {
+      "wrong": "He is said that he is very rich.",
+      "right": "It is said that he is very rich.",
+      "why": "Đã dùng that cộng mệnh đề thì chủ ngữ phải là It. Nếu bắt đầu bằng He thì nói He is said to be rich."
+    },
+    "lessons": [
+      {
+        "id": "ch29-l07",
+        "title": "Động từ chỉ ý kiến"
+      }
+    ]
+  },
+  {
+    "stage": "b2-having-things-done",
+    "title": "Thể sai khiến: have hoặc get something done",
+    "points": [
+      "Have hoặc get cộng đồ vật cộng quá khứ phân từ: nhờ hoặc thuê người khác làm cho mình.",
+      "Đồ vật đứng giữa, quá khứ phân từ đứng cuối: I had my hair cut, không nói I cut my hair nếu thợ cắt.",
+      "Get thân mật hơn have. Có thể chia ở mọi thì: We're having new windows installed.",
+      "Cũng dùng cho chuyện không may xảy ra với mình: I had my wallet stolen."
+    ],
+    "examples": [
+      {
+        "en": "I need to get my phone fixed.",
+        "vi": "Tôi cần mang điện thoại đi sửa."
+      },
+      {
+        "en": "We're having solar panels installed next week.",
+        "vi": "Tuần sau nhà mình sẽ được lắp tấm pin mặt trời."
+      },
+      {
+        "en": "I had my passport stolen.",
+        "vi": "Tôi bị mất cắp hộ chiếu."
+      }
+    ],
+    "mistake": {
+      "wrong": "I cut my hair yesterday at a new salon.",
+      "right": "I had my hair cut yesterday at a new salon.",
+      "why": "Người Việt hay nói tôi cắt tóc, nhưng thợ mới là người cắt, nên tiếng Anh dùng had my hair cut."
+    },
+    "lessons": [
+      {
+        "id": "ch29-l05",
+        "title": "Thể sai khiến"
+      }
+    ]
+  },
+  {
+    "stage": "b2-complaining",
+    "title": "Khiếu nại lịch sự mà vẫn rõ ràng",
+    "points": [
+      "Theo ba bước: nói vấn đề, đưa bằng chứng, rồi nêu điều bạn muốn như refund, replacement hay discount.",
+      "Complain about + vấn đề: I'd like to complain about the noise. Không nói complain the noise.",
+      "Giữ giọng bình tĩnh, dùng I'm afraid hoặc Could you để lời phàn nàn nghe chuyên nghiệp hơn.",
+      "Hỏi lý do bằng Could you explain why, sau why là câu kể bình thường, không đảo ngữ."
+    ],
+    "examples": [
+      {
+        "en": "This isn't what I ordered.",
+        "vi": "Đây không phải món tôi đã gọi."
+      },
+      {
+        "en": "I'd like a refund for the cancelled flight.",
+        "vi": "Tôi muốn được hoàn tiền cho chuyến bay bị hủy."
+      },
+      {
+        "en": "Could you explain why my card was charged twice?",
+        "vi": "Bạn có thể giải thích vì sao thẻ của tôi bị trừ tiền hai lần không?"
+      }
+    ],
+    "mistake": {
+      "wrong": "I want to complain the room.",
+      "right": "I'd like to complain about the room.",
+      "why": "Complain cần có about trước điều bạn phàn nàn. I'd like to cũng lịch sự hơn I want to."
+    },
+    "lessons": [
+      {
+        "id": "ch13-l37",
+        "title": "to complain about"
+      }
+    ]
+  },
+  {
+    "stage": "b2-trouble-abroad",
+    "title": "Xử lý sự cố khi ở nước ngoài",
+    "points": [
+      "Report dùng khi trình báo: I need to report a stolen phone. Nhớ xin police report để làm bảo hiểm.",
+      "Miss là lỡ chuyến, lose là làm mất đồ. I missed my flight, I lost my passport.",
+      "Cover trong bảo hiểm nghĩa là chi trả. Make a claim là làm hồ sơ đòi bồi thường.",
+      "Khi không biết gọi ai, nhờ người khác: Could you put me in touch with the embassy?"
+    ],
+    "examples": [
+      {
+        "en": "I need to report a lost passport.",
+        "vi": "Tôi cần trình báo việc mất hộ chiếu."
+      },
+      {
+        "en": "Does my insurance cover hospital bills?",
+        "vi": "Bảo hiểm của tôi có chi trả viện phí không?"
+      },
+      {
+        "en": "I've missed my connection to Seoul.",
+        "vi": "Tôi bị lỡ chuyến bay nối tiếp đi Seoul."
+      }
+    ],
+    "mistake": {
+      "wrong": "I lost my flight to Seoul.",
+      "right": "I missed my flight to Seoul.",
+      "why": "Tiếng Việt nói mất chuyến bay, nhưng tiếng Anh dùng miss. Lose chỉ dùng khi làm mất đồ vật."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-small-talk",
+    "title": "Giữ mạch chuyện khi nói chuyện xã giao",
+    "points": [
+      "Hỏi câu mở thay vì câu có hoặc không: What made you move here? giúp người kia kể thêm.",
+      "Nối chuyện bằng That reminds me of hoặc Speaking of để cuộc trò chuyện chảy tự nhiên.",
+      "By the way và Anyway dùng để chuyển chủ đề nhẹ nhàng, không bị đột ngột.",
+      "Câu hỏi đuôi như isn't it, don't you mời người kia đồng tình và nói tiếp."
+    ],
+    "examples": [
+      {
+        "en": "So, how do you know the host?",
+        "vi": "Thế bạn quen chủ nhà thế nào?"
+      },
+      {
+        "en": "Oh really? What made you learn Japanese?",
+        "vi": "Ồ thật à? Điều gì khiến bạn học tiếng Nhật?"
+      },
+      {
+        "en": "Great party, isn't it?",
+        "vi": "Bữa tiệc vui nhỉ?"
+      }
+    ],
+    "mistake": {
+      "wrong": "What made you to choose this job?",
+      "right": "What made you choose this job?",
+      "why": "Sau make cộng người, động từ để nguyên mẫu không có to."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-storytelling",
+    "title": "Kể chuyện: quá khứ tiếp diễn và quá khứ đơn",
+    "points": [
+      "Quá khứ tiếp diễn tả bối cảnh, quá khứ đơn là sự việc chen vào: I was cooking when the phone rang.",
+      "Dùng All of a sudden, Just then để tạo bất ngờ, In the end hoặc To cut a long story short để kết.",
+      "Mở đầu gây tò mò: You'll never guess what happened. Sau what là câu kể, không đảo ngữ.",
+      "Trong khi kể, dùng thì quá khứ cho đồng bộ, đừng nhảy qua lại với hiện tại."
+    ],
+    "examples": [
+      {
+        "en": "I was just leaving the house when the phone rang.",
+        "vi": "Tôi vừa ra khỏi nhà thì điện thoại reo."
+      },
+      {
+        "en": "All of a sudden, the lights went out.",
+        "vi": "Đột nhiên, đèn tắt phụt."
+      },
+      {
+        "en": "To cut a long story short, we got lost.",
+        "vi": "Nói ngắn gọn thì chúng tôi bị lạc."
+      }
+    ],
+    "mistake": {
+      "wrong": "I cooked dinner when the phone was ringing.",
+      "right": "I was cooking dinner when the phone rang.",
+      "why": "Việc đang diễn ra dài hơn dùng quá khứ tiếp diễn. Việc ngắn chen ngang dùng quá khứ đơn."
+    },
+    "lessons": [
+      {
+        "id": "ch01-l06",
+        "title": "Thì quá khứ tiếp diễn"
+      },
+      {
+        "id": "ch01-l05",
+        "title": "Thì quá khứ đơn"
+      }
+    ]
+  },
+  {
+    "stage": "b2-predicting",
+    "title": "Dự đoán: likely, bound to, I doubt, a good chance",
+    "points": [
+      "Từ chắc đến không chắc: bound to, likely to, there's a good chance, I doubt.",
+      "Be likely to và be bound to đi với động từ nguyên mẫu: It's likely to rain.",
+      "I doubt mang nghĩa phủ định sẵn, phía sau là câu khẳng định: I doubt he'll come.",
+      "I'd be surprised if cộng quá khứ đơn là cách khéo léo nói việc khó xảy ra."
+    ],
+    "examples": [
+      {
+        "en": "It's likely to take longer.",
+        "vi": "Nhiều khả năng là sẽ mất nhiều thời gian hơn."
+      },
+      {
+        "en": "There's a good chance she'll get the job.",
+        "vi": "Rất có thể cô ấy sẽ được nhận vào làm."
+      },
+      {
+        "en": "I doubt they'll agree.",
+        "vi": "Tôi không nghĩ là họ sẽ đồng ý."
+      }
+    ],
+    "mistake": {
+      "wrong": "I doubt he won't come.",
+      "right": "I doubt he'll come.",
+      "why": "I doubt đã có nghĩa là tôi nghĩ là không, thêm not sẽ thành phủ định hai lần và sai nghĩa."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-cause-effect",
+    "title": "Nói nguyên nhân và hệ quả",
+    "points": [
+      "Nguyên nhân là danh từ: due to, because of, thanks to. Nguyên nhân là mệnh đề: because, since.",
+      "Thanks to dùng cho kết quả tốt. Kết quả xấu thì dùng because of hoặc due to.",
+      "Nêu hệ quả: As a result hoặc Therefore ở đầu câu, This has led to cộng danh từ.",
+      "Lead to, result in, cause đều đi trực tiếp với danh từ: This led to higher prices."
+    ],
+    "examples": [
+      {
+        "en": "This is mainly due to rising costs.",
+        "vi": "Việc này chủ yếu là do chi phí tăng."
+      },
+      {
+        "en": "As a result, the project was delayed.",
+        "vi": "Vì vậy, dự án bị chậm."
+      },
+      {
+        "en": "Thanks to your help, we finished on time.",
+        "vi": "Nhờ có sự giúp đỡ của bạn, chúng tôi đã xong đúng hạn."
+      }
+    ],
+    "mistake": {
+      "wrong": "Because of it rained, the match was cancelled.",
+      "right": "Because it rained, the match was cancelled.",
+      "why": "Because of chỉ đi với danh từ. Trước cả một mệnh đề có chủ ngữ và động từ thì dùng because."
+    },
+    "lessons": [
+      {
+        "id": "ch07-l02",
+        "title": "Mệnh đề trạng ngữ chỉ lý do"
+      },
+      {
+        "id": "ch22-l03",
+        "title": "Giới từ có thể là một ngữ"
+      },
+      {
+        "id": "ch06-l01",
+        "title": "Cụm từ chỉ kết quả"
+      }
+    ]
+  },
+  {
+    "stage": "b2-trends",
+    "title": "Mô tả số liệu: rise, fall, level off",
+    "points": [
+      "Động từ: rise, rose, risen; fall, fell, fallen; level off là chững lại; peak là chạm đỉnh.",
+      "Trạng từ cho động từ: rose sharply, fell slightly. Tính từ cho danh từ: a sharp rise, a slight fall.",
+      "Rise to là tăng lên đến mức nào. Rise by là tăng thêm một lượng bao nhiêu.",
+      "Danh từ rise, increase, drop đi với in: a steady rise in prices."
+    ],
+    "examples": [
+      {
+        "en": "Sales rose sharply in March.",
+        "vi": "Doanh số tăng mạnh vào tháng Ba."
+      },
+      {
+        "en": "The number of users fell slightly to ten thousand.",
+        "vi": "Số người dùng giảm nhẹ, xuống còn mười nghìn."
+      },
+      {
+        "en": "There's been a steady rise in online orders.",
+        "vi": "Thời gian qua, số đơn hàng trực tuyến tăng đều."
+      }
+    ],
+    "mistake": {
+      "wrong": "Sales were increased sharply last year.",
+      "right": "Sales increased sharply last year.",
+      "why": "Increase, rise, fall ở đây là nội động từ, không dùng bị động. Doanh số tự tăng chứ không bị ai tăng."
+    },
+    "lessons": [
+      {
+        "id": "ch18-l07",
+        "title": "Trạng từ chỉ thể cách"
+      }
+    ]
+  },
+  {
+    "stage": "b2-declining-politely",
+    "title": "Từ chối khéo mà không mất lòng",
+    "points": [
+      "Cảm ơn hoặc tỏ ra quý lời mời trước: Thanks for asking hoặc I'd love to, rồi mới nói but.",
+      "Lý do ngắn và thật là đủ, không cần giải thích dài dòng.",
+      "Can I take a rain check là xin dời sang dịp khác, cho thấy bạn vẫn muốn đi.",
+      "Trong công việc, I'm afraid và Unfortunately làm lời từ chối mềm và chuyên nghiệp hơn."
+    ],
+    "examples": [
+      {
+        "en": "I'd love to, but I'm working that day.",
+        "vi": "Mình rất muốn, nhưng hôm đó mình phải làm."
+      },
+      {
+        "en": "Can I take a rain check on dinner?",
+        "vi": "Mình hẹn bữa tối hôm khác được không?"
+      },
+      {
+        "en": "I'm afraid I must say no to the offer.",
+        "vi": "Tôi e là tôi phải từ chối lời đề nghị này."
+      }
+    ],
+    "mistake": {
+      "wrong": "No, I don't want. I'm busy.",
+      "right": "I'd love to, but I'm a bit busy.",
+      "why": "Từ chối thẳng nghe cộc lốc trong tiếng Anh. Nên tỏ ra quý lời mời trước rồi mới từ chối."
+    },
+    "lessons": []
+  }
+]

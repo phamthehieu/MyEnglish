@@ -4,8 +4,13 @@ import fs from "node:fs";
 
 const catalog = JSON.parse(fs.readFileSync(new URL("../src/data/grammarCatalog.json", import.meta.url), "utf8"));
 const lessonIds = new Set(catalog.files.flatMap((f) => (f.lessons ?? []).map((l) => l.id)));
+// The stages of every level that has sentence patterns (src/data/patterns/<level>.json)
+const patternsDir = new URL("../src/data/patterns/", import.meta.url);
 const stages = new Set(
-  ["a1", "a2", "b1"].flatMap((lv) => JSON.parse(fs.readFileSync(new URL(`../src/data/patterns/${lv}.json`, import.meta.url), "utf8")).map((p) => p.topic))
+  fs
+    .readdirSync(patternsDir)
+    .filter((f) => /^[a-c][12]\.json$/.test(f))
+    .flatMap((f) => JSON.parse(fs.readFileSync(new URL(f, patternsDir), "utf8")).map((p) => p.topic))
 );
 
 const problems = [];

@@ -1,0 +1,170 @@
+[
+  {
+    "stage": "b2-speculating-past",
+    "title": "Đoán về quá khứ: must have, might have, can't have",
+    "points": [
+      "Modal + have + quá khứ phân từ dùng để đoán chuyện đã xảy ra: must have gone, might have forgotten.",
+      "Must have: gần như chắc chắn. Might have hoặc could have: có thể, không chắc. Can't have: chắc chắn là không.",
+      "Phủ định của must have là can't have, không phải mustn't have. Mustn't nghĩa là cấm.",
+      "Sau have luôn là quá khứ phân từ: gone, been, left, không dùng động từ nguyên mẫu."
+    ],
+    "examples": [
+      { "en": "She must have missed the bus.", "vi": "Chắc hẳn cô ấy đã lỡ xe buýt." },
+      { "en": "He might have been stuck in traffic.", "vi": "Có thể anh ấy đã bị kẹt xe." },
+      { "en": "It can't have been cheap.", "vi": "Chắc chắn là không rẻ đâu." }
+    ],
+    "mistake": {
+      "wrong": "He mustn't have seen my message.",
+      "right": "He can't have seen my message.",
+      "why": "Mustn't nghĩa là cấm. Muốn nói chắc chắn đã không xảy ra thì dùng can't have."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-regrets",
+    "title": "Tiếc nuối: wish + had, should have, if only",
+    "points": [
+      "Tiếc về quá khứ: I wish hoặc If only + had + quá khứ phân từ. Thì lùi một bậc so với sự việc thật.",
+      "Should have + quá khứ phân từ: lẽ ra nên làm. Shouldn't have: lẽ ra không nên làm.",
+      "If only mạnh hơn I wish và thường đứng một mình như một câu cảm thán.",
+      "It would have been better to + động từ nguyên mẫu là cách nói nhẹ nhàng khi nhìn lại."
+    ],
+    "examples": [
+      { "en": "I wish I had studied harder.", "vi": "Giá mà tôi đã học chăm hơn." },
+      { "en": "We should have left earlier.", "vi": "Lẽ ra chúng ta nên đi sớm hơn." },
+      { "en": "If only I hadn't said that.", "vi": "Giá như tôi đã không nói điều đó." }
+    ],
+    "mistake": {
+      "wrong": "I wish I studied harder at school.",
+      "right": "I wish I had studied harder at school.",
+      "why": "Tiếc chuyện ở quá khứ thì dùng had cộng quá khứ phân từ. Studied chỉ dùng khi ước về hiện tại."
+    },
+    "lessons": ["ch04-l03", "ch28-l11"]
+  },
+  {
+    "stage": "b2-third-conditional",
+    "title": "Điều kiện loại ba và câu điều kiện hỗn hợp",
+    "points": [
+      "Loại ba nói về quá khứ không có thật: If + had + quá khứ phân từ, would have + quá khứ phân từ.",
+      "Không dùng would trong vế if. Viết tắt I'd ở vế if là I had, ở vế sau là I would.",
+      "Hỗn hợp: quá khứ dẫn tới hiện tại. If I had taken that job, I would be rich now.",
+      "Trang trọng hơn: bỏ if và đảo had lên đầu. Had I known, I would have come."
+    ],
+    "examples": [
+      { "en": "If I had known, I would have helped you.", "vi": "Nếu tôi biết thì tôi đã giúp bạn rồi." },
+      { "en": "If we had left earlier, we wouldn't be so late now.", "vi": "Nếu đi sớm hơn thì giờ chúng ta đã không muộn thế này." },
+      { "en": "Had she asked, I would have explained.", "vi": "Nếu cô ấy hỏi, tôi đã giải thích rồi." }
+    ],
+    "mistake": {
+      "wrong": "If I would have known, I would have come.",
+      "right": "If I had known, I would have come.",
+      "why": "Vế if của câu điều kiện loại ba dùng had cộng quá khứ phân từ, không dùng would have."
+    },
+    "lessons": ["ch03-l01", "ch03-l03"]
+  },
+  {
+    "stage": "b2-hypotheticals",
+    "title": "Giả định: what if, suppose, I'd rather you",
+    "points": [
+      "What if, suppose, imagine if + thì quá khứ đặt ra một tình huống tưởng tượng ở hiện tại hoặc tương lai.",
+      "Câu hỏi đi kèm dùng would: Suppose you won the lottery, what would you do?",
+      "I'd rather you + thì quá khứ là nhờ hoặc phản đối lịch sự: I'd rather you didn't smoke here.",
+      "Với cùng một người thì dùng động từ nguyên mẫu: I'd rather stay. Khác người mới cần thì quá khứ."
+    ],
+    "examples": [
+      { "en": "What if we moved the meeting to Friday?", "vi": "Nếu mình dời cuộc họp sang thứ Sáu thì sao?" },
+      { "en": "Suppose you lost your job, what would you do?", "vi": "Giả sử bạn mất việc, bạn sẽ làm gì?" },
+      { "en": "I'd rather you called me first.", "vi": "Tôi mong bạn gọi cho tôi trước thì hơn." }
+    ],
+    "mistake": {
+      "wrong": "I'd rather you don't tell anyone.",
+      "right": "I'd rather you didn't tell anyone.",
+      "why": "Sau I'd rather you dùng thì quá khứ dù ý vẫn nói về hiện tại."
+    },
+    "lessons": ["ch09-l17", "ch20-l15", "ch28-l11"]
+  },
+  {
+    "stage": "b2-arguing-a-point",
+    "title": "Giữ vững quan điểm: the thing is, my point is",
+    "points": [
+      "The thing is hoặc The problem is mở đầu lý do chính. Sau đó là một mệnh đề đầy đủ.",
+      "What I'm getting at is hoặc My point is giúp kéo cuộc nói chuyện về đúng ý chính của bạn.",
+      "Let's not forget that nhắc lại một sự thật để lập luận vững hơn, nghe lịch sự hơn You forget that.",
+      "That's exactly why biến lý lẽ của người kia thành lý do ủng hộ bạn."
+    ],
+    "examples": [
+      { "en": "The thing is, we don't have the budget.", "vi": "Vấn đề là chúng ta không có ngân sách." },
+      { "en": "My point is that time is limited.", "vi": "Ý tôi là thời gian có hạn." },
+      { "en": "That's exactly why we need a plan.", "vi": "Chính vì vậy mà chúng ta cần một kế hoạch." }
+    ],
+    "mistake": {
+      "wrong": "The thing is that, we have no time.",
+      "right": "The thing is, we have no time.",
+      "why": "Dùng the thing is that không có dấu phẩy, hoặc the thing is có dấu phẩy. Không dùng cả hai."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "b2-contrasting",
+    "title": "Đối lập: whereas, despite, even though",
+    "points": [
+      "Whereas nối hai ý trái ngược trong cùng một câu, trước nó thường có dấu phẩy.",
+      "Despite và in spite of đi với danh từ hoặc động từ thêm ing. Although và even though đi với mệnh đề.",
+      "Even though nhấn mạnh hơn although. Không dùng thêm but trong cùng câu.",
+      "On the other hand đưa ra mặt còn lại khi so sánh ưu và nhược điểm."
+    ],
+    "examples": [
+      { "en": "Despite the delays, we finished on time.", "vi": "Dù bị chậm trễ, chúng tôi vẫn xong đúng hạn." },
+      { "en": "Even though it was expensive, I enjoyed it.", "vi": "Mặc dù đắt, tôi vẫn thấy thích." },
+      { "en": "I like mornings, whereas she likes evenings.", "vi": "Tôi thích buổi sáng, còn cô ấy thích buổi tối." }
+    ],
+    "mistake": {
+      "wrong": "Although it was late, but she called back.",
+      "right": "Although it was late, she called back.",
+      "why": "Tiếng Việt nói Dù... nhưng..., còn tiếng Anh chỉ dùng although hoặc but, không dùng cả hai."
+    },
+    "lessons": ["ch09-l01", "ch09-l10"]
+  },
+  {
+    "stage": "b2-emphasis",
+    "title": "Nhấn mạnh: What I need is, It was... that",
+    "points": [
+      "Câu chẻ với what đẩy ý chính xuống cuối: What I need is more time.",
+      "It was + phần nhấn mạnh + that hoặc who chỉ rõ đúng người, đúng nguyên nhân: It was Linh who found it.",
+      "Thêm do, does, did trước động từ nguyên mẫu để khẳng định mạnh: I do care. She did call.",
+      "The reason is that hoặc The reason I'm calling is giúp nói lý do rõ ràng ngay từ đầu."
+    ],
+    "examples": [
+      { "en": "What I really need is a long holiday.", "vi": "Điều tôi thật sự cần là một kỳ nghỉ dài." },
+      { "en": "It was the update that caused the problem.", "vi": "Chính bản cập nhật đã gây ra sự cố." },
+      { "en": "I do understand the risk.", "vi": "Tôi có hiểu rủi ro thật mà." }
+    ],
+    "mistake": {
+      "wrong": "I do cares about it.",
+      "right": "I do care about it.",
+      "why": "Sau do, does, did nhấn mạnh thì động từ giữ nguyên mẫu, không thêm s hay ed."
+    },
+    "lessons": ["ch14-l02"]
+  },
+  {
+    "stage": "b2-hedging",
+    "title": "Nói giảm cho lịch sự: it seems, I'd tend to think",
+    "points": [
+      "It seems that, it appears that, it looks like làm tin xấu nghe nhẹ hơn và cho thấy bạn chưa chắc chắn.",
+      "I'd tend to think, I'd say đưa ý kiến mà vẫn để ngỏ cho người khác bàn thêm.",
+      "It might be a good idea to + động từ thay cho you should khi góp ý với cấp trên hoặc khách hàng.",
+      "Not entirely, not quite làm lời phản đối mềm hơn: I'm not entirely sure."
+    ],
+    "examples": [
+      { "en": "It seems that there's been a mistake.", "vi": "Có vẻ như đã có nhầm lẫn." },
+      { "en": "I'd tend to think it's too early.", "vi": "Tôi thiên về nghĩ là còn quá sớm." },
+      { "en": "It might be a good idea to check again.", "vi": "Có lẽ sẽ tốt nếu mình kiểm tra lại." }
+    ],
+    "mistake": {
+      "wrong": "It seems that the server is down, I am sure.",
+      "right": "It seems that the server is down.",
+      "why": "It seems đã có nghĩa là chưa chắc chắn, thêm I am sure làm câu tự mâu thuẫn."
+    },
+    "lessons": []
+  }
+]

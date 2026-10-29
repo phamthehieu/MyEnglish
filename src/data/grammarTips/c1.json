@@ -1,0 +1,778 @@
+[
+  {
+    "stage": "c1-nuanced-opinions",
+    "title": "Nêu ý kiến có sắc thái",
+    "points": [
+      "As far as I'm concerned và to my mind báo hiệu đây là quan điểm riêng, trang trọng hơn I think.",
+      "It strikes me that hoặc it occurs to me that đưa ra một nhận xét vừa nghĩ ra, nghe tinh tế, không áp đặt.",
+      "I'd go as far as to say báo trước một nhận định mạnh. Ngược lại, I wouldn't go that far làm ý nhẹ đi.",
+      "Không dùng In my opinion và I think trong cùng một câu, vì nghĩa bị lặp."
+    ],
+    "examples": [
+      {
+        "en": "As far as I'm concerned, the matter is closed.",
+        "vi": "Theo tôi thì chuyện này đã xong."
+      },
+      {
+        "en": "It strikes me that nobody asked the users.",
+        "vi": "Tôi chợt nhận ra là chưa ai hỏi người dùng."
+      },
+      {
+        "en": "To my mind, both sides have a point.",
+        "vi": "Theo tôi, cả hai bên đều có lý."
+      }
+    ],
+    "mistake": {
+      "wrong": "In my opinion, I think it's too expensive.",
+      "right": "In my opinion, it's too expensive.",
+      "why": "In my opinion đã có nghĩa là tôi nghĩ, thêm I think nữa là lặp ý."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-conceding",
+    "title": "Nhượng bộ rồi phản biện",
+    "points": [
+      "Granted và admittedly thừa nhận một điểm đúng của người kia trước, rồi but đưa ra lập luận chính.",
+      "I take your point, point taken, fair enough cho thấy bạn đã nghe kỹ trước khi phản biện.",
+      "Be that as it may, even so, that said đều nghĩa là dù vậy. Be that as it may trang trọng nhất.",
+      "Much as I like it là cách nói trang trọng của although I like it."
+    ],
+    "examples": [
+      {
+        "en": "Granted, it's expensive, but it's still worth it.",
+        "vi": "Đúng là nó đắt, nhưng vẫn đáng."
+      },
+      {
+        "en": "I take your point, but the data says otherwise.",
+        "vi": "Tôi ghi nhận ý bạn, nhưng số liệu lại nói khác."
+      },
+      {
+        "en": "Much as I like the idea, it's unrealistic.",
+        "vi": "Dù rất thích ý tưởng này, nó không thực tế."
+      }
+    ],
+    "mistake": {
+      "wrong": "Even so that, we should try.",
+      "right": "Even so, we should try.",
+      "why": "Even so đứng một mình như dù vậy. Không thêm that phía sau."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-inversion",
+    "title": "Đảo ngữ nhấn mạnh: never have I, not only",
+    "points": [
+      "Khi never, rarely, seldom, not only, only when đứng đầu câu, trợ động từ đảo lên trước chủ ngữ.",
+      "Câu không có trợ động từ thì mượn do, does, did: Rarely do we get feedback like this.",
+      "Với only when, only after, đảo ngữ nằm ở vế sau: Only when it was too late did we realise.",
+      "Under no circumstances, on no account rất trang trọng, hay gặp trong quy định và cảnh báo."
+    ],
+    "examples": [
+      {
+        "en": "Never have I seen such a mess.",
+        "vi": "Chưa bao giờ tôi thấy cảnh bừa bộn như vậy."
+      },
+      {
+        "en": "Not only is it fast, but it's cheap too.",
+        "vi": "Nó không chỉ nhanh mà còn rẻ nữa."
+      },
+      {
+        "en": "Only then did I understand the problem.",
+        "vi": "Chỉ đến lúc đó tôi mới hiểu vấn đề."
+      }
+    ],
+    "mistake": {
+      "wrong": "Never I have seen such a mess.",
+      "right": "Never have I seen such a mess.",
+      "why": "Never đứng đầu câu thì trợ động từ have phải đứng trước chủ ngữ I."
+    },
+    "lessons": [
+      {
+        "id": "ch18-l18",
+        "title": "Phép đảo chủ ngữ và động từ sau các trạng từ"
+      },
+      {
+        "id": "ch03-l03",
+        "title": "Đảo ngữ trong câu điều kiện"
+      }
+    ]
+  },
+  {
+    "stage": "c1-advanced-conditionals",
+    "title": "Điều kiện nâng cao: should you, but for, assuming",
+    "points": [
+      "Should you need là đảo ngữ trang trọng của if you need, rất hay gặp trong email công việc.",
+      "But for và if it weren't for nghĩa là nếu không có. Với quá khứ dùng had it not been for.",
+      "Assuming, supposing, provided that thay cho if khi lập kế hoạch dựa trên một giả định.",
+      "Were it not for là đảo ngữ của if it weren't for, trang trọng hơn."
+    ],
+    "examples": [
+      {
+        "en": "Should you need anything else, just let me know.",
+        "vi": "Nếu bạn cần thêm gì, cứ báo tôi."
+      },
+      {
+        "en": "But for your help, we'd have failed.",
+        "vi": "Nếu không có sự giúp đỡ của bạn, chúng tôi đã thất bại."
+      },
+      {
+        "en": "Assuming nothing goes wrong, we can start next week.",
+        "vi": "Giả sử không có gì trục trặc, tuần sau có thể bắt đầu."
+      }
+    ],
+    "mistake": {
+      "wrong": "Should you will need help, call me.",
+      "right": "Should you need help, call me.",
+      "why": "Sau should you là động từ nguyên mẫu, không thêm will."
+    },
+    "lessons": [
+      {
+        "id": "ch03-l03",
+        "title": "Đảo ngữ trong câu điều kiện"
+      },
+      {
+        "id": "ch03-l01",
+        "title": "Ba loại câu điều kiện"
+      }
+    ]
+  },
+  {
+    "stage": "c1-reporting-verbs",
+    "title": "Động từ tường thuật: insist on, urge, admit, suggest",
+    "points": [
+      "Thay said bằng động từ thể hiện thái độ: insist, urge, warn, admit, deny, suggest.",
+      "Insist on, deny, admit, suggest, recommend đi với động từ thêm ing: She denied taking it.",
+      "Urge, warn, encourage đi với tân ngữ rồi to cộng động từ: He warned me not to sign it.",
+      "Suggest không đi với tân ngữ rồi to: không nói suggest me to go."
+    ],
+    "examples": [
+      {
+        "en": "He insisted on paying the bill.",
+        "vi": "Anh ấy nhất quyết trả tiền."
+      },
+      {
+        "en": "She urged us to act quickly.",
+        "vi": "Cô ấy thúc giục chúng tôi hành động nhanh."
+      },
+      {
+        "en": "She suggested postponing the trip.",
+        "vi": "Cô ấy đề xuất hoãn chuyến đi."
+      }
+    ],
+    "mistake": {
+      "wrong": "She suggested me to take a break.",
+      "right": "She suggested that I take a break.",
+      "why": "Suggest không đi với tân ngữ cộng to. Dùng suggest that cộng mệnh đề, hoặc suggest cộng ing."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-diplomatic-disagreement",
+    "title": "Phản đối khéo léo",
+    "points": [
+      "With respect hoặc with all due respect mở đầu lời phản đối thẳng nhưng lịch sự với người cấp cao.",
+      "Thêm would hoặc not sure làm lời phản đối mềm hơn: I'm not sure I'd agree with that.",
+      "Câu hỏi phủ định couldn't we, wouldn't it be better đưa ra phương án khác mà không bác bỏ thẳng.",
+      "I see where you're coming from ghi nhận lý do của người kia trước khi đưa ý khác."
+    ],
+    "examples": [
+      {
+        "en": "With respect, the data doesn't support that.",
+        "vi": "Với tất cả sự tôn trọng, số liệu không ủng hộ điều đó."
+      },
+      {
+        "en": "Couldn't we look at other options instead?",
+        "vi": "Sao chúng ta không xem xét các phương án khác?"
+      },
+      {
+        "en": "I see where you're coming from, but it's risky.",
+        "vi": "Tôi hiểu vì sao bạn nghĩ vậy, nhưng nó rủi ro."
+      }
+    ],
+    "mistake": {
+      "wrong": "With all respect, you are wrong.",
+      "right": "With all due respect, I see it differently.",
+      "why": "Cụm cố định là with all due respect. Sau đó nên nói về quan điểm của bạn thay vì nói người kia sai."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-speculating-future",
+    "title": "Dự đoán tương lai: bound to, set to, will have done",
+    "points": [
+      "Be bound to cộng động từ: chắc chắn sẽ xảy ra. Be set to và be due to: đã lên kế hoạch, sắp xảy ra.",
+      "On the verge of và on the brink of cộng danh từ hoặc ing: đang rất gần một điều quan trọng.",
+      "Will have cộng quá khứ phân từ: sẽ xong trước một mốc. Will be cộng ing: sẽ đang làm vào lúc đó.",
+      "Mốc thời gian thường đi với by: by Friday, by next year."
+    ],
+    "examples": [
+      {
+        "en": "It's bound to cause problems.",
+        "vi": "Chắc chắn nó sẽ gây ra rắc rối."
+      },
+      {
+        "en": "We're on the verge of signing the deal.",
+        "vi": "Chúng tôi sắp sửa ký hợp đồng."
+      },
+      {
+        "en": "By next year, we'll have doubled our users.",
+        "vi": "Đến năm sau, chúng ta sẽ tăng gấp đôi số người dùng."
+      }
+    ],
+    "mistake": {
+      "wrong": "We're on the verge of sign the deal.",
+      "right": "We're on the verge of signing the deal.",
+      "why": "Sau giới từ of, động từ phải thêm ing."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-generalising",
+    "title": "Khái quát mà không quá đà",
+    "points": [
+      "By and large, on the whole, all in all đều nghĩa là nhìn chung, dùng cho nhận định đúng phần lớn.",
+      "Tend to cộng động từ nói về điều thường xảy ra, nhẹ hơn always và tránh khái quát quá mức.",
+      "Generally speaking, as a rule, for the most part cho người nghe biết vẫn có ngoại lệ.",
+      "There's a tendency to nhận xét thói quen chung mà không chỉ trích ai cụ thể."
+    ],
+    "examples": [
+      {
+        "en": "By and large, the feedback was positive.",
+        "vi": "Nhìn chung, phản hồi tích cực."
+      },
+      {
+        "en": "People tend to underestimate the cost.",
+        "vi": "Mọi người thường đánh giá thấp chi phí."
+      },
+      {
+        "en": "Generally speaking, smaller teams move faster.",
+        "vi": "Nói chung, nhóm nhỏ làm nhanh hơn."
+      }
+    ],
+    "mistake": {
+      "wrong": "People are tend to forget passwords.",
+      "right": "People tend to forget passwords.",
+      "why": "Tend là động từ thường, không đi với are. Chỉ dùng are khi nói are likely to."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-signposting",
+    "title": "Dẫn dắt người nghe khi trình bày",
+    "points": [
+      "Let me now turn to và moving on to báo hiệu bạn chuyển sang phần mới, giúp người nghe không bị lạc.",
+      "To put it another way, in other words, put simply dùng để nói lại một ý theo cách dễ hiểu hơn.",
+      "Which brings me to nối ý vừa nói với ý tiếp theo, nghe mạch lạc hơn nhiều so với and next.",
+      "Bị hỏi giữa chừng, nói I'll come back to that in a moment để giữ mạch mà vẫn lịch sự."
+    ],
+    "examples": [
+      {
+        "en": "Let me now turn to the main risks.",
+        "vi": "Giờ tôi xin chuyển sang những rủi ro chính."
+      },
+      {
+        "en": "To put it another way, we're losing money.",
+        "vi": "Nói cách khác, chúng ta đang lỗ."
+      },
+      {
+        "en": "Which brings me to my next point.",
+        "vi": "Điều này đưa tôi đến với ý tiếp theo."
+      }
+    ],
+    "mistake": {
+      "wrong": "Let me now turn to talk about the budget.",
+      "right": "Let me now turn to the budget.",
+      "why": "Turn to ở đây đi với danh từ, không cần thêm talk about vì nghĩa đã là chuyển sang nói về."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-cleft-sentences",
+    "title": "Câu chẻ: What I need is, It was ... who",
+    "points": [
+      "Câu chẻ tách một câu thành hai vế để dồn sự chú ý vào một phần: What worries me most is the deadline.",
+      "It was cộng phần cần nhấn cộng who hoặc that: It was Lan who found the mistake. Với người dùng who, với vật dùng that.",
+      "All I want is và the last thing we need is cũng là câu chẻ, nghe nhấn mạnh và giàu cảm xúc hơn câu thường.",
+      "Sau All I did was, All you have to do is có thể dùng động từ nguyên mẫu không to: All I did was ask."
+    ],
+    "examples": [
+      {
+        "en": "What worries me most is the hidden costs.",
+        "vi": "Điều làm tôi lo nhất là các chi phí ẩn."
+      },
+      {
+        "en": "It was my mentor who made the difference.",
+        "vi": "Chính người hướng dẫn của tôi đã tạo nên sự khác biệt."
+      },
+      {
+        "en": "The last thing we need is another delay.",
+        "vi": "Điều chúng ta không hề muốn lúc này là thêm một lần trì hoãn."
+      }
+    ],
+    "mistake": {
+      "wrong": "What I need it is more time.",
+      "right": "What I need is more time.",
+      "why": "Vế What I need đã là chủ ngữ, thêm it nữa là thừa chủ ngữ, lỗi rất hay gặp khi dịch từ tiếng Việt."
+    },
+    "lessons": [
+      {
+        "id": "ch14-l02",
+        "title": "Nhấn mạnh trong cách viết"
+      }
+    ]
+  },
+  {
+    "stage": "c1-constructive-criticism",
+    "title": "Góp ý khéo mà vẫn rõ ràng",
+    "points": [
+      "I'd question whether nêu nghi ngờ lịch sự, thay cho câu nói thẳng như This is wrong.",
+      "It might be worth cộng động từ thêm ing gợi ý một cách sửa, người nghe thấy được tôn trọng.",
+      "There's room for improvement nghĩa là đã ổn nhưng vẫn có thể tốt hơn, nhẹ nhàng hơn It's not good enough.",
+      "My only concern would be cho thấy nhìn chung bạn đồng ý, chỉ còn một điểm nhỏ cần xem lại."
+    ],
+    "examples": [
+      {
+        "en": "I'd question whether the budget is realistic.",
+        "vi": "Tôi hơi băn khoăn liệu ngân sách có thực tế không."
+      },
+      {
+        "en": "It might be worth getting a second opinion.",
+        "vi": "Có lẽ cũng nên hỏi thêm ý kiến người khác."
+      },
+      {
+        "en": "There's room for a clearer structure.",
+        "vi": "Bố cục vẫn còn có thể rõ ràng hơn."
+      }
+    ],
+    "mistake": {
+      "wrong": "It might be worth to check the figures again.",
+      "right": "It might be worth checking the figures again.",
+      "why": "Sau worth luôn dùng động từ thêm ing, không dùng to cộng động từ."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-past-criticism",
+    "title": "Trách móc và tiếc nuối chuyện đã qua",
+    "points": [
+      "Should have và ought to have cộng quá khứ phân từ: lẽ ra phải làm nhưng đã không làm.",
+      "Needn't have done: đã làm nhưng hóa ra không cần. Didn't need to do: không cần nên thường là đã không làm.",
+      "Was supposed to nói về điều đã hẹn hoặc dự kiến nhưng không thành: We were supposed to finish by Friday.",
+      "Could at least have trách nhẹ rằng người kia không làm cả điều tối thiểu: You could at least have said sorry."
+    ],
+    "examples": [
+      {
+        "en": "You really ought to have told me sooner.",
+        "vi": "Lẽ ra bạn phải nói với tôi sớm hơn mới đúng."
+      },
+      {
+        "en": "You needn't have gone to all that trouble.",
+        "vi": "Bạn đâu cần phải cất công như vậy."
+      },
+      {
+        "en": "You could at least have sent a message.",
+        "vi": "Ít ra bạn cũng nên nhắn một tin chứ."
+      }
+    ],
+    "mistake": {
+      "wrong": "You should told me earlier.",
+      "right": "You should have told me earlier.",
+      "why": "Nói về quá khứ phải dùng should have cộng quá khứ phân từ, không bỏ have."
+    },
+    "lessons": [
+      {
+        "id": "ch20-l22",
+        "title": "SHOULD + PERFEGTIWE"
+      }
+    ]
+  },
+  {
+    "stage": "c1-probability",
+    "title": "Nói mức độ chắc chắn tinh tế",
+    "points": [
+      "In all likelihood và the odds are that: rất có thể. In all likelihood trang trọng hơn, the odds are that thân mật hơn.",
+      "There's every chance nghĩa là khả năng rất cao, thường mang ý lạc quan. A slim chance là khả năng rất thấp.",
+      "It's highly unlikely that phủ nhận khả năng một cách khách quan, nghe lịch sự hơn I don't think.",
+      "Ghép đúng cặp: highly likely, highly unlikely. Không nói very much likely."
+    ],
+    "examples": [
+      {
+        "en": "In all likelihood, they'll say yes.",
+        "vi": "Rất có thể là họ sẽ đồng ý."
+      },
+      {
+        "en": "There's every chance you'll get the job.",
+        "vi": "Hoàn toàn có khả năng bạn sẽ được nhận."
+      },
+      {
+        "en": "It's highly unlikely that anyone will complain.",
+        "vi": "Rất khó có chuyện ai đó phàn nàn."
+      }
+    ],
+    "mistake": {
+      "wrong": "There's a big chance it'll rain.",
+      "right": "There's a good chance it'll rain.",
+      "why": "Tiếng Anh nói a good chance hoặc a strong chance, không nói a big chance như dịch từ khả năng lớn."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-feelings",
+    "title": "Bày tỏ cảm xúc một cách tinh tế",
+    "points": [
+      "I can't help feeling cộng tính từ hoặc mệnh đề: cảm giác không kìm được. Sau help dùng động từ thêm ing.",
+      "I must admit, I have to say, to be honest giúp thừa nhận cảm xúc khó nói một cách chân thành.",
+      "It's been weighing on me hoặc playing on my mind: một chuyện cứ đè nặng trong lòng suốt một thời gian.",
+      "I'd be lying if I said I wasn't nervous là cách thú nhận gián tiếp, mềm hơn I'm nervous."
+    ],
+    "examples": [
+      {
+        "en": "I can't help feeling a bit let down.",
+        "vi": "Tôi không khỏi cảm thấy hơi thất vọng."
+      },
+      {
+        "en": "I must admit I'm quite impressed.",
+        "vi": "Phải thú thật là tôi khá ấn tượng."
+      },
+      {
+        "en": "I'd be lying if I said I wasn't tempted.",
+        "vi": "Nói là không xiêu lòng thì là nói dối."
+      }
+    ],
+    "mistake": {
+      "wrong": "I can't help to feel worried.",
+      "right": "I can't help feeling worried.",
+      "why": "Cấu trúc can't help luôn đi với động từ thêm ing, không dùng to cộng động từ."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-pros-cons",
+    "title": "Cân nhắc ưu và nhược điểm",
+    "points": [
+      "On the upside, on the plus side giới thiệu mặt tốt. The downside is, the main drawback is nêu mặt hạn chế.",
+      "The catch is dùng cho điểm bất lợi bị giấu kín, thường đi kèm một lời mời hấp dẫn.",
+      "What it boils down to is hoặc it all comes down to rút mọi thứ về một yếu tố cốt lõi.",
+      "Chốt lại bằng outweigh: The benefits outweigh the costs nghĩa là lợi nhiều hơn hại."
+    ],
+    "examples": [
+      {
+        "en": "On the upside, there's no commute.",
+        "vi": "Mặt tích cực là không phải đi lại."
+      },
+      {
+        "en": "The downside is that it takes longer.",
+        "vi": "Điểm trừ là nó mất nhiều thời gian hơn."
+      },
+      {
+        "en": "What it boils down to is trust.",
+        "vi": "Rốt cuộc thì mọi chuyện nằm ở lòng tin."
+      }
+    ],
+    "mistake": {
+      "wrong": "The benefits are outweigh the costs.",
+      "right": "The benefits outweigh the costs.",
+      "why": "Outweigh là động từ, không đi cùng are. Lỗi này hay gặp do nhầm với cấu trúc are greater than."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-summarising",
+    "title": "Tóm tắt và chốt lại ý chính",
+    "points": [
+      "In a nutshell, long story short, basically dùng khi kể lại ngắn gọn, nghe thân mật.",
+      "The bottom line is that và at the end of the day nêu điều quan trọng nhất, bỏ qua chi tiết phụ.",
+      "All things considered và on the whole đưa ra kết luận sau khi đã cân nhắc cả hai mặt.",
+      "The key takeaway is that là cách chốt thông điệp cuối buổi họp, rất hay dùng trong công việc."
+    ],
+    "examples": [
+      {
+        "en": "In a nutshell, we need more time.",
+        "vi": "Nói gọn lại thì chúng ta cần thêm thời gian."
+      },
+      {
+        "en": "The bottom line is that we can't afford it.",
+        "vi": "Điều cốt lõi là chúng ta không đủ tiền."
+      },
+      {
+        "en": "All things considered, it went well.",
+        "vi": "Xét mọi mặt thì mọi việc diễn ra tốt."
+      }
+    ],
+    "mistake": {
+      "wrong": "In conclusion, I think that's all.",
+      "right": "All things considered, it was a success.",
+      "why": "Câu kết cần nêu kết luận thật, không chỉ báo là đã hết. In conclusion cũng quá trang trọng khi nói."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-euphemism",
+    "title": "Nói giảm nói tránh cho tế nhị",
+    "points": [
+      "Not the most cộng tính từ tốt là cách chê khéo: He's not the most patient person thay cho He's impatient.",
+      "A little on the cộng tính từ cộng side làm lời nhận xét tiêu cực nhẹ đi: a little on the expensive side.",
+      "Let someone go, made redundant là cách nói tránh của fire. Between jobs là cách nói tế nhị của unemployed.",
+      "Passed away nhẹ nhàng hơn died, nên dùng khi nói về người đã mất."
+    ],
+    "examples": [
+      {
+        "en": "He's not the most organised person.",
+        "vi": "Anh ấy không phải người ngăn nắp cho lắm."
+      },
+      {
+        "en": "It's a little on the small side.",
+        "vi": "Nó hơi nhỏ một chút."
+      },
+      {
+        "en": "They had to let some staff go.",
+        "vi": "Họ đã phải cho một số nhân viên nghỉ việc."
+      }
+    ],
+    "mistake": {
+      "wrong": "He's not the most lazy person.",
+      "right": "He's not the most hardworking person.",
+      "why": "Muốn chê khéo thì phủ định một tính từ tốt. Phủ định tính từ xấu lại thành lời khen."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-tough-questions",
+    "title": "Xử lý câu hỏi khó một cách khéo léo",
+    "points": [
+      "That's a fair question ghi nhận câu hỏi, cho bạn thêm vài giây suy nghĩ và cho thấy bạn không né tránh.",
+      "I'd rather not speculate từ chối đoán khi chưa có căn cứ. Sau rather là động từ nguyên mẫu không to.",
+      "Let me get back to you on hẹn trả lời sau. Get back to someone nghĩa là liên lạc lại để trả lời.",
+      "What I can say is cho biết phần thông tin bạn được phép chia sẻ, lịch sự mà vẫn minh bạch."
+    ],
+    "examples": [
+      {
+        "en": "That's a fair question, and the short answer is no.",
+        "vi": "Câu hỏi rất xác đáng, và câu trả lời ngắn gọn là không."
+      },
+      {
+        "en": "Let me get back to you on the exact figures.",
+        "vi": "Để tôi trả lời bạn sau về số liệu chính xác."
+      },
+      {
+        "en": "What I can say is your data is safe.",
+        "vi": "Điều tôi có thể nói là dữ liệu của bạn vẫn an toàn."
+      }
+    ],
+    "mistake": {
+      "wrong": "I'd rather not to speculate about the numbers.",
+      "right": "I'd rather not speculate about the numbers.",
+      "why": "Sau would rather và would rather not dùng động từ nguyên mẫu, không có to."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-doubt-certainty",
+    "title": "Nghi ngờ và khẳng định chắc chắn",
+    "points": [
+      "I have my doubts about cộng danh từ diễn tả hoài nghi nhẹ, vẫn để ngỏ khả năng mình sai.",
+      "I'm far from convinced that mạnh hơn I'm not sure: bạn còn rất nghi ngờ nhưng vẫn lịch sự.",
+      "There's no doubt that và there's no question that khẳng định chắc chắn, dùng khi có bằng chứng rõ.",
+      "I'd be very surprised if cộng động từ quá khứ là cách nói khéo của I don't think so."
+    ],
+    "examples": [
+      {
+        "en": "I have my doubts about their figures.",
+        "vi": "Tôi có phần nghi ngờ về số liệu của họ."
+      },
+      {
+        "en": "There's no doubt that prices will rise.",
+        "vi": "Không còn nghi ngờ gì nữa, giá sẽ tăng."
+      },
+      {
+        "en": "I'd be very surprised if they agreed.",
+        "vi": "Tôi sẽ rất ngạc nhiên nếu họ đồng ý."
+      }
+    ],
+    "mistake": {
+      "wrong": "There's no doubt about that prices will rise.",
+      "right": "There's no doubt that prices will rise.",
+      "why": "Trước một mệnh đề chỉ dùng that. About chỉ đi với danh từ: no doubt about it."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-strong-emphasis",
+    "title": "Nhấn mạnh bằng cụm cố định",
+    "points": [
+      "By no means nghĩa là hoàn toàn không, mạnh hơn not: It's by no means perfect.",
+      "Not in the slightest và not in the least nghĩa là không một chút nào, đặt sau động từ hoặc cuối câu.",
+      "Utterly và absolutely đi với tính từ mạnh như ridiculous, exhausted. Không nói very ridiculous.",
+      "The last thing I want is to nghĩa là điều tôi ít muốn nhất, hay dùng để trấn an người nghe."
+    ],
+    "examples": [
+      {
+        "en": "It's by no means easy.",
+        "vi": "Nó chẳng hề dễ dàng."
+      },
+      {
+        "en": "I'm not in the slightest worried.",
+        "vi": "Tôi chẳng lo lắng chút nào."
+      },
+      {
+        "en": "The last thing I want is to upset anyone.",
+        "vi": "Điều tôi không muốn nhất là làm ai đó buồn lòng."
+      }
+    ],
+    "mistake": {
+      "wrong": "That's very ridiculous.",
+      "right": "That's utterly ridiculous.",
+      "why": "Ridiculous đã là tính từ mạnh nên không đi với very. Hãy dùng utterly hoặc absolutely."
+    },
+    "lessons": [
+      {
+        "id": "ch14-l02",
+        "title": "Nhấn mạnh trong cách viết"
+      }
+    ]
+  },
+  {
+    "stage": "c1-narrative-inversion",
+    "title": "Đảo ngữ khi kể chuyện: little did I know",
+    "points": [
+      "Little did I know tạo bất ngờ khi kể chuyện. Sau little là did cộng chủ ngữ cộng động từ nguyên mẫu.",
+      "No sooner had I cộng V3 đi với than. Hardly had I cộng V3 đi với when. Cả hai nghĩa là vừa mới thì.",
+      "Only later did I kể điều mình hiểu ra sau sự việc. Đảo ngữ nằm ngay sau only later.",
+      "Vế xảy ra trước dùng quá khứ hoàn thành, vế xảy ra sau dùng quá khứ đơn."
+    ],
+    "examples": [
+      {
+        "en": "Little did I know that she was my boss.",
+        "vi": "Tôi nào ngờ rằng cô ấy là sếp của tôi."
+      },
+      {
+        "en": "No sooner had I left the house than it rained.",
+        "vi": "Tôi vừa ra khỏi nhà thì trời đổ mưa."
+      },
+      {
+        "en": "Hardly had we got home when the phone rang.",
+        "vi": "Chúng tôi vừa mới về đến nhà thì điện thoại reo."
+      }
+    ],
+    "mistake": {
+      "wrong": "No sooner had I arrived when it started raining.",
+      "right": "No sooner had I arrived than it started raining.",
+      "why": "No sooner luôn đi với than vì sooner là dạng so sánh. Hardly mới đi với when."
+    },
+    "lessons": [
+      {
+        "id": "ch18-l18",
+        "title": "Phép đảo chủ ngữ và động từ sau các trạng từ"
+      },
+      {
+        "id": "ch01-l07",
+        "title": "Thì quá khứ hoàn thành/ Tiền quá khứ"
+      }
+    ]
+  },
+  {
+    "stage": "c1-formal-register",
+    "title": "Văn phong trang trọng và danh từ hóa",
+    "points": [
+      "Danh từ hóa biến động từ thành danh từ: we implemented thành the implementation of, câu khách quan hơn.",
+      "Following, prior to, in light of, in view of thay cho after, before, because of trong văn bản công việc.",
+      "A significant increase in sales trang trọng hơn sales went up a lot. Sau increase, decline dùng in.",
+      "Bị động như has been delayed giúp tập trung vào sự việc thay vì người làm."
+    ],
+    "examples": [
+      {
+        "en": "The implementation of the new system has been delayed.",
+        "vi": "Việc triển khai hệ thống mới đã bị hoãn lại."
+      },
+      {
+        "en": "In light of your feedback, we will revise the plan.",
+        "vi": "Xét đến góp ý của bạn, chúng tôi sẽ điều chỉnh kế hoạch."
+      },
+      {
+        "en": "There has been a significant decline in sales.",
+        "vi": "Doanh số đã có sự sụt giảm đáng kể."
+      }
+    ],
+    "mistake": {
+      "wrong": "There has been a significant increase of sales.",
+      "right": "There has been a significant increase in sales.",
+      "why": "Nói tăng hay giảm ở lĩnh vực nào thì dùng increase in, decline in, không dùng of."
+    },
+    "lessons": []
+  },
+  {
+    "stage": "c1-idioms-work",
+    "title": "Thành ngữ thông dụng trong công việc",
+    "points": [
+      "Get the ball rolling là khởi động một việc. Kick things off cũng có nghĩa tương tự.",
+      "Back to square one và back to the drawing board nghĩa là phải làm lại từ đầu.",
+      "On the same page là cùng hiểu, cùng thống nhất. Keep someone in the loop là cập nhật tin cho ai.",
+      "Thành ngữ hợp với giao tiếp hằng ngày ở công sở, nhưng nên hạn chế trong văn bản rất trang trọng."
+    ],
+    "examples": [
+      {
+        "en": "Let's get the ball rolling on the new project.",
+        "vi": "Hãy bắt tay vào dự án mới thôi."
+      },
+      {
+        "en": "We're back to square one with the design.",
+        "vi": "Với bản thiết kế, chúng ta lại về vạch xuất phát."
+      },
+      {
+        "en": "I'll keep you in the loop about any changes.",
+        "vi": "Tôi sẽ cập nhật cho bạn về mọi thay đổi."
+      }
+    ],
+    "mistake": {
+      "wrong": "Are we on the same paper about the deadline?",
+      "right": "Are we on the same page about the deadline?",
+      "why": "Thành ngữ là cụm cố định, không thay từ: on the same page, không phải same paper."
+    },
+    "lessons": [
+      {
+        "id": "ch27-l01",
+        "title": "THÀNH NGỮ"
+      }
+    ]
+  },
+  {
+    "stage": "c1-hypothetical-past-present",
+    "title": "Câu điều kiện hỗn hợp và wish",
+    "points": [
+      "Quá khứ dẫn đến hiện tại: If I hadn't moved abroad, I wouldn't be here. Vế sau dùng would cộng động từ nguyên mẫu.",
+      "Hiện tại dẫn đến quá khứ: If I were more confident, I'd have said yes. Vế sau dùng would have cộng V3.",
+      "I wish I'd cộng V3 là tiếc nuối về quá khứ. I wish cộng quá khứ đơn là tiếc nuối về hiện tại.",
+      "Had I cộng V3 là dạng đảo ngữ trang trọng của If I had cộng V3."
+    ],
+    "examples": [
+      {
+        "en": "If I hadn't learned English, I wouldn't be here.",
+        "vi": "Nếu hồi đó tôi không học tiếng Anh thì giờ tôi đã chẳng ở đây."
+      },
+      {
+        "en": "If I were more adventurous, I'd have said yes.",
+        "vi": "Nếu tôi thích phiêu lưu hơn thì đã nhận lời rồi."
+      },
+      {
+        "en": "I wish I'd travelled more when I had the chance.",
+        "vi": "Giá mà tôi đã đi du lịch nhiều hơn khi còn cơ hội."
+      }
+    ],
+    "mistake": {
+      "wrong": "If I had taken that job, I would have been rich now.",
+      "right": "If I had taken that job, I would be rich now.",
+      "why": "Kết quả ở hiện tại, có now, nên dùng would be chứ không dùng would have been."
+    },
+    "lessons": [
+      {
+        "id": "ch03-l01",
+        "title": "Ba loại câu điều kiện"
+      },
+      {
+        "id": "ch04-l03",
+        "title": "Ao ước ở quá khứ"
+      }
+    ]
+  }
+]
