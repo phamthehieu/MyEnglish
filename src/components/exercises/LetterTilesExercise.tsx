@@ -408,7 +408,7 @@ export default function LetterTilesExercise({
   return (
     <div className="w-full max-w-xl mx-auto space-y-4 animate-in fade-in duration-200">
       {!hideHeader ? (
-        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-center space-y-2 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-4 text-center space-y-1.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
           <div className="text-xs font-semibold text-teal-700 dark:text-teal-300">Xếp chữ cái thành từ tiếng Anh có nghĩa:</div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{maskTargetInMeaning(getConciseMeaning(word.meaning_vn, target, example), target)}</h2>
           {/* The pronunciation as a hint (no example sentence: in Vietnamese alone it says nothing about the word) */}
@@ -481,7 +481,7 @@ export default function LetterTilesExercise({
 
       {/* Helpers sit under the answer being built, away from the main button: a hint costs the word a grade (Hard) */}
       {state !== "correct" && state !== "give_up" && (
-        <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <div className="flex items-center justify-center gap-1 text-sm">
           <button
             type="button"
             onClick={clear}
@@ -500,7 +500,7 @@ export default function LetterTilesExercise({
               title="Hiện chữ cái đầu tiên làm gợi ý (từ này sẽ được chấm Khó)"
             >
               <HelpCircle className="w-3.5 h-3.5" />
-              <span>Gợi ý chữ đầu</span>
+              <span>Gợi ý</span>
             </button>
           )}
           {/* Giving up counts the word as forgotten: it asks twice */}
@@ -515,7 +515,7 @@ export default function LetterTilesExercise({
             title="Xem đáp án và học lại từ này (tính là chưa nhớ)"
           >
             <Eye className="w-3.5 h-3.5" />
-            <span>{confirmGiveUp ? "Bấm lần nữa để xem" : "Không nhớ"}</span>
+            <span>{confirmGiveUp ? "Bấm lần nữa" : "Không nhớ"}</span>
           </button>
         </div>
       )}
