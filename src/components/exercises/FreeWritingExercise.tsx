@@ -75,8 +75,8 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
 
   return (
     <div className="w-full max-w-xl mx-auto space-y-4 animate-in fade-in duration-200">
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-5 space-y-3 shadow-sm">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200/50 dark:border-violet-800/40">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">
           <PenLine className="w-3 h-3" />
           <span>Tự viết câu (AI chấm)</span>
         </div>
@@ -84,9 +84,9 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
           Viết <strong>một câu tiếng Anh</strong> dùng từ có nghĩa:
         </p>
         <p className="text-base font-semibold text-slate-900 dark:text-white">{getConciseMeaning(word.meaning_vn, word.word)}</p>
-        {word.part_of_speech && <p className="text-xs text-slate-600 dark:text-zinc-400">({word.part_of_speech})</p>}
+        {word.part_of_speech && <p className="text-sm text-slate-600 dark:text-zinc-400">({word.part_of_speech})</p>}
         {hintShown && (
-          <p className="text-xs text-amber-700 dark:text-amber-300">
+          <p className="text-sm text-amber-700 dark:text-amber-300">
             Gợi ý: {word.word.charAt(0).toUpperCase()}
             {word.word.slice(1).replace(/[a-z]/gi, " _")}
           </p>
@@ -116,7 +116,7 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
         data-1p-ignore="true"
         data-form-type="other"
         placeholder="Một câu ngắn là đủ. Ví dụ: I fixed a bug today."
-        className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-sm text-slate-900 dark:text-white focus:outline-none focus:border-violet-500"
+        className="w-full px-4 py-3 rounded-2xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 dark:focus:border-teal-400 dark:focus:ring-teal-400/20"
       />
 
       {!grade ? (
@@ -125,7 +125,7 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
             type="button"
             onClick={() => setHintShown(true)}
             disabled={hintShown || grading}
-            className="min-h-10 px-2 text-xs text-slate-600 hover:text-amber-700 inline-flex items-center gap-1 disabled:opacity-40"
+            className="min-h-10 px-2 text-sm text-slate-600 dark:text-zinc-400 hover:text-amber-700 dark:hover:text-amber-300 inline-flex items-center gap-1 disabled:opacity-40"
           >
             <Lightbulb className="w-3.5 h-3.5" /> Gợi ý chữ cái đầu (tính là Khó)
           </button>
@@ -135,7 +135,7 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
               type="button"
               onClick={submit}
               disabled={grading || sentence.trim().length < 3}
-              className="px-4 min-h-11 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold disabled:opacity-40 inline-flex items-center gap-1.5"
+              className="px-5 min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white dark:bg-teal-600 dark:hover:bg-teal-500 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-1.5 transition-colors"
             >
               {grading ? <Sparkles className="w-3.5 h-3.5 animate-spin" /> : null}
               {grading ? "AI đang chấm..." : "Chấm câu"}
@@ -145,10 +145,10 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
       ) : (
         <div className="space-y-3">
           <div
-            className={`p-3 rounded-xl border text-xs space-y-2 ${
+            className={`p-4 rounded-2xl border text-sm space-y-2 ${
               ok
-                ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-100"
-                : "bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-100"
+                ? "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/40 text-green-900 dark:text-green-100"
+                : "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/40 text-red-900 dark:text-red-100"
             }`}
           >
             <div className="flex items-center gap-2 font-semibold">
@@ -180,7 +180,7 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
             type="button"
             autoFocus
             onClick={() => onComplete(ok, ok ? 0 : 1, rating as Rating)}
-            className="w-full h-12 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-semibold"
+            className="w-full min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white dark:bg-teal-600 dark:hover:bg-teal-500 text-base font-semibold transition-colors"
           >
             Tiếp tục
           </button>

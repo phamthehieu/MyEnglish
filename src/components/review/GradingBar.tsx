@@ -63,9 +63,9 @@ export default function GradingBar({
       key: 1,
       keyLabel: "Again (1)",
       highlight: !isCorrect && effectiveExerciseType !== "flip",
-      activeCls: "border-rose-400 dark:border-rose-500 bg-rose-100 dark:bg-rose-900/60 text-rose-900 dark:text-rose-200 ring-2 ring-rose-500/30",
-      idleCls: "border-rose-200 dark:border-rose-800/80 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300",
-      badgeCls: "bg-rose-200/70 dark:bg-rose-800/60 text-rose-900 dark:text-rose-100",
+      activeCls: "border-red-600 bg-red-100 text-red-900 ring-2 ring-red-600/20 dark:border-red-500 dark:bg-red-500/20 dark:text-red-100",
+      idleCls: "border-red-200 bg-red-50 text-red-800 hover:bg-red-100 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200",
+      badgeCls: "text-red-700 dark:text-red-300",
     },
     {
       rating: Rating.Hard,
@@ -74,8 +74,8 @@ export default function GradingBar({
       keyLabel: "Hard (2)",
       highlight: false,
       activeCls: "",
-      idleCls: "border-amber-200 dark:border-amber-800/80 bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/60 text-amber-800 dark:text-amber-300",
-      badgeCls: "bg-amber-200/70 dark:bg-amber-800/60 text-amber-900 dark:text-amber-100",
+      idleCls: "border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200",
+      badgeCls: "text-amber-700 dark:text-amber-300",
     },
     {
       rating: Rating.Good,
@@ -83,9 +83,9 @@ export default function GradingBar({
       key: 3,
       keyLabel: "Good (3)",
       highlight: !!isCorrect,
-      activeCls: "border-blue-400 dark:border-blue-500 bg-blue-100 dark:bg-blue-900/60 text-blue-900 dark:text-blue-200 ring-2 ring-blue-500/30",
-      idleCls: "border-blue-200 dark:border-blue-800/80 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/40 dark:hover:bg-blue-900/60 text-blue-800 dark:text-blue-300",
-      badgeCls: "bg-blue-200/70 dark:bg-blue-800/60 text-blue-900 dark:text-blue-100",
+      activeCls: "border-teal-800 bg-teal-700 text-white ring-2 ring-teal-700/25 dark:bg-teal-600",
+      idleCls: "border-teal-700 bg-teal-700 text-white hover:bg-teal-800 dark:border-teal-600 dark:bg-teal-600 dark:hover:bg-teal-500",
+      badgeCls: "text-teal-50",
     },
     {
       rating: Rating.Easy,
@@ -94,8 +94,8 @@ export default function GradingBar({
       keyLabel: "Easy (4)",
       highlight: false,
       activeCls: "",
-      idleCls: "border-emerald-200 dark:border-emerald-800/80 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300",
-      badgeCls: "bg-emerald-200/70 dark:bg-emerald-800/60 text-emerald-900 dark:text-emerald-100",
+      idleCls: "border-green-200 bg-green-50 text-green-800 hover:bg-green-100 dark:border-green-500/30 dark:bg-green-500/10 dark:text-green-200",
+      badgeCls: "text-green-700 dark:text-green-300",
     },
   ].filter((g) => (onlyAgain ? g.rating === Rating.Again : g.rating !== Rating.Easy || allowEasy));
 
@@ -106,7 +106,7 @@ export default function GradingBar({
           onClick={onIntroDone}
           disabled={isAdvancing || introLocked}
           autoFocus
-          className="w-full h-14 px-3 rounded-2xl bg-cyan-600 hover:bg-cyan-500 text-white disabled:opacity-40 text-sm font-semibold leading-tight flex items-center justify-center gap-2 transition-colors shadow-md"
+          className="w-full min-h-14 px-3 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white disabled:opacity-40 text-base font-semibold leading-tight flex items-center justify-center gap-2 transition-colors shadow-sm"
         >
           <span>{introLocked ? "🎤 Đọc to từ này, hoặc chọn \"không nói to được\" ở trên" : "Học tiếp (sẽ hỏi lại sau vài thẻ)"}</span>
           {!introLocked && <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>}
@@ -116,7 +116,7 @@ export default function GradingBar({
           onClick={onContinue}
           disabled={isAdvancing}
           autoFocus
-          className="w-full h-14 rounded-2xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-slate-900 disabled:opacity-40 text-sm font-semibold flex items-center justify-center gap-2 transition-colors shadow-md"
+          className="w-full h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white disabled:opacity-40 text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
         >
           <span>Tiếp tục</span>
           <span className="text-xs opacity-80">
@@ -158,12 +158,12 @@ export default function GradingBar({
                 key={g.rating}
                 onClick={() => handleGrade(g.rating)}
                 disabled={isAdvancing}
-                className={`min-h-[56px] px-1 py-1.5 rounded-2xl border flex flex-col items-center justify-center gap-0.5 transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed ${
+                className={`min-h-16 px-1 py-2 rounded-2xl border flex flex-col items-center justify-center gap-0.5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                   g.highlight ? `${g.activeCls} font-bold` : `${g.idleCls} font-medium`
                 }`}
               >
-                <span className="text-sm font-bold leading-tight">{g.label}</span>
-                <span className={`text-[11px] leading-tight px-1.5 py-0.5 rounded-md font-semibold ${g.badgeCls}`}>
+                <span className="text-base font-bold leading-tight">{g.label}</span>
+                <span className={`text-xs leading-tight font-medium ${g.badgeCls}`}>
                   {intervalPreviews[g.rating as keyof IntervalPreviews]}
                 </span>
                 <span className="desktop-only text-[11px] font-mono opacity-80">{simple ? `phím ${g.key}` : g.keyLabel}</span>
@@ -181,10 +181,10 @@ export default function GradingBar({
       ) : effectiveExerciseType === "flip" ? (
         <button
           onClick={() => setIsFlipped(true)}
-          className="w-full h-14 rounded-2xl bg-white hover:bg-slate-100 dark:bg-zinc-900 dark:hover:bg-zinc-800 border border-slate-300 dark:border-zinc-800 text-slate-800 dark:text-zinc-200 text-sm font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
+          className="w-full h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
         >
           <span>Lật thẻ xem đáp án</span>
-          <kbd className="px-2 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-[11px] font-mono text-slate-700 dark:text-zinc-300">
+          <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">
             Space
           </kbd>
         </button>
@@ -192,10 +192,10 @@ export default function GradingBar({
         <button
           onClick={handleCheckAnswer}
           disabled={!userInput.trim() || isAdvancing}
-          className="w-full h-14 rounded-2xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-md shadow-indigo-600/20"
+          className="w-full h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-40 text-white text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
         >
           <span>Kiểm tra đáp án</span>
-          <kbd className="px-2 py-0.5 rounded bg-indigo-700/60 border border-indigo-400/40 text-[11px] font-mono text-indigo-100">
+          <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">
             Enter ↵
           </kbd>
         </button>
@@ -203,10 +203,10 @@ export default function GradingBar({
         <button
           onClick={handleCheckAnswer}
           disabled={!userInput.trim() || isAdvancing}
-          className="w-full h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-600/20"
+          className="w-full h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-40 text-white text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
         >
           <span>Kiểm tra chính tả</span>
-          <kbd className="px-2 py-0.5 rounded bg-emerald-700/60 border border-emerald-400/40 text-[11px] font-mono text-emerald-100">
+          <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">
             Enter ↵
           </kbd>
         </button>

@@ -41,10 +41,10 @@ export default function GiveUpButton({ onConfirm, disabled, label = "Không nh�
       disabled={disabled}
       aria-live="polite"
       title="Tính là chưa nhớ: từ này sẽ được hỏi lại"
-      className={`min-h-[40px] px-3 rounded-lg inline-flex items-center justify-center gap-1.5 text-xs font-medium transition-colors ${
+      className={`min-h-[40px] px-3 rounded-xl inline-flex items-center justify-center gap-1.5 text-sm font-medium transition-colors ${
         armed
-          ? "bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 font-semibold"
-          : "text-slate-600 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400"
+          ? "bg-red-50 text-red-700 ring-1 ring-red-200 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/40 font-semibold"
+          : "text-slate-600 hover:text-red-700 dark:text-zinc-400 dark:hover:text-red-400"
       } ${className ?? ""}`}
     >
       {icon}

@@ -73,7 +73,7 @@ export default function SessionSummary({
   return (
     <div className="w-full flex-1 min-h-0 overflow-y-auto flex flex-col">
       <div className="flex flex-col items-center p-6 md:p-8 max-w-xl mx-auto text-center space-y-5 my-auto animate-in zoom-in-95 duration-200 w-full py-8">
-        <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-white shadow-xl shadow-emerald-500/20">
+        <div className="w-16 h-16 rounded-full bg-green-600 flex items-center justify-center text-white">
           <Award className="w-8 h-8" />
         </div>
 
@@ -94,7 +94,7 @@ export default function SessionSummary({
 
       {close?.done && (
         // Loud on purpose: the learner must know for sure they can stop for today
-        <div className="w-full rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white p-4 text-left space-y-2.5 shadow-lg shadow-emerald-600/20" data-testid="day-done">
+        <div className="w-full rounded-2xl bg-green-600 text-white p-4 text-left space-y-2.5" data-testid="day-done">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-full bg-white/20 ring-4 ring-white/30 flex items-center justify-center shrink-0">
               <Check className="w-6 h-6" strokeWidth={3} />
@@ -167,7 +167,7 @@ export default function SessionSummary({
       </div>
 
       {/* XP */}
-      <div className="w-full p-3.5 rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/40 dark:to-yellow-950/40 text-left space-y-2">
+      <div className="w-full p-3.5 rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-500/10 text-left space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold flex items-center gap-1.5 text-amber-800 dark:text-amber-300">
             <Zap className="w-4 h-4" /> Điểm kinh nghiệm
@@ -182,7 +182,7 @@ export default function SessionSummary({
           </div>
           <div className="flex-1 h-2 rounded-full bg-amber-200/50 dark:bg-amber-900/40 overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-amber-500 to-yellow-500 rounded-full transition-all duration-500"
+              className="h-full bg-amber-500 rounded-full transition-all duration-500"
               style={{ width: `${xpState.progressPercent}%` }}
             />
           </div>
@@ -204,7 +204,7 @@ export default function SessionSummary({
         <button
           onClick={onFinish}
           autoFocus
-          className="px-6 min-h-12 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 !text-white text-sm font-semibold shadow-lg shadow-cyan-500/25 transition-all inline-flex items-center gap-2"
+          className="w-full sm:w-auto justify-center px-8 min-h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-base font-semibold shadow-sm transition-colors inline-flex items-center gap-2"
         >
           <Sparkles className="w-4 h-4" /> Hoàn tất
         </button>

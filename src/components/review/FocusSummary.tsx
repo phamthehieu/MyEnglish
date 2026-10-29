@@ -20,23 +20,23 @@ export default function FocusSummary({ result, next, onExtend, onNavigate }: Foc
   const sameDay = next && next.at.toDateString() === new Date().toDateString();
 
   return (
-    <div className="w-full p-4 rounded-2xl border border-violet-200 dark:border-violet-800/60 bg-violet-50 dark:bg-violet-950/30 text-left space-y-3">
-      <div className="flex items-center gap-2 text-sm font-bold text-violet-800 dark:text-violet-200">
+    <div className="w-full p-4 rounded-2xl border border-teal-200 dark:border-teal-800/60 bg-teal-50 dark:bg-teal-950/30 text-left space-y-3">
+      <div className="flex items-center gap-2 text-sm font-bold text-teal-800 dark:text-teal-200">
         <Timer className="w-4 h-4" />
         {result.outcome === "completed" ? `Xong phiên tập trung ${minutes} phút` : `Đã học ${minutes} phút`}
         {result.xp > 0 && <span className="ml-auto text-amber-600 dark:text-amber-400 font-mono">+{result.xp} XP</span>}
       </div>
       <div className="grid grid-cols-3 gap-2">
         <div className="p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/60">
-          <div className="text-xl font-bold text-violet-700 dark:text-violet-300">{minutes}</div>
+          <div className="text-xl font-bold text-teal-700 dark:text-teal-300">{minutes}</div>
           <div className="text-xs text-slate-500 dark:text-zinc-400">phút học thật</div>
         </div>
         <div className="p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/60">
-          <div className="text-xl font-bold text-violet-700 dark:text-violet-300">{result.cards}</div>
+          <div className="text-xl font-bold text-teal-700 dark:text-teal-300">{result.cards}</div>
           <div className="text-xs text-slate-500 dark:text-zinc-400">thẻ</div>
         </div>
         <div className="p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/60">
-          <div className="text-xl font-bold text-violet-700 dark:text-violet-300">{firstTry == null ? "—" : `${firstTry}%`}</div>
+          <div className="text-xl font-bold text-teal-700 dark:text-teal-300">{firstTry == null ? "—" : `${firstTry}%`}</div>
           <div className="text-xs text-slate-500 dark:text-zinc-400">đúng ngay lần đầu</div>
         </div>
       </div>
@@ -51,13 +51,13 @@ export default function FocusSummary({ result, next, onExtend, onNavigate }: Foc
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => onNavigate("writing")}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 text-xs font-medium hover:bg-violet-100 dark:hover:bg-violet-900/40"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-teal-300 dark:border-teal-700 text-teal-700 dark:text-teal-300 text-xs font-medium hover:bg-teal-100 dark:hover:bg-teal-900/40"
             >
               <NotebookPen className="w-3.5 h-3.5" /> Ôn lỗi sai
             </button>
             <button
               onClick={() => onNavigate("grammar")}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 text-xs font-medium hover:bg-violet-100 dark:hover:bg-violet-900/40"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-teal-300 dark:border-teal-700 text-teal-700 dark:text-teal-300 text-xs font-medium hover:bg-teal-100 dark:hover:bg-teal-900/40"
             >
               <BookOpen className="w-3.5 h-3.5" /> Ôn ngữ pháp
             </button>
@@ -67,7 +67,7 @@ export default function FocusSummary({ result, next, onExtend, onNavigate }: Foc
       {result.endedBy !== "queue" && (
         <button
           onClick={onExtend}
-          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold"
+          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold"
         >
           <Plus className="w-3.5 h-3.5" /> Thêm 5 phút
         </button>

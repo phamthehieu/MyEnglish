@@ -388,16 +388,16 @@ export default function LetterTilesExercise({
   return (
     <div className="w-full max-w-xl mx-auto space-y-4 animate-in fade-in duration-200">
       {!hideHeader ? (
-        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-6 text-center space-y-2 shadow-sm">
-          <div className="text-[11px] font-medium text-cyan-700 dark:text-cyan-400">Xếp chữ cái thành từ tiếng Anh có nghĩa:</div>
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-center space-y-2 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+          <div className="text-xs font-semibold text-teal-700 dark:text-teal-300">Xếp chữ cái thành từ tiếng Anh có nghĩa:</div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{maskTargetInMeaning(getConciseMeaning(word.meaning_vn, target, example), target)}</h2>
-          {word.part_of_speech && <p className="text-xs italic text-slate-400">{word.part_of_speech}</p>}
-          {example?.sentence_vn && <p className="text-sm text-slate-500 dark:text-zinc-400">Ví dụ: {example.sentence_vn}</p>}
+          {word.part_of_speech && <p className="text-sm italic text-slate-600 dark:text-zinc-400">{word.part_of_speech}</p>}
+          {example?.sentence_vn && <p className="text-sm text-slate-600 dark:text-zinc-400">Ví dụ: {example.sentence_vn}</p>}
         </div>
       ) : (
-        <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-zinc-400 pt-1">
+        <div className="flex items-center justify-between text-sm font-semibold text-slate-600 dark:text-zinc-400 pt-1">
           <span>Xếp chữ cái thành từ tiếng Anh:</span>
-          <span className="text-[11px] font-mono text-cyan-600 dark:text-cyan-400 font-bold">
+          <span className="text-xs font-mono text-teal-700 dark:text-teal-300 font-bold">
             {letterCount} chữ cái
           </span>
         </div>
@@ -427,10 +427,10 @@ export default function LetterTilesExercise({
                 type="button"
                 onClick={() => unpickAt(nonFixedIdx)}
                 title="Bấm để xóa chữ này"
-                className={`w-10 h-12 rounded-lg border-2 flex items-center justify-center text-xl font-bold font-mono transition-all cursor-pointer select-none group shadow-xs ${
+                className={`w-10 h-12 rounded-xl border-2 flex items-center justify-center text-xl font-bold font-mono transition-colors cursor-pointer select-none group ${
                   state === "wrong"
-                    ? "border-amber-400 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200 hover:border-rose-400 hover:bg-rose-50"
-                    : "border-cyan-400 bg-cyan-50 dark:bg-cyan-950/30 text-slate-900 dark:text-white hover:border-rose-400 hover:bg-rose-50/80 hover:text-rose-600 dark:hover:bg-rose-950/40 dark:hover:text-rose-300 hover:scale-105 active:scale-95"
+                    ? "border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-200 hover:border-red-600 hover:bg-red-50"
+                    : "border-teal-700 bg-teal-50 text-teal-800 dark:border-teal-400 dark:bg-teal-400/10 dark:text-teal-200 hover:border-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:border-red-500 dark:hover:bg-red-500/10 dark:hover:text-red-300 active:scale-95"
                 }`}
               >
                 {letter}
@@ -441,14 +441,14 @@ export default function LetterTilesExercise({
           return (
             <span
               key={i}
-              className={`w-10 h-12 rounded-lg border-2 flex items-center justify-center text-xl font-bold font-mono select-none ${
+              className={`w-10 h-12 rounded-xl border-2 flex items-center justify-center text-xl font-bold font-mono select-none ${
                 state === "correct"
-                  ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300"
+                  ? "border-green-600 bg-green-50 text-green-800 dark:bg-green-500/10 dark:border-green-500 dark:text-green-200"
                   : state === "give_up"
-                  ? "border-rose-400 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 font-bold"
+                  ? "border-red-600 bg-red-50 text-red-800 dark:bg-red-500/10 dark:border-red-500 dark:text-red-200 font-bold"
                   : state === "wrong"
-                  ? "border-amber-400 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-200"
-                  : "border-dashed border-slate-300 dark:border-zinc-700 text-slate-400"
+                  ? "border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-200"
+                  : "border-dashed border-slate-300 bg-white dark:bg-zinc-900 dark:border-zinc-700 text-slate-400"
               }`}
             >
               {state === "give_up"
@@ -461,12 +461,12 @@ export default function LetterTilesExercise({
 
       {/* Helpers sit under the answer being built, away from the main button: a hint costs the word a grade (Hard) */}
       {state !== "correct" && state !== "give_up" && (
-        <div className="flex items-center justify-center gap-2 text-xs">
+        <div className="flex items-center justify-center gap-2 text-sm">
           <button
             type="button"
             onClick={clear}
             disabled={picked.length === 0}
-            className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700 disabled:opacity-40 disabled:pointer-events-none transition-colors font-medium cursor-pointer"
+            className="inline-flex items-center gap-1.5 h-10 px-3 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800 disabled:opacity-40 disabled:pointer-events-none transition-colors font-medium cursor-pointer"
             title="Làm lại từ đầu"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -476,7 +476,7 @@ export default function LetterTilesExercise({
             <button
               type="button"
               onClick={() => setHint(true)}
-              className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors font-medium cursor-pointer"
+              className="inline-flex items-center gap-1.5 h-10 px-3 rounded-xl text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors font-medium cursor-pointer"
               title="Hiện chữ cái đầu tiên làm gợi ý (từ này sẽ được chấm Khó)"
             >
               <HelpCircle className="w-3.5 h-3.5" />
@@ -503,10 +503,10 @@ export default function LetterTilesExercise({
               }}
               disabled={state === "correct" || state === "give_up"}
               title={used ? "Bấm để xóa chữ này khỏi từ đã ghép" : undefined}
-              className={`w-11 h-11 rounded-xl text-lg font-bold font-mono shadow-sm transition-all ${
+              className={`w-12 h-12 rounded-2xl text-lg font-bold font-mono transition-colors ${
                 used || state === "give_up"
-                  ? "bg-slate-100 dark:bg-zinc-800/60 text-slate-400 dark:text-zinc-500 border border-dashed border-slate-300/70 dark:border-zinc-700/70 cursor-not-allowed opacity-60"
-                  : "bg-white dark:bg-zinc-900 border-2 border-slate-300 dark:border-zinc-700 text-slate-800 dark:text-zinc-100 hover:border-cyan-400 active:scale-95 cursor-pointer"
+                  ? "bg-slate-50 dark:bg-zinc-800/50 text-slate-400 dark:text-zinc-500 border border-dashed border-slate-300 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                  : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-slate-900 dark:text-zinc-100 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-700 hover:bg-teal-50 dark:hover:border-teal-400 dark:hover:bg-teal-400/10 active:scale-95 cursor-pointer"
               }`}
             >
               {t.ch}
@@ -516,13 +516,13 @@ export default function LetterTilesExercise({
       </div>
 
       {/* What the exercise says now. Always the same height, so nothing moves under the learner's finger */}
-      <div className="min-h-[28px] flex items-center justify-center px-1 text-xs text-center" aria-live="polite">
+      <div className="min-h-[28px] flex items-center justify-center px-1 text-sm text-center" aria-live="polite">
         {state === "correct" ? (
-          <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-600 dark:text-emerald-400 animate-in fade-in">
+          <span className="inline-flex items-center gap-1.5 font-semibold text-green-700 dark:text-green-400 animate-in fade-in">
             <CheckCircle2 className="w-4 h-4 shrink-0" /> {target}
           </span>
         ) : state === "give_up" ? (
-          <span className="inline-flex items-center gap-1.5 font-semibold text-rose-600 dark:text-rose-400 animate-in fade-in">
+          <span className="inline-flex items-center gap-1.5 font-semibold text-red-700 dark:text-red-400 animate-in fade-in">
             <AlertCircle className="w-4 h-4 shrink-0" /> Đáp án: {target}
           </span>
         ) : state === "wrong" ? (
@@ -530,7 +530,7 @@ export default function LetterTilesExercise({
             <AlertCircle className="w-4 h-4 shrink-0 text-amber-500" /> Gần rồi, đổi vài chữ rồi thử lại nhé
           </span>
         ) : picked.length === letterCount ? (
-          <span className="font-medium text-cyan-700 dark:text-cyan-400">Đã đủ chữ, bấm Kiểm tra</span>
+          <span className="font-medium text-teal-700 dark:text-teal-300">Đã đủ chữ, bấm Kiểm tra</span>
         ) : (
           <span className="font-mono text-slate-600 dark:text-zinc-400">
             {picked.length}/{letterCount} chữ
@@ -546,7 +546,7 @@ export default function LetterTilesExercise({
             type="button"
             onClick={() => check(picked)}
             disabled={state === "wrong" || picked.length !== letterCount}
-            className="w-full h-12 rounded-xl bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 disabled:pointer-events-none text-white font-bold text-sm shadow-sm transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 disabled:pointer-events-none text-white font-semibold text-base shadow-sm transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>Kiểm tra</span>
             <kbd className="px-1.5 py-0.5 bg-white/20 rounded text-[10px] font-mono leading-none">Enter</kbd>
@@ -557,10 +557,10 @@ export default function LetterTilesExercise({
             <button
               type="button"
               onClick={() => (confirmGiveUp ? giveUp() : setConfirmGiveUp(true))}
-              className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 h-10 px-3 rounded-xl text-sm font-semibold transition-colors cursor-pointer ${
                 confirmGiveUp
-                  ? "border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300"
-                  : "text-slate-600 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400"
+                  ? "border border-red-200 dark:border-red-500/40 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-300"
+                  : "text-slate-600 hover:text-red-700 dark:text-zinc-400 dark:hover:text-red-400"
               }`}
               title="Xem đáp án và học lại từ này (tính là chưa nhớ)"
             >

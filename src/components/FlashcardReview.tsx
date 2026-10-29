@@ -298,7 +298,7 @@ export default function FlashcardReview({
           className={`w-full mb-2.5 px-4 py-2 rounded-2xl shadow-lg border text-left animate-in fade-in slide-in-from-top-2 duration-200 shrink-0 ${
             celebration.kind === "mastered"
               ? "bg-emerald-600/95 border-emerald-400 text-white shadow-emerald-500/20"
-              : "bg-violet-600/95 border-violet-400 text-white shadow-violet-500/20"
+              : "bg-teal-600/95 border-teal-400 text-white shadow-teal-500/20"
           }`}
         >
           <div className="text-xs font-bold flex items-center gap-1.5">
@@ -322,15 +322,15 @@ export default function FlashcardReview({
               }
             : undefined
         }
-        className={`w-full flex-1 min-h-[200px] max-h-[620px] my-auto overflow-y-auto overflow-x-hidden rounded-3xl border bg-white dark:bg-zinc-950 p-5 md:p-6 shadow-xl dark:shadow-2xl flex flex-col justify-between transition-all relative ${
+        className={`w-full flex-1 min-h-[200px] max-h-[620px] my-auto overflow-y-auto overflow-x-hidden rounded-2xl border bg-white dark:bg-zinc-900 p-5 md:p-6 shadow-[0_4px_12px_rgba(15,23,42,0.06)] flex flex-col justify-between transition-all relative ${
           answerShown ? "select-text" : ""
         } ${
           effectiveExerciseType === "flip" ? "cursor-pointer hover:border-slate-400 dark:hover:border-zinc-700/80" : ""
         } ${
           hasCheckedAnswer
             ? isCorrect
-              ? "border-emerald-500/60 shadow-emerald-500/10"
-              : "border-rose-500/60 shadow-rose-500/10"
+              ? "border-green-600/60"
+              : "border-red-600/60"
             : "border-slate-200 dark:border-zinc-800"
         }`}
       >
@@ -609,7 +609,7 @@ export default function FlashcardReview({
               <button
                 autoFocus
                 onClick={() => setConfirmingExit(false)}
-                className="px-4 h-11 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold transition-colors"
+                className="px-4 h-12 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 text-white text-sm font-semibold transition-colors"
               >
                 Học tiếp
               </button>
@@ -618,7 +618,7 @@ export default function FlashcardReview({
                   setConfirmingExit(false);
                   onExit();
                 }}
-                className="px-4 h-11 rounded-lg border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-sm hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+                className="px-4 h-12 rounded-xl border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-semibold hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
               >
                 Thoát
               </button>

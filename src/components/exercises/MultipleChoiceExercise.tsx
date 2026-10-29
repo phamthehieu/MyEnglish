@@ -122,8 +122,8 @@ export default function MultipleChoiceExercise({
   return (
     <div className="w-full max-w-xl mx-auto space-y-3 md:space-y-6 animate-in fade-in duration-200">
       {/* Question Card: on a phone it drops its own frame (a card inside the card ate the space) */}
-      <div className="rounded-2xl md:border border-slate-200 dark:border-zinc-800 md:bg-white md:dark:bg-zinc-900/80 py-1 md:p-8 text-center space-y-1.5 md:space-y-3 md:shadow-sm relative overflow-hidden">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-400 border border-cyan-200/50 dark:border-cyan-800/40">
+      <div className="rounded-2xl md:border border-slate-200 dark:border-zinc-800 md:bg-white md:dark:bg-zinc-900 py-1 md:p-8 text-center space-y-1.5 md:space-y-3 md:shadow-[0_1px_3px_rgba(15,23,42,0.05)] relative overflow-hidden">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">
           <Sparkles className="w-3 h-3" />
           <span>{questionData.subPrompt}</span>
         </div>
@@ -136,7 +136,7 @@ export default function MultipleChoiceExercise({
             <button
               onClick={() => onSpeak(word.word)}
               type="button"
-              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-cyan-600 transition-colors"
+              className="min-w-11 min-h-11 inline-flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 hover:text-teal-700 dark:hover:text-teal-300 transition-colors"
               title="Phát âm"
               aria-label="Phát âm"
             >
@@ -168,16 +168,16 @@ export default function MultipleChoiceExercise({
           const showFail = isSelected && !opt.isCorrect;
 
           let btnClasses =
-            "min-h-12 rounded-xl border p-3 md:p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
+            "min-h-14 rounded-2xl border px-4 py-3 md:py-4 text-left transition-colors duration-150 flex items-start gap-3 relative ";
           if (showSuccess) {
             btnClasses +=
-              "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30";
+              "border-green-600 bg-green-50 text-green-800 dark:bg-green-500/10 dark:border-green-500 dark:text-green-200";
           } else if (showFail) {
             btnClasses +=
-              "border-rose-400 bg-rose-50 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200";
+              "border-red-600 bg-red-50 text-red-800 dark:bg-red-500/10 dark:border-red-500 dark:text-red-200";
           } else {
             btnClasses +=
-              "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-cyan-400 dark:hover:border-cyan-600 text-slate-800 dark:text-zinc-200 hover:shadow-sm";
+              "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-teal-700/50 hover:bg-slate-50 dark:hover:border-teal-400/50 dark:hover:bg-zinc-800/50 text-slate-900 dark:text-zinc-100";
           }
 
           if (isShake) {
@@ -194,9 +194,9 @@ export default function MultipleChoiceExercise({
               <span
                 className={`w-6 h-6 shrink-0 rounded-md flex items-center justify-center text-xs font-mono font-bold transition-colors ${
                   showSuccess
-                    ? "bg-emerald-500 text-white"
+                    ? "bg-green-600 text-white"
                     : showFail
-                    ? "bg-rose-500 text-white"
+                    ? "bg-red-600 text-white"
                     : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                 }`}
               >
@@ -204,15 +204,15 @@ export default function MultipleChoiceExercise({
               </span>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium leading-snug break-words">{opt.text}</p>
+                <p className="text-base font-medium leading-snug break-words">{opt.text}</p>
               </div>
 
               {/* Reserved icon slot so text width and button height never shift */}
               <div className="w-5 h-5 shrink-0 flex items-center justify-center">
                 {showSuccess && (
-                  <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 animate-in zoom-in duration-150" />
+                  <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0 animate-in zoom-in duration-150" />
                 )}
-                {showFail && <XCircle className="w-5 h-5 text-rose-500 shrink-0 animate-in zoom-in duration-150" />}
+                {showFail && <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 animate-in zoom-in duration-150" />}
               </div>
             </button>
           );
@@ -226,11 +226,11 @@ export default function MultipleChoiceExercise({
           Phím tắt: bấm <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[11px] font-mono">1</kbd> - <kbd className="px-1 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 text-[11px] font-mono">4</kbd>
         </span>
         {wrongNote && !isAnswered ? (
-          <span className="text-amber-600 dark:text-amber-400 font-semibold animate-in fade-in duration-150 text-right">
+          <span className="text-sm text-amber-700 dark:text-amber-400 font-semibold animate-in fade-in duration-150 text-right">
             {wrongNote}
           </span>
         ) : (
-          <span className="text-[11px] text-slate-600 dark:text-zinc-400">
+          <span className="text-xs text-slate-600 dark:text-zinc-400">
             Chọn 1 trong 4 đáp án
           </span>
         )}

@@ -170,8 +170,8 @@ export default function SentenceBuilderExercise({
   return (
     <div className="w-full max-w-xl mx-auto space-y-4 animate-in fade-in duration-200">
       {/* Target meaning prompt - fixed height block */}
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-5 text-center space-y-2 shadow-sm shrink-0">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200/50 dark:border-amber-800/40">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 text-center space-y-2 shadow-[0_1px_3px_rgba(15,23,42,0.05)] shrink-0">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">
           <Sparkles className="w-3 h-3" />
           <span>Sắp xếp thành câu hoàn chỉnh</span>
         </div>
@@ -181,14 +181,14 @@ export default function SentenceBuilderExercise({
         </p>
 
         <div className="flex items-center justify-center gap-2 pt-0.5">
-          <span className="text-xs text-slate-600 dark:text-zinc-400">Từ mục tiêu:</span>
-          <span className="text-xs font-bold text-cyan-700 dark:text-cyan-400 px-2 py-0.5 rounded bg-cyan-50 dark:bg-cyan-950/50 border border-cyan-200 dark:border-cyan-800">
+          <span className="text-sm text-slate-600 dark:text-zinc-400">Từ mục tiêu:</span>
+          <span className="text-sm font-bold text-teal-800 dark:text-teal-200 px-2 py-0.5 rounded-lg bg-teal-50 dark:bg-teal-400/10">
             {word.word}
           </span>
           <button
             onClick={() => onSpeakRef.current(word.word)}
             type="button"
-            className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-cyan-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors"
+            className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full text-slate-600 hover:text-teal-700 dark:hover:text-teal-300 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800 transition-colors"
             title="Phát âm từ"
             aria-label="Phát âm từ"
           >
@@ -201,16 +201,16 @@ export default function SentenceBuilderExercise({
       <div
         className={`rounded-2xl border-2 min-h-[92px] p-3.5 flex flex-wrap items-center gap-2 transition-all content-center ${
           isCorrect === true
-            ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/30"
+            ? "border-green-600 bg-green-50 dark:border-green-500 dark:bg-green-500/10"
             : isCorrect === false
-            ? "border-rose-400 bg-rose-50/50 dark:bg-rose-950/30"
+            ? "border-red-600 bg-red-50 dark:border-red-500 dark:bg-red-500/10"
             : placedTokens.length > 0
-            ? "border-cyan-400 dark:border-cyan-700 bg-cyan-50/20 dark:bg-cyan-950/10"
-            : "border-dashed border-slate-300 dark:border-zinc-700 bg-slate-50/50 dark:bg-zinc-900/40"
+            ? "border-teal-700/40 bg-white dark:border-teal-400/40 dark:bg-zinc-900"
+            : "border-dashed border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/50"
         } ${shake ? "animate-shake" : ""}`}
       >
         {placedTokens.length === 0 ? (
-          <p className="text-xs text-slate-600 dark:text-zinc-400 mx-auto select-none">
+          <p className="text-sm text-slate-600 dark:text-zinc-400 mx-auto select-none">
             Chạm vào các từ bên dưới để ghép câu theo đúng ngữ pháp...
           </p>
         ) : (
@@ -219,16 +219,16 @@ export default function SentenceBuilderExercise({
               key={token.id}
               onClick={() => handleRemoveToken(token)}
               disabled={isAnswered}
-              className={`min-h-11 px-4 rounded-lg text-sm font-medium shadow-sm transition-all transform active:scale-95 ${
+              className={`min-h-11 px-4 rounded-xl text-base font-medium transition-colors active:scale-95 ${
                 isCorrect === true
-                  ? "bg-emerald-500 text-white"
+                  ? "bg-green-600 text-white"
                   : isAnswered && isCorrect === false
-                  ? "bg-rose-100 dark:bg-rose-900/60 text-rose-800 dark:text-rose-200 border border-rose-300 dark:border-rose-700 cursor-default"
+                  ? "bg-red-50 dark:bg-red-500/10 text-red-800 dark:text-red-200 border border-red-600 dark:border-red-500 cursor-default"
                   : isCorrect === false
                   ? misplaced.has(token.id) || misplaced.size === 0
-                    ? "bg-rose-500 text-white"
-                    : "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700"
-                  : "bg-white dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 border border-slate-200 dark:border-zinc-700 hover:border-rose-400 hover:text-rose-600"
+                    ? "bg-red-600 text-white"
+                    : "bg-green-50 dark:bg-green-500/10 text-green-800 dark:text-green-200 border border-green-600 dark:border-green-500"
+                  : "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-200 border border-teal-700 dark:border-teal-400 hover:border-red-600 hover:bg-red-50 hover:text-red-700 dark:hover:border-red-500 dark:hover:bg-red-500/10 dark:hover:text-red-300"
               }`}
             >
               {token.text}
@@ -239,7 +239,7 @@ export default function SentenceBuilderExercise({
 
       {/* Available Word Bank - constant min-height matching placed zone */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-slate-600 dark:text-zinc-400 px-1">
+        <div className="flex items-center justify-between text-sm text-slate-600 dark:text-zinc-400 px-1">
           <span>Ngân hàng từ vựng:</span>
           {!isAnswered && (
             <div className="flex items-center gap-2">
@@ -258,19 +258,19 @@ export default function SentenceBuilderExercise({
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2 min-h-[92px] p-3 rounded-xl bg-slate-100 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800 content-start">
+        <div className="flex flex-wrap gap-2 min-h-[92px] p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/50 border border-slate-200 dark:border-zinc-800 content-start">
           {availableTokens.map((token) => (
             <button
               key={token.id}
               onClick={() => handlePlaceToken(token)}
               disabled={isAnswered}
-              className="min-h-11 px-4 rounded-lg text-sm font-medium bg-white dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 border border-slate-200 dark:border-zinc-700 hover:border-cyan-400 dark:hover:border-cyan-600 hover:shadow-sm transition-all transform active:scale-95"
+              className="min-h-11 px-4 rounded-xl text-base font-medium bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 border border-slate-200 dark:border-zinc-700 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-700 hover:bg-teal-50 dark:hover:border-teal-400 dark:hover:bg-teal-400/10 transition-colors active:scale-95"
             >
               {token.text}
             </button>
           ))}
           {availableTokens.length === 0 && placedTokens.length > 0 && (
-            <span className="text-xs text-slate-600 dark:text-zinc-400 italic my-auto mx-auto select-none">
+            <span className="text-sm text-slate-600 dark:text-zinc-400 italic my-auto mx-auto select-none">
               {isAnswered && isCorrect
                 ? "Hoàn thành chính xác!"
                 : isAnswered && !isCorrect
@@ -286,47 +286,47 @@ export default function SentenceBuilderExercise({
       {/* Dedicated Stable Feedback Area - ALWAYS occupies 52px so layout NEVER jumps */}
       <div className="h-[52px] min-h-[52px] flex items-center justify-center w-full">
         {isAnswered && isCorrect ? (
-          <div className="w-full h-full px-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs flex items-center justify-between shadow-xs animate-in fade-in duration-150">
+          <div className="w-full h-full px-4 rounded-2xl bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/40 text-green-800 dark:text-green-200 text-sm flex items-center justify-between animate-in fade-in duration-150">
             <div className="flex items-center gap-2 min-w-0">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400 shrink-0" />
               <div className="truncate">
                 <span className="font-bold mr-1.5">Chính xác!</span>
-                <span className="text-emerald-700 dark:text-emerald-300">
+                <span className="text-green-700 dark:text-green-300">
                   {data.fullSentence}
                 </span>
               </div>
             </div>
             <button
               onClick={() => onSpeakRef.current(data.fullSentence)}
-              className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 shrink-0 ml-2"
+              className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full hover:bg-green-100 dark:hover:bg-green-500/20 text-green-700 dark:text-green-300 shrink-0 ml-2"
               title="Nghe câu"
             >
               <Volume2 className="w-4 h-4" />
             </button>
           </div>
         ) : isAnswered && isCorrect === false ? (
-          <div className="w-full h-full px-4 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 text-rose-800 dark:text-rose-200 text-xs flex items-center justify-between shadow-xs animate-in fade-in duration-150">
+          <div className="w-full h-full px-4 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/40 text-red-800 dark:text-red-200 text-sm flex items-center justify-between animate-in fade-in duration-150">
             <div className="flex items-center gap-2 min-w-0">
-              <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
               <div className="truncate">
                 <span className="font-bold mr-1.5">Đáp án đúng:</span>
-                <span className="text-rose-700 dark:text-rose-300">
+                <span className="text-red-700 dark:text-red-300">
                   {data.fullSentence}
                 </span>
               </div>
             </div>
             <button
               onClick={() => onSpeakRef.current(data.fullSentence)}
-              className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full hover:bg-rose-100 dark:hover:bg-rose-900/50 text-rose-700 shrink-0 ml-2"
+              className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-500/20 text-red-700 dark:text-red-300 shrink-0 ml-2"
               title="Nghe câu"
             >
               <Volume2 className="w-4 h-4" />
             </button>
           </div>
         ) : isCorrect === false && !isAnswered ? (
-          <div className="w-full h-full px-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-200 text-xs flex items-center justify-between shadow-xs animate-in fade-in duration-150">
+          <div className="w-full h-full px-3.5 rounded-2xl bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/40 text-red-800 dark:text-red-200 text-sm flex items-center justify-between animate-in fade-in duration-150">
             <div className="flex items-center gap-2 min-w-0">
-              <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+              <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
               <div className="line-clamp-2 leading-tight">
                 <span className="font-semibold">
                   {misplaced.size > 0 && misplaced.size < placedTokens.length
@@ -343,13 +343,13 @@ export default function SentenceBuilderExercise({
             <button
               type="button"
               onClick={handleReset}
-              className="shrink-0 ml-2 px-3 min-h-10 rounded-lg bg-rose-100 dark:bg-rose-900/60 font-semibold hover:bg-rose-200 dark:hover:bg-rose-800 text-rose-700 dark:text-rose-200 transition-colors"
+              className="shrink-0 ml-2 px-3 min-h-10 rounded-xl border border-red-200 bg-white dark:border-red-500/40 dark:bg-transparent font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 text-red-700 dark:text-red-300 transition-colors"
             >
               Xếp lại
             </button>
           </div>
         ) : (
-          <div className="w-full h-full rounded-xl border border-dashed border-slate-200 dark:border-zinc-800/80 flex items-center justify-center text-xs text-slate-600 dark:text-zinc-400 font-medium select-none px-3 text-center">
+          <div className="w-full h-full rounded-2xl border border-dashed border-slate-200 dark:border-zinc-800 flex items-center justify-center text-sm text-slate-600 dark:text-zinc-400 font-medium select-none px-3 text-center">
             <span>Chạm các từ để ghép câu. Chạm từ đã ghép để gỡ ra. Ghép đủ rồi bấm Kiểm tra.</span>
           </div>
         )}
@@ -361,7 +361,7 @@ export default function SentenceBuilderExercise({
           type="button"
           onClick={handleCheck}
           disabled={!allPlaced || isCorrect === false}
-          className="w-full h-12 rounded-xl bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-200 disabled:text-slate-500 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 disabled:pointer-events-none text-white font-bold text-sm shadow-sm transition-colors inline-flex items-center justify-center gap-2"
+          className="w-full min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:bg-slate-200 disabled:text-slate-500 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 disabled:pointer-events-none text-white font-semibold text-base shadow-sm transition-colors inline-flex items-center justify-center gap-2"
         >
           <span>Kiểm tra</span>
         </button>

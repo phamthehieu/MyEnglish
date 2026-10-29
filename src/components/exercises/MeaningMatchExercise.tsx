@@ -123,21 +123,21 @@ export default function MeaningMatchExercise({
 
   const cell = (state: "matched" | "selected" | "wrong" | "idle") =>
     state === "matched"
-      ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-200 opacity-70"
+      ? "border-green-600 bg-green-50 text-green-800 dark:bg-green-500/10 dark:border-green-500 dark:text-green-200 opacity-70"
       : state === "selected"
-      ? "border-cyan-500 ring-2 ring-cyan-500/30 bg-cyan-50 dark:bg-cyan-950/50 text-cyan-900 dark:text-cyan-200"
+      ? "border-teal-700 bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:border-teal-400 dark:text-teal-200"
       : state === "wrong"
-      ? "border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-200 animate-shake"
-      : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-slate-300 text-slate-800 dark:text-zinc-200";
+      ? "border-red-600 bg-red-50 text-red-800 dark:bg-red-500/10 dark:border-red-500 dark:text-red-200 animate-shake"
+      : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-teal-700/50 dark:hover:border-teal-400/50 text-slate-900 dark:text-zinc-100";
 
   return (
     <div className="w-full max-w-2xl mx-auto space-y-6 animate-in fade-in duration-200">
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-5 text-center space-y-2 shadow-sm">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400 border border-purple-200/50 dark:border-purple-800/40">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 text-center space-y-2 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">
           <Link2 className="w-3 h-3" />
           <span>Nối từ với nghĩa</span>
         </div>
-        <p className="text-xs text-slate-600 dark:text-zinc-400">
+        <p className="text-sm text-slate-600 dark:text-zinc-400">
           Chọn một từ tiếng Anh ở cột trái rồi chọn nghĩa tiếng Việt tương ứng ở cột phải.
         </p>
       </div>
@@ -158,10 +158,10 @@ export default function MeaningMatchExercise({
                 key={p.wordId}
                 onClick={() => handleWordClick(p.wordId)}
                 disabled={done || matched.has(p.wordId)}
-                className={`w-full min-h-12 p-3.5 rounded-xl border text-left transition-all flex items-center justify-between shadow-sm ${cell(state)}`}
+                className={`w-full min-h-14 px-4 py-3 rounded-2xl border text-left transition-colors flex items-center justify-between ${cell(state)}`}
               >
-                <span className="text-sm font-bold">{p.word}</span>
-                {matched.has(p.wordId) && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+                <span className="text-base font-semibold">{p.word}</span>
+                {matched.has(p.wordId) && <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />}
               </button>
             );
           })}
@@ -176,8 +176,8 @@ export default function MeaningMatchExercise({
                 key={m.wordId}
                 onClick={() => handleMeaningClick(m.wordId)}
                 disabled={done || matched.has(m.wordId)}
-                className={`w-full min-h-12 p-3.5 rounded-xl border text-left transition-all shadow-sm text-sm font-medium leading-relaxed ${cell(state)} ${
-                  selectedWordId && state === "idle" ? "border-dashed border-cyan-300 dark:border-cyan-700" : ""
+                className={`w-full min-h-14 px-4 py-3 rounded-2xl border text-left transition-colors text-sm font-medium leading-relaxed ${cell(state)} ${
+                  selectedWordId && state === "idle" ? "border-dashed border-teal-700/40 dark:border-teal-400/40" : ""
                 }`}
               >
                 {m.meaningVN}
@@ -187,9 +187,9 @@ export default function MeaningMatchExercise({
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-xs px-1 min-h-[40px]">
+      <div className="flex items-center justify-between text-sm px-1 min-h-[40px]">
         {done ? (
-          <span className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold mx-auto">
+          <span className="flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold mx-auto">
             <CheckCircle2 className="w-4 h-4" />
             {targetMistakes === 0 && !byElimination
               ? `Chính xác! "${word.word}" đã được nối đúng ngay.`

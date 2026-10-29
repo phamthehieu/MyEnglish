@@ -97,8 +97,8 @@ export default function ListeningDictationExercise({
 
   return (
     <div className="w-full max-w-xl mx-auto space-y-5 animate-in fade-in duration-200">
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-6 text-center space-y-4 shadow-sm">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-center space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">
           <Music className="w-3 h-3" />
           <span>Nghe từ và chọn nghĩa đúng</span>
         </div>
@@ -107,15 +107,15 @@ export default function ListeningDictationExercise({
           <button
             onClick={() => playAudio()}
             type="button"
-            className={`w-20 h-20 rounded-full flex flex-col items-center justify-center transition-all transform active:scale-95 shadow-md cursor-pointer ${
+            className={`w-20 h-20 rounded-full flex flex-col items-center justify-center transition-colors active:scale-95 cursor-pointer ${
               isPlaying
-                ? "bg-gradient-to-tr from-cyan-500 to-blue-500 text-white scale-105 ring-4 ring-cyan-500/30 animate-pulse"
-                : "bg-slate-100 dark:bg-zinc-800 hover:bg-cyan-50 dark:hover:bg-zinc-700 text-cyan-600 dark:text-cyan-400 border border-slate-200 dark:border-zinc-700"
+                ? "bg-teal-700 dark:bg-teal-600 text-white ring-4 ring-teal-700/20 dark:ring-teal-400/20 animate-pulse"
+                : "bg-teal-50 dark:bg-teal-400/10 hover:bg-teal-100 dark:hover:bg-teal-400/20 text-teal-700 dark:text-teal-300 border border-teal-700/20 dark:border-teal-400/30"
             }`}
             title="Nghe tốc độ thường (Phím R)"
           >
             <Volume2 className="w-8 h-8 mb-0.5" />
-            <span className="text-[11px] font-semibold">Nghe</span>
+            <span className="text-xs font-semibold">Nghe</span>
           </button>
         </div>
 
@@ -123,22 +123,22 @@ export default function ListeningDictationExercise({
           <button
             onClick={() => playAudio(SLOW_RATE)}
             type="button"
-            className="px-4 min-h-11 rounded-lg text-xs font-medium bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-300 transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+            className="px-4 min-h-11 rounded-2xl text-sm font-semibold border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 transition-colors flex items-center gap-1.5 cursor-pointer"
             title="Nghe chậm (Phím S)"
           >
             <Snail className="w-3.5 h-3.5 text-amber-500" />
             <span>Nghe chậm</span>
           </button>
-          <span className="desktop-only text-[11px] text-slate-600 dark:text-zinc-400">Phím R: nghe lại · S: nghe chậm · 1–4: chọn</span>
+          <span className="desktop-only text-xs text-slate-600 dark:text-zinc-400">Phím R: nghe lại · S: nghe chậm · 1–4: chọn</span>
         </div>
 
         <div className="min-h-[28px] text-sm">
           {isAnswered ? (
             <span className="font-bold text-slate-900 dark:text-white">
-              {word.word} {word.phonetic ? <span className="font-mono text-cyan-600 dark:text-cyan-400 text-xs">{word.phonetic}</span> : null}
+              {word.word} {word.phonetic ? <span className="font-mono text-teal-700 dark:text-teal-300 text-sm">{word.phonetic}</span> : null}
             </span>
           ) : (
-            <span className="text-[11px] text-slate-600 dark:text-zinc-400">Từ sẽ hiện sau khi bạn trả lời</span>
+            <span className="text-xs text-slate-600 dark:text-zinc-400">Từ sẽ hiện sau khi bạn trả lời</span>
           )}
         </div>
       </div>
@@ -152,20 +152,20 @@ export default function ListeningDictationExercise({
               key={o.id}
               onClick={() => handleSelect(o)}
               disabled={isAnswered || wrong}
-              className={`w-full p-3.5 rounded-xl border text-left text-sm transition-all flex items-center gap-3 ${
+              className={`w-full min-h-14 px-4 py-3 rounded-2xl border text-left text-base font-medium transition-colors flex items-center gap-3 ${
                 right
-                  ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100"
+                  ? "border-green-600 bg-green-50 text-green-800 dark:bg-green-500/10 dark:border-green-500 dark:text-green-200"
                   : wrong
-                  ? "border-rose-300 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 opacity-70"
-                  : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-cyan-400 text-slate-800 dark:text-zinc-200"
+                  ? "border-red-600 bg-red-50 text-red-800 dark:bg-red-500/10 dark:border-red-500 dark:text-red-200 opacity-70"
+                  : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-teal-700/50 hover:bg-slate-50 dark:hover:border-teal-400/50 dark:hover:bg-zinc-800/50 text-slate-900 dark:text-zinc-100"
               }`}
             >
-              <span className="w-6 h-6 rounded-md bg-slate-100 dark:bg-zinc-800 text-[11px] font-mono flex items-center justify-center shrink-0">
+              <span className="w-6 h-6 rounded-md bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-xs font-mono font-bold flex items-center justify-center shrink-0">
                 {idx + 1}
               </span>
               <span className="flex-1">{o.text}</span>
-              {right && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
-              {wrong && <XCircle className="w-4 h-4 text-rose-500" />}
+              {right && <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />}
+              {wrong && <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />}
             </button>
           );
         })}

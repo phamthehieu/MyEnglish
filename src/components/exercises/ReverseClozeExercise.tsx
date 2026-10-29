@@ -127,7 +127,7 @@ export default function ReverseClozeExercise({
         return (
           <span
             key={i}
-            className="font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-950/60 px-1.5 py-0.5 rounded border border-cyan-200 dark:border-cyan-800 underline decoration-cyan-400 decoration-2"
+            className="font-bold text-teal-800 dark:text-teal-200 bg-teal-50 dark:bg-teal-400/10 px-1.5 py-0.5 rounded underline decoration-teal-700 dark:decoration-teal-400 decoration-2 underline-offset-2"
           >
             {part}
           </span>
@@ -140,13 +140,13 @@ export default function ReverseClozeExercise({
   return (
     <div className="w-full max-w-xl mx-auto space-y-6 animate-in fade-in duration-200">
       {/* Context Sentence Card */}
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/80 p-6 md:p-8 space-y-4 shadow-sm text-center">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-400 border border-cyan-200/50 dark:border-cyan-800/40">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-8 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-center">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">
           <Sparkles className="w-3 h-3" />
           <span>Câu ví dụ thực tế</span>
         </div>
 
-        <div className="text-base md:text-lg font-medium text-slate-800 dark:text-zinc-200 leading-relaxed">
+        <div className="text-base md:text-lg font-medium text-slate-900 dark:text-zinc-100 leading-relaxed">
           "{renderSentenceWithHighlight()}"
         </div>
 
@@ -154,14 +154,14 @@ export default function ReverseClozeExercise({
           <button
             onClick={() => onSpeak(example.sentence_en)}
             type="button"
-            className="inline-flex items-center gap-1.5 px-4 min-h-10 rounded-full text-xs font-medium text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 min-h-10 rounded-2xl text-sm font-semibold border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 transition-colors"
           >
-            <Volume2 className="w-3.5 h-3.5 text-cyan-500" />
+            <Volume2 className="w-3.5 h-3.5" />
             <span>Nghe câu ví dụ</span>
           </button>
         </div>
 
-        <p className="text-xs text-slate-600 dark:text-zinc-400 border-t border-slate-100 dark:border-zinc-800 pt-3">
+        <p className="text-sm text-slate-600 dark:text-zinc-400 border-t border-slate-100 dark:border-zinc-800 pt-3">
           Từ được gạch chân mang nghĩa là gì trong câu trên?
         </p>
       </div>
@@ -175,16 +175,16 @@ export default function ReverseClozeExercise({
           const showFail = isSelected && !opt.isCorrect;
 
           let btnClasses =
-            "min-h-12 rounded-xl border p-4 text-left transition-all duration-150 flex items-start gap-3 relative ";
+            "min-h-14 rounded-2xl border px-4 py-4 text-left transition-colors duration-150 flex items-start gap-3 relative ";
           if (showSuccess) {
             btnClasses +=
-              "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 shadow-md ring-2 ring-emerald-500/30";
+              "border-green-600 bg-green-50 text-green-800 dark:bg-green-500/10 dark:border-green-500 dark:text-green-200";
           } else if (showFail) {
             btnClasses +=
-              "border-rose-400 bg-rose-50 dark:bg-rose-950/40 text-rose-900 dark:text-rose-200";
+              "border-red-600 bg-red-50 text-red-800 dark:bg-red-500/10 dark:border-red-500 dark:text-red-200";
           } else {
             btnClasses +=
-              "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-cyan-400 text-slate-800 dark:text-zinc-200 hover:shadow-sm";
+              "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-teal-700/50 hover:bg-slate-50 dark:hover:border-teal-400/50 dark:hover:bg-zinc-800/50 text-slate-900 dark:text-zinc-100";
           }
 
           if (isShake) btnClasses += " animate-shake";
@@ -199,20 +199,20 @@ export default function ReverseClozeExercise({
               <span
                 className={`w-6 h-6 shrink-0 rounded-md flex items-center justify-center text-xs font-mono font-bold ${
                   showSuccess
-                    ? "bg-emerald-500 text-white"
+                    ? "bg-green-600 text-white"
                     : showFail
-                    ? "bg-rose-500 text-white"
+                    ? "bg-red-600 text-white"
                     : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                 }`}
               >
                 {idx + 1}
               </span>
-              <p className="text-sm font-medium leading-snug flex-1">{opt.text}</p>
-              
+              <p className="text-base font-medium leading-snug flex-1">{opt.text}</p>
+
               {/* Reserved icon slot so text width and button height never shift */}
               <div className="w-5 h-5 shrink-0 flex items-center justify-center">
-                {showSuccess && <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 animate-in zoom-in duration-150" />}
-                {showFail && <XCircle className="w-5 h-5 text-rose-500 shrink-0 animate-in zoom-in duration-150" />}
+                {showSuccess && <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0 animate-in zoom-in duration-150" />}
+                {showFail && <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 animate-in zoom-in duration-150" />}
               </div>
             </button>
           );
@@ -220,13 +220,13 @@ export default function ReverseClozeExercise({
       </div>
 
       {/* Bottom Status - constant height h-7 so it NEVER jumps */}
-      <div className="h-7 min-h-[28px] flex items-center justify-center text-xs">
+      <div className="h-7 min-h-[28px] flex items-center justify-center text-sm">
         {wrongAttempts > 0 && !isAnswered ? (
-          <p className="text-center text-xs text-amber-700 dark:text-amber-400 font-semibold animate-in fade-in duration-150">
+          <p className="text-center text-sm text-amber-700 dark:text-amber-400 font-semibold animate-in fade-in duration-150">
             Chưa đúng, thử phương án khác nhé!
           </p>
         ) : (
-          <span className="text-center text-[11px] text-slate-600 dark:text-zinc-400">
+          <span className="text-center text-xs text-slate-600 dark:text-zinc-400">
             Chọn phương án đúng nhất theo ngữ cảnh câu
           </span>
         )}

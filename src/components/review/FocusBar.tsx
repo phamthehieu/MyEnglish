@@ -73,7 +73,7 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
   return (
     <div className="w-full shrink-0 mb-3">
       <div className="flex items-center flex-wrap gap-x-3 text-xs">
-        <span className="inline-flex items-center gap-1.5 font-semibold text-violet-700 dark:text-violet-300">
+        <span className="inline-flex items-center gap-1.5 font-semibold text-teal-700 dark:text-teal-300">
           <Timer className="w-4 h-4" /> Phiên tập trung
         </span>
         <span className="font-mono text-sm font-bold text-slate-900 dark:text-white tabular-nums">
@@ -109,7 +109,7 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
         </button>
       </div>
       <div className="mt-2 h-1 rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
-        <div className="h-full bg-violet-500 transition-[width] duration-1000 ease-linear" style={{ width: `${hideClock ? 0 : done * 100}%` }} />
+        <div className="h-full bg-teal-500 transition-[width] duration-1000 ease-linear" style={{ width: `${hideClock ? 0 : done * 100}%` }} />
       </div>
 
       {confirming && (
@@ -134,7 +134,7 @@ export default function FocusBar({ remainingMs, plannedMs, paused, timeUp, cards
               <button
                 autoFocus
                 onClick={() => setConfirming(false)}
-                className="px-4 h-11 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold"
+                className="px-4 h-11 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold"
               >
                 Học tiếp
               </button>

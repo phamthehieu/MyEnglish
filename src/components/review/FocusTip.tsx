@@ -23,17 +23,17 @@ export default function FocusTip({ onStart }: { onStart: (minutes: number) => vo
 
   if (!show) return null;
   return (
-    <div className="w-full p-4 rounded-2xl border border-violet-200 dark:border-violet-800/60 bg-violet-50 dark:bg-violet-950/30 text-left flex flex-wrap items-center gap-3">
-      <Crosshair className="w-5 h-5 text-violet-600 dark:text-violet-300 shrink-0" />
+    <div className="w-full p-4 rounded-2xl border border-teal-200 dark:border-teal-800/60 bg-teal-50 dark:bg-teal-950/30 text-left flex flex-wrap items-center gap-3">
+      <Crosshair className="w-5 h-5 text-teal-600 dark:text-teal-300 shrink-0" />
       <div className="min-w-0 flex-1 basis-[220px]">
-        <div className="text-sm font-bold text-violet-800 dark:text-violet-200">Lần sau thử phiên tập trung?</div>
+        <div className="text-sm font-bold text-teal-800 dark:text-teal-200">Lần sau thử phiên tập trung?</div>
         <p className="text-xs text-slate-600 dark:text-zinc-300">
           Học trọn {minutes} phút, không popup, không thông báo. Hoàn thành được thêm {minutes * FOCUS_XP_PER_MIN} XP.
         </p>
       </div>
       <button
         onClick={() => onStart(minutes)}
-        className="px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold"
+        className="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold"
       >
         Thử ngay {minutes}′
       </button>
