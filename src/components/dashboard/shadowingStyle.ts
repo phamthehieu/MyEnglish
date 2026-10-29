@@ -5,9 +5,9 @@ export const SENTENCE_FONT = { fontFamily: '"Lexend Variable", ui-sans-serif, sy
 
 /** How a word of a checked sentence is colored: heard clearly, shaky, heard as another word, not heard */
 export const WORD_TONE: Record<WordStatus, string> = {
-  ok: "text-emerald-600 dark:text-emerald-400",
+  ok: "text-green-600 dark:text-green-400",
   shaky: "text-amber-600 dark:text-amber-400",
-  wrong: "text-rose-600 dark:text-rose-400 underline decoration-wavy underline-offset-4",
-  missing: "text-rose-500 dark:text-rose-400 opacity-60 line-through",
+  wrong: "text-red-600 dark:text-red-400 underline decoration-wavy underline-offset-4",
+  missing: "text-red-500 dark:text-red-400 opacity-60 line-through",
   skip: "text-slate-700 dark:text-zinc-300",
 };

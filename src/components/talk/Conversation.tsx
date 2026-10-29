@@ -48,6 +48,7 @@ import {
   setTalkLevel,
 } from "@/services/talk/progress";
 import { scheduleMiss } from "@/services/talk/review";
+import { Button } from "@/components/ui/kit";
 import MicButton from "./MicButton";
 import TapText, { useWordTap } from "./WordTap";
 import { useMic } from "./useMic";
@@ -526,74 +527,92 @@ function ConversationChat({
   ];
 
   return (
-    <div className="flex flex-col h-full min-h-0">
-      {/* Header */}
-      <div className="shrink-0 flex items-center gap-3 px-3 py-2 border-b border-slate-200 dark:border-zinc-800">
-        <button onClick={onBack} className="w-10 h-10 -ml-1 inline-flex items-center justify-center text-slate-600 dark:text-zinc-400" aria-label="Về danh sách">
+    <div className="flex flex-col h-full min-h-0 gap-3 px-3 pt-3 md:px-0">
+      {/* Quiet top line: back, who you talk to, the options */}
+      <div className="shrink-0 flex items-center gap-3">
+        <button
+          onClick={onBack}
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+          aria-label="Về danh sách"
+        >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <div className="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-lg">
+        <div className="w-10 h-10 shrink-0 rounded-full bg-teal-50 dark:bg-teal-400/10 flex items-center justify-center text-lg">
           {partnerEmoji}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{partnerName}</p>
-          <p className="text-xs text-slate-600 dark:text-zinc-400 truncate">{situation.title_vi}</p>
+          <p className="text-sm font-semibold text-slate-900 dark:text-zinc-100 truncate">{partnerName}</p>
+          <p className="text-xs text-slate-500 dark:text-zinc-400 truncate">{situation.title_vi}</p>
         </div>
         <button
           onClick={() => setLevelOpen((o) => !o)}
-          className="shrink-0 min-h-[40px] inline-flex items-center gap-1.5 text-xs font-semibold px-3 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+          className={`shrink-0 min-h-10 inline-flex items-center gap-1.5 text-sm font-semibold px-3 rounded-full border ${
+            levelOpen
+              ? "border-teal-700 bg-teal-50 text-teal-800 dark:border-teal-500 dark:bg-teal-400/10 dark:text-teal-300"
+              : "border-slate-200 bg-white text-slate-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+          }`}
           aria-expanded={levelOpen}
         >
           <SlidersHorizontal className="w-4 h-4" /> Tùy chọn
         </button>
       </div>
       {levelOpen && (
-        <div className="shrink-0 max-h-[55%] overflow-y-auto bg-slate-50 dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-800 p-2 space-y-3">
-          <div className="space-y-1">
-            <p className="px-1 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Cách trả lời</p>
-            <div role="radiogroup" aria-label="Cách trả lời" className="flex flex-wrap gap-1">
+        <div className="shrink-0 max-h-[55%] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 space-y-4">
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-slate-900 dark:text-zinc-100">Cách trả lời</p>
+            <div role="radiogroup" aria-label="Cách trả lời" className="flex flex-wrap gap-2">
               {levels.map((l) => (
                 <button
                   key={l}
                   role="radio"
                   aria-checked={level === l}
                   onClick={() => changeLevel(l)}
-                  className={`flex-1 min-w-[4.5rem] min-h-[44px] rounded-lg text-sm font-semibold ${
-                    level === l ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+                  className={`flex-1 min-w-[4.5rem] min-h-11 rounded-full px-3 text-sm font-semibold ${
+                    level === l
+                      ? "bg-teal-700 text-white dark:bg-teal-600"
+                      : "border border-slate-200 bg-white text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
                   }`}
                 >
                   {LEVEL_LABEL[l]}
                 </button>
               ))}
             </div>
-            <p className="px-1 text-xs text-slate-600 dark:text-zinc-400">Tự động: app đổi cách trả lời theo mức bạn đã quen câu đó.</p>
+            <p className="text-sm text-slate-500 dark:text-zinc-400">Tự động: app đổi cách trả lời theo mức bạn đã quen câu đó.</p>
           </div>
-          <div className="space-y-1">
-            <p className="px-1 text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Tùy chọn khác</p>
+          <div className="space-y-2">
+            <p className="text-sm font-semibold text-slate-900 dark:text-zinc-100">Tùy chọn khác</p>
             {options.map((o) => (
               <button
                 key={o.label}
                 onClick={o.flip}
                 role="switch"
                 aria-checked={o.on}
-                className={`w-full min-h-[48px] flex items-center gap-3 rounded-lg px-3 py-2 text-left ${
-                  o.on ? "bg-violet-600 text-white" : "bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"
+                className={`w-full min-h-12 flex items-center gap-3 rounded-xl border px-3 py-2 text-left ${
+                  o.on
+                    ? "border-teal-600/40 bg-teal-50 text-teal-900 dark:border-teal-500/40 dark:bg-teal-400/10 dark:text-teal-100"
+                    : "border-slate-200 bg-white text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300"
                 }`}
               >
-                <o.icon className="w-4 h-4 shrink-0" />
+                <o.icon className={`w-4 h-4 shrink-0 ${o.on ? "text-teal-700 dark:text-teal-300" : ""}`} />
                 <span className="min-w-0 flex-1">
                   <span className="block text-sm font-semibold">{o.label}</span>
-                  <span className={`block text-xs ${o.on ? "text-violet-100" : "text-slate-600 dark:text-zinc-400"}`}>{o.hint}</span>
+                  <span className="block text-xs text-slate-500 dark:text-zinc-400">{o.hint}</span>
                 </span>
-                <span className="shrink-0 text-xs font-bold">{o.on ? "Bật" : "Tắt"}</span>
+                <span
+                  className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${
+                    o.on ? "bg-teal-700 text-white dark:bg-teal-600" : "bg-slate-100 text-slate-600 dark:bg-zinc-800 dark:text-zinc-400"
+                  }`}
+                >
+                  {o.on ? "Bật" : "Tắt"}
+                </span>
               </button>
             ))}
           </div>
         </div>
       )}
 
-      {/* Messages */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-3 py-4 space-y-3">
+      {/* Messages: one white card */}
+      <div className="flex-1 min-h-0 overflow-y-auto rounded-2xl border border-slate-200 bg-white px-3 py-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 space-y-3">
         {steps.map((s, i) => {
           const spoken = lineFor(s);
           const mine = s.lineId ? lineOf.get(s.lineId) : undefined;
@@ -607,7 +626,7 @@ function ConversationChat({
                 <TypingDots />
               ) : (
                 <div className="flex items-end gap-2">
-                  <div className="w-7 h-7 shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-950/60 flex items-center justify-center text-sm">
+                  <div className="w-8 h-8 shrink-0 rounded-full bg-teal-50 dark:bg-teal-400/10 flex items-center justify-center text-sm">
                     {partnerEmoji}
                   </div>
                   <button
@@ -617,18 +636,18 @@ function ConversationChat({
                     className="max-w-[80%] min-w-0 break-words text-left rounded-2xl rounded-bl-sm bg-slate-100 dark:bg-zinc-800 px-4 py-2.5"
                   >
                     {concealed ? (
-                      <span className="block text-sm text-slate-600 dark:text-zinc-300">🔊 Nghe rồi trả lời (chạm để nghe lại)</span>
+                      <span className="block text-sm text-slate-700 dark:text-zinc-300">🔊 Nghe rồi trả lời (chạm để nghe lại)</span>
                     ) : (
                       <>
-                        <span className="block text-[15px] font-medium text-slate-900 dark:text-white">
+                        <span className="block text-base font-medium text-slate-900 dark:text-zinc-100">
                           <TapText text={spoken.en} unlearned={words.unlearned} onWord={(w) => words.open(w, spoken.en)} tone="light" />
                         </span>
-                        <span className="block text-xs text-slate-600 dark:text-zinc-400">{spoken.vi}</span>
+                        <span className="block text-sm text-slate-500 dark:text-zinc-400">{spoken.vi}</span>
                       </>
                     )}
                   </button>
                   {concealed && (
-                    <button onClick={() => setPeeked(key)} className="min-h-[40px] text-xs font-semibold text-violet-700 dark:text-violet-300">
+                    <button onClick={() => setPeeked(key)} className="min-h-[40px] text-xs font-semibold text-teal-800 dark:text-teal-300">
                       Xem chữ
                     </button>
                   )}
@@ -636,11 +655,11 @@ function ConversationChat({
               )}
               {mine && (
                 <div className="flex justify-end">
-                  <div className="max-w-[80%] min-w-0 break-words rounded-2xl rounded-br-sm bg-violet-600 text-white px-4 py-2.5">
-                    <span className="block text-[15px] font-medium">
+                  <div className="max-w-[80%] min-w-0 break-words rounded-2xl rounded-br-sm bg-teal-700 dark:bg-teal-600 text-white px-4 py-2.5">
+                    <span className="block text-base font-medium">
                       <TapText text={mine.en} unlearned={words.unlearned} onWord={(w) => words.open(w, mine.en)} tone="dark" />
                     </span>
-                    <span className="block text-xs text-violet-100">{mine.vi}</span>
+                    <span className="block text-sm text-teal-50">{mine.vi}</span>
                   </div>
                 </div>
               )}
@@ -649,17 +668,22 @@ function ConversationChat({
         })}
 
         {finished && (
-          <div className="rounded-2xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-4 space-y-3">
-            <p className="font-bold text-emerald-800 dark:text-emerald-200">Xong rồi! 🎉</p>
-            <p className="text-sm text-emerald-900 dark:text-emerald-100">Mục tiêu: {situation.goal_vi}</p>
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+            <p className="inline-flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-zinc-100">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300">
+                <Trophy className="h-4 w-4" />
+              </span>
+              Xong rồi! 🎉
+            </p>
+            <p className="text-sm text-slate-700 dark:text-zinc-300">Mục tiêu: {situation.goal_vi}</p>
             {summary && summary.turns > 0 && (
-              <div className="rounded-xl bg-white/70 dark:bg-zinc-900/60 p-3 space-y-1 text-sm text-slate-800 dark:text-zinc-200">
+              <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/50 p-3 space-y-1 text-sm text-slate-700 dark:text-zinc-300">
                 {summary.stars && <p className="text-lg">{"⭐".repeat(summary.stars)}{"☆".repeat(3 - summary.stars)}</p>}
                 <p>
                   Đúng ngay lần đầu: <span className="font-semibold">{summary.first}/{summary.turns} lượt</span> ({Math.round(summary.score * 100)}%)
                 </p>
                 {summary.prev !== undefined && (
-                  <p className="text-xs text-slate-600 dark:text-zinc-400">
+                  <p className="text-sm text-slate-500 dark:text-zinc-400">
                     Lần trước {Math.round(summary.prev * 100)}%{" "}
                     {summary.score > summary.prev ? "→ bạn tiến bộ rồi 👏" : summary.score < summary.prev ? "→ lần này kém hơn một chút, thử lại nhé" : "→ giữ vững phong độ"}
                   </p>
@@ -667,13 +691,13 @@ function ConversationChat({
               </div>
             )}
             {missed.size > 0 && (
-              <div className="text-sm text-slate-800 dark:text-zinc-200">
-                <p className="font-semibold">Câu cần luyện thêm (sẽ quay lại trong phần ôn):</p>
+              <div className="text-sm text-slate-700 dark:text-zinc-300">
+                <p className="font-semibold text-slate-900 dark:text-zinc-100">Câu cần luyện thêm (sẽ quay lại trong phần ôn):</p>
                 <ul className="mt-1 space-y-1">
                   {[...missed].map((id) => (
                     <li key={id} className="flex items-center gap-2">
-                      <button onClick={() => handleSpeak(lineOf.get(id)?.en ?? "")} aria-label="Nghe câu" className="shrink-0 p-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60">
-                        <Volume2 className="w-3.5 h-3.5" />
+                      <button onClick={() => handleSpeak(lineOf.get(id)?.en ?? "")} aria-label="Nghe câu" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 hover:bg-teal-100 dark:bg-teal-400/10 dark:text-teal-300">
+                        <Volume2 className="w-4 h-4" />
                       </button>
                       <span>{lineOf.get(id)?.en}</span>
                     </li>
@@ -682,27 +706,24 @@ function ConversationChat({
               </div>
             )}
             {weakWords.current.size > 0 && (
-              <div className="text-sm text-slate-800 dark:text-zinc-200">
-                <p className="font-semibold">Từ máy nghe chưa chắc, hãy nói rõ hơn:</p>
+              <div className="text-sm text-slate-700 dark:text-zinc-300">
+                <p className="font-semibold text-slate-900 dark:text-zinc-100">Từ máy nghe chưa chắc, hãy nói rõ hơn:</p>
                 <div className="mt-1 flex flex-wrap gap-1.5">
                   {[...weakWords.current].map((w) => (
-                    <button key={w} onClick={() => handleSpeak(w)} className="px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-200 text-xs font-semibold">
+                    <button key={w} onClick={() => handleSpeak(w)} className="min-h-10 px-3 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-300 text-sm font-semibold">
                       🔊 {w}
                     </button>
                   ))}
                 </div>
               </div>
             )}
-            <div className="flex gap-2">
-              <button
-                onClick={restart}
-                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
-              >
-                <RotateCcw className="w-4 h-4" /> Nói lại
-              </button>
-              <button onClick={onBack} className="flex-1 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm font-semibold">
+            <div className="grid grid-cols-2 gap-2">
+              <Button size="lg" onClick={restart}>
+                <RotateCcw className="w-5 h-5" /> Nói lại
+              </Button>
+              <Button variant="secondary" size="lg" onClick={onBack}>
                 Về danh sách
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -711,27 +732,27 @@ function ConversationChat({
 
       {/* The learner's answer */}
       {waiting && target && (
-        <div className="shrink-0 max-h-[60%] overflow-y-auto border-t border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 pt-3 pb-3 space-y-2 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="shrink-0 max-h-[60%] overflow-y-auto rounded-t-2xl border border-b-0 border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 pt-4 space-y-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-1px_3px_rgba(15,23,42,0.05)]">
           {method === "tiles" || method === "choose" ? (
-            <p className="text-sm text-slate-700 dark:text-zinc-300">
-              Nói: <span className="font-semibold">«{target.vi}»</span>
+            <p className="text-base text-slate-700 dark:text-zinc-300">
+              Nói: <span className="font-semibold text-slate-900 dark:text-zinc-100">«{target.vi}»</span>
             </p>
           ) : (
-            <div className="text-sm text-slate-700 dark:text-zinc-300">
+            <div className="text-base text-slate-700 dark:text-zinc-300">
               <p>
                 Bạn muốn nói:{" "}
-                <span className="font-semibold">{replies.map((l) => `«${l.vi}»`).join(" hoặc ")}</span>
+                <span className="font-semibold text-slate-900 dark:text-zinc-100">{replies.map((l) => `«${l.vi}»`).join(" hoặc ")}</span>
               </p>
               {hint ? (
-                <ul className="mt-1 text-xs text-violet-700 dark:text-violet-300 list-disc pl-5">
+                <ul className="mt-1 text-sm text-teal-800 dark:text-teal-300 list-disc pl-5">
                   {replies.map((l) => (
                     <li key={l.id}>{l.en}</li>
                   ))}
                 </ul>
               ) : (
                 !challenge && (
-                  <button onClick={() => setHint(true)} className="mt-1 min-h-[40px] inline-flex items-center gap-1 text-xs font-semibold text-violet-700 dark:text-violet-300">
-                    <Lightbulb className="w-3.5 h-3.5" /> Xem gợi ý
+                  <button onClick={() => setHint(true)} className="mt-1 min-h-10 inline-flex items-center gap-1 text-sm font-semibold text-teal-700 dark:text-teal-300">
+                    <Lightbulb className="w-4 h-4" /> Xem gợi ý
                   </button>
                 )
               )}
@@ -747,13 +768,13 @@ function ConversationChat({
                     key={c.line.id}
                     onClick={() => pickChoice(c)}
                     disabled={bad}
-                    className={`w-full text-left rounded-xl border px-4 py-2.5 ${
+                    className={`w-full min-h-12 text-left rounded-xl border px-4 py-2.5 ${
                       bad
-                        ? "border-rose-300 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 opacity-70"
-                        : "border-violet-200 dark:border-violet-900 bg-violet-50 dark:bg-violet-950/30 text-violet-900 dark:text-violet-100"
+                        ? "border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 opacity-70"
+                        : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 hover:border-teal-600/50 hover:bg-teal-50/50 dark:hover:bg-teal-400/5"
                     }`}
                   >
-                    <span className="block text-[15px] font-semibold">{c.line.en}</span>
+                    <span className="block text-base font-semibold">{c.line.en}</span>
                   </button>
                 );
               })}
@@ -762,12 +783,12 @@ function ConversationChat({
 
           {method === "tiles" && (
             <>
-              <div className="min-h-[3rem] rounded-xl border-2 border-dashed border-slate-300 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
+              <div className="min-h-[3.25rem] rounded-xl border-2 border-dashed border-slate-200 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
                 {chosen.map((t) => (
                   <button
                     key={t.id}
                     onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))}
-                    className="px-3 min-h-[40px] rounded-lg bg-violet-600 text-white text-sm font-semibold"
+                    className="px-3 min-h-11 rounded-xl bg-teal-700 dark:bg-teal-600 text-white text-sm font-semibold"
                   >
                     {t.text}
                   </button>
@@ -781,28 +802,19 @@ function ConversationChat({
                       setFeedback(null);
                       setChosen((c) => [...c, t]);
                     }}
-                    className="px-3 min-h-[40px] rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-white"
+                    className="px-3 min-h-11 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-zinc-100 hover:border-teal-600/50"
                   >
                     {t.text}
                   </button>
                 ))}
               </div>
               <div className="flex gap-2">
-                <button
-                  onClick={() => setChosen([])}
-                  disabled={chosen.length === 0}
-                  className="px-4 min-h-[44px] rounded-xl border border-slate-300 dark:border-zinc-700 disabled:opacity-40"
-                  aria-label="Xóa hết"
-                >
-                  <Eraser className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={sendTiles}
-                  disabled={chosen.length === 0}
-                  className="flex-1 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
-                >
-                  <Send className="w-4 h-4" /> Gửi
-                </button>
+                <Button variant="secondary" size="lg" onClick={() => setChosen([])} disabled={chosen.length === 0} aria-label="Xóa hết" className="px-5">
+                  <Eraser className="w-5 h-5" />
+                </Button>
+                <Button size="lg" className="flex-1" onClick={sendTiles} disabled={chosen.length === 0}>
+                  <Send className="w-5 h-5" /> Gửi
+                </Button>
               </div>
             </>
           )}
@@ -827,33 +839,28 @@ function ConversationChat({
                 spellCheck={false}
                 enterKeyHint="send"
                 placeholder="Gõ câu tiếng Anh…"
-                className="flex-1 min-w-0 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-[15px] text-slate-900 dark:text-white"
+                className="flex-1 min-w-0 min-h-12 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-base text-slate-900 dark:text-zinc-100 focus:border-teal-600 focus:outline-none"
               />
-              <button
-                type="submit"
-                disabled={!typed.trim()}
-                className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white"
-                aria-label="Gửi"
-              >
-                <Send className="w-4 h-4" />
-              </button>
+              <Button type="submit" disabled={!typed.trim()} aria-label="Gửi" className="px-4">
+                <Send className="w-5 h-5" />
+              </Button>
             </form>
           )}
 
           {method === "say" && (
             <>
               <MicButton mic={mic} onStart={() => say()} idleLabel="Bấm để nói" />
-              {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem}</p>}
+              {mic.problem && <p className="text-sm text-red-700 dark:text-red-300">{mic.problem}</p>}
             </>
           )}
 
           {feedback && (
-            <div className="rounded-xl border border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm space-y-1" role="status">
+            <div className="rounded-xl border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm space-y-1" role="status">
               <p>{feedback}</p>
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold">
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold">
                 {method === "say" && (
-                  <button onClick={playRecording} className="min-h-[40px] underline underline-offset-2 inline-flex items-center gap-1">
-                    <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
+                  <button onClick={playRecording} className="min-h-10 underline underline-offset-2 inline-flex items-center gap-1">
+                    <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
                   </button>
                 )}
                 {fails >= SHOW_ANSWER_AFTER && (
@@ -865,7 +872,7 @@ function ConversationChat({
             </div>
           )}
 
-          <div className="flex items-center justify-center gap-1 pt-1">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 border-t border-slate-100 pt-3 dark:border-zinc-800">
             {methods.map((m) => {
               const Icon = METHOD_ICON[m];
               return (
@@ -873,13 +880,13 @@ function ConversationChat({
                   key={m}
                   onClick={() => changeMethod(m)}
                   aria-pressed={method === m}
-                  className={`px-3 min-h-[40px] rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
+                  className={`px-3 min-h-10 rounded-full text-sm font-semibold inline-flex items-center gap-1 ${
                     method === m
-                      ? "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300"
-                      : "text-slate-600 dark:text-zinc-400"
+                      ? "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
+                      : "text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800"
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" /> {LEVEL_LABEL[m]}
+                  <Icon className="w-4 h-4" /> {LEVEL_LABEL[m]}
                 </button>
               );
             })}

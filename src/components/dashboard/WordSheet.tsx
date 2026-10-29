@@ -12,12 +12,12 @@ export function cleanWord(raw: string): string {
 
 /** A dot for how hard the word is: green A1-A2, amber B1-B2, rose above */
 const LEVEL_DOT: Record<string, string> = {
-  A1: "bg-emerald-400",
-  A2: "bg-emerald-400",
-  B1: "bg-amber-400",
-  B2: "bg-amber-400",
-  C1: "bg-rose-400",
-  C2: "bg-rose-400",
+  A1: "bg-teal-300",
+  A2: "bg-teal-300",
+  B1: "bg-teal-500",
+  B2: "bg-teal-500",
+  C1: "bg-teal-700",
+  C2: "bg-teal-700",
 };
 
 /**
@@ -94,8 +94,8 @@ export default function WordSheet({
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end" role="dialog" aria-modal="true" aria-label={`Từ ${shown}`}>
-      <button className="popup-backdrop-enter absolute inset-0 bg-black/40" onClick={onClose} aria-label="Đóng" />
-      <div className="sheet-enter relative mx-auto w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 px-5 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl">
+      <button className="popup-backdrop-enter absolute inset-0 bg-slate-900/50 dark:bg-black/60" onClick={onClose} aria-label="Đóng" />
+      <div className="sheet-enter relative mx-auto w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-t-3xl border-t border-slate-200 bg-white px-5 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-xl dark:border-zinc-800 dark:bg-zinc-900">
         <button onClick={onClose} className="mx-auto mb-4 block h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" aria-label="Đóng" />
 
         <div className="flex items-start justify-between gap-3">
@@ -107,7 +107,7 @@ export default function WordSheet({
           </div>
           <button
             onClick={() => handleSpeak(shown)}
-            className="h-12 w-12 shrink-0 rounded-full bg-violet-500/15 text-violet-600 dark:text-violet-300 inline-flex items-center justify-center"
+            className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 hover:bg-teal-100 dark:bg-teal-400/10 dark:text-teal-300 dark:hover:bg-teal-400/20"
             aria-label="Nghe phát âm"
           >
             <Volume2 className="w-5 h-5" />
@@ -146,14 +146,14 @@ export default function WordSheet({
         <div className="mt-5 flex items-center gap-3 border-l-2 border-slate-300 dark:border-zinc-600 pl-4">
           <p className="min-w-0 flex-1 text-[17px] leading-relaxed text-slate-800 dark:text-zinc-100" style={{ fontFamily }}>
             {sentence.split(" ").map((w, i) => (
-              <span key={i} className={cleanWord(w).toLowerCase() === shown ? "font-semibold text-orange-600 dark:text-orange-300" : undefined}>
+              <span key={i} className={cleanWord(w).toLowerCase() === shown ? "font-semibold text-teal-700 dark:text-teal-300" : undefined}>
                 {w}{" "}
               </span>
             ))}
           </p>
           <button
             onClick={() => handleSpeak(sentence)}
-            className="h-11 w-11 shrink-0 rounded-full bg-violet-500/15 text-violet-600 dark:text-violet-300 inline-flex items-center justify-center"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 hover:bg-teal-100 dark:bg-teal-400/10 dark:text-teal-300 dark:hover:bg-teal-400/20"
             aria-label="Đọc cả câu này"
           >
             <Play className="w-4 h-4 fill-current" />
@@ -199,7 +199,7 @@ export default function WordSheet({
         {hasMore && (
           <button
             onClick={() => setMore((v) => !v)}
-            className="mt-4 flex w-full items-center justify-center gap-2 border-t border-slate-200 dark:border-zinc-800 pt-4 text-base font-semibold text-violet-600 dark:text-violet-300"
+            className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 border-t border-slate-200 pt-4 text-base font-semibold text-teal-700 dark:border-zinc-800 dark:text-teal-300"
             aria-expanded={more}
           >
             {more ? <ChevronsDown className="w-4 h-4" /> : <ChevronsUp className="w-4 h-4" />}
@@ -210,12 +210,12 @@ export default function WordSheet({
         <button
           onClick={save}
           disabled={saving || entry === undefined || entry === null || note?.ok === true}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-violet-500/15 py-4 text-lg font-bold text-violet-700 dark:text-violet-300 disabled:opacity-50"
+          className="mt-4 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-teal-700 px-6 text-[17px] font-semibold text-white shadow-sm transition-colors hover:bg-teal-800 disabled:opacity-50 dark:bg-teal-600 dark:hover:bg-teal-500"
         >
           {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : note?.ok ? <BookmarkCheck className="w-5 h-5" /> : <BookmarkPlus className="w-5 h-5" />}
           {note?.ok ? "Đã lưu" : "Lưu từ"}
         </button>
-        {note && <p className={`mt-2 text-center text-sm ${note.ok ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>{note.text}</p>}
+        {note && <p className={`mt-2 text-center text-sm ${note.ok ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}`}>{note.text}</p>}
       </div>
     </div>
   );

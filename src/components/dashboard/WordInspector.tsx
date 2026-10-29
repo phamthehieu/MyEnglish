@@ -72,7 +72,7 @@ function Section({ id, icon, title, right, children }: { id: string; icon: React
   return (
     <section id={id} className="scroll-mt-2 space-y-2.5">
       <div className="flex items-center justify-between gap-2">
-        <h3 className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-zinc-400">
+        <h3 className="flex items-center gap-1.5 text-base font-semibold text-slate-900 dark:text-zinc-100">
           {icon}
           {title}
         </h3>
@@ -85,9 +85,9 @@ function Section({ id, icon, title, right, children }: { id: string; icon: React
 
 function Stat({ label, value, sub, tone = "" }: { label: string; value: ReactNode; sub?: ReactNode; tone?: string }) {
   return (
-    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 min-w-0">
+    <div className="min-w-0 rounded-xl bg-slate-50 p-2.5 dark:bg-zinc-800/60">
       <div className="text-xs text-slate-600 dark:text-zinc-400 truncate">{label}</div>
-      <div className={`text-base font-bold font-mono truncate ${tone || "text-slate-900 dark:text-white"}`}>{value}</div>
+      <div className={`truncate text-base font-bold tabular-nums ${tone || "text-slate-900 dark:text-white"}`}>{value}</div>
       {sub && <div className="text-xs text-slate-600 dark:text-zinc-400 truncate">{sub}</div>}
     </div>
   );
@@ -227,39 +227,39 @@ export default function WordInspector({
       <div
         aria-hidden="true"
         onClick={() => setSelectedWord(null)}
-        className="absolute inset-0 bg-slate-900/25 dark:bg-black/55 animate-in fade-in duration-150"
+        className="absolute inset-0 bg-slate-900/40 dark:bg-black/60 animate-in fade-in duration-150"
       />
-      <aside className="relative h-full w-full max-w-[640px] md:w-[580px] lg:w-[640px] border-l border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-950 flex flex-col animate-in slide-in-from-right duration-200 shadow-2xl">
+      <aside className="relative h-full w-full max-w-[640px] md:w-[580px] lg:w-[640px] border-l border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex flex-col animate-in slide-in-from-right duration-200 shadow-xl">
         {/* ── Header: the word, how to say it, where it stands ── */}
-        <div className="shrink-0 border-b border-slate-200 dark:border-zinc-800 bg-gradient-to-b from-cyan-50/70 to-white dark:from-cyan-950/20 dark:to-zinc-950">
+        <div className="shrink-0 border-b border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
           <div className="px-5 pt-4 pb-3 space-y-3">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 space-y-1.5">
-                <div className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-slate-600 dark:text-zinc-400">
-                  <BookOpen className="w-3.5 h-3.5 text-cyan-500" /> Chi tiết từ vựng
+                <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">
+                  <BookOpen className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" /> Chi tiết từ vựng
                 </div>
-                <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words select-text">{w.word}</h2>
+                <h2 className="break-words text-3xl font-bold text-slate-900 select-text dark:text-white">{w.word}</h2>
                 <div className="flex flex-wrap items-center gap-1.5">
                   {posList.map((p) => (
                     <span
                       key={p}
-                      className="text-xs font-mono px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800 font-semibold"
+                      className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700 dark:bg-zinc-800 dark:text-zinc-300"
                     >
                       {p}
                     </span>
                   ))}
                   {cefr && (
-                    <span className="text-xs px-2 py-0.5 rounded-full font-bold bg-cyan-100 dark:bg-cyan-950/70 text-cyan-800 dark:text-cyan-300">{cefr}</span>
+                    <span className="rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">{cefr}</span>
                   )}
                   {catalogEntry && (
                     <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300">
                       Oxford {catalogEntry.list}
                     </span>
                   )}
-                  <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                  <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-700 dark:bg-green-500/10 dark:text-green-300">
                     {WORD_STATUS_LABELS[status]}
                   </span>
-                  {leech && <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-rose-600 text-white">Từ khó</span>}
+                  {leech && <span className="rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-semibold text-white">Từ khó</span>}
                   {!!w.suspended && (
                     <span className="text-xs px-2 py-0.5 rounded-full bg-slate-200 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300">Đang tạm ngưng</span>
                   )}
@@ -273,18 +273,18 @@ export default function WordInspector({
                     aria-label="Thêm tùy chọn"
                     aria-expanded={menuOpen}
                     title="Thêm tùy chọn"
-                    className="w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+                    className="flex h-11 w-11 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
                   >
                     <MoreVertical className="w-5 h-5" />
                   </button>
                   {menuOpen && (
-                    <div className="absolute right-0 top-full mt-1 z-10 min-w-[10rem] rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl py-1">
+                    <div className="absolute right-0 top-full z-10 mt-1 min-w-[11rem] overflow-hidden rounded-2xl border border-slate-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
                       <button
                         onClick={(e) => {
                           setMenuOpen(false);
                           requestDeleteWord(w.id, w.word, e);
                         }}
-                        className="w-full min-h-11 px-3 flex items-center gap-2 text-sm font-medium text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+                        className="flex min-h-11 w-full items-center gap-2 px-4 text-sm font-semibold text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
                       >
                         <Trash2 className="w-4 h-4" /> Xoá từ này
                       </button>
@@ -295,7 +295,7 @@ export default function WordInspector({
                   onClick={() => setSelectedWord(null)}
                   aria-label="Đóng chi tiết từ vựng"
                   title="Đóng (Esc)"
-                  className="w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+                  className="flex h-11 w-11 items-center justify-center rounded-full text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -303,7 +303,7 @@ export default function WordInspector({
             </div>
 
             {/* Pronunciation: US and UK IPA, normal and slow */}
-            <div className="flex flex-wrap items-center gap-2 text-xs select-text">
+            <div className="flex flex-wrap items-center gap-2 text-sm select-text">
               {ipaUs.length > 0 && (
                 <span className="font-mono text-slate-700 dark:text-zinc-200">
                   <span className="text-xs font-sans font-bold text-slate-600 dark:text-zinc-400 mr-1">US</span>
@@ -319,16 +319,16 @@ export default function WordInspector({
               <div className="ml-auto flex items-center gap-1.5">
                 <button
                   onClick={() => handleSpeak(w.word)}
-                  className="px-3 min-h-10 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white font-semibold inline-flex items-center gap-1.5 shadow-sm"
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-2xl bg-teal-700 px-4 font-semibold text-white shadow-sm hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500"
                 >
-                  <Volume2 className="w-3.5 h-3.5" /> Nghe
+                  <Volume2 className="w-4 h-4" /> Nghe
                 </button>
                 <button
                   onClick={() => handleSpeak(w.word, SLOW_RATE)}
                   title="Nghe chậm"
-                  className="px-3 min-h-10 rounded-lg border border-cyan-300 dark:border-cyan-700 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 inline-flex items-center gap-1.5"
+                  className="inline-flex min-h-11 items-center gap-1.5 rounded-2xl border border-teal-700/30 bg-white px-4 font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
                 >
-                  <Snail className="w-3.5 h-3.5" /> Chậm
+                  <Snail className="w-4 h-4" /> Chậm
                 </button>
               </div>
             </div>
@@ -337,7 +337,7 @@ export default function WordInspector({
               type="button"
               onClick={() => setShowSummary((v) => !v)}
               aria-expanded={showSummary}
-              className="sm:hidden w-full min-h-10 rounded-lg border border-slate-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900 text-xs font-medium text-slate-700 dark:text-zinc-300 inline-flex items-center justify-center gap-1.5"
+              className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-2xl text-sm font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10 sm:hidden"
             >
               {showSummary ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               {showSummary ? "Ẩn chỉ số và mục lục" : "Xem chỉ số và mục lục"}
@@ -352,17 +352,17 @@ export default function WordInspector({
                   recall == null
                     ? ""
                     : recall >= 0.85
-                      ? "text-emerald-600 dark:text-emerald-400"
+                      ? "text-green-700 dark:text-green-400"
                       : recall >= 0.7
-                        ? "text-amber-600 dark:text-amber-400"
-                        : "text-rose-600 dark:text-rose-400"
+                        ? "text-amber-700 dark:text-amber-400"
+                        : "text-red-700 dark:text-red-400"
                 }
                 sub={recall == null ? "chưa học" : "thẻ yếu hơn"}
               />
               <Stat
                 label="Ôn tiếp"
                 value={w.suspended ? "—" : next ? (next.diffMs <= 0 ? "Đến hạn" : next.shortLabel) : "—"}
-                tone={next && next.diffMs <= 0 && !w.suspended ? "text-rose-600 dark:text-rose-400" : ""}
+                tone={next && next.diffMs <= 0 && !w.suspended ? "text-amber-700 dark:text-amber-400" : ""}
                 sub={w.suspended ? "đang tạm ngưng" : nextAt ? dateVn(nextAt.toISOString()) : "chưa có lịch"}
               />
               <Stat
@@ -370,17 +370,17 @@ export default function WordInspector({
                 value={stats && stats.totalAttempts > 0 ? `${stats.correctCount}/${stats.wrongCount}` : "—"}
                 sub={stats && stats.totalAttempts > 0 ? `${stats.accuracy}% chính xác` : "chưa trả lời"}
               />
-              <Stat label="Đã quên" value={`${lapses} lần`} tone={lapses >= 2 ? "text-rose-600 dark:text-rose-400" : ""} sub={leech ? "từ khó" : " "} />
+              <Stat label="Đã quên" value={`${lapses} lần`} tone={lapses >= 2 ? "text-red-700 dark:text-red-400" : ""} sub={leech ? "từ khó" : " "} />
             </div>
           </div>
 
           {/* Section bar: jump to any part of the panel */}
-          <nav className={`${showSummary ? "flex" : "hidden"} sm:flex px-5 pb-2.5 flex-wrap gap-1.5`} aria-label="Các phần chi tiết">
+          <nav className={`${showSummary ? "flex" : "hidden"} sm:flex px-5 pb-3 flex-wrap gap-2`} aria-label="Các phần chi tiết">
             {nav.map(([id, label]) => (
               <button
                 key={id}
                 onClick={() => jump(id)}
-                className="shrink-0 px-3 min-h-9 rounded-lg text-xs font-medium text-slate-600 dark:text-zinc-300 bg-white/70 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 hover:border-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 transition-colors"
+                className="inline-flex min-h-10 shrink-0 items-center rounded-full border border-slate-200 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
               >
                 {label}
               </button>
@@ -391,14 +391,14 @@ export default function WordInspector({
         {/* ── Content: meanings, examples and messages can be selected and copied ── */}
         <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto p-5 space-y-7 select-text">
           {/* Meaning: the short one, then every sense of the dictionary entry */}
-          <Section id="wi-meaning" icon={<Sparkles className="w-3.5 h-3.5 text-cyan-500" />} title="Nghĩa tiếng Việt">
-            <p className="text-base text-slate-900 dark:text-zinc-100 leading-relaxed font-medium">{w.meaning_vn}</p>
+          <Section id="wi-meaning" icon={<Sparkles className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />} title="Nghĩa tiếng Việt">
+            <p className="text-lg font-medium leading-relaxed text-slate-900 dark:text-zinc-100">{w.meaning_vn}</p>
             {senses.length > 1 && (
-              <ol className="space-y-1.5 rounded-xl bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-3">
+              <ol className="space-y-1.5 rounded-xl bg-slate-50 p-3 dark:bg-zinc-800/60">
                 {senses.map((s, i) => (
                   <li key={i} className="flex gap-2 text-sm text-slate-800 dark:text-zinc-200">
                     <span className="font-mono text-xs text-slate-600 dark:text-zinc-400 w-4 shrink-0 pt-0.5">{i + 1}.</span>
-                    <span className="text-xs font-mono text-purple-700 dark:text-purple-300 shrink-0 pt-0.5 w-14">{s.pos}</span>
+                    <span className="w-14 shrink-0 pt-0.5 text-xs italic text-slate-500 dark:text-zinc-400">{s.pos}</span>
                     <span>{s.vn}</span>
                   </li>
                 ))}
@@ -426,7 +426,7 @@ export default function WordInspector({
           {w.examples.length > 0 && (
             <Section
               id="wi-examples"
-              icon={<Code2 className="w-3.5 h-3.5 text-cyan-500" />}
+              icon={<Code2 className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />}
               title="Câu ví dụ"
               right={<span className="text-xs text-slate-600 dark:text-zinc-400">{w.examples.length} câu</span>}
             >
@@ -436,31 +436,31 @@ export default function WordInspector({
                   const source =
                     ex.source === "user_context" ? "Câu bạn gặp" : ex.source === "catalog" ? "Oxford" : ex.source === "ai" || !ex.source ? "AI viết" : ex.source;
                   return (
-                    <div key={ex.id || idx} className="rounded-xl bg-slate-50 dark:bg-zinc-900 p-3.5 border border-slate-200 dark:border-zinc-800 space-y-2">
+                    <div key={ex.id || idx} className="space-y-2 rounded-xl bg-slate-50 p-3.5 dark:bg-zinc-800/60">
                       <div className="flex items-center gap-1.5 flex-wrap text-xs">
-                        <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400">#{idx + 1}</span>
+                        <span className="font-bold text-teal-700 dark:text-teal-300">#{idx + 1}</span>
                         {sense && (
-                          <span className="px-1.5 py-0.5 rounded bg-purple-100 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300">
+                          <span className="rounded-full bg-slate-200/70 px-2 py-0.5 text-slate-700 dark:bg-zinc-700 dark:text-zinc-300">
                             {sense.pos} · {sense.vn}
                           </span>
                         )}
-                        <span className="px-1.5 py-0.5 rounded bg-slate-200/70 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400">{source}</span>
+                        <span className="rounded-full bg-slate-200/70 px-2 py-0.5 text-slate-600 dark:bg-zinc-700 dark:text-zinc-300">{source}</span>
                       </div>
                       <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-semibold text-slate-900 dark:text-white leading-relaxed">{ex.sentence_en}</p>
+                        <p className="text-base font-semibold leading-relaxed text-slate-900 dark:text-white">{ex.sentence_en}</p>
                         <button
                           onClick={() => handleSpeak(ex.sentence_en)}
                           title="Nghe cả câu"
                           aria-label="Nghe cả câu"
-                          className="text-slate-600 hover:text-cyan-600 dark:text-zinc-400 dark:hover:text-cyan-400 w-10 h-10 -my-2 -mr-2 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-zinc-800 shrink-0"
+                          className="-my-2 -mr-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-600 hover:bg-slate-200 hover:text-teal-700 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-teal-300"
                         >
                           <Volume2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                       {ex.sentence_vn && <p className="text-sm text-slate-600 dark:text-zinc-300 leading-relaxed">{ex.sentence_vn}</p>}
                       {ex.grammar_analysis && ex.grammar_analysis.trim() && (
-                        <div className="pt-2 border-t border-slate-200 dark:border-zinc-800">
-                          <div className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 mb-1">Phân tích câu</div>
+                        <div className="pt-2 border-t border-slate-200 dark:border-zinc-700">
+                          <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-zinc-400">Phân tích câu</div>
                           <p className="text-xs font-mono text-slate-700 dark:text-zinc-300 leading-relaxed whitespace-pre-wrap">{ex.grammar_analysis}</p>
                         </div>
                       )}
@@ -473,26 +473,26 @@ export default function WordInspector({
                   setSelectedWord(null);
                   setActiveTab("grammar");
                 }}
-                className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline inline-flex items-center gap-1"
+                className="-ml-2 inline-flex min-h-11 items-center gap-1.5 rounded-xl px-2 text-sm font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
               >
-                <GraduationCap className="w-3 h-3" /> Mở trung tâm ngữ pháp
+                <GraduationCap className="w-4 h-4" /> Mở trung tâm ngữ pháp
               </button>
             </Section>
           )}
 
           {/* Collocations, synonyms, antonyms */}
           {colls.length + syns.length + ants.length > 0 && (
-            <Section id="wi-related" icon={<Link2 className="w-3.5 h-3.5 text-cyan-500" />} title="Từ liên quan">
+            <Section id="wi-related" icon={<Link2 className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />} title="Từ liên quan">
               {colls.length > 0 && (
                 <div className="space-y-1.5">
                   <div className="text-xs font-semibold text-slate-600 dark:text-zinc-300 flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-cyan-500" /> Cụm từ thường gặp
+                    <Layers className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" /> Cụm từ thường gặp
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {colls.map((c, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 rounded-lg bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700/70 text-slate-800 dark:text-zinc-200 font-mono text-xs"
+                        className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-800 dark:bg-zinc-800 dark:text-zinc-200"
                       >
                         {c}
                       </span>
@@ -526,9 +526,9 @@ export default function WordInspector({
           )}
 
           {/* Memory hook */}
-          <Section id="wi-mnemonic" icon={<Lightbulb className="w-3.5 h-3.5 text-amber-500" />} title="Mẹo nhớ">
+          <Section id="wi-mnemonic" icon={<Lightbulb className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />} title="Mẹo nhớ">
             {mnemonic ? (
-              <p className="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 text-sm text-amber-900 dark:text-amber-100 leading-relaxed">
+              <p className="rounded-xl bg-slate-50 p-3 text-sm leading-relaxed text-slate-800 dark:bg-zinc-800/60 dark:text-zinc-100">
                 {mnemonic}
               </p>
             ) : (
@@ -537,7 +537,7 @@ export default function WordInspector({
                   const id = w.id;
                   generateSmartMnemonic(w).then((m) => useWordsStore.getState().selectedWord?.id === id && setMnemonic(m));
                 }}
-                className="px-3 min-h-10 rounded-xl border border-dashed border-amber-300 dark:border-amber-700 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-50 dark:hover:bg-amber-950/30"
+                className="inline-flex min-h-11 items-center rounded-2xl border border-teal-700/30 bg-white px-4 text-sm font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
               >
                 Tạo mẹo nhớ cho từ này
               </button>
@@ -548,16 +548,16 @@ export default function WordInspector({
           {w.code_snippet && (
             <Section
               id="wi-code"
-              icon={<Terminal className="w-3.5 h-3.5 text-cyan-500" />}
+              icon={<Terminal className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />}
               title="Đoạn mã ngữ cảnh"
               right={
                 <button
                   onClick={() => handleCopyCode(w.code_snippet!)}
-                  className="text-xs text-slate-600 hover:text-cyan-600 dark:text-zinc-400 dark:hover:text-cyan-300 flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800"
+                  className="flex min-h-10 items-center gap-1 rounded-xl px-2.5 text-sm font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
                 >
                   {copiedSnippet ? (
                     <>
-                      <CheckCircle className="w-3 h-3 text-emerald-500" /> Đã sao chép
+                      <CheckCircle className="w-3 h-3 text-green-600" /> Đã sao chép
                     </>
                   ) : (
                     <>
@@ -576,11 +576,11 @@ export default function WordInspector({
           {/* The two memory cards and their schedules */}
           <Section
             id="wi-memory"
-            icon={<Brain className="w-3.5 h-3.5 text-violet-500" />}
+            icon={<Brain className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />}
             title="Trí nhớ & lịch ôn"
             right={
-              <button onClick={() => setShowHistory(true)} className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline inline-flex items-center gap-1">
-                <History className="w-3 h-3" /> Lịch sử ôn
+              <button onClick={() => setShowHistory(true)} className="inline-flex min-h-10 items-center gap-1 rounded-xl px-2 text-sm font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10">
+                <History className="w-3.5 h-3.5" /> Lịch sử ôn
               </button>
             }
           >
@@ -600,10 +600,10 @@ export default function WordInspector({
             </p>
             <button
               onClick={() => toggleSuspended(w)}
-              className={`inline-flex items-center gap-1.5 px-3 min-h-10 rounded-lg text-xs font-semibold border transition-colors ${
+              className={`inline-flex min-h-11 items-center gap-1.5 rounded-2xl border px-4 text-sm font-semibold transition-colors ${
                 w.suspended
-                  ? "border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
-                  : "border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                  ? "border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
+                  : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-700 dark:bg-transparent dark:text-zinc-300 dark:hover:bg-zinc-800"
               }`}
             >
               {w.suspended ? <PlayCircle className="w-3.5 h-3.5" /> : <PauseCircle className="w-3.5 h-3.5" />}
@@ -612,8 +612,8 @@ export default function WordInspector({
           </Section>
 
           {/* Where the word comes from */}
-          <Section id="wi-info" icon={<Info className="w-3.5 h-3.5 text-slate-400" />} title="Thông tin">
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-xs">
+          <Section id="wi-info" icon={<Info className="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" />} title="Thông tin">
+            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
               <dt className="text-slate-600 dark:text-zinc-400">Ngày thêm</dt>
               <dd className="text-slate-700 dark:text-zinc-200">{dateVn(w.created_at)}</dd>
               <dt className="text-slate-600 dark:text-zinc-400">Nguồn</dt>
@@ -634,13 +634,13 @@ export default function WordInspector({
               )}
             </dl>
             {!w.catalog_id && (
-              <div className="flex items-center gap-2 text-xs">
-                <Tag className="w-3.5 h-3.5 text-cyan-500" />
+              <div className="flex flex-wrap items-center gap-2 text-sm">
+                <Tag className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />
                 <span className="text-slate-600 dark:text-zinc-400">Chủ đề</span>
                 <select
                   value={w.topic || "General Tech"}
                   onChange={(e) => handleUpdateTopic(w.id, e.target.value)}
-                  className="bg-white dark:bg-zinc-900 border border-slate-300 dark:border-zinc-700 rounded-lg px-2 py-1 text-slate-800 dark:text-zinc-200 focus:outline-none focus:border-cyan-500"
+                  className="min-h-11 rounded-2xl border border-slate-300 bg-white px-3 text-slate-800 focus:border-teal-600 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
                 >
                   {PREDEFINED_TOPICS.map((top) => (
                     <option key={top} value={top}>
@@ -680,14 +680,14 @@ function MemoryCard({
   const r = studied ? Math.round(calculateRetrievability(srs, now) * 100) : null;
   const next = studied ? formatNextReviewRelative(srs.next_review_date, false, now) : null;
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900 p-3 space-y-2">
+    <div className="space-y-2 rounded-xl bg-slate-50 p-3 dark:bg-zinc-800/60">
       <div className="flex items-center justify-between gap-2">
         <div className="min-w-0">
           <div className="text-sm font-bold text-slate-900 dark:text-white">{title}</div>
           <div className="text-xs text-slate-600 dark:text-zinc-400 truncate">{hint}</div>
         </div>
         {studied && (
-          <span className="text-xs px-1.5 py-0.5 rounded bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 shrink-0">
+          <span className="shrink-0 rounded-full bg-teal-50 px-2 py-0.5 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
             {STATE_LABEL[srs.state ?? 0]}
           </span>
         )}
@@ -700,7 +700,7 @@ function MemoryCard({
             <div className="flex items-center gap-2">
               <div className="flex-1 h-1.5 rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${r >= 85 ? "bg-emerald-500" : r >= 70 ? "bg-amber-500" : "bg-rose-500"}`}
+                  className={`h-full rounded-full ${r >= 85 ? "bg-green-600" : r >= 70 ? "bg-amber-500" : "bg-red-500"}`}
                   style={{ width: `${r}%` }}
                 />
               </div>
@@ -715,7 +715,7 @@ function MemoryCard({
             <dt className="text-slate-600 dark:text-zinc-400">Số lần ôn</dt>
             <dd className="font-mono text-slate-800 dark:text-zinc-200 text-right">{srs.reps ?? srs.repetitions ?? 0}</dd>
             <dt className="text-slate-600 dark:text-zinc-400">Số lần quên</dt>
-            <dd className={`font-mono text-right ${(srs.lapses ?? 0) >= 2 ? "text-rose-600 dark:text-rose-400" : "text-slate-800 dark:text-zinc-200"}`}>
+            <dd className={`font-mono text-right ${(srs.lapses ?? 0) >= 2 ? "text-red-700 dark:text-red-400" : "text-slate-800 dark:text-zinc-200"}`}>
               {srs.lapses ?? 0}
             </dd>
             <dt className="text-slate-600 dark:text-zinc-400">Ôn gần nhất</dt>
@@ -725,7 +725,7 @@ function MemoryCard({
               {suspended ? (
                 <span className="text-slate-600 dark:text-zinc-400">tạm ngưng</span>
               ) : next ? (
-                <span title={next.exactDateStr} className={`px-1.5 py-0.5 rounded text-xs font-semibold ${next.badgeClass.replace("animate-pulse", "")}`}>
+                <span title={next.exactDateStr} className={`rounded-full px-2 py-0.5 text-xs font-semibold ${next.badgeClass.replace("animate-pulse", "")}`}>
                   {next.diffMs <= 0 ? next.label : `${next.label}`}
                 </span>
               ) : (
@@ -759,8 +759,8 @@ function TermList({
 }) {
   const tone =
     kind === "syn"
-      ? { dot: "bg-emerald-500", text: "text-emerald-700 dark:text-emerald-300", border: "border-emerald-400 dark:border-emerald-500/60" }
-      : { dot: "bg-rose-500", text: "text-rose-700 dark:text-rose-300", border: "border-rose-400 dark:border-rose-500/60" };
+      ? { dot: "bg-teal-600", text: "text-teal-800 dark:text-teal-300", border: "border-teal-600 dark:border-teal-400/60" }
+      : { dot: "bg-slate-400", text: "text-slate-800 dark:text-zinc-200", border: "border-slate-400 dark:border-zinc-500" };
   return (
     <div className="space-y-1.5">
       <div className="text-xs font-semibold text-slate-600 dark:text-zinc-300 flex items-center gap-1.5">
@@ -774,7 +774,7 @@ function TermList({
           return (
             <div
               key={idx}
-              className={`rounded-xl border bg-slate-50 dark:bg-zinc-900 overflow-hidden ${open ? tone.border : "border-slate-200 dark:border-zinc-800"}`}
+              className={`overflow-hidden rounded-xl border bg-white dark:bg-zinc-900 ${open ? tone.border : "border-slate-200 dark:border-zinc-800"}`}
             >
               <div
                 onClick={() => examples.length > 0 && toggle(key)}
@@ -782,13 +782,13 @@ function TermList({
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`font-mono text-sm font-bold ${tone.text}`}>{t.word}</span>
+                    <span className={`text-base font-semibold ${tone.text}`}>{t.word}</span>
                     {t.phonetic && <span className="text-xs font-mono text-slate-600 dark:text-zinc-400">{t.phonetic}</span>}
                     <button
                       onClick={(e) => handleSpeak(t.word, e)}
                       title="Phát âm"
                       aria-label="Phát âm"
-                      className="text-slate-600 hover:text-cyan-600 dark:text-zinc-400 dark:hover:text-cyan-400 w-10 h-10 -my-2 flex items-center justify-center rounded"
+                      className="-my-2 flex h-10 w-10 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 hover:text-teal-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-teal-300"
                     >
                       <Volume2 className="w-3.5 h-3.5" />
                     </button>
@@ -798,7 +798,7 @@ function TermList({
                       <button
                         onClick={(e) => onAdd(t.word, e)}
                         title="Thêm từ này vào sổ để học"
-                        className="text-xs font-semibold px-2.5 min-h-9 rounded border border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                        className="inline-flex min-h-10 items-center rounded-2xl border border-teal-700/30 bg-white px-3 text-xs font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
                       >
                         + Thêm vào sổ
                       </button>
@@ -819,13 +819,13 @@ function TermList({
                     <div key={i} className="text-xs space-y-1">
                       <div className="flex items-start justify-between gap-2">
                         <p className="font-semibold text-slate-900 dark:text-white">{ex.sentence_en}</p>
-                        <button onClick={(e) => handleSpeak(ex.sentence_en, e)} title="Nghe câu" aria-label="Nghe câu" className="text-slate-600 dark:text-zinc-400 hover:text-cyan-600 w-10 h-10 -my-2 flex items-center justify-center shrink-0">
+                        <button onClick={(e) => handleSpeak(ex.sentence_en, e)} title="Nghe câu" aria-label="Nghe câu" className="-my-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 hover:text-teal-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-teal-300">
                           <Volume2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                       {ex.meaning_vn && <p className="text-slate-600 dark:text-zinc-300">{ex.meaning_vn}</p>}
                       {ex.structure && <p className="font-mono text-xs text-slate-600 dark:text-zinc-400">Cấu trúc: {ex.structure}</p>}
-                      {ex.why_used && <p className="text-xs text-amber-700 dark:text-amber-400">Vì sao: {ex.why_used}</p>}
+                      {ex.why_used && <p className="text-xs text-slate-600 dark:text-zinc-400">Vì sao: {ex.why_used}</p>}
                     </div>
                   ))}
                 </div>

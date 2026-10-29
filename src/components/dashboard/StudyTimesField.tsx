@@ -42,20 +42,20 @@ export default function StudyTimesField({
   const custom = anchorKey(hour, minute);
   const quiet = nightQuiet ? chosen.filter(inNight) : [];
   const select =
-    "min-h-10 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 text-sm font-mono text-slate-900 dark:text-zinc-100 disabled:opacity-50";
+    "min-h-11 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 text-base tabular-nums text-slate-900 dark:text-zinc-100 disabled:opacity-50 focus:outline-none focus:border-teal-700";
 
   return (
-    <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-3">
+    <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3">
       <div className="flex items-center justify-between gap-2">
-        <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
-          <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
+        <span className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
+          <Clock className="w-4 h-4 text-teal-700 dark:text-teal-300" />
           Giờ học cố định:
         </span>
-        <span className="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-semibold">
+        <span className="rounded-full bg-teal-50 dark:bg-teal-400/10 px-2.5 py-1 text-xs tabular-nums text-teal-800 dark:text-teal-300 font-semibold">
           {chosen.length}/{MAX_ANCHORS} giờ
         </span>
       </div>
-      <p className="text-xs text-slate-600 dark:text-zinc-400 leading-snug">
+      <p className="text-sm text-slate-500 dark:text-zinc-400 leading-snug">
         Chạm để chọn giờ bạn hay rảnh, mỗi giờ nhắc một lần mỗi ngày. Giờ này không bị tính vào số lần nhắc tối đa.
       </p>
 
@@ -69,22 +69,22 @@ export default function StudyTimesField({
               onClick={() => toggle(time)}
               disabled={!active || (!on && full)}
               aria-pressed={on}
-              className={`inline-flex items-center gap-1.5 min-h-10 px-3 rounded-xl text-xs font-semibold transition-colors disabled:opacity-40 ${
+              className={`inline-flex items-center gap-1.5 min-h-11 px-3.5 rounded-full border text-sm font-medium transition-colors disabled:opacity-40 ${
                 on
-                  ? "bg-cyan-600 text-white shadow-sm"
-                  : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-cyan-500"
+                  ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600"
+                  : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
               }`}
             >
-              {on ? <Check className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
-              <span className="font-mono font-bold text-sm">{time}</span>
-              {label && <span className={on ? "text-cyan-100" : "text-slate-500 dark:text-zinc-400"}>{label}</span>}
+              {on ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+              <span className="tabular-nums font-semibold">{time}</span>
+              {label && <span className={on ? "text-teal-50" : "text-slate-500 dark:text-zinc-400"}>{label}</span>}
             </button>
           );
         })}
       </div>
 
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-xs font-semibold text-slate-700 dark:text-zinc-300">Giờ khác:</span>
+        <span className="text-sm font-semibold text-slate-700 dark:text-zinc-300">Giờ khác:</span>
         <select value={hour} onChange={(e) => setHour(Number(e.target.value))} disabled={!active || full} aria-label="Giờ" className={select}>
           {HOURS.map((h) => (
             <option key={h} value={h}>
@@ -103,20 +103,20 @@ export default function StudyTimesField({
         <button
           onClick={() => toggle(custom)}
           disabled={!active || full || chosen.includes(custom)}
-          className="min-h-10 px-4 rounded-xl bg-cyan-600 hover:bg-cyan-700 disabled:opacity-40 text-white text-xs font-bold"
+          className="min-h-11 px-4 rounded-2xl border border-teal-700/30 dark:border-teal-400/40 bg-white dark:bg-transparent text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 disabled:opacity-50 text-sm font-semibold"
         >
           Thêm
         </button>
       </div>
-      {full && <p className="text-xs text-slate-500 dark:text-zinc-400">Đã đủ {MAX_ANCHORS} giờ. Bỏ bớt một giờ để thêm giờ khác.</p>}
+      {full && <p className="text-sm text-slate-500 dark:text-zinc-400">Đã đủ {MAX_ANCHORS} giờ. Bỏ bớt một giờ để thêm giờ khác.</p>}
 
       {quiet.length > 0 && (
-        <p className="text-xs text-amber-700 dark:text-amber-400 leading-snug">
+        <p className="text-sm text-amber-800 dark:text-amber-300 leading-snug">
           {quiet.join(", ")} nằm trong giờ không nhắc ban đêm ({NIGHT_QUIET_START}:00–{pad(NIGHT_QUIET_END)}:00) nên sẽ không nhắc. Đổi giờ
           khác hoặc tắt &quot;Không nhắc ban đêm&quot; bên dưới.
         </p>
       )}
-      {!active && <p className="text-xs text-amber-700 dark:text-amber-400 leading-snug">Bật nhắc học ở trên để dùng giờ học cố định.</p>}
+      {!active && <p className="text-sm text-amber-800 dark:text-amber-300 leading-snug">Bật nhắc học ở trên để dùng giờ học cố định.</p>}
     </div>
   );
 }

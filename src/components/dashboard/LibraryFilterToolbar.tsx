@@ -29,56 +29,56 @@ const BUCKET_CONFIGS: BucketConfig[] = [
     label: "Tất cả",
     hint: "mọi từ trong thư viện.",
     activeClass:
-      "bg-slate-900 dark:bg-white text-white dark:text-zinc-900 border-slate-900 dark:border-white shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
   {
     id: "due",
     label: "Đến hạn",
     hint: "từ đã tới lúc ôn lại, nên ôn ngay.",
     activeClass:
-      "bg-rose-600 text-white border-rose-600 shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
   {
     id: "today",
     label: "Hôm nay",
     hint: "từ sẽ tới hạn ôn trong hôm nay.",
     activeClass:
-      "bg-amber-600 text-white border-amber-600 shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
   {
     id: "1-3d",
     label: "1 - 3 ngày",
     hint: "từ sẽ tới hạn ôn sau 1 đến 3 ngày nữa.",
     activeClass:
-      "bg-cyan-600 text-white border-cyan-600 shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
   {
     id: "4-7d",
     label: "4 - 7 ngày",
     hint: "từ sẽ tới hạn ôn sau 4 đến 7 ngày nữa.",
     activeClass:
-      "bg-teal-600 text-white border-teal-600 shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
   {
     id: "future",
     label: "> 7 ngày",
     hint: "từ nhớ khá chắc, hơn 7 ngày nữa mới phải ôn.",
     activeClass:
-      "bg-indigo-600 text-white border-indigo-600 shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
   {
     id: "waiting",
     label: "Chờ lượt",
     hint: "từ chưa tới lượt học vì hôm nay đã đủ số từ mới. Sẽ tự xuất hiện khi còn chỗ.",
     activeClass:
-      "bg-violet-600 text-white border-violet-600 shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
   {
     id: "new",
     label: "Chưa học",
     hint: "từ bạn chưa học lần nào.",
     activeClass:
-      "bg-slate-700 dark:bg-zinc-700 text-white border-slate-700 shadow-sm font-semibold",
+      "bg-teal-700 text-white border-teal-700 font-semibold dark:bg-teal-600 dark:border-teal-600",
   },
 ];
 
@@ -141,40 +141,40 @@ export default function LibraryFilterToolbar({
   const topicDueCount = bucketCounts.due || 0;
 
   return (
-    <div className="relative z-20 rounded-xl bg-slate-100/70 dark:bg-zinc-900/60 border border-slate-200/80 dark:border-zinc-800/80 backdrop-blur-sm text-xs">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-2 p-1.5">
+    <div className="relative z-20 rounded-2xl border border-slate-200 bg-white text-sm shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex flex-col gap-2 p-2 sm:flex-row sm:items-center">
       {/* Phone: the dropdown (and review / reset) on top, the chips below */}
-      <div className="flex items-center gap-2 sm:shrink-0">
+      <div className="flex min-w-0 flex-wrap items-center gap-2 sm:shrink-0 sm:flex-nowrap">
       {/* 1. Level / Topic Dropdown Selector */}
       <div className="relative shrink-0 min-w-0" ref={dropdownRef}>
         <button
           type="button"
           onClick={() => setIsLevelMenuOpen((prev) => !prev)}
-          className={`inline-flex items-center gap-1.5 px-3 min-h-10 rounded-lg border text-xs font-medium transition-all shadow-sm ${
+          className={`inline-flex min-h-11 max-w-full items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-colors ${
             isTopicFiltered
-              ? "bg-cyan-50 dark:bg-cyan-950/60 text-cyan-800 dark:text-cyan-300 border-cyan-300 dark:border-cyan-700/80 font-semibold"
-              : "bg-white dark:bg-zinc-900/90 text-slate-700 dark:text-zinc-300 border-slate-200 dark:border-zinc-800 hover:border-slate-300 dark:hover:border-zinc-700 hover:text-slate-900 dark:hover:text-zinc-100"
+              ? "border-teal-700 bg-teal-50 text-teal-800 dark:border-teal-400 dark:bg-teal-400/10 dark:text-teal-200"
+              : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
           }`}
           title={`Chọn ${levelLabel}`}
         >
-          <Folder className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0" />
+          <Folder className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
           <span className="truncate max-w-[9rem] sm:max-w-none">
             {isTopicFiltered ? `${levelLabel}: ${topicLabel(selectedTopic)}` : `${levelLabel}: Tất cả`}
           </span>
-          <span className="text-xs font-mono px-1.5 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 font-semibold">
+          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold tabular-nums text-slate-600 dark:bg-zinc-800 dark:text-zinc-400">
             {isTopicFiltered ? (topicStats[selectedTopic] || 0) : totalWords}
           </span>
           <ChevronDown
-            className={`w-3 h-3 text-slate-400 transition-transform ${
-              isLevelMenuOpen ? "rotate-180 text-cyan-500" : ""
+            className={`w-4 h-4 shrink-0 text-slate-500 transition-transform dark:text-zinc-400 ${
+              isLevelMenuOpen ? "rotate-180" : ""
             }`}
           />
         </button>
 
         {/* Level Dropdown Menu */}
         {isLevelMenuOpen && (
-          <div className="absolute left-0 top-full mt-1.5 w-52 rounded-xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-xl py-1 z-30 animate-in fade-in zoom-in-95 duration-100">
-            <div className="px-3 py-1.5 text-xs text-slate-600 dark:text-zinc-400 border-b border-slate-100 dark:border-zinc-800/80">
+          <div className="absolute left-0 top-full z-30 mt-1.5 w-60 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white py-1 shadow-lg animate-in fade-in zoom-in-95 duration-100 dark:border-zinc-800 dark:bg-zinc-900">
+            <div className="border-b border-slate-100 px-4 py-2 text-xs font-semibold text-slate-500 dark:border-zinc-800 dark:text-zinc-400">
               Lọc theo {levelLabel.toLowerCase()}
             </div>
             {/* Option: Tất cả */}
@@ -184,17 +184,17 @@ export default function LibraryFilterToolbar({
                 setSelectedTopic("all");
                 setIsLevelMenuOpen(false);
               }}
-              className={`w-full px-3 min-h-10 text-left flex items-center justify-between text-xs transition-colors ${
+              className={`flex min-h-11 w-full items-center justify-between px-4 text-left text-sm transition-colors ${
                 !isTopicFiltered
-                  ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-300 font-semibold"
-                  : "text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
+                  ? "bg-teal-50 font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-200"
+                  : "text-slate-700 hover:bg-slate-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
               }`}
             >
               <span className="flex items-center gap-2">
-                {!isTopicFiltered && <Check className="w-3.5 h-3.5 text-cyan-600" />}
+                {!isTopicFiltered && <Check className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />}
                 <span className={!isTopicFiltered ? "ml-0" : "ml-[22px]"}>Tất cả</span>
               </span>
-              <span className="text-xs font-mono text-slate-600 dark:text-zinc-400">
+              <span className="text-xs tabular-nums text-slate-500 dark:text-zinc-400">
                 {totalWords} từ
               </span>
             </button>
@@ -211,17 +211,17 @@ export default function LibraryFilterToolbar({
                     setSelectedTopic(top);
                     setIsLevelMenuOpen(false);
                   }}
-                  className={`w-full px-3 min-h-10 text-left flex items-center justify-between text-xs transition-colors ${
+                  className={`flex min-h-11 w-full items-center justify-between px-4 text-left text-sm transition-colors ${
                     isSelected
-                      ? "bg-cyan-50 dark:bg-cyan-950/50 text-cyan-800 dark:text-cyan-300 font-semibold"
-                      : "text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
+                      ? "bg-teal-50 font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-200"
+                      : "text-slate-700 hover:bg-slate-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   }`}
                 >
                   <span className="flex items-center gap-2">
-                    {isSelected && <Check className="w-3.5 h-3.5 text-cyan-600" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />}
                     <span className={isSelected ? "ml-0" : "ml-[22px]"}>{topicLabel(top)}</span>
                   </span>
-                  <span className="text-xs font-mono text-slate-600 dark:text-zinc-400">
+                  <span className="text-xs tabular-nums text-slate-500 dark:text-zinc-400">
                     {count} từ
                   </span>
                 </button>
@@ -236,14 +236,14 @@ export default function LibraryFilterToolbar({
         <button
           type="button"
           onClick={() => handleStartReview(topicDueCount > 0, selectedTopic)}
-          className="inline-flex items-center gap-1 px-3 min-h-10 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 dark:text-orange-300 border border-orange-300/80 dark:border-orange-500/40 text-xs font-semibold transition-all shadow-sm shrink-0 active:scale-95"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-2xl bg-teal-700 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500"
           title={
             topicDueCount > 0
               ? `Ôn ${topicDueCount} từ đến hạn cấp ${topicLabel(selectedTopic)}`
               : `Luyện ${topicStats[selectedTopic] || 0} từ cấp ${topicLabel(selectedTopic)} (không đổi lịch ôn)`
           }
         >
-          <Play className="w-3 h-3 fill-orange-500 text-orange-500 dark:fill-orange-400 dark:text-orange-400" />
+          <Play className="w-3.5 h-3.5 fill-white" />
           <span>{topicDueCount > 0 ? `Ôn ${topicLabel(selectedTopic)} (${topicDueCount})` : `Luyện ${topicLabel(selectedTopic)}`}</span>
         </button>
       )}
@@ -254,7 +254,7 @@ export default function LibraryFilterToolbar({
           type="button"
           onClick={handleResetFilters}
           title="Đặt lại bộ lọc về mặc định"
-          className="inline-flex items-center gap-1 px-3 min-h-10 rounded-lg text-xs font-medium text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 transition-colors shrink-0 shadow-sm ml-auto sm:ml-0"
+          className="ml-auto inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-2xl px-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800 sm:ml-0"
         >
           <RotateCcw className="w-3 h-3" />
           <span>Đặt lại</span>
@@ -263,12 +263,12 @@ export default function LibraryFilterToolbar({
       </div>
 
       {/* Vertical divider */}
-      <div className="hidden sm:block w-[1px] h-4 bg-slate-300/80 dark:bg-zinc-800 shrink-0" />
+      <div className="hidden h-6 w-px shrink-0 bg-slate-200 dark:bg-zinc-800 sm:block" />
 
       {/* 2. Schedule Chips (Horizontally Scrollable, a fade on the right hints there is more) */}
       <div className="relative flex-1 min-w-0">
-      <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-0.5 pr-6">
-        <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400 shrink-0 hidden sm:inline" />
+      <div className="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5 pr-6">
+        <Clock className="hidden h-4 w-4 shrink-0 text-slate-500 dark:text-zinc-400 sm:inline" />
         {BUCKET_CONFIGS.map((config) => {
           const isSelected = selectedBucket === config.id;
           const count = bucketCounts[config.id] || 0;
@@ -284,20 +284,20 @@ export default function LibraryFilterToolbar({
               type="button"
               onClick={() => onSelectBucket(config.id)}
               title={config.hint}
-              className={`px-3 min-h-9 rounded-lg text-xs font-medium shrink-0 transition-all flex items-center gap-1.5 border ${
+              className={`flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-colors ${
                 isSelected
                   ? config.activeClass
-                  : "bg-white dark:bg-zinc-900/90 text-slate-700 dark:text-zinc-300 border-slate-200 dark:border-zinc-800 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800/80 shadow-sm"
+                  : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
               }`}
             >
               {config.id === "due" && count > 0 && (
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
               )}
               <span>{config.label}</span>
               <span
-                className={`text-xs font-mono px-1.5 py-0.5 rounded-full ${
+                className={`rounded-full px-1.5 py-0.5 text-xs font-semibold tabular-nums ${
                   isSelected
-                    ? "bg-black/20 text-white"
+                    ? "bg-white/20 text-white"
                     : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
                 }`}
               >
@@ -309,14 +309,14 @@ export default function LibraryFilterToolbar({
       </div>
       <div
         aria-hidden
-        className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 rounded-r-lg bg-gradient-to-l from-slate-100 dark:from-zinc-900 to-transparent sm:hidden"
+        className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent dark:from-zinc-900 sm:hidden"
       />
       </div>
       </div>
 
       {/* What the selected (or the cryptic) schedule chip means, as visible text */}
       {helpLine && (
-        <p className="px-3 pb-2 text-xs text-slate-600 dark:text-zinc-400 leading-snug">{helpLine}</p>
+        <p className="px-3 pb-2.5 text-sm leading-snug text-slate-600 dark:text-zinc-400">{helpLine}</p>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, BookOpen, Check, ChevronDown, Clock, CircleAlert, Eye, GraduationCap, Layers, Loader2, RefreshCw, RotateCcw, Sparkles, Trash2, Upload, Wrench } from "lucide-react";
+import { ArrowRight, BookOpen, Check, ChevronDown, Clock, CircleAlert, Eye, Layers, Loader2, RefreshCw, RotateCcw, Sparkles, Trash2, Upload, Wrench } from "lucide-react";
+import { Button } from "@/components/ui/kit";
 import { SHOW_DEV_TOOLS } from "@/lib/devTools";
 import type { GrammarBookFile } from "@/types/grammarBook";
 import {
@@ -266,24 +267,18 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
 
   return (
     <div className={PAGE_CONTAINER}>
-      <div className="mx-auto max-w-5xl space-y-5 pb-6">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div className="space-y-1 min-w-0">
-            <h1 className="flex items-center gap-2.5 text-xl font-bold text-slate-900 dark:text-white sm:text-2xl">
-              <GraduationCap className="h-6 w-6 shrink-0 text-cyan-600 dark:text-cyan-400" />
-              <span>Ngữ pháp</span>
-            </h1>
-            <p className="text-xs text-slate-600 dark:text-zinc-400 sm:text-sm">
-              Mỗi ngày học một bài mới, và ôn lại những bài sắp quên.
-            </p>
-          </div>
+      <div className="mx-auto max-w-5xl space-y-4 pb-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="min-w-0 text-sm text-slate-500 dark:text-zinc-400">
+            Mỗi ngày học một bài mới, và ôn lại những bài sắp quên.
+          </p>
 
           {/* Importing exercises is occasional: a quiet button, the learning actions stay the loud ones */}
           {SHOW_DEV_TOOLS && (
             <button
               type="button"
               onClick={() => setExerciseImportOpen(true)}
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:border-cyan-300 hover:text-cyan-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-cyan-800 dark:hover:text-cyan-300 shrink-0"
+              className="inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-50 hover:text-teal-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-teal-300"
             >
               <Sparkles className="h-3.5 w-3.5" />
               <span>Nhập bài tập AI & Lịch sử</span>
@@ -300,32 +295,28 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
             Đang tải...
           </div>
         ) : loadError && !hasBook ? (
-          <div className="space-y-4 rounded-2xl border border-rose-200 bg-white p-6 text-center shadow-sm dark:border-rose-900/60 dark:bg-zinc-900 sm:p-10">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400">
+          <div className="space-y-4 rounded-2xl border border-red-200 bg-white p-6 text-center shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-red-500/30 dark:bg-zinc-900 sm:p-10">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400">
               <CircleAlert className="h-7 w-7" />
             </span>
             <div className="mx-auto max-w-md space-y-1.5">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Không tải được dữ liệu ngữ pháp</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Không tải được dữ liệu ngữ pháp</h2>
               <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
                 Có lỗi khi đọc dữ liệu trên máy này. Hãy thử lại. Nếu vẫn lỗi, hãy khởi động lại ứng dụng.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={retryLoad}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
-            >
+            <Button onClick={retryLoad} className="w-full sm:w-auto">
               <RefreshCw className="h-4 w-4" />
               Thử lại
-            </button>
+            </Button>
           </div>
         ) : !hasBook ? (
-          <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-10">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-cyan-50 text-cyan-600 dark:bg-cyan-950/60 dark:text-cyan-400">
+          <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 sm:p-10">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
               <BookOpen className="h-7 w-7" />
             </span>
             <div className="mx-auto max-w-md space-y-1.5">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Chưa có dữ liệu sách ngữ pháp</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Chưa có dữ liệu sách ngữ pháp</h2>
               <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
                 {SHOW_DEV_TOOLS
                   ? "Dữ liệu lấy từ chính cuốn sách của bạn: nhờ AI chuyển từng chương sang file JSON bằng prompt có sẵn, rồi nhập các file vào đây."
@@ -334,23 +325,15 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
             </div>
             <div className="flex flex-col items-stretch justify-center gap-2.5 sm:flex-row sm:items-center">
               {SHOW_DEV_TOOLS ? (
-                <button
-                  type="button"
-                  onClick={() => setExerciseImportOpen(true)}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
-                >
+                <Button onClick={() => setExerciseImportOpen(true)}>
                   <Sparkles className="h-4 w-4" />
                   Nhập bài tập AI / Lịch sử
-                </button>
+                </Button>
               ) : (
-                <button
-                  type="button"
-                  onClick={retryLoad}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
-                >
+                <Button onClick={retryLoad}>
                   <RefreshCw className="h-4 w-4" />
                   Thử lại
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -382,7 +365,7 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
                 <button
                   type="button"
                   onClick={() => setImportOpen(true)}
-                  className="inline-flex items-center gap-1.5 text-slate-400 transition hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-400"
+                  className="inline-flex min-h-10 items-center gap-1.5 text-slate-500 transition-colors hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-300"
                   title="Nhập dữ liệu gốc từ sách PDF"
                 >
                   <Upload className="h-3 w-3" />
@@ -402,7 +385,7 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
       {notice && (
         <div
           role="status"
-          className="fixed bottom-16 left-1/2 z-50 max-w-[90vw] -translate-x-1/2 rounded-xl bg-slate-900 px-4 py-2.5 text-center text-xs font-medium text-white shadow-lg dark:bg-zinc-100 dark:text-zinc-900"
+          className="fixed bottom-16 left-1/2 z-50 max-w-[90vw] -translate-x-1/2 rounded-2xl bg-slate-900 px-4 py-3 text-center text-sm font-medium text-white shadow-md dark:bg-zinc-100 dark:text-zinc-900"
         >
           {notice}
         </div>
@@ -422,29 +405,29 @@ function ManagedItemsPanel({
   onRemoveAccepted: (item: ManagedItems["accepted"][number]) => void;
 }) {
   return (
-    <details className="group rounded-xl border border-slate-200 bg-white p-3.5 text-xs dark:border-zinc-800 dark:bg-zinc-900">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 font-semibold text-slate-600 dark:text-zinc-300">
-        <span className="flex items-center gap-1.5">
+    <details className="group rounded-2xl border border-slate-200 bg-white px-4 py-1 text-xs shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:px-5">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 font-semibold text-slate-600 dark:text-zinc-300">
+        <span className="flex min-w-0 items-center gap-1.5">
           <Wrench className="h-3.5 w-3.5" />
           Công cụ: câu đã ẩn và đáp án tự công nhận
         </span>
         <ChevronDown className="h-3.5 w-3.5 transition group-open:rotate-180" />
       </summary>
 
-      <div className="mt-3 space-y-4">
+      <div className="mb-3 mt-2 space-y-4">
         <section className="space-y-1.5">
-          <h3 className="font-bold text-slate-700 dark:text-zinc-200">Câu đã ẩn ({managed.hidden.length})</h3>
+          <h3 className="font-semibold text-slate-700 dark:text-zinc-200">Câu đã ẩn ({managed.hidden.length})</h3>
           {managed.hidden.length === 0 ? (
             <p className="text-slate-500 dark:text-zinc-400">Chưa ẩn câu nào.</p>
           ) : (
             <ul className="space-y-1">
               {managed.hidden.map((itemKey) => (
-                <li key={itemKey} className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 px-2.5 py-1.5 dark:bg-zinc-800/60">
+                <li key={itemKey} className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-0.5 dark:bg-zinc-800/60">
                   <span className="min-w-0 truncate font-mono text-slate-700 dark:text-zinc-300">{itemKey}</span>
                   <button
                     type="button"
                     onClick={() => onRestoreHidden(itemKey)}
-                    className="inline-flex shrink-0 items-center gap-1 font-semibold text-cyan-700 hover:underline dark:text-cyan-400"
+                    className="inline-flex min-h-10 shrink-0 items-center gap-1 font-semibold text-teal-700 hover:underline dark:text-teal-300"
                   >
                     <Eye className="h-3.5 w-3.5" />
                     Hiện lại
@@ -456,7 +439,7 @@ function ManagedItemsPanel({
         </section>
 
         <section className="space-y-1.5">
-          <h3 className="font-bold text-slate-700 dark:text-zinc-200">Đáp án mình tự công nhận ({managed.accepted.length})</h3>
+          <h3 className="font-semibold text-slate-700 dark:text-zinc-200">Đáp án mình tự công nhận ({managed.accepted.length})</h3>
           {managed.accepted.length === 0 ? (
             <p className="text-slate-500 dark:text-zinc-400">Chưa có đáp án nào.</p>
           ) : (
@@ -464,7 +447,7 @@ function ManagedItemsPanel({
               {managed.accepted.map((item) => (
                 <li
                   key={`${item.itemKey}-${item.blankIndex}-${item.answer}`}
-                  className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 px-2.5 py-1.5 dark:bg-zinc-800/60"
+                  className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-0.5 dark:bg-zinc-800/60"
                 >
                   <span className="min-w-0 truncate">
                     <span className="font-mono text-slate-500 dark:text-zinc-400">{item.itemKey}</span>
@@ -474,7 +457,7 @@ function ManagedItemsPanel({
                   <button
                     type="button"
                     onClick={() => onRemoveAccepted(item)}
-                    className="inline-flex shrink-0 items-center gap-1 font-semibold text-rose-600 hover:underline dark:text-rose-400"
+                    className="inline-flex min-h-10 shrink-0 items-center gap-1 font-semibold text-red-600 hover:underline dark:text-red-400"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                     Xoá
@@ -585,45 +568,45 @@ function TodayPanel({
   return (
     <section aria-label="Hôm nay" className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
       {/* The one thing to do next */}
-      <div className="flex flex-col justify-between gap-4 rounded-2xl border border-cyan-300 bg-gradient-to-br from-cyan-50 to-white p-5 shadow-md shadow-cyan-500/5 dark:border-cyan-800/70 dark:from-cyan-950/30 dark:to-zinc-900">
+      <div className="flex min-w-0 flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
         <div className="space-y-1.5">
-          <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-300">
+          <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:text-teal-300">
             {primary.icon}
             {allDone ? "Hôm nay đã xong · muốn luyện thêm?" : `Tiếp theo · ${primary.label}`}
           </span>
-          <p className="break-words text-lg font-bold leading-snug text-slate-900 dark:text-white">
+          <p className="break-words text-xl font-semibold leading-snug text-slate-900 dark:text-zinc-100">
             {primary.key === "practice" ? "Luyện các thì bạn muốn chắc hơn" : primary.detail}
           </p>
           {primary.key === "lesson" && plan?.relearn && (
-            <p className="text-xs text-slate-600 dark:text-zinc-400">Lần kiểm tra nhanh trước chưa đạt: xem lại bài rồi làm lại phần kiểm tra.</p>
+            <p className="text-sm text-slate-500 dark:text-zinc-400">Lần kiểm tra nhanh trước chưa đạt: xem lại bài rồi làm lại phần kiểm tra.</p>
           )}
           {primary.key === "review" && (
-            <p className="text-xs text-slate-600 dark:text-zinc-400">Các bài này sắp quên: ôn trước rồi mới học bài mới.</p>
+            <p className="text-sm text-slate-500 dark:text-zinc-400">Các bài này sắp quên: ôn trước rồi mới học bài mới.</p>
           )}
         </div>
         <div className="space-y-3">
-          <button
-            type="button"
+          <Button
+            size="lg"
             onClick={primary.action ?? undefined}
             disabled={starting && primary.key === "review"}
-            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-bold !text-white shadow-sm shadow-cyan-600/30 transition hover:bg-cyan-500 disabled:opacity-60"
+            className="w-full min-w-0 sm:w-auto"
           >
-            {starting && primary.key === "review" ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-            {primary.actionText}
-            <ArrowRight className="h-4 w-4" />
-          </button>
+            {starting && primary.key === "review" ? <Loader2 className="h-4 w-4 shrink-0 animate-spin" /> : null}
+            <span className="min-w-0 truncate">{primary.actionText}</span>
+            <ArrowRight className="h-4 w-4 shrink-0" />
+          </Button>
           {/* The whole path: remembered (green) and still learning (blue) */}
           <div className="space-y-1">
-            <div className="flex h-2 overflow-hidden rounded-full bg-slate-200/70 dark:bg-zinc-800">
-              <div className="h-full bg-emerald-500 transition-all duration-300" style={{ width: pct(mastered) }} />
-              <div className="h-full bg-cyan-500 transition-all duration-300" style={{ width: pct(learning) }} />
+            <div className="flex h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
+              <div className="h-full bg-green-600 transition-all duration-300" style={{ width: pct(mastered) }} />
+              <div className="h-full bg-teal-700 transition-all duration-300 dark:bg-teal-500" style={{ width: pct(learning) }} />
             </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-slate-600 dark:text-zinc-400">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-slate-500 dark:text-zinc-400">
               <span>
-                <b className="font-mono text-slate-900 dark:text-white">{mastered + learning}/{total}</b> bài đã học
+                <b className="font-semibold tabular-nums text-slate-900 dark:text-zinc-100">{mastered + learning}/{total}</b> bài đã học
               </span>
-              <span className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />{mastered} đã thuộc</span>
-              <span className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />{learning} đang học</span>
+              <span className="inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-green-600" />{mastered} đã thuộc</span>
+              <span className="inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-teal-700 dark:bg-teal-500" />{learning} đang học</span>
             </div>
           </div>
         </div>
@@ -637,34 +620,34 @@ function TodayPanel({
           const body = (
             <>
               <span
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
                   step.done
-                    ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400"
+                    ? "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400"
                     : isPrimary
-                      ? "bg-cyan-600 text-white"
+                      ? "bg-teal-700 text-white dark:bg-teal-600"
                       : "bg-slate-100 text-slate-500 dark:bg-zinc-800 dark:text-zinc-400"
                 }`}
               >
                 {step.done ? <Check className="h-4 w-4" /> : step.icon}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-sm font-semibold text-slate-900 dark:text-white">{step.label}</span>
-                <span className="block truncate text-xs text-slate-600 dark:text-zinc-400" title={step.detail}>
+                <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100">{step.label}</span>
+                <span className="block truncate text-xs text-slate-500 dark:text-zinc-400" title={step.detail}>
                   {step.done && step.action ? step.actionText : step.detail}
                 </span>
               </span>
               {isPrimary ? (
-                <span className="shrink-0 rounded-full bg-cyan-100 px-2 py-0.5 text-xs font-bold text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-300">Tiếp theo</span>
+                <span className="shrink-0 rounded-full bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">Tiếp theo</span>
               ) : clickable ? (
-                <ArrowRight className="h-4 w-4 shrink-0 text-slate-400" />
+                <ArrowRight className="h-4 w-4 shrink-0 text-slate-500 dark:text-zinc-400" />
               ) : null}
             </>
           );
-          const cls = `flex w-full items-center gap-3 rounded-xl border px-3.5 py-2.5 text-left transition ${
+          const cls = `flex min-h-14 w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition-colors ${
             isPrimary
-              ? "border-cyan-200 bg-cyan-50/60 dark:border-cyan-900/60 dark:bg-cyan-950/20"
+              ? "border-teal-700/30 bg-teal-50 dark:border-teal-400/30 dark:bg-teal-400/10"
               : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-          } ${clickable ? "hover:border-cyan-300 hover:bg-cyan-50/40 dark:hover:border-cyan-800 dark:hover:bg-cyan-950/20" : ""}`;
+          } ${clickable ? "hover:bg-slate-50 dark:hover:bg-zinc-800" : ""}`;
           return (
             <li key={step.key} className="min-w-0">
               {clickable ? (

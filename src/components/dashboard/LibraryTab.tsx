@@ -73,26 +73,26 @@ export default function LibraryTab({
     <div className={`${PAGE_CONTAINER} space-y-3 sm:space-y-4`}>
       {/* Notification alert if any */}
       {message && (
-        <div className="p-3 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-800 dark:bg-cyan-950/40 dark:border-cyan-800 dark:text-cyan-300 text-xs flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
+        <div className="flex items-center justify-between gap-2 rounded-2xl bg-teal-50 py-1 pl-4 pr-1 text-sm text-teal-900 dark:bg-teal-400/10 dark:text-teal-100">
+          <div className="flex min-w-0 items-center gap-2">
+            <Sparkles className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
             <span>{message}</span>
           </div>
           <button
             type="button"
             onClick={() => setMessage(null)}
             aria-label="Đóng thông báo"
-            className="text-cyan-600 hover:text-cyan-900 dark:text-cyan-400 dark:hover:text-white"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-teal-700 hover:bg-teal-100 dark:text-teal-300 dark:hover:bg-teal-400/10"
           >
-            <X className="w-3.5 h-3.5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
       {/* Row 1: Search Input & View Mode Toggle (Grid vs Table) */}
       <div className="flex items-center gap-2">
-        <div className="flex-1 relative">
-          <Search className="w-4 h-4 text-slate-400 dark:text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="relative min-w-0 flex-1">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-zinc-400" />
           <input
             ref={searchInputRef}
             type="text"
@@ -108,19 +108,19 @@ export default function LibraryTab({
             data-lpignore="true"
             data-1p-ignore="true"
             data-form-type="other"
-            className="w-full bg-white dark:bg-zinc-900/90 border border-slate-200 dark:border-zinc-800 rounded-xl pl-9 pr-10 sm:pr-14 py-2.5 text-sm text-slate-900 dark:text-zinc-100 placeholder:text-slate-500 dark:placeholder:text-zinc-500 focus:outline-none focus:border-cyan-500/50 transition-colors shadow-sm"
+            className="min-h-12 w-full rounded-2xl border border-slate-300 bg-white py-2.5 pl-10 pr-10 text-base text-slate-900 transition-colors placeholder:text-slate-500 focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-600/20 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-500 sm:pr-14 sm:text-sm"
           />
           {searchQuery ? (
             <button
               type="button"
               onClick={() => setSearchQuery("")}
-              className="absolute right-0.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-300 w-10 h-10 flex items-center justify-center"
+              className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 hover:text-slate-800 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
               aria-label="Xóa tìm kiếm"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           ) : (
-            <div className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-1 text-[10px] font-mono text-slate-400 dark:text-zinc-500 pointer-events-none">
+            <div className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-1 text-[11px] font-mono text-slate-500 dark:text-zinc-400 pointer-events-none">
               <kbd className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-500 dark:text-zinc-400">/</kbd>
             </div>
           )}
@@ -130,20 +130,20 @@ export default function LibraryTab({
         <div
           role="group"
           aria-label="Chế độ hiển thị danh sách từ"
-          className="inline-flex items-center gap-0.5 bg-slate-100/90 dark:bg-zinc-900 p-1 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm shrink-0"
+          className="inline-flex shrink-0 items-center gap-0.5 rounded-2xl border border-slate-200 bg-white p-1 dark:border-zinc-800 dark:bg-zinc-900"
         >
           <button
             type="button"
             onClick={() => setViewMode("gallery")}
             title="Dạng lưới thẻ"
             aria-label="Xem dạng lưới"
-            className={`px-2.5 min-h-10 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
+            className={`flex min-h-10 items-center gap-1.5 rounded-xl px-3 text-sm transition-colors ${
               viewMode === "gallery"
-                ? "bg-white dark:bg-zinc-800 text-cyan-600 dark:text-cyan-400 shadow-sm font-semibold border border-slate-200/80 dark:border-transparent"
-                : "text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
+                ? "bg-teal-700 font-semibold text-white dark:bg-teal-600"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             }`}
           >
-            <LayoutGrid className="w-3.5 h-3.5" />
+            <LayoutGrid className="w-4 h-4" />
             <span>Lưới</span>
           </button>
           <button
@@ -151,13 +151,13 @@ export default function LibraryTab({
             onClick={() => setViewMode("table")}
             title="Dạng bảng chi tiết"
             aria-label="Xem dạng bảng"
-            className={`px-2.5 min-h-10 rounded-lg transition-all flex items-center gap-1.5 text-xs ${
+            className={`flex min-h-10 items-center gap-1.5 rounded-xl px-3 text-sm transition-colors ${
               viewMode === "table"
-                ? "bg-white dark:bg-zinc-800 text-cyan-600 dark:text-cyan-400 shadow-sm font-semibold border border-slate-200/80 dark:border-transparent"
-                : "text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
+                ? "bg-teal-700 font-semibold text-white dark:bg-teal-600"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
             }`}
           >
-            <List className="w-3.5 h-3.5" />
+            <List className="w-4 h-4" />
             <span>Bảng</span>
           </button>
         </div>
@@ -185,7 +185,7 @@ export default function LibraryTab({
             resetKey={`${searchQuery}|${selectedTopic}|${reviewTimeFilter}`}
           />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
             {visibleWords.map((item) => (
               <WordCard
                 key={item.id}
@@ -203,7 +203,7 @@ export default function LibraryTab({
                 <button
                   type="button"
                   onClick={() => setVisibleCount((c) => c + GALLERY_PAGE_SIZE)}
-                  className="px-4 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-800 dark:text-zinc-200 text-xs font-medium transition-colors shadow-sm"
+                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-teal-700/30 bg-white px-5 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
                 >
                   Xem thêm ({filteredWords.length - visibleWords.length} từ còn lại)
                 </button>
@@ -212,12 +212,12 @@ export default function LibraryTab({
           </div>
         )
       ) : (
-        <div className="p-12 text-center rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 space-y-3">
+        <div className="space-y-3 rounded-2xl border border-slate-200 bg-white px-4 py-10 text-center shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-12">
           <BookOpen className="w-10 h-10 text-slate-300 dark:text-zinc-600 mx-auto" />
-          <h3 className="text-sm font-semibold text-slate-700 dark:text-zinc-300">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">
             Không có từ vựng nào phù hợp
           </h3>
-          <p className="text-xs text-slate-500 dark:text-zinc-400 max-w-sm mx-auto">
+          <p className="mx-auto max-w-sm text-sm text-slate-600 dark:text-zinc-400">
             Thử thay đổi từ khóa tìm kiếm, chọn chủ đề khác hoặc đặt lại bộ lọc lịch nhắc lại.
           </p>
           <div className="pt-2 flex flex-wrap justify-center gap-2">
@@ -229,7 +229,7 @@ export default function LibraryTab({
                   setSelectedTopic("all");
                   setReviewTimeFilter("all");
                 }}
-                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-medium text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700"
+                className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-teal-700/30 bg-white px-5 text-base font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
               >
                 Đặt lại bộ lọc
               </button>
@@ -237,9 +237,9 @@ export default function LibraryTab({
             <button
               type="button"
               onClick={() => setActiveTab("capture")}
-              className="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-medium shadow-sm transition-colors flex items-center gap-1.5"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-teal-700 px-5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>{AI_VOCAB_ENABLED ? "Thêm từ vựng mới" : "Mở lộ trình từ vựng"}</span>
             </button>
           </div>

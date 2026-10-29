@@ -23,22 +23,22 @@ export default function SpeakingGrammar({ onOpenLesson, defaultOpen = false }: {
   const shown = entries.filter((e) => e.level === level);
 
   return (
-    <section aria-label="Ngữ pháp cho nói" className="rounded-2xl border border-cyan-200 dark:border-cyan-900/60 bg-white dark:bg-zinc-900 p-4 space-y-3">
-      <button type="button" onClick={() => setExpanded(!expanded)} aria-expanded={expanded} className="w-full min-h-[44px] flex items-center gap-2 text-left">
+    <section aria-label="Ngữ pháp cho nói" className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-3">
+      <button type="button" onClick={() => setExpanded(!expanded)} aria-expanded={expanded} className="w-full min-h-11 flex items-center gap-3 text-left">
         <span className="min-w-0 flex-1 space-y-0.5">
-          <span className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
-            <Footprints className="w-4 h-4 shrink-0 text-emerald-500" /> Ngữ pháp cho nói
+          <span className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-zinc-100">
+            <Footprints className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" /> Ngữ pháp cho nói
           </span>
-          <span className="block text-xs text-slate-600 dark:text-zinc-400">
+          <span className="block text-sm text-slate-500 dark:text-zinc-400">
             Vì sao các câu mẫu của lộ trình nói lại đúng, để bạn tự đặt thêm câu mới.
             {currentEntry ? ` Bạn đang ở chặng "${currentEntry.stageTitle}".` : ""}
           </span>
         </span>
-        <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform ${expanded ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-5 h-5 shrink-0 text-slate-500 dark:text-zinc-400 transition-transform ${expanded ? "rotate-180" : ""}`} />
       </button>
 
       {expanded && levels.length > 1 && (
-        <div className="flex gap-1.5" role="tablist" aria-label="Cấp">
+        <div className="flex flex-wrap gap-2" role="tablist" aria-label="Cấp">
           {levels.map((l) => (
             <button
               key={l}
@@ -48,10 +48,10 @@ export default function SpeakingGrammar({ onOpenLesson, defaultOpen = false }: {
                 setLevel(l);
                 setOpen(null);
               }}
-              className={`px-4 min-h-[40px] rounded-lg border text-xs font-bold ${
+              className={`px-4 min-h-10 rounded-full text-sm font-semibold transition-colors ${
                 level === l
-                  ? "border-cyan-600 bg-cyan-600 text-white"
-                  : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:border-cyan-400"
+                  ? "bg-teal-700 text-white dark:bg-teal-600"
+                  : "border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
               }`}
             >
               {l}
@@ -60,27 +60,27 @@ export default function SpeakingGrammar({ onOpenLesson, defaultOpen = false }: {
         </div>
       )}
 
-      {expanded && <ul className="space-y-1.5">
+      {expanded && <ul className="space-y-2">
         {shown.map((e) => {
           const isOpen = open === e.stage;
           return (
-            <li key={e.stage} className={`rounded-xl border ${e.stage === current?.id ? "border-emerald-400 dark:border-emerald-700" : "border-slate-200 dark:border-zinc-800"}`}>
+            <li key={e.stage} className={`rounded-2xl border ${e.stage === current?.id ? "border-teal-700/40 dark:border-teal-400/40" : "border-slate-200 dark:border-zinc-800"}`}>
               <button
                 onClick={() => setOpen(isOpen ? null : e.stage)}
                 aria-expanded={isOpen}
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-left"
+                className="w-full min-h-14 flex items-center gap-2 px-4 py-2.5 text-left"
               >
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-semibold text-slate-900 dark:text-white">{e.stageTitle}</span>
-                  <span className="block text-xs text-slate-600 dark:text-zinc-400 truncate">{e.title}</span>
+                  <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100">{e.stageTitle}</span>
+                  <span className="block text-xs text-slate-500 dark:text-zinc-400 truncate">{e.title}</span>
                 </span>
                 {e.stage === current?.id && (
-                  <span className="shrink-0 rounded-full bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 text-xs font-bold text-emerald-700 dark:text-emerald-300">Đang học</span>
+                  <span className="shrink-0 rounded-full bg-teal-50 dark:bg-teal-400/10 px-2.5 py-1 text-xs font-semibold text-teal-800 dark:text-teal-300">Đang học</span>
                 )}
-                <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-4 h-4 shrink-0 text-slate-500 dark:text-zinc-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
               </button>
               <Collapse open={isOpen}>
-                <div className="px-3 pb-3">
+                <div className="px-4 pb-4">
                   <GrammarTipCard tip={e} onOpenLesson={onOpenLesson} />
                 </div>
               </Collapse>

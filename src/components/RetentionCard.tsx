@@ -7,11 +7,11 @@ const pct = (r: Rate) => (r.rate == null ? "—" : `${Math.round(r.rate * 100)}%
 function Delta({ now, before }: { now: Rate; before: Rate }) {
   if (now.rate == null || before.rate == null) return null;
   const diff = Math.round((now.rate - before.rate) * 100);
-  if (diff === 0) return <span className="text-[10px] text-slate-400 dark:text-zinc-500">như 30 ngày trước</span>;
+  if (diff === 0) return <span className="text-xs text-slate-500 dark:text-zinc-400">như 30 ngày trước</span>;
   const up = diff > 0;
   const Icon = up ? ArrowUp : ArrowDown;
   return (
-    <span className={`inline-flex items-center gap-0.5 text-[10px] ${up ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
+    <span className={`inline-flex items-center gap-0.5 text-xs ${up ? "text-green-700 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
       <Icon className="w-3 h-3" />
       {Math.abs(diff)} điểm so với 30 ngày trước
     </span>
@@ -20,10 +20,10 @@ function Delta({ now, before }: { now: Rate; before: Rate }) {
 
 function Tile({ label, value, sub }: { label: string; value: string; sub?: ReactNode }) {
   return (
-    <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800">
-      <div className="text-[11px] text-slate-500 dark:text-zinc-400">{label}</div>
-      <div className="text-lg font-bold font-mono text-slate-900 dark:text-white">{value}</div>
-      {sub && <div className="text-[10px] text-slate-400 dark:text-zinc-500">{sub}</div>}
+    <div className="min-w-0 rounded-xl bg-slate-50 p-3 dark:bg-zinc-800/50">
+      <div className="text-xs text-slate-500 dark:text-zinc-400">{label}</div>
+      <div className="text-lg font-bold tabular-nums text-slate-900 dark:text-zinc-100">{value}</div>
+      {sub && <div className="text-xs text-slate-500 dark:text-zinc-400">{sub}</div>}
     </div>
   );
 }
@@ -46,11 +46,11 @@ export default function RetentionCard() {
   const { current, previous, withFocus, withoutFocus, focus } = data;
 
   return (
-    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 space-y-4">
-      <div className="flex items-center gap-2">
-        <Repeat className="w-4 h-4 text-cyan-500" />
-        <h3 className="text-sm font-bold text-slate-900 dark:text-white">Thói quen quay lại</h3>
-        <span className="text-[11px] text-slate-400 dark:text-zinc-500">{data.windowDays} ngày gần nhất</span>
+    <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <Repeat className="h-5 w-5 text-teal-700 dark:text-teal-300" />
+        <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100">Thói quen quay lại</h3>
+        <span className="text-xs text-slate-500 dark:text-zinc-400">{data.windowDays} ngày gần nhất</span>
       </div>
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
@@ -65,7 +65,7 @@ export default function RetentionCard() {
 
       <div className="space-y-2">
         <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-zinc-300">
-          <Timer className="w-3.5 h-3.5 text-violet-500" /> Phiên tập trung
+          <Timer className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" /> Phiên tập trung
         </div>
         {focus.sessions === 0 ? (
           <p className="text-xs text-slate-500 dark:text-zinc-400">

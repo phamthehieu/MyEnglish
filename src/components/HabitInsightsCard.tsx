@@ -33,7 +33,7 @@ function Bars({
       ))}
       {hovered !== null && (
         <div
-          className="absolute -top-3 px-2 py-1 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-mono pointer-events-none whitespace-nowrap"
+          className="absolute -top-3 px-2 py-1 rounded-md bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs tabular-nums pointer-events-none whitespace-nowrap"
           style={{ left: `min(${(hovered / values.length) * 100}%, calc(100% - 120px))` }}
         >
           {labelFor(hovered)}: {values[hovered]}
@@ -45,10 +45,10 @@ function Bars({
 
 function Tile({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800">
-      <div className="text-[11px] text-slate-500 dark:text-zinc-400">{label}</div>
-      <div className="text-lg font-bold font-mono text-slate-900 dark:text-white">{value}</div>
-      {sub && <div className="text-[10px] text-slate-400 dark:text-zinc-500">{sub}</div>}
+    <div className="min-w-0 rounded-xl bg-slate-50 p-3 dark:bg-zinc-800/50">
+      <div className="text-xs text-slate-500 dark:text-zinc-400">{label}</div>
+      <div className="text-lg font-bold tabular-nums text-slate-900 dark:text-zinc-100">{value}</div>
+      {sub && <div className="text-xs text-slate-500 dark:text-zinc-400">{sub}</div>}
     </div>
   );
 }
@@ -84,27 +84,27 @@ export default function HabitInsightsCard({ words }: { words: WordDetail[] }) {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-5 space-y-6 shadow-sm">
+    <div className="space-y-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
       {/* Long-term memory growth */}
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <Sprout className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white">Từ vào trí nhớ dài hạn</h3>
+          <Sprout className="h-5 w-5 text-teal-700 dark:text-teal-300" />
+          <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100">Từ vào trí nhớ dài hạn</h3>
         </div>
         <div className="flex flex-wrap items-end gap-6">
           <div>
-            <div className="text-3xl font-extrabold font-mono text-emerald-600 dark:text-emerald-400">{masteredNow}</div>
-            <div className="text-[11px] text-slate-500 dark:text-zinc-400">từ nhớ chắc (ổn định ≥ {MASTERED_STABILITY_DAYS} ngày)</div>
+            <div className="text-3xl font-bold tabular-nums text-teal-700 dark:text-teal-300">{masteredNow}</div>
+            <div className="text-xs text-slate-500 dark:text-zinc-400">từ nhớ chắc (ổn định ≥ {MASTERED_STABILITY_DAYS} ngày)</div>
           </div>
           <div>
-            <div className="text-xl font-bold font-mono text-slate-900 dark:text-white">+{data.masteredThisWeek}</div>
-            <div className="text-[11px] text-slate-500 dark:text-zinc-400">
+            <div className="text-xl font-bold tabular-nums text-slate-900 dark:text-zinc-100">+{data.masteredThisWeek}</div>
+            <div className="text-xs text-slate-500 dark:text-zinc-400">
               tuần này{data.productionMasteredThisWeek > 0 ? ` · +${data.productionMasteredThisWeek} từ tự nhớ ra được` : ""}
             </div>
           </div>
         </div>
-        <Bars values={data.masteredWeeks.map((w) => w.count)} labelFor={weekLabel} tone="bg-emerald-500" />
-        <div className="flex justify-between text-[10px] text-slate-400 dark:text-zinc-500 font-mono">
+        <Bars values={data.masteredWeeks.map((w) => w.count)} labelFor={weekLabel} tone="bg-teal-700 dark:bg-teal-500" />
+        <div className="flex justify-between text-xs tabular-nums text-slate-500 dark:text-zinc-400">
           <span>8 tuần trước</span>
           <span>Tuần này</span>
         </div>
@@ -112,7 +112,7 @@ export default function HabitInsightsCard({ words }: { words: WordDetail[] }) {
 
       {/* When the learner studies */}
       <div className="space-y-2">
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-zinc-300">
+        <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-700 dark:text-zinc-300">
           <Clock className="w-3.5 h-3.5" /> Giờ bạn hay học ({data.days} ngày)
           {topHours.size > 0 && (
             <span className="ml-auto font-normal text-slate-500 dark:text-zinc-400">
@@ -124,8 +124,8 @@ export default function HabitInsightsCard({ words }: { words: WordDetail[] }) {
             </span>
           )}
         </div>
-        <Bars values={data.studyHours} labelFor={(h) => `${h}h–${h + 1}h`} tone="bg-cyan-500" highlight={topHours} height="h-16" />
-        <div className="flex justify-between text-[10px] text-slate-400 dark:text-zinc-500 font-mono">
+        <Bars values={data.studyHours} labelFor={(h) => `${h}h–${h + 1}h`} tone="bg-teal-700 dark:bg-teal-500" highlight={topHours} height="h-16" />
+        <div className="flex justify-between text-xs tabular-nums text-slate-500 dark:text-zinc-400">
           <span>0h</span>
           <span>6h</span>
           <span>12h</span>
@@ -136,11 +136,11 @@ export default function HabitInsightsCard({ words }: { words: WordDetail[] }) {
 
       {/* Reminders */}
       <div className="space-y-2">
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-zinc-300">
+        <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-zinc-300">
           <BellRing className="w-3.5 h-3.5" /> Lời nhắc ôn ({data.days} ngày)
         </div>
         {f.shown === 0 && f.popupShown === 0 ? (
-          <p className="text-[11px] text-slate-400 dark:text-zinc-500">Chưa có dữ liệu — số liệu sẽ có sau vài lần nhắc.</p>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có dữ liệu — số liệu sẽ có sau vài lần nhắc.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <Tile label="Lời nhắc đã hiện" value={String(f.shown)} />
@@ -154,7 +154,7 @@ export default function HabitInsightsCard({ words }: { words: WordDetail[] }) {
           </div>
         )}
         {data.advice && (
-          <div className="flex items-start gap-2 p-3 rounded-xl bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-800/60 text-xs text-cyan-900 dark:text-cyan-100">
+          <div className="flex items-start gap-2 p-3 rounded-xl bg-teal-50 dark:bg-teal-400/10 text-sm text-teal-900 dark:text-teal-100">
             <Lightbulb className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{data.advice}</span>
           </div>

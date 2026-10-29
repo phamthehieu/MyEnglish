@@ -8,48 +8,52 @@ interface SyntaxHighlighterProps {
   showLabels?: boolean;
 }
 
+/**
+ * The parts of a sentence keep their own colours (the colour is the meaning), but calm ones: a pale fill, a dark
+ * text of the same hue (readable on white), and in dark mode a faint tint with a light text.
+ */
 const ROLE_STYLES: Record<string, { bg: string; text: string; border: string; labelBg: string }> = {
   subject: {
-    bg: "bg-blue-50 dark:bg-blue-950/40",
-    text: "text-blue-700 dark:text-blue-300 font-semibold",
-    border: "border-blue-200 dark:border-blue-800/60",
-    labelBg: "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300",
+    bg: "bg-sky-50 dark:bg-sky-400/10",
+    text: "text-sky-800 dark:text-sky-200 font-semibold",
+    border: "border-sky-200 dark:border-sky-400/25",
+    labelBg: "text-sky-700 dark:text-sky-300",
   },
   verb: {
-    bg: "bg-amber-50 dark:bg-amber-950/40",
-    text: "text-amber-700 dark:text-amber-300 font-bold",
-    border: "border-amber-200 dark:border-amber-800/60",
-    labelBg: "bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300",
+    bg: "bg-amber-50 dark:bg-amber-400/10",
+    text: "text-amber-900 dark:text-amber-200 font-semibold",
+    border: "border-amber-200 dark:border-amber-400/25",
+    labelBg: "text-amber-800 dark:text-amber-300",
   },
   auxiliary: {
-    bg: "bg-orange-50 dark:bg-orange-950/40",
-    text: "text-orange-700 dark:text-orange-300 font-semibold",
-    border: "border-orange-200 dark:border-orange-800/60",
-    labelBg: "bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300",
+    bg: "bg-orange-50 dark:bg-orange-400/10",
+    text: "text-orange-900 dark:text-orange-200 font-semibold",
+    border: "border-orange-200 dark:border-orange-400/25",
+    labelBg: "text-orange-800 dark:text-orange-300",
   },
   object: {
-    bg: "bg-emerald-50 dark:bg-emerald-950/40",
-    text: "text-emerald-700 dark:text-emerald-300 font-medium",
-    border: "border-emerald-200 dark:border-emerald-800/60",
-    labelBg: "bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300",
+    bg: "bg-green-50 dark:bg-green-400/10",
+    text: "text-green-800 dark:text-green-200 font-medium",
+    border: "border-green-200 dark:border-green-400/25",
+    labelBg: "text-green-700 dark:text-green-300",
   },
   modifier: {
-    bg: "bg-purple-50 dark:bg-purple-950/40",
-    text: "text-purple-700 dark:text-purple-300",
-    border: "border-purple-200 dark:border-purple-800/60",
-    labelBg: "bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300",
+    bg: "bg-violet-50 dark:bg-violet-400/10",
+    text: "text-violet-800 dark:text-violet-200",
+    border: "border-violet-200 dark:border-violet-400/25",
+    labelBg: "text-violet-700 dark:text-violet-300",
   },
   complement: {
-    bg: "bg-teal-50 dark:bg-teal-950/40",
-    text: "text-teal-700 dark:text-teal-300 font-medium",
-    border: "border-teal-200 dark:border-teal-800/60",
-    labelBg: "bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-300",
+    bg: "bg-teal-50 dark:bg-teal-400/10",
+    text: "text-teal-800 dark:text-teal-200 font-medium",
+    border: "border-teal-200 dark:border-teal-400/25",
+    labelBg: "text-teal-700 dark:text-teal-300",
   },
   connector: {
-    bg: "bg-pink-50 dark:bg-pink-950/40",
-    text: "text-pink-700 dark:text-pink-300 font-semibold",
-    border: "border-pink-200 dark:border-pink-800/60",
-    labelBg: "bg-pink-100 dark:bg-pink-900 text-pink-700 dark:text-pink-300",
+    bg: "bg-slate-100 dark:bg-zinc-800",
+    text: "text-slate-800 dark:text-zinc-100 font-semibold",
+    border: "border-slate-300 dark:border-zinc-700",
+    labelBg: "text-slate-600 dark:text-zinc-400",
   },
 };
 
@@ -72,7 +76,7 @@ export default function SyntaxHighlighter({
           bg: "bg-slate-100 dark:bg-zinc-800",
           text: "text-slate-800 dark:text-zinc-200",
           border: "border-slate-200 dark:border-zinc-700",
-          labelBg: "bg-slate-200 dark:bg-zinc-700 text-slate-700 dark:text-zinc-300",
+          labelBg: "text-slate-600 dark:text-zinc-400",
         };
 
         const isHovered = hoveredIndex === index;
@@ -82,14 +86,14 @@ export default function SyntaxHighlighter({
             key={index}
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
-            className={`relative inline-flex flex-col items-center px-2 py-1 rounded-lg border transition-all cursor-pointer ${
+            className={`relative inline-flex flex-col items-center px-2.5 py-1 rounded-xl border transition-colors cursor-pointer ${
               style.bg
-            } ${style.border} ${isHovered ? "ring-2 ring-cyan-400 scale-[1.03] shadow-md z-10" : ""}`}
+            } ${style.border} ${isHovered ? "ring-2 ring-teal-600 dark:ring-teal-400 z-10" : ""}`}
           >
-            <span className={`text-sm ${style.text}`}>{token.text}</span>
+            <span className={`text-base ${style.text}`}>{token.text}</span>
             {showLabels && (
               <span
-                className={`text-[10px] tracking-tight px-1 py-0.2 rounded mt-0.5 font-mono ${
+                className={`text-[11px] font-medium leading-tight mt-0.5 ${
                   style.labelBg
                 }`}
               >

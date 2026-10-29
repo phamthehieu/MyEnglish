@@ -14,9 +14,13 @@ import { exportBackupJson, exportWordsCsv, importBackup, parseBackup } from "@/s
 import { getFSRSSettings, saveFSRSSettings } from "@/services/srs";
 import { useSimpleMode } from "../Jargon";
 
-const BOX = "p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2.5";
+const BOX = "p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3";
 const BTN =
-  "min-h-10 px-3 py-2 rounded-lg text-xs font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed";
+  "min-h-11 px-4 py-2 rounded-2xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+/** The kit's secondary button look (teal outline) */
+const SECONDARY =
+  "border border-teal-700/30 dark:border-teal-400/40 bg-white dark:bg-transparent text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10";
+const PRIMARY = "bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white shadow-sm";
 
 /**
  * Review-schedule settings that need care: personal parameters (optimizer) and the longest interval.
@@ -61,25 +65,25 @@ export default function AdvancedLearningSettings() {
       {/* Personal schedule parameters: advanced, hidden in simple mode */}
       {!simple && <div className={BOX}>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <Cpu className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-          <div className="text-sm font-bold text-slate-900 dark:text-white">Tối ưu theo trí nhớ của bạn</div>
-          <span className="sm:ml-auto text-xs font-mono text-slate-600 dark:text-zinc-400">
+          <Cpu className="w-5 h-5 text-teal-700 dark:text-teal-300" />
+          <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Tối ưu theo trí nhớ của bạn</div>
+          <span className="sm:ml-auto text-sm text-slate-500 dark:text-zinc-400">
             {stored ? `Đang dùng tham số riêng (${new Date(stored.computedAt).toLocaleDateString("vi-VN")})` : "Đang dùng tham số mặc định"}
           </span>
         </div>
-        <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
+        <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
           App có thể học cách bạn quên từ chính lịch sử ôn của bạn (chỉ tính lượt ôn đúng lịch), để khoảng ôn khớp với tốc độ
           quên thật: ít lượt ôn thừa hơn mà vẫn giữ mục tiêu ghi nhớ. Cần ít nhất {MIN_OPTIMIZER_REVIEWS} lượt ôn trên {MIN_OPTIMIZER_CARDS} thẻ.
         </p>
         {data && (
           <div className="space-y-1">
-            <div className="h-1.5 rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
+            <div className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
               <div
-                className="h-full bg-cyan-500 rounded-full"
+                className="h-full bg-teal-700 dark:bg-teal-500 rounded-full"
                 style={{ width: `${Math.min(100, (data.reviewCount / MIN_OPTIMIZER_REVIEWS) * 100)}%` }}
               />
             </div>
-            <div className="text-xs font-mono text-slate-600 dark:text-zinc-400">
+            <div className="text-sm tabular-nums text-slate-500 dark:text-zinc-400">
               {data.reviewCount}/{MIN_OPTIMIZER_REVIEWS} lượt ôn · {data.cardCount}/{MIN_OPTIMIZER_CARDS} thẻ
             </div>
           </div>
@@ -88,7 +92,7 @@ export default function AdvancedLearningSettings() {
           <button
             onClick={runOptimizer}
             disabled={!enough || running}
-            className={`${BTN} bg-cyan-600 hover:bg-cyan-500 text-white`}
+            className={`${BTN} ${PRIMARY}`}
           >
             {running ? "Đang tối ưu..." : "Tối ưu ngay"}
           </button>
@@ -99,17 +103,17 @@ export default function AdvancedLearningSettings() {
                 setStored(null);
                 setMessage("Đã quay về tham số mặc định.");
               }}
-              className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1`}
+              className={`${BTN} ${SECONDARY} inline-flex items-center gap-1.5`}
             >
-              <RotateCcw className="w-3 h-3" /> Khôi phục mặc định
+              <RotateCcw className="w-4 h-4" /> Khôi phục mặc định
             </button>
           )}
         </div>
         {result && (
-          <div className="p-3 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-xs space-y-2">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 text-sm space-y-2 overflow-x-auto">
             <table className="w-full font-mono">
               <thead>
-                <tr className="text-slate-600 dark:text-zinc-400 text-left">
+                <tr className="text-slate-500 dark:text-zinc-400 text-left">
                   <th className="font-medium">Sai số (thấp hơn = khớp hơn)</th>
                   <th className="font-medium text-right">Mặc định</th>
                   <th className="font-medium text-right">Của bạn</th>
@@ -132,7 +136,7 @@ export default function AdvancedLearningSettings() {
                 </tr>
               </tbody>
             </table>
-            <p className={improves ? "text-emerald-700 dark:text-emerald-400" : "text-amber-700 dark:text-amber-400"}>
+            <p className={improves ? "text-green-700 dark:text-green-300" : "text-amber-800 dark:text-amber-300"}>
               {improves
                 ? "Tham số riêng dự đoán trí nhớ của bạn tốt hơn mặc định — nên áp dụng."
                 : "Tham số riêng không tốt hơn mặc định — nên giữ mặc định và thử lại khi có thêm dữ liệu."}
@@ -145,11 +149,11 @@ export default function AdvancedLearningSettings() {
                   setResult(null);
                   setMessage("Đã áp dụng tham số riêng. Lịch ôn mới được tính từ lượt ôn tiếp theo.");
                 }}
-                className={`${BTN} bg-emerald-600 hover:bg-emerald-500 text-white`}
+                className={`${BTN} ${PRIMARY}`}
               >
                 Áp dụng
               </button>
-              <button onClick={() => setResult(null)} className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300`}>
+              <button onClick={() => setResult(null)} className={`${BTN} ${SECONDARY}`}>
                 Bỏ qua
               </button>
             </div>
@@ -160,11 +164,11 @@ export default function AdvancedLearningSettings() {
       {/* Longest interval */}
       <div className={BOX}>
         <div className="flex items-center gap-2">
-          <CalendarRange className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-          <div className="text-sm font-bold text-slate-900 dark:text-white">Khoảng ôn dài nhất</div>
-          <span className="ml-auto text-sm font-bold text-cyan-700 dark:text-cyan-400 font-mono">{maxInterval} ngày</span>
+          <CalendarRange className="w-5 h-5 text-teal-700 dark:text-teal-300" />
+          <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Khoảng ôn dài nhất</div>
+          <span className="ml-auto text-sm font-semibold text-teal-700 dark:text-teal-300 tabular-nums">{maxInterval} ngày</span>
         </div>
-        <p className="text-xs text-slate-600 dark:text-zinc-400">
+        <p className="text-sm text-slate-500 dark:text-zinc-400">
           Từ đã thuộc rất chắc vẫn được hỏi lại ít nhất một lần trong khoảng này. Dài hơn = ít lượt ôn hơn cho từ đã vững.
         </p>
         <div className="grid grid-cols-4 gap-2">
@@ -175,10 +179,10 @@ export default function AdvancedLearningSettings() {
                 saveFSRSSettings({ maximumInterval: val });
                 setMaxInterval(val);
               }}
-              className={`min-h-10 py-2 rounded-lg text-xs font-mono font-medium transition-all ${
+              className={`min-h-11 py-2 rounded-full text-sm font-semibold border transition-colors ${
                 maxInterval === val
-                  ? "bg-cyan-600 text-white shadow-sm font-bold"
-                  : "bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:border-slate-300"
+                  ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600"
+                  : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
               }`}
             >
               {val >= 730 ? `${Math.round(val / 365)} năm` : "1 năm"}
@@ -187,7 +191,7 @@ export default function AdvancedLearningSettings() {
         </div>
       </div>
 
-      {message && <p className="text-xs text-cyan-700 dark:text-cyan-300 break-words">{message}</p>}
+      {message && <p className="text-sm text-teal-700 dark:text-teal-300 break-words">{message}</p>}
     </div>
   );
 }
@@ -199,8 +203,8 @@ export function BackupRestoreSettings({ onWordsChanged }: { onWordsChanged?: () 
 
   return (
     <div className={BOX}>
-      <div className="text-sm font-bold text-slate-900 dark:text-white">Sao lưu & khôi phục dữ liệu</div>
-      <p className="text-xs text-slate-600 dark:text-zinc-400">
+      <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Sao lưu & khôi phục dữ liệu</div>
+      <p className="text-sm text-slate-500 dark:text-zinc-400">
         Nên sao lưu trước khi đặt lại hoặc đổi máy. File được lưu vào thư mục Downloads. Khôi phục chỉ thêm dữ liệu mới, không ghi đè từ và tiến độ đang có.
       </p>
       <div className="flex flex-wrap gap-2">
@@ -210,9 +214,9 @@ export function BackupRestoreSettings({ onWordsChanged }: { onWordsChanged?: () 
               .then((p) => setMessage(`Đã sao lưu toàn bộ dữ liệu: ${p}`))
               .catch((e) => setMessage(`Sao lưu lỗi: ${e}`))
           }
-          className={`${BTN} bg-slate-900 dark:bg-white text-white dark:text-slate-900 inline-flex items-center gap-1`}
+          className={`${BTN} ${PRIMARY} inline-flex items-center gap-1.5`}
         >
-          <Download className="w-3.5 h-3.5" /> Sao lưu toàn bộ
+          <Download className="w-4 h-4" /> Sao lưu toàn bộ
         </button>
         <button
           onClick={() =>
@@ -220,15 +224,15 @@ export function BackupRestoreSettings({ onWordsChanged }: { onWordsChanged?: () 
               .then((p) => setMessage(`Đã xuất danh sách từ: ${p}`))
               .catch((e) => setMessage(`Xuất danh sách lỗi: ${e}`))
           }
-          className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1`}
+          className={`${BTN} ${SECONDARY} inline-flex items-center gap-1.5`}
         >
-          <Download className="w-3.5 h-3.5" /> Danh sách từ (bảng tính)
+          <Download className="w-4 h-4" /> Danh sách từ (bảng tính)
         </button>
         <button
           onClick={() => fileRef.current?.click()}
-          className={`${BTN} border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 inline-flex items-center gap-1`}
+          className={`${BTN} ${SECONDARY} inline-flex items-center gap-1.5`}
         >
-          <Upload className="w-3.5 h-3.5" /> Khôi phục từ file...
+          <Upload className="w-4 h-4" /> Khôi phục từ file...
         </button>
         <input
           ref={fileRef}
@@ -253,7 +257,7 @@ export function BackupRestoreSettings({ onWordsChanged }: { onWordsChanged?: () 
           }}
         />
       </div>
-      {message && <p className="text-xs text-cyan-700 dark:text-cyan-300 break-words">{message}</p>}
+      {message && <p className="text-sm text-teal-700 dark:text-teal-300 break-words">{message}</p>}
     </div>
   );
 }

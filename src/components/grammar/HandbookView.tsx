@@ -1,10 +1,11 @@
 import { useCallback } from "react";
-import { Volume2, BookOpen, Lightbulb } from "lucide-react";
+import { Volume2, Lightbulb } from "lucide-react";
 import type { GrammarBlock } from "@/types/grammarBook";
 import { handleSpeak } from "@/components/review/speech";
 
 interface HandbookViewProps {
   blocks: GrammarBlock[];
+  /** The lesson's names: the lesson screen already shows them in its header, so the handbook does not repeat them */
   title?: string;
   titleVn?: string;
   chapterNotes?: GrammarBlock[];
@@ -21,8 +22,6 @@ const list = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
 
 export default function HandbookView({
   blocks,
-  title,
-  titleVn,
   chapterNotes = [],
 }: HandbookViewProps) {
   const speakText = useCallback((text: string) => {
@@ -39,7 +38,7 @@ export default function HandbookView({
         return (
           <h3
             key={index}
-            className="text-base sm:text-lg font-bold text-slate-800 dark:text-zinc-100 mt-6 mb-2 border-b border-slate-200/80 dark:border-zinc-800 pb-1"
+            className="text-lg font-semibold text-slate-900 dark:text-zinc-100 mt-6 first:mt-0 mb-2"
           >
             {txt(block.text)}
           </h3>
@@ -47,15 +46,15 @@ export default function HandbookView({
 
       case "text":
         return (
-          <p key={index} className="text-sm text-slate-700 dark:text-zinc-300 leading-relaxed my-2 whitespace-pre-line">
+          <p key={index} className="text-base text-slate-700 dark:text-zinc-300 leading-relaxed my-2 whitespace-pre-line">
             {txt(block.text)}
           </p>
         );
 
       case "bullet":
         return (
-          <div key={index} className="flex items-start gap-2.5 my-1.5 ml-2 text-sm text-slate-700 dark:text-zinc-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 mt-2 shrink-0" />
+          <div key={index} className="flex items-start gap-2.5 my-1.5 ml-1 text-base text-slate-700 dark:text-zinc-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-teal-700 dark:bg-teal-400 mt-2.5 shrink-0" />
             <span className="leading-relaxed flex-1 whitespace-pre-line">{txt(block.text)}</span>
           </div>
         );
@@ -64,14 +63,14 @@ export default function HandbookView({
         return (
           <div
             key={index}
-            className="my-3 p-4 rounded-xl bg-violet-50/70 dark:bg-violet-950/30 border border-violet-200/80 dark:border-violet-800/50 shadow-sm"
+            className="my-3 p-4 rounded-2xl bg-teal-50 dark:bg-teal-400/10 border border-teal-700/20 dark:border-teal-400/20"
           >
             {txt(block.label) && (
-              <span className="inline-block px-2 py-0.5 mb-2 text-xs font-bold uppercase tracking-wider rounded bg-violet-200/70 dark:bg-violet-900/60 text-violet-800 dark:text-violet-200">
+              <span className="inline-block px-2.5 py-1 mb-2 text-xs font-semibold rounded-full bg-white dark:bg-zinc-900 text-teal-800 dark:text-teal-300">
                 {txt(block.label)}
               </span>
             )}
-            <div className="font-mono text-sm sm:text-base font-semibold text-violet-950 dark:text-violet-100 whitespace-pre-line leading-relaxed">
+            <div className="font-mono text-base font-semibold text-teal-950 dark:text-teal-100 whitespace-pre-line break-words leading-relaxed">
               {txt(block.text)}
             </div>
           </div>
@@ -81,21 +80,21 @@ export default function HandbookView({
         return (
           <div
             key={index}
-            className="my-2.5 p-3 rounded-xl bg-slate-50 dark:bg-zinc-900/90 border border-slate-200/70 dark:border-zinc-800 flex items-start justify-between gap-3 group hover:border-cyan-300 dark:hover:border-cyan-800/80 transition"
+            className="my-2.5 py-2 pl-4 pr-2 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-800 flex items-start justify-between gap-3"
           >
-            <div className="space-y-1 flex-1">
-              <div className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+            <div className="space-y-1 flex-1 min-w-0 py-1">
+              <div className="text-base font-semibold text-slate-900 dark:text-zinc-100 break-words">
                 <span>{txt(block.en)}</span>
               </div>
               {txt(block.vi) && (
-                <div className="text-xs text-slate-500 dark:text-zinc-400">
+                <div className="text-sm text-slate-500 dark:text-zinc-400">
                   {txt(block.vi)}
                 </div>
               )}
             </div>
             <button
               onClick={() => speakText(txt(block.en))}
-              className="w-10 h-10 inline-flex items-center justify-center rounded-lg text-slate-500 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-200/60 dark:hover:bg-zinc-800 transition shrink-0"
+              className="w-11 h-11 inline-flex items-center justify-center rounded-full text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors shrink-0"
               aria-label="Phát âm tiếng Anh"
               title="Phát âm tiếng Anh"
             >
@@ -108,9 +107,9 @@ export default function HandbookView({
         return (
           <div
             key={index}
-            className="my-3 p-3.5 rounded-xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/50 flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200"
+            className="my-3 p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 flex items-start gap-2.5 text-sm text-amber-900 dark:text-amber-200"
           >
-            <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <Lightbulb className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0 mt-0.5" />
             <div className="leading-relaxed whitespace-pre-line flex-1">{txt(block.text)}</div>
           </div>
         );
@@ -120,11 +119,11 @@ export default function HandbookView({
         const rows = list<unknown>(block.rows);
         if (headers.length === 0 && rows.length === 0) return null;
         return (
-          <div key={index} className="my-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-zinc-800 shadow-sm">
+          <div key={index} className="my-4 overflow-x-auto rounded-xl border border-slate-200 dark:border-zinc-800">
             <table className="w-full text-left text-xs sm:text-sm border-collapse">
               {headers.length > 0 && (
                 <thead>
-                  <tr className="bg-slate-100 dark:bg-zinc-800/90 text-slate-700 dark:text-zinc-300 font-bold border-b border-slate-200 dark:border-zinc-700">
+                  <tr className="bg-slate-50 dark:bg-zinc-800/90 text-slate-700 dark:text-zinc-300 font-semibold border-b border-slate-200 dark:border-zinc-700">
                     {headers.map((h, hIdx) => (
                       <th key={hIdx} className="p-3 border-r border-slate-200 dark:border-zinc-700 last:border-r-0">
                         {txt(h)}
@@ -163,15 +162,15 @@ export default function HandbookView({
             {items.map((item, wIdx) => (
               <div
                 key={wIdx}
-                className="p-2.5 rounded-lg bg-slate-50 dark:bg-zinc-900/80 border border-slate-200/70 dark:border-zinc-800 flex items-center justify-between gap-2"
+                className="py-1 pl-3 pr-1 rounded-xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-800 flex items-center justify-between gap-2"
               >
-                <div>
-                  <span className="font-semibold text-xs text-slate-900 dark:text-zinc-100">{txt(item!.en)}</span>
-                  {txt(item!.vi) && <span className="ml-2 text-xs text-slate-500 dark:text-zinc-400">({txt(item!.vi)})</span>}
+                <div className="min-w-0 break-words">
+                  <span className="font-semibold text-sm text-slate-900 dark:text-zinc-100">{txt(item!.en)}</span>
+                  {txt(item!.vi) && <span className="ml-2 text-sm text-slate-500 dark:text-zinc-400">({txt(item!.vi)})</span>}
                 </div>
                 <button
                   onClick={() => speakText(txt(item!.en))}
-                  className="w-10 h-10 inline-flex items-center justify-center text-slate-500 hover:text-cyan-600 transition"
+                  className="w-11 h-11 shrink-0 inline-flex items-center justify-center rounded-full text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors"
                   aria-label="Phát âm"
                   title="Phát âm"
                 >
@@ -189,18 +188,7 @@ export default function HandbookView({
   };
 
   return (
-    <div className="space-y-4 max-w-4xl mx-auto pb-8">
-      {/* Title Header if present */}
-      {title && (
-        <div className="mb-6 pb-3 border-b border-slate-200 dark:border-zinc-800">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <BookOpen className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-            <span>{title}</span>
-          </h2>
-          {titleVn && <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">{titleVn}</p>}
-        </div>
-      )}
-
+    <div className="space-y-4 max-w-4xl mx-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-6">
       {/* Main Blocks */}
       <div className="space-y-1">
         {safeBlocks.map((block, idx) => renderBlock(block, idx))}
@@ -208,11 +196,11 @@ export default function HandbookView({
 
       {/* Chapter Notes if present */}
       {safeNotes.length > 0 && (
-        <div className="mt-8 pt-6 border-t border-slate-200 dark:border-zinc-800">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-zinc-400 mb-3">
+        <div className="mt-6 pt-5 border-t border-slate-200 dark:border-zinc-800">
+          <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400 mb-3">
             Ghi nhớ chung của chương
           </h4>
-          <div className="p-4 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40 space-y-2">
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-800 space-y-2">
             {safeNotes.map((noteBlock, nIdx) => renderBlock(noteBlock, nIdx))}
           </div>
         </div>

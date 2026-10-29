@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Check, ChevronDown, Lightbulb, Volume2, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Check, ChevronDown, Lightbulb, Volume2, X } from "lucide-react";
 import type { PronunciationItem, PronunciationLesson } from "@/types/pronunciation";
 import { CONFUSABLE_PHONEME_PAIRS, type ConfusablePhonemePair } from "@/services/phonemeMatcher";
 import { recordPronunciationQuiz, recordSayAloud } from "@/services/pronunciation";
@@ -8,6 +8,7 @@ import { shuffle } from "@/lib/utils";
 import { playSound } from "@/services/sound";
 import { handleSpeak, AUTO_SPEAK_DELAY_MS } from "../review/speech";
 import { MicCheck } from "./PronunciationMicCheck";
+import { PracticeTop } from "../talk/MicButton";
 
 /**
  * One short practice session for a sound, one thing on screen at a time: 2 rounds of listening, 2 of saying
@@ -234,24 +235,35 @@ export default function SoundSession({
     setAttempt((a) => a + 1);
   };
 
-  const header = (
-    <div className="flex items-center justify-between gap-3">
-      <button onClick={onBack} className="min-h-[40px] pr-3 text-sm text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 inline-flex items-center gap-1">
-        <ArrowLeft className="w-4 h-4" /> {pair ? "Quay lại" : "Bảng âm"}
-      </button>
-      {onFree && (
-        <button onClick={onFree} className="min-h-[40px] px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm font-semibold text-slate-700 dark:text-zinc-200">
-          Học tự do
-        </button>
-      )}
-    </div>
+  // The quiet top line of the session: back, what is practised, how far along; "Học tự do" on the right
+  const top = (progress?: { label: ReactNode; count: ReactNode; percent: number }) => (
+    <PracticeTop
+      onBack={onBack}
+      backLabel={pair ? "Quay lại" : "Bảng âm"}
+      label={progress?.label ?? `${subject} /${sym}/`}
+      count={progress?.count}
+      percent={progress?.percent}
+      right={
+        onFree && (
+          <button
+            onClick={onFree}
+            className="shrink-0 min-h-10 px-3 rounded-full border border-slate-200 bg-white text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          >
+            Học tự do
+          </button>
+        )
+      }
+    />
   );
+  const header = top();
 
   if (flat.length === 0) {
     return (
       <div className="max-w-md mx-auto space-y-4">
         {header}
-        <p className="text-sm text-slate-600 dark:text-zinc-400">Chưa có bài tập cho phần này.</p>
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+          <p className="text-base text-slate-700 dark:text-zinc-300">Chưa có bài tập cho phần này.</p>
+        </div>
       </div>
     );
   }
@@ -259,14 +271,14 @@ export default function SoundSession({
   if (finished) {
     const summary = pair ? null : summarizeMastery(getMastery()[lesson.id], lesson.examples.length);
     return (
-      <div className="max-w-md mx-auto space-y-6">
-        {header}
-        <div className="rounded-3xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/60 dark:bg-emerald-950/20 p-8 text-center space-y-3">
+      <div className="max-w-md mx-auto space-y-4">
+        {top({ label: `${subject} /${sym}/`, count: null, percent: 100 })}
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-6 md:p-8 text-center space-y-3">
           <div className="text-5xl">🎉</div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Xong {subject.toLowerCase()} /{sym}/</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-zinc-100">Xong {subject.toLowerCase()} /{sym}/</h2>
           {answered > 0 && (
-            <p className="text-slate-600 dark:text-zinc-300">
-              Đúng <span className="font-bold text-emerald-600 dark:text-emerald-400">{correct}/{answered}</span> câu
+            <p className="text-slate-700 dark:text-zinc-300">
+              Đúng <span className="font-bold text-green-700 dark:text-green-300">{correct}/{answered}</span> câu
             </p>
           )}
           <p className="text-sm text-slate-500 dark:text-zinc-400">
@@ -275,15 +287,15 @@ export default function SoundSession({
         </div>
         <div className="space-y-2">
           {nextLesson && onNext ? (
-            <button onClick={() => onNext(nextLesson.id)} className="w-full py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold">
+            <button onClick={() => onNext(nextLesson.id)} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2">
               Âm tiếp theo
             </button>
           ) : (
-            <button onClick={onBack} className="w-full py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold">
+            <button onClick={onBack} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2">
               {pair ? "Xong" : "Về bảng âm"}
             </button>
           )}
-          <button onClick={restart} className="w-full py-3 rounded-2xl border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 font-semibold">
+          <button onClick={restart} className="w-full min-h-14 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 text-[17px] font-semibold inline-flex items-center justify-center gap-2 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10">
             Học lại {pair ? "cặp này" : "âm này"}
           </button>
         </div>
@@ -297,30 +309,23 @@ export default function SoundSession({
   const roundNo = rounds.slice(0, ri + 1).filter((r) => r.title === round.title).length;
 
   return (
-    <div className="max-w-md mx-auto space-y-5">
-      {header}
-
-      <div className="space-y-2">
-        <div className="flex gap-1.5">
-          {flat.map((_, i) => (
-            <span key={i} className={`h-1.5 flex-1 rounded-full ${i < index ? "bg-emerald-500" : i === index ? "bg-violet-500" : "bg-slate-200 dark:bg-zinc-800"}`} />
-          ))}
-        </div>
-        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-zinc-400">
-          <span className="font-semibold">
+    <div className="max-w-md mx-auto space-y-4">
+      {top({
+        label: (
+          <>
             {subject} /{sym}/ · {round.title}
             {roundCount > 1 ? ` ${roundNo}` : ""}
-          </span>
-          <span>
-            {ti + 1}/{round.tasks.length}
-          </span>
-        </div>
-      </div>
+          </>
+        ),
+        count: `${ti + 1}/${round.tasks.length}`,
+        percent: (index / flat.length) * 100,
+      })}
 
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-5">
       {index === 0 && lesson.tips[0] && (
-        <div className="rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50">
-          <button onClick={() => setTipOpen((o) => !o)} className="w-full flex items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-amber-800 dark:text-amber-300">
-            <Lightbulb className="w-4 h-4 shrink-0" />
+        <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/50">
+          <button onClick={() => setTipOpen((o) => !o)} className="w-full min-h-11 flex items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 dark:text-zinc-300">
+            <Lightbulb className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
             <span className="flex-1">Mẹo phát âm</span>
             <ChevronDown className={`w-4 h-4 transition-transform ${tipOpen ? "rotate-180" : ""}`} />
           </button>
@@ -334,39 +339,31 @@ export default function SoundSession({
         </div>
       )}
 
-      <p className="text-center text-lg font-bold text-slate-900 dark:text-white">{round.prompt}</p>
+      <p className="text-center text-base font-semibold text-slate-700 dark:text-zinc-300">{round.prompt}</p>
 
       {task.kind === "say" ? (
         <div className="space-y-5">
           <div className="text-center space-y-1">
-            <div className="text-4xl font-bold text-slate-900 dark:text-white">{task.item.text}</div>
+            <div className="text-4xl font-bold text-slate-900 dark:text-zinc-100 break-words">{task.item.text}</div>
             <div className="font-mono text-slate-500 dark:text-zinc-400">{task.item.ipa}</div>
           </div>
           <div className="flex justify-center">
             <button
               onClick={() => handleSpeak(task.item.text)}
-              className="w-16 h-16 rounded-full bg-violet-600 hover:bg-violet-700 text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+              className="w-16 h-16 rounded-full bg-teal-50 hover:bg-teal-100 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center active:scale-95 transition-transform"
               aria-label="Nghe"
             >
               <Volume2 className="w-7 h-7" />
             </button>
           </div>
           <MicCheck lesson={lesson} item={task.item} compact />
-          <div className="grid grid-cols-2 gap-2">
-            <button onClick={() => rateSaid(true)} className="py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold inline-flex items-center justify-center gap-2">
-              <Check className="w-4 h-4" /> Đã đọc
-            </button>
-            <button onClick={() => rateSaid(false)} className="py-3.5 rounded-2xl border-2 border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 font-semibold">
-              Chưa chắc
-            </button>
-          </div>
         </div>
       ) : (
         <div className="space-y-5">
           <div className="flex justify-center">
             <button
               onClick={() => handleSpeak(task.say)}
-              className="w-20 h-20 rounded-full bg-violet-600 hover:bg-violet-700 text-white flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+              className="w-20 h-20 rounded-full bg-teal-50 hover:bg-teal-100 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center active:scale-95 transition-transform"
               aria-label="Nghe lại"
             >
               <Volume2 className="w-9 h-9" />
@@ -376,18 +373,18 @@ export default function SoundSession({
             {task.choices.map((c) => {
               const isAnswer = c.id === task.answer;
               const isPicked = picked === c.id;
-              let style = "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-900 dark:text-white hover:border-violet-400";
+              let style = "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 hover:border-teal-600/50";
               if (picked !== null) {
-                if (isAnswer) style = "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-200";
-                else if (isPicked) style = "border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-200";
-                else style = "border-transparent opacity-40 text-slate-500";
+                if (isAnswer) style = "border-green-500 bg-green-50 dark:bg-green-950/40 text-green-800 dark:text-green-200";
+                else if (isPicked) style = "border-red-500 bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-200";
+                else style = "border-slate-200 dark:border-zinc-800 opacity-50 text-slate-500";
               }
               return (
                 <button
                   key={c.id}
                   disabled={picked !== null}
                   onClick={() => choose(c.id)}
-                  className={`w-full px-4 py-4 rounded-2xl border-2 text-left text-lg font-semibold flex items-center justify-between transition-colors ${style}`}
+                  className={`w-full min-h-14 px-4 py-3 rounded-xl border-2 text-left text-lg font-semibold flex items-center justify-between transition-colors ${style}`}
                 >
                   <span>{c.label}</span>
                   {picked !== null && isAnswer && <Check className="w-5 h-5" />}
@@ -396,15 +393,26 @@ export default function SoundSession({
               );
             })}
           </div>
-          {picked !== null && (
-            <div className="space-y-3">
-              <p className="text-sm text-center text-slate-600 dark:text-zinc-400">{task.explanation}</p>
-              <button onClick={advance} className="w-full py-3.5 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white font-bold">
-                {index + 1 >= flat.length ? "Xong" : "Tiếp"}
-              </button>
-            </div>
-          )}
+          {picked !== null && <p className="text-sm text-center text-slate-500 dark:text-zinc-400">{task.explanation}</p>}
         </div>
+      )}
+      </div>
+
+      {task.kind === "say" ? (
+        <div className="grid grid-cols-2 gap-2">
+          <button onClick={() => rateSaid(true)} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2">
+            <Check className="w-5 h-5" /> Đã đọc
+          </button>
+          <button onClick={() => rateSaid(false)} className="w-full min-h-14 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 text-[17px] font-semibold inline-flex items-center justify-center gap-2 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10">
+            Chưa chắc
+          </button>
+        </div>
+      ) : (
+        picked !== null && (
+          <button onClick={advance} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2">
+            {index + 1 >= flat.length ? "Xong" : "Tiếp"}
+          </button>
+        )
       )}
     </div>
   );

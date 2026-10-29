@@ -57,7 +57,7 @@ export default function TapText({
   text: string;
   unlearned: Unlearned;
   onWord: (word: string) => void;
-  /** "light": on a light bubble, "dark": on the violet one */
+  /** "light": on a light bubble, "dark": on the teal one */
   tone: "light" | "dark";
 }) {
   const gold = tone === "dark" ? "text-yellow-300 underline decoration-dotted underline-offset-2" : "text-yellow-700 dark:text-yellow-300 underline decoration-dotted underline-offset-2";

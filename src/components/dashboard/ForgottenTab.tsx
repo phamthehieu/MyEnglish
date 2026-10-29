@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowDown, ArrowUp, Bug, ChevronDown, Crosshair, Lightbulb, Play, Settings2, Sparkles, Volume2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ChevronDown, Crosshair, Lightbulb, Play, Settings2, Sparkles, Volume2 } from "lucide-react";
 import type { WordDetail } from "@/types/database";
 import { useWordsStore } from "@/stores/wordsStore";
 import { getLeechSettings, saveLeechSettings, type ExerciseType, type LeechSettings } from "@/services/smartReview";
@@ -41,10 +41,10 @@ function timeAgo(t: number | null, now = Date.now()): string | null {
 
 function Tile({ label, value, sub }: { label: string; value: ReactNode; sub?: ReactNode }) {
   return (
-    <div className="p-3 rounded-xl bg-white dark:bg-zinc-900/80 border border-rose-100 dark:border-rose-900/40">
-      <div className="text-xs text-slate-600 dark:text-zinc-400">{label}</div>
-      <div className="text-xl font-bold font-mono text-slate-900 dark:text-white">{value}</div>
-      {sub && <div className="text-xs text-slate-600 dark:text-zinc-400">{sub}</div>}
+    <div className="rounded-2xl bg-slate-50 p-3 dark:bg-zinc-800/60">
+      <div className="text-sm text-slate-600 dark:text-zinc-400">{label}</div>
+      <div className="text-xl font-bold tabular-nums text-slate-900 dark:text-white">{value}</div>
+      {sub && <div className="text-xs text-slate-500 dark:text-zinc-400">{sub}</div>}
     </div>
   );
 }
@@ -120,36 +120,29 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
   const trend = data ? data.wrongLast7 - data.wrongPrev7 : 0;
 
   return (
-    <div className={`${PAGE_CONTAINER} space-y-6`}>
+    <div className={`${PAGE_CONTAINER} space-y-4`}>
       {/* Header: what this is, three numbers, the one action */}
-      <div className="rounded-2xl border border-rose-200 dark:border-rose-900/50 bg-gradient-to-br from-rose-50 to-white dark:from-rose-950/30 dark:to-zinc-900 p-5 sm:p-6 space-y-4">
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl bg-rose-500/15 flex items-center justify-center text-rose-500 shrink-0">
-            <Bug className="w-5 h-5" />
-          </div>
+      <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+        <div>
           <div className="min-w-0">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-              Từ hay quên
-              {data && data.active.length > 0 && <span className="ml-2 text-rose-500 font-mono">({data.active.length})</span>}
-            </h2>
-            <p className="text-sm text-slate-600 dark:text-zinc-300">
+            <p className="text-sm leading-relaxed text-slate-700 dark:text-zinc-300">
               Những từ bạn trả lời sai từ 2 lần trong {FORGOTTEN_WINDOW_DAYS} ngày, hoặc đã quên nhiều lần. Ôn riêng nhóm này
               là cách nhanh nhất để hết quên.
             </p>
-            <p className="mt-1 text-xs text-slate-600 dark:text-zinc-400">
+            <p className="mt-1.5 text-sm leading-relaxed text-slate-500 dark:text-zinc-400">
               "Từ hay quên" là mọi từ bạn gần đây hay sai. "Từ khó" (🐛) là nhóm nhỏ hơn: những từ bạn đã quên rất nhiều lần, được ôn bằng bài dễ hơn kèm mẹo nhớ.
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-2.5">
           <Tile label="Đang hay quên" value={data ? data.active.length : "…"} sub={data ? `${data.active.filter((e) => e.dueNow).length} từ đến hạn ôn` : null} />
           <Tile
             label="Câu sai 7 ngày qua"
             value={data ? data.wrongLast7 : "…"}
             sub={
               data && (data.wrongLast7 > 0 || data.wrongPrev7 > 0) ? (
-                <span className={`inline-flex items-center gap-0.5 ${trend <= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
+                <span className={`inline-flex items-center gap-0.5 ${trend <= 0 ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}`}>
                   {trend <= 0 ? <ArrowDown className="w-3 h-3" /> : <ArrowUp className="w-3 h-3" />}
                   {trend === 0 ? "như tuần trước" : `${Math.abs(trend)} so với tuần trước (${data.wrongPrev7})`}
                 </span>
@@ -162,22 +155,22 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
         </div>
 
         {data && data.active.length > 0 && (
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               onClick={() => onStartSession(sessionWords)}
               autoFocus
-              className="px-6 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.98] text-white text-sm font-bold shadow-md shadow-rose-600/30 inline-flex items-center gap-2 transition-all"
+              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-teal-700 px-5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 sm:flex-none"
             >
               <Play className="w-4 h-4 fill-white" /> Ôn {sessionWords.length} từ hay quên
             </button>
             <button
               onClick={() => onStartFocus(sessionWords, focusMinutes)}
               title="Ôn nhóm này trong một phiên tập trung: ẩn mọi thứ khác, tắt nhắc nhở"
-              className="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5 shadow-sm shadow-violet-600/30"
+              className="inline-flex min-h-12 items-center justify-center gap-1.5 rounded-2xl border border-teal-700/30 bg-white px-4 text-base font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
             >
               <Crosshair className="w-4 h-4" /> Tập trung {focusMinutes}′
             </button>
-            <span className="text-xs text-slate-600 dark:text-zinc-400">
+            <span className="basis-full text-sm text-slate-600 dark:text-zinc-400 sm:basis-auto">
               {data.active.length > FORGOTTEN_SESSION_MAX ? `${FORGOTTEN_SESSION_MAX} từ khó nhất trước. ` : ""}
               Từ chưa đến hạn chỉ luyện thêm, lịch ôn không đổi.
             </span>
@@ -197,22 +190,22 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
           <button
             key={v}
             onClick={() => setView(v)}
-            className={`px-3 min-h-10 rounded-lg text-xs font-semibold transition-colors ${
+            className={`inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold transition-colors ${
               view === v
-                ? "bg-rose-600 text-white"
-                : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-700"
+                ? "bg-teal-700 text-white dark:bg-teal-600"
+                : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             }`}
           >
             {label}
           </button>
         ))}
         {view === "active" && (
-          <label className="ml-auto inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-zinc-400">
+          <label className="ml-auto inline-flex items-center gap-1.5 text-sm text-slate-600 dark:text-zinc-400">
             Sắp xếp
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as Sort)}
-              className="px-2 min-h-10 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-200"
+              className="min-h-11 rounded-2xl border border-slate-300 bg-white px-3 text-sm text-slate-800 focus:border-teal-600 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200"
             >
               <option value="score">Cần ôn nhất</option>
               <option value="wrong">Sai nhiều nhất</option>
@@ -223,27 +216,27 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
       </div>
 
       {view === "suspended" ? (
-        <p className="text-xs text-slate-600 dark:text-zinc-400">
+        <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
           Từ tạm ngưng được bỏ ra khỏi mọi lượt ôn: phiên học, phiên tập trung, popup và nhắc nhở. Lịch ôn của từ đứng yên
           cho đến khi bạn bấm "Ôn lại". Từ vào đây khi bạn bấm "Tạm ngưng", hoặc tự động khi thành từ khó nếu "Cài đặt từ
           khó" đang chọn "Tạm ngưng ôn". Dùng cho từ bạn chưa muốn học lúc này (quá khó, ít dùng); đừng để quá lâu, vì
           từ không được ôn sẽ dần quên hẳn.
         </p>
       ) : (
-        <p className="text-xs text-slate-600 dark:text-zinc-400 inline-flex flex-wrap items-center gap-x-3 gap-y-1">
+        <p className="inline-flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-600 dark:text-zinc-400">
           <span>Thanh "nhớ %": khả năng bạn còn nhớ từ ngay lúc này, giảm dần theo thời gian và tăng lại sau mỗi lần ôn đúng.</span>
-          <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> ≥ 85% vững</span>
+          <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-600" /> ≥ 85% vững</span>
           <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" /> 70–84% sắp quên</span>
-          <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-rose-500" /> &lt; 70% nên ôn ngay</span>
+          <span className="inline-flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> &lt; 70% nên ôn ngay</span>
         </p>
       )}
 
-      {message && <p className="text-xs text-emerald-600 dark:text-emerald-400">{message}</p>}
+      {message && <p className="text-sm text-green-700 dark:text-green-400">{message}</p>}
 
       {!data ? (
-        <div className="h-32 rounded-2xl bg-slate-100 dark:bg-zinc-900 animate-pulse" />
+        <div className="h-32 animate-pulse rounded-2xl border border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900" />
       ) : list.length === 0 ? (
-        <div className="text-center py-10 text-sm text-slate-600 dark:text-zinc-400">
+        <div className="rounded-2xl border border-slate-200 bg-white px-4 py-10 text-center text-sm text-slate-600 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
           {view === "active"
             ? "Chưa có từ nào hay quên 🎉. Từ bạn trả lời sai từ 2 lần sẽ hiện ở đây."
             : view === "recovered"
@@ -280,7 +273,7 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
               <button
                 type="button"
                 onClick={() => setVisibleCount((c) => c + FORGOTTEN_PAGE_SIZE)}
-                className="px-4 py-2 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-zinc-200 transition-colors"
+                className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-teal-700/30 bg-white px-5 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
               >
                 Xem thêm ({remainingCount} từ còn lại)
               </button>
@@ -290,26 +283,26 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
       )}
 
       {/* Leech settings (were at the bottom of Tiến độ) */}
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
         <button
           onClick={() => setShowSettings((s) => !s)}
-          className="w-full flex items-center gap-2 px-4 min-h-12 text-sm font-semibold text-slate-700 dark:text-zinc-200"
+          className="flex min-h-12 w-full items-center gap-2 rounded-2xl px-4 text-base font-semibold text-slate-900 dark:text-zinc-100 md:px-5"
         >
           <Settings2 className="w-4 h-4 text-slate-600 dark:text-zinc-400" /> Cài đặt từ khó
           <ChevronDown className={`w-4 h-4 ml-auto transition-transform ${showSettings ? "rotate-180" : ""}`} />
         </button>
         {showSettings && (
-          <div className="px-4 pb-4 space-y-3 text-xs">
+          <div className="space-y-3 px-4 pb-4 text-sm md:px-5 md:pb-5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-slate-600 dark:text-zinc-400">Coi là "Từ khó" khi đã quên từ:</span>
               {[2, 3, 4, 5].map((t) => (
                 <button
                   key={t}
                   onClick={() => updateLeech({ threshold: t })}
-                  className={`px-3 min-h-10 rounded font-mono font-bold ${
+                  className={`inline-flex min-h-11 items-center rounded-full px-4 text-sm font-semibold transition-colors ${
                     leechSettings.threshold === t
-                      ? "bg-rose-500 text-white"
-                      : "border border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                      ? "bg-teal-700 text-white dark:bg-teal-600"
+                      : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {t} lần
@@ -328,10 +321,10 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
                 <button
                   key={action}
                   onClick={() => updateLeech({ action })}
-                  className={`px-3 py-2 min-h-10 text-left rounded-md border transition-colors ${
+                  className={`min-h-11 rounded-2xl border px-3.5 py-2 text-left text-sm transition-colors ${
                     leechSettings.action === action
-                      ? "bg-rose-500 text-white border-rose-500"
-                      : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                      ? "border-teal-700 bg-teal-50 font-semibold text-teal-800 dark:border-teal-400 dark:bg-teal-400/10 dark:text-teal-200"
+                      : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600"
                   }`}
                 >
                   {label}
@@ -380,19 +373,19 @@ function ForgottenRow({
     .join("\n");
 
   return (
-    <div className="p-4 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 shadow-sm space-y-2.5">
+    <div className="min-w-0 space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex items-start justify-between gap-2">
-        <button onClick={onOpen} className="text-left min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="text-base font-bold text-slate-900 dark:text-white">{w.word}</span>
-            {w.phonetic && <span className="text-xs font-mono text-slate-600 dark:text-zinc-400">{w.phonetic}</span>}
+        <button onClick={onOpen} className="min-w-0 text-left">
+          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
+            <span className="text-lg font-semibold text-slate-900 dark:text-white">{w.word}</span>
+            {w.phonetic && <span className="text-xs font-mono text-slate-500 dark:text-zinc-400">{w.phonetic}</span>}
           </div>
-          <p className="text-xs text-slate-600 dark:text-zinc-400 line-clamp-1">{w.meaning_vn}</p>
+          <p className="text-sm text-slate-600 dark:text-zinc-400 line-clamp-1">{w.meaning_vn}</p>
         </button>
         <button
           onClick={(e) => handleSpeak(w.word, e)}
           aria-label={`Nghe "${w.word}"`}
-          className="w-10 h-10 -mt-1 -mr-1 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 hover:text-cyan-600 hover:bg-slate-100 dark:hover:bg-zinc-800 shrink-0"
+          className="-mr-1.5 -mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 hover:text-teal-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-teal-300"
         >
           <Volume2 className="w-5 h-5" />
         </button>
@@ -400,32 +393,32 @@ function ForgottenRow({
 
       <div className="flex flex-wrap gap-1.5 text-xs font-semibold">
         {stats && stats.wrong > 0 && (
-          <span className="px-1.5 py-0.5 rounded bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">
+          <span className="rounded-full bg-red-50 px-2 py-0.5 text-red-700 dark:bg-red-500/10 dark:text-red-300">
             Sai {stats.wrong} lần / {FORGOTTEN_WINDOW_DAYS} ngày
           </span>
         )}
         {lapses > 0 && (
-          <span className="px-1.5 py-0.5 rounded bg-orange-50 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400">Quên {lapses} lần</span>
+          <span className="rounded-full bg-amber-50 px-2 py-0.5 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300">Quên {lapses} lần</span>
         )}
-        {leech && <span className="px-1.5 py-0.5 rounded bg-rose-600 text-white">Từ khó</span>}
+        {leech && <span className="rounded-full bg-red-600 px-2 py-0.5 text-white">Từ khó</span>}
         {status === "recovered" && (
-          <span className="px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400">
+          <span className="rounded-full bg-green-50 px-2 py-0.5 text-green-700 dark:bg-green-500/10 dark:text-green-300">
             ✓ Đúng {stats?.rightSinceWrong ?? 0} lần liền
           </span>
         )}
       </div>
 
-      <div className="text-xs text-slate-600 dark:text-zinc-400 space-y-0.5">
-        <div className="flex items-center gap-1.5" title={nextTitle || undefined}>
+      <div className="space-y-0.5 text-sm text-slate-600 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center gap-1.5" title={nextTitle || undefined}>
           Lịch ôn tiếp:
           {status === "suspended" ? (
             <span className="text-slate-600 dark:text-zinc-400">không có (đang tạm ngưng)</span>
           ) : dueNow ? (
-            <span className="px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-950/80 text-rose-700 dark:text-rose-300 font-semibold">
+            <span className="rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-300">
               {next && next.diffMs < 0 ? next.label : "Đến hạn ôn"}
             </span>
           ) : next ? (
-            <span className={`px-1.5 py-0.5 rounded font-semibold ${next.badgeClass}`}>
+            <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${next.badgeClass}`}>
               {next.label} · {next.exactDateStr}
             </span>
           ) : (
@@ -441,41 +434,41 @@ function ForgottenRow({
           className="flex items-center gap-2"
           title={`Khả năng bạn còn nhớ từ này ngay lúc này: ${r}%. Giảm dần theo thời gian kể từ lần ôn cuối, tăng lại sau mỗi lần trả lời đúng. Xanh ≥ 85%, vàng 70–84%, đỏ < 70% (nên ôn sớm).`}
         >
-          <div className="flex-1 h-1.5 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
+          <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
             <div
-              className={`h-full rounded-full ${r >= 85 ? "bg-emerald-500" : r >= 70 ? "bg-amber-500" : "bg-rose-500"}`}
+              className={`h-full rounded-full ${r >= 85 ? "bg-green-600" : r >= 70 ? "bg-amber-500" : "bg-red-500"}`}
               style={{ width: `${r}%` }}
             />
           </div>
-          <span className="text-xs font-mono text-slate-600 dark:text-zinc-400">nhớ {r}%</span>
+          <span className="text-xs tabular-nums text-slate-600 dark:text-zinc-400">nhớ {r}%</span>
         </div>
       )}
 
       {mnemonic !== undefined && (
-        <div className="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200">
+        <div className="rounded-xl bg-slate-50 p-3 text-sm leading-relaxed text-slate-800 dark:bg-zinc-800/60 dark:text-zinc-200">
           {mnemonic ?? "Đang tạo mẹo nhớ…"}
         </div>
       )}
 
-      <div className="flex flex-wrap items-center gap-2 pt-0.5 text-xs">
+      <div className="flex flex-wrap items-center gap-2 pt-0.5 text-sm">
         {status === "suspended" ? (
           <button
             onClick={() => onSuspend(false)}
-            className="px-3 min-h-10 rounded-lg font-semibold border border-cyan-300 dark:border-cyan-700 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-950/40"
+            className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-teal-50 px-4 font-semibold text-teal-800 hover:bg-teal-100 dark:bg-teal-400/10 dark:text-teal-200 dark:hover:bg-teal-400/20"
           >
             Ôn lại
           </button>
         ) : (
           <button
             onClick={onReview}
-            className="px-3 min-h-10 rounded-lg font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/60"
+            className="inline-flex min-h-11 items-center justify-center rounded-2xl bg-teal-50 px-4 font-semibold text-teal-800 hover:bg-teal-100 dark:bg-teal-400/10 dark:text-teal-200 dark:hover:bg-teal-400/20"
           >
             Ôn từ này
           </button>
         )}
         <button
           onClick={onMnemonic}
-          className="inline-flex items-center justify-center gap-1 px-3 min-h-10 rounded-lg border border-amber-300 dark:border-amber-700 text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/40"
+          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-teal-700/30 bg-white px-3.5 font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
         >
           <Lightbulb className="w-3.5 h-3.5" /> Mẹo nhớ
         </button>
@@ -483,7 +476,7 @@ function ForgottenRow({
           <button
             onClick={onRegenerate}
             title="Ví dụ mới cho bối cảnh mới: nhớ lại từ nhiều ngữ cảnh khác nhau giúp hết quên"
-            className="inline-flex items-center justify-center gap-1 px-3 min-h-10 rounded-lg border border-cyan-300 dark:border-cyan-700 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-950/40"
+            className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl border border-teal-700/30 bg-white px-3.5 font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
           >
             <Sparkles className="w-3.5 h-3.5" /> Ví dụ mới (AI)
           </button>
@@ -491,7 +484,7 @@ function ForgottenRow({
         {status !== "suspended" && (
           <button
             onClick={() => onSuspend(true)}
-            className="ml-auto px-3 min-h-10 rounded-lg border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+            className="ml-auto inline-flex min-h-11 items-center justify-center rounded-2xl px-3.5 font-semibold text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
           >
             Tạm ngưng
           </button>

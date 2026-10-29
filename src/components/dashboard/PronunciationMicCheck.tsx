@@ -27,13 +27,13 @@ import {
 } from "@/services/pronunciationCheck";
 
 const VERDICT_TONE: Record<Verdict["kind"], string> = {
-  match: "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-300",
-  focus_ok: "border-teal-300 dark:border-teal-800 bg-teal-50 dark:bg-teal-950/30 text-teal-800 dark:text-teal-300",
+  match: "border-green-300 dark:border-green-800 bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300",
+  focus_ok: "border-green-300 dark:border-green-800 bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300",
   weak: "border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300",
-  confused: "border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 text-rose-800 dark:text-rose-300",
-  unclear: "border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
-  silent: "border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
-  error: "border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
+  confused: "border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-950/30 text-red-800 dark:text-red-300",
+  unclear: "border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
+  silent: "border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
+  error: "border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800/60 text-slate-700 dark:text-zinc-300",
 };
 
 /**
@@ -136,7 +136,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
       disabled={phase !== "idle"}
       className={`flex-1 min-h-[40px] px-2 rounded-lg text-sm font-semibold transition-colors ${
         level === id
-          ? "bg-white dark:bg-zinc-900 text-violet-700 dark:text-violet-300 shadow-sm"
+          ? "bg-white dark:bg-zinc-900 text-teal-800 dark:text-teal-300 shadow-sm"
           : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
       }`}
     >
@@ -160,31 +160,31 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
         </div>
       )}
       {phase === "listening" ? (
-        <button
-          onClick={finish}
-          className="w-full min-h-[48px] py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2 animate-pulse"
-        >
-          <Square className="w-4 h-4 shrink-0 fill-white" /> <span>Đang nghe… đọc "{target}". Đọc xong thì dừng lại, máy sẽ tự chấm (hoặc bấm để dừng)</span>
+        <button onClick={finish} className="group mx-auto flex w-full flex-col items-center gap-2 rounded-2xl py-1 text-sm font-semibold">
+          <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-sm ring-8 ring-red-500/15 animate-pulse group-hover:bg-red-700 motion-reduce:animate-none">
+            <Square className="h-6 w-6 fill-white" />
+          </span>
+          <span className="max-w-xs text-center text-red-700 dark:text-red-300">Đang nghe… đọc "{target}". Đọc xong thì dừng lại, máy sẽ tự chấm (hoặc bấm để dừng)</span>
         </button>
       ) : (
         <button
           onClick={begin}
           disabled={phase !== "idle"}
-          className="w-full min-h-[48px] py-2.5 rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 hover:bg-violet-50 dark:hover:bg-violet-950/30 disabled:opacity-60 text-sm font-semibold inline-flex items-center justify-center gap-2"
+          className="group mx-auto flex w-full flex-col items-center gap-2 rounded-2xl py-1 text-sm font-semibold disabled:cursor-not-allowed"
         >
-          {phase === "idle" ? (
-            <>
-              <Mic className="w-4 h-4" /> Đọc thử cho máy nghe
-            </>
-          ) : (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              {phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang chấm…"}
-            </>
-          )}
+          <span
+            className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-white shadow-sm transition-transform group-active:scale-95 ${
+              phase === "idle" ? "bg-teal-700 group-hover:bg-teal-800 dark:bg-teal-600 dark:group-hover:bg-teal-500" : "bg-teal-700/60 dark:bg-teal-600/60"
+            }`}
+          >
+            {phase === "idle" ? <Mic className="h-7 w-7" /> : <Loader2 className="h-7 w-7 animate-spin" />}
+          </span>
+          <span className="text-center text-teal-800 dark:text-teal-300">
+            {phase === "idle" ? "Đọc thử cho máy nghe" : phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang chấm…"}
+          </span>
         </button>
       )}
-      {problem && <p className="text-xs text-rose-600 dark:text-rose-400">{problem}</p>}
+      {problem && <p className="text-sm text-red-700 dark:text-red-300">{problem}</p>}
       {verdict && (
         <div className={`rounded-xl border p-3 text-sm space-y-2 ${VERDICT_TONE[verdict.kind]}`} role="status">
           {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
@@ -192,8 +192,8 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
           )}
           <p>{verdict.message}</p>
           {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
-            <button onClick={playRecording} className="min-h-[40px] text-xs font-semibold underline underline-offset-2 inline-flex items-center gap-1">
-              <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
+            <button onClick={playRecording} className="min-h-10 text-sm font-semibold underline underline-offset-2 inline-flex items-center gap-1">
+              <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
             </button>
           )}
         </div>

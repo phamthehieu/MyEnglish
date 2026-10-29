@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Check, Eraser, Keyboard, Mic, Puzzle, RotateCcw, Send, Volume2 } from "lucide-react";
+import { Check, Eraser, Keyboard, Mic, Puzzle, RotateCcw, Send, Volume2 } from "lucide-react";
 import { allSituations, getLine } from "@/data/situations";
 import type { Situation, SituationLine } from "@/types/situation";
 import { handleSpeak } from "@/components/review/speech";
 import { asrAvailable, playRecording } from "@/services/pronunciationCheck";
 import { buildTiles, judgeSpoken, matchTiles, matchTyped, type Tile } from "@/services/talk/engine";
 import { dueLines, recordReview } from "@/services/talk/review";
-import MicButton from "./MicButton";
+import { Button, Card as Panel } from "@/components/ui/kit";
+import MicButton, { PracticeTop } from "./MicButton";
 import { useMic } from "./useMic";
 
 /** At most this many sentences in one sitting */
@@ -65,10 +66,10 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
   if (cards.length === 0) {
     return (
       <div className="space-y-4">
-        <button onClick={onBack} className="p-1.5 -ml-1.5 text-slate-600 dark:text-zinc-400" aria-label="Về danh sách">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <p className="text-sm text-slate-600 dark:text-zinc-400">Hôm nay không còn câu nào cần ôn. Quay lại vào ngày mai nhé.</p>
+        <PracticeTop onBack={onBack} backLabel="Về danh sách" label="Ôn lại câu cần luyện" />
+        <Panel>
+          <p className="text-base text-slate-700 dark:text-zinc-300">Hôm nay không còn câu nào cần ôn. Quay lại vào ngày mai nhé.</p>
+        </Panel>
       </div>
     );
   }
@@ -77,15 +78,18 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
     const right = results.filter(Boolean).length;
     return (
       <div className="space-y-4">
-        <div className="rounded-2xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 p-4 space-y-2">
-          <p className="font-bold text-emerald-800 dark:text-emerald-200">Ôn xong rồi! 🎉</p>
-          <p className="text-sm text-emerald-900 dark:text-emerald-100">
+        <Panel className="space-y-2 text-center">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300">
+            <Check className="h-6 w-6" />
+          </span>
+          <p className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Ôn xong rồi! 🎉</p>
+          <p className="text-sm text-slate-700 dark:text-zinc-300">
             Nhớ đúng {right}/{results.length} câu. Câu nào chưa nhớ sẽ quay lại vào ngày mai, câu đã nhớ sẽ cách xa dần.
           </p>
-        </div>
-        <button onClick={onBack} className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
+        </Panel>
+        <Button size="lg" block onClick={onBack}>
           Về danh sách
-        </button>
+        </Button>
       </div>
     );
   }
@@ -122,45 +126,41 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <button onClick={onBack} className="p-1.5 -ml-1.5 text-slate-600 dark:text-zinc-400" aria-label="Về danh sách">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <div className="min-w-0 flex-1">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Ôn lại câu cần luyện</h2>
-          <p className="text-xs text-slate-500 dark:text-zinc-400">
-            Câu {index + 1}/{cards.length} · {card.situation.title_vi}
-          </p>
-        </div>
-      </div>
+      <PracticeTop
+        onBack={onBack}
+        backLabel="Về danh sách"
+        label={`Ôn lại câu cần luyện · ${card.situation.title_vi}`}
+        count={`Câu ${index + 1}/${cards.length}`}
+        percent={((index + 1) / cards.length) * 100}
+      />
 
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-2">
-        <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Nói câu này bằng tiếng Anh:</p>
-        <p className="text-lg font-bold text-slate-900 dark:text-white">«{card.line.vi}»</p>
-        {card.line.note && <p className="text-xs text-slate-600 dark:text-zinc-400">{card.line.note}</p>}
+      <Panel className="space-y-2">
+        <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Nói câu này bằng tiếng Anh:</p>
+        <p className="text-xl font-bold text-slate-900 dark:text-zinc-100">«{card.line.vi}»</p>
+        {card.line.note && <p className="text-sm text-slate-500 dark:text-zinc-400">{card.line.note}</p>}
         {(done !== null || fails >= 2) && (
-          <p className="text-[15px] font-semibold text-violet-700 dark:text-violet-300 inline-flex items-center gap-2">
+          <p className="text-base font-semibold text-teal-800 dark:text-teal-300 inline-flex items-center gap-2">
             {card.line.en}
-            <button onClick={() => handleSpeak(card.line.en)} aria-label="Nghe câu" className="p-1 rounded-full bg-violet-100 dark:bg-violet-950/60">
+            <button onClick={() => handleSpeak(card.line.en)} aria-label="Nghe câu" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 hover:bg-teal-100 dark:bg-teal-400/10 dark:text-teal-300">
               <Volume2 className="w-4 h-4" />
             </button>
           </p>
         )}
-      </div>
+      </Panel>
 
       {done === null ? (
-        <div className="space-y-3">
+        <Panel className="space-y-3">
           {method === "say" && (
             <>
               <MicButton mic={mic} onStart={say} idleLabel="Bấm để nói" />
-              {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem}</p>}
+              {mic.problem && <p className="text-sm text-red-700 dark:text-red-300">{mic.problem}</p>}
             </>
           )}
           {method === "tiles" && (
             <>
-              <div className="min-h-[3rem] rounded-xl border-2 border-dashed border-slate-300 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
+              <div className="min-h-[3.25rem] rounded-xl border-2 border-dashed border-slate-200 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
                 {chosen.map((t) => (
-                  <button key={t.id} onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))} className="px-3 min-h-[40px] rounded-lg bg-violet-600 text-white text-sm font-semibold">
+                  <button key={t.id} onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))} className="px-3 min-h-11 rounded-xl bg-teal-700 text-white text-sm font-semibold dark:bg-teal-600">
                     {t.text}
                   </button>
                 ))}
@@ -173,23 +173,19 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
                       setFeedback(null);
                       setChosen((c) => [...c, t]);
                     }}
-                    className="px-3 min-h-[40px] rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-white"
+                    className="px-3 min-h-11 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-zinc-100 hover:border-teal-600/50"
                   >
                     {t.text}
                   </button>
                 ))}
               </div>
               <div className="flex gap-2">
-                <button onClick={() => setChosen([])} disabled={chosen.length === 0} className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 disabled:opacity-40" aria-label="Xóa hết">
-                  <Eraser className="w-4 h-4" />
-                </button>
-                <button
-                  onClick={sendTiles}
-                  disabled={chosen.length === 0}
-                  className="flex-1 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
-                >
-                  <Send className="w-4 h-4" /> Gửi
-                </button>
+                <Button variant="secondary" size="lg" onClick={() => setChosen([])} disabled={chosen.length === 0} aria-label="Xóa hết" className="px-5">
+                  <Eraser className="w-5 h-5" />
+                </Button>
+                <Button size="lg" className="flex-1" onClick={sendTiles} disabled={chosen.length === 0}>
+                  <Send className="w-5 h-5" /> Gửi
+                </Button>
               </div>
             </>
           )}
@@ -212,20 +208,20 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
                 autoComplete="off"
                 spellCheck={false}
                 placeholder="Gõ câu tiếng Anh…"
-                className="flex-1 min-w-0 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-[15px] text-slate-900 dark:text-white"
+                className="flex-1 min-w-0 min-h-12 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-base text-slate-900 dark:text-zinc-100 focus:border-teal-600 focus:outline-none"
               />
-              <button type="submit" disabled={!typed.trim()} className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white" aria-label="Gửi">
-                <Send className="w-4 h-4" />
-              </button>
+              <Button type="submit" disabled={!typed.trim()} aria-label="Gửi" className="px-4">
+                <Send className="w-5 h-5" />
+              </Button>
             </form>
           )}
 
           {feedback && (
-            <div className="rounded-xl border border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm space-y-1" role="status">
+            <div className="rounded-xl border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm space-y-1" role="status">
               <p>{feedback}</p>
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs font-semibold">
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold">
                 {method === "say" && (
-                  <button onClick={playRecording} className="underline underline-offset-2 inline-flex items-center gap-1">
+                  <button onClick={playRecording} className="min-h-10 underline underline-offset-2 inline-flex items-center gap-1">
                     <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
                   </button>
                 )}
@@ -233,8 +229,8 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
             </div>
           )}
 
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 dark:border-zinc-800">
+            <div className="flex flex-wrap items-center gap-1">
               {(canSpeak ? (["say", "tiles", "type"] as const) : (["tiles", "type"] as const)).map((m) => {
                 const Icon = METHOD_ICON[m];
                 return (
@@ -246,35 +242,35 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
                       setMethod(m);
                     }}
                     aria-pressed={method === m}
-                    className={`px-3 min-h-[40px] rounded-full text-xs font-semibold inline-flex items-center gap-1 ${
-                      method === m ? "bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300" : "text-slate-600 dark:text-zinc-400"
+                    className={`px-3 min-h-10 rounded-full text-sm font-semibold inline-flex items-center gap-1 ${
+                      method === m ? "bg-teal-700 text-white dark:bg-teal-600" : "border border-slate-200 text-slate-700 dark:border-zinc-700 dark:text-zinc-300"
                     }`}
                   >
-                    <Icon className="w-3.5 h-3.5" /> {METHOD_LABEL[m]}
+                    <Icon className="w-4 h-4" /> {METHOD_LABEL[m]}
                   </button>
                 );
               })}
             </div>
-            <button onClick={() => settle(false)} className="text-xs font-semibold underline underline-offset-2 text-slate-600 dark:text-zinc-400">
+            <button onClick={() => settle(false)} className="min-h-10 px-1 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300">
               Xem đáp án
             </button>
           </div>
-        </div>
+        </Panel>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div
-            className={`rounded-xl border px-3 py-2 text-sm inline-flex items-center gap-2 w-full ${
+            className={`rounded-xl border px-3 py-2.5 text-sm inline-flex items-center gap-2 w-full ${
               done
-                ? "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-200"
-                : "border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200"
+                ? "border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-200"
+                : "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200"
             }`}
           >
-            {done ? <Check className="w-4 h-4" /> : <RotateCcw className="w-4 h-4" />}
+            {done ? <Check className="w-4 h-4 shrink-0" /> : <RotateCcw className="w-4 h-4 shrink-0" />}
             {done ? "Đúng rồi! Câu này sẽ cách xa dần." : "Chưa nhớ cũng không sao, câu này sẽ quay lại vào ngày mai."}
           </div>
-          <button onClick={next} className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
+          <Button size="lg" block onClick={next}>
             {index + 1 >= cards.length ? "Xong" : "Câu tiếp theo"}
-          </button>
+          </Button>
         </div>
       )}
     </div>

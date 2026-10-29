@@ -70,19 +70,21 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
 
   if (!user) {
     return (
-      <div className="rounded-2xl border border-amber-200 dark:border-amber-900/50 bg-gradient-to-br from-amber-50 to-white dark:from-amber-950/30 dark:to-zinc-900 p-5 space-y-3 shadow-sm">
-        <div className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-amber-500" />
-          <span className="text-sm font-bold text-slate-900 dark:text-white">Thi đua mỗi tuần</span>
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+            <Trophy className="w-5 h-5" />
+          </span>
+          <span className="text-base font-semibold text-slate-900 dark:text-zinc-100">Thi đua mỗi tuần</span>
         </div>
-        <p className="text-sm text-slate-600 dark:text-zinc-300">
+        <p className="text-sm text-slate-700 dark:text-zinc-300">
           Đăng nhập để xem mình đứng thứ mấy, lập nhóm với bạn bè và giữ tiến trình giữa các máy. Không bắt buộc.
         </p>
         <button
           onClick={() => onNavigate("account")}
-          className="min-h-10 px-3 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold inline-flex items-center gap-1.5"
+          className="min-h-11 px-4 py-2 rounded-2xl border border-teal-700/30 dark:border-teal-400/40 bg-white dark:bg-transparent text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 text-sm font-semibold inline-flex items-center gap-1.5"
         >
-          <UserPlus className="w-3.5 h-3.5" /> Đăng nhập
+          <UserPlus className="w-4 h-4" /> Đăng nhập
         </button>
         <button
           onClick={() => {
@@ -91,7 +93,7 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
             } catch {}
             window.dispatchEvent(new CustomEvent("myenglish-rank-invite-dismissed"));
           }}
-          className="block min-h-10 text-xs text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 underline"
+          className="block min-h-11 text-sm text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-200 underline"
         >
           Không hiện nữa
         </button>
@@ -105,38 +107,38 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
   const row = (r: (typeof rows)[number]) => (
     <div
       key={`${r.rank}-${r.displayName}`}
-      className={cn("flex items-center gap-2.5 px-3 py-2 text-sm", r.isMe && "bg-cyan-50 dark:bg-cyan-500/10")}
+      className={cn("flex items-center gap-2.5 px-4 py-2 text-sm", r.isMe && "bg-teal-50 dark:bg-teal-400/10")}
     >
-      <span className="w-6 text-center text-xs font-bold text-slate-600 dark:text-zinc-400">{MEDAL[r.rank - 1] ?? r.rank}</span>
-      <Avatar id={r.avatar} name={r.displayName} size="xs" />
-      <span className={cn("flex-1 min-w-0 truncate", r.isMe ? "font-bold text-cyan-700 dark:text-cyan-300" : "text-slate-800 dark:text-zinc-100")}>
+      <span className="w-6 shrink-0 text-center text-sm font-semibold tabular-nums text-slate-500 dark:text-zinc-400">{MEDAL[r.rank - 1] ?? r.rank}</span>
+      <Avatar id={r.avatar} name={r.displayName} size="sm" />
+      <span className={cn("flex-1 min-w-0 truncate", r.isMe ? "font-semibold text-teal-800 dark:text-teal-300" : "text-slate-800 dark:text-zinc-100")}>
         {r.displayName}
       </span>
-      <span className="font-mono text-xs tabular-nums text-slate-600 dark:text-zinc-300">{r.xp.toLocaleString("vi-VN")}</span>
+      <span className="shrink-0 text-sm font-medium tabular-nums text-slate-700 dark:text-zinc-300">{r.xp.toLocaleString("vi-VN")}</span>
     </div>
   );
 
   return (
-    <div className="rounded-2xl border border-amber-200 dark:border-amber-900/50 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
-      <div className="p-4 space-y-3 bg-gradient-to-br from-amber-50 to-white dark:from-amber-950/30 dark:to-zinc-900">
-        <div className="flex items-center justify-between gap-2">
+    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
+      <div className="p-4 space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Trophy className="w-4 h-4 text-amber-500" />
-            <span className="text-sm font-bold text-slate-900 dark:text-white">Cuộc đua tuần này</span>
+            <Trophy className="w-5 h-5 text-teal-700 dark:text-teal-300" />
+            <span className="text-base font-semibold text-slate-900 dark:text-zinc-100">Cuộc đua tuần này</span>
           </div>
-          <span className="text-xs text-slate-600 dark:text-zinc-400">{weekTimeLeft()}</span>
+          <span className="text-sm text-slate-500 dark:text-zinc-400">{weekTimeLeft()}</span>
         </div>
         {groups.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-2">
             {[{ id: null as string | null, name: "Tất cả" }, ...groups].map((g) => (
               <button
                 key={g.id ?? "all"}
                 onClick={() => setScope(g.id)}
                 className={cn(
-                  "min-h-10 px-3 py-1 rounded-md text-xs font-semibold border",
+                  "min-h-10 px-3.5 py-1 rounded-full text-sm font-semibold border transition-colors",
                   activeScope === g.id
-                    ? "bg-amber-500 border-amber-500 text-white"
-                    : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                    ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600"
+                    : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
                 )}
               >
                 {g.name}
@@ -146,44 +148,44 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
         )}
         {standing ? (
           <>
-            <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-black text-amber-600 dark:text-amber-400">#{standing.rank}</span>
-              <span className="text-xs text-slate-600 dark:text-zinc-400">
+            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className="text-4xl font-bold tabular-nums text-teal-700 dark:text-teal-300">#{standing.rank}</span>
+              <span className="min-w-0 text-sm text-slate-500 dark:text-zinc-400">
                 trong {standing.total} người · {label}
               </span>
             </div>
-            <div className="text-xs font-mono text-slate-600 dark:text-zinc-300">{standing.xp.toLocaleString("vi-VN")} XP tuần này</div>
+            <div className="text-sm tabular-nums text-slate-500 dark:text-zinc-400">{standing.xp.toLocaleString("vi-VN")} XP tuần này</div>
             <p className="text-sm font-medium text-slate-800 dark:text-zinc-100">{standingMessage(standing)}</p>
           </>
         ) : (
           loadingStanding ? (
             <div aria-hidden className="space-y-2 animate-pulse motion-reduce:animate-none">
-              <div className="h-9 w-24 rounded-lg bg-amber-100 dark:bg-amber-950/50" />
+              <div className="h-9 w-24 rounded-lg bg-slate-200 dark:bg-zinc-800" />
               <div className="h-3 w-40 rounded bg-slate-200 dark:bg-zinc-800" />
               <div className="h-3 w-52 rounded bg-slate-200 dark:bg-zinc-800" />
             </div>
           ) : (
-            <p className="text-sm text-slate-600 dark:text-zinc-400">Chưa có thứ hạng. Ôn vài thẻ rồi đồng bộ để lên bảng.</p>
+            <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có thứ hạng. Ôn vài thẻ rồi đồng bộ để lên bảng.</p>
           )
         )}
       </div>
 
       {standing && rows.length > 0 && (
-        <div className="divide-y divide-slate-100 dark:divide-zinc-800/70 border-t border-slate-100 dark:border-zinc-800">
+        <div className="divide-y divide-slate-100 dark:divide-zinc-800 border-t border-slate-100 dark:border-zinc-800">
           {rows.filter((r) => r.rank <= BOARD_SIZE).map(row)}
           {mine && mine.rank > BOARD_SIZE && (
             <>
-              <div className="px-3 py-0.5 text-center text-xs text-slate-600 dark:text-zinc-400">···</div>
+              <div className="px-3 py-0.5 text-center text-sm text-slate-500 dark:text-zinc-400">···</div>
               {row(mine)}
             </>
           )}
         </div>
       )}
 
-      <div className="px-4 py-2.5 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-xs">
-        <span className="text-slate-600 dark:text-zinc-400">{stale ? "Chưa cập nhật được, đang hiện số cũ" : "XP tuần này"}</span>
-        <button onClick={() => onNavigate("leaderboard")} className="min-h-10 px-1 font-semibold text-cyan-700 dark:text-cyan-400 hover:underline inline-flex items-center">
-          Xem đầy đủ <ChevronRight className="w-3.5 h-3.5" />
+      <div className="px-4 py-1.5 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between gap-2 text-sm">
+        <span className="min-w-0 text-slate-500 dark:text-zinc-400">{stale ? "Chưa cập nhật được, đang hiện số cũ" : "XP tuần này"}</span>
+        <button onClick={() => onNavigate("leaderboard")} className="shrink-0 min-h-11 px-1 font-semibold text-teal-700 dark:text-teal-300 hover:underline inline-flex items-center">
+          Xem đầy đủ <ChevronRight className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -202,11 +204,11 @@ export function RankLine({ onOpen }: { onOpen: () => void }) {
       type="button"
       onClick={onOpen}
       title="Thứ hạng XP tuần này • Bấm để xem bảng xếp hạng"
-      className="w-full text-left rounded-xl border border-amber-200 dark:border-amber-900/40 bg-amber-50/70 dark:bg-amber-950/20 hover:bg-amber-100/70 dark:hover:bg-amber-950/40 px-3 py-2 flex items-center gap-2 text-xs transition-colors shadow-sm"
+      className="w-full min-h-11 text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 px-3 py-2 flex items-center gap-2 text-sm transition-colors"
     >
-      <Trophy className="w-3.5 h-3.5 shrink-0 text-amber-500" />
-      <span className="font-bold text-amber-700 dark:text-amber-300 whitespace-nowrap">#{standing.rank}</span>
-      <span className="truncate text-slate-600 dark:text-zinc-300">{hint}</span>
+      <Trophy className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
+      <span className="font-semibold text-teal-700 dark:text-teal-300 whitespace-nowrap">#{standing.rank}</span>
+      <span className="truncate text-slate-500 dark:text-zinc-400">{hint}</span>
     </button>
   );
 }
@@ -241,12 +243,12 @@ export function RankDelta() {
 
   if (!visible) return null;
   const change = rankChange(baseline, after);
-  const base = "w-full p-3 rounded-2xl border border-amber-200 dark:border-amber-800/60 bg-white dark:bg-zinc-900 text-left text-xs flex items-center gap-2.5";
+  const base = "w-full p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-left text-sm flex items-center gap-2.5";
 
   if (!after) {
     return done ? null : (
-      <div className={cn(base, "text-slate-600 dark:text-zinc-400")}>
-        <Trophy className="w-4 h-4 text-amber-500 shrink-0" /> Đang cập nhật thứ hạng…
+      <div className={cn(base, "text-slate-500 dark:text-zinc-400")}>
+        <Trophy className="w-4 h-4 text-teal-700 dark:text-teal-300 shrink-0" /> Đang cập nhật thứ hạng…
       </div>
     );
   }
@@ -260,8 +262,8 @@ export function RankDelta() {
   }
   return (
     <div className={base}>
-      <Trophy className="w-4 h-4 text-amber-500 shrink-0" />
-      <span className="font-medium text-slate-800 dark:text-zinc-100">{text}</span>
+      <Trophy className="w-4 h-4 text-teal-700 dark:text-teal-300 shrink-0" />
+      <span className="min-w-0 font-medium text-slate-800 dark:text-zinc-100">{text}</span>
     </div>
   );
 }

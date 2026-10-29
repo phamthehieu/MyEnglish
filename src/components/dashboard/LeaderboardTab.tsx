@@ -46,7 +46,7 @@ function SkeletonRows({ count = 6 }: { count?: number }) {
           <div className="w-8 flex justify-center">
             <div className="w-5 h-4 rounded bg-slate-200 dark:bg-zinc-800" />
           </div>
-          <div className="w-7 h-7 rounded-full bg-slate-200 dark:bg-zinc-800" />
+          <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-zinc-800" />
           <div className="flex-1 space-y-1.5">
             <div className="h-3 rounded bg-slate-200 dark:bg-zinc-800" style={{ width: `${55 - i * 5}%` }} />
             <div className="h-2.5 w-16 rounded bg-slate-100 dark:bg-zinc-800/70" />
@@ -69,10 +69,10 @@ const MEDAL = ["🥇", "🥈", "🥉"];
 
 const chip = (active: boolean) =>
   cn(
-    "px-3 min-h-10 rounded-lg text-xs font-semibold border transition-colors",
+    "px-4 min-h-11 rounded-full text-sm font-semibold border transition-colors",
     active
-      ? "bg-cyan-600 border-cyan-600 text-white"
-      : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
+      ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600"
+      : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
   );
 
 /** XP race: weekly / monthly / all-time XP and streaks, among everyone or inside a friend group */
@@ -154,10 +154,12 @@ export default function LeaderboardTab({
   if (!configured || !user) {
     return (
       <div className={PAGE_CONTAINER}>
-        <div className="p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm text-center space-y-3">
-          <Trophy className="w-10 h-10 mx-auto text-amber-500" />
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">Bảng xếp hạng XP</h2>
-          <p className="text-sm text-slate-600 dark:text-zinc-400 max-w-md mx-auto">
+        <div className="p-6 md:p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-center space-y-3">
+          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+            <Trophy className="w-7 h-7" />
+          </span>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Bảng xếp hạng XP</h2>
+          <p className="text-base text-slate-700 dark:text-zinc-300 max-w-md mx-auto">
             {configured
               ? "Đăng nhập để đua kinh nghiệm với mọi người, hoặc lập nhóm riêng với bạn bè. Tiến trình học của bạn cũng được đồng bộ giữa các máy."
               : "Tính năng tài khoản và bảng xếp hạng chưa dùng được trong bản này. Bạn vẫn học bình thường."}
@@ -165,9 +167,9 @@ export default function LeaderboardTab({
           {configured && onOpenSettings && (
             <button
               onClick={onOpenSettings}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-semibold"
+              className="inline-flex min-h-12 items-center justify-center gap-2 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm transition-colors"
             >
-              <LogIn className="w-4 h-4" /> Đăng nhập tài khoản
+              <LogIn className="w-5 h-5" /> Đăng nhập tài khoản
             </button>
           )}
         </div>
@@ -185,20 +187,20 @@ export default function LeaderboardTab({
     <div
       key={`${r.rank}-${r.displayName}-${i}`}
       className={cn(
-        "flex items-center gap-3 px-4 py-2.5 border-b last:border-b-0 border-slate-100 dark:border-zinc-800/70",
-        r.isMe && "bg-cyan-50 dark:bg-cyan-500/10"
+        "flex min-h-14 items-center gap-3 px-4 py-2.5 border-b last:border-b-0 border-slate-100 dark:border-zinc-800",
+        r.isMe && "bg-teal-50 dark:bg-teal-400/10"
       )}
     >
-      <div className="w-8 text-center text-sm font-bold text-slate-600 dark:text-zinc-400">{MEDAL[r.rank - 1] ?? r.rank}</div>
-      <Avatar id={r.avatar} name={r.displayName} size="sm" />
+      <div className="w-8 shrink-0 text-center text-base font-semibold tabular-nums text-slate-500 dark:text-zinc-400">{MEDAL[r.rank - 1] ?? r.rank}</div>
+      <Avatar id={r.avatar} name={r.displayName} size="md" />
       <div className="flex-1 min-w-0">
-        <div className={cn("text-sm truncate", r.isMe ? "font-bold text-cyan-700 dark:text-cyan-300" : "font-medium text-slate-900 dark:text-white")}>
+        <div className={cn("text-base truncate", r.isMe ? "font-semibold text-teal-800 dark:text-teal-300" : "font-medium text-slate-900 dark:text-zinc-100")}>
           {r.displayName}
-          {r.isMe && <span className="ml-2 text-xs uppercase tracking-wide">bạn</span>}
+          {r.isMe && <span className="ml-2 rounded-full bg-teal-700 px-2 py-0.5 text-xs font-semibold text-white dark:bg-teal-600">bạn</span>}
         </div>
-        <div className="text-xs text-slate-600 dark:text-zinc-400">Lv.{r.level}{!isStreak && r.streak > 0 ? ` · 🔥 ${r.streak} ngày` : ""}</div>
+        <div className="text-sm text-slate-500 dark:text-zinc-400">Lv.{r.level}{!isStreak && r.streak > 0 ? ` · 🔥 ${r.streak} ngày` : ""}</div>
       </div>
-      <div className="text-sm font-bold tabular-nums text-slate-900 dark:text-white">
+      <div className="shrink-0 text-base font-semibold tabular-nums text-slate-900 dark:text-zinc-100">
         {isStreak ? `🔥 ${r.streak}` : `${r.xp.toLocaleString("vi-VN")} XP`}
       </div>
     </div>
@@ -208,51 +210,46 @@ export default function LeaderboardTab({
     <div className={PAGE_CONTAINER}>
       <div className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-100 dark:bg-amber-500/10 flex items-center justify-center text-amber-600 dark:text-amber-400">
-              <Trophy className="w-5 h-5" />
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-slate-900 dark:text-white">Bảng xếp hạng</h2>
-              <p className="text-xs text-slate-600 dark:text-zinc-400">{scopeName}</p>
-            </div>
+          <div className="flex min-w-0 items-center gap-2">
+            <Users className="w-4 h-4 shrink-0 text-slate-500 dark:text-zinc-400" />
+            <p className="truncate text-sm font-semibold text-slate-700 dark:text-zinc-300">{scopeName}</p>
           </div>
           <button
             onClick={() => void load()}
             disabled={loading}
-            className="inline-flex items-center gap-1.5 px-3 min-h-10 rounded-lg text-xs font-semibold border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
+            className="inline-flex items-center gap-1.5 px-3 min-h-11 rounded-2xl text-sm font-semibold text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 disabled:opacity-50"
           >
-            <RefreshCw className={cn("w-3.5 h-3.5", loading && "animate-spin")} /> Làm mới
+            <RefreshCw className={cn("w-4 h-4", loading && "animate-spin")} /> Làm mới
           </button>
         </div>
 
-        {/* ⚡ DUOLINGO RAMP UP CHALLENGE BANNER */}
+        {/* Reflex challenge: a timed run for extra XP */}
         {onStartReflexChallenge && (
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-white shadow-md shadow-orange-500/10 transition-all hover:shadow-lg hover:shadow-orange-500/15">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm shadow-inner">
-                  <Zap className="h-6 w-6 fill-white text-white" />
+              <div className="flex min-w-0 items-center gap-3">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+                  <Zap className="h-5 w-5" />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-black uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full text-white">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-semibold bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300 px-2.5 py-0.5 rounded-full">
                       Tốc độ
                     </span>
-                    <h3 className="font-extrabold text-base text-white">
+                    <h3 className="font-semibold text-base text-slate-900 dark:text-zinc-100">
                       Thử thách phản xạ
                     </h3>
                   </div>
-                  <p className="text-xs text-white/90 mt-0.5">
-                    Vượt 3 chặng phản xạ tính giờ để giành tới <strong className="text-white font-bold">+80 XP</strong> bứt phá bảng xếp hạng!
+                  <p className="text-sm text-slate-500 dark:text-zinc-400 mt-0.5">
+                    Vượt 3 chặng phản xạ tính giờ để giành tới <strong className="text-teal-700 dark:text-teal-300 font-semibold">+80 XP</strong> bứt phá bảng xếp hạng!
                   </p>
                 </div>
               </div>
               <button
                 onClick={onStartReflexChallenge}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-900 text-amber-400 font-bold text-xs shadow-md transition-all transform active:scale-95 shrink-0"
+                className="inline-flex min-h-12 items-center justify-center gap-1.5 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white font-semibold text-base shadow-sm transition-colors shrink-0"
               >
-                <Zap className="w-4 h-4 fill-amber-400" />
+                <Zap className="w-4 h-4" />
                 <span>Thử thách ngay</span>
               </button>
             </div>
@@ -273,12 +270,12 @@ export default function LeaderboardTab({
           </button>
           {groups.map((g) => (
             <button key={g.id} onClick={() => setGroupId(g.id)} className={chip(groupId === g.id)}>
-              <Users className="inline w-3 h-3 mr-1 -mt-0.5" />
+              <Users className="inline w-4 h-4 mr-1 -mt-0.5" />
               {g.name}
             </button>
           ))}
           <button onClick={() => setShowGroups((v) => !v)} className={chip(showGroups)}>
-            <Plus className="inline w-3 h-3 mr-1 -mt-0.5" />
+            <Plus className="inline w-4 h-4 mr-1 -mt-0.5" />
             Nhóm
           </button>
         </div>
@@ -295,31 +292,31 @@ export default function LeaderboardTab({
         )}
 
         {error && (
-          <div className="p-3 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50 dark:bg-rose-950/20 text-xs text-rose-700 dark:text-rose-300 flex items-center gap-2">
+          <div className="p-3 rounded-2xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 text-sm text-red-700 dark:text-red-300 flex flex-wrap items-center gap-2">
             <WifiOff className="w-4 h-4 shrink-0" />
-            <span className="flex-1">
+            <span className="min-w-0 flex-1">
               {error}
               {rows && rows.length > 0 ? " Đang hiện số lần trước." : ""}
             </span>
-            <button onClick={() => void load()} className="shrink-0 px-3 min-h-10 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-semibold">
+            <button onClick={() => void load()} className="shrink-0 px-4 min-h-11 rounded-2xl border border-red-200 bg-white text-red-700 hover:bg-red-50 dark:border-red-500/40 dark:bg-transparent dark:text-red-300 dark:hover:bg-red-500/10 font-semibold">
               Thử lại
             </button>
           </div>
         )}
 
-        <div className="relative rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm overflow-hidden" aria-busy={loading}>
+        <div className="relative rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-[0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden" aria-busy={loading}>
           {/* Refreshing a board already on screen: a thin bar, the rows stay readable */}
           {loading && rows && rows.length > 0 && (
-            <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-amber-100 dark:bg-amber-950/60">
-              <div className="h-full w-1/3 bg-amber-500 animate-[leaderboard-progress_1.2s_ease-in-out_infinite]" />
+            <div className="absolute inset-x-0 top-0 h-0.5 overflow-hidden bg-teal-100 dark:bg-teal-950/60">
+              <div className="h-full w-1/3 bg-teal-600 animate-[leaderboard-progress_1.2s_ease-in-out_infinite]" />
             </div>
           )}
           {rows === null ? (
             error ? (
-              <div className="p-8 text-center text-sm text-slate-600 dark:text-zinc-400">Chưa tải được bảng xếp hạng.</div>
+              <div className="p-8 text-center text-sm text-slate-500 dark:text-zinc-400">Chưa tải được bảng xếp hạng.</div>
             ) : (
               <>
-                <div className="px-4 pt-3 pb-1 flex items-center gap-2 text-xs text-slate-600 dark:text-zinc-400" role="status">
+                <div className="px-4 pt-3 pb-1 flex items-center gap-2 text-sm text-slate-500 dark:text-zinc-400" role="status">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   {slow ? "Mạng hơi chậm, vẫn đang tải bảng xếp hạng…" : "Đang tải bảng xếp hạng…"}
                 </div>
@@ -330,7 +327,7 @@ export default function LeaderboardTab({
             loading ? (
               <SkeletonRows count={3} />
             ) : (
-            <div className="p-8 text-center text-sm text-slate-600 dark:text-zinc-400">
+            <div className="p-8 text-center text-base text-slate-500 dark:text-zinc-400">
               Chưa có ai trên bảng này. Ôn vài thẻ để lên bảng đầu tiên!
             </div>
             )
@@ -339,7 +336,7 @@ export default function LeaderboardTab({
               {top.map((r, i) => row(r, i))}
               {mineOutside && (
                 <>
-                  <div className="px-4 py-1 text-center text-xs text-slate-600 dark:text-zinc-400">···</div>
+                  <div className="px-4 py-1 text-center text-sm text-slate-500 dark:text-zinc-400">···</div>
                   {row(mineOutside, top.length)}
                 </>
               )}
@@ -347,12 +344,12 @@ export default function LeaderboardTab({
           )}
         </div>
 
-        <p className="text-xs text-slate-600 dark:text-zinc-400">
+        <p className="text-sm text-slate-500 dark:text-zinc-400">
           {syncing ? "Đang đồng bộ…  " : ""}
           XP của bạn được cập nhật mỗi lần đồng bộ (tự động sau khi học). Bảng chỉ để vui cùng bạn bè: XP do ứng dụng tự báo lên.
         </p>
         {groupId === null && (
-          <p className="text-xs text-amber-800 dark:text-amber-300">
+          <p className="rounded-2xl bg-amber-50 dark:bg-amber-500/10 px-3.5 py-2.5 text-sm text-amber-800 dark:text-amber-300">
             Bảng "Tất cả" công khai: người lạ cũng thấy tên và ảnh đại diện của bạn. Muốn chỉ thi đua với bạn bè, hãy tạo nhóm riêng.
           </p>
         )}
@@ -384,12 +381,12 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
   };
 
   const input =
-    "flex-1 min-w-0 px-3 min-h-10 rounded-lg text-sm border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-slate-900 dark:text-white placeholder:text-slate-500";
+    "flex-1 min-w-0 px-3.5 min-h-12 rounded-xl text-base border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 placeholder:text-slate-500 focus:outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 dark:focus:border-teal-400";
   const button =
-    "px-4 min-h-10 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 disabled:opacity-50 text-white";
+    "shrink-0 px-5 min-h-12 rounded-2xl text-base font-semibold bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-50 disabled:cursor-not-allowed text-white shadow-sm";
 
   return (
-    <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm space-y-4">
+    <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-4">
       <div className="grid gap-3 sm:grid-cols-2">
         <form
           className="space-y-1.5"
@@ -398,8 +395,8 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
             if (name.trim().length >= 2) void act(async () => { const g = await createGroup(name.trim()); setName(""); return g.id; });
           }}
         >
-          <div className="text-xs font-bold text-slate-700 dark:text-zinc-300">Tạo nhóm mới</div>
-          <p className="text-xs text-slate-600 dark:text-zinc-400">Đặt tên nhóm, rồi gửi mã mời cho bạn bè để họ vào cùng.</p>
+          <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Tạo nhóm mới</div>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">Đặt tên nhóm, rồi gửi mã mời cho bạn bè để họ vào cùng.</p>
           <div className="flex gap-2">
             <input className={input} placeholder="Tên nhóm (2–30 ký tự)" maxLength={30} value={name} onChange={(e) => setName(e.target.value)} />
             <button className={button} disabled={busy || name.trim().length < 2}>Tạo</button>
@@ -412,8 +409,8 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
             if (code.trim()) void act(async () => { const g = await joinGroup(code.trim()); setCode(""); return g.id; });
           }}
         >
-          <div className="text-xs font-bold text-slate-700 dark:text-zinc-300">Vào nhóm của bạn bè</div>
-          <p className="text-xs text-slate-600 dark:text-zinc-400">Nhập mã mời bạn bè gửi cho bạn để vào nhóm của họ.</p>
+          <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Vào nhóm của bạn bè</div>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">Nhập mã mời bạn bè gửi cho bạn để vào nhóm của họ.</p>
           <div className="flex gap-2">
             <input className={cn(input, "uppercase")} placeholder="VD: 3F9A12BC" maxLength={12} value={code} onChange={(e) => setCode(e.target.value)} />
             <button className={button} disabled={busy || !code.trim()}>Vào</button>
@@ -421,15 +418,15 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
         </form>
       </div>
 
-      {error && <div className="text-xs text-rose-600 dark:text-rose-400">{error}</div>}
+      {error && <div className="text-sm text-red-700 dark:text-red-300">{error}</div>}
 
       {groups.length > 0 && (
-        <ul className="divide-y divide-slate-100 dark:divide-zinc-800">
+        <ul className="divide-y divide-slate-100 dark:divide-zinc-800 border-t border-slate-100 dark:border-zinc-800">
           {groups.map((g) => (
-            <li key={g.id} className="py-2 flex items-center gap-3 text-xs">
+            <li key={g.id} className="py-2.5 flex items-center gap-3 text-sm">
               <div className="flex-1 min-w-0">
-                <div className="font-semibold text-slate-900 dark:text-white truncate">{g.name}</div>
-                <div className="text-slate-600 dark:text-zinc-400">{g.memberCount} thành viên · mã mời <span className="font-mono">{g.inviteCode}</span></div>
+                <div className="text-base font-semibold text-slate-900 dark:text-zinc-100 truncate">{g.name}</div>
+                <div className="text-slate-500 dark:text-zinc-400">{g.memberCount} thành viên · mã mời <span className="font-mono">{g.inviteCode}</span></div>
               </div>
               <button
                 title="Chép mã mời"
@@ -440,7 +437,7 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
                     window.setTimeout(() => setCopied(null), 1500);
                   });
                 }}
-                className="min-w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                className="min-w-11 h-11 flex items-center justify-center rounded-full text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10"
               >
                 {copied === g.id ? "✓" : <Copy className="w-4 h-4" />}
               </button>
@@ -458,8 +455,8 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
                   void act(async () => { await leaveGroup(g.id); return null; });
                 }}
                 className={cn(
-                  "min-w-10 h-10 flex items-center justify-center rounded-lg text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10",
-                  leaving === g.id && "px-2 font-semibold bg-rose-50 dark:bg-rose-500/10"
+                  "min-w-11 h-11 flex items-center justify-center rounded-full text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/10",
+                  leaving === g.id && "px-3 rounded-2xl font-semibold bg-red-50 dark:bg-red-500/10"
                 )}
               >
                 {leaving === g.id ? "Bấm lần nữa để rời" : <X className="w-4 h-4" />}

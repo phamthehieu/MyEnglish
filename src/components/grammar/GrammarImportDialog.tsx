@@ -258,7 +258,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
   const busy = reading || saving;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 backdrop-blur-sm animate-in fade-in duration-150 sm:p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-3 animate-in fade-in duration-150 sm:p-4">
       <div
         role="dialog"
         aria-modal="true"
@@ -271,18 +271,18 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
           if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragging(false);
         }}
         onDrop={onDrop}
-        className={`flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border bg-white shadow-2xl dark:bg-zinc-900 ${
-          dragging ? "border-cyan-500 ring-2 ring-cyan-400/60" : "border-slate-200 dark:border-zinc-800"
+        className={`flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border bg-white shadow-md dark:bg-zinc-900 ${
+          dragging ? "border-teal-600 ring-2 ring-teal-600/40" : "border-slate-200 dark:border-zinc-800"
         }`}
       >
         <div className="flex items-start justify-between gap-3 border-b border-slate-200 p-4 dark:border-zinc-800 sm:p-5">
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="shrink-0 rounded-xl bg-cyan-50 p-2 text-cyan-600 dark:bg-cyan-950/60 dark:text-cyan-400">
+            <span className="shrink-0 rounded-full bg-teal-50 p-2.5 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
               <Upload className="h-5 w-5" />
             </span>
             <div className="min-w-0">
-              <h2 className="text-base font-bold text-slate-900 dark:text-white sm:text-lg">Nhập dữ liệu sách</h2>
-              <p className="text-xs text-slate-500 dark:text-zinc-400">File JSON chuyển từ sách của bạn. Dữ liệu chỉ lưu trên máy này.</p>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Nhập dữ liệu sách</h2>
+              <p className="text-sm text-slate-500 dark:text-zinc-400">File JSON chuyển từ sách của bạn. Dữ liệu chỉ lưu trên máy này.</p>
             </div>
           </div>
           <button
@@ -290,7 +290,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
             onClick={onClose}
             disabled={saving}
             aria-label="Đóng"
-            className="shrink-0 rounded-xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-40 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 disabled:opacity-40 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
           >
             <X className="h-5 w-5" />
           </button>
@@ -301,9 +301,9 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={busy}
-            className="w-full rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/50 p-5 text-center transition hover:border-cyan-500 hover:bg-cyan-50/30 disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-950/40 dark:hover:border-cyan-500"
+            className="w-full rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-5 text-center transition-colors hover:border-teal-600 hover:bg-teal-50/40 disabled:opacity-60 dark:border-zinc-700 dark:bg-zinc-950/40 dark:hover:border-teal-500"
           >
-            <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-cyan-100 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-400">
+            <span className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
               <FolderOpen className="h-5 w-5" />
             </span>
             <span className="block text-sm font-semibold text-slate-800 dark:text-zinc-200">Chọn các file .json hoặc kéo thả vào đây</span>
@@ -325,21 +325,21 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
           />
 
           {reading && (
-            <div className="flex items-center justify-center gap-2 py-2 text-xs text-cyan-600 dark:text-cyan-400">
+            <div className="flex items-center justify-center gap-2 py-2 text-sm text-teal-700 dark:text-teal-300">
               <Loader2 className="h-4 w-4 animate-spin" />
               Đang kiểm tra các file...
             </div>
           )}
 
           {success && (
-            <div className="flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300">
+            <div className="flex items-start gap-2 rounded-2xl border border-green-200 bg-green-50 p-3 text-sm text-green-800 dark:border-green-500/30 dark:bg-green-500/10 dark:text-green-300">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
               <span>{success}</span>
             </div>
           )}
 
           {saveErrors.length > 0 && (
-            <div className="space-y-1 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300">
+            <div className="space-y-1 rounded-2xl border border-red-200 bg-red-50 p-3 text-xs text-red-800 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-300">
               <div className="flex items-center gap-1.5 font-semibold">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 Có chương chưa lưu được
@@ -366,7 +366,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                 <span>
                   <strong className="text-slate-900 dark:text-white">{totals.items}</strong> câu
                 </span>
-                <span className="text-[11px] italic">(sau khi nhập)</span>
+                <span className="text-xs">(sau khi nhập)</span>
               </div>
 
               {chapters.length > 0 && (
@@ -385,7 +385,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                         <span>{c.sets} nhóm</span>
                         <span>{c.items} câu</span>
                         {c.droppedItems > 0 && (
-                          <span className="font-medium text-rose-700 dark:text-rose-400">bỏ {c.droppedItems} câu lỗi</span>
+                          <span className="font-medium text-red-700 dark:text-red-400">bỏ {c.droppedItems} câu lỗi</span>
                         )}
                         {c.warnings > 0 && <span className="font-medium text-amber-700 dark:text-amber-400">{c.warnings} cảnh báo</span>}
                       </div>
@@ -406,20 +406,20 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
               )}
 
               {skipped.length > 0 && (
-                <details open className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-900 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-200">
+                <details open className="rounded-2xl border border-red-200 bg-red-50 p-3 text-xs text-red-900 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200">
                   <summary className="flex cursor-pointer items-center gap-1.5 font-semibold">
                     <AlertCircle className="h-3.5 w-3.5 shrink-0" />
                     <span>Bỏ qua {skipped.length} file lỗi</span>
                   </summary>
                   <p className="mt-2 break-all text-[11px] font-medium">{skipped.map((e) => e.name).join(", ")}</p>
-                  <div className="mt-1.5 text-rose-800/90 dark:text-rose-300/80">
+                  <div className="mt-1.5 text-red-800/90 dark:text-red-300/80">
                     <MessageList lines={errorLines} noun="lỗi" />
                   </div>
                 </details>
               )}
 
               {warningLines.length > 0 && (
-                <details className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
+                <details className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
                   <summary className="flex cursor-pointer items-center gap-1.5 font-semibold">
                     <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
                     <span>{warningLines.length} cảnh báo (vẫn nhập được; câu lỗi bị bỏ qua, câu nghi ngờ để tự chấm)</span>
@@ -436,10 +436,10 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                   {MODES.map((m) => (
                     <label
                       key={m.id}
-                      className={`flex cursor-pointer items-start gap-2.5 rounded-xl border p-3 transition ${
+                      className={`flex cursor-pointer items-start gap-2.5 rounded-2xl border-2 p-3 transition-colors ${
                         mode === m.id
-                          ? "border-cyan-500 bg-cyan-50/60 dark:border-cyan-600 dark:bg-cyan-950/30"
-                          : "border-slate-200 bg-slate-50 dark:border-zinc-800 dark:bg-zinc-800/40"
+                          ? "border-teal-700 bg-teal-50 dark:border-teal-500 dark:bg-teal-400/10"
+                          : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
                       }`}
                     >
                       <input
@@ -448,25 +448,25 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                         checked={mode === m.id}
                         onChange={() => setMode(m.id)}
                         disabled={busy}
-                        className="mt-0.5 h-4 w-4 shrink-0 accent-cyan-600"
+                        className="mt-0.5 h-4 w-4 shrink-0 accent-teal-700"
                       />
                       <span className="min-w-0">
-                        <span className="block text-xs font-semibold text-slate-800 dark:text-zinc-200">{m.title}</span>
-                        <span className="block text-[11px] text-slate-500 dark:text-zinc-400">{m.hint}</span>
+                        <span className="block text-sm font-semibold text-slate-800 dark:text-zinc-200">{m.title}</span>
+                        <span className="block text-xs text-slate-500 dark:text-zinc-400">{m.hint}</span>
                       </span>
                     </label>
                   ))}
                 </fieldset>
               )}
 
-              <label className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-zinc-800 dark:bg-zinc-800/40">
+              <label className="flex cursor-pointer items-start gap-2.5 rounded-2xl border border-slate-200 bg-white p-3 dark:border-zinc-800 dark:bg-zinc-900">
                 <input
                   type="checkbox"
                   checked={stripAi}
                   onChange={(e) => setStripAi(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-cyan-600"
+                  className="mt-0.5 h-4 w-4 shrink-0 accent-teal-700"
                 />
-                <span className="text-xs font-medium text-slate-800 dark:text-zinc-200">
+                <span className="text-sm font-medium text-slate-800 dark:text-zinc-200">
                   Bỏ phần AI bổ sung trong các file này (bản dịch, phương án nhiễu, giải thích)
                 </span>
               </label>
@@ -475,7 +475,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                 <div
                   role="alertdialog"
                   aria-label="Xác nhận thay thế chương"
-                  className="space-y-2 rounded-xl border border-rose-300 bg-rose-50 p-3 text-xs text-rose-900 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200"
+                  className="space-y-2 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-900 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-200"
                 >
                   <div className="flex items-center gap-1.5 font-semibold">
                     <AlertTriangle className="h-4 w-4 shrink-0" />
@@ -491,7 +491,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                     <button
                       type="button"
                       onClick={() => setConfirmReplace(false)}
-                      className="rounded-lg px-3 py-1.5 font-semibold text-rose-800 transition hover:bg-rose-100 dark:text-rose-200 dark:hover:bg-rose-900/40"
+                      className="min-h-11 rounded-2xl px-4 font-semibold text-slate-700 transition-colors hover:bg-white dark:text-zinc-200 dark:hover:bg-zinc-800"
                     >
                       Quay lại
                     </button>
@@ -499,7 +499,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                       type="button"
                       onClick={() => void runImport()}
                       disabled={busy}
-                      className="rounded-lg bg-rose-600 px-3 py-1.5 font-bold !text-white transition hover:bg-rose-500 disabled:opacity-50"
+                      className="min-h-11 rounded-2xl bg-red-600 px-4 font-semibold !text-white transition-colors hover:bg-red-700 disabled:opacity-50"
                     >
                       Xoá và thay thế
                     </button>
@@ -510,7 +510,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
           )}
         </div>
 
-        <div className="space-y-2 border-t border-slate-200 bg-slate-50 p-4 dark:border-zinc-800 dark:bg-zinc-900/90">
+        <div className="space-y-2 border-t border-slate-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <button
               type="button"
@@ -520,7 +520,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                 setSaveErrors([]);
               }}
               disabled={entries.length === 0 || busy}
-              className="rounded-lg px-3 py-2 text-xs font-semibold text-slate-500 transition hover:text-slate-800 disabled:opacity-40 dark:hover:text-zinc-200"
+              className="min-h-11 rounded-2xl px-3 text-sm font-semibold text-slate-500 transition-colors hover:text-slate-800 disabled:opacity-40 dark:text-zinc-400 dark:hover:text-zinc-200"
             >
               Xoá danh sách
             </button>
@@ -529,7 +529,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                 type="button"
                 onClick={onClose}
                 disabled={saving}
-                className="rounded-xl px-4 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-200 disabled:opacity-40 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                className="min-h-12 rounded-2xl px-5 text-base font-semibold text-teal-700 transition-colors hover:bg-teal-50 disabled:opacity-40 dark:text-teal-300 dark:hover:bg-teal-400/10"
               >
                 Đóng
               </button>
@@ -537,8 +537,8 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
                 type="button"
                 onClick={handleImport}
                 disabled={chapters.length === 0 || busy || confirmReplace}
-                className={`inline-flex items-center gap-1.5 rounded-xl px-5 py-2 text-xs font-bold !text-white shadow-sm transition disabled:opacity-50 ${
-                  mode === "replace" ? "bg-rose-600 hover:bg-rose-500" : "bg-cyan-600 hover:bg-cyan-500"
+                className={`inline-flex min-h-12 items-center gap-1.5 rounded-2xl px-5 text-base font-semibold !text-white shadow-sm transition-colors disabled:opacity-50 ${
+                  mode === "replace" ? "bg-red-600 hover:bg-red-700" : "bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500"
                 }`}
               >
                 {saving && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
@@ -546,7 +546,7 @@ export default function GrammarImportDialog({ isOpen, onClose, onImportComplete 
               </button>
             </div>
           </div>
-          <p className="text-[11px] text-slate-500 dark:text-zinc-500">
+          <p className="text-xs text-slate-500 dark:text-zinc-400">
             {mode === "merge"
               ? "Nhập thêm: phần đã nhập trước được giữ, câu trùng số được cập nhật theo file mới. Tiến độ học luôn được giữ."
               : "Thay thế: nội dung cũ của chương bị xoá trước khi nhập. Tiến độ học vẫn được giữ."}

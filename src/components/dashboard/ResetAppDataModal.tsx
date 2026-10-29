@@ -72,19 +72,19 @@ export default function ResetAppDataModal({ isOpen, onClose }: ResetAppDataModal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 dark:bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-3xl border border-rose-200 dark:border-rose-900/50 bg-white dark:bg-zinc-950 p-5 sm:p-6 shadow-2xl space-y-5 animate-in zoom-in-95 duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/70 animate-in fade-in duration-150">
+      <div className="w-full max-w-lg max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-xl space-y-5 animate-in zoom-in-95 duration-150">
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-rose-100 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 flex items-center justify-center text-rose-600 dark:text-rose-400 shrink-0 shadow-sm">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="w-11 h-11 rounded-full bg-red-50 dark:bg-red-500/10 flex items-center justify-center text-red-600 dark:text-red-300 shrink-0">
               <RotateCcw className="w-5 h-5" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white">
+            <div className="min-w-0">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">
                 Đặt lại toàn bộ dữ liệu ứng dụng
               </h3>
-              <p className="text-xs text-rose-600 dark:text-rose-400 font-medium">
+              <p className="text-sm text-red-700 dark:text-red-300 font-medium">
                 Cài mới hoàn toàn và bắt đầu lại từ đầu
               </p>
             </div>
@@ -93,7 +93,7 @@ export default function ResetAppDataModal({ isOpen, onClose }: ResetAppDataModal
             <button
               onClick={onClose}
               aria-label="Đóng"
-              className="p-2.5 -m-1 rounded-xl text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors"
+              className="w-11 h-11 -m-1 shrink-0 flex items-center justify-center rounded-full text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-900 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -101,34 +101,34 @@ export default function ResetAppDataModal({ isOpen, onClose }: ResetAppDataModal
         </div>
 
         {/* Warning & Info card */}
-        <div className="rounded-2xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/60 dark:bg-rose-950/20 p-4 space-y-3 text-xs leading-relaxed text-slate-700 dark:text-zinc-300">
-          <div className="flex items-center gap-2 font-bold text-rose-700 dark:text-rose-300">
-            <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600 dark:text-rose-400" />
+        <div className="rounded-2xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 p-4 space-y-3 text-sm leading-relaxed text-slate-700 dark:text-zinc-300">
+          <div className="flex items-center gap-2 font-semibold text-red-700 dark:text-red-300">
+            <AlertTriangle className="w-4 h-4 shrink-0 text-red-600 dark:text-red-300" />
             <span>Hành động này không thể hoàn tác! Những gì sẽ diễn ra:</span>
           </div>
 
           <ul className="space-y-2 pl-1">
             <li className="flex items-start gap-2">
-              <span className="text-rose-500 font-bold">•</span>
+              <span className="text-red-600 font-bold">•</span>
               <span>
                 <strong>Xóa toàn bộ quá trình học:</strong> Toàn bộ từ vựng đã thêm, lịch sử ôn tập, ghi nhận lỗi sai, điểm kinh nghiệm (XP) và chuỗi ngày học liên tiếp sẽ bị xóa sạch. Nếu muốn giữ lại, hãy sao lưu dữ liệu trước.
               </span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-emerald-500 font-bold">•</span>
+              <span className="text-slate-400 font-bold">•</span>
               <span>
                 <strong>Nạp lại dữ liệu gốc:</strong> Tự động import lại 5.000 từ vựng Oxford (A1–C1) và trọn bộ 31 chương ngữ pháp chuẩn.
               </span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-blue-500 font-bold">•</span>
+              <span className="text-slate-400 font-bold">•</span>
               <span>
                 <strong>Trở về màn khảo sát ban đầu:</strong> Bạn sẽ được chọn lại trình độ hiện tại, thì tiếng Anh bắt đầu học (mặc định thì hiện tại đơn cho người mất gốc) và kế hoạch học mỗi ngày.
               </span>
             </li>
             {signedIn && (
               <li className="flex items-start gap-2">
-                <span className="text-rose-500 font-bold">•</span>
+                <span className="text-red-600 font-bold">•</span>
                 <span>
                   <strong>Xóa luôn bản đồng bộ trên tài khoản:</strong> tiến trình, XP và vị trí trên bảng xếp hạng của tài khoản cũng bị xóa (nếu không, lần đồng bộ sau sẽ tải lại). Cần có mạng. Tài khoản đăng nhập vẫn được giữ.
                 </span>
@@ -147,11 +147,11 @@ export default function ResetAppDataModal({ isOpen, onClose }: ResetAppDataModal
         {(isResetting || isSuccess) && (
           <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900 flex items-center gap-3">
             {isSuccess ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 animate-in zoom-in-50 duration-200" />
+              <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 animate-in zoom-in-50 duration-200" />
             ) : (
-              <Loader2 className="w-5 h-5 text-rose-600 dark:text-rose-400 animate-spin shrink-0" />
+              <Loader2 className="w-5 h-5 text-slate-500 dark:text-zinc-400 animate-spin shrink-0" />
             )}
-            <span className="text-xs font-semibold text-slate-800 dark:text-zinc-200">
+            <span className="text-sm font-semibold text-slate-800 dark:text-zinc-200">
               {resetStage || "Đang xử lý đặt lại dữ liệu..."}
             </span>
           </div>
@@ -159,21 +159,21 @@ export default function ResetAppDataModal({ isOpen, onClose }: ResetAppDataModal
 
         {/* Error message */}
         {errorMsg && (
-          <div className="p-3.5 rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/40 text-xs text-rose-700 dark:text-rose-300 font-medium">
+          <div className="p-3.5 rounded-2xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 text-sm text-red-700 dark:text-red-300 font-medium">
             {errorMsg}
           </div>
         )}
 
         {/* Checkbox confirmation */}
         {!isResetting && !isSuccess && (
-          <label className="flex items-start gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/60 cursor-pointer select-none hover:bg-slate-100/70 dark:hover:bg-zinc-900 transition-colors">
+          <label className="flex items-start gap-3 p-3.5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 cursor-pointer select-none hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors">
             <input
               type="checkbox"
               checked={confirmed}
               onChange={(e) => setConfirmed(e.target.checked)}
-              className="mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500 dark:border-zinc-700"
+              className="mt-0.5 w-5 h-5 shrink-0 rounded border-slate-300 accent-red-600 dark:border-zinc-700"
             />
-            <span className="text-xs text-slate-700 dark:text-zinc-300 font-medium leading-snug">
+            <span className="text-sm text-slate-700 dark:text-zinc-300 font-medium leading-snug">
               Tôi hiểu rằng toàn bộ tiến độ và lịch sử học tập sẽ bị xóa vĩnh viễn, ứng dụng sẽ coi như cài mới hoàn toàn.
             </span>
           </label>
@@ -185,7 +185,7 @@ export default function ResetAppDataModal({ isOpen, onClose }: ResetAppDataModal
             type="button"
             onClick={onClose}
             disabled={isResetting || isSuccess}
-            className="min-h-[44px] px-4 py-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 text-xs font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-900 disabled:opacity-50 transition-colors"
+            className="min-h-12 px-5 py-2.5 rounded-2xl border border-teal-700/30 dark:border-teal-400/40 bg-white dark:bg-transparent text-base font-semibold text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 disabled:opacity-50 transition-colors"
           >
             Hủy bỏ
           </button>
@@ -193,16 +193,16 @@ export default function ResetAppDataModal({ isOpen, onClose }: ResetAppDataModal
             type="button"
             onClick={handleConfirmReset}
             disabled={!confirmed || isResetting || isSuccess}
-            className="min-h-[44px] px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:opacity-40 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm shadow-rose-600/20 transition-all"
+            className="min-h-12 px-5 py-2.5 rounded-2xl bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-base font-semibold flex items-center justify-center gap-2 shadow-sm transition-colors"
           >
             {isResetting ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
                 <span>Đang đặt lại...</span>
               </>
             ) : (
               <>
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="w-4 h-4" />
                 <span>Xác nhận đặt lại & Bắt đầu lại</span>
               </>
             )}

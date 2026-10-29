@@ -31,6 +31,7 @@ import { loadWorkloadForecast, type WorkloadForecast } from "@/services/progress
 import { calculateStreakAndGoal } from "@/services/streak";
 import Heatmap from "./Heatmap";
 import { PAGE_CONTAINER } from "./dashboard/shared";
+import { SubTabs } from "./ui/kit";
 import ProficiencyAssessmentCard from "./ProficiencyAssessmentCard";
 import WeeklyProgressCard from "./WeeklyProgressCard";
 import WeeklyRankBadge from "./dashboard/WeeklyRankBadge";
@@ -177,105 +178,87 @@ export default function AnalyticsView({
 
   const unlockedCount = achievements.filter((a) => a.isUnlocked).length;
 
-  const card = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm";
+  const card = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
+  const statCard = `${card} min-w-0 p-4 space-y-2`;
   const nextWeekReviews = forecast ? forecast.days.slice(1, 8).reduce((sum, d) => sum + d.reviews, 0) : null;
 
   return (
-    <div className={`${PAGE_CONTAINER} space-y-5 animate-in fade-in duration-200`}>
+    <div className={`${PAGE_CONTAINER} space-y-4 animate-in fade-in duration-200`}>
       {/* Title, level and the sub-tabs */}
       <div className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="min-w-0">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Activity className="w-5 h-5 text-cyan-500" />
-              <span>Tiến độ</span>
-            </h2>
-            <p className="text-xs text-slate-600 dark:text-zinc-400 mt-0.5">{PROGRESS_TABS.find((t) => t.id === tab)?.hint}</p>
-          </div>
+          <p className="min-w-0 flex-1 text-sm text-slate-500 dark:text-zinc-400">{PROGRESS_TABS.find((t) => t.id === tab)?.hint}</p>
           <button
             type="button"
             onClick={() => setTab("badges")}
             title="Xem cấp độ và danh hiệu"
-            className="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/10 to-transparent border border-amber-500/30 hover:border-amber-500/60 transition-colors text-left"
+            className="flex min-h-12 items-center gap-2.5 rounded-2xl border border-slate-200 bg-white py-1.5 pl-2 pr-3 text-left shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition-colors hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800"
           >
-            <span className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-lg shrink-0">{xpState.rankEmoji}</span>
+            <span className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-lg shrink-0">{xpState.rankEmoji}</span>
             <span>
-              <span className="block text-xs font-bold text-amber-600 dark:text-amber-400">
+              <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100">
                 Cấp {xpState.level} · {xpState.rank}
               </span>
-              <span className="block text-xs font-mono text-slate-600 dark:text-zinc-400">
+              <span className="block text-xs tabular-nums text-slate-500 dark:text-zinc-400">
                 {xpState.totalXP.toLocaleString()} XP · +{xpState.todayXP} hôm nay
               </span>
             </span>
           </button>
         </div>
 
-        <div role="tablist" aria-label="Mục tiến độ" className="flex gap-1 overflow-x-auto border-b border-slate-200 dark:border-zinc-800 -mx-1 px-1">
-          {PROGRESS_TABS.map((t) => {
-            const Icon = t.icon;
-            const selected = t.id === tab;
-            return (
-              <button
-                key={t.id}
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                onClick={() => setTab(t.id)}
-                className={`shrink-0 inline-flex items-center gap-1.5 px-3 min-h-11 -mb-px border-b-2 text-sm font-medium transition-colors ${
-                  selected
-                    ? "border-cyan-500 text-cyan-700 dark:text-cyan-300"
-                    : "border-transparent text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {t.label}
-                {t.id === "badges" && (
-                  <span className="text-xs font-mono px-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300">
-                    {unlockedCount}/{achievements.length}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
+        <SubTabs
+          label="Mục tiến độ"
+          value={tab}
+          onChange={setTab}
+          items={PROGRESS_TABS.map((t) => ({
+            id: t.id,
+            label: t.label,
+            badge:
+              t.id === "badges" ? (
+                <span className={`text-xs tabular-nums px-1.5 rounded-full ${t.id === tab ? "bg-white/20" : "bg-slate-100 text-slate-600 dark:bg-zinc-800 dark:text-zinc-300"}`}>
+                  {unlockedCount}/{achievements.length}
+                </span>
+              ) : undefined,
+          }))}
+        />
       </div>
 
       {tab === "overview" && (
         <>
       {/* Top 4 Key Metric Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {/* Retention Health */}
-        <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
+        <div className={statCard}>
+          <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">
               Khả năng ghi nhớ
             </span>
-            <Brain className="w-4 h-4 text-emerald-500" />
+            <Brain className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-2xl font-bold text-slate-900 dark:text-zinc-100 tabular-nums">
               {Math.round(stats.avgRetrievability * 100)}%
             </span>
             <span className="text-xs text-slate-600 dark:text-zinc-400">trung bình</span>
           </div>
-          <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
+          <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
             <div
-              className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+              className="h-full bg-teal-700 dark:bg-teal-500 rounded-full transition-all duration-500"
               style={{ width: `${Math.round(stats.avgRetrievability * 100)}%` }}
             />
           </div>
         </div>
 
         {/* Mastered Words */}
-        <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
+        <div className={statCard}>
+          <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">
               Nhớ lâu (từ 21 ngày)
             </span>
-            <CheckCircle2 className="w-4 h-4 text-cyan-500" />
+            <CheckCircle2 className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-cyan-600 dark:text-cyan-400 font-mono">
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-2xl font-bold text-slate-900 dark:text-zinc-100 tabular-nums">
               {stats.masteredCount}
             </span>
             <span className="text-xs text-slate-600 dark:text-zinc-400">
@@ -290,13 +273,13 @@ export default function AnalyticsView({
         </div>
 
         {/* Streak */}
-        <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
+        <div className={statCard}>
+          <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">Chuỗi ngày học</span>
-            <Flame className="w-4 h-4 text-amber-500" />
+            <Flame className="w-4 h-4 shrink-0 text-amber-500" />
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-amber-500 font-mono">
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-2xl font-bold text-slate-900 dark:text-zinc-100 tabular-nums">
               {streakStats.currentStreak}
             </span>
             <span className="text-xs text-slate-600 dark:text-zinc-400">ngày liên tục</span>
@@ -307,17 +290,17 @@ export default function AnalyticsView({
         </div>
 
         {/* Words often forgotten: the count here, the list and the leech settings in their own section */}
-        <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-2">
-          <div className="flex items-center justify-between">
+        <div className={statCard}>
+          <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-medium text-slate-600 dark:text-zinc-400">Từ hay quên</span>
-            <Bug className="w-4 h-4 text-rose-500" />
+            <Bug className="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
           </div>
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-rose-500 font-mono">{forgottenCount ?? "…"}</span>
+          <div className="flex flex-wrap items-baseline gap-x-2">
+            <span className="text-2xl font-bold text-slate-900 dark:text-zinc-100 tabular-nums">{forgottenCount ?? "…"}</span>
             <span className="text-xs text-slate-600 dark:text-zinc-400">từ</span>
           </div>
           {onOpenForgotten ? (
-            <button onClick={onOpenForgotten} className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:underline">
+            <button onClick={onOpenForgotten} className="-my-2 min-h-10 text-left text-sm font-semibold text-teal-700 dark:text-teal-300 hover:underline">
               {forgottenCount ? "Mở mục Từ hay quên →" : "Chưa có từ nào hay quên →"}
             </button>
           ) : (
@@ -333,9 +316,9 @@ export default function AnalyticsView({
       <WeeklyProgressCard words={words} />
 
       {/* Heatmap Widget */}
-      <div className={`${card} p-5 space-y-3`}>
-        <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-cyan-500" />
+      <div className={`${card} p-4 md:p-5 space-y-3`}>
+        <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
+          <Calendar className="h-5 w-5 text-teal-700 dark:text-teal-300" />
           <span>Lịch sử học mỗi ngày</span>
         </h3>
         <Heatmap words={words} dueRemaining={dueRemaining} />
@@ -356,24 +339,24 @@ export default function AnalyticsView({
           <div className={`${card} p-4 grid grid-cols-1 sm:grid-cols-3 gap-3`}>
             <div className="space-y-0.5">
               <span className="text-xs text-slate-600 dark:text-zinc-400">Mai phải ôn</span>
-              <p className="text-2xl font-black font-mono text-slate-900 dark:text-white">{forecast ? `~${forecast.days[1]?.reviews ?? 0}` : "…"}</p>
+              <p className="text-2xl font-bold tabular-nums text-slate-900 dark:text-zinc-100">{forecast ? `~${forecast.days[1]?.reviews ?? 0}` : "…"}</p>
               <span className="text-xs text-slate-600 dark:text-zinc-400">thẻ</span>
             </div>
             <div className="space-y-0.5">
               <span className="text-xs text-slate-600 dark:text-zinc-400">7 ngày tới</span>
-              <p className="text-2xl font-black font-mono text-slate-900 dark:text-white">{nextWeekReviews === null ? "…" : `~${nextWeekReviews}`}</p>
+              <p className="text-2xl font-bold tabular-nums text-slate-900 dark:text-zinc-100">{nextWeekReviews === null ? "…" : `~${nextWeekReviews}`}</p>
               <span className="text-xs text-slate-600 dark:text-zinc-400">thẻ, chưa tính từ mới</span>
             </div>
             <div className="space-y-0.5">
               <span className="text-xs text-slate-600 dark:text-zinc-400">Trung bình mỗi ngày</span>
-              <p className="text-2xl font-black font-mono text-cyan-600 dark:text-cyan-400">
+              <p className="text-2xl font-bold tabular-nums text-teal-700 dark:text-teal-300">
                 {nextWeekReviews === null ? "…" : `~${Math.round(nextWeekReviews / 7)}`}
               </p>
               <span className="text-xs text-slate-600 dark:text-zinc-400">thẻ ôn trong tuần tới</span>
             </div>
           </div>
           {simple && (
-            <p className="text-xs text-slate-600 dark:text-zinc-400 px-1">
+            <p className="text-sm text-slate-500 dark:text-zinc-400 px-1">
               Phần dưới là số liệu kỹ thuật của thuật toán ôn tập, không cần đọc để học tốt.
             </p>
           )}
@@ -387,33 +370,33 @@ export default function AnalyticsView({
 
       {/* Accuracy & Review Logs Summary (if logs exist) */}
       {reviewAnalytics && reviewAnalytics.totalReviews > 0 && (
-        <div className="p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Activity className="w-4 h-4 text-emerald-500" />
+        <div className={`${card} p-4 md:p-5 space-y-4`}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
+              <Activity className="h-5 w-5 text-teal-700 dark:text-teal-300" />
               <span>Độ chính xác khi ôn, 14 ngày qua</span>
             </h3>
-            <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+            <span className="text-sm tabular-nums font-semibold text-teal-700 dark:text-teal-300">
               Độ chính xác: {reviewAnalytics.accuracyRate}%
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/50">
               <span className="text-xs text-slate-600 dark:text-zinc-400">Tổng lượt ôn tập</span>
-              <p className="text-xl font-bold font-mono text-slate-900 dark:text-white mt-1">
+              <p className="text-xl font-bold tabular-nums text-slate-900 dark:text-zinc-100 mt-1">
                 {reviewAnalytics.totalReviews}
               </p>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/50">
               <span className="text-xs text-slate-600 dark:text-zinc-400">Trả lời đúng</span>
-              <p className="text-xl font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1">
+              <p className="text-xl font-bold tabular-nums text-green-700 dark:text-green-400 mt-1">
                 {reviewAnalytics.correctReviews} ({reviewAnalytics.accuracyRate}%)
               </p>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200 dark:border-zinc-800">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/50">
               <span className="text-xs text-slate-600 dark:text-zinc-400">Tốc độ phản xạ trung bình</span>
-              <p className="text-xl font-bold font-mono text-cyan-600 dark:text-cyan-400 mt-1">
+              <p className="text-xl font-bold tabular-nums text-slate-900 dark:text-zinc-100 mt-1">
                 {(reviewAnalytics.averageResponseTimeMs / 1000).toFixed(1)}s
               </p>
             </div>
@@ -422,11 +405,11 @@ export default function AnalyticsView({
       )}
 
       {/* FSRS Word State Distribution & Retention Insights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Word State Distribution */}
-        <div className="p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-5">
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <PieIcon className="w-4 h-4 text-purple-500" />
+        <div className={`${card} min-w-0 p-4 md:p-5 space-y-5`}>
+          <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
+            <PieIcon className="h-5 w-5 text-teal-700 dark:text-teal-300" />
             <span>Các từ đang ở giai đoạn nào</span>
           </h3>
 
@@ -438,7 +421,7 @@ export default function AnalyticsView({
                   <span className="w-2.5 h-2.5 rounded-full bg-slate-400 inline-block" />
                   Mới thêm
                 </span>
-                <span className="font-mono font-bold text-slate-700 dark:text-zinc-300">
+                <span className="tabular-nums font-semibold text-slate-700 dark:text-zinc-300">
                   {stats.newCount} ({stats.totalWords ? Math.round((stats.newCount / stats.totalWords) * 100) : 0}%)
                 </span>
               </div>
@@ -457,7 +440,7 @@ export default function AnalyticsView({
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block" />
                   Đang học
                 </span>
-                <span className="font-mono font-bold text-amber-600 dark:text-amber-400">
+                <span className="tabular-nums font-semibold text-slate-700 dark:text-zinc-300">
                   {stats.learningCount} ({stats.totalWords ? Math.round((stats.learningCount / stats.totalWords) * 100) : 0}%)
                 </span>
               </div>
@@ -473,16 +456,16 @@ export default function AnalyticsView({
             <div className="space-y-1">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-zinc-400 flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-teal-400 inline-block" />
                   Đang ôn định kỳ
                 </span>
-                <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                <span className="tabular-nums font-semibold text-slate-700 dark:text-zinc-300">
                   {stats.reviewCount - stats.masteredCount} ({stats.totalWords ? Math.round(((stats.reviewCount - stats.masteredCount) / stats.totalWords) * 100) : 0}%)
                 </span>
               </div>
               <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
                 <div
-                  className="h-full bg-blue-500 rounded-full"
+                  className="h-full bg-teal-400 rounded-full"
                   style={{ width: `${stats.totalWords ? ((stats.reviewCount - stats.masteredCount) / stats.totalWords) * 100 : 0}%` }}
                 />
               </div>
@@ -492,16 +475,16 @@ export default function AnalyticsView({
             <div className="space-y-1">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-zinc-400 flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-teal-700 dark:bg-teal-500 inline-block" />
                   Nhớ lâu (từ 21 ngày)
                 </span>
-                <span className="font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="tabular-nums font-semibold text-teal-700 dark:text-teal-300">
                   {stats.masteredCount} ({stats.totalWords ? Math.round((stats.masteredCount / stats.totalWords) * 100) : 0}%)
                 </span>
               </div>
               <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
                 <div
-                  className="h-full bg-emerald-500 rounded-full"
+                  className="h-full bg-teal-700 dark:bg-teal-500 rounded-full"
                   style={{ width: `${stats.totalWords ? (stats.masteredCount / stats.totalWords) * 100 : 0}%` }}
                 />
               </div>
@@ -514,9 +497,9 @@ export default function AnalyticsView({
         </div>
 
         {/* Topic Mastery Grid */}
-        <div className="p-6 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-sm space-y-4">
-          <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <BookOpen className="w-4 h-4 text-cyan-500" />
+        <div className={`${card} min-w-0 p-4 md:p-5 space-y-4`}>
+          <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-teal-700 dark:text-teal-300" />
             <span>Nhớ lâu theo cấp độ</span>
           </h3>
 
@@ -526,17 +509,17 @@ export default function AnalyticsView({
             ) : (
               topicMastery.map((item) => (
                 <div key={item.topic} className="space-y-1">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-700 dark:text-zinc-300 font-medium truncate max-w-[200px]">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="min-w-0 text-slate-700 dark:text-zinc-300 font-medium truncate max-w-[200px]">
                       {item.topic}
                     </span>
-                    <span className="font-mono text-slate-600 dark:text-zinc-400">
+                    <span className="shrink-0 tabular-nums text-slate-600 dark:text-zinc-400">
                       {item.mastered}/{item.total} ({item.percent}%)
                     </span>
                   </div>
-                  <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
+                  <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+                      className="h-full bg-teal-700 dark:bg-teal-500 rounded-full"
                       style={{ width: `${item.percent}%` }}
                     />
                   </div>
@@ -554,28 +537,28 @@ export default function AnalyticsView({
       <div className="space-y-4">
         {/* Level and weekly rank */}
         <div className={`${card} p-4 flex flex-wrap items-center gap-4`}>
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-3xl shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-3xl shrink-0">
             {xpState.rankEmoji}
           </div>
           <div className="min-w-0 flex-1 space-y-1">
-            <p className="text-base font-bold text-slate-900 dark:text-white">
-              Cấp {xpState.level} · <span className="text-amber-600 dark:text-amber-400">{xpState.rank}</span>
+            <p className="text-lg font-semibold text-slate-900 dark:text-zinc-100">
+              Cấp {xpState.level} · <span className="text-teal-700 dark:text-teal-300">{xpState.rank}</span>
             </p>
-            <p className="text-xs font-mono text-slate-600 dark:text-zinc-400">
+            <p className="text-sm tabular-nums text-slate-500 dark:text-zinc-400">
               {xpState.totalXP.toLocaleString()} XP tổng · {xpState.todayXP} XP hôm nay
             </p>
             <WeeklyRankBadge />
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-amber-500" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+            <Trophy className="w-5 h-5 text-teal-700 dark:text-teal-300" />
+            <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100">
               Danh hiệu
             </h3>
           </div>
-          <span className="text-xs font-mono font-semibold text-slate-600 dark:text-zinc-400">
+          <span className="text-sm tabular-nums text-slate-500 dark:text-zinc-400">
             Đã mở {unlockedCount}/{achievements.length} danh hiệu
           </span>
         </div>
@@ -586,28 +569,28 @@ export default function AnalyticsView({
               key={badge.id}
               className={`p-3.5 rounded-2xl border transition-all ${
                 badge.isUnlocked
-                  ? "border-amber-500/40 bg-gradient-to-b from-amber-500/5 to-transparent dark:bg-zinc-900/80 shadow-sm"
-                  : "border-slate-200 dark:border-zinc-800/60 bg-slate-50/50 dark:bg-zinc-900/30 opacity-70"
+                  ? "border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900"
+                  : "border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900/50"
               }`}
             >
               <div className="flex items-start gap-3">
                 <div
                   className={`w-11 h-11 rounded-xl flex items-center justify-center text-2xl shrink-0 ${
                     badge.isUnlocked
-                      ? "bg-amber-500/20 border border-amber-500/30 shadow-sm"
-                      : "bg-slate-200 dark:bg-zinc-800 grayscale"
+                      ? "bg-teal-50 dark:bg-teal-400/10"
+                      : "bg-slate-200 dark:bg-zinc-800 grayscale opacity-60"
                   }`}
                 >
                   {badge.emoji}
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                  <div className="flex items-center justify-between gap-2">
+                    <h4 className={`text-sm font-semibold truncate ${badge.isUnlocked ? "text-slate-900 dark:text-zinc-100" : "text-slate-600 dark:text-zinc-400"}`}>
                       {badge.title}
                     </h4>
                     {badge.isUnlocked && (
-                      <span className="text-xs text-amber-500 font-bold">✓</span>
+                      <span className="text-sm text-green-600 dark:text-green-400 font-bold">✓</span>
                     )}
                   </div>
                   <p className="text-xs text-slate-600 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-snug">
@@ -615,20 +598,20 @@ export default function AnalyticsView({
                   </p>
 
                   <div className="mt-2 flex items-center justify-between text-xs">
-                    <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                    <span className="tabular-nums text-teal-700 dark:text-teal-300 font-semibold">
                       +{badge.xpBonus} XP
                     </span>
                     {!badge.isUnlocked && (
-                      <span className="text-slate-600 dark:text-zinc-400 font-mono">
+                      <span className="text-slate-600 dark:text-zinc-400 tabular-nums">
                         {badge.currentValue}/{badge.targetValue}
                       </span>
                     )}
                   </div>
 
                   {!badge.isUnlocked && (
-                    <div className="w-full h-1 rounded-full bg-slate-200 dark:bg-zinc-800 mt-1.5 overflow-hidden">
+                    <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-zinc-800 mt-1.5 overflow-hidden">
                       <div
-                        className="h-full bg-amber-500 rounded-full"
+                        className="h-full bg-teal-700 dark:bg-teal-500 rounded-full"
                         style={{ width: `${badge.progress}%` }}
                       />
                     </div>

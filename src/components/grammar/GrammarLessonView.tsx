@@ -21,6 +21,7 @@ import HandbookView from "./HandbookView";
 import GrammarPlayer from "./GrammarPlayer";
 import GrammarExerciseImportModal from "./GrammarExerciseImportModal";
 import { LessonStatusChip, MasteryBar } from "./PathPicker";
+import { Button } from "@/components/ui/kit";
 
 export type GrammarLessonTab = "handbook" | "practice" | "diagnostic";
 
@@ -232,28 +233,28 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-5 pb-12 animate-in fade-in duration-200">
+    <div className="mx-auto max-w-4xl space-y-4 pb-12 animate-in fade-in duration-200">
       <div ref={topRef} />
 
-      <header className="space-y-3 border-b border-slate-200 pb-4 dark:border-zinc-800">
+      <header className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
         <div className="flex items-start gap-3">
           <button
             type="button"
             onClick={onBack}
             title="Quay lại danh sách"
             aria-label="Quay lại danh sách"
-            className="shrink-0 rounded-xl border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-5 w-5" />
           </button>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500 dark:text-zinc-400">
-              <span className="rounded-full bg-cyan-100 px-2 py-0.5 font-mono font-bold text-cyan-700 dark:bg-cyan-950 dark:text-cyan-300">
+              <span className="rounded-full bg-teal-50 px-2.5 py-1 font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
                 Ch.{chapterNo} · Bài {lesson.order}
               </span>
               {lesson.page ? <span>tr. {lesson.page}</span> : null}
             </div>
-            <h1 className="mt-1 break-words text-lg font-bold text-slate-900 dark:text-white sm:text-xl">{name}</h1>
+            <h1 className="mt-1 break-words text-xl font-semibold text-slate-900 dark:text-zinc-100">{name}</h1>
             {lesson.titleVn && lesson.title && lesson.title !== lesson.titleVn && (
               <p className="break-words text-xs text-slate-500 dark:text-zinc-400">{lesson.title}</p>
             )}
@@ -266,7 +267,7 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
             <span className="inline-flex items-center gap-1.5 text-xs text-slate-600 dark:text-zinc-300">
               Thuộc
               <MasteryBar mastery={progress.mastery} className="w-16" />
-              <span className="font-mono font-bold text-cyan-700 dark:text-cyan-400">{progress.mastery}%</span>
+              <span className="font-semibold tabular-nums text-teal-700 dark:text-teal-300">{progress.mastery}%</span>
             </span>
           ) : (
             <span className="text-xs text-slate-600 dark:text-zinc-300">Chưa kiểm tra</span>
@@ -281,38 +282,38 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
             <button
               type="button"
               onClick={() => setImportModalOpen(true)}
-              className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-cyan-200 bg-cyan-50/70 hover:bg-cyan-100/80 px-2.5 py-1.5 text-xs font-semibold text-cyan-700 transition dark:border-cyan-800 dark:bg-cyan-950/40 dark:text-cyan-300 dark:hover:bg-cyan-900/50 cursor-pointer"
+              className="ml-auto inline-flex min-h-10 cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 text-xs font-semibold text-teal-700 transition-colors hover:bg-teal-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-teal-300 dark:hover:bg-teal-400/10"
               title="Thêm bài tập bằng AI cho riêng bài học này"
             >
-              <Sparkles className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
+              <Sparkles className="h-3.5 w-3.5" />
               <span>Thêm bài tập AI</span>
             </button>
           )}
           <label
             title="Bật: bài này nằm trong lịch học hằng ngày. Tắt: bỏ qua bài này."
-            className="inline-flex min-h-[40px] cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 dark:border-zinc-800 dark:text-zinc-300"
+            className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-slate-200 px-3.5 py-1.5 text-xs font-medium text-slate-700 dark:border-zinc-800 dark:text-zinc-300"
           >
             <input
               type="checkbox"
               checked={onPath}
               onChange={() => toggleLessonSelection(lesson.id)}
-              className="h-4 w-4 accent-cyan-600"
+              className="h-4 w-4 accent-teal-700"
             />
             Trên lộ trình (lịch học hằng ngày)
           </label>
         </div>
       </header>
 
-      <div className="grid grid-cols-3 gap-1 rounded-xl border border-slate-200/80 bg-slate-100 p-1 dark:border-zinc-700 dark:bg-zinc-800">
+      <div className="grid grid-cols-3 gap-2">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             type="button"
             onClick={() => goTab(id)}
-            className={`flex items-center justify-center gap-1.5 min-h-[40px] rounded-lg px-1.5 py-2 text-center text-xs font-semibold leading-tight transition ${
+            className={`flex min-h-11 min-w-0 items-center justify-center gap-1.5 rounded-full px-2 py-2 text-center text-sm font-semibold leading-tight transition-colors ${
               tab === id
-                ? "bg-white text-cyan-700 shadow-sm dark:bg-zinc-900 dark:text-cyan-400"
-                : "text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                ? "bg-teal-700 text-white dark:bg-teal-600"
+                : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
             }`}
           >
             <Icon className="hidden h-3.5 w-3.5 shrink-0 sm:block" />
@@ -329,34 +330,33 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
           {noQuestions ? (
             <ReadOnlyPanel studied={studied} quickEmpty={quickEmpty} onMark={markRead} onBack={onBack} />
           ) : (
-            <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 dark:border-cyan-900/60 dark:bg-cyan-950/20 sm:flex-row sm:items-center">
+            <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 sm:flex-row sm:items-center md:p-5">
               <p className="flex-1 text-sm text-slate-700 dark:text-zinc-300">
                 {studied
                   ? "Đọc xong rồi? Làm bài tập của riêng thì này để nhớ lâu hơn."
                   : "Đọc xong sổ tay rồi? Làm vài câu kiểm tra (tối đa 8 câu) để bắt đầu học bài này."}
               </p>
-              <button
-                type="button"
+              <Button
                 onClick={() => (studied ? void startExercises() : void startQuickCheck())}
                 disabled={starting !== null}
-                className="inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
+                className="w-full shrink-0 sm:w-auto"
               >
                 {starting ? <Loader2 className="h-4 w-4 animate-spin" /> : studied ? <Layers className="h-4 w-4" /> : <Zap className="h-4 w-4" />}
                 {studied ? "Làm bài tập" : "Làm vài câu kiểm tra"}
-              </button>
+              </Button>
             </div>
           )}
         </div>
       )}
 
       {tab === "diagnostic" && (
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8">
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
           <div className="flex items-start gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-400">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
               <Zap className="h-5 w-5" />
             </span>
             <div className="min-w-0 space-y-1">
-              <h2 className="text-base font-bold text-slate-900 dark:text-white">Kiểm tra nhanh (tối đa 8 câu)</h2>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Kiểm tra nhanh (tối đa 8 câu)</h2>
               <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
                 {studied
                   ? "Làm lại để xem bạn còn nhớ bài này đến đâu. Kết quả cập nhật độ thuộc và lịch ôn."
@@ -366,22 +366,17 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
           </div>
           {studied && progress.lastAttemptDate && (
             <p className="text-xs text-slate-500 dark:text-zinc-400">
-              Điểm gần nhất: <strong className="font-mono text-slate-800 dark:text-zinc-200">{progress.score}%</strong> · Độ thuộc: {progress.mastery}%
+              Điểm gần nhất: <strong className="font-semibold tabular-nums text-slate-800 dark:text-zinc-200">{progress.score}%</strong> · Độ thuộc: {progress.mastery}%
             </p>
           )}
           {message && <Notice text={message} tone={message.startsWith("Đã ghi nhận") ? "ok" : "warn"} />}
           {noQuestions ? (
             <ReadOnlyPanel studied={studied} quickEmpty={quickEmpty} onMark={markRead} onBack={onBack} />
           ) : (
-            <button
-              type="button"
-              onClick={startQuickCheck}
-              disabled={starting !== null}
-              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-xl bg-cyan-600 px-6 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500 disabled:opacity-50 sm:w-auto"
-            >
+            <Button size="lg" onClick={startQuickCheck} disabled={starting !== null} className="w-full sm:w-auto">
               {starting === "learn" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4 fill-current" />}
               Bắt đầu
-            </button>
+            </Button>
           )}
         </div>
       )}
@@ -403,10 +398,10 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
 function Notice({ text, tone = "warn" }: { text: string; tone?: "warn" | "ok" }) {
   return (
     <p
-      className={`rounded-lg border px-3 py-2 text-xs ${
+      className={`rounded-2xl border px-4 py-3 text-sm ${
         tone === "ok"
-          ? "border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300"
-          : "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300"
+          ? "border-green-200 bg-green-50 text-green-800 dark:border-green-500/30 dark:bg-green-500/10 dark:text-green-300"
+          : "border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300"
       }`}
     >
       {text}
@@ -420,25 +415,17 @@ function ReadOnlyPanel({ studied, quickEmpty, onMark, onBack }: { studied: boole
     ? "Chưa có câu hỏi nào dùng riêng bài này để kiểm tra. Đọc xong thì đánh dấu để tính là đã học."
     : "Bài này chưa có câu hỏi có đáp án để kiểm tra. Đọc xong thì đánh dấu để tính là đã học.";
   return (
-    <div className="mt-6 flex flex-col gap-3 rounded-2xl border border-cyan-200 bg-cyan-50/60 p-4 dark:border-cyan-900/60 dark:bg-cyan-950/20 sm:flex-row sm:items-center">
+    <div className="mt-4 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 sm:flex-row sm:items-center md:p-5">
       <p className="flex-1 text-sm text-slate-700 dark:text-zinc-300">{studied ? "Bạn đã học xong bài này." : hint}</p>
       {studied ? (
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-white dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800"
-        >
+        <Button variant="secondary" onClick={onBack} className="w-full shrink-0 sm:w-auto">
           Về danh sách bài
-        </button>
+        </Button>
       ) : (
-        <button
-          type="button"
-          onClick={onMark}
-          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-cyan-600 px-4 py-2.5 text-sm font-semibold !text-white shadow-sm transition hover:bg-cyan-500"
-        >
+        <Button onClick={onMark} className="w-full shrink-0 sm:w-auto">
           <CheckCircle2 className="h-4 w-4" />
           Đã đọc xong, tính là đã học
-        </button>
+        </Button>
       )}
     </div>
   );

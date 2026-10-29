@@ -17,6 +17,7 @@ import { isFoundationMode } from "@/services/learnerProfile";
 import { isMobilePlatform } from "@/lib/platform";
 import { asrAvailable } from "@/services/pronunciationCheck";
 import { PAGE_CONTAINER } from "../dashboard/shared";
+import { Badge, Button, Card } from "../ui/kit";
 import Conversation from "./Conversation";
 import WarmUp from "./WarmUp";
 
@@ -30,11 +31,7 @@ const GROUPS: Array<{ id: SituationGroup; label: string }> = [
 ];
 
 const STATUS_LABEL: Record<SituationStatus, string> = { new: "Mới", learning: "Đang học", done: "Đã nói được" };
-const STATUS_TONE: Record<SituationStatus, string> = {
-  new: "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300",
-  learning: "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300",
-  done: "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300",
-};
+const STATUS_TONE: Record<SituationStatus, "neutral" | "amber" | "green"> = { new: "neutral", learning: "amber", done: "green" };
 
 /** How many words of a conversation are in the learner's word bank but not remembered long yet */
 function learningWordsIn(situation: Situation, formIndex: ReadonlyMap<string, WordDetail>): number {
@@ -66,52 +63,46 @@ function SituationCard({
   const stars = getSituationProgress(situation.id).bestStars ?? 0;
   const [confirmDelete, setConfirmDelete] = useState(false);
   return (
-    <div className={`rounded-2xl border bg-white dark:bg-zinc-900 p-4 space-y-3 ${suggested ? "border-2 border-emerald-400 dark:border-emerald-700" : "border-slate-200 dark:border-zinc-800"}`}>
-      {suggested && <p className="text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">Bài gợi ý hôm nay</p>}
+    <Card className={`space-y-3 ${suggested ? "border-teal-600/60 ring-1 ring-teal-600/20 dark:border-teal-500/50" : ""}`}>
+      {suggested && <Badge tone="teal">Bài gợi ý hôm nay</Badge>}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <h3 className="font-bold text-slate-900 dark:text-white">{situation.title_vi}</h3>
-          <p className="text-xs text-slate-600 dark:text-zinc-400">
+          <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100">{situation.title_vi}</h3>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">
             {situation.title_en} · {situation.cefr}
             {situation.ai && (
-              <span className="ml-1.5 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 font-semibold">
+              <span className="ml-1.5 inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-teal-50 dark:bg-teal-400/10 text-xs text-teal-800 dark:text-teal-300 font-semibold">
                 <Sparkles className="w-3 h-3" /> AI
               </span>
             )}
           </p>
         </div>
-        <span className={`shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${STATUS_TONE[s.status]}`}>
+        <Badge tone={STATUS_TONE[s.status]} className="shrink-0">
           {STATUS_LABEL[s.status]}
-        </span>
+        </Badge>
       </div>
       <p className="text-sm text-slate-700 dark:text-zinc-300">Mục tiêu: {situation.goal_vi}</p>
-      <p className="text-xs text-slate-600 dark:text-zinc-400">
+      <p className="text-sm text-slate-500 dark:text-zinc-400">
         Đã nói được {s.linesSaid}/{s.totalLines} câu · đã trò chuyện {s.runs} lần
         {stars > 0 && <span className="ml-1.5">· Thử thách {"⭐".repeat(stars)}</span>}
       </p>
       {learning > 0 && (
-        <p className="text-xs font-semibold text-amber-700 dark:text-amber-300">📚 Có {learning} từ bạn đang học trong bài này</p>
+        <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">📚 Có {learning} từ bạn đang học trong bài này</p>
       )}
-      <div className="flex gap-2">
-        <button
-          onClick={onWarmUp}
-          className="flex-1 min-h-[44px] rounded-xl border-2 border-violet-300 dark:border-violet-700 text-violet-700 dark:text-violet-300 text-sm font-semibold inline-flex items-center justify-center gap-2"
-        >
+      <div className="grid grid-cols-2 gap-2">
+        <Button variant="secondary" onClick={onWarmUp}>
           <PlayCircle className="w-4 h-4" /> Học câu trước
-        </button>
-        <button
-          onClick={onChat}
-          className="flex-1 min-h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
-        >
+        </Button>
+        <Button onClick={onChat}>
           <MessageCircle className="w-4 h-4" /> Nói thử
-        </button>
+        </Button>
       </div>
       {situation.ai && (
         <div className="flex justify-end">
           {confirmDelete ? (
-            <span className="text-xs text-slate-600 dark:text-zinc-400">
+            <span className="text-sm text-slate-500 dark:text-zinc-400">
               Xóa hội thoại này?{" "}
-              <button onClick={() => removeGenerated(situation.id)} className="min-h-[40px] px-2 font-semibold text-rose-600 dark:text-rose-400 underline underline-offset-2">
+              <button onClick={() => removeGenerated(situation.id)} className="min-h-[40px] px-2 font-semibold text-red-700 dark:text-red-300 underline underline-offset-2">
                 Xóa
               </button>{" "}
               ·{" "}
@@ -122,14 +113,14 @@ function SituationCard({
           ) : (
             <button
               onClick={() => setConfirmDelete(true)}
-              className="min-h-[40px] px-2 text-xs text-slate-600 dark:text-zinc-400 inline-flex items-center gap-1"
+              className="min-h-[40px] px-2 text-sm text-slate-500 hover:text-red-700 dark:text-zinc-400 dark:hover:text-red-300 inline-flex items-center gap-1"
             >
               <Trash2 className="w-3.5 h-3.5" /> Xóa
             </button>
           )}
         </div>
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -240,32 +231,30 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
   };
 
   return (
-    <div className="rounded-2xl border border-dashed border-violet-300 dark:border-violet-800 bg-violet-50/60 dark:bg-violet-950/20 p-4 space-y-2">
-      <p className="font-bold text-slate-900 dark:text-white inline-flex items-center gap-2">
-        <Sparkles className="w-4 h-4 text-violet-500" /> Tạo hội thoại mới bằng AI
-      </p>
-      <p className="text-xs text-slate-600 dark:text-zinc-400">
-        Tình huống mới{levelText ? `, hợp trình độ ${levelText}` : ""}, không trùng với các hội thoại bạn đang có. Chỉ tạo khi
-        bạn bấm.
-      </p>
-      <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-zinc-400">
+    <Card className="space-y-3">
+      <div>
+        <p className="font-semibold text-slate-900 dark:text-zinc-100 inline-flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-teal-700 dark:text-teal-300" /> Tạo hội thoại mới bằng AI
+        </p>
+        <p className="text-sm text-slate-500 dark:text-zinc-400">
+          Tình huống mới{levelText ? `, hợp trình độ ${levelText}` : ""}, không trùng với các hội thoại bạn đang có. Chỉ tạo khi
+          bạn bấm.
+        </p>
+      </div>
+      <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-zinc-400">
         <span>Số bài:</span>
         {[1, 3, 5, 10].map((n) => (
           <button
             key={n}
             onClick={() => setCount(n)}
             disabled={busy || writing}
-            className={`min-w-[44px] min-h-[40px] px-3 rounded-lg border font-semibold ${count === n ? "border-violet-500 bg-violet-100 dark:bg-violet-950/50 text-violet-700 dark:text-violet-300" : "border-slate-200 dark:border-zinc-700"}`}
+            className={`min-w-[44px] min-h-10 px-3 rounded-full font-semibold ${count === n ? "bg-teal-700 text-white dark:bg-teal-600" : "border border-slate-200 text-slate-700 dark:border-zinc-700 dark:text-zinc-300"}`}
           >
             {n}
           </button>
         ))}
       </div>
-      <button
-        onClick={create}
-        disabled={busy || writing || ready !== true}
-        className="w-full py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
-      >
+      <Button block onClick={create} disabled={busy || writing || ready !== true}>
         {writing && background_status ? (
           <>
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -283,23 +272,23 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
             <Sparkles className="w-4 h-4" /> Tạo {count} hội thoại mới
           </>
         )}
-      </button>
+      </Button>
       {writing && (
-        <div className="flex items-center justify-between gap-2 text-xs text-slate-600 dark:text-zinc-400">
+        <div className="flex items-center justify-between gap-2 text-sm text-slate-500 dark:text-zinc-400">
           <span>Bạn có thể thoát app, máy vẫn tạo tiếp và báo khi xong.</span>
-          <button onClick={cancelBatch} className="font-semibold underline underline-offset-2 shrink-0">
+          <button onClick={cancelBatch} className="min-h-10 font-semibold text-teal-700 dark:text-teal-300 underline underline-offset-2 shrink-0">
             Dừng
           </button>
         </div>
       )}
       {ready === false && (
-        <p className="text-xs text-amber-700 dark:text-amber-300">
+        <p className="text-sm text-amber-700 dark:text-amber-300">
           Chưa có AI. Vào Cài đặt để nhập khóa Gemini{isMobilePlatform() ? "" : " (hoặc cài AI CLI)"}, rồi quay lại đây.
         </p>
       )}
-      {made && <p className="text-xs text-emerald-700 dark:text-emerald-300">Đã tạo {made.split(", ").length} bài: {made}. Xem ở nhóm bên dưới.</p>}
-      {error && <p className="text-xs text-rose-600 dark:text-rose-400">{error}</p>}
-    </div>
+      {made && <p className="text-sm text-green-700 dark:text-green-300">Đã tạo {made.split(", ").length} bài: {made}. Xem ở nhóm bên dưới.</p>}
+      {error && <p className="text-sm text-red-700 dark:text-red-300">{error}</p>}
+    </Card>
   );
 }
 
@@ -370,13 +359,13 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
           onChat={() => setView({ kind: "chat", id: situation.id })}
         />
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Trò chuyện tình huống</h2>
-            <p className="text-sm text-slate-600 dark:text-zinc-400">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Trò chuyện tình huống</h2>
+            <p className="text-sm text-slate-500 dark:text-zinc-400">
               Học vài câu cần dùng, rồi nói thử như ngoài đời. Chọn câu hoặc tự nói, máy sẽ nghe và báo lại.
             </p>
-            {!asrAvailable() && <p className="mt-1 text-xs text-slate-600 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>}
+            {!asrAvailable() && <p className="mt-1 text-sm text-slate-500 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>}
           </div>
           {showSuggested && (
             <SituationCard
@@ -390,17 +379,17 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
           {due > 0 && (
             <button
               onClick={() => setView({ kind: "review" })}
-              className="w-full text-left rounded-2xl border-2 border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 p-4 flex items-center gap-3"
+              className="w-full text-left rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 flex items-center gap-3 hover:border-amber-300"
             >
               <RotateCcw className="w-5 h-5 shrink-0 text-amber-700 dark:text-amber-300" />
               <span className="min-w-0 flex-1">
-                <span className="block font-bold text-amber-900 dark:text-amber-200">Ôn lại hôm nay: {due} câu</span>
-                <span className="block text-xs text-amber-800 dark:text-amber-300">Những câu bạn từng nói sai hoặc phải xem đáp án. Ôn vài phút là nhớ lâu hơn.</span>
+                <span className="block font-semibold text-amber-900 dark:text-amber-200">Ôn lại hôm nay: {due} câu</span>
+                <span className="block text-sm text-amber-800 dark:text-amber-300">Những câu bạn từng nói sai hoặc phải xem đáp án. Ôn vài phút là nhớ lâu hơn.</span>
               </span>
             </button>
           )}
-          <p className="text-xs text-slate-600 dark:text-zinc-400">Cấp độ: A1 dễ → C2 khó.</p>
-          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
+          <p className="text-sm text-slate-500 dark:text-zinc-400">Cấp độ: A1 dễ → C2 khó.</p>
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none" role="tablist" aria-label="Cấp độ">
             {(["all", ...LEVELS] as const).map((l) => {
               const count = l === "all" ? all.length : all.filter((s) => s.cefr === l).length;
               // A level with nothing in it yet is not offered
@@ -411,14 +400,14 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
                   role="tab"
                   aria-selected={level === l}
                   onClick={() => setLevel(l)}
-                  className={`shrink-0 px-3 min-h-[40px] rounded-full text-sm font-semibold border transition-colors ${
+                  className={`shrink-0 px-4 min-h-10 rounded-full text-sm font-semibold border transition-colors ${
                     level === l
-                      ? "bg-emerald-600 border-emerald-600 text-white"
-                      : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:border-emerald-400"
+                      ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600"
+                      : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {l === "all" ? "Tất cả" : l}
-                  <span className={`ml-1.5 text-xs font-normal ${level === l ? "text-emerald-100" : "text-slate-600 dark:text-zinc-400"}`}>{count}</span>
+                  <span className={`ml-1.5 text-xs font-normal ${level === l ? "text-teal-50" : "text-slate-500 dark:text-zinc-400"}`}>{count}</span>
                 </button>
               );
             })}
@@ -438,7 +427,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
             if (list.length === 0) return null;
             return (
               <section key={g.id} className="space-y-3">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-zinc-400">{g.label}</h3>
+                <h3 className="pt-2 text-sm font-semibold text-slate-500 dark:text-zinc-400">{g.label}</h3>
                 {list.map((s) => (
                   <SituationCard
                     key={s.id}

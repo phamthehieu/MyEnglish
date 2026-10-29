@@ -28,43 +28,43 @@ function PracticeBar({ index, total, speed, loop, onPlay, onSpeed, onLoop }: Pra
       <div className="flex items-center gap-3">
         <button
           onClick={onPlay}
-          className="h-12 w-12 shrink-0 rounded-full border border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-600 dark:text-violet-300 inline-flex items-center justify-center"
+          className="h-12 w-12 shrink-0 rounded-full bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white shadow-sm inline-flex items-center justify-center"
           aria-label="Nghe câu này"
         >
           <Play className="w-5 h-5 fill-current" />
         </button>
-        <button onClick={onSpeed} className={`${pill} min-w-[3.5rem] px-4 bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 tabular-nums`} aria-label={`Tốc độ ${speed} lần. Bấm để đổi`}>
+        <button onClick={onSpeed} className={`${pill} min-w-[3.5rem] px-4 bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 tabular-nums`} aria-label={`Tốc độ ${speed} lần. Bấm để đổi`}>
           {speed}×
         </button>
         <button
           onClick={onLoop}
           aria-pressed={loop}
           aria-label={loop ? "Đang lặp lại câu này. Bấm để tắt" : "Lặp lại câu này"}
-          className={`${pill} gap-1.5 px-4 ${loop ? "bg-violet-500/20 text-violet-600 dark:text-violet-300 ring-1 ring-violet-400/60" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"}`}
+          className={`${pill} gap-1.5 px-4 ${loop ? "bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300 ring-1 ring-teal-700/40 dark:ring-teal-400/40" : "bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"}`}
         >
           <Repeat className="w-5 h-5" /> Lặp
         </button>
-        <span className="ml-auto text-lg font-bold tabular-nums text-slate-900 dark:text-white">
-          {index + 1} <span className="font-normal text-slate-600 dark:text-zinc-400">/ {total}</span>
+        <span className="ml-auto text-sm font-semibold tabular-nums text-teal-800 dark:text-teal-300">
+          {index + 1} <span className="font-normal text-slate-500 dark:text-zinc-400">/ {total}</span>
         </span>
       </div>
       <div
-        className="h-1 rounded-full bg-slate-200 dark:bg-zinc-800"
+        className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800"
         role="progressbar"
         aria-label="Tiến độ trong bài"
         aria-valuemin={1}
         aria-valuemax={total}
         aria-valuenow={index + 1}
       >
-        <div className="h-full rounded-full bg-violet-500 transition-[width] motion-reduce:transition-none" style={{ width: `${((index + 1) / total) * 100}%` }} />
+        <div className="h-full rounded-full bg-teal-700 dark:bg-teal-500 transition-[width] motion-reduce:transition-none" style={{ width: `${((index + 1) / total) * 100}%` }} />
       </div>
     </div>
   );
 }
 
-const CARD = "mb-2 rounded-3xl border border-violet-400/50 dark:border-violet-500/40 bg-white/70 dark:bg-zinc-900/70 p-4 space-y-4";
+const CARD = "mb-2 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
 const CHECK_BUTTON =
-  "h-12 flex-1 rounded-2xl bg-violet-600 hover:bg-violet-700 text-white text-base font-bold disabled:bg-violet-500/20 disabled:text-violet-400/60 disabled:hover:bg-violet-500/20";
+  "min-h-14 min-w-0 flex-1 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm disabled:cursor-not-allowed disabled:opacity-50";
 
 /** "Kiểm tra", the eye that shows the answer, and "Tiếp" */
 function Actions({
@@ -81,14 +81,14 @@ function Actions({
   last: boolean;
 }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       <button onClick={onCheck} disabled={!canCheck} className={CHECK_BUTTON}>
         Kiểm tra
       </button>
-      <button onClick={onReveal} title="Xem đáp án" className="h-12 shrink-0 rounded-full px-2 gap-1.5 text-sm font-semibold text-slate-600 dark:text-zinc-400 inline-flex items-center justify-center">
+      <button onClick={onReveal} title="Xem đáp án" className="min-h-12 shrink-0 rounded-2xl px-2 gap-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:text-zinc-300 dark:hover:bg-zinc-800 inline-flex items-center justify-center">
         <Eye className="w-5 h-5" /> Xem đáp án
       </button>
-      <button onClick={onNext} disabled={last} className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 text-base font-semibold text-violet-600 dark:text-violet-300 disabled:opacity-40">
+      <button onClick={onNext} disabled={last} className="inline-flex min-h-12 shrink-0 items-center gap-1.5 rounded-2xl px-2 text-base font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10 disabled:opacity-40">
         Tiếp <ArrowRight className="w-5 h-5" />
       </button>
     </div>
@@ -132,7 +132,7 @@ export function DictationCard({
     <div className={CARD}>
       <PracticeBar index={index} total={total} {...bar} />
 
-      <div className="relative rounded-2xl border border-slate-300 dark:border-zinc-700 focus-within:border-violet-400 dark:focus-within:border-violet-500 px-4 py-3">
+      <div className="relative rounded-xl border border-slate-200 dark:border-zinc-700 focus-within:border-teal-600 focus-within:ring-2 focus-within:ring-teal-600/20 dark:focus-within:border-teal-500 px-4 py-3">
         <textarea
           value={typed}
           onChange={(e) => setTyped(e.target.value)}
@@ -150,7 +150,7 @@ export function DictationCard({
           autoCapitalize="off"
           spellCheck={false}
           data-gramm="false"
-          className="block w-full resize-none bg-transparent pr-20 text-lg leading-snug text-slate-900 dark:text-white outline-none placeholder:text-slate-400 dark:placeholder:text-zinc-500"
+          className="block w-full resize-none bg-transparent pr-20 text-lg leading-snug text-slate-900 dark:text-zinc-100 outline-none placeholder:text-slate-500 dark:placeholder:text-zinc-500"
         />
         <span className="absolute right-4 top-3.5 inline-flex items-center gap-1 text-sm font-semibold tabular-nums text-slate-500 dark:text-zinc-400">
           <Equal className="w-4 h-4" />
@@ -161,14 +161,14 @@ export function DictationCard({
       <Actions canCheck={typed.trim() !== ""} onCheck={check} onReveal={reveal} onNext={onNext} last={index >= total - 1} />
 
       {revealed && (
-        <p role="status" className="text-lg leading-snug text-slate-900 dark:text-white" style={SENTENCE_FONT}>
-          <span className="block text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-zinc-400">Đáp án</span>
+        <p role="status" className="text-lg leading-snug text-slate-900 dark:text-zinc-100" style={SENTENCE_FONT}>
+          <span className="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Đáp án</span>
           {sentence.text}
         </p>
       )}
       {!revealed && result?.correct && (
-        <p role="status" className="text-base font-semibold text-emerald-600 dark:text-emerald-400">
-          ✓ Chính xác! <span className="block mt-1 text-lg font-normal text-slate-900 dark:text-white" style={SENTENCE_FONT}>{sentence.text}</span>
+        <p role="status" className="text-base font-semibold text-green-600 dark:text-green-400">
+          ✓ Chính xác! <span className="block mt-1 text-lg font-normal text-slate-900 dark:text-zinc-100" style={SENTENCE_FONT}>{sentence.text}</span>
         </p>
       )}
       {!revealed && result && !result.correct && (
@@ -181,18 +181,18 @@ export function DictationCard({
             ))}
           </p>
           <p className="text-sm text-slate-600 dark:text-zinc-400">
-            <b className="text-slate-900 dark:text-white">
+            <b className="text-slate-900 dark:text-zinc-100">
               {result.check.clear}/{result.check.judged}
             </b>{" "}
             từ đúng. Sửa lại rồi kiểm tra tiếp.
           </p>
           {wrong.map((w, i) => (
-            <p key={i} className="text-sm text-rose-600 dark:text-rose-400">
+            <p key={i} className="text-sm text-red-600 dark:text-red-400">
               Bạn gõ "{w.heard}" thay vì "{bareWord(w.text)}"
             </p>
           ))}
-          {result.check.words.some((w) => w.status === "missing") && <p className="text-sm text-rose-600 dark:text-rose-400">Gạch ngang: bạn chưa gõ từ đó.</p>}
-          {result.check.extra.length > 0 && <p className="text-sm text-rose-600 dark:text-rose-400">Thừa: {result.check.extra.join(", ")}</p>}
+          {result.check.words.some((w) => w.status === "missing") && <p className="text-sm text-red-600 dark:text-red-400">Gạch ngang: bạn chưa gõ từ đó.</p>}
+          {result.check.extra.length > 0 && <p className="text-sm text-red-600 dark:text-red-400">Thừa: {result.check.extra.join(", ")}</p>}
         </div>
       )}
     </div>
@@ -252,7 +252,7 @@ export function ClozeCard({
       {blanks.length === 0 ? (
         <p className="text-base text-slate-600 dark:text-zinc-400">Câu này ngắn quá nên không có chỗ trống. Bấm "Tiếp" để sang câu sau.</p>
       ) : (
-        <p className="leading-[2.5] text-slate-900 dark:text-white" style={{ ...SENTENCE_FONT, fontSize: 18 * fontScale }}>
+        <p className="leading-[2.5] text-slate-900 dark:text-zinc-100" style={{ ...SENTENCE_FONT, fontSize: 18 * fontScale }}>
           {tokens.map((raw, i) => {
             const b = blanks.indexOf(i);
             if (b < 0) return <span key={i}>{bareWord(raw)} </span>;
@@ -281,10 +281,10 @@ export function ClozeCard({
                   style={{ width: `${Math.max(4, solutions[b].length + 2)}ch` }}
                   className={`mx-0.5 rounded-xl border-2 bg-transparent px-1.5 py-0.5 text-center outline-none ${
                     state === "right"
-                      ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
+                      ? "border-green-500 text-green-600 dark:text-green-400"
                       : state === "wrong"
-                        ? "border-rose-500 text-rose-600 dark:text-rose-400"
-                        : "border-violet-400/60 dark:border-violet-500/50 focus:border-violet-500 dark:focus:border-violet-400"
+                        ? "border-red-500 text-red-600 dark:text-red-400"
+                        : "border-slate-300 dark:border-zinc-600 focus:border-teal-600 dark:focus:border-teal-400"
                   }`}
                 />{" "}
               </span>
@@ -295,10 +295,10 @@ export function ClozeCard({
 
       <Actions canCheck={answers.some((a) => a.trim() !== "")} onCheck={check} onReveal={reveal} onNext={onNext} last={index >= total - 1} />
 
-      {allRight && !revealed && <p role="status" className="text-base font-semibold text-emerald-600 dark:text-emerald-400">✓ Chính xác!</p>}
+      {allRight && !revealed && <p role="status" className="text-base font-semibold text-green-700 dark:text-green-300">✓ Chính xác!</p>}
       {revealed && <p role="status" className="text-sm text-slate-600 dark:text-zinc-400">Đây là đáp án của câu này.</p>}
       {graded && !allRight && (
-        <p role="status" className="text-sm text-rose-600 dark:text-rose-400">
+        <p role="status" className="text-sm text-red-600 dark:text-red-400">
           Đúng {rightCount}/{blanks.length} chỗ trống. Sửa lại các ô đỏ rồi kiểm tra tiếp.
         </p>
       )}

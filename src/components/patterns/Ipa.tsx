@@ -35,7 +35,7 @@ export function useIpa(): [boolean, (on: boolean) => void] {
 export function IpaLine({ ipa }: { ipa?: string }) {
   const [on] = useIpa();
   if (!on || !ipa) return null;
-  return <p className="font-mono text-xs text-violet-600 dark:text-violet-300 break-words">{ipa}</p>;
+  return <p className="font-mono text-xs text-teal-700 dark:text-teal-300 break-words">{ipa}</p>;
 }
 
 /** The switch for those lines */
@@ -48,7 +48,7 @@ export function IpaToggle() {
       aria-label="Hiện cách đọc IPA"
       title="IPA = ký hiệu cách đọc"
       className={`shrink-0 px-3 min-h-[40px] rounded-full text-xs font-bold border ${
-        on ? "bg-violet-600 border-violet-600 text-white" : "border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300"
+        on ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600" : "border-slate-200 bg-white dark:border-zinc-700 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
       }`}
     >
       IPA

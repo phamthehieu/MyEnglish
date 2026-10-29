@@ -75,9 +75,9 @@ export default function WeeklyProgressCard({ words, compact = false }: { words: 
   const lowRetention = enoughData && (retentionPct as number) < targetPct - 5;
 
   return (
-    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 space-y-4 shadow-sm">
-      <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-        <CalendarCheck className="w-4 h-4 text-cyan-500" />
+    <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+      <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
+        <CalendarCheck className="h-5 w-5 text-teal-700 dark:text-teal-300" />
         <span>Tuần này</span>
       </h3>
 
@@ -109,22 +109,22 @@ export default function WeeklyProgressCard({ words, compact = false }: { words: 
 function Stat({ label, value, tone }: { label: string; value: string; tone?: "good" | "warn" }) {
   const color =
     tone === "good"
-      ? "text-emerald-600 dark:text-emerald-400"
+      ? "text-green-700 dark:text-green-400"
       : tone === "warn"
-      ? "text-amber-600 dark:text-amber-400"
-      : "text-slate-900 dark:text-white";
+      ? "text-amber-700 dark:text-amber-400"
+      : "text-slate-900 dark:text-zinc-100";
   return (
-    <div className="rounded-xl bg-slate-50 dark:bg-zinc-950/60 border border-slate-200/70 dark:border-zinc-800 px-3 py-2">
-      <div className={`text-lg font-extrabold ${color}`}>{value}</div>
+    <div className="min-w-0 rounded-xl bg-slate-50 px-3 py-2.5 dark:bg-zinc-800/50">
+      <div className={`text-lg font-bold tabular-nums ${color}`}>{value}</div>
       <div className="text-xs text-slate-600 dark:text-zinc-400 leading-tight">{label}</div>
     </div>
   );
 }
 
 const TIER_STYLE: Record<Tier, { badge: string; bar: string }> = {
-  easy: { badge: "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300", bar: "bg-emerald-500" },
-  medium: { badge: "bg-sky-100 dark:bg-sky-950/70 text-sky-700 dark:text-sky-300", bar: "bg-sky-500" },
-  hard: { badge: "bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300", bar: "bg-amber-500" },
+  easy: { badge: "bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300", bar: "bg-teal-700 dark:bg-teal-500" },
+  medium: { badge: "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300", bar: "bg-teal-700 dark:bg-teal-500" },
+  hard: { badge: "bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-300", bar: "bg-teal-700 dark:bg-teal-500" },
 };
 const TIER_ORDER: Record<Tier, number> = { easy: 0, medium: 1, hard: 2 };
 
@@ -146,9 +146,9 @@ function WeeklyChallenges({
   const total = list.reduce((sum, c) => sum + TIER_XP[c.tier], 0) + ALL_DONE_BONUS_XP;
   return (
     <div className="pt-3 border-t border-slate-100 dark:border-zinc-800 space-y-2.5">
-      <div className="flex items-center justify-between gap-2 text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
         <span className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-zinc-200">
-          {doneCount === list.length ? <Trophy className="w-3.5 h-3.5 text-amber-500" /> : <Target className="w-3.5 h-3.5 text-indigo-500" />}
+          {doneCount === list.length ? <Trophy className="w-4 h-4 text-green-600 dark:text-green-400" /> : <Target className="w-4 h-4 text-teal-700 dark:text-teal-300" />}
           Thử thách tuần
         </span>
         <span className="text-xs text-slate-600 dark:text-zinc-400">
@@ -162,14 +162,14 @@ function WeeklyChallenges({
           const style = TIER_STYLE[c.tier];
           return (
             <li key={c.kind} className="space-y-1">
-              <div className="flex items-start gap-2 text-xs">
-                <span className={`shrink-0 mt-px px-1.5 py-0.5 rounded text-xs font-bold ${style.badge}`}>{TIER_LABEL[c.tier]}</span>
+              <div className="flex items-start gap-2 text-sm">
+                <span className={`shrink-0 mt-px px-2 py-0.5 rounded-full text-xs font-semibold ${style.badge}`}>{TIER_LABEL[c.tier]}</span>
                 {/* Hover or focus: what counts and where to do it, and why the target is this size */}
                 <span className="group relative flex-1 min-w-0">
                   <span
                     tabIndex={0}
                     aria-describedby={`howto-${c.kind}`}
-                    className={`leading-snug cursor-help underline decoration-dotted decoration-slate-300 dark:decoration-zinc-600 underline-offset-2 outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 rounded-sm ${
+                    className={`leading-snug cursor-help underline decoration-dotted decoration-slate-300 dark:decoration-zinc-600 underline-offset-2 outline-none focus-visible:ring-2 focus-visible:ring-teal-600 rounded-sm ${
                       done ? "text-slate-600 dark:text-zinc-400 line-through" : "text-slate-800 dark:text-zinc-200"
                     }`}
                   >
@@ -192,16 +192,16 @@ function WeeklyChallenges({
                   </span>
                 </span>
                 <span className="shrink-0 text-right">
-                  <span className="block font-mono text-xs text-slate-600 dark:text-zinc-400">
+                  <span className="block tabular-nums text-xs text-slate-600 dark:text-zinc-400">
                     {progress}/{c.target}
                   </span>
-                  <span className={`block text-xs font-semibold ${done ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
+                  <span className={`block text-xs font-semibold ${done ? "text-green-700 dark:text-green-400" : "text-slate-600 dark:text-zinc-400"}`}>
                     {done ? <Check className="inline w-3 h-3 -mt-0.5" /> : "+"}
                     {TIER_XP[c.tier]} XP
                   </span>
                 </span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
                 <div className={`h-full rounded-full transition-all duration-300 ${style.bar}`} style={{ width: `${Math.round((progress / c.target) * 100)}%` }} />
               </div>
             </li>

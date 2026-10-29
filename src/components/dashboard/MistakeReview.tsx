@@ -52,19 +52,24 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
   const ok = result !== null && result !== Rating.Again;
 
   return (
-    <div className="p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 space-y-4">
-      <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-zinc-400">
-        <span className="font-semibold uppercase tracking-wider">Sửa lỗi bạn từng viết</span>
-        <span className="font-mono">
-          {index + 1} / {mistakes.length}
-        </span>
+    <div className="p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4">
+      <div className="space-y-1">
+        <div className="flex items-center justify-between gap-2 text-xs font-semibold">
+          <span className="min-w-0 truncate text-slate-500 dark:text-zinc-400">Sửa lỗi bạn từng viết</span>
+          <span className="shrink-0 tabular-nums text-teal-800 dark:text-teal-300">
+            {index + 1} / {mistakes.length}
+          </span>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
+          <div className="h-full rounded-full bg-teal-700 transition-[width] duration-300 dark:bg-teal-500" style={{ width: `${((index + 1) / Math.max(1, mistakes.length)) * 100}%` }} />
+        </div>
       </div>
 
-      <div className="text-base leading-relaxed text-slate-800 dark:text-zinc-200">
+      <div className="text-lg leading-relaxed text-slate-800 dark:text-zinc-200 break-words">
         {prompt ? (
           <>
             {prompt.before}
-            <span className="px-1 rounded bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 font-semibold underline decoration-wavy decoration-rose-400">
+            <span className="px-1 rounded bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-300 font-semibold underline decoration-wavy decoration-red-400">
               {prompt.wrong}
             </span>
             {prompt.after}
@@ -72,7 +77,7 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
         ) : (
           <>
             Bạn từng viết:{" "}
-            <span className="px-1 rounded bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 font-semibold">{m.wrong_text}</span>
+            <span className="px-1 rounded bg-red-50 dark:bg-red-500/15 text-red-700 dark:text-red-300 font-semibold">{m.wrong_text}</span>
           </>
         )}
       </div>
@@ -87,7 +92,7 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
         autoComplete="off"
         className="space-y-2"
       >
-        <label className="block text-xs text-slate-600 dark:text-zinc-400">Gõ lại phần tô đỏ cho đúng:</label>
+        <label className="block text-sm text-slate-500 dark:text-zinc-400">Gõ lại phần tô đỏ cho đúng:</label>
         <input
           ref={inputRef}
           value={input}
@@ -103,28 +108,28 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
           data-lpignore="true"
           data-1p-ignore="true"
           data-form-type="other"
-          className="w-full p-3 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500"
+          className="w-full min-h-12 px-4 rounded-xl border-2 border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-base font-semibold text-slate-900 dark:text-zinc-100 focus:outline-none focus:border-teal-600 dark:focus:border-teal-500 disabled:opacity-80"
           placeholder="Cách viết đúng…"
         />
         {result === null && (
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => setHint(true)}
-              disabled={hint}
-              className="inline-flex items-center gap-1 min-h-[40px] text-xs text-slate-600 hover:text-amber-600 disabled:text-amber-600"
-            >
-              <Lightbulb className="w-3.5 h-3.5" />
-              {hint ? `Loại lỗi: ${MISTAKE_CATEGORY_LABEL[m.category ?? "other"]}` : "Gợi ý loại lỗi"}
-            </button>
-            <div className="flex items-center gap-2">
-              <button type="button" onClick={() => setResult(Rating.Again)} className="min-h-[40px] px-2 text-xs text-slate-600 hover:text-slate-800 dark:hover:text-zinc-200">
+          <div className="space-y-3 pt-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setHint(true)}
+                disabled={hint}
+                className="inline-flex items-center gap-1.5 min-h-11 px-3.5 rounded-full border border-amber-200 dark:border-amber-500/40 bg-white dark:bg-zinc-900 text-xs font-semibold text-amber-800 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-500/10 disabled:bg-amber-50 dark:disabled:bg-amber-500/10"
+              >
+                <Lightbulb className="w-3.5 h-3.5" />
+                {hint ? `Loại lỗi: ${MISTAKE_CATEGORY_LABEL[m.category ?? "other"]}` : "Gợi ý loại lỗi"}
+              </button>
+              <button type="button" onClick={() => setResult(Rating.Again)} className="min-h-11 px-3.5 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-slate-600 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800">
                 Không nhớ
               </button>
-              <button type="submit" disabled={!input.trim()} className="min-h-[44px] px-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 !text-white text-xs font-semibold disabled:opacity-40">
-                Kiểm tra
-              </button>
             </div>
+            <button type="submit" disabled={!input.trim()} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-[17px] font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+              Kiểm tra
+            </button>
           </div>
         )}
       </form>
@@ -132,20 +137,20 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
       {result !== null && (
         <div className="space-y-3">
           <div
-            className={`p-3 rounded-xl text-xs space-y-1 ${ok ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-800 dark:text-emerald-200" : "bg-rose-50 dark:bg-rose-500/10 text-rose-800 dark:text-rose-200"}`}
+            className={`p-4 rounded-2xl border text-sm space-y-1.5 break-words ${ok ? "border-green-200 dark:border-green-500/30 bg-green-50 dark:bg-green-500/10 text-green-900 dark:text-green-100" : "border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-100"}`}
           >
-            <div className="flex items-center gap-1.5 font-semibold">
-              {ok ? <CheckCircle2 className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-              {ok ? "Đúng rồi!" : "Chưa đúng."} Cách viết đúng: <span className="font-mono">{m.right_text}</span>
+            <div className="flex flex-wrap items-center gap-1.5 font-semibold">
+              {ok ? <CheckCircle2 className="w-5 h-5 text-green-700 dark:text-green-400" /> : <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />}
+              {ok ? "Đúng rồi!" : "Chưa đúng."} Cách viết đúng: <span>{m.right_text}</span>
             </div>
             {m.why_vn && <p>{m.why_vn}</p>}
             {m.sentence && <p className="italic opacity-80">{m.sentence}</p>}
           </div>
-          <div className="flex items-center justify-end gap-2">
+          <div className="space-y-3">
             {!ok && input.trim() && (
               <button
                 onClick={() => next(Rating.Hard)}
-                className="min-h-[44px] px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-xs text-slate-700 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                className="w-full min-h-12 px-5 rounded-2xl border border-teal-700/30 dark:border-teal-400/40 bg-white dark:bg-transparent text-base font-semibold text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10"
               >
                 Tôi chỉ gõ nhầm
               </button>
@@ -153,10 +158,10 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
             <button
               onClick={() => next(ok ? Rating.Good : Rating.Again)}
               autoFocus
-              className="inline-flex items-center gap-1.5 min-h-[44px] px-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold"
+              className="w-full inline-flex items-center justify-center gap-2 min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-[17px] font-semibold shadow-sm"
             >
               Tiếp
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>

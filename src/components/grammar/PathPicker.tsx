@@ -27,36 +27,32 @@ interface PathPickerProps {
 
 const STATUS_STYLE: Record<LessonStatus, { label: string; className: string }> = {
   new: { label: "Mới", className: "bg-slate-100 text-slate-600 dark:bg-zinc-800 dark:text-zinc-400" },
-  learning: { label: "Đang học", className: "bg-cyan-100 text-cyan-800 dark:bg-cyan-950/70 dark:text-cyan-300" },
-  due: { label: "Đến hạn", className: "bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300" },
-  mastered: { label: "Đã thuộc", className: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300" },
+  learning: { label: "Đang học", className: "bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300" },
+  due: { label: "Đến hạn", className: "bg-amber-50 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300" },
+  mastered: { label: "Đã thuộc", className: "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300" },
 };
 
-/** Lesson card colours by status: a thin accent on top, a soft tint behind, and the legend dot */
+/** Lesson card colours by status: white cards with a thin accent on top (the status), and the legend dot */
 const CARD_STYLE: Record<LessonStatus, { accent: string; surface: string; dot: string }> = {
   new: {
     accent: "bg-slate-300 dark:bg-zinc-600",
-    surface:
-      "border-slate-200 bg-white hover:border-slate-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700",
+    surface: "border-slate-200 bg-white hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800",
     dot: "bg-slate-300 dark:bg-zinc-500",
   },
   learning: {
-    accent: "bg-cyan-500",
-    surface:
-      "border-cyan-200 bg-cyan-50/70 hover:border-cyan-300 dark:border-cyan-900/60 dark:bg-cyan-950/25 dark:hover:border-cyan-800",
-    dot: "bg-cyan-500",
+    accent: "bg-teal-700 dark:bg-teal-500",
+    surface: "border-slate-200 bg-white hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800",
+    dot: "bg-teal-700 dark:bg-teal-500",
   },
   due: {
     accent: "bg-amber-500",
-    surface:
-      "border-amber-200 bg-amber-50/80 hover:border-amber-300 dark:border-amber-900/60 dark:bg-amber-950/25 dark:hover:border-amber-800",
+    surface: "border-amber-200 bg-amber-50/60 hover:bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10 dark:hover:bg-amber-500/15",
     dot: "bg-amber-500",
   },
   mastered: {
-    accent: "bg-emerald-500",
-    surface:
-      "border-emerald-200 bg-emerald-50/70 hover:border-emerald-300 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:hover:border-emerald-800",
-    dot: "bg-emerald-500",
+    accent: "bg-green-600",
+    surface: "border-slate-200 bg-white hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:bg-zinc-800",
+    dot: "bg-green-600",
   },
 };
 
@@ -76,7 +72,7 @@ export function MasteryBar({ mastery, className = "w-16 sm:w-24" }: { mastery: n
   return (
     <span className={`inline-block h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800 ${className}`}>
       <span
-        className={`block h-full rounded-full ${value >= 80 ? "bg-emerald-500" : "bg-cyan-500"}`}
+        className={`block h-full rounded-full ${value >= 80 ? "bg-green-600" : "bg-teal-700 dark:bg-teal-500"}`}
         style={{ width: `${value}%` }}
       />
     </span>
@@ -100,7 +96,7 @@ function ProgressRing({ value, size = 18, stroke = 3 }: { value: number; size?: 
         strokeLinecap="round"
         strokeDasharray={c}
         strokeDashoffset={c * (1 - pct / 100)}
-        className={`transition-[stroke-dashoffset] duration-300 ${pct >= 80 ? "stroke-emerald-500" : "stroke-cyan-500"}`}
+        className={`transition-[stroke-dashoffset] duration-300 ${pct >= 80 ? "stroke-green-600" : "stroke-teal-700 dark:stroke-teal-500"}`}
       />
     </svg>
   );
@@ -172,8 +168,8 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
         onClick={isPractice ? onToggle : onOpen}
         aria-pressed={isPractice ? picked : undefined}
         title={showEn ? `${name} · ${lesson.title}` : name}
-        className={`relative flex min-h-[96px] w-full flex-1 flex-col overflow-hidden rounded-xl border px-2.5 pb-2.5 pt-3.5 text-left shadow-sm transition duration-150 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 ${style.surface} ${
-          picked ? "ring-2 ring-cyan-500 dark:ring-cyan-400" : ""
+        className={`relative flex min-h-[96px] w-full flex-1 flex-col overflow-hidden rounded-2xl border px-3 pb-2.5 pt-3.5 text-left shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 ${style.surface} ${
+          picked ? "ring-2 ring-teal-700 dark:ring-teal-400" : ""
         } ${dimmed ? "opacity-60 hover:opacity-100" : ""}`}
       >
         <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${style.accent}`} />
@@ -183,7 +179,7 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
             aria-hidden="true"
             className={`absolute right-2 top-2.5 flex h-5 w-5 items-center justify-center rounded-full border transition ${
               picked
-                ? "border-cyan-600 bg-cyan-600 !text-white"
+                ? "border-teal-700 bg-teal-700 !text-white"
                 : "border-slate-300 bg-white/70 dark:border-zinc-600 dark:bg-zinc-900/60"
             }`}
           >
@@ -192,20 +188,20 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
         )}
 
         {/* Room on the right for the switch / check in the corner */}
-        <span className={`line-clamp-2 break-words text-sm font-semibold leading-snug text-slate-900 dark:text-white ${isPractice ? "pr-7" : ""}`}>
+        <span className={`line-clamp-2 break-words text-sm font-semibold leading-snug text-slate-900 dark:text-zinc-100 ${isPractice ? "pr-7" : ""}`}>
           {name}
         </span>
-        {showEn && <span className="mt-0.5 block truncate text-xs text-slate-600 dark:text-zinc-400">{lesson.title}</span>}
+        {showEn && <span className="mt-0.5 block truncate text-xs text-slate-500 dark:text-zinc-400">{lesson.title}</span>}
 
         {/* Wraps when the card is narrow: the review date drops under the gauge */}
         <span className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-2 text-xs">
           <span className="inline-flex items-center gap-1.5">
             <ProgressRing value={mastery} />
-            <span className="font-mono text-slate-600 dark:text-zinc-300">{Math.round(mastery)}%</span>
+            <span className="tabular-nums text-slate-600 dark:text-zinc-300">{Math.round(mastery)}%</span>
           </span>
           <span
             className={`max-w-full truncate ${
-              status === "due" ? "font-semibold text-amber-700 dark:text-amber-400" : "text-slate-600 dark:text-zinc-400"
+              status === "due" ? "font-semibold text-amber-800 dark:text-amber-300" : "text-slate-500 dark:text-zinc-400"
             }`}
           >
             {status === "new" ? "Mới" : row.reviewText}
@@ -225,9 +221,9 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
             e.stopPropagation();
             onToggle();
           }}
-          className="mt-1 flex min-h-[40px] w-full items-center gap-2 rounded-lg px-1.5 text-left text-xs font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 dark:text-zinc-300"
+          className="mt-1 flex min-h-11 w-full items-center gap-2 rounded-xl px-1.5 text-left text-xs font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 dark:text-zinc-300"
         >
-          <span className={`relative h-4 w-7 shrink-0 rounded-full transition-colors ${onPath ? "bg-cyan-600" : "bg-slate-300 dark:bg-zinc-600"}`}>
+          <span className={`relative h-4 w-7 shrink-0 rounded-full transition-colors ${onPath ? "bg-teal-700 dark:bg-teal-500" : "bg-slate-300 dark:bg-zinc-600"}`}>
             <span
               className={`absolute left-0.5 top-0.5 h-3 w-3 rounded-full bg-white shadow transition-transform ${
                 onPath ? "translate-x-3" : ""
@@ -239,7 +235,7 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
       )}
 
       {isNext && (
-        <span className="pointer-events-none absolute -top-2 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-cyan-600 px-2 py-0.5 text-xs font-bold !text-white shadow-sm">
+        <span className="pointer-events-none absolute -top-2 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-teal-700 px-2 py-0.5 text-xs font-semibold !text-white dark:bg-teal-600">
           <ArrowRight className="h-2.5 w-2.5" strokeWidth={3} />
           Tiếp theo
         </span>
@@ -253,7 +249,7 @@ type TenseItem = { id: string; title: string; row: LessonRow };
 function SubHeading({ children }: { children: ReactNode }) {
   return (
     <div className="flex items-center gap-2 px-0.5">
-      <span className="text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400">{children}</span>
+      <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">{children}</span>
       <span className="h-px flex-1 bg-slate-200 dark:bg-zinc-800" />
     </div>
   );
@@ -263,9 +259,9 @@ function SubHeading({ children }: { children: ReactNode }) {
 const TABLE_MIN_WIDTH = 680;
 
 const COLUMN_HEAD =
-  "flex items-end justify-center px-1 pb-0.5 text-center text-xs font-semibold leading-tight text-slate-600 dark:text-zinc-400";
+  "flex items-end justify-center px-1 pb-0.5 text-center text-xs font-semibold leading-tight text-slate-500 dark:text-zinc-400";
 const ROW_HEAD =
-  "flex items-center justify-center rounded-xl bg-slate-100 px-1 text-center text-xs font-bold leading-tight text-slate-600 dark:bg-zinc-800/70 dark:text-zinc-300";
+  "flex items-center justify-center rounded-2xl bg-slate-100 px-1 text-center text-xs font-semibold leading-tight text-slate-600 dark:bg-zinc-800/70 dark:text-zinc-300";
 
 /** The lessons of one chapter: the tense table for a tense chapter, a grid of cards otherwise */
 function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row: LessonRow) => ReactNode }) {
@@ -318,7 +314,7 @@ function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row
                   <div
                     key={col.aspect}
                     aria-hidden="true"
-                    className="min-h-[96px] rounded-xl border border-dashed border-slate-200 dark:border-zinc-800"
+                    className="min-h-[96px] rounded-2xl border border-dashed border-slate-200 dark:border-zinc-800"
                   />
                 );
               })}
@@ -478,13 +474,13 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
 
   return (
     <section className="space-y-4">
-      <div className="space-y-1 px-1">
+      <div className="space-y-2 px-1">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-sm font-bold text-slate-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">
             {isPractice ? "Luyện theo thì" : "Lộ trình theo sách"}
           </h2>
           {/* Same lessons, two uses: the daily path, or picking tenses to practise */}
-          <div role="tablist" aria-label="Chế độ" className="inline-flex items-center gap-0.5 rounded-lg border border-slate-200 bg-slate-100 p-0.5 dark:border-zinc-800 dark:bg-zinc-900">
+          <div role="tablist" aria-label="Chế độ" className="inline-flex flex-wrap items-center gap-2">
             {(
               [
                 ["path", "Lộ trình"],
@@ -497,10 +493,10 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
                 role="tab"
                 aria-selected={mode === m}
                 onClick={() => changeMode(m)}
-                className={`min-h-[40px] rounded-md px-3 py-1 text-xs font-semibold transition-colors ${
+                className={`min-h-10 rounded-full px-4 text-sm font-semibold transition-colors ${
                   mode === m
-                    ? "bg-white text-cyan-700 shadow-sm dark:bg-zinc-800 dark:text-cyan-300"
-                    : "text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 }`}
               >
                 {label}
@@ -508,13 +504,13 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
             ))}
           </div>
         </div>
-        <p className="text-xs leading-relaxed text-slate-600 dark:text-zinc-400">
+        <p className="text-sm leading-relaxed text-slate-500 dark:text-zinc-400">
           {isPractice
             ? "Chọn 1 thì, 2 thì hoặc nhiều thì: app lấy các câu chỉ dùng những thì này."
             : "Công tắc \"Trên lộ trình\" ở mỗi bài: bật là bài đó nằm trong lịch học hằng ngày, tắt là bỏ qua. Bài mới đến theo thứ tự sách, mỗi ngày một bài."}
         </p>
-        {!isPractice && pathNote && <p className="text-xs text-amber-600 dark:text-amber-400">{pathNote}</p>}
-        <ul className="flex flex-wrap items-center gap-x-3.5 gap-y-1 pt-1 text-xs text-slate-600 dark:text-zinc-400">
+        {!isPractice && pathNote && <p className="text-sm text-amber-800 dark:text-amber-300">{pathNote}</p>}
+        <ul className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-xs text-slate-500 dark:text-zinc-400">
           {LEGEND_ORDER.map((s) => (
             <li key={s} className="inline-flex items-center gap-1.5">
               <span aria-hidden="true" className={`h-2 w-2 rounded-full ${CARD_STYLE[s].dot}`} />
@@ -535,21 +531,21 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
 
           return (
             <div key={chapter.chapterId}>
-              <div className="space-y-2 rounded-2xl border border-slate-200 bg-white p-2.5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-3">
+              <div className="space-y-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-4">
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     onClick={() => setOpenOverride((prev) => ({ ...prev, [chapter.chapterId]: !isOpen }))}
-                    className="flex min-w-0 flex-1 items-center gap-2.5 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                    className="flex min-h-11 min-w-0 flex-1 items-center gap-2.5 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600"
                   >
                     <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 ${isOpen ? "" : "-rotate-90"}`}
+                      className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200 dark:text-zinc-400 ${isOpen ? "" : "-rotate-90"}`}
                     />
-                    <span className="inline-flex h-6 shrink-0 items-center rounded-md bg-cyan-50 px-2 text-xs font-bold text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-300">
+                    <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-teal-50 px-2.5 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
                       Ch.{order}
                     </span>
-                    <span className="min-w-0 flex-1 break-words text-sm font-bold leading-snug text-slate-900 dark:text-white">
+                    <span className="min-w-0 flex-1 break-words text-base font-semibold leading-snug text-slate-900 dark:text-zinc-100">
                       {titleVn}
                     </span>
                   </button>
@@ -557,7 +553,7 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
                     <button
                       type="button"
                       onClick={() => toggleChapter(ids)}
-                      className="shrink-0 min-h-[40px] rounded-lg border border-cyan-200 px-2.5 py-1 text-xs font-semibold text-cyan-700 transition hover:bg-cyan-50 dark:border-cyan-900 dark:text-cyan-400 dark:hover:bg-cyan-950/40"
+                      className="shrink-0 min-h-10 rounded-full border border-teal-700/30 px-3 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:text-teal-300 dark:hover:bg-teal-400/10"
                     >
                       {allChecked ? "Bỏ cả chương" : "Chọn cả chương"}
                     </button>
@@ -565,10 +561,10 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
                 </div>
                 {/* Progress on its own line, so it never competes with the title and the action for width */}
                 <div className="flex items-center gap-2 pl-[1.625rem] text-xs text-slate-500 dark:text-zinc-400">
-                  <span className="h-1.5 w-full max-w-[14rem] overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
+                  <span className="h-2 w-full max-w-[14rem] overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
                     <span
                       className={`block h-full rounded-full transition-[width] duration-300 ${
-                        percent >= 100 ? "bg-emerald-500" : "bg-cyan-500"
+                        percent >= 100 ? "bg-green-600" : "bg-teal-700 dark:bg-teal-500"
                       }`}
                       style={{ width: `${percent}%` }}
                     />
@@ -580,7 +576,7 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
               </div>
 
               {isOpen && (
-                <div className="mt-2.5 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-2.5 dark:border-zinc-800 dark:bg-zinc-900/40 sm:p-3">
+                <div className="mt-3 px-0.5">
                   <ChapterBody rows={rows} renderCard={renderCard} />
                 </div>
               )}
@@ -590,12 +586,12 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
       </div>
 
       {isPractice && (
-        <div className="sticky bottom-2 z-20 flex items-center gap-2 rounded-xl border border-cyan-200 bg-white/95 p-2.5 shadow-lg backdrop-blur dark:border-cyan-900 dark:bg-zinc-900/95">
+        <div className="sticky bottom-2 z-20 flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-md dark:border-zinc-800 dark:bg-zinc-900">
           <button
             type="button"
             disabled={pickedInBookOrder.length === 0}
             onClick={() => onPractice(pickedInBookOrder)}
-            className="inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-lg bg-cyan-600 px-3 py-2 text-sm font-semibold !text-white transition hover:bg-cyan-500 disabled:opacity-40"
+            className="inline-flex min-h-12 min-w-0 flex-1 items-center justify-center gap-2 rounded-2xl bg-teal-700 px-4 text-base font-semibold !text-white shadow-sm transition-colors hover:bg-teal-800 disabled:opacity-50 dark:bg-teal-600 dark:hover:bg-teal-500"
           >
             <Layers className="h-4 w-4 shrink-0" />
             <span className="truncate">Luyện {pickedInBookOrder.length} bài đã chọn</span>
@@ -603,7 +599,7 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
           <button
             type="button"
             onClick={() => changeMode("path")}
-            className="shrink-0 rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="min-h-12 shrink-0 rounded-2xl px-4 text-base font-semibold text-teal-700 transition-colors hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
           >
             Huỷ
           </button>

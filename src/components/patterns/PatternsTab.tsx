@@ -12,6 +12,7 @@ import { addStageWords } from "@/services/roadmap/words";
 import { PAGE_CONTAINER } from "../dashboard/shared";
 import GrammarTipCard from "../grammar/GrammarTipCard";
 import Collapse from "../ui/Collapse";
+import { Button, Card, ProgressBar } from "../ui/kit";
 import DaySession from "../roadmap/DaySession";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import PatternRunner from "./PatternRunner";
@@ -43,7 +44,7 @@ function StepDots({ step }: { step: number }) {
   return (
     <span className="inline-flex gap-1" aria-label={`Đã xong ${step}/${STEPS} bước`}>
       {Array.from({ length: STEPS }, (_, i) => (
-        <span key={i} className={`w-2 h-2 rounded-full ${i < step ? "bg-emerald-500" : "bg-slate-300 dark:bg-zinc-700"}`} />
+        <span key={i} className={`w-2 h-2 rounded-full ${i < step ? "bg-teal-700 dark:bg-teal-500" : "bg-slate-200 dark:bg-zinc-700"}`} />
       ))}
     </span>
   );
@@ -51,31 +52,33 @@ function StepDots({ step }: { step: number }) {
 
 function GoalPicker({ current, onPick, onLater }: { current: RoadmapGoal | null; onPick: (g: RoadmapGoal) => void; onLater?: () => void }) {
   return (
-    <div className="rounded-2xl border-2 border-violet-300 dark:border-violet-700 bg-violet-50 dark:bg-violet-950/30 p-4 space-y-3">
+    <Card className="space-y-3">
       <div>
-        <p className="font-bold text-violet-900 dark:text-violet-200">Bạn muốn dùng tiếng Anh để làm gì?</p>
-        <p className="text-xs text-violet-800 dark:text-violet-300">App sắp xếp lộ trình nói theo mục tiêu này. Bạn đổi lại được bất cứ lúc nào.</p>
+        <p className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Bạn muốn dùng tiếng Anh để làm gì?</p>
+        <p className="text-sm text-slate-500 dark:text-zinc-400">App sắp xếp lộ trình nói theo mục tiêu này. Bạn đổi lại được bất cứ lúc nào.</p>
       </div>
       <div className="grid grid-cols-2 gap-2">
         {GOALS.map((g) => (
           <button
             key={g}
             onClick={() => onPick(g)}
-            className={`text-left rounded-xl border px-3 py-2.5 ${
-              current === g ? "border-violet-600 bg-violet-600 text-white" : "border-violet-200 dark:border-violet-800 bg-white dark:bg-zinc-900 text-slate-900 dark:text-white"
+            className={`min-w-0 min-h-14 text-left rounded-xl border px-3 py-2.5 ${
+              current === g
+                ? "border-teal-700 bg-teal-50 text-teal-900 ring-1 ring-teal-700 dark:border-teal-500 dark:bg-teal-400/10 dark:text-teal-100 dark:ring-teal-500"
+                : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 hover:border-teal-600/50"
             }`}
           >
-            <span className="block text-sm font-bold">{GOAL_LABEL[g]}</span>
-            <span className={`block text-xs ${current === g ? "text-violet-100" : "text-slate-600 dark:text-zinc-400"}`}>{GOAL_HINT[g]}</span>
+            <span className="block text-sm font-semibold">{GOAL_LABEL[g]}</span>
+            <span className="block text-xs text-slate-500 dark:text-zinc-400">{GOAL_HINT[g]}</span>
           </button>
         ))}
       </div>
       {onLater && (
-        <button onClick={onLater} className="text-xs font-semibold underline underline-offset-2 text-violet-800 dark:text-violet-300">
+        <button onClick={onLater} className="min-h-10 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300">
           Để sau (học theo thứ tự chung)
         </button>
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -85,13 +88,13 @@ function StageGrammar({ stageId, onOpenLesson }: { stageId: string; onOpenLesson
   const tip = tipForStage(stageId);
   if (!tip) return null;
   return (
-    <div className="rounded-xl bg-white/70 dark:bg-zinc-900/60 border border-cyan-200 dark:border-cyan-900/60">
-      <button onClick={() => setShown(!shown)} aria-expanded={shown} className="w-full flex items-center justify-between gap-2 px-3 py-2 text-left">
-        <span className="flex items-center gap-2 min-w-0 text-sm font-semibold text-cyan-900 dark:text-cyan-200">
-          <GraduationCap className="w-4 h-4 shrink-0" />
+    <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/50">
+      <button onClick={() => setShown(!shown)} aria-expanded={shown} className="w-full min-h-11 flex items-center justify-between gap-2 px-3 py-2 text-left">
+        <span className="flex items-center gap-2 min-w-0 text-sm font-semibold text-slate-700 dark:text-zinc-300">
+          <GraduationCap className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
           <span className="truncate">Vì sao nói vậy? {tip.title}</span>
         </span>
-        <ChevronDown className={`w-4 h-4 shrink-0 text-slate-400 transition-transform ${shown ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-4 h-4 shrink-0 text-slate-500 transition-transform ${shown ? "rotate-180" : ""}`} />
       </button>
       <Collapse open={shown}>
         <div className="px-3 pb-3">
@@ -226,10 +229,10 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
 
   return (
     <div className={PAGE_CONTAINER}>
-      <div className="max-w-2xl mx-auto w-full space-y-5">
+      <div className="max-w-2xl mx-auto w-full space-y-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">Lộ trình nói</h2>
-          <p className="text-sm text-slate-600 dark:text-zinc-400">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Lộ trình nói</h2>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">
             Mỗi chặng một chủ đề: học vài mẫu câu, thay chỗ trống, ghép câu, trả lời nhanh, rồi nói một hội thoại. Gặp lại cùng câu nhiều lần là nói được mà không cần nghĩ.
           </p>
         </div>
@@ -237,7 +240,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
         {PATTERNS.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có mẫu câu nào.</p>}
 
         {notice && (
-          <p className="bar-enter rounded-xl border border-sky-300 dark:border-sky-800 bg-sky-50 dark:bg-sky-950/30 text-sky-900 dark:text-sky-200 px-3 py-2 text-sm" role="status">
+          <p className="bar-enter rounded-xl border border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-950/30 text-teal-900 dark:text-teal-200 px-3 py-2.5 text-sm" role="status">
             {notice}
           </p>
         )}
@@ -255,92 +258,102 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
             }}
           />
         ) : current && plan ? (
-          <div className="rounded-2xl border-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 p-4 space-y-3">
+          <Card className="space-y-4">
             <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-emerald-800 dark:text-emerald-300">
+                <p className="text-sm font-semibold text-teal-800 dark:text-teal-300">
                   Chặng {stages.indexOf(current) + 1}/{stages.length} · {GOAL_LABEL[road.goal ?? "all"]}
                 </p>
-                <p className="text-lg font-bold text-emerald-950 dark:text-emerald-100">{current.title}</p>
+                <p className="text-xl font-semibold text-slate-900 dark:text-zinc-100">{current.title}</p>
               </div>
-              <button onClick={() => setChangingGoal(true)} className="shrink-0 min-h-[40px] px-1 text-xs font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
+              <button onClick={() => setChangingGoal(true)} className="shrink-0 min-h-10 px-1 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300">
                 Đổi mục tiêu
               </button>
             </div>
             {plan.tasks.length > 0 ? (
-              <button onClick={startDay} className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold inline-flex items-center justify-center gap-2">
-                <Play className="w-4 h-4" /> Bắt đầu hôm nay (~{plan.minutes} phút)
-              </button>
+              <Button size="lg" block onClick={startDay}>
+                <Play className="w-5 h-5" /> Bắt đầu hôm nay (~{plan.minutes} phút)
+              </Button>
             ) : (
-              <p className="rounded-xl bg-white/70 dark:bg-zinc-900/60 px-3 py-2 text-sm text-emerald-900 dark:text-emerald-100">
+              <p className="rounded-xl bg-slate-50 dark:bg-zinc-800/50 px-3 py-2.5 text-sm text-slate-700 dark:text-zinc-300">
                 {plan.complete ? "Chặng này đã đủ điều kiện hoàn thành: bấm vào chặng ở dưới để đóng lại." : "Hôm nay bạn đã xong phần của chặng này. Quay lại vào ngày mai để làm bước tiếp theo (mỗi bước cách nhau một ngày để nhớ lâu)."}
               </p>
             )}
-            <div className="h-2 rounded-full bg-emerald-200 dark:bg-emerald-900 overflow-hidden" aria-label="Tiến độ lộ trình">
-              <div className="h-full bg-emerald-600 transition-[width] duration-500 ease-out motion-reduce:transition-none" style={{ width: `${(finishedCount / Math.max(1, stages.length)) * 100}%` }} />
+            <div className="space-y-1.5">
+              <div aria-label="Tiến độ lộ trình">
+                <ProgressBar value={(finishedCount / Math.max(1, stages.length)) * 100} />
+              </div>
+              <p className="text-sm text-slate-500 dark:text-zinc-400">
+                Đã xong {finishedCount}/{stages.length} chặng · còn {etaText} nếu học {minutes} phút mỗi ngày
+              </p>
             </div>
-            <p className="text-xs text-emerald-900 dark:text-emerald-200">
-              Đã xong {finishedCount}/{stages.length} chặng · còn {etaText} nếu học {minutes} phút mỗi ngày
-            </p>
             {startsLower && (
-              <p className="text-xs text-emerald-900 dark:text-emerald-200">
+              <p className="text-sm text-slate-500 dark:text-zinc-400">
                 Mẫu câu {wantedLevel} chưa có, nên lộ trình tạm bắt đầu từ {stages[0].level}. Bạn vẫn học từ vựng {wantedLevel} như bình thường.
               </p>
             )}
-            <p className="text-xs text-emerald-900 dark:text-emerald-200">
+            <p className="text-sm text-slate-700 dark:text-zinc-300">
               Chặng này: {current.patterns.map((p) => p.frame_en).join("  ·  ")}
             </p>
             <StageGrammar stageId={current.id} onOpenLesson={onOpenGrammarLesson} />
 
             {upperLevel &&
               (jumping ? (
-                <div className="rounded-xl bg-white/70 dark:bg-zinc-900/60 px-3 py-2 space-y-2 text-xs text-emerald-900 dark:text-emerald-100">
+                <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/50 p-3 space-y-2 text-sm text-slate-700 dark:text-zinc-300">
                   <p>
                     Đánh dấu {leftInLevel} chặng {current.level} còn lại là đã biết và chuyển sang {upperLevel}? Bạn vẫn xem lại được từng chặng ở danh sách dưới.
                   </p>
-                  <div className="flex gap-2">
-                    <button
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
                       onClick={() => {
                         const n = skipLevel(stages, current.level);
                         setJumping(false);
                         setNotice(`Đã bỏ qua ${n} chặng ${current.level}. Bạn đang ở cấp ${upperLevel}.`);
                       }}
-                      className="flex-1 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold"
                     >
                       Nhảy lên {upperLevel}
-                    </button>
-                    <button onClick={() => setJumping(false)} className="flex-1 py-2 rounded-lg border border-emerald-400 dark:border-emerald-700 font-semibold">
+                    </Button>
+                    <Button variant="secondary" onClick={() => setJumping(false)}>
                       Không
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ) : (
-                <button onClick={() => setJumping(true)} className="text-xs font-semibold underline underline-offset-2 text-emerald-800 dark:text-emerald-300">
+                <button onClick={() => setJumping(true)} className="min-h-10 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300">
                   Đã vững {current.level}? Nhảy lên cấp {upperLevel}
                 </button>
               ))}
-          </div>
+          </Card>
         ) : (
-          <p className="rounded-xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-3 text-sm text-emerald-900 dark:text-emerald-100">
-            🎉 Bạn đã đi hết lộ trình {level}! Bạn vẫn luyện thêm bằng "Hỏi đáp nhanh" và "Dịch câu" bên dưới.
-          </p>
+          <Card className="flex items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300">
+              <Check className="h-5 w-5" />
+            </span>
+            <p className="text-sm text-slate-700 dark:text-zinc-300">
+              🎉 Bạn đã đi hết lộ trình {level}! Bạn vẫn luyện thêm bằng "Hỏi đáp nhanh" và "Dịch câu" bên dưới.
+            </p>
+          </Card>
         )}
 
         {PATTERNS.length > 0 && (
           <div className="grid gap-2 sm:grid-cols-2">
-            <button onClick={() => setTranslating(true)} className="text-left rounded-2xl border-2 border-sky-300 dark:border-sky-700 bg-sky-50 dark:bg-sky-950/30 p-3.5 flex items-center gap-3">
-              <Languages className="w-5 h-5 shrink-0 text-sky-700 dark:text-sky-300" />
+            <button onClick={() => setTranslating(true)} className="min-w-0 text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex items-center gap-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-600/50">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+                <Languages className="w-5 h-5" />
+              </span>
               <span className="min-w-0">
-                <span className="block font-bold text-sky-900 dark:text-sky-200">Dịch câu</span>
-                <span className="block text-xs text-sky-800 dark:text-sky-300">10 câu, có đồng hồ</span>
+                <span className="block font-semibold text-slate-900 dark:text-zinc-100">Dịch câu</span>
+                <span className="block text-sm text-slate-500 dark:text-zinc-400">10 câu, có đồng hồ</span>
               </span>
             </button>
             {poolSize > 0 && (
-              <button onClick={rapid} className="text-left rounded-2xl border-2 border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 p-3.5 flex items-center gap-3">
-                <Zap className="w-5 h-5 shrink-0 text-amber-700 dark:text-amber-300" />
+              <button onClick={rapid} className="min-w-0 text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex items-center gap-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-600/50">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
+                  <Zap className="w-5 h-5" />
+                </span>
                 <span className="min-w-0">
-                  <span className="block font-bold text-amber-900 dark:text-amber-200">Hỏi đáp nhanh</span>
-                  <span className="block text-xs text-amber-800 dark:text-amber-300">
+                  <span className="block font-semibold text-slate-900 dark:text-zinc-100">Hỏi đáp nhanh</span>
+                  <span className="block text-sm text-slate-500 dark:text-zinc-400">
                     {poolSize} mẫu đã học · thuộc {masteredCount()}/{PATTERNS.length}
                   </span>
                 </span>
@@ -350,32 +363,32 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
         )}
 
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Các chặng</h3>
+          <h3 className="pt-2 text-sm font-semibold text-slate-500 dark:text-zinc-400">Các chặng</h3>
           {stages.map((stage, i) => {
             const status = road.done.includes(stage.id) ? "done" : road.skipped.includes(stage.id) ? "skipped" : stage === current ? "current" : "later";
             const isOpen = open === stage.id;
             return (
-              <div key={stage.id} className={`rounded-2xl border ${status === "current" ? "border-emerald-400 dark:border-emerald-700" : "border-slate-200 dark:border-zinc-800"} bg-white dark:bg-zinc-900`}>
-                <button onClick={() => setOpen(isOpen ? null : stage.id)} className="w-full flex items-center gap-3 p-3.5 text-left" aria-expanded={isOpen}>
+              <div key={stage.id} className={`rounded-2xl border ${status === "current" ? "border-teal-600/60 dark:border-teal-500/50" : "border-slate-200 dark:border-zinc-800"} bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)]`}>
+                <button onClick={() => setOpen(isOpen ? null : stage.id)} className="w-full min-h-14 flex items-center gap-3 p-3.5 text-left" aria-expanded={isOpen}>
                   <span
-                    className={`shrink-0 w-7 h-7 rounded-full text-xs font-bold inline-flex items-center justify-center ${
+                    className={`shrink-0 w-8 h-8 rounded-full text-xs font-bold inline-flex items-center justify-center ${
                       status === "done" || status === "skipped"
-                        ? "bg-emerald-600 text-white"
+                        ? "bg-green-600 text-white"
                         : status === "current"
-                          ? "bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-200 ring-2 ring-emerald-500"
+                          ? "bg-teal-700 text-white dark:bg-teal-600"
                           : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300"
                     }`}
                   >
                     {status === "done" || status === "skipped" ? <Check className="w-4 h-4" /> : i + 1}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block font-bold text-slate-900 dark:text-white">{stage.title}</span>
-                    <span className="block text-xs text-slate-500 dark:text-zinc-400">
+                    <span className="block font-semibold text-slate-900 dark:text-zinc-100">{stage.title}</span>
+                    <span className="block text-sm text-slate-500 dark:text-zinc-400">
                       {stage.patterns.length} mẫu câu · {stage.words.length} từ
                       {status === "skipped" ? " · đã biết rồi" : status === "done" ? " · đã xong" : ""}
                     </span>
                   </span>
-                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`w-4 h-4 shrink-0 text-slate-500 transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </button>
                 <Collapse open={isOpen}>
                   <div className="px-3.5 pb-3.5 space-y-2">
@@ -384,13 +397,13 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                       const s = stateOf(p);
                       const avg = averageTime(s);
                       return (
-                        <button key={p.id} onClick={() => learn(p)} className="w-full text-left rounded-xl border border-slate-200 dark:border-zinc-800 p-3 space-y-0.5">
+                        <button key={p.id} onClick={() => learn(p)} className="w-full text-left rounded-xl border border-slate-200 dark:border-zinc-800 p-3 space-y-0.5 hover:border-teal-600/50">
                           <span className="flex items-center justify-between gap-2">
-                            <span className="font-bold text-slate-900 dark:text-white">{p.frame_en}</span>
+                            <span className="min-w-0 font-semibold text-slate-900 dark:text-zinc-100">{p.frame_en}</span>
                             <StepDots step={s.step} />
                           </span>
-                          <span className="block text-sm text-slate-600 dark:text-zinc-400">{p.frame_vi}</span>
-                          <span className="block text-xs text-slate-600 dark:text-zinc-400">
+                          <span className="block text-sm text-slate-700 dark:text-zinc-300">{p.frame_vi}</span>
+                          <span className="block text-xs text-slate-500 dark:text-zinc-400">
                             {s.step >= STEPS ? "Đã thuộc · bấm để hỏi đáp nhanh" : s.step === 0 ? "Chưa học" : `Tiếp theo: ${STEP_LABELS[s.step]}`}
                             {avg !== null ? ` · trả lời trung bình ${(avg / 1000).toFixed(1)} giây` : ""}
                           </span>
@@ -398,15 +411,15 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                       );
                     })}
                     {status !== "done" && status !== "skipped" && (
-                      <div className="flex gap-2 pt-1">
+                      <div className="flex flex-wrap gap-2 pt-1">
                         {status !== "current" && (
-                          <button onClick={() => setFocus(stage.id)} className="flex-1 min-h-[44px] rounded-xl border border-emerald-400 text-emerald-800 dark:text-emerald-200 text-sm font-semibold">
+                          <Button variant="secondary" size="sm" className="flex-1 min-h-11" onClick={() => setFocus(stage.id)}>
                             Học chặng này
-                          </button>
+                          </Button>
                         )}
-                        <button onClick={() => setSkipTest(stage)} className="flex-1 min-h-[44px] px-2 rounded-xl border border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-semibold inline-flex items-center justify-center gap-1.5">
+                        <Button variant="ghost" size="sm" className="flex-1 min-h-11" onClick={() => setSkipTest(stage)}>
                           <SkipForward className="w-4 h-4" /> Làm bài kiểm tra để bỏ qua
-                        </button>
+                        </Button>
                       </div>
                     )}
                   </div>

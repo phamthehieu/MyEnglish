@@ -87,9 +87,9 @@ function Kbd({ children }: { children: React.ReactNode }) {
 
 function ProgressBar({ value, tone = "violet" }: { value: number; tone?: "violet" | "emerald" }) {
   return (
-    <div className="h-1.5 w-full rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
+    <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
       <div
-        className={`h-full rounded-full transition-all ${tone === "emerald" ? "bg-emerald-500" : "bg-violet-500"}`}
+        className={`h-full rounded-full transition-all ${tone === "emerald" ? "bg-green-600" : "bg-teal-700 dark:bg-teal-500"}`}
         style={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }}
       />
     </div>
@@ -97,7 +97,7 @@ function ProgressBar({ value, tone = "violet" }: { value: number; tone?: "violet
 }
 
 const MASTERY_LABEL: Record<MasterySummary["level"], string> = { new: "Chưa học", learning: "Đang học", mastered: "Thành thạo" };
-const MASTERY_BAR: Record<MasterySummary["level"], string> = { new: "bg-slate-300 dark:bg-zinc-600", learning: "bg-amber-500", mastered: "bg-emerald-500" };
+const MASTERY_BAR: Record<MasterySummary["level"], string> = { new: "bg-slate-300 dark:bg-zinc-600", learning: "bg-amber-500", mastered: "bg-green-500" };
 
 /** Tooltip text of a mastery summary */
 function masteryHint(m: MasterySummary): string {
@@ -108,7 +108,7 @@ function masteryHint(m: MasterySummary): string {
 /** The thin bar under a sound on the chart */
 function MasteryBar({ summary }: { summary: MasterySummary }) {
   return (
-    <div className="mt-1.5 h-1 w-full rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden" aria-label={masteryHint(summary)}>
+    <div className="mt-1.5 h-1 w-full rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden" aria-label={masteryHint(summary)}>
       <div className={`h-full rounded-full transition-all ${MASTERY_BAR[summary.level]}`} style={{ width: `${summary.percent}%` }} />
     </div>
   );
@@ -134,21 +134,21 @@ function MasteryPanel({ summary }: { summary: MasterySummary }) {
     },
   ];
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 space-y-2">
+    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-2">
       <div className="flex items-center justify-between text-xs">
         <span className="font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Độ thành thạo</span>
         <span className="font-bold text-slate-800 dark:text-zinc-200">
           {MASTERY_LABEL[summary.level]} · {summary.percent}%
         </span>
       </div>
-      <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden">
+      <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
         <div className={`h-full rounded-full transition-all ${MASTERY_BAR[summary.level]}`} style={{ width: `${summary.percent}%` }} />
       </div>
       <ul className="space-y-1 text-xs text-slate-600 dark:text-zinc-400">
         {rows.map((r) => (
           <li key={r.label} className="flex items-center justify-between gap-2">
             <span className="inline-flex items-center gap-1.5">
-              <span className={r.done ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400"}>{r.done ? "✓" : "○"}</span>
+              <span className={r.done ? "text-green-600 dark:text-green-400" : "text-slate-500"}>{r.done ? "✓" : "○"}</span>
               {r.label}
             </span>
             <span className="font-medium text-slate-800 dark:text-zinc-200 shrink-0">{r.value}</span>
@@ -168,10 +168,10 @@ function PlayButton({ text, slow, title, className = "" }: { text: string; slow?
         handleSpeak(text, slow ? SLOW_RATE : undefined);
       }}
       title={title ?? (slow ? "Nghe chậm" : "Nghe")}
-      className={`p-2 rounded-lg shrink-0 ${
+      className={`flex h-10 w-10 items-center justify-center rounded-full shrink-0 ${
         slow
           ? "text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800"
-          : "text-violet-700 dark:text-violet-300 bg-violet-50 dark:bg-violet-950/50 hover:bg-violet-100 dark:hover:bg-violet-900/50"
+          : "text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-400/10 hover:bg-teal-100 dark:hover:bg-teal-400/20"
       } ${className}`}
     >
       {slow ? <Snail className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
@@ -182,15 +182,15 @@ function PlayButton({ text, slow, title, className = "" }: { text: string; slow?
 /** One word with its IPA: the whole tile plays it, the snail plays it slowly */
 function SoundItem({ item }: { item: PronunciationItem }) {
   return (
-    <div className="flex items-stretch rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden hover:border-violet-300 dark:hover:border-violet-700">
+    <div className="flex items-stretch rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden hover:border-teal-600/50">
       <button
         onClick={() => handleSpeak(item.text)}
         title="Nghe"
-        className="flex-1 min-w-0 flex items-center gap-2.5 px-3 py-2 text-left hover:bg-violet-50/60 dark:hover:bg-violet-950/20"
+        className="flex-1 min-w-0 min-h-12 flex items-center gap-2.5 px-3 py-2 text-left hover:bg-teal-50/60 dark:hover:bg-teal-400/5"
       >
-        <Volume2 className="w-4 h-4 shrink-0 text-violet-600 dark:text-violet-400" />
+        <Volume2 className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-400" />
         <span className="min-w-0">
-          <span className="block text-base font-semibold text-slate-900 dark:text-white">{item.text}</span>
+          <span className="block text-base font-semibold text-slate-900 dark:text-zinc-100">{item.text}</span>
           <span className="block text-sm font-mono text-slate-500 dark:text-zinc-400">{item.ipa}</span>
           {item.note && <span className="block text-xs text-slate-500 dark:text-zinc-400">{item.note}</span>}
         </span>
@@ -217,15 +217,15 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
   });
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/20">
+      <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <button
           onClick={() => setTheoryOpen((o) => !o)}
           aria-expanded={theoryOpen}
-          className="w-full flex items-center gap-2 px-4 py-2.5 text-left text-sm font-semibold text-amber-800 dark:text-amber-300"
+          className="w-full min-h-12 flex items-center gap-2 px-4 py-2.5 text-left text-sm font-semibold text-slate-900 dark:text-zinc-100"
         >
-          <Lightbulb className="w-4 h-4 shrink-0" />
+          <Lightbulb className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-300" />
           <span className="flex-1">Giải thích và cách phát âm</span>
-          <span className="text-xs font-medium text-amber-700/80 dark:text-amber-400/80">{theoryOpen ? "Thu gọn" : "Đọc đầy đủ"}</span>
+          <span className="text-xs font-semibold text-teal-700 dark:text-teal-300">{theoryOpen ? "Thu gọn" : "Đọc đầy đủ"}</span>
           <ChevronDown className={`w-4 h-4 shrink-0 transition-transform ${theoryOpen ? "rotate-180" : ""}`} />
         </button>
         <div className="px-4 pb-3 space-y-2 text-sm leading-relaxed text-slate-700 dark:text-zinc-300">
@@ -247,7 +247,7 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
       </div>
 
       <div className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Bấm vào từ để nghe</p>
+        <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Bấm vào từ để nghe</p>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-2">
           {lesson.examples.map((item) => (
             <SoundItem key={item.text} item={item} />
@@ -257,12 +257,12 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
 
       {lesson.pairs && lesson.pairs.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Cặp dễ nhầm: nghe sự khác nhau</p>
+          <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Cặp dễ nhầm: nghe sự khác nhau</p>
           <div className="grid gap-2 min-[1000px]:grid-cols-2">
             {lesson.pairs.map((pair) => (
               <div key={`${pair.a.text}-${pair.b.text}`} className="grid grid-cols-[1fr_auto_1fr] items-center gap-1.5">
                 <SoundItem item={pair.a} />
-                <span className="text-xs text-slate-400">vs</span>
+                <span className="text-xs text-slate-500">vs</span>
                 <SoundItem item={pair.b} />
               </div>
             ))}
@@ -271,12 +271,12 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
       )}
 
       <div className="flex flex-wrap items-center justify-end gap-2 pt-1">
-        <button onClick={onQuiz} className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800">
+        <button onClick={onQuiz} className="min-h-12 px-4 rounded-2xl text-base font-semibold text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10">
           Làm bài nghe ngay
         </button>
         <button
           onClick={onNext}
-          className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5"
+          className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5"
         >
           Tiếp: Đọc to theo <ArrowRight className="w-4 h-4" /> <Kbd>Enter</Kbd>
         </button>
@@ -344,16 +344,16 @@ function SayAloud({
 
   if (finished) {
     return (
-      <div className="rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/60 dark:bg-emerald-950/20 p-5 space-y-3 text-center">
-        <p className="text-lg font-bold text-emerald-800 dark:text-emerald-300">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-3 text-center">
+        <p className="text-lg font-semibold text-green-700 dark:text-green-300">
           Đã đọc to {total} từ, tự chấm đọc được {okCount}/{total} 👏
         </p>
         <p className="text-sm text-slate-600 dark:text-zinc-400">Giờ kiểm tra tai bằng bài nghe nhé.</p>
         <div className="flex flex-wrap justify-center gap-2">
-          <button onClick={again} className="px-4 py-2 rounded-lg border border-slate-300 dark:border-zinc-700 text-sm inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-200">
+          <button onClick={again} className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5">
             <RotateCcw className="w-4 h-4" /> Đọc lại vòng nữa <Kbd>R</Kbd>
           </button>
-          <button onClick={onQuiz} className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5">
+          <button onClick={onQuiz} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5">
             Làm bài nghe <ArrowRight className="w-4 h-4" /> <Kbd>Enter</Kbd>
           </button>
         </div>
@@ -364,9 +364,9 @@ function SayAloud({
 
   return (
     <div className="space-y-3">
-      <div className="rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-white dark:bg-zinc-900 p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4">
         <div className="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-zinc-400">
-          <span className="inline-flex items-center gap-1.5 font-semibold text-emerald-700 dark:text-emerald-300">
+          <span className="inline-flex items-center gap-1.5 font-semibold text-teal-800 dark:text-teal-300">
             <Mic className="w-4 h-4" /> Nghe rồi đọc to thành tiếng
           </span>
           <span>
@@ -375,19 +375,19 @@ function SayAloud({
         </div>
         <ProgressBar value={index / total} tone="emerald" />
         <div className="flex flex-col items-center gap-1 py-2">
-          <div className="text-3xl font-bold text-slate-900 dark:text-white">{item.text}</div>
+          <div className="text-3xl font-bold text-slate-900 dark:text-zinc-100">{item.text}</div>
           <div className="text-base font-mono text-slate-500 dark:text-zinc-400">{item.ipa}</div>
           {item.note && <div className="text-xs text-slate-500 dark:text-zinc-400">{item.note}</div>}
           <div className="flex gap-2 pt-2">
             <button
               onClick={() => handleSpeak(item.text)}
-              className="px-4 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5"
+              className="min-h-11 px-4 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-sm font-semibold inline-flex items-center gap-1.5"
             >
               <Volume2 className="w-4 h-4" /> Nghe <Kbd>Space</Kbd>
             </button>
             <button
               onClick={() => handleSpeak(item.text, SLOW_RATE)}
-              className="px-3 py-2 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-200"
+              className="min-h-11 px-3 rounded-2xl border border-slate-200 dark:border-zinc-700 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800 inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-300"
             >
               <Snail className="w-4 h-4" /> Chậm <Kbd>S</Kbd>
             </button>
@@ -397,13 +397,13 @@ function SayAloud({
         <div className="grid grid-cols-2 gap-2">
           <button
             onClick={() => rate(true)}
-            className="py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold inline-flex items-center justify-center gap-2"
+            className="min-h-14 px-3 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm inline-flex items-center justify-center gap-2"
           >
             <Check className="w-4 h-4" /> Mình đọc được <Kbd>1</Kbd>
           </button>
           <button
             onClick={() => rate(false)}
-            className="py-3 rounded-xl border-2 border-slate-300 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800 text-sm font-semibold inline-flex items-center justify-center gap-2"
+            className="min-h-14 px-3 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold inline-flex items-center justify-center gap-2"
           >
             Chưa chắc, từ khác <Kbd>2</Kbd>
           </button>
@@ -499,13 +499,13 @@ function Quiz({
   if (result) {
     const pct = Math.round((result.correct * 100) / total);
     return (
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4">
         <div className="text-center space-y-1">
-          <div className={`text-4xl font-bold ${result.passed ? "text-emerald-600 dark:text-emerald-400" : "text-slate-800 dark:text-zinc-100"}`}>
+          <div className={`text-4xl font-bold ${result.passed ? "text-green-600 dark:text-green-400" : "text-slate-800 dark:text-zinc-100"}`}>
             {result.correct}/{total}
           </div>
           {result.passed ? (
-            <p className="text-base font-semibold text-emerald-700 dark:text-emerald-400">Hoàn thành bài! 🎉 ({pct}%)</p>
+            <p className="text-base font-semibold text-green-700 dark:text-green-400">Hoàn thành bài! 🎉 ({pct}%)</p>
           ) : (
             <p className="text-sm text-slate-700 dark:text-zinc-300">
               Cần đúng {passMark(total)}/{total} để xong bài. Nghe lại các câu sai vài lần rồi thử lại nhé, tai sẽ quen dần.
@@ -515,12 +515,12 @@ function Quiz({
         <ProgressBar value={result.correct / total} tone={result.passed ? "emerald" : "violet"} />
         {wrong.length > 0 && (
           <div className="space-y-1.5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Câu sai: nghe lại</p>
+            <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Câu sai: nghe lại</p>
             {wrong.map((w, i) => (
-              <div key={`${w.say}-${i}`} className="flex items-center gap-2 rounded-lg bg-slate-50 dark:bg-zinc-800/60 px-3 py-1.5">
+              <div key={`${w.say}-${i}`} className="flex items-center gap-2 rounded-xl bg-slate-50 dark:bg-zinc-800/60 px-3 py-1.5">
                 <PlayButton text={w.say} />
                 <PlayButton text={w.say} slow />
-                <span className="text-sm font-semibold text-slate-900 dark:text-white">{w.say}</span>
+                <span className="text-sm font-semibold text-slate-900 dark:text-zinc-100">{w.say}</span>
                 {w.answer !== w.say && <span className="text-xs text-slate-500 dark:text-zinc-400 truncate">→ {w.answer}</span>}
               </div>
             ))}
@@ -528,30 +528,30 @@ function Quiz({
         )}
         <div className="flex flex-wrap justify-center gap-2">
           {result.next ? (
-            <button onClick={primary} className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5">
+            <button onClick={primary} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5">
               Bài tiếp: {result.next.title} <ArrowRight className="w-4 h-4" /> <Kbd>Enter</Kbd>
             </button>
           ) : result.passed ? (
-            <button onClick={onBack} className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5">
+            <button onClick={onBack} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5">
               Về danh sách bài <Kbd>Enter</Kbd>
             </button>
           ) : (
-            <button onClick={restart} className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5">
+            <button onClick={restart} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5">
               <RotateCcw className="w-4 h-4" /> Làm lại <Kbd>Enter</Kbd>
             </button>
           )}
           {(result.passed || result.next) && (
-            <button onClick={restart} className="px-4 py-2 rounded-lg border border-slate-300 dark:border-zinc-700 text-sm inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-200">
+            <button onClick={restart} className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5">
               <RotateCcw className="w-4 h-4" /> Làm lại <Kbd>R</Kbd>
             </button>
           )}
           {!result.passed && (
-            <button onClick={onReview} className="px-4 py-2 rounded-lg border border-slate-300 dark:border-zinc-700 text-sm inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-200">
+            <button onClick={onReview} className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5">
               <BookOpen className="w-4 h-4" /> Nghe lại từ mẫu
             </button>
           )}
           {result.next && (
-            <button onClick={onBack} className="px-4 py-2 rounded-lg text-sm text-slate-600 dark:text-zinc-300 hover:bg-slate-100 dark:hover:bg-zinc-800">
+            <button onClick={onBack} className="min-h-12 px-4 rounded-2xl text-base font-semibold text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10">
               Danh sách bài
             </button>
           )}
@@ -564,9 +564,9 @@ function Quiz({
   const answeredRight = picked !== null && picked === q.answer;
   return (
     <div className="space-y-3">
-      <div className="rounded-2xl border border-violet-200 dark:border-violet-900/60 bg-white dark:bg-zinc-900 p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4">
         <div className="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-zinc-400">
-          <span className="inline-flex items-center gap-1.5 font-semibold text-violet-700 dark:text-violet-300">
+          <span className="inline-flex items-center gap-1.5 font-semibold text-teal-800 dark:text-teal-300">
             <Ear className="w-4 h-4" /> Nghe và chọn
           </span>
           <span>
@@ -578,13 +578,13 @@ function Quiz({
           <div className="flex gap-2">
             <button
               onClick={() => handleSpeak(q.say)}
-              className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5"
+              className="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-sm font-semibold inline-flex items-center gap-1.5"
             >
               <Volume2 className="w-5 h-5" /> Nghe lại <Kbd>Space</Kbd>
             </button>
             <button
               onClick={() => handleSpeak(q.say, SLOW_RATE)}
-              className="px-3 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 text-sm inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-200"
+              className="min-h-11 px-3 rounded-2xl border border-slate-200 dark:border-zinc-700 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800 inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-300"
             >
               <Snail className="w-4 h-4" /> Chậm <Kbd>S</Kbd>
             </button>
@@ -595,24 +595,24 @@ function Quiz({
           {q.options.map((opt, i) => {
             const isAnswer = opt === q.answer;
             const style = !picked
-              ? "border-slate-200 dark:border-zinc-700 hover:border-violet-400 hover:bg-violet-50/50 dark:hover:bg-violet-950/20"
+              ? "border-slate-200 dark:border-zinc-700 hover:border-teal-600/50 hover:bg-teal-50/50 dark:hover:bg-teal-400/5"
               : isAnswer
-                ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40"
+                ? "border-green-500 bg-green-50 dark:bg-green-950/40"
                 : opt === picked
-                  ? "border-rose-400 bg-rose-50 dark:bg-rose-950/30"
+                  ? "border-red-400 bg-red-50 dark:bg-red-950/30"
                   : "border-slate-200 dark:border-zinc-800 opacity-50";
             return (
               <div key={opt} className="relative">
                 <button
                   onClick={() => choose(opt)}
                   disabled={!!picked}
-                  className={`w-full min-h-[3.5rem] px-3 py-3 rounded-xl border-2 flex items-center justify-center gap-2 text-lg font-semibold text-slate-900 dark:text-white disabled:cursor-default ${style}`}
+                  className={`w-full min-h-[3.5rem] px-3 py-3 rounded-xl border-2 flex items-center justify-center gap-2 text-lg font-semibold text-slate-900 dark:text-zinc-100 disabled:cursor-default ${style}`}
                 >
                   <span className="absolute left-2.5 top-2.5">
                     {picked && isAnswer ? (
-                      <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
                     ) : picked && opt === picked ? (
-                      <X className="w-4 h-4 text-rose-500" />
+                      <X className="w-4 h-4 text-red-600 dark:text-red-400" />
                     ) : (
                       <Kbd>{i + 1}</Kbd>
                     )}
@@ -627,21 +627,21 @@ function Quiz({
         {picked && (
           <div
             className={`rounded-xl px-4 py-3 space-y-2 ${
-              answeredRight ? "bg-emerald-50 dark:bg-emerald-950/30" : "bg-rose-50 dark:bg-rose-950/20"
+              answeredRight ? "bg-green-50 dark:bg-green-950/30" : "bg-red-50 dark:bg-red-950/20"
             }`}
           >
-            <p className={`text-sm ${answeredRight ? "text-emerald-800 dark:text-emerald-300" : "text-rose-800 dark:text-rose-300"}`}>
+            <p className={`text-sm ${answeredRight ? "text-green-800 dark:text-green-300" : "text-red-800 dark:text-red-300"}`}>
               <span className="font-bold">{answeredRight ? "Đúng rồi! " : `Chưa đúng. Đáp án: ${q.answer}. `}</span>
               {q.explanation}
             </p>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="inline-flex items-center gap-1 text-xs text-slate-600 dark:text-zinc-400">
-                Từ vừa nghe: <span className="font-semibold text-slate-900 dark:text-white">{q.say}</span>
+                Từ vừa nghe: <span className="font-semibold text-slate-900 dark:text-zinc-100">{q.say}</span>
                 <PlayButton text={q.say} className="!p-1" />
               </span>
               <button
                 onClick={next}
-                className="px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold inline-flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 transition-all"
+                className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 transition-all"
               >
                 {index + 1 >= total ? "Xem kết quả" : "Câu tiếp"} <Kbd>Enter</Kbd>
               </button>
@@ -704,19 +704,22 @@ function LessonView({
     <div className="max-w-3xl mx-auto space-y-4">
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-3">
-          <button onClick={onBack} className="text-sm text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 inline-flex items-center gap-1">
-            <ArrowLeft className="w-4 h-4" /> {backLabel}
+          <button onClick={onBack} className="min-h-11 pr-3 rounded-full text-sm font-semibold text-slate-700 hover:text-slate-900 dark:text-zinc-300 dark:hover:text-zinc-100 inline-flex items-center gap-2">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 dark:bg-zinc-800">
+              <ArrowLeft className="w-5 h-5" />
+            </span>
+            {backLabel}
           </button>
-          <span className="text-xs text-slate-500 dark:text-zinc-400">
+          <span className="text-xs font-semibold text-teal-800 dark:text-teal-300">
             {unit} {number}/{count}
             {passed ? " · đã xong ✓" : progress ? ` · tốt nhất ${progress.best}/${progress.total}` : ""}
           </span>
         </div>
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">{lesson.title}</h2>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-zinc-100">{lesson.title}</h2>
           <p className="text-sm text-slate-500 dark:text-zinc-400">{lesson.tagline}</p>
         </div>
-        <div role="tablist" className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-slate-100 dark:bg-zinc-800/70">
+        <div role="tablist" className="grid grid-cols-3 gap-1 p-1 rounded-2xl bg-slate-100 dark:bg-zinc-800/70">
           {STEPS.map((s, i) => {
             const Icon = s.icon;
             const active = s.id === step;
@@ -726,15 +729,15 @@ function LessonView({
                 role="tab"
                 aria-selected={active}
                 onClick={() => setStep(s.id)}
-                className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-sm font-semibold transition-colors ${
+                className={`min-w-0 min-h-11 flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl text-sm font-semibold transition-colors ${
                   active
-                    ? "bg-white dark:bg-zinc-900 text-violet-700 dark:text-violet-300 shadow-sm"
+                    ? "bg-white dark:bg-zinc-900 text-teal-800 dark:text-teal-300 shadow-sm"
                     : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
                 }`}
               >
                 <span
                   className={`inline-flex items-center justify-center w-5 h-5 rounded-full text-[11px] ${
-                    active ? "bg-violet-600 text-white" : "bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-zinc-300"
+                    active ? "bg-teal-700 text-white dark:bg-teal-600" : "bg-slate-200 dark:bg-zinc-700 text-slate-600 dark:text-zinc-300"
                   }`}
                 >
                   {s.id === "quiz" && passed ? <Check className="w-3 h-3" /> : i + 1}
@@ -794,22 +797,22 @@ function IpaChart({
       {nextSound && (
         <button
           onClick={() => onOpen(nextSound.id)}
-          className="w-full text-left rounded-2xl border border-violet-200 dark:border-violet-800/50 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950/40 dark:to-zinc-900 p-4 flex items-center gap-3 hover:border-violet-400"
+          className="w-full text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 flex items-center gap-3 hover:border-teal-600/50"
         >
-          <span className="w-11 h-11 rounded-xl bg-violet-600 text-white flex items-center justify-center text-lg font-bold font-mono shrink-0">
+          <span className="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center text-lg font-bold font-mono shrink-0">
             {nextSound.title.match(/\/(.+?)\//)?.[1]}
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-xs font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">Âm tiếp theo</span>
-            <span className="block text-base font-bold text-slate-900 dark:text-white truncate">{nextSound.title}</span>
+            <span className="block text-xs font-semibold uppercase tracking-wide text-teal-800 dark:text-teal-300">Âm tiếp theo</span>
+            <span className="block text-base font-bold text-slate-900 dark:text-zinc-100 truncate">{nextSound.title}</span>
           </span>
-          <ArrowRight className="w-5 h-5 text-violet-500 shrink-0" />
+          <ArrowRight className="w-5 h-5 text-teal-700 dark:text-teal-300 shrink-0" />
         </button>
       )}
-      <p className="text-xs text-slate-600 dark:text-zinc-400">IPA = ký hiệu cách đọc. Mỗi ô dưới đây là một âm; chạm để xem cách phát âm.</p>
+      <p className="text-sm text-slate-500 dark:text-zinc-400">IPA = ký hiệu cách đọc. Mỗi ô dưới đây là một âm; chạm để xem cách phát âm.</p>
       {chart.map((group) => (
         <div key={group.kind} className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-zinc-400">
+          <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">
             {group.label} · {group.entries.length}
           </p>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(84px,1fr))] gap-2">
@@ -822,19 +825,19 @@ function IpaChart({
                   key={e.lessonId}
                   onClick={() => onOpen(e.lessonId)}
                   title={`Luyện âm /${e.sym}/ như trong "${e.key}"${done ? " (đã xong)" : p ? ` (tốt nhất ${p.best}/${p.total})` : ""} · ${masteryHint(m)}`}
-                  className={`relative rounded-xl border px-2 py-2.5 text-center transition-colors ${
+                  className={`relative min-w-0 rounded-xl border px-2 py-2.5 text-center transition-colors ${
                     done
-                      ? "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 hover:border-emerald-500"
+                      ? "border-green-300 dark:border-green-800 bg-green-50 dark:bg-green-950/30 hover:border-green-500"
                       : p
-                        ? "border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 hover:border-amber-500"
-                        : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-violet-400 dark:hover:border-violet-600"
+                        ? "border-teal-600/40 dark:border-teal-500/40 bg-teal-50/60 dark:bg-teal-400/5 hover:border-teal-600"
+                        : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-teal-600/50"
                   }`}
                 >
-                  {done && <Check className="absolute top-1 right-1 w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />}
-                  <span className="block text-2xl font-mono font-bold text-slate-900 dark:text-white leading-tight">{e.sym}</span>
+                  {done && <Check className="absolute top-1 right-1 w-3.5 h-3.5 text-green-600 dark:text-green-400" />}
+                  <span className="block text-2xl font-mono font-bold text-slate-900 dark:text-zinc-100 leading-tight">{e.sym}</span>
                   <span className="block text-xs text-slate-600 dark:text-zinc-400 truncate">{e.key}</span>
                   <MasteryBar summary={m} />
-                  <span className={`block mt-1 text-xs truncate ${done ? "text-emerald-700 dark:text-emerald-400" : p ? "text-amber-700 dark:text-amber-400" : "text-slate-600 dark:text-zinc-400"}`}>
+                  <span className={`block mt-1 text-xs truncate ${done ? "text-green-700 dark:text-green-400" : p ? "text-teal-800 dark:text-teal-300" : "text-slate-500 dark:text-zinc-400"}`}>
                     {done ? "Đã xong" : m.level === "mastered" ? MASTERY_LABEL.mastered : p || m.level === "learning" ? `Đang học ${m.percent}%` : "Chưa học"}
                   </span>
                 </button>
@@ -1000,7 +1003,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
       <div className="max-w-3xl mx-auto space-y-4">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           <div className="min-w-0">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Phát âm</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Phát âm</h2>
             <p className="text-sm text-slate-600 dark:text-zinc-400">
               Mỗi bài ~5 phút: nghe mẫu → đọc to → bài nghe. Đúng {Math.round(PRONUNCIATION_PASS_RATIO * 100)}% là xong bài.
             </p>
@@ -1021,29 +1024,29 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
 
         {/* Dynamic Confusable Phoneme Challenge Card */}
         {phonemeSession && (
-          <div className="rounded-2xl border border-indigo-200/90 dark:border-indigo-900/60 bg-gradient-to-r from-indigo-50/70 via-purple-50/40 to-white dark:from-indigo-950/40 dark:via-purple-950/20 dark:to-zinc-900 p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
             <div className="flex items-center gap-3.5 min-w-0">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-600 text-white flex items-center justify-center font-bold text-lg shadow-md shrink-0">
+              <div className="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center font-bold text-lg shrink-0">
                 ⚡
               </div>
               <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">
                     Cặp âm dễ nhầm
                   </span>
                   <span className="text-xs font-mono font-bold text-slate-600 dark:text-zinc-400">
                     /{phonemeSession.pair.symA}/ vs /{phonemeSession.pair.symB}/
                   </span>
                 </div>
-                <div className="text-base font-extrabold text-slate-900 dark:text-white truncate mt-0.5">
+                <div className="text-base font-semibold text-slate-900 dark:text-zinc-100 truncate mt-0.5">
                   {phonemeSession.pair.title}
                 </div>
-                <div className="text-xs text-slate-600 dark:text-zinc-400">Hai âm nghe gần giống nhau, người Việt hay lẫn. Luyện để tai phân biệt được.</div>
+                <div className="text-sm text-slate-500 dark:text-zinc-400">Hai âm nghe gần giống nhau, người Việt hay lẫn. Luyện để tai phân biệt được.</div>
               </div>
             </div>
             <button
               onClick={() => setShowPhonemeModal(true)}
-              className="shrink-0 min-h-[44px] px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-bold shadow-md inline-flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+              className="shrink-0 min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm inline-flex items-center justify-center gap-2 transition-colors"
             >
               <Ear className="w-4 h-4" />
               Luyện phân biệt ngay
@@ -1051,7 +1054,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
           </div>
         )}
 
-        <div role="tablist" className="grid grid-cols-2 gap-1 p-1 rounded-xl bg-slate-100 dark:bg-zinc-800/70">
+        <div role="tablist" className="grid grid-cols-2 gap-1 p-1 rounded-2xl bg-slate-100 dark:bg-zinc-800/70">
           {(
             [
               ["chart", "Bảng 44 âm"],
@@ -1063,9 +1066,9 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
               role="tab"
               aria-selected={view === id}
               onClick={() => setView(id)}
-              className={`min-h-[44px] px-2 rounded-lg text-sm font-semibold transition-colors ${
+              className={`min-h-11 px-2 rounded-xl text-sm font-semibold transition-colors ${
                 view === id
-                  ? "bg-white dark:bg-zinc-900 text-violet-700 dark:text-violet-300 shadow-sm"
+                  ? "bg-white dark:bg-zinc-900 text-teal-800 dark:text-teal-300 shadow-sm"
                   : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200"
               }`}
             >
@@ -1075,23 +1078,23 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
         </div>
 
         {view === "chart" && loadFailed && chart.length === 0 ? (
-          <div className="rounded-2xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/60 dark:bg-rose-950/20 p-4 space-y-3 text-center">
-            <p className="text-sm text-rose-800 dark:text-rose-300">Không tải được bảng âm. Hãy thử lại.</p>
-            <button onClick={loadLessons} className="min-h-[44px] px-5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-bold">
+          <div className="rounded-2xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/20 p-4 space-y-3 text-center">
+            <p className="text-sm text-red-800 dark:text-red-300">Không tải được bảng âm. Hãy thử lại.</p>
+            <button onClick={loadLessons} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center">
               Thử lại
             </button>
           </div>
         ) : view === "chart" ? (
           chart.length > 0 && <IpaChart chart={chart} progress={progress} mastery={mastery} wordCounts={wordCounts} nextSound={nextSound} onOpen={(id) => openLesson(id, "learn", false, true)} />
         ) : next ? (
-          <div className="rounded-2xl border border-violet-200 dark:border-violet-800/50 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950/40 dark:to-zinc-900 p-4 shadow-sm space-y-3">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-3">
             <div className="flex items-start gap-3">
-              <div className="w-11 h-11 rounded-xl bg-violet-600 text-white flex items-center justify-center text-lg font-bold shrink-0">{nextIndex + 1}</div>
+              <div className="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center text-lg font-bold shrink-0">{nextIndex + 1}</div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">
+                <div className="text-sm font-semibold text-teal-800 dark:text-teal-300">
                   {nextProgress ? "Đang học dở" : passedCount === 0 ? "Bắt đầu từ đây" : "Bài tiếp theo"}
                 </div>
-                <div className="text-lg font-bold text-slate-900 dark:text-white">{next.title}</div>
+                <div className="text-lg font-semibold text-slate-900 dark:text-zinc-100">{next.title}</div>
                 <div className="text-sm text-slate-600 dark:text-zinc-400">{next.tagline}</div>
                 <div className="text-xs text-slate-500 dark:text-zinc-400 pt-1">
                   {next.examples.length} từ mẫu · {next.quiz.length} câu nghe
@@ -1104,13 +1107,13 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
                 <>
                   <button
                     onClick={() => openLesson(next.id, "quiz")}
-                    className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-bold inline-flex items-center gap-1.5"
+                    className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5"
                   >
                     <Ear className="w-4 h-4" /> Làm lại bài nghe ({next.quiz.length} câu) <Kbd>Enter</Kbd>
                   </button>
                   <button
                     onClick={() => openLesson(next.id, "learn")}
-                    className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white/70 dark:bg-zinc-900/70 text-sm font-semibold text-slate-700 dark:text-zinc-200"
+                    className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5"
                   >
                     Nghe lại từ mẫu
                   </button>
@@ -1119,13 +1122,13 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
                 <>
                   <button
                     onClick={() => openLesson(next.id, "learn")}
-                    className="px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-bold inline-flex items-center gap-1.5"
+                    className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5"
                   >
                     Bắt đầu luyện <ArrowRight className="w-4 h-4" /> <Kbd>Enter</Kbd>
                   </button>
                   <button
                     onClick={() => openLesson(next.id, "quiz")}
-                    className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white/70 dark:bg-zinc-900/70 text-sm font-semibold text-slate-700 dark:text-zinc-200 inline-flex items-center gap-1.5"
+                    className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5 inline-flex items-center gap-1.5"
                   >
                     <Ear className="w-4 h-4" /> Làm bài nghe ngay
                   </button>
@@ -1135,9 +1138,9 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
           </div>
         ) : (
           lessons.length > 0 && (
-            <div className="rounded-2xl border border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/60 dark:bg-emerald-950/20 p-4 flex items-center gap-3">
-              <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0" />
-              <p className="text-sm text-emerald-800 dark:text-emerald-300">
+            <div className="rounded-2xl border border-green-200 dark:border-green-900/60 bg-green-50 dark:bg-green-950/20 p-4 flex items-center gap-3">
+              <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-400 shrink-0" />
+              <p className="text-sm text-green-800 dark:text-green-300">
                 Xong cả {lessons.length} bài! 🎉 Thỉnh thoảng làm lại một bài nghe để giữ tai quen.
               </p>
             </div>
@@ -1146,43 +1149,43 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
 
         {view === "topics" && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Tất cả bài</p>
+          <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Tất cả bài</p>
           <div className="grid gap-2 min-[1000px]:grid-cols-2">
             {lessons.map((l, i) => {
               const status = lessonStatus(progress[l.id], l.id === next?.id);
               const badge =
                 status.tone === "done"
-                  ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+                  ? "bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300"
                   : status.tone === "next"
-                    ? "bg-violet-600 text-white"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
                     : status.tone === "tried"
-                      ? "bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300"
+                      ? "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
                       : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400";
               const statusText =
                 status.tone === "done"
-                  ? "text-emerald-600 dark:text-emerald-400"
+                  ? "text-green-600 dark:text-green-400"
                   : status.tone === "next"
-                    ? "text-violet-700 dark:text-violet-300"
+                    ? "text-teal-800 dark:text-teal-300"
                     : status.tone === "tried"
-                      ? "text-amber-700 dark:text-amber-400"
+                      ? "text-teal-800 dark:text-teal-300"
                       : "text-slate-500 dark:text-zinc-400";
               return (
                 <button
                   key={l.id}
                   onClick={() => openLesson(l.id, "learn")}
                   title={l.tagline}
-                  className={`group w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-xl border bg-white dark:bg-zinc-900 hover:border-violet-300 dark:hover:border-violet-700 ${
-                    status.tone === "next" ? "border-violet-300 dark:border-violet-800" : "border-slate-200 dark:border-zinc-800"
+                  className={`group w-full min-h-14 text-left flex items-center gap-3 px-3 py-2.5 rounded-xl border bg-white dark:bg-zinc-900 hover:border-teal-600/50 ${
+                    status.tone === "next" ? "border-teal-600/60 dark:border-teal-500/50" : "border-slate-200 dark:border-zinc-800"
                   }`}
                 >
                   <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${badge}`}>
                     {status.tone === "done" ? <Check className="w-4 h-4" /> : i + 1}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold text-slate-900 dark:text-white truncate">{l.title}</span>
+                    <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100 truncate">{l.title}</span>
                     <span className={`block text-xs ${statusText}`}>{status.label}</span>
                   </span>
-                  <ChevronRight className="w-4 h-4 shrink-0 text-slate-300 dark:text-zinc-600 group-hover:text-violet-500" />
+                  <ChevronRight className="w-4 h-4 shrink-0 text-slate-400 dark:text-zinc-500 group-hover:text-teal-700" />
                 </button>
               );
             })}

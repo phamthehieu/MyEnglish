@@ -51,35 +51,33 @@ export default function SettingsSection({ id, icon, title, description, summary,
   };
   const shell =
     tone === "primary"
-      ? "border-cyan-300 dark:border-cyan-800/70 bg-gradient-to-br from-cyan-50/70 to-white dark:from-cyan-950/25 dark:to-zinc-900 shadow-md shadow-cyan-500/5"
+      ? "border-teal-700/30 dark:border-teal-400/30 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)]"
       : tone === "muted"
-        ? "border-slate-200 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/40"
-        : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm";
+        ? "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900"
+        : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
 
   return (
     <section id={`settings-${id}`} className={`scroll-mt-4 rounded-2xl border ${shell}`}>
       <button type="button" onClick={toggle} aria-expanded={open} className="w-full min-h-14 flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-4 text-left">
         <span
-          className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+          className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
             tone === "primary"
-              ? "bg-cyan-600 text-white shadow-sm shadow-cyan-600/30"
-              : tone === "muted"
-                ? "bg-slate-200/70 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"
-                : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300"
+              ? "bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300"
+              : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300"
           }`}
         >
           {icon}
         </span>
         <span className="min-w-0 flex-1">
-          <span className={`block font-bold text-slate-900 dark:text-white ${tone === "primary" ? "text-base" : "text-sm"}`}>{title}</span>
-          {description && <span className="block text-xs text-slate-600 dark:text-zinc-400">{description}</span>}
+          <span className="block text-base font-semibold text-slate-900 dark:text-zinc-100">{title}</span>
+          {description && <span className="block text-sm text-slate-500 dark:text-zinc-400">{description}</span>}
           {/* The state at a glance: on its own line on phones, on the right of the title from sm up */}
-          {!open && summary && <span className="block sm:hidden mt-0.5 text-xs font-medium text-cyan-700 dark:text-cyan-400">{summary}</span>}
+          {!open && summary && <span className="block sm:hidden mt-0.5 text-sm font-medium text-teal-700 dark:text-teal-300">{summary}</span>}
         </span>
-        {!open && summary && <span className="hidden sm:block shrink-0 text-xs text-slate-600 dark:text-zinc-400 text-right max-w-[45%] truncate">{summary}</span>}
+        {!open && summary && <span className="hidden sm:block shrink-0 text-sm text-slate-500 dark:text-zinc-400 text-right max-w-[45%] truncate">{summary}</span>}
         <ChevronDown className={`w-5 h-5 shrink-0 text-slate-500 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && <div className="px-4 sm:px-5 pb-5 space-y-4">{children}</div>}
+      {open && <div className="border-t border-slate-100 dark:border-zinc-800 px-4 sm:px-5 pt-4 pb-5 space-y-4">{children}</div>}
     </section>
   );
 }

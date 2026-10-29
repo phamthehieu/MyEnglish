@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Check, Eraser, Keyboard, Mic, Send, Volume2, X } from "lucide-react";
+import { Check, Eraser, Keyboard, Mic, Send, Volume2, X } from "lucide-react";
 import type { Pattern } from "@/types/pattern";
 import { fillPattern } from "@/types/pattern";
 import { handleSpeak } from "@/components/review/speech";
@@ -8,7 +8,7 @@ import { judgeSpoken, matchTyped, type Tile } from "@/services/talk/engine";
 import { lineOfSlot, patternSituation, tilesSpell } from "@/services/patterns/engine";
 import { applySession, type SessionKind, type Task, type TaskResult } from "@/services/patterns/session";
 import { STEP_LABELS } from "@/services/patterns/progress";
-import MicButton from "@/components/talk/MicButton";
+import MicButton, { PracticeTop } from "@/components/talk/MicButton";
 import { useMic } from "@/components/talk/useMic";
 import { useKeepVisible } from "./useKeepVisible";
 import { IpaLine, IpaToggle } from "./Ipa";
@@ -21,8 +21,15 @@ const RETRY_BONUS_MS = 5000;
 
 type Outcome = Omit<TaskResult, "patternId" | "kind">;
 
-const BTN_PRIMARY = "w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold";
-const CARD = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3";
+const BTN_PRIMARY =
+  "w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50";
+/** The round outlined button next to the main one (clear the answer) */
+const BTN_SIDE =
+  "px-5 min-h-14 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 disabled:opacity-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300";
+const CARD = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
+/** A word tile to pick, and one already placed in the answer */
+const TILE = "px-3 min-h-11 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-zinc-100 hover:border-teal-600/50";
+const TILE_PLACED = "px-3 min-h-11 rounded-xl bg-teal-700 dark:bg-teal-600 text-white text-sm font-semibold";
 
 /** About how long the voice takes to say a sentence */
 const speechMs = (text: string) => 600 + text.trim().split(/\s+/).length * 450;
@@ -32,7 +39,7 @@ function Blank({ frame, fill }: { frame: string; fill?: string }) {
   return (
     <span>
       {a}
-      <span className={fill ? "font-bold text-emerald-700 dark:text-emerald-300" : "px-3 border-b-2 border-slate-400 dark:border-zinc-500"}>{fill ?? "    "}</span>
+      <span className={fill ? "font-bold text-green-700 dark:text-green-300" : "px-3 border-b-2 border-slate-400 dark:border-zinc-500"}>{fill ?? "    "}</span>
       {b}
     </span>
   );
@@ -40,7 +47,7 @@ function Blank({ frame, fill }: { frame: string; fill?: string }) {
 
 function Speaker({ text, label = "Nghe" }: { text: string; label?: string }) {
   return (
-    <button onClick={() => handleSpeak(text)} aria-label={label} className="shrink-0 w-10 h-10 inline-flex items-center justify-center rounded-full bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300">
+    <button onClick={() => handleSpeak(text)} aria-label={label} className="shrink-0 w-10 h-10 inline-flex items-center justify-center rounded-full bg-teal-50 hover:bg-teal-100 dark:bg-teal-400/10 text-teal-700 dark:text-teal-300">
       <Volume2 className="w-4 h-4" />
     </button>
   );
@@ -64,13 +71,13 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
   return (
     <div className="space-y-3">
       <div className={CARD}>
-        <p className="text-xl font-bold text-slate-900 dark:text-white">
+        <p className="text-xl font-bold text-slate-900 dark:text-zinc-100">
           <Blank frame={pattern.frame_en} />
         </p>
         <p className="text-sm text-slate-600 dark:text-zinc-400">
           <Blank frame={pattern.frame_vi} />
         </p>
-        <p className="text-sm text-slate-700 dark:text-zinc-300 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 px-3 py-2">💡 {pattern.note_vi}</p>
+        <p className="text-sm text-slate-700 dark:text-zinc-300 rounded-xl bg-slate-50 dark:bg-zinc-800/50 px-3 py-2.5">💡 {pattern.note_vi}</p>
       </div>
 
       <div className={CARD}>
@@ -81,7 +88,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
             <div key={s.en} className="flex items-center gap-2">
               <Speaker text={f.en} />
               <div className="min-w-0">
-                <p className="text-[15px] font-semibold text-slate-900 dark:text-white">{f.en}</p>
+                <p className="text-[15px] font-semibold text-slate-900 dark:text-zinc-100">{f.en}</p>
                 <p className="text-xs text-slate-500 dark:text-zinc-400">{f.vi}</p>
                 <IpaLine ipa={s.ipa} />
               </div>
@@ -92,7 +99,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
           <div key={e.en} className="flex items-center gap-2">
             <Speaker text={e.en} />
             <div className="min-w-0">
-              <p className="text-[15px] text-slate-900 dark:text-white">{e.en}</p>
+              <p className="text-[15px] text-slate-900 dark:text-zinc-100">{e.en}</p>
               <p className="text-xs text-slate-500 dark:text-zinc-400">{e.vi}</p>
               <IpaLine ipa={e.ipa} />
             </div>
@@ -106,7 +113,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
             Thử nói: <span className="font-semibold">«{fillPattern(pattern, slot).en}»</span>
           </p>
           <MicButton mic={mic} onStart={say} idleLabel="Bấm để nói thử" />
-          {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem}</p>}
+          {mic.problem && <p className="text-sm text-red-700 dark:text-red-300">{mic.problem}</p>}
           {heard && <p className="text-sm text-slate-700 dark:text-zinc-300">{heard}</p>}
         </div>
       )}
@@ -135,8 +142,8 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
     <div className="space-y-3">
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Câu này nói bằng tiếng Anh thế nào?</p>
-        <p className="text-lg font-bold text-slate-900 dark:text-white">«{item.vi}»</p>
-        <p className="text-xl text-slate-900 dark:text-white">
+        <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">«{item.vi}»</p>
+        <p className="text-xl text-slate-900 dark:text-zinc-100">
           <Blank frame={item.frame} fill={solved ? item.answer.en : undefined} />
         </p>
       </div>
@@ -149,12 +156,12 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
               key={o.en}
               onClick={() => pick(o.en)}
               disabled={bad || solved}
-              className={`w-full text-left rounded-xl border px-4 py-2.5 text-[15px] font-semibold ${
+              className={`w-full min-h-12 text-left rounded-xl border px-4 py-2.5 text-base font-semibold ${
                 good
-                  ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-200"
+                  ? "border-green-300 bg-green-50 dark:border-green-800 dark:bg-green-950/30 text-green-800 dark:text-green-200"
                   : bad
-                    ? "border-rose-300 dark:border-rose-900 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 opacity-70"
-                    : "border-violet-200 dark:border-violet-900 bg-violet-50 dark:bg-violet-950/30 text-violet-900 dark:text-violet-100"
+                    ? "border-red-300 dark:border-red-900 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 opacity-70"
+                    : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 hover:border-teal-600/50 hover:bg-teal-50/50 dark:hover:bg-teal-400/5"
               }`}
             >
               {o.en}
@@ -164,7 +171,7 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
       </div>
       {solved && (
         <>
-          <p className="text-sm text-emerald-700 dark:text-emerald-300 inline-flex items-center gap-2">
+          <p className="text-sm text-green-700 dark:text-green-300 inline-flex items-center gap-2">
             <Check className="w-4 h-4" /> {item.full} <Speaker text={item.full} />
           </p>
           <IpaLine ipa={item.answer.ipa} />
@@ -201,11 +208,11 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
     <div className="space-y-3">
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Ghép câu tiếng Anh cho nghĩa này:</p>
-        <p className="text-lg font-bold text-slate-900 dark:text-white">«{item.vi}»</p>
+        <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">«{item.vi}»</p>
       </div>
-      <div className="min-h-[3rem] rounded-xl border-2 border-dashed border-slate-300 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
+      <div className="min-h-[3.25rem] rounded-xl border-2 border-dashed border-slate-200 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
         {chosen.map((t) => (
-          <button key={t.id} disabled={done} onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))} className="px-3 py-1.5 rounded-lg bg-violet-600 text-white text-sm font-semibold">
+          <button key={t.id} disabled={done} onClick={() => setChosen((c) => c.filter((x) => x.id !== t.id))} className={TILE_PLACED}>
             {t.text}
           </button>
         ))}
@@ -220,21 +227,21 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
                   setFeedback(null);
                   setChosen((c) => [...c, t]);
                 }}
-                className="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-white"
+                className={TILE}
               >
                 {t.text}
               </button>
             ))}
           </div>
           <div className="flex gap-2">
-            <button onClick={() => setChosen([])} disabled={chosen.length === 0} className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 disabled:opacity-40" aria-label="Xóa hết">
+            <button onClick={() => setChosen([])} disabled={chosen.length === 0} className={BTN_SIDE} aria-label="Xóa hết">
               <Eraser className="w-4 h-4" />
             </button>
-            <button onClick={send} disabled={chosen.length === 0} className="flex-1 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white text-sm font-semibold inline-flex items-center justify-center gap-2">
+            <button onClick={send} disabled={chosen.length === 0} className={`flex-1 ${BTN_PRIMARY}`}>
               <Send className="w-4 h-4" /> Gửi
             </button>
           </div>
-          {feedback && <p className="rounded-xl border border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm">{feedback}</p>}
+          {feedback && <p className="rounded-xl border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm">{feedback}</p>}
           {fails >= 2 && (
             <button
               onClick={() => {
@@ -242,7 +249,7 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
                 setDone(true);
                 handleSpeak(item.en);
               }}
-              className="text-xs font-semibold underline underline-offset-2 text-slate-600 dark:text-zinc-400"
+              className="min-h-10 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300"
             >
               Xem đáp án
             </button>
@@ -251,7 +258,7 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
       )}
       {done && (
         <>
-          <p className="text-sm text-emerald-700 dark:text-emerald-300 inline-flex items-center gap-2">
+          <p className="text-sm text-green-700 dark:text-green-300 inline-flex items-center gap-2">
             <Check className="w-4 h-4" /> {item.en} <Speaker text={item.en} />
           </p>
           <IpaLine ipa={item.ipa} />
@@ -370,15 +377,15 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
     <div ref={area} className="space-y-3 pb-[45vh]">
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Người ấy hỏi:</p>
-        <p className="text-lg font-bold text-slate-900 dark:text-white inline-flex items-center gap-2">
+        <p className="text-lg font-bold text-slate-900 dark:text-zinc-100 inline-flex items-center gap-2">
           {item.ask.en} <Speaker text={item.ask.en} />
         </p>
         <p className="text-xs text-slate-500 dark:text-zinc-400">{item.ask.vi}</p>
         <p className="text-sm text-slate-700 dark:text-zinc-300 pt-1">
           Bạn trả lời: <span className="font-semibold">«{item.vi}»</span>
         </p>
-        <div className="h-2 rounded-full bg-slate-200 dark:bg-zinc-800 overflow-hidden" aria-label="Thời gian còn lại">
-          <div className={`h-full ${left < 0.3 ? "bg-rose-500" : "bg-emerald-500"}`} style={{ width: `${state === "asking" ? 100 : left * 100}%` }} />
+        <div className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden" aria-label="Thời gian còn lại">
+          <div className={`h-full rounded-full ${left < 0.3 ? "bg-red-500" : "bg-teal-700 dark:bg-teal-500"}`} style={{ width: `${state === "asking" ? 100 : left * 100}%` }} />
         </div>
       </div>
 
@@ -386,14 +393,14 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
       {state === "answering" && (
         <>
           {canSpeak && (
-            <div className="flex gap-1.5" role="group" aria-label="Cách trả lời">
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Cách trả lời">
               {(["say", "type"] as const).map((m) => (
                 <button
                   key={m}
                   onClick={() => switchTo(m)}
                   aria-pressed={mode === m}
                   className={`px-4 min-h-[40px] rounded-full text-sm font-semibold inline-flex items-center gap-1.5 border ${
-                    mode === m ? "bg-violet-600 border-violet-600 text-white" : "border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300"
+                    mode === m ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600" : "border-slate-200 bg-white dark:border-zinc-700 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
                   }`}
                 >
                   {m === "say" ? <Mic className="w-3.5 h-3.5" /> : <Keyboard className="w-3.5 h-3.5" />} {m === "say" ? "Nói" : "Gõ (thêm thời gian)"}
@@ -404,7 +411,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
           {mode === "say" ? (
             <>
               <MicButton mic={mic} onStart={() => void say()} idleLabel="Bấm để nói" />
-              {mic.problem && <p className="text-xs text-rose-600 dark:text-rose-400">{mic.problem} Bạn có thể bấm "Gõ" để trả lời.</p>}
+              {mic.problem && <p className="text-sm text-red-700 dark:text-red-300">{mic.problem} Bạn có thể bấm "Gõ" để trả lời.</p>}
               {retryNote && !mic.problem && <p className="text-sm text-amber-800 dark:text-amber-300">{retryNote}</p>}
               {!started && !mic.problem && <p className="text-xs text-slate-500 dark:text-zinc-400">Đồng hồ sẽ chạy khi micro sẵn sàng.</p>}
             </>
@@ -426,9 +433,9 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
                 autoComplete="off"
                 spellCheck={false}
                 placeholder="Gõ câu tiếng Anh…"
-                className="flex-1 min-w-0 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-[15px] text-slate-900 dark:text-white"
+                className="flex-1 min-w-0 min-h-12 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-base text-slate-900 dark:text-zinc-100 focus:border-teal-600 focus:outline-none"
               />
-              <button type="submit" disabled={!typed.trim()} className="px-4 rounded-xl bg-violet-600 hover:bg-violet-700 disabled:opacity-40 text-white min-w-[48px]" aria-label="Gửi">
+              <button type="submit" disabled={!typed.trim()} className="px-4 min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 disabled:opacity-50 text-white min-w-[52px]" aria-label="Gửi">
                 <Send className="w-4 h-4 mx-auto" />
               </button>
             </form>
@@ -440,8 +447,8 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
           <div
             className={`rounded-xl border px-3 py-2 text-sm space-y-1 ${
               verdict.ok
-                ? "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-800 dark:text-emerald-200"
-                : "border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200"
+                ? "border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-200"
+                : "border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200"
             }`}
           >
             <p className="inline-flex items-center gap-2">
@@ -501,28 +508,28 @@ export default function PatternRunner({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3">
-        <button onClick={onExit} className="p-1.5 -ml-1.5 text-slate-600 dark:text-zinc-400" aria-label="Thoát">
-          <ArrowLeft className="w-5 h-5" />
-        </button>
-        <div className="min-w-0 flex-1">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white truncate">{title}</h2>
-          <p className="text-xs text-slate-500 dark:text-zinc-400">
+      <PracticeTop
+        onBack={onExit}
+        backLabel="Thoát"
+        close
+        label={
+          <>
+            <span className="text-slate-900 dark:text-zinc-100">{title}</span>
+            {" · "}
             {kind === "ladder" ? `Bước ${step}/4: ${STEP_LABELS[step - 1]}` : "Hỏi đáp nhanh"}
-            {passed === null && tasks.length > 1 ? ` · ${index + 1}/${tasks.length}` : ""}
-          </p>
-        </div>
-        <IpaToggle />
-      </div>
+          </>
+        }
+        count={passed === null && tasks.length > 1 ? `${index + 1}/${tasks.length}` : undefined}
+        percent={passed !== null ? 100 : tasks.length > 1 ? (index / tasks.length) * 100 : undefined}
+        right={<IpaToggle />}
+      />
 
       {passed !== null ? (
         <div className="space-y-3">
           <div
-            className={`rounded-2xl border p-4 space-y-1 ${
-              passed ? "border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/30" : "border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30"
-            }`}
+            className={`${CARD}`}
           >
-            <p className="font-bold text-slate-900 dark:text-white">
+            <p className="text-lg font-semibold text-slate-900 dark:text-zinc-100">
               {kind === "ladder" ? (passed ? "Xong bước này! 🎉" : "Chưa qua bước này, thử lại nhé") : "Xong lượt hỏi đáp nhanh! 🎉"}
             </p>
             {tasks[0].kind !== "learn" && (

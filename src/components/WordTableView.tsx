@@ -111,23 +111,23 @@ export default function WordTableView({
 
   return (
     <>
-      <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 overflow-hidden shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
         {/* Phones: one stacked card per word instead of the wide table */}
-        <ul className="md:hidden divide-y divide-slate-100 dark:divide-zinc-800/60">
+        <ul className="md:hidden divide-y divide-slate-100 dark:divide-zinc-800">
           {visibleWords.map((item) => {
             const relative = rowMeta.get(item.id)?.relative;
             return (
               <li
                 key={item.id}
                 onClick={() => onSelectWord(item)}
-                className="px-3 py-2.5 cursor-pointer active:bg-slate-50 dark:active:bg-zinc-800/40"
+                className="cursor-pointer px-4 py-3 active:bg-slate-50 dark:active:bg-zinc-800/40"
               >
                 <div className="flex items-start gap-1">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-mono font-bold text-base text-slate-900 dark:text-white break-words">{item.word}</span>
+                      <span className="break-words text-base font-semibold text-slate-900 dark:text-white">{item.word}</span>
                       {item.phonetic && (
-                        <span className="text-xs font-mono text-cyan-700 dark:text-cyan-400/80">{item.phonetic}</span>
+                        <span className="text-xs font-mono text-slate-500 dark:text-zinc-400">{item.phonetic}</span>
                       )}
                     </div>
                     <p className="mt-0.5 text-sm text-slate-700 dark:text-zinc-300 leading-snug line-clamp-2">{item.meaning_vn}</p>
@@ -136,7 +136,7 @@ export default function WordTableView({
                     type="button"
                     onClick={(e) => handleSpeak(item.word, e)}
                     aria-label={`Nghe phát âm ${item.word}`}
-                    className="shrink-0 w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 active:bg-slate-100 dark:active:bg-zinc-800"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100 dark:text-zinc-400 dark:active:bg-zinc-800"
                   >
                     <Volume2 className="w-5 h-5" />
                   </button>
@@ -144,7 +144,7 @@ export default function WordTableView({
                     type="button"
                     onClick={(e) => onDeleteWord(item.id, item.word, e)}
                     aria-label={`Xoá từ ${item.word}`}
-                    className="shrink-0 w-10 h-10 flex items-center justify-center rounded-lg text-slate-600 dark:text-zinc-400 active:bg-rose-50 dark:active:bg-rose-950/40"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-500 active:bg-red-50 active:text-red-600 dark:text-zinc-400 dark:active:bg-red-500/10"
                   >
                     <Trash2 className="w-5 h-5" />
                   </button>
@@ -169,7 +169,7 @@ export default function WordTableView({
                       setTrajectoryWord(item);
                     }}
                     aria-label="Xem lộ trình các lần ôn tiếp theo"
-                    className="ml-auto w-10 h-10 -my-2 flex items-center justify-center rounded-lg text-cyan-600 dark:text-cyan-400"
+                    className="-my-2 ml-auto flex h-11 w-11 items-center justify-center rounded-full text-teal-700 active:bg-teal-50 dark:text-teal-300 dark:active:bg-teal-400/10"
                   >
                     <Sparkles className="w-4 h-4" />
                   </button>
@@ -179,9 +179,9 @@ export default function WordTableView({
           })}
         </ul>
         <div className="hidden md:block overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs">
+          <table className="w-full text-left border-collapse text-sm">
             <thead>
-              <tr className="border-b border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950/70 text-slate-600 dark:text-zinc-400 font-mono text-[11px] select-none">
+              <tr className="select-none border-b border-slate-200 bg-slate-50 text-xs font-semibold text-slate-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-400">
                 <th
                   onClick={() => handleSort("word")}
                   className="py-3 px-4 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors"
@@ -236,7 +236,7 @@ export default function WordTableView({
                 <th className="py-3 px-4 text-right">Thao tác</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-zinc-800/60">
+            <tbody className="divide-y divide-slate-100 dark:divide-zinc-800">
               {visibleWords.map((item) => {
                 const meta = rowMeta.get(item.id);
                 const relative = meta?.relative;
@@ -254,68 +254,68 @@ export default function WordTableView({
                     className="hover:bg-slate-50/80 dark:hover:bg-zinc-800/40 cursor-pointer transition-colors group"
                   >
                     {/* Word Column */}
-                    <td className="py-3 px-4 font-mono font-bold text-slate-900 dark:text-white">
+                    <td className="py-3 px-4 font-semibold text-slate-900 dark:text-white">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors text-sm">
+                        <span className="text-base transition-colors group-hover:text-teal-700 dark:group-hover:text-teal-300">
                           {item.word}
                         </span>
                         {item.phonetic && (
-                          <span className="text-[10px] font-mono text-cyan-700 dark:text-cyan-400/80 bg-cyan-50 dark:bg-cyan-950/50 border border-cyan-200 dark:border-cyan-800/40 px-1.5 py-0.5 rounded">
+                          <span className="text-xs font-mono font-normal text-slate-500 dark:text-zinc-400">
                             {item.phonetic}
                           </span>
                         )}
                         <button
                           onClick={(e) => handleSpeak(item.word, e)}
                           title="Nghe phát âm"
-                          className="text-slate-400 hover:text-cyan-600 dark:text-zinc-500 dark:hover:text-cyan-400 p-0.5 rounded transition-colors"
+                          className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-teal-700 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-teal-300"
                         >
-                          <Volume2 className="w-3.5 h-3.5" />
+                          <Volume2 className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
 
                     {/* Topic Column */}
                     <td className="py-3 px-4 whitespace-nowrap">
-                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-cyan-50 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800/50">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-2.5 py-0.5 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
                         <Tag className="w-2.5 h-2.5 opacity-70" />
                         {topicLabel(item.topic)}
                       </span>
                     </td>
 
                     {/* Meaning Column */}
-                    <td className="py-3 px-4 text-slate-700 dark:text-zinc-300 font-normal text-xs max-w-md line-clamp-2 leading-relaxed">
+                    <td className="py-3 px-4 text-slate-700 dark:text-zinc-300 font-normal text-sm max-w-md line-clamp-2 leading-relaxed">
                       {item.meaning_vn}
                     </td>
 
                     {/* Appearances / Correct vs Wrong */}
-                    <td className="py-3 px-4 text-center font-mono">
+                    <td className="py-3 px-4 text-center tabular-nums">
                       <div className="flex flex-col items-center gap-1">
                         <span
-                          className={`px-2 py-0.5 rounded text-[11px] font-bold ${
+                          className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
                             total > 0
-                              ? "bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 border border-slate-200 dark:border-zinc-700/60"
-                              : "text-slate-400 dark:text-zinc-600 text-[10px]"
+                              ? "bg-slate-100 text-slate-800 dark:bg-zinc-800 dark:text-zinc-200"
+                              : "text-slate-500 dark:text-zinc-400"
                           }`}
                         >
                           {total > 0 ? `${total} lần` : "Chưa ôn"}
                         </span>
                         {total > 0 && (
                           <div className="space-y-0.5">
-                            <div className="flex items-center justify-center gap-1 text-[10px]">
-                              <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+                            <div className="flex items-center justify-center gap-1 text-[11px]">
+                              <span className="text-green-700 dark:text-green-400 font-bold">
                                 {correct}✓
                               </span>
                               <span className="text-slate-300 dark:text-zinc-700">/</span>
-                              <span className="text-rose-600 dark:text-rose-400 font-bold">
+                              <span className="text-red-700 dark:text-red-400 font-bold">
                                 {wrong}✗
                               </span>
                               <span className="text-slate-500 dark:text-zinc-400 font-semibold">
                                 ({accuracy}%)
                               </span>
                             </div>
-                            <div className="w-16 h-1 bg-rose-200 dark:bg-rose-950/80 rounded-full overflow-hidden">
+                            <div className="w-16 h-1.5 bg-red-100 dark:bg-red-500/20 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-emerald-500 rounded-full transition-all"
+                                className="h-full bg-green-600 rounded-full transition-all"
                                 style={{ width: `${accuracy}%` }}
                               />
                             </div>
@@ -325,14 +325,14 @@ export default function WordTableView({
                     </td>
 
                     {/* Stability / Ease Factor */}
-                    <td className="py-3 px-4 text-center font-mono text-slate-700 dark:text-zinc-300">
+                    <td className="py-3 px-4 text-center tabular-nums text-slate-700 dark:text-zinc-300">
                       {item.srs.stability && item.srs.stability > 0
                         ? `${Number(item.srs.stability).toFixed(1)} ngày`
                         : `${item.srs.interval} ngày`}
                     </td>
 
                     {/* Interval */}
-                    <td className="py-3 px-4 text-center font-mono text-slate-500 dark:text-zinc-400">
+                    <td className="py-3 px-4 text-center tabular-nums text-slate-500 dark:text-zinc-400">
                       {item.srs.interval} ngày
                     </td>
 
@@ -341,12 +341,12 @@ export default function WordTableView({
                       <div className="flex items-center gap-1.5">
                         <span
                           title={relative?.exactDateStr}
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono font-medium border ${
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium border ${
                             relative?.badgeClass || "bg-slate-100 text-slate-600"
                           }`}
                         >
                           {relative?.urgency === "overdue" && (
-                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                           )}
                           <Clock className="w-3 h-3 opacity-70" />
                           <span>{relative?.label}</span>
@@ -358,9 +358,9 @@ export default function WordTableView({
                             setTrajectoryWord(item);
                           }}
                           title="Xem lộ trình các lần ôn tiếp theo"
-                          className="p-1 rounded-lg text-slate-400 hover:text-cyan-600 dark:text-zinc-500 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
+                          className="flex h-9 w-9 items-center justify-center rounded-full text-teal-700 transition-colors hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
                         >
-                          <Sparkles className="w-3.5 h-3.5 text-cyan-500" />
+                          <Sparkles className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
@@ -371,11 +371,11 @@ export default function WordTableView({
                         <button
                           onClick={(e) => onDeleteWord(item.id, item.word, e)}
                           title="Xoá từ này"
-                          className="text-slate-400 hover:text-rose-600 dark:text-zinc-500 dark:hover:text-rose-400 p-1 rounded transition-colors"
+                          className="flex h-9 w-9 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-zinc-400 dark:hover:bg-red-500/10 dark:hover:text-red-400"
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
-                        <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-zinc-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors" />
+                        <ChevronRight className="w-4 h-4 text-slate-500 dark:text-zinc-400 group-hover:text-teal-700 dark:group-hover:text-teal-300 transition-colors" />
                       </div>
                     </td>
                   </tr>
@@ -388,7 +388,7 @@ export default function WordTableView({
           <div className="p-3 border-t border-slate-200 dark:border-zinc-800 flex justify-center">
             <button
               onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-              className="px-4 py-1.5 rounded-lg border border-slate-300 dark:border-zinc-700 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-800 dark:text-zinc-200 text-xs font-medium transition-colors"
+              className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-teal-700/30 bg-white px-5 text-sm font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
             >
               Xem thêm ({remaining} từ còn lại)
             </button>

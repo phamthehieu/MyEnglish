@@ -26,5 +26,5 @@ export default function WeeklyRankBadge() {
   }, [user]);
 
   if (rank === null) return null;
-  return <p className="text-[11px] font-semibold text-amber-600 dark:text-amber-400">🏆 Hạng {rank} tuần này</p>;
+  return <p className="text-xs font-semibold text-teal-700 dark:text-teal-300">🏆 Hạng {rank} tuần này</p>;
 }

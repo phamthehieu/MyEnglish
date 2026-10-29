@@ -130,15 +130,15 @@ function loadYouTubeApi(): Promise<void> {
 /** The sentence stays bright and only the word being said is lit: one set of colors for a list row, one for the dark pill on the video */
 const KARAOKE_TONE = {
   card: {
-    past: "text-slate-900 dark:text-white",
-    now: "text-orange-600 dark:text-orange-300 underline decoration-orange-500 dark:decoration-orange-300 underline-offset-[5px] decoration-2",
-    next: "text-slate-900 dark:text-white",
+    past: "text-slate-900 dark:text-zinc-100",
+    now: "text-teal-700 dark:text-teal-300 underline decoration-teal-600 dark:decoration-teal-300 underline-offset-[5px] decoration-2",
+    next: "text-slate-900 dark:text-zinc-100",
     // A harder word (see isHardWord) in a muted gold
     hard: "text-yellow-700 dark:text-yellow-300/80",
   },
   overlay: {
     past: "text-white",
-    now: "text-orange-300 underline decoration-orange-300 underline-offset-4",
+    now: "text-teal-300 underline decoration-teal-300 underline-offset-4",
     next: "text-white",
     hard: "text-white",
   },
@@ -247,7 +247,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
   if (!asrAvailable()) {
     return (
       <div className="space-y-3">
-        <p className="text-xs text-center text-slate-600 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>
+        <p className="text-sm text-center text-slate-500 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>
         {trailing && <div className="flex justify-end">{trailing}</div>}
       </div>
     );
@@ -307,21 +307,21 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
             onClick={phase === "listening" ? finish : begin}
             disabled={busy}
             aria-label={label}
-            className={`h-20 w-20 rounded-full ring-8 inline-flex items-center justify-center text-white transition-colors disabled:opacity-70 ${
+            className={`h-20 w-20 rounded-full ring-8 inline-flex items-center justify-center text-white shadow-sm transition-colors active:scale-95 disabled:opacity-70 ${
               phase === "listening"
-                ? "bg-rose-600 ring-rose-500/25 animate-pulse motion-reduce:animate-none"
-                : "bg-violet-500 ring-violet-500/20"
+                ? "bg-red-600 hover:bg-red-700 ring-red-500/20 animate-pulse motion-reduce:animate-none"
+                : "bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 ring-teal-700/10"
             }`}
           >
             {busy ? <Loader2 className="w-8 h-8 animate-spin" /> : phase === "listening" ? <Square className="w-7 h-7 fill-white" /> : <Mic className="w-8 h-8" />}
           </button>
-          <span className="text-sm text-slate-600 dark:text-zinc-400 text-center max-w-[16rem]">{label}</span>
+          <span className="text-sm font-semibold text-teal-800 dark:text-teal-300 text-center max-w-[16rem]">{label}</span>
         </div>
         <div className="justify-self-end">{trailing}</div>
       </div>
-      {problem && <p className="text-xs text-center text-rose-600 dark:text-rose-400">{problem}</p>}
+      {problem && <p className="text-sm text-center text-red-700 dark:text-red-300">{problem}</p>}
       {result && (
-        <div className="rounded-lg bg-slate-50 dark:bg-zinc-800/60 p-2.5 space-y-1.5" role="status">
+        <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/60 p-3 space-y-1.5" role="status">
           <p className="text-base font-semibold leading-snug">
             {result.words.map((w, i) => (
               <span key={i} className={WORD_TONE[w.status]}>
@@ -329,8 +329,8 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
               </span>
             ))}
           </p>
-          <p className="text-xs text-slate-600 dark:text-zinc-400">
-            <b className="text-slate-900 dark:text-white">
+          <p className="text-sm text-slate-500 dark:text-zinc-400">
+            <b className="text-slate-900 dark:text-zinc-100">
               {result.clear}/{result.judged}
             </b>{" "}
             từ rõ
@@ -339,13 +339,13 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
           {result.words
             .filter((w) => w.status === "wrong")
             .map((w, i) => (
-              <p key={i} className="text-xs text-rose-600 dark:text-rose-400">
+              <p key={i} className="text-xs text-red-600 dark:text-red-400">
                 "{w.text.replace(/[^\w'’-]/g, "")}" máy nghe thành "{w.heard}"
               </p>
             ))}
-          {result.words.some((w) => w.status === "missing") && <p className="text-xs text-rose-600 dark:text-rose-400">Gạch ngang: chưa nghe thấy từ đó.</p>}
-          <button onClick={playRecording} className="min-h-[40px] text-xs font-semibold text-slate-600 dark:text-zinc-300 underline underline-offset-2 inline-flex items-center gap-1">
-            <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
+          {result.words.some((w) => w.status === "missing") && <p className="text-xs text-red-600 dark:text-red-400">Gạch ngang: chưa nghe thấy từ đó.</p>}
+          <button onClick={playRecording} className="min-h-10 text-sm font-semibold text-teal-700 dark:text-teal-300 underline underline-offset-2 inline-flex items-center gap-1">
+            <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
           </button>
         </div>
       )}
@@ -392,34 +392,34 @@ function ShadowCard({
 }) {
   const pill = "h-11 rounded-full inline-flex items-center justify-center text-sm font-semibold transition-colors";
   return (
-    <div className="mb-2 rounded-3xl border border-violet-400/50 dark:border-violet-500/40 bg-white/70 dark:bg-zinc-900/70 p-4 space-y-4">
+    <div className="mb-2 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
       <div
-        className="h-1 rounded-full bg-slate-200 dark:bg-zinc-800"
+        className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800"
         role="progressbar"
         aria-label="Tiến độ trong bài"
         aria-valuemin={1}
         aria-valuemax={total}
         aria-valuenow={index + 1}
       >
-        <div className="h-full rounded-full bg-violet-500 transition-[width] motion-reduce:transition-none" style={{ width: `${((index + 1) / total) * 100}%` }} />
+        <div className="h-full rounded-full bg-teal-700 dark:bg-teal-500 transition-[width] motion-reduce:transition-none" style={{ width: `${((index + 1) / total) * 100}%` }} />
       </div>
 
-      <p className="text-center font-semibold leading-[1.6] text-slate-900 dark:text-white" style={{ ...SENTENCE_FONT, fontSize: 22 * fontScale }}>
+      <p className="text-center font-semibold leading-[1.6] text-slate-900 dark:text-zinc-100" style={{ ...SENTENCE_FONT, fontSize: 22 * fontScale }}>
         {seg.words ? <KaraokeText key={index} words={seg.words} getTime={getTime} tone="card" unlearned={() => false} onWord={onWord} /> : seg.text}
       </p>
 
       {seg.ipa && (
         <div className="flex items-start gap-3">
-          {showIpa ? <p className="min-w-0 flex-1 text-center text-[15px] leading-snug text-slate-600 dark:text-zinc-400 break-words">{seg.ipa}</p> : <span className="flex-1" />}
+          {showIpa ? <p className="min-w-0 flex-1 text-center text-[15px] leading-snug text-slate-500 dark:text-zinc-400 break-words">{seg.ipa}</p> : <span className="flex-1" />}
           <button
             onClick={onToggleIpa}
             aria-pressed={showIpa}
             aria-label={showIpa ? "Ẩn phiên âm" : "Hiện phiên âm"}
             title="IPA = ký hiệu cách đọc"
-            className={`h-11 shrink-0 rounded-xl border px-3 text-sm font-bold ${
+            className={`h-11 shrink-0 rounded-full border px-3 text-sm font-bold ${
               showIpa
-                ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
-                : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-400"
+                ? "border-teal-700/40 dark:border-teal-400/40 bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
+                : "border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300"
             }`}
           >
             IPA
@@ -430,25 +430,25 @@ function ShadowCard({
       <div className="flex items-center justify-center gap-3">
         <button
           onClick={onPlay}
-          className="h-14 w-14 rounded-full border border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-600 dark:text-violet-300 inline-flex items-center justify-center"
+          className="h-14 w-14 rounded-full bg-teal-50 hover:bg-teal-100 dark:bg-teal-400/10 text-teal-700 dark:text-teal-300 inline-flex items-center justify-center"
           aria-label="Nghe câu này"
         >
           <Play className="w-6 h-6 fill-current" />
         </button>
-        <button onClick={onSpeed} className={`${pill} min-w-[3.5rem] px-4 bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 tabular-nums`} aria-label={`Tốc độ ${speed} lần. Bấm để đổi`}>
+        <button onClick={onSpeed} className={`${pill} min-w-[3.5rem] px-4 bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 tabular-nums`} aria-label={`Tốc độ ${speed} lần. Bấm để đổi`}>
           {speed}×
         </button>
         <button
           onClick={onLoop}
           aria-pressed={loop}
           aria-label={loop ? "Đang lặp lại câu này. Bấm để tắt" : "Lặp lại câu này"}
-          className={`${pill} gap-1.5 px-4 ${loop ? "bg-violet-500/20 text-violet-600 dark:text-violet-300 ring-1 ring-violet-400/60" : "bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400"}`}
+          className={`${pill} gap-1.5 px-4 ${loop ? "bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300 ring-1 ring-teal-700/40 dark:ring-teal-400/40" : "bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300"}`}
         >
           <Repeat className="w-5 h-5" /> Lặp
         </button>
       </div>
 
-      <div className="border-t border-slate-200 dark:border-zinc-800" />
+      <div className="border-t border-slate-100 dark:border-zinc-800" />
 
       <SentenceReader
         text={seg.text}
@@ -458,7 +458,7 @@ function ShadowCard({
           <button
             onClick={onNext}
             disabled={index >= total - 1}
-            className="inline-flex min-h-[44px] items-center gap-1.5 text-base font-semibold text-violet-600 dark:text-violet-300 disabled:opacity-40"
+            className="inline-flex min-h-12 items-center gap-1.5 rounded-2xl border border-teal-700/30 px-4 text-base font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:text-teal-300 dark:hover:bg-teal-400/10 disabled:opacity-40"
           >
             Tiếp <ArrowRight className="w-5 h-5" />
           </button>
@@ -492,10 +492,10 @@ function FontSheet({ index, onPick, onClose }: { index: number; onPick: (i: numb
       <button className="popup-backdrop-enter absolute inset-0 bg-black/50" onClick={onClose} aria-label="Đóng" />
       <div className="sheet-enter relative mx-auto w-full max-w-lg rounded-t-3xl bg-white dark:bg-zinc-900 border-t border-slate-200 dark:border-zinc-800 px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-4 shadow-2xl">
         <button onClick={onClose} className="mx-auto block h-1.5 w-10 rounded-full bg-slate-300 dark:bg-zinc-600" aria-label="Đóng" />
-        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Cỡ chữ</h3>
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Cỡ chữ</h3>
         <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 px-4 py-3">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-600 dark:text-zinc-400">Xem trước</p>
-          <p className="mt-1 font-medium text-slate-900 dark:text-white" style={{ ...SENTENCE_FONT, fontSize: (SENTENCE_PX * pct) / 100 }}>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Xem trước</p>
+          <p className="mt-1 font-medium text-slate-900 dark:text-zinc-100" style={{ ...SENTENCE_FONT, fontSize: (SENTENCE_PX * pct) / 100 }}>
             It's 1780 in Paris
           </p>
         </div>
@@ -510,8 +510,8 @@ function FontSheet({ index, onPick, onClose }: { index: number; onPick: (i: numb
                 onClick={() => onPick(i)}
                 className={`flex flex-col items-center justify-end gap-1 rounded-2xl border px-1 pb-3 pt-2 transition-colors ${
                   on
-                    ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
-                    : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300"
+                    ? "border-teal-700 ring-1 ring-teal-700 dark:border-teal-500 dark:ring-teal-500 bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
+                    : "border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300"
                 }`}
               >
                 <span className="font-bold leading-none" style={{ fontSize: (20 * f.pct) / 100 }}>
@@ -745,14 +745,14 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
   const tool = (on: boolean) =>
     `h-11 shrink-0 rounded-xl border inline-flex items-center justify-center gap-1.5 text-xs font-semibold transition-colors ${
       on
-        ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
-        : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-400"
+        ? "border-teal-700/40 dark:border-teal-400/40 bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
+        : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300"
     }`;
   const tab = (on: boolean) =>
-    `shrink-0 px-4 min-h-[44px] rounded-full border text-sm font-semibold inline-flex items-center gap-2 transition-colors ${
+    `shrink-0 px-4 min-h-11 rounded-full border text-sm font-semibold inline-flex items-center gap-2 transition-colors ${
       on
-        ? "border-violet-400/70 dark:border-violet-500/60 bg-violet-500/15 text-violet-700 dark:text-violet-300"
-        : "border-slate-200 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60 text-slate-600 dark:text-zinc-300"
+        ? "border-teal-700 bg-teal-700 text-white dark:border-teal-600 dark:bg-teal-600"
+        : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
     }`;
   const divider = <span className="w-px h-6 shrink-0 bg-slate-200 dark:bg-zinc-700" aria-hidden="true" />;
 
@@ -786,16 +786,16 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
             </div>
           )}
         </div>
-        {error && <p className="px-3 pt-2 text-sm text-rose-600 dark:text-rose-400">{error}</p>}
+        {error && <p className="px-3 pt-2 text-sm text-red-600 dark:text-red-400">{error}</p>}
 
         <div className="px-3 md:px-0 pt-3 space-y-3">
           {!compact && (
             <div className="flex items-center gap-2">
-              <button onClick={onBack} className="w-11 h-11 -ml-2 inline-flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 shrink-0" aria-label="Danh sách">
+              <button onClick={onBack} className="w-11 h-11 inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 shrink-0" aria-label="Danh sách">
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div className="min-w-0 flex-1">
-                <h2 className="text-base font-bold text-slate-900 dark:text-white truncate">{lesson.title}</h2>
+                <h2 className="text-base font-semibold text-slate-900 dark:text-zinc-100 truncate">{lesson.title}</h2>
                 <p className="text-xs text-slate-600 dark:text-zinc-400 tabular-nums">
                   {lesson.level} · {Math.floor(lesson.duration / 60)}:{String(lesson.duration % 60).padStart(2, "0")} · câu {index + 1}/{segments.length}
                 </p>
@@ -933,12 +933,12 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
                 }
               }}
               className={`relative flex gap-3 px-3 py-2.5 rounded-2xl border cursor-pointer transition-colors ${
-                active ? "border-violet-400/60 dark:border-violet-500/50 bg-violet-500/10" : "border-transparent hover:bg-slate-100 dark:hover:bg-zinc-800/60 motion-reduce:transition-none"
+                active ? "border-teal-600/40 dark:border-teal-500/40 bg-teal-50 dark:bg-teal-400/10" : "border-transparent hover:bg-slate-100 dark:hover:bg-zinc-800/60 motion-reduce:transition-none"
               }`}
             >
-              {active && <span className="absolute left-0 top-2.5 bottom-2.5 w-1 rounded-full bg-violet-500" aria-hidden="true" />}
+              {active && <span className="absolute left-0 top-2.5 bottom-2.5 w-1 rounded-full bg-teal-700 dark:bg-teal-500" aria-hidden="true" />}
               <span
-                className={`w-11 shrink-0 pt-1 text-[13px] tabular-nums ${active ? "font-semibold text-violet-600 dark:text-violet-300" : "text-slate-500 dark:text-zinc-500"}`}
+                className={`w-11 shrink-0 pt-1 text-[13px] tabular-nums ${active ? "font-semibold text-teal-700 dark:text-teal-300" : "text-slate-500 dark:text-zinc-400"}`}
                 style={{ fontFamily: SENTENCE_FONT.fontFamily }}
               >
                 {clock(s.start)}
@@ -949,7 +949,7 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
                 ) : (
                   <>
                     <p
-                      className={`leading-[1.55] ${active ? "font-medium text-slate-900 dark:text-white" : "font-normal text-slate-700 dark:text-zinc-200"}`}
+                      className={`leading-[1.55] ${active ? "font-medium text-slate-900 dark:text-zinc-100" : "font-normal text-slate-700 dark:text-zinc-200"}`}
                       style={{ ...SENTENCE_FONT, fontSize: SENTENCE_PX * fontScale }}
                     >
                       {active && s.words ? (
@@ -1042,11 +1042,11 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
     return (
       <div className={PAGE_CONTAINER}>
         <div className="max-w-3xl mx-auto space-y-4">
-          <button onClick={() => setOpenId(null)} className="w-11 h-11 -ml-2 inline-flex items-center justify-center rounded-lg text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200" aria-label="Danh sách">
+          <button onClick={() => setOpenId(null)} className="w-11 h-11 inline-flex items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700" aria-label="Danh sách">
             <ArrowLeft className="w-5 h-5" />
           </button>
           {failed ? (
-            <p className="text-sm text-rose-600 dark:text-rose-400">Không mở được bài này. Quay lại và thử lại nhé.</p>
+            <p className="text-sm text-red-600 dark:text-red-400">Không mở được bài này. Quay lại và thử lại nhé.</p>
           ) : (
             <p className="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-zinc-400">
               <Loader2 className="w-4 h-4 animate-spin" /> Đang mở bài…
@@ -1059,18 +1059,18 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
 
   return (
     <div className={PAGE_CONTAINER}>
-      <div className="max-w-3xl mx-auto space-y-5">
+      <div className="max-w-3xl mx-auto space-y-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Shadowing</h2>
-          <p className="text-sm text-slate-600 dark:text-zinc-400">Xem video, bấm vào câu nào là video nhảy tới câu đó, nghe rồi nói theo.</p>
-          <p className="text-xs text-slate-600 dark:text-zinc-400 mt-1">Có 4 cách học: Phụ đề (xem), Shadowing (nghe rồi đọc theo), Chính tả (nghe rồi gõ lại), Điền từ (điền từ còn thiếu).</p>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Shadowing</h2>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">Xem video, bấm vào câu nào là video nhảy tới câu đó, nghe rồi nói theo.</p>
+          <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">Có 4 cách học: Phụ đề (xem), Shadowing (nghe rồi đọc theo), Chính tả (nghe rồi gõ lại), Điền từ (điền từ còn thiếu).</p>
         </div>
 
         {entries.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có video nào.</p>}
 
-        {levels.length > 0 && <p className="text-xs text-slate-600 dark:text-zinc-400 -mb-2">Cấp độ: A1 dễ → C2 khó.</p>}
+        {levels.length > 0 && <p className="text-sm text-slate-500 dark:text-zinc-400 -mb-2">Cấp độ: A1 dễ → C2 khó.</p>}
         {levels.length > 0 && (
-          <div className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1" role="tablist" aria-label="Cấp độ">
+          <div className={`flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 ${SCROLLBAR_HIDDEN}`} role="tablist" aria-label="Cấp độ">
             {levels.map((l) => {
               const on = l === level;
               return (
@@ -1079,14 +1079,14 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
                   role="tab"
                   aria-selected={on}
                   onClick={() => setLevel(l)}
-                  className={`shrink-0 px-3.5 min-h-[40px] rounded-full text-sm font-semibold border transition-colors ${
+                  className={`shrink-0 px-4 min-h-10 rounded-full text-sm font-semibold border transition-colors ${
                     on
-                      ? "bg-violet-600 border-violet-600 text-white"
-                      : "border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 hover:border-violet-400"
+                      ? "bg-teal-700 border-teal-700 text-white dark:bg-teal-600 dark:border-teal-600"
+                      : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
                   }`}
                 >
                   {l}
-                  <span className={`ml-1.5 text-xs font-normal ${on ? "text-violet-200" : "text-slate-600 dark:text-zinc-400"}`}>
+                  <span className={`ml-1.5 text-xs font-normal ${on ? "text-teal-50" : "text-slate-500 dark:text-zinc-400"}`}>
                     {entries.filter((e) => e.level === l).length}
                   </span>
                 </button>
@@ -1097,24 +1097,24 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
 
         {groups.map(([name, items]) => (
           <section key={name} className="space-y-2">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">
+            <h3 className="pt-2 text-sm font-semibold text-slate-500 dark:text-zinc-400">
               {name}
-              <span className="ml-2 font-normal normal-case tracking-normal text-slate-600 dark:text-zinc-400">{items.length} bài</span>
+              <span className="ml-2 font-normal text-slate-500 dark:text-zinc-400">{items.length} bài</span>
             </h3>
             {items.map((l) => (
               <button
                 key={l.id}
                 onClick={() => setOpenId(l.id)}
-                className="w-full flex gap-3 items-center text-left p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-violet-400"
+                className="w-full flex gap-3 items-center text-left p-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-600/50"
               >
                 <img
                   src={`https://i.ytimg.com/vi/${l.youtubeId}/mqdefault.jpg`}
                   alt=""
                   loading="lazy"
-                  className="w-32 aspect-video rounded-lg object-cover bg-slate-200 dark:bg-zinc-800 shrink-0"
+                  className="w-28 sm:w-32 aspect-video rounded-xl object-cover bg-slate-200 dark:bg-zinc-800 shrink-0"
                 />
                 <div className="min-w-0">
-                  <div className="font-semibold text-slate-900 dark:text-white line-clamp-2">{l.title}</div>
+                  <div className="font-semibold text-slate-900 dark:text-zinc-100 line-clamp-2">{l.title}</div>
                   <div className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
                     {l.level} · {Math.max(1, Math.round(l.duration / 60))} phút · {l.count} câu
                   </div>

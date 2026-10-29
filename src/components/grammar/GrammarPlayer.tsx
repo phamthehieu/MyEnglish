@@ -61,18 +61,20 @@ const NEAR_MISS_EDITS = 2;
 // Small helpers
 
 const LINK_BTN =
-  "min-h-[40px] px-3 rounded-xl border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-200 transition flex items-center gap-1.5 disabled:opacity-50";
+  "min-h-11 px-3.5 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-slate-600 dark:text-zinc-400 hover:bg-slate-50 hover:text-slate-800 dark:hover:bg-zinc-800 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5 disabled:opacity-50";
+/** The one big teal action at the bottom of the screen (as in the review session) */
 const PRIMARY_BTN =
-  "w-full sm:w-auto px-6 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-sm font-bold shadow-md shadow-cyan-600/20 transition active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-1.5";
+  "w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2";
 const SECONDARY_BTN =
-  "px-4 py-2 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 text-sm font-semibold hover:border-slate-300 dark:hover:border-zinc-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5";
-const CARD = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-4 sm:p-5 space-y-4";
-const LABEL = "text-xs font-bold uppercase tracking-wide text-slate-600 dark:text-zinc-400";
+  "min-h-12 px-5 rounded-2xl border border-teal-700/30 dark:border-teal-400/40 bg-white dark:bg-transparent text-teal-800 dark:text-teal-300 text-base font-semibold hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2";
+const CARD =
+  "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4";
+const LABEL = "text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400";
 
 const TONE_BOX: Record<Tone, string> = {
-  idle: "border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900/60",
-  ok: "border-emerald-400 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/30",
-  bad: "border-rose-400 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30",
+  idle: "border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900",
+  ok: "border-green-500 dark:border-green-500/50 bg-green-50 dark:bg-green-500/10",
+  bad: "border-red-400 dark:border-red-500/50 bg-red-50 dark:bg-red-500/10",
 };
 
 function startingText(given?: string): string {
@@ -126,7 +128,7 @@ function Seg({ text, underline }: { text: string; underline?: string }) {
   return (
     <>
       {text.slice(0, start)}
-      <span className="underline decoration-2 underline-offset-4 decoration-cyan-500">{underline}</span>
+      <span className="underline decoration-2 underline-offset-4 decoration-teal-600">{underline}</span>
       {text.slice(start + underline.length)}
     </>
   );
@@ -148,9 +150,9 @@ function PromptText({ prompt, underline, renderBlank }: { prompt: string; underl
 }
 
 const SLOT_TONE: Record<Tone, string> = {
-  idle: "border-cyan-500 bg-cyan-50 dark:bg-cyan-950/40 text-cyan-700 dark:text-cyan-300",
-  ok: "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300",
-  bad: "border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300",
+  idle: "border-teal-600 bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300",
+  ok: "border-green-600 bg-green-50 dark:bg-green-500/10 text-green-800 dark:text-green-300",
+  bad: "border-red-500 bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-300",
 };
 
 function Slot({ tone = "idle", children }: { tone?: Tone; children?: ReactNode }) {
@@ -175,43 +177,39 @@ function PlayerHeader({
   badge?: string;
 }) {
   return (
-    <div className="space-y-3">
-      <div className="flex items-start gap-2">
+    <div className="space-y-2">
+      <div className="flex items-center gap-3">
         <button
           type="button"
           data-own-enter
           onClick={onExit}
           title="Quay lại"
-          className="p-1.5 -ml-1.5 rounded-lg text-slate-500 dark:text-zinc-400 hover:text-slate-800 dark:hover:text-zinc-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition shrink-0"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700 transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div className="min-w-0 flex-1">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white truncate" title={title}>
+          <h2 className="text-base font-semibold text-slate-900 dark:text-zinc-100 truncate" title={title}>
             {title}
           </h2>
           {subtitle && (
-            <p className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5 line-clamp-3 break-words" title={subtitle}>
+            <p className="text-sm text-slate-500 dark:text-zinc-400 mt-0.5 line-clamp-3 break-words" title={subtitle}>
               {subtitle}
             </p>
           )}
         </div>
       </div>
       {progress && (
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-950 text-cyan-700 dark:text-cyan-300">
+        <div className="space-y-1">
+          <div className="flex items-center justify-between gap-2 text-xs font-semibold">
+            {badge ? <span className="min-w-0 truncate text-slate-500 dark:text-zinc-400">{badge}</span> : <span />}
+            <span className="shrink-0 text-teal-800 dark:text-teal-300">
               Câu {progress.index + 1}/{progress.total}
             </span>
-            {badge && (
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 truncate">
-                {badge}
-              </span>
-            )}
           </div>
-          <div className="h-1.5 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
+          <div className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden">
             <div
-              className="h-full rounded-full bg-cyan-500 transition-all duration-300"
+              className="h-full rounded-full bg-teal-700 dark:bg-teal-500 transition-[width] duration-300"
               style={{ width: `${Math.round(((progress.index + 1) / Math.max(1, progress.total)) * 100)}%` }}
             />
           </div>
@@ -269,15 +267,15 @@ function Feedback({
   return (
     <div
       ref={innerRef}
-      className={`rounded-2xl border p-4 space-y-3 animate-in fade-in duration-200 ${
+      className={`rounded-2xl border p-4 md:p-5 space-y-3 animate-in fade-in duration-200 ${
         ok
-          ? "bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-100"
-          : "bg-rose-50/80 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-100"
+          ? "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/30 text-green-900 dark:text-green-100"
+          : "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30 text-red-900 dark:text-red-100"
       }`}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="flex items-center gap-2 text-base font-bold">
-          {ok ? <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" /> : <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />}
+          {ok ? <CheckCircle2 className="w-5 h-5 text-green-700 dark:text-green-400" /> : <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />}
           {outcome.selfAccepted
             ? "Mình thấy đúng (không tính điểm)"
             : ok
@@ -291,7 +289,7 @@ function Feedback({
             type="button"
             data-own-enter
             onClick={onAccept}
-            className="text-xs font-semibold text-cyan-700 dark:text-cyan-300 hover:underline flex items-center gap-1"
+            className="min-h-11 rounded-full px-3 text-xs font-semibold text-teal-800 dark:text-teal-300 hover:bg-white/70 dark:hover:bg-black/20 flex items-center gap-1 transition-colors"
             title="Câu trả lời của bạn gần đúng. Ghi nhận là tự công nhận: không tính điểm và không ảnh hưởng lịch ôn. Xem hoặc xoá ở phần Ngữ pháp, mục công cụ."
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -330,7 +328,7 @@ function Feedback({
               type="button"
               data-own-enter
               onClick={() => onOpenLesson(lesson.id)}
-              className="text-xs font-semibold text-cyan-700 dark:text-cyan-300 hover:underline flex items-center gap-1"
+              className="min-h-10 text-sm font-semibold text-teal-800 dark:text-teal-300 hover:underline flex items-center gap-1"
             >
               <BookOpen className="w-3.5 h-3.5" />
               Xem lại bài
@@ -346,7 +344,7 @@ function Feedback({
             type="button"
             data-own-enter
             onClick={() => handleSpeak(task.full, 0.95)}
-            className="p-1 rounded-lg opacity-70 hover:opacity-100 transition shrink-0"
+            className="flex h-10 w-10 items-center justify-center rounded-full opacity-70 hover:opacity-100 hover:bg-white/70 dark:hover:bg-black/20 transition shrink-0"
             title="Nghe câu"
           >
             <Volume2 className="w-4 h-4" />
@@ -371,7 +369,7 @@ function QuestionContext({ entry }: { entry: SessionEntry }) {
   return (
     <div className="space-y-3">
       {entry.instruction && (
-        <p className="rounded-xl bg-cyan-50 dark:bg-cyan-950/40 px-3 py-2 text-sm font-semibold text-cyan-800 dark:text-cyan-200 break-words">{entry.instruction}</p>
+        <p className="rounded-2xl bg-teal-50 dark:bg-teal-400/10 px-4 py-3 text-sm font-semibold text-teal-900 dark:text-teal-200 break-words">{entry.instruction}</p>
       )}
       {entry.passage && <Passage text={entry.passage} />}
       {words.length > 0 && (
@@ -381,7 +379,7 @@ function QuestionContext({ entry }: { entry: SessionEntry }) {
             {words.map((word, i) => (
               <span
                 key={`${word}-${i}`}
-                className="px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-sm font-semibold text-slate-800 dark:text-zinc-100 break-words"
+                className="px-3 py-1 rounded-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-sm font-semibold text-slate-800 dark:text-zinc-100 break-words"
               >
                 {word}
               </span>
@@ -397,18 +395,18 @@ function QuestionContext({ entry }: { entry: SessionEntry }) {
 function Passage({ text }: { text: string }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900/60 overflow-hidden">
+    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
       <button
         type="button"
         data-own-enter
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="w-full flex items-center justify-between gap-2 px-3 py-2 text-xs font-bold text-slate-600 dark:text-zinc-300"
+        className="w-full min-h-11 flex items-center justify-between gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400"
       >
         <span>Đoạn văn</span>
         <ChevronDown className={`w-4 h-4 transition ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && <p className="px-3 pb-3 text-sm leading-relaxed whitespace-pre-line break-words text-slate-800 dark:text-zinc-100">{text}</p>}
+      {open && <p className="px-4 pb-4 text-sm leading-relaxed whitespace-pre-line break-words text-slate-800 dark:text-zinc-100">{text}</p>}
     </div>
   );
 }
@@ -589,10 +587,10 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
 
   // --- Pieces -----------------------------------------------------------------------------------------
 
-  const promptClass = "text-base sm:text-lg font-semibold leading-9 text-slate-900 dark:text-white whitespace-pre-line break-words";
+  const promptClass = "text-lg font-semibold leading-9 text-slate-900 dark:text-zinc-100 whitespace-pre-line break-words";
 
   const givenLine = task.given && !(task.format === "type" && task.blanks === 0) && task.format !== "translate" && task.format !== "error" && (
-    <p className="text-sm text-slate-600 dark:text-zinc-300">
+    <p className="text-sm text-slate-500 dark:text-zinc-400">
       Bắt đầu bằng: <span className="font-semibold">{task.given}</span>
     </p>
   );
@@ -603,7 +601,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
       type="button"
       disabled={answered}
       onClick={onClick}
-      className="px-2.5 py-1 rounded-lg bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-200 text-sm font-semibold hover:bg-rose-100 dark:hover:bg-rose-950 disabled:hover:bg-cyan-100 dark:disabled:hover:bg-cyan-950/80 transition break-words"
+      className="min-h-9 px-3 py-1 rounded-full bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-200 text-sm font-semibold hover:bg-red-50 dark:hover:bg-red-500/10 disabled:hover:bg-teal-50 dark:disabled:hover:bg-teal-400/10 transition-colors break-words"
       title={answered ? undefined : "Bấm để bỏ từ này"}
     >
       {tile}
@@ -630,10 +628,10 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
           {options.map((option, i) => {
             const isCorrect = i === task.correctOption;
             const isPicked = i === picked;
-            let style = "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 hover:border-cyan-400 dark:hover:border-cyan-700 hover:bg-cyan-50/40 dark:hover:bg-cyan-950/20";
+            let style = "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 hover:border-teal-600 dark:hover:border-teal-500 hover:bg-teal-50/50 dark:hover:bg-teal-400/10";
             if (answered) {
-              if (isCorrect) style = "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-100";
-              else if (isPicked) style = "border-rose-500 bg-rose-50 dark:bg-rose-950/40 text-rose-900 dark:text-rose-100";
+              if (isCorrect) style = "border-green-600 bg-green-50 dark:bg-green-500/10 text-green-900 dark:text-green-100";
+              else if (isPicked) style = "border-red-500 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-100";
               else style = "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-400 dark:text-zinc-500";
             }
             return (
@@ -642,9 +640,9 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
                 type="button"
                 disabled={answered}
                 onClick={() => pickOption(i)}
-                className={`p-3 rounded-xl border-2 text-sm font-semibold text-left flex items-start gap-2.5 transition active:scale-[0.99] ${style}`}
+                className={`min-h-14 px-4 py-3 rounded-2xl border-2 text-base font-semibold text-left flex items-start gap-3 transition-colors ${style}`}
               >
-                <span className="shrink-0 w-6 h-6 rounded-md bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-xs font-bold flex items-center justify-center">
+                <span className="shrink-0 mt-0.5 w-6 h-6 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-xs font-bold flex items-center justify-center">
                   {i + 1}
                 </span>
                 <span className="min-w-0 break-words leading-6">{option}</span>
@@ -685,12 +683,12 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
                     data-form-type="other"
                     aria-label={`Ô trống ${i + 1}`}
                     style={{ width: `${Math.min(40, Math.max(10, value.length + 3))}ch`, maxWidth: "100%" }}
-                    className={`inline-block align-middle h-9 mx-1 px-2 rounded-lg border-2 text-sm font-semibold text-center text-slate-900 dark:text-white bg-white dark:bg-zinc-950 focus:outline-none ${
+                    className={`inline-block align-middle h-10 mx-1 px-2 rounded-xl border-2 text-base font-semibold text-center text-slate-900 dark:text-zinc-100 bg-white dark:bg-zinc-950 focus:outline-none ${
                       state === "idle"
-                        ? "border-slate-300 dark:border-zinc-700 focus:border-cyan-500"
+                        ? "border-slate-300 dark:border-zinc-700 focus:border-teal-600 dark:focus:border-teal-500"
                         : state === "ok"
-                          ? "border-emerald-500"
-                          : "border-rose-500"
+                          ? "border-green-500"
+                          : "border-red-500"
                     }`}
                   />
                 );
@@ -723,11 +721,11 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
           data-1p-ignore="true"
           data-form-type="other"
           aria-label="Câu trả lời"
-          className={`w-full px-3 py-2.5 rounded-xl border-2 text-sm font-semibold leading-relaxed text-slate-900 dark:text-white bg-white dark:bg-zinc-950 focus:outline-none resize-none ${
-            tone === "idle" ? "border-slate-300 dark:border-zinc-700 focus:border-cyan-500" : tone === "ok" ? "border-emerald-500" : "border-rose-500"
+          className={`w-full px-4 py-3 rounded-2xl border-2 text-base font-semibold leading-relaxed text-slate-900 dark:text-zinc-100 bg-white dark:bg-zinc-950 focus:outline-none resize-none ${
+            tone === "idle" ? "border-slate-300 dark:border-zinc-700 focus:border-teal-600 dark:focus:border-teal-500" : tone === "ok" ? "border-green-500" : "border-red-500"
           }`}
         />
-        <p className="desktop-only text-xs text-slate-600 dark:text-zinc-400">Enter để kiểm tra · Shift+Enter để xuống dòng</p>
+        <p className="desktop-only text-xs text-slate-500 dark:text-zinc-400">Enter để kiểm tra · Shift+Enter để xuống dòng</p>
       </>
     );
   };
@@ -748,25 +746,25 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
         </p>
         {givenLine}
         {!intoBlank && (
-          <div className={`min-h-[3.25rem] p-2.5 rounded-xl border-2 border-dashed flex flex-wrap items-center gap-1.5 ${TONE_BOX[tone]}`}>
+          <div className={`min-h-14 p-2.5 rounded-2xl border-2 border-dashed flex flex-wrap items-center gap-1.5 ${TONE_BOX[tone]}`}>
             {placed.length === 0 ? (
-              <span className="text-xs italic text-slate-400 dark:text-zinc-500">Chạm vào các từ bên dưới để ghép câu...</span>
+              <span className="text-sm text-slate-500 dark:text-zinc-400">Chạm vào các từ bên dưới để ghép câu...</span>
             ) : (
               placedChips
             )}
           </div>
         )}
-        <div className="flex flex-wrap gap-2 justify-center p-3 rounded-xl bg-slate-50 dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800">
+        <div className="flex flex-wrap gap-2 justify-center p-3 rounded-2xl bg-slate-50 dark:bg-zinc-950/40 border border-slate-200 dark:border-zinc-800">
           {tiles.map((tile, i) => (
             <button
               key={i}
               type="button"
               disabled={answered || placedSet.has(i)}
               onClick={() => setPlaced((prev) => (prev.includes(i) ? prev : [...prev, i]))}
-              className={`px-3 py-1.5 rounded-xl border text-sm font-semibold shadow-sm transition active:scale-95 break-words ${
+              className={`min-h-11 px-3.5 py-2 rounded-xl border text-base font-semibold shadow-sm transition-colors break-words ${
                 placedSet.has(i)
                   ? "border-dashed border-slate-200 dark:border-zinc-800 bg-transparent text-transparent select-none shadow-none"
-                  : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-800 dark:text-zinc-100 hover:border-cyan-400 hover:bg-cyan-50/50 dark:hover:bg-cyan-950/30"
+                  : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-800 dark:text-zinc-100 hover:border-teal-600 hover:bg-teal-50/50 dark:hover:bg-teal-400/10"
               }`}
             >
               {tile}
@@ -791,10 +789,10 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
         <div className="flex flex-wrap gap-1.5">
           {(task.errorTokens ?? []).map((token, i) => {
             const inSpan = i >= from && i <= to;
-            let style = "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 hover:border-cyan-400 hover:bg-cyan-50/50 dark:hover:bg-cyan-950/30";
+            let style = "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-800 dark:text-zinc-100 hover:border-teal-600 hover:bg-teal-50/50 dark:hover:bg-teal-400/10";
             if (answered) {
               style = inSpan
-                ? "border-rose-500 bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-200"
+                ? "border-red-500 bg-red-50 dark:bg-red-500/10 text-red-800 dark:text-red-200"
                 : "border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-500 dark:text-zinc-400";
               if (picked === i && !inSpan) style += " ring-2 ring-amber-400";
             }
@@ -804,7 +802,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
                 type="button"
                 disabled={answered}
                 onClick={() => pickToken(i)}
-                className={`px-2.5 py-1.5 rounded-lg border text-base font-semibold transition active:scale-95 break-words ${style}`}
+                className={`min-h-11 px-3 py-2 rounded-xl border text-base font-semibold transition-colors break-words ${style}`}
               >
                 {token}
               </button>
@@ -813,7 +811,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
         </div>
         {answered && task.errorFix && (
           <p className="text-sm text-slate-700 dark:text-zinc-200">
-            Sửa thành: <span className="font-bold text-emerald-600 dark:text-emerald-400">{task.errorFix}</span>
+            Sửa thành: <span className="font-bold text-green-700 dark:text-green-400">{task.errorFix}</span>
           </p>
         )}
       </>
@@ -828,18 +826,18 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
       {givenLine}
       {!answered && (
         <>
-          <p className="text-xs text-slate-500 dark:text-zinc-400">Tự làm câu này, rồi xem đáp án và tự chấm.</p>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">Tự làm câu này, rồi xem đáp án và tự chấm.</p>
           {!revealed ? (
             <button type="button" onClick={() => setRevealed(true)} className={SECONDARY_BTN}>
               Xem đáp án
             </button>
           ) : (
             <div className="space-y-3">
-              <div className="rounded-xl border border-cyan-200 dark:border-cyan-900/60 bg-cyan-50/70 dark:bg-cyan-950/30 p-3 space-y-1.5">
+              <div className="rounded-2xl border border-teal-200 dark:border-teal-400/20 bg-teal-50 dark:bg-teal-400/10 p-4 space-y-1.5">
                 {task.full ? (
                   <p className="text-sm font-semibold text-slate-900 dark:text-white break-words">{task.full}</p>
                 ) : (
-                  !task.item.keyRaw && <p className="text-sm italic text-slate-500 dark:text-zinc-400">Sách không có đáp án mẫu cho câu này.</p>
+                  !task.item.keyRaw && <p className="text-sm text-slate-500 dark:text-zinc-400">Sách không có đáp án mẫu cho câu này.</p>
                 )}
                 {task.item.keyRaw && (
                   <p className="text-sm text-slate-700 dark:text-zinc-300 break-words whitespace-pre-line">
@@ -851,14 +849,14 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
                 <button
                   type="button"
                   onClick={() => answerWith({ kind: "self", correct: true })}
-                  className="px-4 py-2.5 rounded-xl border-2 border-emerald-500 text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 text-sm font-bold hover:bg-emerald-100 dark:hover:bg-emerald-950/50 transition"
+                  className="min-h-12 px-4 rounded-2xl border-2 border-green-600 text-green-800 dark:text-green-300 bg-green-50 dark:bg-green-500/10 text-base font-semibold hover:bg-green-100 dark:hover:bg-green-500/20 transition-colors"
                 >
                   Mình làm đúng
                 </button>
                 <button
                   type="button"
                   onClick={() => answerWith({ kind: "self", correct: false })}
-                  className="px-4 py-2.5 rounded-xl border-2 border-rose-500 text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/30 text-sm font-bold hover:bg-rose-100 dark:hover:bg-rose-950/50 transition"
+                  className="min-h-12 px-4 rounded-2xl border-2 border-red-500 text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-500/10 text-base font-semibold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"
                 >
                   Mình làm sai
                 </button>
@@ -898,27 +896,27 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
       )}
 
       {confirmHide && !answered && (
-        <div role="group" aria-label="Xác nhận ẩn câu" className="flex flex-col gap-2.5 rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/70 dark:bg-rose-950/30 p-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-rose-900 dark:text-rose-200">Câu này bị lỗi? Mình sẽ ẩn nó khỏi bài tập và ôn tập. Bạn có thể hoàn tác ngay sau đó.</p>
+        <div role="group" aria-label="Xác nhận ẩn câu" className="flex flex-col gap-3 rounded-2xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 p-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-red-900 dark:text-red-200">Câu này bị lỗi? Mình sẽ ẩn nó khỏi bài tập và ôn tập. Bạn có thể hoàn tác ngay sau đó.</p>
           <div className="flex shrink-0 gap-2">
-            <button type="button" data-own-enter disabled={busy} onClick={onHide} className="min-h-[40px] px-4 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition disabled:opacity-50">
+            <button type="button" data-own-enter disabled={busy} onClick={onHide} className="min-h-11 px-4 rounded-2xl border border-red-200 dark:border-red-500/40 bg-white dark:bg-transparent text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/10 text-sm font-semibold transition-colors disabled:opacity-50">
               Ẩn câu này
             </button>
-            <button type="button" data-own-enter onClick={() => setConfirmHide(false)} className={SECONDARY_BTN + " !min-h-[40px] !py-1.5 !text-xs"}>
+            <button type="button" data-own-enter onClick={() => setConfirmHide(false)} className={SECONDARY_BTN + " !min-h-11 !text-sm"}>
               Thôi
             </button>
           </div>
         </div>
       )}
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           {canHint && (
             <button
               type="button"
               data-own-enter
               onClick={useHint}
-              className="min-h-[40px] px-3 rounded-xl border border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-50 dark:hover:bg-amber-950/30 transition flex items-center gap-1.5"
+              className="min-h-11 px-3.5 rounded-full border border-amber-200 dark:border-amber-500/40 bg-white dark:bg-zinc-900 text-amber-800 dark:text-amber-300 text-xs font-semibold hover:bg-amber-50 dark:hover:bg-amber-500/10 transition-colors flex items-center gap-1.5"
               title="Chuyển sang dạng dễ hơn (câu này sẽ được ôn lại)"
             >
               <Lightbulb className="w-3.5 h-3.5" />
@@ -931,7 +929,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
               data-own-enter
               disabled={busy}
               onClick={giveUp}
-              className="min-h-[40px] px-3 rounded-xl border border-slate-300 dark:border-zinc-700 text-slate-600 dark:text-zinc-300 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800 transition flex items-center gap-1.5 disabled:opacity-50"
+              className="min-h-11 px-3.5 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1.5 disabled:opacity-50"
               title="Xem đáp án của câu này (tính là sai)"
             >
               <CircleHelp className="w-3.5 h-3.5" />
@@ -959,7 +957,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
         {answered ? (
           <button type="button" disabled={busy} onClick={next} className={PRIMARY_BTN}>
             <span>Tiếp tục</span>
-            <span className="text-xs opacity-90 font-normal">
+            <span className="text-sm opacity-90 font-normal">
               {outcome?.correct ? "(đã ghi nhận tiến độ)" : "(gặp lại ở cuối bài)"}
             </span>
             <span className="desktop-only font-mono text-xs">↵</span>
@@ -1095,13 +1093,13 @@ function Run({ entries, mode, title, subtitle, onExit, onComplete, onOpenLesson 
         badge={FORMAT_LABELS[task.format]}
       />
       {undo && (
-        <div role="status" className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-900/60 px-3 py-2">
-          <span className="text-xs text-slate-600 dark:text-zinc-300">Đã ẩn câu trước. Hoàn tác nếu bạn ẩn nhầm.</span>
+        <div role="status" className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-1">
+          <span className="text-sm text-slate-600 dark:text-zinc-300">Đã ẩn câu trước. Hoàn tác nếu bạn ẩn nhầm.</span>
           <button
             type="button"
             data-own-enter
             onClick={undoHide}
-            className="flex items-center gap-1 text-xs font-bold text-cyan-700 dark:text-cyan-300 hover:underline"
+            className="min-h-11 flex items-center gap-1 px-2 text-sm font-semibold text-teal-700 dark:text-teal-300 hover:underline"
           >
             <Undo2 className="w-3.5 h-3.5" />
             Hoàn tác
@@ -1132,8 +1130,8 @@ function EmptyState({ title, subtitle, onExit }: { title: string; subtitle?: str
     <div className="max-w-2xl mx-auto w-full space-y-4">
       <PlayerHeader title={title} subtitle={subtitle} onExit={onExit} />
       <div className={`${CARD} text-center`}>
-        <p className="text-sm font-semibold text-slate-700 dark:text-zinc-200">Chưa có câu nào phù hợp</p>
-        <button type="button" onClick={onExit} className={`${PRIMARY_BTN} sm:w-auto mx-auto`}>
+        <p className="text-base font-semibold text-slate-700 dark:text-zinc-200">Chưa có câu nào phù hợp</p>
+        <button type="button" onClick={onExit} className={PRIMARY_BTN}>
           Đóng
         </button>
       </div>
@@ -1168,10 +1166,10 @@ function Summary({
     percent === null
       ? "text-slate-400 dark:text-zinc-500"
       : percent >= 80
-        ? "text-emerald-600 dark:text-emerald-400"
+        ? "text-green-700 dark:text-green-400"
         : percent >= 50
-          ? "text-amber-600 dark:text-amber-400"
-          : "text-rose-600 dark:text-rose-400";
+          ? "text-amber-700 dark:text-amber-400"
+          : "text-red-600 dark:text-red-400";
 
   // The soonest review among the lessons this run used ("Ôn lại sau X ngày")
   const lessonIds = [...new Set(results.flatMap((r) => r.entry.lessonIds))];
@@ -1191,7 +1189,7 @@ function Summary({
         {early && <p className="text-xs text-slate-500 dark:text-zinc-400">Bạn đã kết thúc sớm, nên chưa làm hết các câu.</p>}
         {selfCount > 0 && <p className="text-xs text-slate-500 dark:text-zinc-400">{selfCount} câu bạn tự công nhận, không tính điểm.</p>}
         {soonestDays !== null && (
-          <p className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-cyan-700 dark:text-cyan-300">
+          <p className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-teal-700 dark:text-teal-300">
             <Clock className="w-3.5 h-3.5" />
             {soonestDays <= 0 ? "Ôn lại hôm nay" : `Ôn lại sau ${soonestDays} ngày`}
           </p>
@@ -1199,7 +1197,7 @@ function Summary({
       </div>
 
       {percent !== null && percent < GRAMMAR_PASS_SCORE && (
-        <div className="flex flex-col gap-2.5 rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/70 dark:bg-amber-950/30 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 rounded-2xl border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 p-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-amber-900 dark:text-amber-200">Nên đọc lại phần lý thuyết trước khi làm tiếp.</p>
           {onOpenLesson && focusLesson && (
             <button type="button" onClick={() => onOpenLesson(focusLesson)} className={`${SECONDARY_BTN} sm:w-auto shrink-0`}>
@@ -1217,7 +1215,7 @@ function Summary({
             {missed.map((r, i) => (
               <li
                 key={`${r.entry.task.itemKey}-${i}`}
-                className="rounded-xl border border-rose-200 dark:border-rose-900/60 bg-rose-50/60 dark:bg-rose-950/20 px-3 py-2 text-sm text-slate-800 dark:text-zinc-100 break-words"
+                className="rounded-xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-3 py-2.5 text-sm text-slate-800 dark:text-zinc-100 break-words"
               >
                 {r.entry.task.full || r.entry.task.prompt}
                 {r.hinted && <span className="ml-2 text-xs text-amber-700 dark:text-amber-400">(dùng gợi ý)</span>}
@@ -1227,9 +1225,9 @@ function Summary({
         </div>
       )}
 
-      <div className="flex flex-col gap-2.5 sm:flex-row sm:justify-end">
+      <div className="space-y-3">
         {missed.length > 0 && (
-          <button type="button" onClick={onRetry} className={`${SECONDARY_BTN} sm:w-auto`}>
+          <button type="button" onClick={onRetry} className={`${SECONDARY_BTN} w-full`}>
             <RotateCcw className="w-4 h-4" />
             Làm lại câu sai
           </button>
