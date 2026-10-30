@@ -3,13 +3,12 @@ import { features, isTouchDevice } from "@/lib/platform";
 import { BookOpenText, Check, Pencil, Plus, Quote, Sparkles, X } from "lucide-react";
 import { useWordsStore } from "@/stores/wordsStore";
 import { analyzeText, logEncounters, type BankStatus, type ReadingAnalysis } from "@/services/reading";
-import { pipeline } from "@/services/pipeline";
+import { addMetWords } from "@/services/metWords";
 import { addUserContextExample } from "@/services/db";
 import { PAGE_CONTAINER } from "./shared";
 import { isFoundationMode } from "@/services/learnerProfile";
 import { COMMON_WORDS, FUNCTION_WORDS } from "@/data/commonWords";
 import { AI_VOCAB_ENABLED } from "@/services/features";
-import { pullWordFromDeck } from "@/services/vocabFeed";
 
 const DRAFT_KEY = "myenglish_reading_draft_v1";
 /** Long texts are cut so highlighting stays instant */
@@ -138,20 +137,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
 
   const addPicked = async () => {
     setAdding(true);
-    let accepted = 0;
-    const refused: string[] = [];
-    for (const [base, sentence] of picked) {
-      if (!AI_VOCAB_ENABLED) {
-        // The Oxford deck is the only source of words: words it has are learnt next, with this sentence
-        const r = await pullWordFromDeck(base, sentence).catch(() => ({ status: "not_in_deck", word: base }));
-        if (r.status === "not_in_deck") refused.push(base);
-        else accepted++;
-        continue;
-      }
-      const res = await pipeline.enqueue(base, { context: sentence });
-      if (res.accepted) accepted++;
-      else refused.push(base);
-    }
+    const { accepted, refused } = await addMetWords(picked);
     setAdding(false);
     setPicked(new Map());
     refreshWords();

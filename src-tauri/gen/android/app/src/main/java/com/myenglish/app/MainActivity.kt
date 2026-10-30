@@ -7,6 +7,7 @@ import android.webkit.WebView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.ViewCompat
+import android.webkit.JavascriptInterface
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : TauriActivity() {
@@ -25,6 +26,7 @@ class MainActivity : TauriActivity() {
   private var pendingAction: String? = null
   private var pendingFocusMinutes: Int = 10
   private var imeHeight = -1
+  @Volatile private var waitingText: String? = null
 
   // Must be registered before the activity starts: a property is created with the activity
   private val micPermission =
@@ -64,6 +66,7 @@ class MainActivity : TauriActivity() {
   }
 
   private fun handleIncomingIntent(intent: Intent?) {
+    incomingText(intent)?.let { deliverIncomingText(it) }
     val action = intent?.getStringExtra("action")
       ?: if (intent?.getBooleanExtra("openReview", false) == true) "start_review" else null
     val focusMinutes = intent?.getIntExtra("focusMinutes", 10) ?: 10
@@ -78,6 +81,39 @@ class MainActivity : TauriActivity() {
         pendingAction = action
         pendingFocusMinutes = focusMinutes
       }
+    }
+  }
+
+  /** Text shared to the app (Share → MyEnglish) or chosen in another app's selection menu ("Lưu vào MyEnglish") */
+  private fun incomingText(intent: Intent?): String? {
+    val text = when (intent?.action) {
+      Intent.ACTION_SEND -> intent.getCharSequenceExtra(Intent.EXTRA_TEXT)
+      Intent.ACTION_PROCESS_TEXT -> intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
+      else -> null
+    }?.toString()?.trim()
+    // Handled once: the same intent comes back when the activity is recreated (a turn of the phone)
+    intent?.action = null
+    return text?.takeIf { it.isNotEmpty() }?.take(4000)
+  }
+
+  /**
+   * For the page's capture sheet (src/services/incomingText.ts): the text waits here until the page takes it
+   * (window.AndroidIncoming.take()), when it starts or when told by the event. On a cold start the page is not loaded
+   * yet when the intent arrives, so pushing the text into it could land nowhere.
+   */
+  private fun deliverIncomingText(text: String) {
+    waitingText = text
+    appWebView?.let { wv ->
+      wv.post { wv.evaluateJavascript("window.dispatchEvent(new Event('myenglish-incoming-text'))", null) }
+    }
+  }
+
+  inner class IncomingBridge {
+    @JavascriptInterface
+    fun take(): String {
+      val text = waitingText ?: ""
+      waitingText = null
+      return text
     }
   }
 
@@ -131,6 +167,9 @@ class MainActivity : TauriActivity() {
         )
       }
     }
+
+    // Text shared to the app (Share → MyEnglish, "Lưu vào MyEnglish"): taken by the page when it is ready
+    webView.addJavascriptInterface(IncomingBridge(), "AndroidIncoming")
 
     // Deliver any action pending from activity cold start
     val act = pendingAction

@@ -40,6 +40,13 @@ const pwa = VitePWA({
     orientation: "portrait",
     background_color: "#f7f8fa",
     theme_color: "#0f766e",
+    // Installed on Android, the web app is in the share menu: shared text opens its capture sheet
+    // (src/services/incomingText.ts)
+    share_target: {
+      action: "./",
+      method: "GET",
+      params: { title: "title", text: "text", url: "url" },
+    },
     icons: [
       { src: "pwa/icon-192.png", sizes: "192x192", type: "image/png" },
       { src: "pwa/icon-512.png", sizes: "512x512", type: "image/png" },

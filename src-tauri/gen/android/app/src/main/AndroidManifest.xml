@@ -46,6 +46,18 @@
                 <!-- AndroidTV support -->
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
+            <!-- A word met at work: "Share → MyEnglish" from any app, and "Lưu vào MyEnglish" in the menu of selected
+                 text (Gmail, Slack, the browser...). MainActivity hands the text to the page's capture sheet. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter android:label="Lưu vào MyEnglish">
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
 
         <!-- Floating popup quiz / reminder card shown over other apps -->

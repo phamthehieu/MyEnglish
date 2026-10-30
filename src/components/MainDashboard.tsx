@@ -12,6 +12,7 @@ import { librarySchedule } from "@/services/librarySchedule";
 import { calculateStreakAndGoal } from "@/services/streak";
 import { applyComebackToWork, resolveComeback } from "@/services/comeback";
 import { shouldShowOnboarding } from "@/services/onboarding";
+import { onIncomingText } from "@/services/incomingText";
 import { syncDailyFeed } from "@/services/shadowingFeed";
 import { syncDailySituations } from "@/services/talk/situationFeed";
 import { allSituations } from "@/data/situations";
@@ -45,6 +46,7 @@ const CliGuideView = lazy(() => import("./CliGuideView"));
 const FocusReviewModal = lazy(() => import("./FocusReviewModal"));
 const GrammarHub = lazy(() => import("./grammar/GrammarHub"));
 const OnboardingFlow = lazy(() => import("./OnboardingFlow"));
+const CaptureSheet = lazy(() => import("./dashboard/CaptureSheet"));
 const ReadingTab = lazy(() => import("./dashboard/ReadingTab"));
 const WritingTab = lazy(() => import("./dashboard/WritingTab"));
 const ForgottenTab = lazy(() => import("./dashboard/ForgottenTab"));
@@ -466,6 +468,10 @@ export default function MainDashboard({
   const [pendingAutoStart, setPendingAutoStart] = useState(false);
   // A focus session asked for from a reminder, started once the latest words are loaded (minutes)
   const [pendingFocus, setPendingFocus] = useState<number | null>(null);
+
+  // Text met at work, shared to the app or chosen in another app's selection menu: the capture sheet ("Lưu từ")
+  const [incomingText, setIncomingText] = useState<string | null>(null);
+  useEffect(() => onIncomingText(setIncomingText), []);
 
   // First run (no words yet): goal -> level -> minutes per day, then the first session
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -1614,6 +1620,13 @@ export default function MainDashboard({
       {showOnboarding && (
         <Suspense fallback={null}>
           <OnboardingFlow onFinish={handleOnboardingFinish} />
+        </Suspense>
+      )}
+
+      {/* After the first run: a text shared before it waits until then */}
+      {incomingText && !showOnboarding && (
+        <Suspense fallback={null}>
+          <CaptureSheet text={incomingText} onClose={() => setIncomingText(null)} onSaved={() => void refreshWords()} />
         </Suspense>
       )}
 
