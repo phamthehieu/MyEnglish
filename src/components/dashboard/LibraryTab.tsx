@@ -144,7 +144,7 @@ export default function LibraryTab({
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
-            <span>Lưới</span>
+            <span className="hidden sm:inline">Lưới</span>
           </button>
           <button
             type="button"
@@ -158,7 +158,7 @@ export default function LibraryTab({
             }`}
           >
             <List className="w-4 h-4" />
-            <span>Bảng</span>
+            <span className="hidden sm:inline">Bảng</span>
           </button>
         </div>
       </div>

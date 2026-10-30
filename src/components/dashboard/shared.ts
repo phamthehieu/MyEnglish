@@ -49,6 +49,8 @@ export type NavSectionId = "today" | "vocab" | "speak" | "grammar" | "me";
 export interface NavSection {
   id: NavSectionId;
   label: string;
+  /** On the phone's bottom bar, where five labels share the width (large text included) */
+  shortLabel?: string;
   tabs: Array<{ tab: DashboardTab; label: string }>;
 }
 export const NAV_SECTIONS: NavSection[] = [
@@ -67,6 +69,7 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     id: "speak",
     label: "Luyện nói",
+    shortLabel: "Nói",
     tabs: [
       { tab: "patterns", label: "Mẫu câu" },
       { tab: "talk", label: "Hội thoại" },

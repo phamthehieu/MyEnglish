@@ -187,7 +187,7 @@ export default function AnalyticsView({
       {/* Title, level and the sub-tabs */}
       <div className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="min-w-0 flex-1 text-sm text-slate-500 dark:text-zinc-400">{PROGRESS_TABS.find((t) => t.id === tab)?.hint}</p>
+          <p className="min-w-0 flex-1 basis-56 text-sm text-slate-500 dark:text-zinc-400">{PROGRESS_TABS.find((t) => t.id === tab)?.hint}</p>
           <button
             type="button"
             onClick={() => setTab("badges")}

@@ -474,7 +474,7 @@ export default function Sidebar({ activeTab, setActiveTab, dueCount, streakStats
                 </span>
               )}
             </span>
-            <span className="truncate max-w-full px-0.5">{s.label}</span>
+            <span className="max-w-full px-0.5 text-[11.5px] leading-tight whitespace-nowrap">{s.shortLabel ?? s.label}</span>
           </button>
         );
       })}
