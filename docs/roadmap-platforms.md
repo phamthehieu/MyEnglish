@@ -27,7 +27,8 @@ Những phần chỉ chạy trên Android, các nền tảng khác phải có c�
 
 ## Giai đoạn 0: Nền móng chung (làm trước mọi nền tảng mới)
 
-- [ ] **[Bắt buộc]** Tách lớp lưu trữ: `db.ts` gọi qua một giao diện chung, có 2 bản: SQLite (Tauri) và bản cho trình duyệt (wa-sqlite + OPFS, hoặc sql.js lưu vào IndexedDB). Dùng chung lược đồ và các bước nâng cấp dữ liệu.
+- [x] **[Bắt buộc]** Tách lớp lưu trữ: `db.ts` gọi qua một giao diện chung, có 2 bản: SQLite (Tauri) và bản cho trình duyệt (wa-sqlite + OPFS, hoặc sql.js lưu vào IndexedDB). Dùng chung lược đồ và các bước nâng cấp dữ liệu.
+  - Đã làm: `src/services/sqlite/` (sql.js, lưu vào IndexedDB sau mỗi thay đổi và khi rời trang). Mỗi lúc chỉ một tab giữ dữ liệu, tab thứ hai báo "Đang mở ở tab khác".
 - [ ] **[Bắt buộc]** Tạo `src/services/platform.ts` gom các khả năng theo nền tảng (giọng đọc, nhận dạng giọng nói, nhắc học, cập nhật, bàn phím). Màn nào cần thì hỏi "có không", không gọi thẳng `window.AndroidXXX`.
 - [ ] **[Bắt buộc]** Màn hình ẩn hoặc thay thế gọn những phần nền tảng không có (ví dụ: không có nhận dạng giọng nói thì cho tự chấm).
 - [ ] **[Bắt buộc]** Kiểm tra đồng bộ Supabase khi một người dùng 2–3 thiết bị khác loại: đăng nhập trên máy mới thì kéo đủ dữ liệu, hai máy học cùng lúc không mất tiến độ.

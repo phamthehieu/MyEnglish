@@ -30,6 +30,21 @@ async function bootstrap() {
     } catch (err) {
       console.warn("localStorage restore failed, backup disabled for this session:", err);
     }
+  } else {
+    // The web app: its database lives in this browser and one tab holds it; open it before anything shows, so a
+    // second tab says so instead of showing an empty app
+    try {
+      const { getDatabase } = await import("./services/db");
+      await getDatabase();
+    } catch (err) {
+      const { DatabaseInUseError } = await import("./services/sqlite/open");
+      if (err instanceof DatabaseInUseError) {
+        const { default: OpenElsewhere } = await import("./components/OpenElsewhere");
+        ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(<OpenElsewhere message={err.message} />);
+        return;
+      }
+      console.error("Database initialization failed:", err);
+    }
   }
 
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

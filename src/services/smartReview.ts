@@ -10,7 +10,7 @@
  */
 
 import { parseTerms, type WordDetail, type WordExample, type SRSReview, type ReviewCard, type CardDirection } from "@/types/database";
-import Database from "@tauri-apps/plugin-sql";
+import type { SqlDatabase as Database } from "./sqlite/types";
 import { Rating } from "ts-fsrs";
 import { getDatabase, isPlaceholderMeaning } from "./db";
 import { getRecentIntros } from "./intros";

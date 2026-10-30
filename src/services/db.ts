@@ -1,4 +1,5 @@
-import Database from "@tauri-apps/plugin-sql";
+import type { SqlDatabase as Database } from "./sqlite/types";
+import { openDatabase } from "./sqlite/open";
 import type { Word, WordExample, SRSReview, CreateWordInput, WordDetail } from "@/types/database";
 import { initReviewLogsTable, registerWordForms } from "./smartReview";
 import { logTerminal } from "./logger";
@@ -73,7 +74,7 @@ export async function getDatabase(): Promise<Database> {
   }
   initPromise = (async () => {
     try {
-      const db = await Database.load(DB_PATH);
+      const db = await openDatabase(DB_PATH);
       dbInstance = db;
       await initSchema(db);
       return db;
