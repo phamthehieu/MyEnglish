@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.webkit.WebView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : TauriActivity() {
   companion object {
@@ -22,6 +24,7 @@ class MainActivity : TauriActivity() {
   private var appWebView: WebView? = null
   private var pendingAction: String? = null
   private var pendingFocusMinutes: Int = 10
+  private var imeHeight = -1
 
   // Must be registered before the activity starts: a property is created with the activity
   private val micPermission =
@@ -103,6 +106,31 @@ class MainActivity : TauriActivity() {
     webView.addJavascriptInterface(SituationsBridge(this), "AndroidSituations")
     // A new version of the app, downloaded and installed from inside it
     webView.addJavascriptInterface(UpdateBridge(this, webView), "AndroidUpdater")
+
+    // Edge to edge, the keyboard no longer shrinks the page, so the page cannot see it. Tell it: the keyboard's
+    // height above the navigation bar, in CSS px, as --ime-height on <html> and a myenglish-ime event (0 = closed).
+    // Read on every layout of the window rather than with an insets listener: the WebView has its own, which
+    // gives the page env(safe-area-inset-*), and must not be replaced.
+    val decor = window.decorView
+    decor.viewTreeObserver.addOnGlobalLayoutListener {
+      val insets = ViewCompat.getRootWindowInsets(decor) ?: return@addOnGlobalLayoutListener
+      val ime = if (insets.isVisible(WindowInsetsCompat.Type.ime())) {
+        val keyboard = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+        val navBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+        (keyboard - navBar).coerceAtLeast(0)
+      } else {
+        0
+      }
+      if (ime != imeHeight) {
+        imeHeight = ime
+        val css = Math.round(ime / resources.displayMetrics.density)
+        webView.evaluateJavascript(
+          "document.documentElement.style.setProperty('--ime-height','${css}px');" +
+            "window.dispatchEvent(new CustomEvent('myenglish-ime',{detail:$css}))",
+          null
+        )
+      }
+    }
 
     // Deliver any action pending from activity cold start
     val act = pendingAction

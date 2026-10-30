@@ -161,6 +161,17 @@
   scrollbar-width: none;
 }
 
+/* Android, edge to edge: the keyboard covers the page instead of shrinking it, so the content gives up its height
+   (MainActivity sets --ime-height while the keyboard is open); the box being typed in and the buttons under it stay
+   in sight */
+main {
+  margin-bottom: var(--ime-height, 0px);
+}
+/* The tab bar steps aside while the keyboard is up (Sidebar): the room kept for it under the content goes too */
+html[data-keyboard] main {
+  padding-bottom: 0 !important;
+}
+
 /* "font-mono" is the app's one face too (tailwind.config.js): even-width digits keep number columns lined up */
 .font-mono {
   font-variant-numeric: tabular-nums;

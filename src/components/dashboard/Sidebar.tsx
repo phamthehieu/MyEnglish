@@ -101,26 +101,59 @@ export default function Sidebar({ activeTab, setActiveTab, dueCount, streakStats
   const waiting: Partial<Record<NavSectionId, number>> = { vocab: dueCount, grammar: grammarDueCount };
   const sections = NAV_SECTIONS.map((s) => ({ ...s, icon: SECTION_ICON[s.id], count: waiting[s.id] ?? 0, active: navSectionOf(activeTab).id === s.id }));
 
-  // While a text box has the focus the keyboard covers the bottom of the screen: the tab bar steps aside to leave room
-  const [typing, setTyping] = useState(false);
+  // While the keyboard is up for a text box it covers the bottom of the screen: the tab bar steps aside to leave room.
+  // Both are needed: closing the keyboard (Back, or swiping it down) leaves the box focused, and the bar must come back.
+  const [boxFocused, setBoxFocused] = useState(false);
+  const [keyboardUp, setKeyboardUp] = useState(false);
+  const typing = boxFocused && keyboardUp;
   useEffect(() => {
     let timer: number | undefined;
     const isBox = (t: EventTarget | null) => t instanceof HTMLTextAreaElement || (t instanceof HTMLInputElement && !["checkbox", "radio", "button", "submit", "range"].includes(t.type));
     const onIn = (e: FocusEvent) => {
       window.clearTimeout(timer);
-      if (isBox(e.target)) setTyping(true);
+      if (isBox(e.target)) setBoxFocused(true);
     };
     // A short wait: moving from one box to the next must not bring the bar back for a moment
     const onOut = () => {
       window.clearTimeout(timer);
-      timer = window.setTimeout(() => setTyping(false), 150);
+      timer = window.setTimeout(() => setBoxFocused(false), 150);
+    };
+    // On Android the app shell says when the keyboard opens or closes (MainActivity: edge to edge, the page does not
+    // shrink). Elsewhere the keyboard shrinks the visible height: compare with the tallest height seen at this width
+    // (a turn of the phone starts over).
+    // The page above the keyboard just got shorter: bring the box being typed in back into sight
+    const onIme = (e: Event) => {
+      const up = Number((e as CustomEvent).detail) > 80;
+      setKeyboardUp(up);
+      // index.css drops the room kept for this bar while the keyboard is up
+      document.documentElement.toggleAttribute("data-keyboard", up);
+      if (up && isBox(document.activeElement)) {
+        const box = document.activeElement as HTMLElement;
+        window.requestAnimationFrame(() => box.scrollIntoView({ block: "center", behavior: "smooth" }));
+      }
+    };
+    window.addEventListener("myenglish-ime", onIme);
+    const view = window.visualViewport;
+    const height = () => view?.height ?? window.innerHeight;
+    let width = window.innerWidth;
+    let tallest = height();
+    const onResize = () => {
+      if (window.innerWidth !== width) {
+        width = window.innerWidth;
+        tallest = height();
+      }
+      tallest = Math.max(tallest, height());
+      setKeyboardUp(height() < tallest * 0.8);
     };
     document.addEventListener("focusin", onIn);
     document.addEventListener("focusout", onOut);
+    (view ?? window).addEventListener("resize", onResize);
     return () => {
       window.clearTimeout(timer);
       document.removeEventListener("focusin", onIn);
       document.removeEventListener("focusout", onOut);
+      window.removeEventListener("myenglish-ime", onIme);
+      (view ?? window).removeEventListener("resize", onResize);
     };
   }, []);
 
