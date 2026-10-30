@@ -88,16 +88,21 @@ if (publish) {
 
 if (bump) {
   step(`Nâng phiên bản ${current} → ${version}`);
-  const edit = (file, from, to) => {
+  // All four are checked before any is written: a file that does not match leaves none of them half changed.
+  // Cargo.lock may have Windows line ends.
+  const v = current.replaceAll(".", "\\.");
+  const edits = [
+    ["package.json", new RegExp(`"version": "${v}"`), `"version": "${version}"`],
+    ["src-tauri/tauri.conf.json", new RegExp(`"version": "${v}"`), `"version": "${version}"`],
+    ["src-tauri/Cargo.toml", new RegExp(`^version = "${v}"`, "m"), `version = "${version}"`],
+    ["src-tauri/Cargo.lock", new RegExp(`(name = "tauri-app"\\r?\\n)version = "${v}"`), `$1version = "${version}"`],
+  ].map(([file, pattern, to]) => {
     const path = join(root, file);
     const text = readFileSync(path, "utf8");
-    if (!text.includes(from)) fail(`không tìm thấy "${from}" trong ${file}.`);
-    writeFileSync(path, text.replace(from, to));
-  };
-  edit("package.json", `"version": "${current}"`, `"version": "${version}"`);
-  edit("src-tauri/tauri.conf.json", `"version": "${current}"`, `"version": "${version}"`);
-  edit("src-tauri/Cargo.toml", `version = "${current}"`, `version = "${version}"`);
-  edit("src-tauri/Cargo.lock", `name = "tauri-app"\nversion = "${current}"`, `name = "tauri-app"\nversion = "${version}"`);
+    if (!pattern.test(text)) fail(`không tìm thấy phiên bản ${current} trong ${file}.`);
+    return [path, text.replace(pattern, to)];
+  });
+  for (const [path, text] of edits) writeFileSync(path, text);
   run("git", ["commit", "-q", "-am", `chore: version ${version}`]);
 }
 
