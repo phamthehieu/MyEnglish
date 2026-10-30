@@ -275,7 +275,7 @@ STYLE (keep identical on every screen of this project):
 - Calm, professional, trustworthy, fine to open at the office. Not childish, no mascot, gamification subtle.
 - Primary color teal #0F766E, success green #16A34A, warning amber #D97706, error red #DC2626,
   background #F7F8FA, cards white, text #0F172A, secondary text #64748B.
-- Font: Be Vietnam Pro. Body 16px, line height 1.5. Rounded corners 16px, soft shadows, generous spacing.
+- Font: Google Sans Flex. Body 16px, line height 1.5. Rounded corners 16px, soft shadows, generous spacing.
 - Lucide-style line icons. Tap targets at least 48px. WCAG AA contrast.
 - All UI text in Vietnamese, exactly as written in quotes. English only for learning content.
 - One obvious primary action per screen, everything else secondary.
@@ -298,7 +298,7 @@ SCREEN: "Hôm nay" (active tab: Hôm nay)
 ```text
 Create 3 more variants of the "Hôm nay" screen, same layout and style as the existing Hôm nay screen.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -318,7 +318,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 3 screens for the "Từ vựng" tab, same style as the Hôm nay screen.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -343,7 +343,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 Design 4 exercise screens of the study session, same full-screen session layout as the flip card
 (top bar with X, progress "Thẻ 7/20", no tab bar).
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted. Correct = green,
 wrong = red, both with an icon, not color alone.
 
@@ -362,7 +362,7 @@ wrong = red, both with an icon, not color alone.
 ```text
 Design 3 screens, same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -382,7 +382,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 3 screens of the "Từ vựng" tab, same style and same sub-tab chips as the Ôn tập screen.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -400,7 +400,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 3 screens of the "Luyện nói" tab, same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -423,7 +423,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 3 screens of "Hội thoại" (role-play conversations), same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -444,7 +444,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 3 screens of the "Luyện nói" tab, same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -463,7 +463,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 3 screens of the "Ngữ pháp" tab, same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -484,7 +484,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 2 screens under the "Ngữ pháp" tab (sub-tab chips "Đọc" and "Viết"), same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -502,7 +502,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 2 screens of the "Tôi" tab, same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -521,7 +521,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design 3 screens of the "Tôi" tab, same style and sub-tab chips as the Tiến độ screen.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted, bottom tab bar
 "Hôm nay" · "Từ vựng" · "Luyện nói" · "Ngữ pháp" · "Tôi".
 
@@ -544,7 +544,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 Design the 4-step first-run flow, same style as the project. No tab bar. Progress "Bước n/4"
 at the top, back arrow, one question per screen, primary button fixed at the bottom.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted.
 
 1) "Tiếng Anh của bạn đang ở mức nào?": selectable cards "A0 · Mất gốc", "A1 · Biết vài câu chào",
@@ -564,7 +564,7 @@ STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white ca
 ```text
 Design these small screens and overlays, same style as the project.
 
-STYLE (same as the project): teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA,
+STYLE (same as the project): teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA,
 16px corners, calm and professional, Vietnamese UI text exactly as quoted.
 
 1) Android notification mockup on a lock screen: "MyEnglish · Đến giờ học bạn đã hẹn ⏰ · 18 thẻ đang chờ, ~5 phút".
@@ -583,7 +583,7 @@ Tạo một dự án mới ở chế độ **Web**, hoặc đổi sang Web nếu
 
 ```text
 Design the desktop version (1440x900) of "MyEnglish" for Windows/macOS, same visual style as the
-mobile screens: teal #0F766E primary, Be Vietnam Pro 16px, white cards on #F7F8FA, 16px corners,
+mobile screens: teal #0F766E primary, Google Sans Flex 16px, white cards on #F7F8FA, 16px corners,
 calm and professional, Vietnamese UI text exactly as quoted.
 
 Layout: left sidebar 240px with logo "MyEnglish", 5 items "Hôm nay", "Từ vựng", "Luyện nói",

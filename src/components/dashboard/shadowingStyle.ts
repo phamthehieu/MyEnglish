@@ -1,7 +1,7 @@
 import type { WordStatus } from "@/services/sentenceCheck";
 
-/** The look of the sentences of the Shadowing screen: the Lexend face, a little air between letters and words */
-export const SENTENCE_FONT = { fontFamily: '"Lexend Variable", ui-sans-serif, system-ui, sans-serif', letterSpacing: "0.015em", wordSpacing: "0.1em" } as const;
+/** The look of the sentences of the Shadowing screen: the app's face, a little air between letters and words */
+export const SENTENCE_FONT = { fontFamily: "inherit", letterSpacing: "0.015em", wordSpacing: "0.1em" } as const;
 
 /** How a word of a checked sentence is colored: heard clearly, shaky, heard as another word, not heard */
 export const WORD_TONE: Record<WordStatus, string> = {

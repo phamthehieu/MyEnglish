@@ -161,6 +161,11 @@
   scrollbar-width: none;
 }
 
+/* "font-mono" is the app's one face too (tailwind.config.js): even-width digits keep number columns lined up */
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
 /* Code monospace font */
 pre code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

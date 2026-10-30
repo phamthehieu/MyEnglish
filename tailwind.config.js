@@ -18,9 +18,11 @@ export default {
       },
     },
     extend: {
-      // Be Vietnam Pro draws every Vietnamese tone mark cleanly (bundled in main.tsx, works offline)
+      // One face for every text, Google Sans Flex (bundled in main.tsx, works offline; has the Vietnamese and IPA
+      // letters). "mono" is the same face: index.css gives it even-width digits so number columns still line up
       fontFamily: {
-        sans: ['"Be Vietnam Pro"', ...defaultTheme.fontFamily.sans],
+        sans: ['"Google Sans Flex Variable"', ...defaultTheme.fontFamily.sans],
+        mono: ['"Google Sans Flex Variable"', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         // The v2 look is teal (#0F766E = teal-700): "cyan", the accent of the whole app, is drawn in teal

@@ -19,7 +19,6 @@ import {
   Volume2,
 } from "lucide-react";
 // Round, wide letters with Vietnamese support, bundled with the app (works offline); used for the sentences only
-import "@fontsource-variable/lexend/wght.css";
 import { COMMON_WORDS, FUNCTION_WORDS } from "@/data/commonWords";
 import { getAllWords } from "@/services/db";
 import { isFoundationMode } from "@/services/learnerProfile";
