@@ -157,6 +157,24 @@ export function handleSpeak(text: string, eOrRate?: React.MouseEvent | number, v
   }
 }
 
+/**
+ * Browsers (Safari on an iPhone above all) keep speech silent until the page speaks inside a tap: a card that reads
+ * its word by itself would stay mute. The first tap anywhere says nothing, silently, and unlocks speech for the rest.
+ */
+export function unlockWebSpeechOnFirstTap(): void {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  const unlock = () => {
+    try {
+      const silent = new SpeechSynthesisUtterance(" ");
+      silent.volume = 0;
+      window.speechSynthesis.speak(silent);
+    } catch {
+      /* no speech in this browser */
+    }
+  };
+  document.addEventListener("pointerdown", unlock, { once: true, capture: true });
+}
+
 /** Slow speed for a word the learner wants to hear clearly (50% of normal) */
 export const SLOW_RATE = 0.45;
 

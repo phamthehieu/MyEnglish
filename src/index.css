@@ -161,6 +161,24 @@
   scrollbar-width: none;
 }
 
+/* The web app in a phone's browser (Safari): 100% can be taller than what shows between the browser's bars, which
+   would hide the bottom of the page; 100dvh is what shows. Not under the interface zoom, where dvh grows too. */
+@supports (height: 100dvh) {
+  html.web-app:not(.zoomed),
+  html.web-app:not(.zoomed) body {
+    height: 100dvh;
+  }
+}
+
+/* iPhone and iPad: a text box under 16px makes Safari zoom the page in on focus, and it stays zoomed */
+@supports (-webkit-touch-callout: none) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+}
+
 /* Android, edge to edge: the keyboard covers the page instead of shrinking it, so the content gives up its height
    (MainActivity sets --ime-height while the keyboard is open); the box being typed in and the buttons under it stay
    in sight */

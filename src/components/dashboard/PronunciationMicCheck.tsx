@@ -24,6 +24,8 @@ import {
   wordsInDictionary,
   type CheckLevel,
   type Verdict,
+  canPlayRecording,
+  speechUnavailableText,
 } from "@/services/pronunciationCheck";
 
 const VERDICT_TONE: Record<Verdict["kind"], string> = {
@@ -67,7 +69,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
   const confusables = isCheckableWord(target) ? confusablesFor(lesson, target) : [];
   const mates = isCheckableWord(target) ? focusMates(lesson, target) : [];
   if (!asrAvailable()) {
-    return compact ? null : <p className="w-full pt-3 text-xs text-center text-slate-600 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>;
+    return compact ? null : <p className="w-full pt-3 text-xs text-center text-slate-600 dark:text-zinc-400">{speechUnavailableText()}</p>;
   }
   if (!canCheck(lesson, target)) return null;
   const decoys = decoysFor(lesson, target, [...confusables, ...mates]);
@@ -191,7 +193,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
             <p className="text-xs font-bold uppercase tracking-wide">{verdict.ok ? "✓ Đạt" : "Chưa đạt"}</p>
           )}
           <p>{verdict.message}</p>
-          {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
+          {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && canPlayRecording() && (
             <button onClick={playRecording} className="min-h-10 text-sm font-semibold underline underline-offset-2 inline-flex items-center gap-1">
               <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
             </button>

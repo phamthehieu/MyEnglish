@@ -89,5 +89,7 @@ export function applyUiScale(): void {
   try {
     const scale = getUiScale();
     (document.documentElement.style as CSSStyleDeclaration & { zoom: string }).zoom = scale === 1 ? "" : String(scale);
+    // index.css sizes the web app with 100dvh only when the page is not zoomed (dvh grows with the zoom like vh)
+    document.documentElement.classList.toggle("zoomed", scale !== 1);
   } catch {}
 }

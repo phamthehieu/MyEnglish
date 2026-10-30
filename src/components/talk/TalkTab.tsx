@@ -15,7 +15,7 @@ import { batchAvailable, batchStatus, cancelBatch, importPending, startBatch, to
 import { getActiveCefrLevel } from "@/services/pipeline";
 import { isFoundationMode } from "@/services/learnerProfile";
 import { features } from "@/lib/platform";
-import { asrAvailable } from "@/services/pronunciationCheck";
+import { asrAvailable, speechUnavailableText } from "@/services/pronunciationCheck";
 import { PAGE_CONTAINER } from "../dashboard/shared";
 import { Badge, Button, Card } from "../ui/kit";
 import Conversation from "./Conversation";
@@ -368,7 +368,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
             <p className="text-sm text-slate-500 dark:text-zinc-400">
               Học vài câu cần dùng, rồi nói thử như ngoài đời. Chọn câu hoặc tự nói, máy sẽ nghe và báo lại.
             </p>
-            {!asrAvailable() && <p className="mt-1 text-sm text-slate-500 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>}
+            {!asrAvailable() && <p className="mt-1 text-sm text-slate-500 dark:text-zinc-400">{speechUnavailableText()}</p>}
           </div>
           {showSuggested && (
             <SituationCard

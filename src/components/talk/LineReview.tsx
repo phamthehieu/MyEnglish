@@ -3,7 +3,7 @@ import { Check, Eraser, Keyboard, Mic, Puzzle, RotateCcw, Send, Volume2 } from "
 import { allSituations, getLine } from "@/data/situations";
 import type { Situation, SituationLine } from "@/types/situation";
 import { handleSpeak } from "@/components/review/speech";
-import { asrAvailable, playRecording } from "@/services/pronunciationCheck";
+import { asrAvailable, playRecording, canPlayRecording } from "@/services/pronunciationCheck";
 import { buildTiles, judgeSpoken, matchTiles, matchTyped, type Tile } from "@/services/talk/engine";
 import { dueLines, recordReview } from "@/services/talk/review";
 import { Button, Card as Panel } from "@/components/ui/kit";
@@ -220,7 +220,7 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
             <div className="rounded-xl border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm space-y-1" role="status">
               <p>{feedback}</p>
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold">
-                {method === "say" && (
+                {method === "say" && canPlayRecording() && (
                   <button onClick={playRecording} className="min-h-10 underline underline-offset-2 inline-flex items-center gap-1">
                     <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
                   </button>

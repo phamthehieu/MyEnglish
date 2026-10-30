@@ -36,6 +36,8 @@ import {
   prepareListening,
   SILENCE_PEAK,
   startListening,
+  canPlayRecording,
+  speechUnavailableText,
 } from "@/services/pronunciationCheck";
 import { checkSentence, type SentenceCheck } from "@/services/sentenceCheck";
 import { countWords } from "@/services/shadowingPractice";
@@ -246,7 +248,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
   if (!asrAvailable()) {
     return (
       <div className="space-y-3">
-        <p className="text-sm text-center text-slate-500 dark:text-zinc-400">Chấm giọng chỉ có trên điện thoại Android.</p>
+        <p className="text-sm text-center text-slate-500 dark:text-zinc-400">{speechUnavailableText()}</p>
         {trailing && <div className="flex justify-end">{trailing}</div>}
       </div>
     );
@@ -343,9 +345,11 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
               </p>
             ))}
           {result.words.some((w) => w.status === "missing") && <p className="text-xs text-red-600 dark:text-red-400">Gạch ngang: chưa nghe thấy từ đó.</p>}
-          <button onClick={playRecording} className="min-h-10 text-sm font-semibold text-teal-700 dark:text-teal-300 underline underline-offset-2 inline-flex items-center gap-1">
-            <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
-          </button>
+          {canPlayRecording() && (
+            <button onClick={playRecording} className="min-h-10 text-sm font-semibold text-teal-700 dark:text-teal-300 underline underline-offset-2 inline-flex items-center gap-1">
+              <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -830,7 +834,7 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
                   : view === "dictation"
                     ? "Chính tả: nghe rồi gõ lại cả câu."
                     : "Điền từ: điền các từ còn thiếu trong câu."}
-              {!canShadow && " Chấm giọng chỉ có trên điện thoại Android."}
+              {!canShadow && ` ${speechUnavailableText()}`}
             </p>
           )}
 

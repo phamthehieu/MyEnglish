@@ -23,7 +23,7 @@ import type { DialogueNode, Situation, SituationLine } from "@/types/situation";
 import { englishVoices, getTtsSettings, handleSpeak } from "@/components/review/speech";
 import { turnVariants } from "@/data/situations/variants";
 import { fillSlots } from "@/data/situations/templates";
-import { asrAvailable, playRecording } from "@/services/pronunciationCheck";
+import { asrAvailable, playRecording, canPlayRecording } from "@/services/pronunciationCheck";
 import {
   buildChoices,
   buildTiles,
@@ -858,7 +858,7 @@ function ConversationChat({
             <div className="rounded-xl border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm space-y-1" role="status">
               <p>{feedback}</p>
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm font-semibold">
-                {method === "say" && (
+                {method === "say" && canPlayRecording() && (
                   <button onClick={playRecording} className="min-h-10 underline underline-offset-2 inline-flex items-center gap-1">
                     <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
                   </button>

@@ -55,8 +55,12 @@ export const features = {
   ai: (): boolean => isTauri(),
   /** The Gemini / Claude command-line tools on this computer */
   aiCli: (): boolean => isDesktopApp(),
-  /** Offline speech recognition (Vosk in the Android app: window.AndroidASR) */
-  speechRecognition: (): boolean => typeof window !== "undefined" && "AndroidASR" in window,
+  /** Speech recognition: Vosk in the Android app (window.AndroidASR), the browser's own in the web app */
+  speechRecognition: (): boolean =>
+    typeof window !== "undefined" &&
+    ("AndroidASR" in window || (isWeb() && ("SpeechRecognition" in window || "webkitSpeechRecognition" in window))),
+  /** Hearing one's own recording again (the Android app keeps it; the browser's recognition does not) */
+  playbackOwnVoice: (): boolean => typeof window !== "undefined" && "AndroidASR" in window,
   /** Study reminders: Android notifications and floating card, or the desktop's corner card and popup */
   reminders: (): boolean => isTauri(),
   /** Start with the computer */

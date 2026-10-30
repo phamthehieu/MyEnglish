@@ -34,6 +34,10 @@ async function bootstrap() {
       console.warn("localStorage restore failed, backup disabled for this session:", err);
     }
   } else {
+    // index.css sizes the web app to what shows between a phone browser's bars
+    document.documentElement.classList.add("web-app");
+    // Words read aloud by themselves stay silent in a browser until a first tap unlocks speech
+    void import("./components/review/speech").then(({ unlockWebSpeechOnFirstTap }) => unlockWebSpeechOnFirstTap());
     // The web app: offline use and updates through its service worker (not in development: it would cache the
     // files being edited)
     if (import.meta.env.PROD) void import("./services/webApp").then(({ startWebApp }) => startWebApp());

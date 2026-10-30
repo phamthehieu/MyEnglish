@@ -6,6 +6,7 @@ import {
   startListening,
   wordsInDictionary,
   type AsrResult,
+  speechUnavailableText,
 } from "@/services/pronunciationCheck";
 import { stopSpeaking } from "@/components/review/speech";
 import { buildGrammar, decoysFor, speakableFrom, wordsOf, type Grammar } from "@/services/talk/engine";
@@ -76,7 +77,7 @@ export function useMic(): MicHandle {
           failure === "permission"
             ? "Cần cho phép dùng micro: vào Cài đặt của máy, mục Ứng dụng, MyEnglish, Quyền, bật Micro."
             : failure === "no-bridge"
-              ? "Chế độ tự nói chỉ có trên điện thoại Android."
+              ? speechUnavailableText()
               : "Chưa chuẩn bị được bộ nhận dạng giọng nói. Thử lại sau ít phút."
         );
         setPhase("idle");

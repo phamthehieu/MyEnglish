@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, MessageCircle, Snail, Volume2 } from "lucide-react";
 import type { Situation } from "@/types/situation";
 import { handleSpeak, SLOW_RATE } from "@/components/review/speech";
-import { asrAvailable, playRecording } from "@/services/pronunciationCheck";
+import { asrAvailable, playRecording, canPlayRecording, speechUnavailableText } from "@/services/pronunciationCheck";
 import { judgeSpoken, type SpokenVerdict } from "@/services/talk/engine";
 import { recordLineTry } from "@/services/talk/progress";
 import { Button, Card } from "@/components/ui/kit";
@@ -92,7 +92,7 @@ export default function WarmUp({
             {verdict && (
               <div className={`rounded-xl border p-3 text-sm space-y-2 ${TONE[verdict.kind]}`} role="status">
                 <p>{verdict.message}</p>
-                {(verdict.kind === "ok" || verdict.kind === "shaky" || verdict.kind === "other") && (
+                {(verdict.kind === "ok" || verdict.kind === "shaky" || verdict.kind === "other") && canPlayRecording() && (
                   <button onClick={playRecording} className="min-h-10 text-sm font-semibold underline underline-offset-2 inline-flex items-center gap-1">
                     <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
                   </button>
@@ -101,7 +101,7 @@ export default function WarmUp({
             )}
           </div>
         ) : (
-          <p className="text-sm text-slate-500 dark:text-zinc-400">Tự nói và nghe lại giọng mình chỉ có trên điện thoại Android.</p>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">{speechUnavailableText()}</p>
         )}
       </Card>
 

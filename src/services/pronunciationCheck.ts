@@ -1,5 +1,7 @@
 import type { PronunciationItem, PronunciationLesson } from "@/types/pronunciation";
 import { CHECK_AGAINST, CHECK_NEEDS_LOOKALIKE, END_SOUND_LESSONS } from "@/data/pronunciationCheckData";
+import { features, isWeb } from "@/lib/platform";
+import { createWebSpeechBridge, webSpeechAvailable } from "./webSpeechAsr";
 
 /**
  * "Đọc thử cho máy nghe": on Android the phone records the learner and an offline recognizer (Vosk, see
@@ -320,15 +322,24 @@ export function focusLabel(lesson: PronunciationLesson, item: PronunciationItem)
 
 // ---- Talking to the phone ----
 
+let webBridge: AsrBridge | null = null;
+
+/**
+ * The Android app's recognizer (Vosk, AsrBridge.kt), or in the web app the browser's own (webSpeechAsr.ts) in the
+ * same shape. Not in the desktop app: its webview has the browser object but no service behind it.
+ */
 function bridge(): AsrBridge | null {
   try {
-    return (window as unknown as { AndroidASR?: AsrBridge }).AndroidASR ?? null;
+    const android = (window as unknown as { AndroidASR?: AsrBridge }).AndroidASR;
+    if (android) return android;
+    if (isWeb() && webSpeechAvailable()) return (webBridge ??= createWebSpeechBridge());
+    return null;
   } catch {
     return null;
   }
 }
 
-/** The check exists on Android only (the recognizer is part of the app shell there) */
+/** The check exists in the Android app (Vosk) and in browsers that recognize speech (Chrome, Edge, Safari) */
 export function asrAvailable(): boolean {
   return bridge() !== null;
 }
@@ -445,6 +456,18 @@ export function cancelListening(): void {
   } catch {
     /* nothing was recording */
   }
+}
+
+/** The learner's own recording can be heard again (the Android app keeps it; a browser's recognition does not) */
+export function canPlayRecording(): boolean {
+  return features.playbackOwnVoice();
+}
+
+/** Why there is no speaking check here, for the learner */
+export function speechUnavailableText(): string {
+  return isWeb()
+    ? "Trình duyệt này chưa nghe được giọng nói. Mở bằng Chrome, Edge hoặc Safari, hoặc dùng app trên điện thoại Android."
+    : "Chấm giọng chỉ có trên điện thoại Android.";
 }
 
 /** Play the learner's last recording */
