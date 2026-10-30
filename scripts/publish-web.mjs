@@ -109,6 +109,11 @@ try {
 }
 if (!enabled) {
   console.log("==> Bật GitHub Pages cho repo");
-  gh("api", "-X", "POST", `repos/${owner}/${repo}/pages`, "-f", `source[branch]=${BRANCH}`, "-f", "source[path]=/");
+  try {
+    gh("api", "-X", "POST", `repos/${owner}/${repo}/pages`, "-f", `source[branch]=${BRANCH}`, "-f", "source[path]=/");
+  } catch (err) {
+    // GitHub turns Pages on by itself for a branch named gh-pages, sometimes between the check above and this call
+    if (!/already enabled|409/.test(String(err?.stderr ?? err))) throw err;
+  }
 }
 console.log(`\nXong. Vài phút nữa bản web có ở ${site}`);
