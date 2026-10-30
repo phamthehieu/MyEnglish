@@ -36,6 +36,15 @@ if ($Release -and -not (Test-Path (Join-Path $android "keystore.properties"))) {
   throw "No keystore.properties in ${android}. Create the signing key first (see the header of this script)."
 }
 
+# The speech-recognition model is git-ignored: an APK built without it says "Chưa chuẩn bị được bộ nhận dạng
+# giọng nói" on every speaking exercise. Fetch it on a fresh checkout, and never build without it.
+if (-not (Test-Path (Join-Path $android "app\src\main\assets\vosk-model-en\am"))) {
+  & (Join-Path $PSScriptRoot "fetch-vosk-model.ps1")
+  if (-not (Test-Path (Join-Path $android "app\src\main\assets\vosk-model-en\am"))) {
+    throw "The Vosk model is missing from app\src\main\assets\vosk-model-en (see scripts\fetch-vosk-model.ps1)."
+  }
+}
+
 # rust target, Tauri target name, ABI folder in the APK
 $targets = if ($Release) {
   @(@{ Triple = "aarch64-linux-android"; Name = "aarch64"; Abi = "arm64-v8a" },
