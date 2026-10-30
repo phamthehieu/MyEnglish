@@ -695,11 +695,11 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                     <Power className="w-5 h-5" />
                   </span>
                   <div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                         Tự khởi động cùng hệ điều hành
                       </h3>
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-zinc-300">
+                      <span className="whitespace-nowrap px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-zinc-300">
                         Mặc định: Bật
                       </span>
                     </div>

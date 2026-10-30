@@ -549,19 +549,11 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
                       {titleVn}
                     </span>
                   </button>
-                  {ids.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={() => toggleChapter(ids)}
-                      className="shrink-0 min-h-10 rounded-full border border-teal-700/30 px-3 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:text-teal-300 dark:hover:bg-teal-400/10"
-                    >
-                      {allChecked ? "Bỏ cả chương" : "Chọn cả chương"}
-                    </button>
-                  )}
                 </div>
-                {/* Progress on its own line, so it never competes with the title and the action for width */}
+                {/* Progress and the chapter action on their own line: the title keeps the whole width (long Vietnamese
+                    chapter names ran to four lines next to the button on a phone) */}
                 <div className="flex items-center gap-2 pl-[1.625rem] text-xs text-slate-500 dark:text-zinc-400">
-                  <span className="h-2 w-full max-w-[14rem] overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
+                  <span className="h-2 min-w-0 flex-1 max-w-[14rem] overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
                     <span
                       className={`block h-full rounded-full transition-[width] duration-300 ${
                         percent >= 100 ? "bg-green-600" : "bg-teal-700 dark:bg-teal-500"
@@ -572,6 +564,15 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
                   <span className="shrink-0 whitespace-nowrap">
                     {studied}/{rows.length} đã học
                   </span>
+                  {ids.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => toggleChapter(ids)}
+                      className="ml-auto shrink-0 whitespace-nowrap min-h-10 rounded-full border border-teal-700/30 px-3 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:text-teal-300 dark:hover:bg-teal-400/10"
+                    >
+                      {allChecked ? "Bỏ cả chương" : "Chọn cả chương"}
+                    </button>
+                  )}
                 </div>
               </div>
 

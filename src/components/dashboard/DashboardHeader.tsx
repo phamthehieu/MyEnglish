@@ -191,12 +191,14 @@ export default function DashboardHeader({
                     : `Học nhanh ${dueCount} thẻ`
                   : "Bắt đầu buổi ôn tập nhanh (Flashcards & Bài tập)"
             }
-            className="inline-flex items-center justify-center gap-1.5 min-h-10 px-3 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-sm font-semibold shadow-sm transition-colors shrink-0"
+            aria-label={isReviewing ? "Tiếp tục ôn" : `Ôn tập ${dueCount} thẻ`}
+            className="inline-flex items-center justify-center gap-1.5 min-h-10 min-w-10 px-2.5 sm:px-3 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-sm font-semibold shadow-sm transition-colors shrink-0"
           >
             <Zap className="w-4 h-4" />
-            <span>
+            {/* Phones: the bolt and the count are enough, so the section's name in the title is never cut */}
+            <span className="hidden sm:inline">
               {isReviewing ? "Tiếp tục ôn" : "Ôn tập"}
-              {!isReviewing && <span className="hidden sm:inline"> ngay</span>}
+              {!isReviewing && " ngay"}
             </span>
             {!isReviewing && (
               <span className="text-xs bg-white/20 text-white px-1.5 py-0.5 rounded-full font-bold leading-none">

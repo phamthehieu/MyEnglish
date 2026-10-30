@@ -90,11 +90,12 @@ function SituationCard({
         <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">📚 Có {learning} từ bạn đang học trong bài này</p>
       )}
       <div className="grid grid-cols-2 gap-2">
-        <Button variant="secondary" onClick={onWarmUp}>
-          <PlayCircle className="w-4 h-4" /> Học câu trước
+        {/* Half a phone's width each: no wrapping label (the icons give way on a narrow screen) */}
+        <Button variant="secondary" onClick={onWarmUp} className="whitespace-nowrap px-3">
+          <PlayCircle className="hidden w-4 h-4 shrink-0 min-[380px]:block" /> Học câu trước
         </Button>
-        <Button onClick={onChat}>
-          <MessageCircle className="w-4 h-4" /> Nói thử
+        <Button onClick={onChat} className="whitespace-nowrap px-3">
+          <MessageCircle className="hidden w-4 h-4 shrink-0 min-[380px]:block" /> Nói thử
         </Button>
       </div>
       {situation.ai && (

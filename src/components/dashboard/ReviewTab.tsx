@@ -120,8 +120,8 @@ export default function ReviewTab({
 
               <div className="grid grid-cols-2 gap-2">
                 {onStartFocus && (
-                  <Button variant="secondary" onClick={() => onStartFocus(focusMinutes)} disabled={words.length === 0} title="Chỉ học, tắt nhắc nhở và mọi thứ khác">
-                    <Crosshair className="h-4 w-4" /> Tập trung
+                  <Button variant="secondary" onClick={() => onStartFocus(focusMinutes)} disabled={words.length === 0} title="Chỉ học, tắt nhắc nhở và mọi thứ khác" className="whitespace-nowrap px-3">
+                    <Crosshair className="hidden h-4 w-4 shrink-0 min-[380px]:block" /> Tập trung
                   </Button>
                 )}
                 <Button
@@ -129,9 +129,9 @@ export default function ReviewTab({
                   onClick={() => handleStartReview(false)}
                   disabled={words.length === 0}
                   title="Ôn thêm mọi từ, không đổi lịch ôn"
-                  className={onStartFocus ? "" : "col-span-2"}
+                  className={`whitespace-nowrap px-3 ${onStartFocus ? "" : "col-span-2"}`}
                 >
-                  <Dumbbell className="h-4 w-4" /> Luyện thêm
+                  <Dumbbell className="hidden h-4 w-4 shrink-0 min-[380px]:block" /> Luyện thêm
                 </Button>
               </div>
 
