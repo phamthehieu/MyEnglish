@@ -24,6 +24,9 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npx vite build
+      # The web app keeps its data with SQLite in WebAssembly: a build without that file would start but save nothing
+      - name: Web build ships SQLite (WebAssembly)
+        run: ls dist/assets/sql-wasm-*.wasm
 
   rust:
     name: Test (Rust / Tauri)

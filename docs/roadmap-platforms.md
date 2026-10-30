@@ -38,7 +38,8 @@ Những phần chỉ chạy trên Android, các nền tảng khác phải có c�
   - Còn lại: thử một lần với tài khoản thật trên Supabase (đăng nhập bản web và app cùng tài khoản) khi bản web có địa chỉ chạy thật.
 - [x] **[Nên]** Ghi lỗi từ máy người dùng về một chỗ (bảng Supabase hoặc Sentry), để biết app lỗi ở đâu mà không cần người dùng chụp màn hình.
   - Đã làm: `src/services/errorReport.ts` + bảng `client_errors` (`supabase/migrations/0009_client_errors.sql`). Cần chạy 0009 một lần trong SQL editor của Supabase; cách đọc lỗi ở `supabase/README.md`, mục "Errors".
-- [ ] **[Nên]** CI (`.github/workflows/ci.yml`) chạy `tsc` và `vitest` cho mọi nền tảng, thêm test cho lớp lưu trữ bản web.
+- [x] **[Nên]** CI (`.github/workflows/ci.yml`) chạy `tsc` và `vitest` cho mọi nền tảng, thêm test cho lớp lưu trữ bản web.
+  - Đã có sẵn `tsc`, `vitest` (gồm test SQLite bản web và đồng bộ app ↔ web) và `vite build`; thêm bước kiểm tra bản web có file SQLite WebAssembly.
 - [ ] **[Thêm]** Thống kê sử dụng tối thiểu, ẩn danh: bao nhiêu người học mỗi ngày, màn nào ít dùng.
 
 ## Giai đoạn 1: Bản web / PWA (iPhone và máy tính công ty dùng được ngay)
