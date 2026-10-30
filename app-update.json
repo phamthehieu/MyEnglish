@@ -1,6 +1,6 @@
 {
-  "version": "0.3.10",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.3.10/MyEnglish-v0.3.10.apk",
-  "notes": "Giao diện dễ dùng hơn trên điện thoại: nút to hơn, chữ rõ hơn, thanh điều hướng mới; mic tự dừng khi bạn đọc xong.",
-  "sha256": "b6042a4a7a7127cbc2c658784f0f043fbd25c8dce8ef768c2de09b1d91be000e"
+  "version": "0.4.0",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.0/MyEnglish-v0.4.0.apk",
+  "notes": "Giao diện mới gọn và dễ dùng hơn, font chữ mới. Sửa lỗi bài nói báo \"chưa chuẩn bị được bộ nhận dạng giọng nói\". Chọn được giọng đọc tiếng Anh trên máy Samsung. Thanh điều hướng hiện lại khi đóng bàn phím.",
+  "sha256": "dd017c8f992470bfbe104b30695dadff6767b7afab83be0c1a4b1b798beccc43"
 }
