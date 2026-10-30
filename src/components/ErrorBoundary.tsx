@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { listen, type UnlistenFn } from "@tauri-apps/api/event";
 import { hideReviewNudge, hideReviewPopup } from "@/services/reminderSettings";
+import { recordError } from "@/services/errorReport";
 
 interface ErrorBoundaryProps {
   /** Window label: floating windows hide themselves instead of showing an error */
@@ -31,6 +32,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
 
   componentDidCatch(error: Error, info: ErrorInfo) {
     console.error(`[ErrorBoundary:${this.props.windowLabel}]`, error, info.componentStack);
+    recordError(error, `render:${this.props.windowLabel}`);
     const { windowLabel } = this.props;
     if (windowLabel === "review-popup") void hideReviewPopup();
     else if (windowLabel === "review-nudge") void hideReviewNudge();

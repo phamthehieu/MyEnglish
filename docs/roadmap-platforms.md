@@ -36,7 +36,8 @@ Những phần chỉ chạy trên Android, các nền tảng khác phải có c�
 - [x] **[Bắt buộc]** Kiểm tra đồng bộ Supabase khi một người dùng 2–3 thiết bị khác loại: đăng nhập trên máy mới thì kéo đủ dữ liệu, hai máy học cùng lúc không mất tiến độ.
   - Đã làm: `test/crossPlatformSync.test.ts` cho một máy chạy SQLite của app và một máy chạy SQLite của bản web đồng bộ qua máy chủ giả, cả hai chiều: thẻ và lịch ôn giống hệt, nhật ký ôn, XP cộng dồn, cài đặt, từ tự thêm (chữ Việt, emoji), xóa từ, học cùng lúc khi mất mạng, và hai bên lặng yên sau khi đã đồng bộ (không đẩy qua đẩy lại).
   - Còn lại: thử một lần với tài khoản thật trên Supabase (đăng nhập bản web và app cùng tài khoản) khi bản web có địa chỉ chạy thật.
-- [ ] **[Nên]** Ghi lỗi từ máy người dùng về một chỗ (bảng Supabase hoặc Sentry), để biết app lỗi ở đâu mà không cần người dùng chụp màn hình.
+- [x] **[Nên]** Ghi lỗi từ máy người dùng về một chỗ (bảng Supabase hoặc Sentry), để biết app lỗi ở đâu mà không cần người dùng chụp màn hình.
+  - Đã làm: `src/services/errorReport.ts` + bảng `client_errors` (`supabase/migrations/0009_client_errors.sql`). Cần chạy 0009 một lần trong SQL editor của Supabase; cách đọc lỗi ở `supabase/README.md`, mục "Errors".
 - [ ] **[Nên]** CI (`.github/workflows/ci.yml`) chạy `tsc` và `vitest` cho mọi nền tảng, thêm test cho lớp lưu trữ bản web.
 - [ ] **[Thêm]** Thống kê sử dụng tối thiểu, ẩn danh: bao nhiêu người học mỗi ngày, màn nào ít dùng.
 

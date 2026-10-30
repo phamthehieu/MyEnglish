@@ -6,7 +6,7 @@ keep their progress in step across machines and race others on XP.
 ## Set up
 
 1. Create a project at <https://supabase.com> (free tier is enough).
-2. **SQL editor** → paste and run [`migrations/0001_init.sql`](migrations/0001_init.sql), then [`migrations/0002_standing.sql`](migrations/0002_standing.sql) (rank widgets), then [`migrations/0003_avatar.sql`](migrations/0003_avatar.sql) (profile avatars), then [`migrations/0004_progress_merge.sql`](migrations/0004_progress_merge.sql) (conflicts settled by progress first), then [`migrations/0005_xp_limits.sql`](migrations/0005_xp_limits.sql) (XP and streak limits per account), then [`migrations/0006_sync_scale.sql`](migrations/0006_sync_scale.sql) (scale and hardening), then [`migrations/0007_focus_retention.sql`](migrations/0007_focus_retention.sql) (return-rate reports), then [`migrations/0008_feedback.sql`](migrations/0008_feedback.sql) (the "Góp ý" form, see "Feedback" below). Each file is run once, in order.
+2. **SQL editor** → paste and run [`migrations/0001_init.sql`](migrations/0001_init.sql), then [`migrations/0002_standing.sql`](migrations/0002_standing.sql) (rank widgets), then [`migrations/0003_avatar.sql`](migrations/0003_avatar.sql) (profile avatars), then [`migrations/0004_progress_merge.sql`](migrations/0004_progress_merge.sql) (conflicts settled by progress first), then [`migrations/0005_xp_limits.sql`](migrations/0005_xp_limits.sql) (XP and streak limits per account), then [`migrations/0006_sync_scale.sql`](migrations/0006_sync_scale.sql) (scale and hardening), then [`migrations/0007_focus_retention.sql`](migrations/0007_focus_retention.sql) (return-rate reports), then [`migrations/0008_feedback.sql`](migrations/0008_feedback.sql) (the "Góp ý" form, see "Feedback" below), then [`migrations/0009_client_errors.sql`](migrations/0009_client_errors.sql) (errors met on learners' devices, see "Errors" below). Each file is run once, in order.
 
    0006 changes:
    - the leaderboard sums the XP ledger once instead of per profile, and `standing_board` returns the rank widgets' data (top, you, the people just above and below, the total) in one call
@@ -41,6 +41,7 @@ keep their progress in step across machines and race others on XP.
 | `xp_daily` | XP earned per device per day (the leaderboard sums it) |
 | `groups`, `group_members` | friend groups joined with an invite code |
 | `feedback` | messages from the "Góp ý" form (not readable through the API) |
+| `client_errors` | errors the app could not handle, one row per device, error and day (not readable through the API) |
 
 Never uploaded: the imported grammar book, custom grammar exercises, the Oxford deck itself, API keys and
 machine paths. Only an allowlist of settings is synced.
@@ -85,3 +86,23 @@ To get each new message in Telegram:
 
 Without the two secrets, or when Telegram fails, the message is still saved. To see why a notice did not arrive:
 `select status_code, content, error_msg from net._http_response order by created desc limit 5;`
+
+## Errors met on learners' devices
+
+The app (all platforms) sends the errors nothing handled (an uncaught exception, a promise nobody awaited, a screen
+that crashed) through `report_errors` from [`0009_client_errors.sql`](migrations/0009_client_errors.sql), in batches
+a few seconds later, or at the next start when it was offline. Sent: the message and stack with e-mail addresses,
+keys, tokens and the query part of addresses taken out, the app version, the platform (`android`, `desktop`, `web`)
+and where it happened. Never study data. Limits: 30 different errors per device per day, 3000 new rows per hour in
+all; the same error again the same day only raises `count`.
+
+Read them in **Table Editor → client_errors**, newest `last_at` first, or grouped across devices:
+
+```sql
+select fingerprint, min(message) as message, sum(count) as times, count(distinct device_id) as devices,
+       max(context ->> 'version') as latest_version, max(last_at) as last_seen
+from public.client_errors where not handled and day > current_date - 7
+group by fingerprint order by devices desc, times desc;
+```
+
+Tick `handled` once fixed. Until 0009 is run, the app keeps at most 20 errors waiting and tries again later.

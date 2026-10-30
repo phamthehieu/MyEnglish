@@ -7,7 +7,10 @@ import { initTheme } from "./services/theme";
 import { restoreLocalStorageFromDb, startLocalStorageBackup } from "./services/storageBackup";
 import { getInitialWindowLabel } from "./lib/windowLabel";
 import { initStrictInputGuards } from "./lib/inputGuards";
+import { installErrorReporting } from "./services/errorReport";
 
+// Errors nothing handles go to the developer (src/services/errorReport.ts), from the very start
+installErrorReporting();
 // Initialize theme (dark/light/system) before first paint
 initTheme();
 // Enforce strict raw keyboard input across all inputs in the system
