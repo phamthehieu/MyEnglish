@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { check, Update, DownloadEvent } from "@tauri-apps/plugin-updater";
 import { relaunch } from "@tauri-apps/plugin-process";
 import { invoke } from "@tauri-apps/api/core";
-import { isMobilePlatform } from "@/lib/platform";
+import { isDesktopApp } from "@/lib/platform";
 
 export const GITHUB_REPO = "phamthehieu/MyEnglish";
 
@@ -63,7 +63,7 @@ export const useUpdateStore = create<UpdateStoreState>((set, get) => ({
     clearAutoReset();
 
     // Phones update through the app store: there is no in-app updater
-    if (isMobilePlatform()) return false;
+    if (!isDesktopApp()) return false;
 
     if (!isTauriEnvironment()) {
       console.debug("Not in Tauri environment, skipping auto-updater");

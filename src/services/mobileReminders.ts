@@ -1,5 +1,5 @@
 import { cancel, isPermissionGranted, pending, requestPermission } from "@tauri-apps/plugin-notification";
-import { isMobilePlatform } from "@/lib/platform";
+import { isPhoneApp } from "@/lib/platform";
 import { getReminderSettings, NIGHT_QUIET_END, NIGHT_QUIET_START, type ReminderSettings } from "./reminderSettings";
 import { anchorTimesOf } from "./reminderMoments";
 import { getActivityLogs, getDailyGoal, getLocalDateString } from "./streak";
@@ -351,7 +351,7 @@ let started = false;
 
 /** Start the phone reminders (main window, Android only). Safe to call more than once. */
 export function startMobileReminders(): () => void {
-  if (started || !isMobilePlatform() || !bridge()) return () => {};
+  if (started || !isPhoneApp() || !bridge()) return () => {};
   started = true;
 
   ensureNotificationPermission();

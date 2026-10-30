@@ -76,7 +76,7 @@ import {
   type BlurOverlayLevel,
 } from "@/services/reminderSettings";
 import { PAGE_CONTAINER } from "./dashboard/shared";
-import { isMobilePlatform } from "@/lib/platform";
+import { isPhoneApp, isWeb } from "@/lib/platform";
 import { SHOW_DEV_TOOLS } from "@/lib/devTools";
 import {
   nextPlannedReminder,
@@ -89,7 +89,18 @@ import {
 } from "@/services/mobileReminders";
 import { triggerReviewNudge } from "@/services/reminderSettings";
 
-const IS_MOBILE = isMobilePlatform();
+// The phone app (Android reminders, floating card) as opposed to the desktop app; the web app has neither
+const IS_MOBILE = isPhoneApp();
+const IS_WEB = isWeb();
+
+/** What a section of these settings becomes in the web app, which does not have it yet */
+function NotOnWeb({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 md:shadow-sm`}>
+      <p className="text-sm leading-relaxed text-slate-700 dark:text-zinc-300">{children}</p>
+    </div>
+  );
+}
 const IS_MAC = typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
 
 /** Today's activity has reached the daily goal (the same test the reminder worker makes, minus the due-review check) */
@@ -683,8 +694,14 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         icon={<Bell className="w-5 h-5" />}
         title="Nhắc học"
         description="Khi nào app nhắc bạn ôn: mỗi bao lâu, vào giờ nào, giờ yên tĩnh."
-        summary={reminderSettings.enabled ? (reminderSettings.intervalMinutes > 0 ? `Bật · mỗi ${reminderSettings.intervalMinutes} phút` : "Bật · theo giờ học") : "Đang tắt"}
+        summary={IS_WEB ? "Chưa có trên bản web" : reminderSettings.enabled ? (reminderSettings.intervalMinutes > 0 ? `Bật · mỗi ${reminderSettings.intervalMinutes} phút` : "Bật · theo giờ học") : "Đang tắt"}
       >
+        {IS_WEB ? (
+          <NotOnWeb>
+            Bản web chưa nhắc học được. Muốn được nhắc đúng giờ, hãy dùng app trên điện thoại Android hoặc máy tính: đăng
+            nhập cùng tài khoản là tiến độ học được đồng bộ.
+          </NotOnWeb>
+        ) : (
         <div className="space-y-6">
           {/* SECTION 0: AUTOSTART SYSTEM SETTING (desktop only) */}
           {!IS_MOBILE && (
@@ -1251,6 +1268,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             </div>
           </div>
         </div>
+        )}
       </SettingsSection>
 
       {/* 3. GIAO DIỆN: chế độ, cỡ chữ, âm thanh, giọng đọc */}
@@ -1270,9 +1288,15 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         icon={<Bot className="w-5 h-5" />}
         title="AI (không bắt buộc)"
         description="Chỉ cần cho các tính năng AI như Viết và sửa lỗi. Không có AI bạn vẫn học bình thường."
-        summary={!cliStatus ? "Đang kiểm tra…" : cliStatus.installed ? "● Đã kết nối" : "○ Chưa kết nối"}
+        summary={IS_WEB ? "Chưa có trên bản web" : !cliStatus ? "Đang kiểm tra…" : cliStatus.installed ? "● Đã kết nối" : "○ Chưa kết nối"}
         defaultOpen={false}
       >
+        {IS_WEB ? (
+          <NotOnWeb>
+            Các tính năng AI (Viết và sửa lỗi, tạo hội thoại mới) chưa có trên bản web. Mọi bài học khác dùng bình thường;
+            muốn dùng AI, hãy mở app trên điện thoại Android hoặc máy tính.
+          </NotOnWeb>
+        ) : (
         <div className="space-y-6">
           {/* AI CLI status: information only. Without it the app still works; only the AI features are off */}
           <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 md:shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4`}>
@@ -1869,6 +1893,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           )}
 
         </div>
+        )}
       </SettingsSection>
 
       {/* 5. THUẬT TOÁN LỊCH ÔN: nâng cao, đã có sẵn cấu hình mặc định */}

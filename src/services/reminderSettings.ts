@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { emit } from "@tauri-apps/api/event";
-import { isMobilePlatform } from "@/lib/platform";
+import { isPhoneApp } from "@/lib/platform";
 
 export type ReminderInterval = 0 | 15 | 30 | 45 | 60 | 120; // 0 = disabled, others in minutes
 export type ReminderTrigger = "due_only" | "due_then_random" | "all_words";
@@ -450,7 +450,7 @@ export function getRemainingSecondsToNextReminder(): number {
  * Trigger the native desktop Focus Review Pop-up window
  */
 export async function triggerReviewPopup(): Promise<boolean> {
-  if (isMobilePlatform()) {
+  if (isPhoneApp()) {
     // On mobile, review is started manually from the dashboard or via notification intent, never unsolicited in-app
     return false;
   }
@@ -476,7 +476,7 @@ export async function triggerReviewNudge(
   dueCount: number,
   extraPayload?: Partial<ReviewNudgePayload>
 ): Promise<boolean> {
-  if (isMobilePlatform()) {
+  if (isPhoneApp()) {
     // Mobile reminders are handled natively by Android AlarmManager when outside the app.
     // Never show in-app popup nudges while the user is using the app.
     return false;

@@ -14,7 +14,7 @@ import { aiReady, generateSituation } from "@/services/talk/generateAi";
 import { batchAvailable, batchStatus, cancelBatch, importPending, startBatch, topUpBatch, type BatchStatus } from "@/services/talk/situationBatch";
 import { getActiveCefrLevel } from "@/services/pipeline";
 import { isFoundationMode } from "@/services/learnerProfile";
-import { isMobilePlatform } from "@/lib/platform";
+import { features } from "@/lib/platform";
 import { asrAvailable } from "@/services/pronunciationCheck";
 import { PAGE_CONTAINER } from "../dashboard/shared";
 import { Badge, Button, Card } from "../ui/kit";
@@ -284,7 +284,9 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
       )}
       {ready === false && (
         <p className="text-sm text-amber-700 dark:text-amber-300">
-          Chưa có AI. Vào Cài đặt để nhập khóa Gemini{isMobilePlatform() ? "" : " (hoặc cài AI CLI)"}, rồi quay lại đây.
+          {features.ai()
+            ? `Chưa có AI. Vào Cài đặt để nhập khóa Gemini${features.aiCli() ? " (hoặc cài AI CLI)" : ""}, rồi quay lại đây.`
+            : "Tạo hội thoại bằng AI chưa có trên bản web: mở app trên điện thoại Android hoặc máy tính để dùng."}
         </p>
       )}
       {made && <p className="text-sm text-green-700 dark:text-green-300">Đã tạo {made.split(", ").length} bài: {made}. Xem ở nhóm bên dưới.</p>}

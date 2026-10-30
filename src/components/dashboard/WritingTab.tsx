@@ -21,12 +21,12 @@ import { recordDailyActivity } from "@/services/streak";
 import { getActiveCefrLevel } from "@/services/pipeline";
 import { bankStatus } from "@/services/reading";
 import { shuffle } from "@/lib/utils";
-import { isMobilePlatform } from "@/lib/platform";
+import { features } from "@/lib/platform";
 import { PAGE_CONTAINER } from "./shared";
 import MistakeReview from "./MistakeReview";
 
 const DRAFT_KEY = "myenglish_standup_draft_v1";
-const IS_MOBILE = isMobilePlatform();
+const HAS_AI_CLI = features.aiCli();
 
 interface WritingTabProps {
   onOpenGrammarLesson: (lessonId: string) => void;
@@ -139,7 +139,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       reload();
     } catch (err) {
       setError(
-        `Không sửa được bằng AI: ${err instanceof Error ? err.message : String(err)}. Vào Cài đặt để nhập khóa Gemini${IS_MOBILE ? "" : " (hoặc cài AI CLI)"}, rồi thử lại.`
+        `Không sửa được bằng AI: ${err instanceof Error ? err.message : String(err)}. Vào Cài đặt để nhập khóa Gemini${HAS_AI_CLI ? " (hoặc cài AI CLI)" : ""}, rồi thử lại.`
       );
     } finally {
       setBusy(false);
@@ -214,7 +214,10 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
         </div>
         {cliReady === false && (
           <p className="rounded-xl bg-amber-50 dark:bg-amber-500/10 px-3 py-2 text-sm text-amber-800 dark:text-amber-300">
-            Để nhờ AI sửa, vào Cài đặt nhập khóa Gemini{IS_MOBILE ? "" : " (hoặc cài AI CLI)"}. Bạn vẫn viết và ôn lại lỗi đã lưu bình thường.
+            {features.ai()
+              ? `Để nhờ AI sửa, vào Cài đặt nhập khóa Gemini${HAS_AI_CLI ? " (hoặc cài AI CLI)" : ""}.`
+              : "Nhờ AI sửa chưa có trên bản web: mở app trên điện thoại Android hoặc máy tính để dùng."}{" "}
+            Bạn vẫn viết và ôn lại lỗi đã lưu bình thường.
           </p>
         )}
         {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}

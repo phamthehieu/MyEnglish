@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { onBackButtonPress } from "@tauri-apps/api/app";
-import { isMobilePlatform } from "@/lib/platform";
+import { isPhoneApp } from "@/lib/platform";
 
 /**
  * The Android Back button (or gesture) while `enabled`: runs `handler` instead of leaving the app.
@@ -11,7 +11,7 @@ export function useBackButton(enabled: boolean, handler: () => void) {
   handlerRef.current = handler;
 
   useEffect(() => {
-    if (!enabled || !isMobilePlatform()) return;
+    if (!enabled || !isPhoneApp()) return;
     let cancelled = false;
     let unregister: (() => void) | undefined;
     onBackButtonPress(() => handlerRef.current())

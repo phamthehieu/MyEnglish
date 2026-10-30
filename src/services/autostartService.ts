@@ -1,5 +1,5 @@
 import { enable, disable, isEnabled } from "@tauri-apps/plugin-autostart";
-import { isMobilePlatform } from "@/lib/platform";
+import { features } from "@/lib/platform";
 
 const AUTOSTART_PREF_KEY = "myenglish_autostart_enabled_v1";
 
@@ -27,7 +27,7 @@ export function getSavedAutostartPreference(): boolean {
 export async function syncAutostartWithSystem(): Promise<boolean> {
   const desired = getSavedAutostartPreference();
   // No start-at-login on phones
-  if (isMobilePlatform()) return false;
+  if (!features.autostart()) return false;
   try {
     const currentlyEnabled = await isEnabled();
     if (desired && !currentlyEnabled) {

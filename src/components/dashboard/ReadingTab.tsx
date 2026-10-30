@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { isMobilePlatform } from "@/lib/platform";
+import { features, isTouchDevice } from "@/lib/platform";
 import { BookOpenText, Check, Pencil, Plus, Quote, Sparkles, X } from "lucide-react";
 import { useWordsStore } from "@/stores/wordsStore";
 import { analyzeText, logEncounters, type BankStatus, type ReadingAnalysis } from "@/services/reading";
@@ -157,7 +157,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
     refreshWords();
     showMessage(
       (AI_VOCAB_ENABLED
-        ? `Đã thêm ${accepted} từ vào sổ, kèm câu bạn gặp chúng làm ví dụ. AI đang phân tích nghĩa (cần AI: vào Cài đặt để nhập khóa Gemini${isMobilePlatform() ? "" : " hoặc cài AI CLI"}).`
+        ? `Đã thêm ${accepted} từ vào sổ, kèm câu bạn gặp chúng làm ví dụ. AI đang phân tích nghĩa (${features.ai() ? `cần AI: vào Cài đặt để nhập khóa Gemini${features.aiCli() ? " hoặc cài AI CLI" : ""}` : "AI chưa có trên bản web"}).`
         : `${accepted} từ sẽ được học sớm, kèm câu bạn gặp chúng làm ví dụ.`) +
         (refused.length ? ` ${AI_VOCAB_ENABLED ? "Không thêm được" : "Không có trong bộ từ của app"}: ${refused.join(", ")}.` : "")
     );
@@ -197,7 +197,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder={isMobilePlatform() ? "Dán văn bản tiếng Anh vào đây…" : `Dán văn bản tiếng Anh vào đây (${PASTE_KEYS})…`}
+          placeholder={isTouchDevice() ? "Dán văn bản tiếng Anh vào đây…" : `Dán văn bản tiếng Anh vào đây (${PASTE_KEYS})…`}
           rows={14}
           autoComplete="off"
           autoCorrect="off"

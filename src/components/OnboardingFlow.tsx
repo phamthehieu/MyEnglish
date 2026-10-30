@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ArrowLeft, Bell, Check, ChevronDown, ChevronRight, ClipboardCheck, Loader2 } from "lucide-react";
-import { isMobilePlatform } from "@/lib/platform";
+import { isDesktopApp } from "@/lib/platform";
 import type { StudyLevel } from "@/services/vocabCatalog";
 import { defaultStudyLevelsFor, setStudyLevels, topUpNewWords } from "@/services/vocabFeed";
 import {
@@ -314,7 +314,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
                                 </label>
                               );
                             })}
-                            {!isMobilePlatform() && (
+                            {isDesktopApp() && (
                               <label
                                 className={`${choiceCard(transitions)} flex min-h-12 cursor-pointer items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus-within:ring-2 focus-within:ring-teal-600/40 dark:text-zinc-200 sm:col-span-2`}
                               >
@@ -347,7 +347,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
                           </div>
                         </div>
 
-                        {!isMobilePlatform() && (
+                        {isDesktopApp() && (
                           <p className="text-sm text-slate-600 dark:text-zinc-400">Một thẻ nhỏ ở góc màn hình, không chiếm bàn phím. Không nhắc ban đêm.</p>
                         )}
                       </div>

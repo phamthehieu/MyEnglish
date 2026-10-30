@@ -14,6 +14,7 @@ import {
 import { exportBackupJson, exportWordsCsv, importBackup, parseBackup } from "@/services/dataExport";
 import { getFSRSSettings, saveFSRSSettings } from "@/services/srs";
 import { useSimpleMode } from "../Jargon";
+import { features } from "@/lib/platform";
 
 const BOX = `${SETTINGS_GROUP} md:p-4 md:first:pt-4 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-3`;
 const BTN =
@@ -63,8 +64,8 @@ export default function AdvancedLearningSettings() {
 
   return (
     <div className="space-y-3">
-      {/* Personal schedule parameters: advanced, hidden in simple mode */}
-      {!simple && <div className={BOX}>
+      {/* Personal schedule parameters: advanced, hidden in simple mode, and only where the optimizer runs (Rust) */}
+      {!simple && features.schedulerOptimizer() && <div className={BOX}>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <Cpu className="w-5 h-5 text-teal-700 dark:text-teal-300" />
           <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Tối ưu theo trí nhớ của bạn</div>
@@ -206,7 +207,7 @@ export function BackupRestoreSettings({ onWordsChanged }: { onWordsChanged?: () 
     <div className={BOX}>
       <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Sao lưu & khôi phục dữ liệu</div>
       <p className="text-sm text-slate-500 dark:text-zinc-400">
-        Nên sao lưu trước khi đặt lại hoặc đổi máy. File được lưu vào thư mục Downloads. Khôi phục chỉ thêm dữ liệu mới, không ghi đè từ và tiến độ đang có.
+        Nên sao lưu trước khi đặt lại hoặc đổi máy. File được lưu vào thư mục Downloads (trên web: thư mục tải về của trình duyệt). Khôi phục chỉ thêm dữ liệu mới, không ghi đè từ và tiến độ đang có.
       </p>
       <div className="flex flex-wrap gap-2">
         <button

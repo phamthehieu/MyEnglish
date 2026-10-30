@@ -29,8 +29,10 @@ Những phần chỉ chạy trên Android, các nền tảng khác phải có c�
 
 - [x] **[Bắt buộc]** Tách lớp lưu trữ: `db.ts` gọi qua một giao diện chung, có 2 bản: SQLite (Tauri) và bản cho trình duyệt (wa-sqlite + OPFS, hoặc sql.js lưu vào IndexedDB). Dùng chung lược đồ và các bước nâng cấp dữ liệu.
   - Đã làm: `src/services/sqlite/` (sql.js, lưu vào IndexedDB sau mỗi thay đổi và khi rời trang). Mỗi lúc chỉ một tab giữ dữ liệu, tab thứ hai báo "Đang mở ở tab khác".
-- [ ] **[Bắt buộc]** Tạo `src/services/platform.ts` gom các khả năng theo nền tảng (giọng đọc, nhận dạng giọng nói, nhắc học, cập nhật, bàn phím). Màn nào cần thì hỏi "có không", không gọi thẳng `window.AndroidXXX`.
-- [ ] **[Bắt buộc]** Màn hình ẩn hoặc thay thế gọn những phần nền tảng không có (ví dụ: không có nhận dạng giọng nói thì cho tự chấm).
+- [x] **[Bắt buộc]** Tạo `src/services/platform.ts` gom các khả năng theo nền tảng (giọng đọc, nhận dạng giọng nói, nhắc học, cập nhật, bàn phím). Màn nào cần thì hỏi "có không", không gọi thẳng `window.AndroidXXX`.
+  - Đã làm: `src/lib/platform.ts` có `isPhoneApp`, `isDesktopApp`, `isWeb`, `isTouchDevice` và `features` (AI, AI CLI, nhận dạng giọng nói, nhắc học, tự khởi động, tối ưu lịch ôn). `isMobilePlatform` cũ (đoán theo user agent, nên trình duyệt điện thoại cũng bị coi là app) đã bỏ.
+- [x] **[Bắt buộc]** Màn hình ẩn hoặc thay thế gọn những phần nền tảng không có (ví dụ: không có nhận dạng giọng nói thì cho tự chấm).
+  - Đã làm cho web: Cài đặt → Nhắc học và AI nói rõ "chưa có trên bản web"; Viết, Hội thoại, Đọc không còn bảo nhập khóa Gemini; tối ưu lịch ôn ẩn đi; sao lưu và xuất danh sách từ tải file bằng trình duyệt. Bài nói đã có sẵn lời báo "chỉ có trên điện thoại Android" (giai đoạn 1 xem lại).
 - [ ] **[Bắt buộc]** Kiểm tra đồng bộ Supabase khi một người dùng 2–3 thiết bị khác loại: đăng nhập trên máy mới thì kéo đủ dữ liệu, hai máy học cùng lúc không mất tiến độ.
 - [ ] **[Nên]** Ghi lỗi từ máy người dùng về một chỗ (bảng Supabase hoặc Sentry), để biết app lỗi ở đâu mà không cần người dùng chụp màn hình.
 - [ ] **[Nên]** CI (`.github/workflows/ci.yml`) chạy `tsc` và `vitest` cho mọi nền tảng, thêm test cho lớp lưu trữ bản web.

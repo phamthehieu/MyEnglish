@@ -1,9 +1,10 @@
 /**
  * Backup / restore of the learner's data as a JSON file (everything: words, examples, both card
  * schedules, review history, grammar progress, settings) and a CSV word list readable in Excel.
- * Files are written by the native `export_backup` command into the Downloads folder.
+ * Files are written by the native `export_backup` command into the Downloads folder (a browser download on the web).
  */
 import { invoke } from "@tauri-apps/api/core";
+import { isTauri } from "@/lib/platform";
 import { getDatabase } from "./db";
 import { backupLocalStorageToDb } from "./storageBackup";
 import { resetPushCursors } from "./sync/state";
@@ -68,10 +69,29 @@ export async function buildBackup(): Promise<BackupFile> {
   return { app: "MyEnglish", format: 1, exportedAt: new Date().toISOString(), tables };
 }
 
+/**
+ * Write a file into Downloads: the app's export_backup command, or the browser's own download in the web app.
+ * Returns where it went (the path, or the file name for a browser download).
+ */
+async function saveToDownloads(contents: string, fileName: string, type: string): Promise<string> {
+  if (isTauri()) return invoke<string>("export_backup", { contents, fileName });
+  const url = URL.createObjectURL(new Blob([contents], { type }));
+  try {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+  } finally {
+    // The download has its own copy once started
+    window.setTimeout(() => URL.revokeObjectURL(url), 10_000);
+  }
+  return `${fileName} (trong thư mục tải về của trình duyệt)`;
+}
+
 /** Full JSON backup into Downloads. Returns the path written. */
 export async function exportBackupJson(): Promise<string> {
   const backup = await buildBackup();
-  return invoke<string>("export_backup", { contents: JSON.stringify(backup), fileName: `myenglish-backup-${stamp()}.json` });
+  return saveToDownloads(JSON.stringify(backup), `myenglish-backup-${stamp()}.json`, "application/json");
 }
 
 function csvCell(v: unknown): string {
@@ -92,7 +112,7 @@ export async function exportWordsCsv(): Promise<string> {
   const header = ["word", "phonetic", "part_of_speech", "meaning_vn", "topic", "cefr_level", "state", "stability", "lapses", "next_review_date", "recall_next_review", "created_at"];
   // BOM so Excel opens UTF-8 Vietnamese text correctly
   const csv = "﻿" + [header.join(","), ...rows.map((r) => header.map((h) => csvCell(r[h])).join(","))].join("\r\n");
-  return invoke<string>("export_backup", { contents: csv, fileName: `myenglish-words-${stamp()}.csv` });
+  return saveToDownloads(csv, `myenglish-words-${stamp()}.csv`, "text/csv;charset=utf-8");
 }
 
 export interface ImportReport {

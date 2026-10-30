@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import { isMobilePlatform } from "@/lib/platform";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import {
@@ -152,7 +151,7 @@ export function getPosLabel(pos?: string | null): string | null {
 }
 
 /** Shown after an answer: the user reads the feedback and moves on themselves */
-const NEXT_HINT = isMobilePlatform() ? "Bấm Tiếp tục để sang câu sau." : "Bấm Tiếp tục để sang câu sau.";
+const NEXT_HINT = "Bấm Tiếp tục để sang câu sau.";
 
 /**
  * Correct answer(s) for display, with equivalent contracted/full forms,
