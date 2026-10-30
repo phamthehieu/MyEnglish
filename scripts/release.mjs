@@ -14,6 +14,7 @@
 //
 // Needs the GitHub CLI, logged in once: winget install GitHub.cli, then gh auth login.
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -63,14 +64,26 @@ if (bump) {
   if (!version) fail(`--bump phải là patch, minor hoặc major (không phải "${bump}").`);
 }
 const tag = `v${version}`;
+const apk = join(outDir, `MyEnglish-v${version}.apk`);
+// A release already on GitHub (made by hand, or a run that stopped half way) is finished, not made again: only when
+// its APK is the very file built here, since the notice carries that file's SHA-256
+let resume = false;
 if (publish) {
-  let exists = true;
+  let release = null;
   try {
-    run("gh", ["release", "view", tag]);
+    release = JSON.parse(run("gh", ["release", "view", tag, "--json", "assets"]));
   } catch {
-    exists = false;
+    release = null;
   }
-  if (exists) fail(`bản ${tag} đã có trên GitHub. Dùng --bump để lên phiên bản mới.`);
+  if (release) {
+    const asset = release.assets.find((a) => a.name === `MyEnglish-v${version}.apk`);
+    const local = existsSync(apk) ? `sha256:${createHash("sha256").update(readFileSync(apk)).digest("hex")}` : "";
+    if (bump || !asset || asset.digest !== local) {
+      fail(`bản ${tag} đã có trên GitHub với một APK khác file trên máy này. Dùng --bump để lên phiên bản mới.`);
+    }
+    resume = true;
+    console.log(`Bản ${tag} đã có trên GitHub, đúng file APK trên máy: làm tiếp các bước còn lại.`);
+  }
 }
 
 if (bump) {
@@ -89,12 +102,13 @@ if (bump) {
 }
 
 // ---- Build and check the APK ----
-step(`Build bản phát hành ${version} (vài phút)`);
-execFileSync("powershell", ["-ExecutionPolicy", "Bypass", "-File", join(root, "scripts", "build-android-win.ps1"), "-Release"], {
-  cwd: root,
-  stdio: "inherit",
-});
-const apk = join(outDir, `MyEnglish-v${version}.apk`);
+if (!resume) {
+  step(`Build bản phát hành ${version} (vài phút)`);
+  execFileSync("powershell", ["-ExecutionPolicy", "Bypass", "-File", join(root, "scripts", "build-android-win.ps1"), "-Release"], {
+    cwd: root,
+    stdio: "inherit",
+  });
+}
 if (!existsSync(apk)) fail(`không thấy ${apk} sau khi build.`);
 
 step("Kiểm tra APK");
@@ -118,10 +132,12 @@ if (!publish) {
 step("Đẩy main lên GitHub");
 run("git", ["push", "-q", "origin", "main"]);
 
-step(`Tạo GitHub release ${tag} kèm APK`);
-const notesPath = join(outDir, `release-notes-${version}.txt`);
-writeFileSync(notesPath, notes);
-run("gh", ["release", "create", tag, apk, "--title", tag, "--notes-file", notesPath, "--target", "main"]);
+if (!resume) {
+  step(`Tạo GitHub release ${tag} kèm APK`);
+  const notesPath = join(outDir, `release-notes-${version}.txt`);
+  writeFileSync(notesPath, notes);
+  run("gh", ["release", "create", tag, apk, "--title", tag, "--notes-file", notesPath, "--target", "main"]);
+}
 
 step("Chờ tải được APK");
 const repo = /github\.com[:/]([^/]+\/[^/.]+)(?:\.git)?$/.exec(run("git", ["remote", "get-url", "origin"]))?.[1];
