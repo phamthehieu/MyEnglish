@@ -37,3 +37,6 @@ scripts/tools/
 
 # The web app built for GitHub Pages (scripts/publish-web.mjs)
 dist-web/
+
+# Supabase CLI's local state (supabase login / functions deploy)
+supabase/.temp/
