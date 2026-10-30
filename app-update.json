@@ -1,6 +1,6 @@
 {
-  "version": "0.4.0",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.0/MyEnglish-v0.4.0.apk",
-  "notes": "Giao diện mới gọn và dễ dùng hơn, font chữ mới. Sửa lỗi bài nói báo \"chưa chuẩn bị được bộ nhận dạng giọng nói\". Chọn được giọng đọc tiếng Anh trên máy Samsung. Thanh điều hướng hiện lại khi đóng bàn phím.",
-  "sha256": "dd017c8f992470bfbe104b30695dadff6767b7afab83be0c1a4b1b798beccc43"
+  "version": "0.4.1",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.1/MyEnglish-v0.4.1.apk",
+  "notes": "Lưu từ ngay khi đang làm việc: chạy chữ trong Gmail, Slack, trình duyệt… rồi chọn \"Lưu vào MyEnglish\" (hoặc Chia sẻ → MyEnglish), từ được học kèm câu bạn gặp. Chọn giờ nhắc học tùy ý ngay từ lúc bắt đầu. Xóa được tài khoản ngay trong app. Sửa vài lỗi nhỏ.",
+  "sha256": "327ee2617b95568ba67c3f7808f975099f3e56ee2d343cbf6d451aa4fa294412"
 }
