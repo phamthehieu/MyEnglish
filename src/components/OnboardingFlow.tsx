@@ -11,7 +11,8 @@ import {
   type DailyMinutes,
   type LevelChoice,
 } from "@/services/onboarding";
-import { ANCHOR_TIMES, type PresetAnchor, type ReminderAnchor } from "@/services/reminderMoments";
+import { anchorTimesOf, type ReminderAnchor } from "@/services/reminderMoments";
+import StudyTimesField from "./dashboard/StudyTimesField";
 import type { ReminderTrigger } from "@/services/reminderSettings";
 import { DEFAULT_INITIAL_TENSE_IDS, saveInitialTenses } from "@/services/grammarPath";
 import TenseSelectionPicker from "./grammar/TenseSelectionPicker";
@@ -79,14 +80,12 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
   const [minutes, setMinutes] = useState<DailyMinutes>(10);
   const [reminders, setReminders] = useState(true);
   const [triggerCondition, setTriggerCondition] = useState<ReminderTrigger>("due_only");
-  const [anchors, setAnchors] = useState<ReminderAnchor[]>(["after_lunch"]);
+  // Study times as "HH:MM", chosen freely as in Settings (13:15, after lunch, until the learner picks)
+  const [anchors, setAnchors] = useState<ReminderAnchor[]>(() => anchorTimesOf(["after_lunch"]));
   const [transitions, setTransitions] = useState(true);
   const [showMore, setShowMore] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const toggleAnchor = (a: ReminderAnchor) =>
-    setAnchors((prev) => (prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]));
 
   const goToLevels = () => {
     // Up to the learner's own level (A0 = A1): words they may know are skipped with "Đã biết"
@@ -300,30 +299,17 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
                       <div className="space-y-4">
                         <div className="space-y-2">
                           <span className="block text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-zinc-400">Nhắc vào lúc nào?</span>
-                          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                            {(Object.keys(ANCHOR_TIMES) as PresetAnchor[]).map((a) => {
-                              const on = anchors.includes(a);
-                              return (
-                                <label
-                                  key={a}
-                                  className={`${choiceCard(on)} flex min-h-12 cursor-pointer items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus-within:ring-2 focus-within:ring-teal-600/40 dark:text-zinc-200`}
-                                >
-                                  <input type="checkbox" checked={on} onChange={() => toggleAnchor(a)} className="sr-only" />
-                                  <span className="flex-1">{ANCHOR_TIMES[a].label}</span>
-                                  <CheckDot on={on} small />
-                                </label>
-                              );
-                            })}
-                            {isDesktopApp() && (
-                              <label
-                                className={`${choiceCard(transitions)} flex min-h-12 cursor-pointer items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus-within:ring-2 focus-within:ring-teal-600/40 dark:text-zinc-200 sm:col-span-2`}
-                              >
-                                <input type="checkbox" checked={transitions} onChange={(e) => setTransitions(e.target.checked)} className="sr-only" />
-                                <span className="flex-1">Lúc mở máy buổi sáng, hoặc vừa xong cuộc họp</span>
-                                <CheckDot on={transitions} small />
-                              </label>
-                            )}
-                          </div>
+                          {/* The same choice of times as Settings: suggested times in one tap, or any hour and minute */}
+                          <StudyTimesField bare anchors={anchors} active nightQuiet onChange={setAnchors} />
+                          {isDesktopApp() && (
+                            <label
+                              className={`${choiceCard(transitions)} flex min-h-12 cursor-pointer items-center gap-3 px-3.5 py-2.5 text-sm font-medium text-slate-800 focus-within:ring-2 focus-within:ring-teal-600/40 dark:text-zinc-200`}
+                            >
+                              <input type="checkbox" checked={transitions} onChange={(e) => setTransitions(e.target.checked)} className="sr-only" />
+                              <span className="flex-1">Lúc mở máy buổi sáng, hoặc vừa xong cuộc họp</span>
+                              <CheckDot on={transitions} small />
+                            </label>
+                          )}
                         </div>
 
                         <div className="space-y-2 border-t border-slate-100 pt-3 dark:border-zinc-800">

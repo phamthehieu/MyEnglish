@@ -22,12 +22,15 @@ export default function StudyTimesField({
   active,
   nightQuiet,
   onChange,
+  bare = false,
 }: {
   anchors: readonly ReminderAnchor[];
   /** Reminders are on: the times can be changed */
   active: boolean;
   nightQuiet: boolean;
   onChange: (anchors: string[]) => void;
+  /** Inside a card of its own (the first-run plan): no box and no heading of its own */
+  bare?: boolean;
 }) {
   const chosen = anchorTimesOf(anchors);
   const [hour, setHour] = useState(19);
@@ -45,19 +48,23 @@ export default function StudyTimesField({
     "min-h-11 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 text-base tabular-nums text-slate-900 dark:text-zinc-100 disabled:opacity-50 focus:outline-none focus:border-teal-700";
 
   return (
-    <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3">
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
-          <Clock className="w-4 h-4 text-teal-700 dark:text-teal-300" />
-          Giờ học cố định:
-        </span>
-        <span className="rounded-full bg-teal-50 dark:bg-teal-400/10 px-2.5 py-1 text-xs tabular-nums text-teal-800 dark:text-teal-300 font-semibold">
-          {chosen.length}/{MAX_ANCHORS} giờ
-        </span>
-      </div>
-      <p className="text-sm text-slate-500 dark:text-zinc-400 leading-snug">
-        Chạm để chọn giờ bạn hay rảnh, mỗi giờ nhắc một lần mỗi ngày. Giờ này không bị tính vào số lần nhắc tối đa.
-      </p>
+    <div className={bare ? "space-y-3" : "p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3"}>
+      {!bare && (
+        <>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
+              <Clock className="w-4 h-4 text-teal-700 dark:text-teal-300" />
+              Giờ học cố định:
+            </span>
+            <span className="rounded-full bg-teal-50 dark:bg-teal-400/10 px-2.5 py-1 text-xs tabular-nums text-teal-800 dark:text-teal-300 font-semibold">
+              {chosen.length}/{MAX_ANCHORS} giờ
+            </span>
+          </div>
+          <p className="text-sm text-slate-500 dark:text-zinc-400 leading-snug">
+            Chạm để chọn giờ bạn hay rảnh, mỗi giờ nhắc một lần mỗi ngày. Giờ này không bị tính vào số lần nhắc tối đa.
+          </p>
+        </>
+      )}
 
       <div className="flex flex-wrap gap-2" role="group" aria-label="Giờ học">
         {chips.map((time) => {
@@ -112,8 +119,10 @@ export default function StudyTimesField({
 
       {quiet.length > 0 && (
         <p className="text-sm text-amber-800 dark:text-amber-300 leading-snug">
-          {quiet.join(", ")} nằm trong giờ không nhắc ban đêm ({NIGHT_QUIET_START}:00–{pad(NIGHT_QUIET_END)}:00) nên sẽ không nhắc. Đổi giờ
-          khác hoặc tắt &quot;Không nhắc ban đêm&quot; bên dưới.
+          {quiet.join(", ")} nằm trong giờ không nhắc ban đêm ({NIGHT_QUIET_START}:00–{pad(NIGHT_QUIET_END)}:00) nên sẽ không nhắc.{" "}
+          {bare
+            ? "Chọn giờ khác, hoặc sau này tắt \"Không nhắc ban đêm\" trong Cài đặt → Nhắc học."
+            : "Đổi giờ khác hoặc tắt \"Không nhắc ban đêm\" bên dưới."}
         </p>
       )}
       {!active && <p className="text-sm text-amber-800 dark:text-amber-300 leading-snug">Bật nhắc học ở trên để dùng giờ học cố định.</p>}
