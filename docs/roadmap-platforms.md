@@ -33,7 +33,9 @@ Những phần chỉ chạy trên Android, các nền tảng khác phải có c�
   - Đã làm: `src/lib/platform.ts` có `isPhoneApp`, `isDesktopApp`, `isWeb`, `isTouchDevice` và `features` (AI, AI CLI, nhận dạng giọng nói, nhắc học, tự khởi động, tối ưu lịch ôn). `isMobilePlatform` cũ (đoán theo user agent, nên trình duyệt điện thoại cũng bị coi là app) đã bỏ.
 - [x] **[Bắt buộc]** Màn hình ẩn hoặc thay thế gọn những phần nền tảng không có (ví dụ: không có nhận dạng giọng nói thì cho tự chấm).
   - Đã làm cho web: Cài đặt → Nhắc học và AI nói rõ "chưa có trên bản web"; Viết, Hội thoại, Đọc không còn bảo nhập khóa Gemini; tối ưu lịch ôn ẩn đi; sao lưu và xuất danh sách từ tải file bằng trình duyệt. Bài nói đã có sẵn lời báo "chỉ có trên điện thoại Android" (giai đoạn 1 xem lại).
-- [ ] **[Bắt buộc]** Kiểm tra đồng bộ Supabase khi một người dùng 2–3 thiết bị khác loại: đăng nhập trên máy mới thì kéo đủ dữ liệu, hai máy học cùng lúc không mất tiến độ.
+- [x] **[Bắt buộc]** Kiểm tra đồng bộ Supabase khi một người dùng 2–3 thiết bị khác loại: đăng nhập trên máy mới thì kéo đủ dữ liệu, hai máy học cùng lúc không mất tiến độ.
+  - Đã làm: `test/crossPlatformSync.test.ts` cho một máy chạy SQLite của app và một máy chạy SQLite của bản web đồng bộ qua máy chủ giả, cả hai chiều: thẻ và lịch ôn giống hệt, nhật ký ôn, XP cộng dồn, cài đặt, từ tự thêm (chữ Việt, emoji), xóa từ, học cùng lúc khi mất mạng, và hai bên lặng yên sau khi đã đồng bộ (không đẩy qua đẩy lại).
+  - Còn lại: thử một lần với tài khoản thật trên Supabase (đăng nhập bản web và app cùng tài khoản) khi bản web có địa chỉ chạy thật.
 - [ ] **[Nên]** Ghi lỗi từ máy người dùng về một chỗ (bảng Supabase hoặc Sentry), để biết app lỗi ở đâu mà không cần người dùng chụp màn hình.
 - [ ] **[Nên]** CI (`.github/workflows/ci.yml`) chạy `tsc` và `vitest` cho mọi nền tảng, thêm test cho lớp lưu trữ bản web.
 - [ ] **[Thêm]** Thống kê sử dụng tối thiểu, ẩn danh: bao nhiêu người học mỗi ngày, màn nào ít dùng.
