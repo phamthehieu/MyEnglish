@@ -34,8 +34,11 @@ async function bootstrap() {
       console.warn("localStorage restore failed, backup disabled for this session:", err);
     }
   } else {
-    // The web app: its database lives in this browser and one tab holds it; open it before anything shows, so a
-    // second tab says so instead of showing an empty app
+    // The web app: offline use and updates through its service worker (not in development: it would cache the
+    // files being edited)
+    if (import.meta.env.PROD) void import("./services/webApp").then(({ startWebApp }) => startWebApp());
+    // Its database lives in this browser and one tab holds it; open it before anything shows, so a second tab says
+    // so instead of showing an empty app
     try {
       const { getDatabase } = await import("./services/db");
       await getDatabase();
