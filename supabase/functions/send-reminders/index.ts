@@ -56,7 +56,7 @@ Deno.serve(async (req) => {
     try {
       await webpush.sendNotification(
         { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
-        JSON.stringify({ ...reminderText(slot), url: "/" }),
+        JSON.stringify(reminderText(slot)),
         { TTL: 60 * 60, urgency: "normal", topic: "study-reminder" }
       );
       await db.from("push_subscriptions").update({ last_slot: slot, failures: 0 }).eq("endpoint", sub.endpoint);

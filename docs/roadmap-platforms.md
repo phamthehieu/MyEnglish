@@ -44,16 +44,26 @@ Những phần chỉ chạy trên Android, các nền tảng khác phải có c�
 
 ## Giai đoạn 1: Bản web / PWA (iPhone và máy tính công ty dùng được ngay)
 
-- [ ] **[Bắt buộc]** Lớp lưu trữ bản web (giai đoạn 0) chạy thật, dữ liệu còn sau khi tắt trình duyệt.
-- [ ] **[Bắt buộc]** Biến app thành PWA: manifest, biểu tượng, service worker (vite-plugin-pwa), cài được lên màn hình chính iPhone và Android.
-- [ ] **[Bắt buộc]** Chạy được không cần mạng: lưu sẵn mã app và dữ liệu bài học (~16 MB). Gói dữ liệu từng cấp độ chỉ tải khi cần.
-- [ ] **[Bắt buộc]** Chọn nơi đặt web (Cloudflare Pages, Vercel hoặc GitHub Pages) và tên miền. Thêm địa chỉ web vào danh sách chuyển hướng đăng nhập của Supabase.
-- [ ] **[Bắt buộc]** Sửa các điểm riêng của Safari trên iPhone: vùng tai thỏ (safe area), chiều cao màn hình (`100dvh`), bàn phím che ô nhập.
-- [ ] **[Bắt buộc]** Giọng đọc bằng `speechSynthesis`, chọn được giọng tiếng Anh như bản Android.
-- [ ] **[Nên]** Nhận dạng giọng nói trên web: thử Vosk WASM (nặng ~40 MB, chỉ tải khi mở bài nói). Không được thì dùng tự chấm.
-- [ ] **[Nên]** Nhắc học bằng Web Push: Supabase Edge Function gửi theo giờ học đã đặt. Trên iPhone chỉ chạy khi đã cài lên màn hình chính (iOS 16.4 trở lên).
-- [ ] **[Nên]** Thêm bước "đăng bản web" vào `scripts/release.mjs` để một lệnh phát hành cả Android lẫn web.
-- [ ] **[Thêm]** Hướng dẫn cài lên màn hình chính cho người dùng iPhone, có hình minh họa từng bước.
+- [x] **[Bắt buộc]** Lớp lưu trữ bản web (giai đoạn 0) chạy thật, dữ liệu còn sau khi tắt trình duyệt.
+  - Đã làm: dữ liệu còn sau khi tải lại và khi tắt mạng (kiểm tra trên Edge).
+- [x] **[Bắt buộc]** Biến app thành PWA: manifest, biểu tượng, service worker (vite-plugin-pwa), cài được lên màn hình chính iPhone và Android.
+  - Đã làm: `vite-plugin-pwa`, biểu tượng `public/pwa/`, service worker chỉ đăng ký trên web (không trong Tauri); bản mới chờ đến khi người học rời app mới áp dụng.
+- [x] **[Bắt buộc]** Chạy được không cần mạng: lưu sẵn mã app và dữ liệu bài học (~16 MB). Gói dữ liệu từng cấp độ chỉ tải khi cần.
+  - Đã làm: lưu sẵn ~10 MB (app, kho từ, SQLite); bài Shadowing và video phát âm lưu khi mở lần đầu. Đã thử tắt mạng rồi tải lại.
+- [x] **[Bắt buộc]** Chọn nơi đặt web (Cloudflare Pages, Vercel hoặc GitHub Pages) và tên miền. Thêm địa chỉ web vào danh sách chuyển hướng đăng nhập của Supabase.
+  - Đã chọn GitHub Pages (miễn phí, repo công khai): https://phamthehieu.github.io/MyEnglish/. Lệnh `npm run web:publish -- --push` (hoặc `npm run release -- … --web --publish`). Supabase: bật "Confirm email" thì phải thêm địa chỉ này vào Authentication → URL Configuration; đang tắt thì không cần.
+- [x] **[Bắt buộc]** Sửa các điểm riêng của Safari trên iPhone: vùng tai thỏ (safe area), chiều cao màn hình (`100dvh`), bàn phím che ô nhập.
+  - Đã làm: `100dvh` cho bản web (trừ khi phóng to chữ), ô nhập ≥16px để Safari không tự phóng to. Bàn phím trên iPhone: thanh dưới tự ẩn; cần thử trên iPhone thật.
+- [x] **[Bắt buộc]** Giọng đọc bằng `speechSynthesis`, chọn được giọng tiếng Anh như bản Android.
+  - Đã có sẵn; thêm "mở khóa" giọng đọc ở lần chạm đầu (Safari chặn âm thanh tự phát).
+- [x] **[Nên]** Nhận dạng giọng nói trên web: thử Vosk WASM (nặng ~40 MB, chỉ tải khi mở bài nói). Không được thì dùng tự chấm.
+  - Đã làm bằng bộ nhận dạng của trình duyệt (Chrome, Edge, Safari) thay vì Vosk WASM 40 MB: `src/services/webSpeechAsr.ts`, cùng dạng cầu nối với Android. Âm thanh được gửi cho Google/Apple nhận dạng. Firefox không có: báo rõ.
+- [x] **[Nên]** Nhắc học bằng Web Push: Supabase Edge Function gửi theo giờ học đã đặt. Trên iPhone chỉ chạy khi đã cài lên màn hình chính (iOS 16.4 trở lên).
+  - Đã làm: `0010_web_push.sql`, Edge Function `send-reminders`, `public/push-sw.js`, Cài đặt → Nhắc học trên web. Cần cài đặt một lần (khóa VAPID, triển khai function, lịch pg_cron): `supabase/README.md`, mục "Reminders in the web app".
+- [x] **[Nên]** Thêm bước "đăng bản web" vào `scripts/release.mjs` để một lệnh phát hành cả Android lẫn web.
+  - Đã làm: `scripts/publish-web.mjs` (build `/MyEnglish/`, kiểm tra không lộ khóa bí mật, đăng nhánh `gh-pages`), `release.mjs --web`.
+- [x] **[Thêm]** Hướng dẫn cài lên màn hình chính cho người dùng iPhone, có hình minh họa từng bước.
+  - Đã làm: thẻ "Cài MyEnglish lên màn hình chính" ở Hôm nay (bản web chưa cài): các bước Safari trên iPhone, nút "Cài app" trên Chrome/Edge; ẩn 30 ngày khi đóng. Chưa có hình minh họa.
 
 ## Giai đoạn 2: Android lên Google Play
 

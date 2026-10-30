@@ -12,6 +12,7 @@
     "build:mac": "bash scripts/build-mac.sh",
     "build:win": "bash scripts/build-win-docker.sh",
     "release": "node scripts/release.mjs",
+    "web:publish": "node scripts/publish-web.mjs",
     "stats": "bash scripts/install-stats.sh",
     "test": "vitest run",
     "test:watch": "vitest",

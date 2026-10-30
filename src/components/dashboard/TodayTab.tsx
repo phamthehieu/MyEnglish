@@ -39,6 +39,7 @@ import { isCloudConfigured } from "@/services/supabase";
 import TodayRoadmapCard from "./TodayRoadmapCard";
 import StudyLevelBar from "./StudyLevelBar";
 import AppUpdateBanner from "./AppUpdateBanner";
+import InstallAppCard from "./InstallAppCard";
 import RoadmapTodayCard from "../roadmap/RoadmapTodayCard";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import { PATTERNS } from "@/data/patterns";
@@ -300,6 +301,8 @@ export default function TodayTab({
           <div className="min-w-0 space-y-4">
             {/* A new version of the app (Android) */}
             {!loading && <AppUpdateBanner />}
+            {/* The web app, not installed yet: put it on the home screen */}
+            {!loading && <InstallAppCard />}
 
             {/* The one thing to do now */}
             {loading ? (

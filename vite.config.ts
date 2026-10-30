@@ -8,6 +8,11 @@ import process from "node:process";
 import pkg from "./package.json" with { type: "json" };
 
 const host = process.env.TAURI_DEV_HOST;
+/**
+ * Where the web app is served: "/" for the apps (Tauri) and a site of its own, "/MyEnglish/" on GitHub Pages
+ * (scripts/publish-web.mjs builds with WEB_BASE). Everything below stays relative to it.
+ */
+const BASE = (process.env.WEB_BASE ?? "/").replace(/\/?$/, "/");
 
 // Shadowing lessons (one chunk each, ~10 MB together) are kept offline once opened, not all at the first visit
 const SHADOWING_LESSONS = fs
@@ -29,8 +34,8 @@ const pwa = VitePWA({
     short_name: "MyEnglish",
     description: "Học từ vựng, nói và ngữ pháp tiếng Anh mỗi ngày, vài phút một lần.",
     lang: "vi",
-    start_url: "/",
-    scope: "/",
+    start_url: "./",
+    scope: "./",
     display: "standalone",
     orientation: "portrait",
     background_color: "#f7f8fa",
@@ -46,7 +51,7 @@ const pwa = VitePWA({
     globPatterns: ["**/*.{js,css,html,wasm,woff2,png,svg}"],
     globIgnores: [...SHADOWING_LESSONS, "app-icon.png", "tauri.svg", "vite.svg", "window-init.js"],
     maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
-    navigateFallback: "/index.html",
+    navigateFallback: `${BASE}index.html`,
     cleanupOutdatedCaches: true,
     // Study reminders (Web Push): showing them and opening the app on a tap
     importScripts: ["push-sw.js"],
@@ -64,7 +69,7 @@ const pwa = VitePWA({
       },
       {
         // Anything else of the app's own not kept at install (a shadowing lesson): kept once opened
-        urlPattern: ({ url }) => url.origin === self.location.origin && url.pathname.startsWith("/assets/"),
+        urlPattern: ({ url }) => url.origin === self.location.origin && url.pathname.includes("/assets/"),
         handler: "CacheFirst",
         options: {
           cacheName: "assets-on-demand",
@@ -78,6 +83,7 @@ const pwa = VitePWA({
 
 // https://vite.dev/config/
 export default defineConfig(() => ({
+  base: BASE,
   plugins: [react(), pwa],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
