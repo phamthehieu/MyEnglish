@@ -70,8 +70,10 @@ Những phần chỉ chạy trên Android, các nền tảng khác phải có c�
 - [ ] **[Bắt buộc]** Tài khoản Google Play Console (25 USD, trả một lần).
 - [ ] **[Bắt buộc]** Build ra AAB (Play yêu cầu) bên cạnh APK hiện tại, dùng chung khóa ký.
 - [ ] **[Bắt buộc]** Bản Play **tắt tự cập nhật trong app**, vì Play cấm app tự tải APK. Bản APK trên GitHub giữ nguyên cách cập nhật hiện tại.
-- [ ] **[Bắt buộc]** Trang chính sách quyền riêng tư (chưa có), điền mục Data safety trên Play Console.
-- [ ] **[Bắt buộc]** Chức năng **xóa tài khoản** ngay trong app và trên một trang web (chưa có; cả Google Play và App Store đều bắt buộc).
+- [x] **[Bắt buộc]** Trang chính sách quyền riêng tư (chưa có), điền mục Data safety trên Play Console.
+  - Đã làm: `public/privacy.html` (https://phamthehieu.github.io/MyEnglish/privacy.html), mở từ Tôi → Tài khoản và lúc tạo tài khoản. Còn phải điền mục Data safety khi lên Play.
+- [x] **[Bắt buộc]** Chức năng **xóa tài khoản** ngay trong app và trên một trang web (chưa có; cả Google Play và App Store đều bắt buộc).
+  - Đã làm: Tôi → Tài khoản → Xóa tài khoản (gõ "xóa" để xác nhận), hàm `delete_my_account` (`0011_delete_account.sql`, cần chạy một lần). Trang web cho Play: bản web, cùng mục đó.
 - [ ] **[Bắt buộc]** Xin quyền thông báo trên Android 13 trở lên. Giải thích rõ lý do khi xin quyền hiển thị trên ứng dụng khác (thẻ hỏi nhanh nổi).
 - [ ] **[Nên]** Thử trên vài máy: Android 7 (minSdk 24), màn hình 320px, máy Xiaomi/Oppo (hay chặn chạy nền và chặn nhắc học).
 - [ ] **[Nên]** Widget ngoài màn hình chính: số thẻ cần ôn hôm nay, bấm là vào ôn.
@@ -88,6 +90,7 @@ Nên làm sau khi bản web chạy ổn: web đã phục vụ được phần l�
 - [ ] **[Bắt buộc]** Bỏ tự cập nhật trong app (Apple cấm), cập nhật qua App Store.
 - [ ] **[Bắt buộc]** Thay thẻ hỏi nhanh nổi (iOS không cho cửa sổ nổi) bằng thông báo có nút trả lời, hoặc widget.
 - [ ] **[Bắt buộc]** Xóa tài khoản trong app, chính sách quyền riêng tư, nhãn quyền riêng tư trên App Store, ảnh chụp màn hình các cỡ iPhone.
+  - Đã có xóa tài khoản và chính sách (dùng chung với Android); còn nhãn quyền riêng tư và ảnh chụp App Store.
 - [ ] **[Bắt buộc]** Thử bàn phím, vùng tai thỏ, cỡ chữ hệ thống lớn trên iPhone.
 - [ ] **[Nên]** Phát hành thử qua TestFlight cho vài người trước khi lên App Store.
 - [ ] **[Thêm]** Widget iOS (WidgetKit).

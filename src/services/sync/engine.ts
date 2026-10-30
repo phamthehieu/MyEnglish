@@ -259,3 +259,11 @@ async function pullXpChanges(transport: SyncTransport): Promise<XpRow[]> {
 export async function forgetAccount(): Promise<void> {
   await deleteSyncState("last_sync_at");
 }
+
+/**
+ * The account was deleted: this machine's data belongs to no account any more. Its cursors and account id go, so an
+ * account signed in later takes this data as its own (a full first sync) instead of asking about another account.
+ */
+export async function leaveDeletedAccount(): Promise<void> {
+  await resetSyncCursors();
+}

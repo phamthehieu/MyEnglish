@@ -45,6 +45,8 @@ interface AuthState {
   signUp: (email: string, password: string, displayName: string) => Promise<boolean>;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => Promise<void>;
+  /** Delete the account and everything of it on the server (the app stores require it); the device keeps its data */
+  deleteAccount: () => Promise<boolean>;
   resetPassword: (email: string) => Promise<boolean>;
   updateDisplayName: (name: string) => Promise<boolean>;
   updateAvatar: (id: string) => Promise<boolean>;
@@ -148,6 +150,26 @@ export const useAuthStore = create<AuthState>((set, get) => {
         set({ busy: false, user: null, profile: null, sync: initialSync });
       }
     },
+
+    deleteAccount: () =>
+      run(async () => {
+        const client = getSupabase();
+        if (!client) return false;
+        const { error } = await client.rpc("delete_my_account");
+        if (error) throw error;
+        const { leaveDeletedAccount } = await import("@/services/sync/engine");
+        await leaveDeletedAccount().catch(() => {});
+        // The session belongs to a user that no longer exists: drop it here only
+        await client.auth.signOut({ scope: "local" }).catch(() => {});
+        set({
+          user: null,
+          profile: null,
+          sync: initialSync,
+          notice:
+            "Đã xóa tài khoản và mọi dữ liệu của nó trên máy chủ. Dữ liệu học trên máy này vẫn còn; muốn xóa nốt, vào Cài đặt → Dữ liệu & đặt lại.",
+        });
+        return true;
+      }),
 
     resetPassword: (email) =>
       run(async () => {

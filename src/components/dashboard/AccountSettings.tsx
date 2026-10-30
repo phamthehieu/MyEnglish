@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { AlertTriangle, CheckCircle2, Cloud, CloudOff, Loader2, LogOut, RefreshCw } from "lucide-react";
+import { AlertTriangle, CheckCircle2, Cloud, CloudOff, Loader2, LogOut, RefreshCw, Trash2 } from "lucide-react";
+import { openExternal, PRIVACY_URL } from "@/lib/externalLinks";
 import { useAuthStore } from "@/stores/authStore";
 import { useStandingStore } from "@/stores/standingStore";
 import { resolveAccountMismatch, runSync } from "@/services/sync/manager";
@@ -136,6 +137,11 @@ export default function AccountSettings() {
         )}
         {error && <div className="text-sm text-red-700 dark:text-red-300">{error}</div>}
         {notice && <div className="text-sm text-green-700 dark:text-green-300">{notice}</div>}
+        {mode === "signup" && (
+          <p className="text-sm text-slate-500 dark:text-zinc-400">
+            Khi tạo tài khoản, bạn đồng ý với <PrivacyLink />.
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-3">
           <button type="submit" className={primary} disabled={busy}>
             {busy && <Loader2 className="w-4 h-4 animate-spin" />}
@@ -334,8 +340,83 @@ export default function AccountSettings() {
       </label>
       <p className="text-sm text-slate-500 dark:text-zinc-400 leading-relaxed">
         Đồng bộ: từ vựng và lịch ôn, lịch sử ôn tập, sổ lỗi, điểm ngữ pháp, điểm XP, chuỗi ngày và các cài đặt học. Không đồng bộ: nội dung sách ngữ pháp
-        bạn nhập, khóa API, đường dẫn máy.
+        bạn nhập, khóa API, đường dẫn máy. Xem <PrivacyLink />.
       </p>
+      <DeleteAccount />
     </>
+  );
+}
+
+/** The privacy policy (public/privacy.html), opened in the browser */
+function PrivacyLink() {
+  return (
+    <button
+      type="button"
+      onClick={() => void openExternal(PRIVACY_URL)}
+      className="font-semibold text-teal-700 underline underline-offset-2 dark:text-teal-300"
+    >
+      Chính sách quyền riêng tư
+    </button>
+  );
+}
+
+/**
+ * Deleting the account, as the app stores require: everything of it on the server goes (profile, synced data, XP,
+ * groups the learner owns); this device keeps its learning data. Typing "xóa" first keeps a stray tap from doing it.
+ */
+function DeleteAccount() {
+  const busy = useAuthStore((s) => s.busy);
+  const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState("");
+  const confirmed = typed.trim().toLowerCase() === "xóa";
+
+  if (!open) {
+    return (
+      <div className="border-t border-slate-100 pt-4 dark:border-zinc-800">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-2xl px-3 text-sm font-semibold text-red-700 hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-500/10"
+        >
+          <Trash2 className="h-4 w-4" /> Xóa tài khoản
+        </button>
+      </div>
+    );
+  }
+  return (
+    <div className="space-y-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-slate-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-zinc-300">
+      <div className="flex items-center gap-2 font-bold text-red-700 dark:text-red-300">
+        <AlertTriangle className="h-4 w-4 shrink-0" /> Xóa tài khoản vĩnh viễn?
+      </div>
+      <ul className="list-disc space-y-1 pl-5 leading-relaxed">
+        <li>Xóa trên máy chủ: tên, ảnh đại diện, dữ liệu học đã đồng bộ, điểm XP và hạng, nhóm bạn đã tạo. Không khôi phục được.</li>
+        <li>Các máy khác đang đăng nhập tài khoản này sẽ không đồng bộ được nữa.</li>
+        <li>Dữ liệu học trên máy này vẫn còn. Muốn xóa nốt, vào Cài đặt → Dữ liệu &amp; đặt lại.</li>
+      </ul>
+      <label className="block space-y-1.5">
+        <span className="font-semibold">Gõ chữ &quot;xóa&quot; để xác nhận</span>
+        <input className={field} value={typed} onChange={(e) => setTyped(e.target.value)} autoComplete="off" />
+      </label>
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          disabled={!confirmed || busy}
+          onClick={() => void useAuthStore.getState().deleteAccount()}
+          className="min-h-12 rounded-2xl bg-red-600 px-5 text-base font-semibold text-white hover:bg-red-700 disabled:opacity-50"
+        >
+          {busy ? "Đang xóa…" : "Xóa tài khoản"}
+        </button>
+        <button
+          type="button"
+          className={secondary}
+          onClick={() => {
+            setOpen(false);
+            setTyped("");
+          }}
+        >
+          Hủy
+        </button>
+      </div>
+    </div>
   );
 }

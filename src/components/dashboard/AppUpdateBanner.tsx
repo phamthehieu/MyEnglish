@@ -2,6 +2,7 @@ import { useEffect, useReducer, useState } from "react";
 import { Download, Loader2, X } from "lucide-react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { CURRENT_VERSION } from "@/services/updateService";
+import { isPhoneApp } from "@/lib/platform";
 import {
   dismissVersion,
   fetchAppUpdate,
@@ -16,7 +17,8 @@ const CHECK_EVERY_MS = 6 * 60 * 60 * 1000;
 /** The last look at the published file, kept while the app runs so each visit to Today does not go online again */
 let lastCheck: { at: number; info: AppUpdateInfo | null } | null = null;
 
-const isAndroid = () => typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent || "");
+// The Android app only: a phone browser running the web app updates by itself and has no APK to install
+const isAndroid = () => isPhoneApp() && typeof navigator !== "undefined" && /Android/i.test(navigator.userAgent || "");
 
 /**
  * Android only: a new version of the app is out. The button downloads the APK inside the app (with its progress) and

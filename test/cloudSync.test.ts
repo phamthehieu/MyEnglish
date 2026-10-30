@@ -251,6 +251,20 @@ describe("cloud sync", () => {
     expect(server.pushed.length).toBe(before);
   });
 
+  it("after the account is deleted, the next account takes this machine's data without asking", async () => {
+    const server = fakeServer();
+    const a = await device();
+    await review(a, await addDeckWord(a, "apple"));
+    await a.engine.syncNow(server.transport(), "user-1");
+    await a.engine.leaveDeletedAccount(); // user-1 deleted their account
+    const fresh = fakeServer();
+    await expect(a.engine.syncNow(fresh.transport(), "user-2")).resolves.toBeDefined();
+    // Everything was pushed again to the new account
+    expect(fresh.pushed.some((r) => r.kind === "card" && r.key.includes("apple"))).toBe(true);
+    // The machine keeps its id (its XP ledger stays one device)
+    expect(await a.state.getDeviceId()).toBeTruthy();
+  });
+
   it("keeps syncing progress when the server refuses this machine's XP (device limit)", async () => {
     const server = fakeServer();
     const a = await device();
