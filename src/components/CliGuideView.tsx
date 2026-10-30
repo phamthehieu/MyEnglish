@@ -8,6 +8,7 @@ import FeedbackForm from "./dashboard/FeedbackForm";
 import { isPretestEnabled, setPretestEnabled } from "@/services/pretest";
 import { getQuietHours } from "@/services/reminderMoments";
 import StudyTimesField from "./dashboard/StudyTimesField";
+import WebReminders from "./dashboard/WebReminders";
 import { getActivityLogs, getDailyGoal, getLocalDateString, setDailyGoal } from "@/services/streak";
 import { isMainSessionActive } from "@/services/activeSession";
 import { useState, useEffect } from "react";
@@ -694,13 +695,10 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         icon={<Bell className="w-5 h-5" />}
         title="Nhắc học"
         description="Khi nào app nhắc bạn ôn: mỗi bao lâu, vào giờ nào, giờ yên tĩnh."
-        summary={IS_WEB ? "Chưa có trên bản web" : reminderSettings.enabled ? (reminderSettings.intervalMinutes > 0 ? `Bật · mỗi ${reminderSettings.intervalMinutes} phút` : "Bật · theo giờ học") : "Đang tắt"}
+        summary={IS_WEB ? "Thông báo theo giờ học" : reminderSettings.enabled ? (reminderSettings.intervalMinutes > 0 ? `Bật · mỗi ${reminderSettings.intervalMinutes} phút` : "Bật · theo giờ học") : "Đang tắt"}
       >
         {IS_WEB ? (
-          <NotOnWeb>
-            Bản web chưa nhắc học được. Muốn được nhắc đúng giờ, hãy dùng app trên điện thoại Android hoặc máy tính: đăng
-            nhập cùng tài khoản là tiến độ học được đồng bộ.
-          </NotOnWeb>
+          <WebReminders />
         ) : (
         <div className="space-y-6">
           {/* SECTION 0: AUTOSTART SYSTEM SETTING (desktop only) */}

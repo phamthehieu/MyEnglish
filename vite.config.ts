@@ -48,6 +48,8 @@ const pwa = VitePWA({
     maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
     navigateFallback: "/index.html",
     cleanupOutdatedCaches: true,
+    // Study reminders (Web Push): showing them and opening the app on a tap
+    importScripts: ["push-sw.js"],
     runtimeCaching: [
       {
         // Sound videos of the pronunciation lessons: kept once played (videos ask for byte ranges)
