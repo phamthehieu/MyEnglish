@@ -163,7 +163,7 @@ export default function Heatmap({ words, dueRemaining = null }: HeatmapProps) {
       </div>
 
       {/* DAILY GOAL PROGRESS CARD */}
-      <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-3">
+      <div className="p-3 md:p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <Target className="w-4 h-4 text-teal-700 dark:text-teal-300" />

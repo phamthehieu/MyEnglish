@@ -140,7 +140,7 @@ export default function ProficiencyAssessmentCard({
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-4 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-6 relative">
+    <div className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-3.5 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-6 relative">
       {/* TOP HEADER: Assessed Level & Overall Score */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 dark:border-zinc-800 pb-5">
         <div className="flex min-w-0 items-start gap-4">
@@ -260,7 +260,7 @@ export default function ProficiencyAssessmentCard({
       {/* THREE PILLAR METRICS BREAKDOWN */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {/* Pillar 1: Grammar Mastery */}
-        <div className="min-w-0 p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-2">
+        <div className="min-w-0 p-3 md:p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-2">
           <div className="flex items-center justify-between gap-2 text-sm font-semibold text-slate-700 dark:text-zinc-300">
             <span className="flex items-center gap-1.5">
               <GraduationCap className="w-4 h-4 text-teal-700 dark:text-teal-300" /> Ngữ Pháp Tích Lũy
@@ -279,7 +279,7 @@ export default function ProficiencyAssessmentCard({
         </div>
 
         {/* Pillar 2: Vocabulary & FSRS Retention */}
-        <div className="min-w-0 p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-2">
+        <div className="min-w-0 p-3 md:p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-2">
           <div className="flex items-center justify-between gap-2 text-sm font-semibold text-slate-700 dark:text-zinc-300">
             <span className="flex items-center gap-1.5">
               <Brain className="w-4 h-4 text-teal-700 dark:text-teal-300" /> Vốn từ & độ nhớ lâu
@@ -300,7 +300,7 @@ export default function ProficiencyAssessmentCard({
         </div>
 
         {/* Pillar 3: Learning Consistency */}
-        <div className="min-w-0 p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-2">
+        <div className="min-w-0 p-3 md:p-4 rounded-xl bg-slate-50 dark:bg-zinc-800/50 space-y-2">
           <div className="flex items-center justify-between gap-2 text-sm font-semibold text-slate-700 dark:text-zinc-300">
             <span className="flex items-center gap-1.5">
               <Flame className="w-4 h-4 text-amber-500" /> Tính Kỷ Luật & Phản Xạ
@@ -445,7 +445,7 @@ export default function ProficiencyAssessmentCard({
       )}
 
       {/* SMART AUTO-REPLENISH ENGINE SECTION (AI vocabulary; off while the Oxford deck is the only source) */}
-      {AI_VOCAB_ENABLED && <div className="bg-slate-50 dark:bg-zinc-800/50 rounded-xl p-4 space-y-4">
+      {AI_VOCAB_ENABLED && <div className="bg-slate-50 dark:bg-zinc-800/50 rounded-xl p-3 md:p-4 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-400/10 text-teal-700 dark:text-teal-300 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -522,7 +522,7 @@ export default function ProficiencyAssessmentCard({
 
       {/* RECOMMENDATIONS & AI ADVICE */}
       {profile.recommendations.length > 0 && (
-        <div className="bg-slate-50 dark:bg-zinc-800/50 rounded-xl p-4 space-y-2">
+        <div className="bg-slate-50 dark:bg-zinc-800/50 rounded-xl p-3 md:p-4 space-y-2">
           <div className="text-sm font-semibold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
             <Sparkles className="w-4 h-4 text-teal-700 dark:text-teal-300" />
             <span>Gợi ý học tiếp ở cấp độ {profile.effectiveLevel}</span>
@@ -584,7 +584,7 @@ function LevelDetailPanel({
   return (
     <div
       id="cefr-level-detail"
-      className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/40 p-4 md:p-5 space-y-4 animate-in fade-in slide-in-from-top-1 duration-150"
+      className="rounded-2xl md:border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/40 p-3 md:p-5 space-y-4 animate-in fade-in slide-in-from-top-1 duration-150"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-0.5 min-w-0">

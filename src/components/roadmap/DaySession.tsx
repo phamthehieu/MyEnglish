@@ -110,7 +110,7 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
     const tip = tipForStage(stage.id)!;
     return (
       <div className="space-y-3">
-        <div className="rounded-2xl border border-cyan-300 dark:border-cyan-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+        <div className="rounded-2xl border border-cyan-300 dark:border-cyan-800 bg-white dark:bg-zinc-900 p-3.5 md:p-4 space-y-3">
           <p className="text-xs font-semibold text-cyan-800 dark:text-cyan-300 inline-flex items-center gap-1.5">
             <GraduationCap className="w-4 h-4" /> Trước khi bắt đầu: ngữ pháp của chặng "{stage.title}"
           </p>

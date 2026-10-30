@@ -668,7 +668,7 @@ function ConversationChat({
         })}
 
         {finished && (
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-4 space-y-3">
             <p className="inline-flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-zinc-100">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300">
                 <Trophy className="h-4 w-4" />

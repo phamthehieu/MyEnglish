@@ -97,7 +97,7 @@ export default function KnownTab({ onCheckNow }: KnownTabProps) {
 
   return (
     <div className={`${PAGE_CONTAINER} space-y-4`}>
-      <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+      <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
         <div>
           <div className="min-w-0">
             <p className="text-sm leading-relaxed text-slate-700 dark:text-zinc-300">
@@ -286,7 +286,7 @@ function KnownRow({ entry, onOpen, onCheck }: { entry: KnownEntry; onOpen: () =>
   const { word: w, status, markedAt, checkAt, rememberedLong } = entry;
   const check = checkAt ? formatNextReviewRelative(checkAt, false) : null;
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-4 py-3">
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-3.5 py-3 md:px-4">
       <button onClick={onOpen} className="min-h-11 min-w-0 flex-1 basis-[220px] text-left">
         <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">
           <span className="text-base font-semibold text-slate-900 dark:text-white">{w.word}</span>

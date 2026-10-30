@@ -45,7 +45,7 @@ export default function StudyTimesField({
     "min-h-11 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 text-base tabular-nums text-slate-900 dark:text-zinc-100 disabled:opacity-50 focus:outline-none focus:border-teal-700";
 
   return (
-    <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3">
+    <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3">
       <div className="flex items-center justify-between gap-2">
         <span className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
           <Clock className="w-4 h-4 text-teal-700 dark:text-teal-300" />

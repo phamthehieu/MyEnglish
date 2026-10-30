@@ -391,7 +391,7 @@ function ShadowCard({
 }) {
   const pill = "h-11 rounded-full inline-flex items-center justify-center text-sm font-semibold transition-colors";
   return (
-    <div className="mb-2 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+    <div className="mb-2 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
       <div
         className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800"
         role="progressbar"

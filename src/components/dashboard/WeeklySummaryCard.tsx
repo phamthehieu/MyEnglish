@@ -43,7 +43,7 @@ export default function WeeklySummaryCard({ simple, now }: { simple: boolean; no
   ].filter(Boolean);
 
   return (
-    <div className="rounded-xl border border-violet-200 dark:border-violet-800/50 bg-violet-50/60 dark:bg-violet-950/20 p-4 space-y-2">
+    <div className="rounded-xl border border-violet-200 dark:border-violet-800/50 bg-violet-50/60 dark:bg-violet-950/20 p-3.5 md:p-4 space-y-2">
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-1 min-w-0">
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">

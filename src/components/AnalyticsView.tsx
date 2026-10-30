@@ -179,7 +179,7 @@ export default function AnalyticsView({
   const unlockedCount = achievements.filter((a) => a.isUnlocked).length;
 
   const card = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
-  const statCard = `${card} min-w-0 p-4 space-y-2`;
+  const statCard = `${card} min-w-0 p-3 md:p-4 space-y-2`;
   const nextWeekReviews = forecast ? forecast.days.slice(1, 8).reduce((sum, d) => sum + d.reviews, 0) : null;
 
   return (
@@ -316,7 +316,7 @@ export default function AnalyticsView({
       <WeeklyProgressCard words={words} />
 
       {/* Heatmap Widget */}
-      <div className={`${card} p-4 md:p-5 space-y-3`}>
+      <div className={`${card} p-3.5 md:p-5 space-y-3`}>
         <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
           <Calendar className="h-5 w-5 text-teal-700 dark:text-teal-300" />
           <span>Lịch sử học mỗi ngày</span>
@@ -336,7 +336,7 @@ export default function AnalyticsView({
       {tab === "schedule" && (
         <>
           {/* The days ahead in one line, then the calibration of the scheduler */}
-          <div className={`${card} p-4 grid grid-cols-1 sm:grid-cols-3 gap-3`}>
+          <div className={`${card} p-3.5 md:p-4 grid grid-cols-1 sm:grid-cols-3 gap-3`}>
             <div className="space-y-0.5">
               <span className="text-xs text-slate-600 dark:text-zinc-400">Mai phải ôn</span>
               <p className="text-2xl font-bold tabular-nums text-slate-900 dark:text-zinc-100">{forecast ? `~${forecast.days[1]?.reviews ?? 0}` : "…"}</p>
@@ -370,7 +370,7 @@ export default function AnalyticsView({
 
       {/* Accuracy & Review Logs Summary (if logs exist) */}
       {reviewAnalytics && reviewAnalytics.totalReviews > 0 && (
-        <div className={`${card} p-4 md:p-5 space-y-4`}>
+        <div className={`${card} p-3.5 md:p-5 space-y-4`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
               <Activity className="h-5 w-5 text-teal-700 dark:text-teal-300" />
@@ -407,7 +407,7 @@ export default function AnalyticsView({
       {/* FSRS Word State Distribution & Retention Insights */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Word State Distribution */}
-        <div className={`${card} min-w-0 p-4 md:p-5 space-y-5`}>
+        <div className={`${card} min-w-0 p-3.5 md:p-5 space-y-5`}>
           <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
             <PieIcon className="h-5 w-5 text-teal-700 dark:text-teal-300" />
             <span>Các từ đang ở giai đoạn nào</span>
@@ -497,7 +497,7 @@ export default function AnalyticsView({
         </div>
 
         {/* Topic Mastery Grid */}
-        <div className={`${card} min-w-0 p-4 md:p-5 space-y-4`}>
+        <div className={`${card} min-w-0 p-3.5 md:p-5 space-y-4`}>
           <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100 flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-teal-700 dark:text-teal-300" />
             <span>Nhớ lâu theo cấp độ</span>
@@ -536,7 +536,7 @@ export default function AnalyticsView({
       {tab === "badges" && (
       <div className="space-y-4">
         {/* Level and weekly rank */}
-        <div className={`${card} p-4 flex flex-wrap items-center gap-4`}>
+        <div className={`${card} p-3.5 md:p-4 flex flex-wrap items-center gap-4`}>
           <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-3xl shrink-0">
             {xpState.rankEmoji}
           </div>

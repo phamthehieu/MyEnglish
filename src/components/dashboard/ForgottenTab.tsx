@@ -122,7 +122,7 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
   return (
     <div className={`${PAGE_CONTAINER} space-y-4`}>
       {/* Header: what this is, three numbers, the one action */}
-      <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+      <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
         <div>
           <div className="min-w-0">
             <p className="text-sm leading-relaxed text-slate-700 dark:text-zinc-300">
@@ -286,13 +286,13 @@ export default function ForgottenTab({ onStartSession, onStartFocus, onRefreshWo
       <div className="rounded-2xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
         <button
           onClick={() => setShowSettings((s) => !s)}
-          className="flex min-h-12 w-full items-center gap-2 rounded-2xl px-4 text-base font-semibold text-slate-900 dark:text-zinc-100 md:px-5"
+          className="flex min-h-12 w-full items-center gap-2 rounded-2xl px-3.5 text-base font-semibold text-slate-900 dark:text-zinc-100 md:px-5"
         >
           <Settings2 className="w-4 h-4 text-slate-600 dark:text-zinc-400" /> Cài đặt từ khó
           <ChevronDown className={`w-4 h-4 ml-auto transition-transform ${showSettings ? "rotate-180" : ""}`} />
         </button>
         {showSettings && (
-          <div className="space-y-3 px-4 pb-4 text-sm md:px-5 md:pb-5">
+          <div className="space-y-3 px-3.5 pb-4 text-sm md:px-5 md:pb-5">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-slate-600 dark:text-zinc-400">Coi là "Từ khó" khi đã quên từ:</span>
               {[2, 3, 4, 5].map((t) => (
@@ -373,7 +373,7 @@ function ForgottenRow({
     .join("\n");
 
   return (
-    <div className="min-w-0 space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="min-w-0 space-y-3 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-4">
       <div className="flex items-start justify-between gap-2">
         <button onClick={onOpen} className="min-w-0 text-left">
           <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5">

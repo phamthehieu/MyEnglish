@@ -78,7 +78,7 @@ export default function TodayRoadmapCard({ simple, milestone, onOpenPath }: Toda
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3">
+    <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-4 space-y-3">
       <div className="flex items-center justify-between gap-2 text-sm">
         <span className="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-zinc-200">
           <Layers className="w-4 h-4 text-cyan-500" /> Lộ trình từ vựng Oxford

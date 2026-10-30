@@ -225,7 +225,7 @@ export default function LeaderboardTab({
 
         {/* Reflex challenge: a timed run for extra XP */}
         {onStartReflexChallenge && (
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
@@ -386,7 +386,7 @@ function GroupsPanel({ groups, onChanged }: { groups: GroupInfo[]; onChanged: (s
     "shrink-0 px-5 min-h-12 rounded-2xl text-base font-semibold bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-50 disabled:cursor-not-allowed text-white shadow-sm";
 
   return (
-    <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-4">
+    <div className="p-3.5 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-4">
       <div className="grid gap-3 sm:grid-cols-2">
         <form
           className="space-y-1.5"

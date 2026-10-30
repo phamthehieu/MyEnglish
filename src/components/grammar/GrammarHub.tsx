@@ -405,7 +405,7 @@ function ManagedItemsPanel({
   onRemoveAccepted: (item: ManagedItems["accepted"][number]) => void;
 }) {
   return (
-    <details className="group rounded-2xl border border-slate-200 bg-white px-4 py-1 text-xs shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:px-5">
+    <details className="group rounded-2xl border border-slate-200 bg-white px-3.5 py-1 text-xs shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:px-5">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 font-semibold text-slate-600 dark:text-zinc-300">
         <span className="flex min-w-0 items-center gap-1.5">
           <Wrench className="h-3.5 w-3.5" />
@@ -568,7 +568,7 @@ function TodayPanel({
   return (
     <section aria-label="Hôm nay" className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
       {/* The one thing to do next */}
-      <div className="flex min-w-0 flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+      <div className="flex min-w-0 flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
         <div className="space-y-1.5">
           <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:text-teal-300">
             {primary.icon}
@@ -643,7 +643,7 @@ function TodayPanel({
               ) : null}
             </>
           );
-          const cls = `flex min-h-14 w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition-colors ${
+          const cls = `flex min-h-14 w-full items-center gap-3 rounded-2xl border px-3.5 py-3 text-left md:px-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition-colors ${
             isPrimary
               ? "border-teal-700/30 bg-teal-50 dark:border-teal-400/30 dark:bg-teal-400/10"
               : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"

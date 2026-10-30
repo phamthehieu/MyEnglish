@@ -23,7 +23,7 @@ export default function SpeakingGrammar({ onOpenLesson, defaultOpen = false }: {
   const shown = entries.filter((e) => e.level === level);
 
   return (
-    <section aria-label="Ngữ pháp cho nói" className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-3">
+    <section aria-label="Ngữ pháp cho nói" className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-3">
       <button type="button" onClick={() => setExpanded(!expanded)} aria-expanded={expanded} className="w-full min-h-11 flex items-center gap-3 text-left">
         <span className="min-w-0 flex-1 space-y-0.5">
           <span className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-zinc-100">
@@ -60,15 +60,15 @@ export default function SpeakingGrammar({ onOpenLesson, defaultOpen = false }: {
         </div>
       )}
 
-      {expanded && <ul className="space-y-2">
+      {expanded && <ul className="md:space-y-2">
         {shown.map((e) => {
           const isOpen = open === e.stage;
           return (
-            <li key={e.stage} className={`rounded-2xl border ${e.stage === current?.id ? "border-teal-700/40 dark:border-teal-400/40" : "border-slate-200 dark:border-zinc-800"}`}>
+            <li key={e.stage} className={`border-t border-slate-200 dark:border-zinc-800 md:rounded-2xl md:border ${e.stage === current?.id ? "md:border-teal-700/40 md:dark:border-teal-400/40" : ""}`}>
               <button
                 onClick={() => setOpen(isOpen ? null : e.stage)}
                 aria-expanded={isOpen}
-                className="w-full min-h-14 flex items-center gap-2 px-4 py-2.5 text-left"
+                className="w-full min-h-14 flex items-center gap-2 py-2.5 text-left md:px-4"
               >
                 <span className="min-w-0 flex-1">
                   <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100">{e.stageTitle}</span>
@@ -80,7 +80,7 @@ export default function SpeakingGrammar({ onOpenLesson, defaultOpen = false }: {
                 <ChevronDown className={`w-4 h-4 shrink-0 text-slate-500 dark:text-zinc-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
               </button>
               <Collapse open={isOpen}>
-                <div className="px-4 pb-4">
+                <div className="pb-4 md:px-4">
                   <GrammarTipCard tip={e} onOpenLesson={onOpenLesson} />
                 </div>
               </Collapse>

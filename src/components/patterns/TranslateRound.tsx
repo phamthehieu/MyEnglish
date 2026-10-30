@@ -117,7 +117,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
   return (
     // The bottom padding leaves room to scroll the box above the keyboard
     <div ref={area} className="space-y-3 pb-[45vh]">
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <p className="text-xs font-semibold tracking-wide text-slate-500 dark:text-zinc-400">NGHĨA TIẾNG VIỆT:</p>
         <p className="text-xl font-bold text-slate-900 dark:text-zinc-100">{item.vi}</p>
 
@@ -288,7 +288,7 @@ export default function TranslateRound({
     return (
       <div className="space-y-4">
         <PracticeTop onBack={onExit} backLabel="Thoát" close label={title} />
-        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
           <p className="text-base text-slate-700 dark:text-zinc-300">Chưa có câu nào để dịch ở cấp và mục tiêu này.</p>
         </div>
       </div>
@@ -317,7 +317,7 @@ export default function TranslateRound({
 
       {done ? (
         <div className="space-y-3">
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-1 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-1 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
             <p className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Xong vòng này! 🎉 {points} điểm</p>
             <p className="text-sm text-slate-700 dark:text-zinc-300">
               Đúng {right.length}/{results.length} câu
@@ -325,7 +325,7 @@ export default function TranslateRound({
             </p>
           </div>
           {missed.length > 0 && (
-            <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-2 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+            <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-2 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
               <p className="text-sm font-semibold text-slate-900 dark:text-zinc-100">Câu cần nhớ thêm:</p>
               {missed.map((m, i) => (
                 <div key={i} className="flex items-center gap-2">

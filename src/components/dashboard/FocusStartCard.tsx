@@ -100,7 +100,7 @@ export default function FocusStartCard({ onStart, disabled = false, shortcut = f
 
   if (!strong) {
     return (
-      <div className="rounded-2xl border border-violet-200 dark:border-violet-800/50 bg-white dark:bg-zinc-900 p-4 flex flex-wrap items-center gap-3">
+      <div className="rounded-2xl border border-violet-200 dark:border-violet-800/50 bg-white dark:bg-zinc-900 p-3.5 md:p-4 flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2 min-w-0 flex-1 basis-[220px]">
           <div className="w-9 h-9 rounded-xl bg-violet-100 dark:bg-violet-500/15 flex items-center justify-center text-violet-600 dark:text-violet-300 shrink-0">
             <Timer className="w-5 h-5" />

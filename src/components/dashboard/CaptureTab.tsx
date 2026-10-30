@@ -71,7 +71,7 @@ export default function CaptureTab({
       </div>
 
       {/* Input Card */}
-      <form onSubmit={handleCaptureSubmit} autoComplete="off" className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+      <form onSubmit={handleCaptureSubmit} autoComplete="off" className="space-y-3 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
         <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
           <label className="flex min-h-12 min-w-0 flex-1 basis-full items-center gap-2 rounded-2xl border border-slate-300 bg-white px-3 transition-colors focus-within:border-teal-600 focus-within:ring-2 focus-within:ring-teal-600/20 dark:border-zinc-700 dark:bg-zinc-900 sm:basis-auto">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">

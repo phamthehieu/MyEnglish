@@ -193,7 +193,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
             </button>
           </div>
         )}
-        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-3">
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-3">
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -272,7 +272,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px] gap-4 items-start">
-        <article className="min-w-0 p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-base leading-8 text-slate-800 dark:text-zinc-200 whitespace-pre-wrap break-words">
+        <article className="min-w-0 p-3.5 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-base leading-8 text-slate-800 dark:text-zinc-200 whitespace-pre-wrap break-words">
           {analysis.segments.map((seg, i) => {
             const t = seg.token;
             if (!t || t.kind === "common") {

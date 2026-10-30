@@ -62,7 +62,7 @@ function PracticeBar({ index, total, speed, loop, onPlay, onSpeed, onLoop }: Pra
   );
 }
 
-const CARD = "mb-2 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
+const CARD = "mb-2 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
 const CHECK_BUTTON =
   "min-h-14 min-w-0 flex-1 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm disabled:cursor-not-allowed disabled:opacity-50";
 

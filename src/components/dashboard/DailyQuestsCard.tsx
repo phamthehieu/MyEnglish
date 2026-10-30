@@ -160,7 +160,7 @@ export default function DailyQuestsCard({
   return (
     <section
       aria-label="Nhiệm vụ hôm nay"
-      className="rounded-2xl border border-amber-200 dark:border-amber-800/40 bg-white dark:bg-zinc-900 p-4 space-y-2.5"
+      className="rounded-2xl border border-amber-200 dark:border-amber-800/40 bg-white dark:bg-zinc-900 p-3.5 md:p-4 space-y-2.5"
       data-testid="daily-quests"
     >
       <div className="flex items-center justify-between gap-2">

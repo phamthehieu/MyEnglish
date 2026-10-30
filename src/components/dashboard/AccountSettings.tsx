@@ -45,7 +45,7 @@ export default function AccountSettings() {
 
   const shell = (children: React.ReactNode) => (
     <section>
-      <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">{children}</div>
+      <div className="p-3.5 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">{children}</div>
     </section>
   );
 

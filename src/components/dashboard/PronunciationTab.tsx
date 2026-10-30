@@ -134,7 +134,7 @@ function MasteryPanel({ summary }: { summary: MasterySummary }) {
     },
   ];
   return (
-    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-2">
+    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-4 space-y-2">
       <div className="flex items-center justify-between text-xs">
         <span className="font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">Độ thành thạo</span>
         <span className="font-bold text-slate-800 dark:text-zinc-200">
@@ -364,7 +364,7 @@ function SayAloud({
 
   return (
     <div className="space-y-3">
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-4">
         <div className="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-zinc-400">
           <span className="inline-flex items-center gap-1.5 font-semibold text-teal-800 dark:text-teal-300">
             <Mic className="w-4 h-4" /> Nghe rồi đọc to thành tiếng
@@ -499,7 +499,7 @@ function Quiz({
   if (result) {
     const pct = Math.round((result.correct * 100) / total);
     return (
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-4">
         <div className="text-center space-y-1">
           <div className={`text-4xl font-bold ${result.passed ? "text-green-600 dark:text-green-400" : "text-slate-800 dark:text-zinc-100"}`}>
             {result.correct}/{total}
@@ -564,7 +564,7 @@ function Quiz({
   const answeredRight = picked !== null && picked === q.answer;
   return (
     <div className="space-y-3">
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-4">
         <div className="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-zinc-400">
           <span className="inline-flex items-center gap-1.5 font-semibold text-teal-800 dark:text-teal-300">
             <Ear className="w-4 h-4" /> Nghe và chọn
@@ -797,7 +797,7 @@ function IpaChart({
       {nextSound && (
         <button
           onClick={() => onOpen(nextSound.id)}
-          className="w-full text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 flex items-center gap-3 hover:border-teal-600/50"
+          className="w-full text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-4 flex items-center gap-3 hover:border-teal-600/50"
         >
           <span className="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center text-lg font-bold font-mono shrink-0">
             {nextSound.title.match(/\/(.+?)\//)?.[1]}
@@ -1024,7 +1024,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
 
         {/* Dynamic Confusable Phoneme Challenge Card */}
         {phonemeSession && (
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
             <div className="flex items-center gap-3.5 min-w-0">
               <div className="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center font-bold text-lg shrink-0">
                 ⚡
@@ -1087,7 +1087,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
         ) : view === "chart" ? (
           chart.length > 0 && <IpaChart chart={chart} progress={progress} mastery={mastery} wordCounts={wordCounts} nextSound={nextSound} onOpen={(id) => openLesson(id, "learn", false, true)} />
         ) : next ? (
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-3">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-3">
             <div className="flex items-start gap-3">
               <div className="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 flex items-center justify-center text-lg font-bold shrink-0">{nextIndex + 1}</div>
               <div className="min-w-0 flex-1">

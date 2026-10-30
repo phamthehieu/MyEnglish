@@ -30,6 +30,14 @@ interface SettingsSectionProps {
  * A block of the Settings screen that can be folded. The learner's choice (open or closed) is remembered per
  * section, so extras folded once stay out of the way.
  */
+/**
+ * A group of settings inside a section. On phones it is a plain block under a thin divider (no box inside the
+ * section's box, so the text keeps the width); from md up it is its own bordered box. Add the md: padding,
+ * corners and background of the box (with md:first:pt-* matching the padding).
+ */
+export const SETTINGS_GROUP =
+  "border-t border-slate-100 pt-4 first:border-t-0 first:pt-0 dark:border-zinc-800 md:border md:first:border-t md:border-slate-200 md:dark:border-zinc-800";
+
 /** Event a link to a section sends to open it if it is folded: detail = the section id */
 export const OPEN_SETTINGS_SECTION_EVENT = "myenglish-open-settings-section";
 
@@ -58,7 +66,7 @@ export default function SettingsSection({ id, icon, title, description, summary,
 
   return (
     <section id={`settings-${id}`} className={`scroll-mt-4 rounded-2xl border ${shell}`}>
-      <button type="button" onClick={toggle} aria-expanded={open} className="w-full min-h-14 flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-4 text-left">
+      <button type="button" onClick={toggle} aria-expanded={open} className="w-full min-h-14 flex items-center gap-3 px-3.5 sm:px-5 py-3 sm:py-4 text-left">
         <span
           className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
             tone === "primary"
@@ -77,7 +85,7 @@ export default function SettingsSection({ id, icon, title, description, summary,
         {!open && summary && <span className="hidden sm:block shrink-0 text-sm text-slate-500 dark:text-zinc-400 text-right max-w-[45%] truncate">{summary}</span>}
         <ChevronDown className={`w-5 h-5 shrink-0 text-slate-500 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
-      {open && <div className="border-t border-slate-100 dark:border-zinc-800 px-4 sm:px-5 pt-4 pb-5 space-y-4">{children}</div>}
+      {open && <div className="border-t border-slate-100 dark:border-zinc-800 px-3.5 sm:px-5 pt-4 pb-5 space-y-4">{children}</div>}
     </section>
   );
 }

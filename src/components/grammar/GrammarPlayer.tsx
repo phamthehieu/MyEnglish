@@ -68,7 +68,7 @@ const PRIMARY_BTN =
 const SECONDARY_BTN =
   "min-h-12 px-5 rounded-2xl border border-teal-700/30 dark:border-teal-400/40 bg-white dark:bg-transparent text-teal-800 dark:text-teal-300 text-base font-semibold hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2";
 const CARD =
-  "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 md:p-5 space-y-4";
+  "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-4";
 const LABEL = "text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400";
 
 const TONE_BOX: Record<Tone, string> = {

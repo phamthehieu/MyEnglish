@@ -379,7 +379,7 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
           {due > 0 && (
             <button
               onClick={() => setView({ kind: "review" })}
-              className="w-full text-left rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-4 flex items-center gap-3 hover:border-amber-300"
+              className="w-full text-left rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 p-3.5 md:p-4 flex items-center gap-3 hover:border-amber-300"
             >
               <RotateCcw className="w-5 h-5 shrink-0 text-amber-700 dark:text-amber-300" />
               <span className="min-w-0 flex-1">

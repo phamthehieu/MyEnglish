@@ -236,7 +236,7 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
     <div className="mx-auto max-w-4xl space-y-4 pb-12 animate-in fade-in duration-200">
       <div ref={topRef} />
 
-      <header className="space-y-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+      <header className="space-y-3 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
         <div className="flex items-start gap-3">
           <button
             type="button"
@@ -350,7 +350,7 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
       )}
 
       {tab === "diagnostic" && (
-        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+        <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
           <div className="flex items-start gap-3">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
               <Zap className="h-5 w-5" />

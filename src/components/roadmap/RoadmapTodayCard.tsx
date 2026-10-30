@@ -20,7 +20,7 @@ export default function RoadmapTodayCard({ setActiveTab, showStart = false }: { 
   };
 
   // A quiet card: the main action of the screen is the checklist, not this
-  const box = "rounded-2xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/60 dark:bg-emerald-950/20 p-4 space-y-2";
+  const box = "rounded-2xl border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50/60 dark:bg-emerald-950/20 p-3.5 md:p-4 space-y-2";
   // Secondary button: outlined, so it does not compete with the screen's main one
   const outlineBtn = "w-full min-h-11 py-2.5 rounded-xl border border-emerald-600 dark:border-emerald-500 bg-white dark:bg-zinc-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-sm font-bold inline-flex items-center justify-center gap-2";
 

@@ -26,7 +26,7 @@ const BTN_PRIMARY =
 /** The round outlined button next to the main one (clear the answer) */
 const BTN_SIDE =
   "px-5 min-h-14 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 disabled:opacity-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300";
-const CARD = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
+const CARD = "rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]";
 /** A word tile to pick, and one already placed in the answer */
 const TILE = "px-3 min-h-11 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-semibold text-slate-900 dark:text-zinc-100 hover:border-teal-600/50";
 const TILE_PLACED = "px-3 min-h-11 rounded-xl bg-teal-700 dark:bg-teal-600 text-white text-sm font-semibold";

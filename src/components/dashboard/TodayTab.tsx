@@ -350,7 +350,7 @@ export default function TodayTab({
             {!loading && forgottenDue >= FORGOTTEN_HINT_MIN && (
               <button
                 onClick={() => setActiveTab("forgotten")}
-                className="w-full min-h-14 flex items-center gap-3 px-4 py-3 rounded-2xl border border-red-200 dark:border-red-500/30 bg-white dark:bg-zinc-900 text-left text-slate-800 dark:text-zinc-100 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                className="w-full min-h-14 flex items-center gap-3 px-3.5 py-3 md:px-4 rounded-2xl border border-red-200 dark:border-red-500/30 bg-white dark:bg-zinc-900 text-left text-slate-800 dark:text-zinc-100 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-300">
                   <Bug className="h-5 w-5" />
@@ -374,7 +374,7 @@ export default function TodayTab({
             type="button"
             onClick={() => setMoreOpen((v) => !v)}
             aria-expanded={moreOpen}
-            className="min-[1000px]:hidden w-full min-w-0 min-h-14 flex items-center gap-3 px-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-left text-slate-700 dark:text-zinc-200"
+            className="min-[1000px]:hidden w-full min-w-0 min-h-14 flex items-center gap-3 px-3.5 md:px-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-left text-slate-700 dark:text-zinc-200"
           >
             <Compass className="h-5 w-5 shrink-0 text-teal-700 dark:text-teal-300" />
             <span className="min-w-0 flex-1 truncate font-medium">{moreOpen ? "Thu gọn" : "Xem thêm: nhiệm vụ, xếp hạng tuần, lộ trình từ vựng"}</span>

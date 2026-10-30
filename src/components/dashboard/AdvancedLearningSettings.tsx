@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Cpu, Download, Upload, RotateCcw, CalendarRange } from "lucide-react";
+import { SETTINGS_GROUP } from "./SettingsSection";
 import {
   MIN_OPTIMIZER_CARDS,
   MIN_OPTIMIZER_REVIEWS,
@@ -14,7 +15,7 @@ import { exportBackupJson, exportWordsCsv, importBackup, parseBackup } from "@/s
 import { getFSRSSettings, saveFSRSSettings } from "@/services/srs";
 import { useSimpleMode } from "../Jargon";
 
-const BOX = "p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3";
+const BOX = `${SETTINGS_GROUP} md:p-4 md:first:pt-4 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-3`;
 const BTN =
   "min-h-11 px-4 py-2 rounded-2xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 /** The kit's secondary button look (teal outline) */

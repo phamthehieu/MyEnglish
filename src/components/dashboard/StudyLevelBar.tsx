@@ -36,7 +36,7 @@ export default function StudyLevelBar() {
 
   return (
     <>
-      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+      <div className="flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <span className="flex h-12 min-w-12 shrink-0 items-center justify-center rounded-xl bg-teal-50 px-2 text-lg font-bold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
           {levels[0]}
         </span>

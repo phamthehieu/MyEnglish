@@ -70,7 +70,7 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
 
   if (!user) {
     return (
-      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="flex items-center gap-2.5">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
             <Trophy className="w-5 h-5" />
@@ -107,7 +107,7 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
   const row = (r: (typeof rows)[number]) => (
     <div
       key={`${r.rank}-${r.displayName}`}
-      className={cn("flex items-center gap-2.5 px-4 py-2 text-sm", r.isMe && "bg-teal-50 dark:bg-teal-400/10")}
+      className={cn("flex items-center gap-2.5 px-3.5 py-2 text-sm md:px-4", r.isMe && "bg-teal-50 dark:bg-teal-400/10")}
     >
       <span className="w-6 shrink-0 text-center text-sm font-semibold tabular-nums text-slate-500 dark:text-zinc-400">{MEDAL[r.rank - 1] ?? r.rank}</span>
       <Avatar id={r.avatar} name={r.displayName} size="sm" />
@@ -120,7 +120,7 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
 
   return (
     <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] overflow-hidden">
-      <div className="p-4 space-y-3">
+      <div className="p-3.5 md:p-4 space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-teal-700 dark:text-teal-300" />
@@ -182,7 +182,7 @@ export function RankPanel({ onNavigate }: { onNavigate: (tab: DashboardTab) => v
         </div>
       )}
 
-      <div className="px-4 py-1.5 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between gap-2 text-sm">
+      <div className="px-3.5 md:px-4 py-1.5 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between gap-2 text-sm">
         <span className="min-w-0 text-slate-500 dark:text-zinc-400">{stale ? "Chưa cập nhật được, đang hiện số cũ" : "XP tuần này"}</span>
         <button onClick={() => onNavigate("leaderboard")} className="shrink-0 min-h-11 px-1 font-semibold text-teal-700 dark:text-teal-300 hover:underline inline-flex items-center">
           Xem đầy đủ <ChevronRight className="w-4 h-4" />

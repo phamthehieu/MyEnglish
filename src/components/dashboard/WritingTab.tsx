@@ -165,7 +165,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       </div>
 
       {/* Daily standup */}
-      <div className="p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+      <div className="p-3.5 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <span className="text-base font-semibold text-slate-900 dark:text-zinc-100">Standup hôm nay</span>
           <span className="text-xs tabular-nums text-slate-500 dark:text-zinc-400">
@@ -220,7 +220,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
         {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
         {feedback && (
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-3 text-sm text-slate-700 dark:text-zinc-300">
+          <div className="p-3 md:p-4 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-3 text-sm text-slate-700 dark:text-zinc-300">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="font-semibold text-slate-900 dark:text-zinc-100">
                 {feedback.corrections.length === 0 ? "Không có lỗi nào 🎉" : `${feedback.corrections.length} lỗi cần sửa`}
@@ -255,7 +255,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       </div>
 
       {/* Mistake notebook */}
-      <div className="p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+      <div className="p-3.5 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span className="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-zinc-100">
             <BookMarked className="w-4 h-4 text-teal-700 dark:text-teal-300" />

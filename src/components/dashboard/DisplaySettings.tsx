@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Volume2 } from "lucide-react";
+import { SETTINGS_GROUP } from "./SettingsSection";
 import {
   getUiScale,
   isFoundationMode,
@@ -45,7 +46,7 @@ export default function DisplaySettings() {
   );
 
   return (
-    <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-3">
+    <div className={`${SETTINGS_GROUP} md:p-4 md:first:pt-4 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-3`}>
       <div className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Giao diện, âm thanh & giọng đọc</div>
       <div className="space-y-2">
         <div className="text-base font-semibold text-slate-900 dark:text-zinc-100">Màu giao diện</div>

@@ -337,7 +337,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
 
         {PATTERNS.length > 0 && (
           <div className="grid gap-2 sm:grid-cols-2">
-            <button onClick={() => setTranslating(true)} className="min-w-0 text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex items-center gap-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-600/50">
+            <button onClick={() => setTranslating(true)} className="min-w-0 text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-4 flex items-center gap-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-600/50">
               <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
                 <Languages className="w-5 h-5" />
               </span>
@@ -347,7 +347,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
               </span>
             </button>
             {poolSize > 0 && (
-              <button onClick={rapid} className="min-w-0 text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 flex items-center gap-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-600/50">
+              <button onClick={rapid} className="min-w-0 text-left rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-4 flex items-center gap-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-teal-600/50">
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300">
                   <Zap className="w-5 h-5" />
                 </span>

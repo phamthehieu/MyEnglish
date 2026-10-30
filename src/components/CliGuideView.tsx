@@ -1,6 +1,6 @@
 import DisplaySettings from "./dashboard/DisplaySettings";
 import type { DashboardTab } from "./dashboard/shared";
-import SettingsSection, { OPEN_SETTINGS_SECTION_EVENT } from "./dashboard/SettingsSection";
+import SettingsSection, { OPEN_SETTINGS_SECTION_EVENT, SETTINGS_GROUP } from "./dashboard/SettingsSection";
 import { FOCUS_DURATIONS, getFocusSettings, saveFocusSettings } from "@/services/focusSettings";
 import AdvancedLearningSettings, { BackupRestoreSettings } from "./dashboard/AdvancedLearningSettings";
 import ResetAppDataModal from "./dashboard/ResetAppDataModal";
@@ -523,7 +523,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
       {/* Feedback alert message */}
       {notifFeedback && (
-        <div className="p-4 rounded-2xl bg-teal-50 dark:bg-teal-400/10 border border-teal-200 dark:border-teal-800 text-sm text-teal-900 dark:text-teal-100 flex items-start justify-between gap-3 animate-in fade-in flex-wrap sm:flex-nowrap">
+        <div className="p-3.5 md:p-4 rounded-2xl bg-teal-50 dark:bg-teal-400/10 border border-teal-200 dark:border-teal-800 text-sm text-teal-900 dark:text-teal-100 flex items-start justify-between gap-3 animate-in fade-in flex-wrap sm:flex-nowrap">
           <div className="flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 text-teal-700 dark:text-teal-300 shrink-0 mt-0.5" />
             <span className="leading-relaxed">{notifFeedback}</span>
@@ -550,7 +550,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       >
         <div className="grid gap-3 md:grid-cols-2">
           {/* Daily goal: the answers that count a day as done (streak, Today) */}
-          <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2">
+          <div className={`${SETTINGS_GROUP} md:p-4 md:first:pt-4 md:rounded-xl md:bg-white md:dark:bg-zinc-950 space-y-2`}>
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -581,7 +581,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           </div>
 
           {/* Focus session length: what "Tập trung" starts everywhere */}
-          <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2">
+          <div className={`${SETTINGS_GROUP} md:p-4 md:first:pt-4 md:rounded-xl md:bg-white md:dark:bg-zinc-950 space-y-2`}>
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
@@ -612,7 +612,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         </div>
 
         {/* Daily study limits */}
-        <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-3">
+        <div className={`${SETTINGS_GROUP} md:p-4 md:first:pt-4 md:rounded-xl md:bg-white md:dark:bg-zinc-950 space-y-3`}>
           {([
             {
               key: "newCardsPerDay" as const,
@@ -688,7 +688,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         <div className="space-y-6">
           {/* SECTION 0: AUTOSTART SYSTEM SETTING (desktop only) */}
           {!IS_MOBILE && (
-            <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
+            <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-4 md:shadow-sm`}>
               <div className="flex items-center justify-between gap-4 flex-wrap">
                 <div className="flex items-center gap-3">
                   <span className="p-2.5 rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 shrink-0">
@@ -736,7 +736,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           )}
 
           {/* SECTION 1: SETTINGS & SCHEDULE CONFIGURATION */}
-          <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-6 shadow-sm">
+          <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-6 md:shadow-sm`}>
             <div className="flex items-center justify-between gap-3 flex-wrap border-b border-slate-100 dark:border-zinc-800 pb-4">
               <div className="flex items-center gap-2.5">
                 <span className="p-2.5 rounded-full bg-teal-50 text-teal-700 dark:bg-teal-400/10 dark:text-teal-300 shrink-0">
@@ -770,7 +770,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             {/* Realtime Schedule & Countdown Card */}
             {/* On a phone the time shown is the next notification handed to Android, and the button opens the quick quiz in the app */}
             {reminderSettings.enabled && reminderSettings.intervalMinutes > 0 && (
-              <div className="p-4 rounded-2xl bg-teal-50/60 dark:bg-teal-400/5 border border-teal-200/80 dark:border-teal-800/60 flex items-center justify-between gap-4 flex-wrap">
+              <div className="p-3 md:p-4 rounded-2xl bg-teal-50/60 dark:bg-teal-400/5 border border-teal-200/80 dark:border-teal-800/60 flex items-center justify-between gap-4 flex-wrap">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-400/10 text-teal-700 dark:text-teal-300 flex items-center justify-center font-bold shrink-0">
                     <Clock className="w-5 h-5 animate-pulse" />
@@ -892,7 +892,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
             {/* Active Snooze Alert if currently snoozed */}
             {snoozeMinutesRemaining > 0 && (
-              <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-center justify-between gap-3 flex-wrap">
+              <div className="p-3 md:p-4 rounded-2xl bg-amber-50dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 flex items-center justify-between gap-3 flex-wrap">
                 <div className="flex items-center gap-2.5 text-amber-800 dark:text-amber-300 text-xs font-semibold">
                   <Hourglass className="w-4 h-4 text-amber-600 dark:text-amber-400 animate-spin-slow shrink-0" />
                   <span>
@@ -912,7 +912,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             {/* SETTING FIELDS GRID */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Field 1: Reminder Interval */}
-              <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
+              <div className="p-3 md:p-4 rounded-2xl bg-slate-50/80dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />
@@ -947,7 +947,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
               {/* Field 2: Snooze Duration (the desktop popup's "Hoãn" button) */}
               {!IS_MOBILE && (
-              <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
+              <div className="p-3 md:p-4 rounded-2xl bg-slate-50/80dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Hourglass className="w-3.5 h-3.5 text-amber-500" />
@@ -990,7 +990,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
               {/* Field 3: Trigger Condition (desktop popup worker only; Android plans its own notifications) */}
               {!IS_MOBILE && (
-              <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
+              <div className="p-3 md:p-4 rounded-2xl bg-slate-50/80dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
                   Điều kiện kích hoạt hiển thị:
                 </span>
@@ -1033,7 +1033,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
               {/* Field 3b: Do not disturb */}
               {/* On a phone only the last three apply (mobileReminders.ts): the others watch the desktop */}
-              <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80">
+              <div className="p-3 md:p-4 rounded-2xl bg-slate-50/80dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80">
                 {!IS_MOBILE && (<>
                 <label className="flex items-start justify-between gap-3 cursor-pointer">
                   <span className="space-y-1">
@@ -1174,7 +1174,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
               {/* Field 4: Words per Session and Field 5: blur — the desktop popup only */}
               {!IS_MOBILE && (<>
-              <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
+              <div className="p-3 md:p-4 rounded-2xl bg-slate-50/80dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Zap className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />
@@ -1214,7 +1214,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               </div>
 
               {/* Field 5: Fullscreen Overlay Blur Level & Audio Policy */}
-              <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
+              <div className="p-3 md:p-4 rounded-2xl bg-slate-50/80dark:bg-zinc-950/60 border border-slate-200/80 dark:border-zinc-800/80 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
                     <Maximize2 className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />
@@ -1275,7 +1275,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
       >
         <div className="space-y-6">
           {/* AI CLI status: information only. Without it the app still works; only the AI features are off */}
-          <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 md:shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4`}>
             <div className="flex items-start gap-3.5">
               <div
                 className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border ${cliStatus?.installed
@@ -1330,7 +1330,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           </div>
 
           {/* Gemini API key: the easy way, no CLI to install. Stored in the OS credential store by the Rust side */}
-          <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+          <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-4 md:shadow-[0_1px_3px_rgba(15,23,42,0.05)]`}>
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-2 text-slate-900 dark:text-zinc-100 font-semibold text-sm">
                 <Key className="w-4 h-4" />
@@ -1348,7 +1348,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               Khi dùng AI, nội dung từ vựng và câu bạn viết sẽ được gửi tới Google.
             </p>
 
-            <div className="space-y-3 p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800">
+            <div className="space-y-3 p-3 md:p-4 rounded-xl bg-slate-50dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800">
               <h4 className="text-xs font-bold text-slate-900 dark:text-white">Cách lấy Gemini API Key:</h4>
               <ol className="text-xs text-slate-600 dark:text-zinc-400 space-y-1.5 list-decimal pl-5 leading-relaxed">
                 <li>
@@ -1465,7 +1465,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
           {!IS_MOBILE && (
             <>
               {/* Custom CLI Path Configuration (Especially for Windows or custom install paths) */}
-              <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-sm space-y-3">
+              <div className={`${SETTINGS_GROUP} md:p-4 md:first:pt-4 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 md:shadow-sm space-y-3`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sliders className="w-4 h-4 text-teal-700 dark:text-teal-300" />
@@ -1558,7 +1558,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               </div>
 
               {/* Account compatibility notice */}
-              <div className="p-4 rounded-2xl bg-teal-50/70 dark:bg-teal-400/5 border border-teal-200 dark:border-teal-800/50 space-y-2">
+              <div className="p-3 md:p-4 rounded-2xl bg-teal-50/70 dark:bg-teal-400/5 border border-teal-200 dark:border-teal-800/50 space-y-2">
                 <div className="flex items-center gap-2 text-teal-800 dark:text-teal-300 font-semibold text-sm">
                   <ShieldCheck className="w-4 h-4" />
                   <span>Khả năng tương thích tài khoản Google (Free vs Plus)</span>
@@ -1595,7 +1595,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 1: Install */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1625,7 +1625,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 2: Permissions & PATH */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1656,7 +1656,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 3: Auth */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1685,7 +1685,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 4: Test & App Connection */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1738,7 +1738,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 1: Install Windows */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1769,7 +1769,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 2: Auth Windows */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1799,7 +1799,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 3: Test Windows */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1830,7 +1830,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   </div>
 
                   {/* Step 4: Configure App on Windows */}
-                  <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
+                  <div className="p-3 md:p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-2.5 shadow-sm">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-2">
                         <span className="w-5 h-5 rounded-full bg-teal-700 dark:bg-teal-600 text-white flex items-center justify-center text-xs font-mono">
@@ -1849,7 +1849,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                         <li>%APPDATA%\npm\agy.cmd (nếu cài qua npm)</li>
                         <li>Biến môi trường PATH hệ thống (lệnh where agy.exe)</li>
                       </ul>
-                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700 space-y-1.5 text-xs">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 md:border border-slate-200 dark:border-zinc-700 space-y-1.5 text-xs">
                         <p className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
                           <Sliders className="w-3.5 h-3.5 text-teal-700 dark:text-teal-300" />
                           Nếu bạn cài đặt ở thư mục tùy chỉnh (Ví dụ ổ D:\tools\agy.exe):
@@ -1882,7 +1882,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         defaultOpen={false}
       >
         <div className="space-y-6">
-          <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
+          <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-4 md:shadow-sm`}>
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-2 text-slate-900 dark:text-zinc-100 font-semibold text-sm">
                 <Zap className="w-4 h-4 text-teal-700 dark:text-teal-300" />
@@ -1894,7 +1894,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             </div>
 
             {/* Retention Control Widget */}
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2.5">
+            <div className="p-3 md:p-4 rounded-xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white">
@@ -1961,7 +1961,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
         defaultOpen={false}
       >
         <BackupRestoreSettings onWordsChanged={onRefreshWords} />
-        <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
+        <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-4 md:shadow-sm`}>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="space-y-1 max-w-xl">
               <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -1997,12 +1997,12 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
 
       {/* 8. CÔNG CỤ CHO NHÀ PHÁT TRIỂN: thu gọn, người học không cần dùng */}
       {SHOW_DEV_TOOLS && (
-      <details className="rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 bg-slate-50/60 dark:bg-zinc-950/40 p-4">
+      <details className="rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 bg-slate-50/60 dark:bg-zinc-950/40 p-3.5 md:p-4">
         <summary className="cursor-pointer select-none text-xs font-bold text-slate-600 dark:text-zinc-400">
           Công cụ cho nhà phát triển (kiểm thử thông báo, tạo từ đến hạn)
         </summary>
         <div className="mt-4 space-y-4">
-          <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 space-y-4 shadow-sm">
+          <div className={`${SETTINGS_GROUP} md:p-5 md:first:pt-5 md:rounded-2xl md:bg-white md:dark:bg-zinc-900 space-y-4 md:shadow-sm`}>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <BellRing className="w-4 h-4 text-teal-700 dark:text-teal-300" />
               <span>Trung tâm kiểm tra thực tế (Testing Center)</span>
@@ -2011,7 +2011,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
               {/* Test 1: Pop-up Focus Review (desktop only: a phone has no popup window) */}
               {!IS_MOBILE && (
-                <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 space-y-2.5 flex flex-col justify-between">
+                <div className="p-3 md:p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 space-y-2.5 flex flex-col justify-between">
                   <div>
                     <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                       <Zap className="w-4 h-4 text-teal-700 dark:text-teal-300" />
@@ -2033,7 +2033,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               )}
 
               {/* Test 2: Native Desktop Notification */}
-              <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 space-y-2.5 flex flex-col justify-between">
+              <div className="p-3 md:p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 space-y-2.5 flex flex-col justify-between">
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                     <Bell className="w-4 h-4 text-teal-700 dark:text-teal-300" />
@@ -2054,7 +2054,7 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
               </div>
 
               {/* Test 3: Mark word due in SQLite */}
-              <div className="p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 space-y-2.5 flex flex-col justify-between">
+              <div className="p-3 md:p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 space-y-2.5 flex flex-col justify-between">
                 <div>
                   <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                     <Flame className="w-4 h-4 text-amber-600" />

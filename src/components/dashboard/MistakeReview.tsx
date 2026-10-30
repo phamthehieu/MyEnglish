@@ -52,7 +52,7 @@ export default function MistakeReview({ mistakes, onDone }: MistakeReviewProps) 
   const ok = result !== null && result !== Rating.Again;
 
   return (
-    <div className="p-4 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-4">
+    <div className="border-t border-slate-100 pt-4 dark:border-zinc-800 md:p-5 md:rounded-2xl md:border md:border-slate-200 md:dark:border-zinc-800 md:bg-white md:dark:bg-zinc-900 space-y-4">
       <div className="space-y-1">
         <div className="flex items-center justify-between gap-2 text-xs font-semibold">
           <span className="min-w-0 truncate text-slate-500 dark:text-zinc-400">Sửa lỗi bạn từng viết</span>

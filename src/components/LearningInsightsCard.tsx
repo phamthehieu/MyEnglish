@@ -73,7 +73,7 @@ export default function LearningInsightsCard() {
   }
 
   return (
-    <div className="space-y-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
+    <div className="space-y-5 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
       <div className="flex flex-wrap items-center gap-2">
         <Target className="h-5 w-5 text-teal-700 dark:text-teal-300" />
         <h3 className="text-base font-semibold text-slate-900 dark:text-zinc-100">Hiệu quả ghi nhớ (30 ngày)</h3>
