@@ -6,7 +6,7 @@ import type { Pattern } from "@/types/pattern";
 import { averageTime, masteredCount, rapidPool, STEP_LABELS, STEPS, type PatternState } from "@/services/patterns/progress";
 import { buildRapidMix, buildStepTasks, type Task } from "@/services/patterns/session";
 import { SKIP_PASS, type DayPlan } from "@/services/roadmap/plan";
-import { GOAL_LABEL, type RoadmapGoal, type Stage } from "@/services/roadmap/stages";
+import { GOAL_HINT, GOAL_LABEL, GOALS, type RoadmapGoal, type Stage } from "@/services/roadmap/stages";
 import { isFinished, setFocus, setGoal, skipLevel, skipStage } from "@/services/roadmap/state";
 import { addStageWords } from "@/services/roadmap/words";
 import { PAGE_CONTAINER } from "../dashboard/shared";
@@ -21,14 +21,6 @@ import TranslateRound from "./TranslateRound";
 /** Set by the Today screen: open the day's work at once */
 export const AUTOSTART_KEY = "roadmap.autostart";
 
-const GOALS: RoadmapGoal[] = ["travel", "work", "daily", "social"];
-const GOAL_HINT: Record<RoadmapGoal, string> = {
-  travel: "Gọi món, hỏi đường, mua vé, khách sạn",
-  work: "Giới thiệu, nghề nghiệp, giờ giấc, nhờ giúp",
-  daily: "Ăn uống, mua sắm, sức khỏe, sở thích",
-  social: "Chào hỏi, gia đình, cảm xúc, rủ rê",
-  all: "",
-};
 
 interface Session {
   title: string;

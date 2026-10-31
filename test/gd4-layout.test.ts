@@ -55,7 +55,7 @@ describe("the five sections of the app", () => {
   ];
 
   it("has five sections in order, and every tab belongs to exactly one", () => {
-    expect(NAV_SECTIONS.map((s) => s.label)).toEqual(["Hôm nay", "Từ vựng", "Luyện nói", "Ngữ pháp", "Tôi"]);
+    expect(NAV_SECTIONS.map((s) => s.label)).toEqual(["Hôm nay", "Từ vựng", "Luyện nói", "Ngữ pháp & Viết", "Tôi"]);
     const tabs = NAV_SECTIONS.flatMap((s) => s.tabs.map((t) => t.tab));
     expect([...tabs].sort()).toEqual([...ALL_TABS].sort());
   });
@@ -65,7 +65,9 @@ describe("the five sections of the app", () => {
     expect(navSectionOf("forgotten").id).toBe("vocab");
     expect(navSectionOf("capture").id).toBe("vocab");
     expect(navSectionOf("patterns").tabs.map((t) => t.tab)).toEqual(["patterns", "talk", "pronunciation", "shadowing"]);
-    expect(navSectionOf("writing").tabs.map((t) => t.tab)).toEqual(["grammar", "reading", "writing"]);
+    expect(navSectionOf("writing").tabs.map((t) => t.tab)).toEqual(["grammar", "writing"]);
+    // Reading is where words are met and saved: it sits with the words
+    expect(navSectionOf("reading").id).toBe("vocab");
     expect(navSectionOf("leaderboard").id).toBe("me");
     expect(navSectionOf("guide").tabs[0].tab).toBe("analytics");
     expect(tabLabel("library")).toBe("Kho từ");

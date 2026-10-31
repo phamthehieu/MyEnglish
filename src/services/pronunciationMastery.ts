@@ -105,7 +105,10 @@ export function recordMasteryAnswers(lessonIds: string[], correct: number, total
   save(store);
 }
 
-/** Words said aloud count toward the words met, not toward accuracy (they are self-rated) */
+/**
+ * Words said aloud and rated by the learner count toward the words met, not toward accuracy. A word the recognizer
+ * heard (PronunciationMicCheck) is recorded with recordMasteryAnswers, like a quiz answer.
+ */
 export function recordMasteryWords(lessonId: string, words: string[]): void {
   const store = load();
   const e = entryOf(store, lessonId);

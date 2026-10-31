@@ -3,6 +3,7 @@ import { Loader2, Mic, Square, Volume2 } from "lucide-react";
 import type { PronunciationItem, PronunciationLesson } from "@/types/pronunciation";
 import { stopSpeaking } from "../review/speech";
 import { playSound } from "@/services/sound";
+import { recordMasteryAnswers } from "@/services/pronunciationMastery";
 import {
   asrAvailable,
   buildGrammar,
@@ -119,6 +120,11 @@ export function MicCheck({
     });
     setVerdict(next);
     setPhase("idle");
+    // What the machine heard is evidence like a quiz answer: it counts toward the sound's mastery (a self-rating does
+    // not). Silence, an error or nothing made out says nothing about the sound.
+    if (next.kind === "match" || next.kind === "focus_ok" || next.kind === "weak" || next.kind === "confused") {
+      recordMasteryAnswers([lesson.id], next.ok ? 1 : 0, 1, [target]);
+    }
     if (next.ok && onPassedRef.current) {
       playSound("correct");
       advanceTimer.current = window.setTimeout(() => onPassedRef.current?.(), PASS_ADVANCE_MS);

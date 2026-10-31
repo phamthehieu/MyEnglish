@@ -60,6 +60,8 @@ export const NAV_SECTIONS: NavSection[] = [
     label: "Từ vựng",
     tabs: [
       { tab: "review", label: "Ôn tập" },
+      // Reading is where words are met and saved: next to the words, not hidden behind grammar
+      { tab: "reading", label: "Đọc" },
       { tab: "library", label: "Kho từ" },
       { tab: "forgotten", label: "Từ hay quên" },
       { tab: "known", label: "Đã biết" },
@@ -79,10 +81,10 @@ export const NAV_SECTIONS: NavSection[] = [
   },
   {
     id: "grammar",
-    label: "Ngữ pháp",
+    label: "Ngữ pháp & Viết",
+    shortLabel: "Ngữ pháp",
     tabs: [
       { tab: "grammar", label: "Ngữ pháp" },
-      { tab: "reading", label: "Đọc" },
       { tab: "writing", label: "Viết" },
     ],
   },

@@ -4,6 +4,16 @@ import type { Pattern, PatternGoal, PatternLevel } from "@/types/pattern";
 
 export type RoadmapGoal = PatternGoal | "all";
 
+/** The goals a learner picks from (the first run, the speaking tab) */
+export const GOALS: RoadmapGoal[] = ["travel", "work", "daily", "social"];
+export const GOAL_HINT: Record<RoadmapGoal, string> = {
+  travel: "Gọi món, hỏi đường, mua vé, khách sạn",
+  work: "Giới thiệu, nghề nghiệp, giờ giấc, nhờ giúp",
+  daily: "Ăn uống, mua sắm, sức khỏe, sở thích",
+  social: "Chào hỏi, gia đình, cảm xúc, rủ rê",
+  all: "",
+};
+
 export const GOAL_LABEL: Record<RoadmapGoal, string> = {
   travel: "Du lịch",
   work: "Đi làm",

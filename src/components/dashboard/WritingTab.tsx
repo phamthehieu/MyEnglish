@@ -185,9 +185,11 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       <div className="p-3.5 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <span className="text-base font-semibold text-slate-900 dark:text-zinc-100">Standup hôm nay</span>
-          <span className="text-xs tabular-nums text-slate-500 dark:text-zinc-400">
-            {used}/{STANDUP_PER_DAY} lượt sửa hôm nay
-          </span>
+          {cliReady !== false && (
+            <span className="text-xs tabular-nums text-slate-500 dark:text-zinc-400">
+              {used}/{STANDUP_PER_DAY} lượt sửa hôm nay
+            </span>
+          )}
         </div>
         <p className="text-sm text-slate-500 dark:text-zinc-400">
           Hôm qua bạn làm gì, hôm nay làm gì, có gì đang bị chặn? 2–4 câu là đủ.
