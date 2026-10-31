@@ -19,8 +19,6 @@ import { AUTO_SPEAK_DELAY_MS, handleSpeak, SLOW_RATE, SPEAK_EVENT, stopSpeaking,
 /** Common words the recognizer can pick instead of the target, so it does not accept any sound as the word */
 const DECOY_POOL = ["water", "house", "people", "time", "work", "money", "family", "problem", "city", "friend", "morning", "number"];
 const DECOY_COUNT = 4;
-/** How long "Tốt lắm" stays before the card moves on by itself */
-const ADVANCE_AFTER_MS = 1200;
 
 function decoysFor(word: string): string[] {
   const w = word.trim().toLowerCase();
@@ -33,32 +31,21 @@ function decoysFor(word: string): string[] {
  * On a new word's introduction: listen, then say the word aloud. The introduction cannot be finished until
  * `onPassed` is called:
  *  - Android and browsers that recognize speech, single plain word: hands free. Once the card has read the word,
- *    the microphone switches itself on; when the recognizer hears the word the card moves on (`onAdvance`).
- *    Hearing the word again pauses the microphone (it would hear the phone) and switches it back on after.
+ *    the microphone switches itself on until the recognizer hears the word. The card does not move on by
+ *    itself: the learner still has the meaning and the example to read. Hearing the word again pauses the
+ *    microphone (it would hear the phone) and switches it back on after.
  *  - anywhere else (desktop has no recognizer, phrases, words outside its dictionary): the learner confirms
  *    "Đọc được" themselves; "Chưa chắc" only sends them back to listen again
  * "Tôi không nói to được lúc này" (noisy room, public place, accent) is always on screen, so nobody has to fail first.
  * Never graded; logged as a "say_aloud" event.
  */
-export default function SayAloudPrompt({
-  word,
-  wordId,
-  onPassed,
-  onAdvance,
-}: {
-  word: string;
-  wordId: string;
-  onPassed: () => void;
-  /** Called a moment after the recognizer heard the word: the card moves on by itself */
-  onAdvance?: () => void;
-}) {
+export default function SayAloudPrompt({ word, wordId, onPassed }: { word: string; wordId: string; onPassed: () => void }) {
   const [done, setDone] = useState<"ok" | "skipped" | null>(null);
   const [phase, setPhase] = useState<"idle" | "preparing" | "listening" | "checking">("idle");
   const [message, setMessage] = useState<string | null>(null);
   // The recognizer cannot hear this word (not in its dictionary, no permission...): fall back to self-rating
   const [manual, setManual] = useState(false);
   const timer = useRef<number | undefined>(undefined);
-  const advanceTimer = useRef<number | undefined>(undefined);
   const grammar = useRef<string[]>([]);
   const alive = useRef(true);
   const phaseRef = useRef(phase);
@@ -75,7 +62,6 @@ export default function SayAloudPrompt({
     return () => {
       alive.current = false;
       window.clearTimeout(timer.current);
-      window.clearTimeout(advanceTimer.current);
       cancelListening();
     };
   }, []);
@@ -98,7 +84,6 @@ export default function SayAloudPrompt({
     if (verdict.ok) {
       playSound("correct");
       pass(true, "mic");
-      if (onAdvance) advanceTimer.current = window.setTimeout(() => alive.current && onAdvance(), ADVANCE_AFTER_MS);
     } else {
       setMessage(verdict.kind === "silent" ? `Chưa nghe thấy bạn. Bấm micro rồi đọc to "${word}" nhé.` : verdict.message);
       logLearningEvent("say_aloud", { wordId, meta: { ok: false, surface: "intro", how: "mic", heard: verdict.heard ?? null } });
@@ -188,7 +173,7 @@ export default function SayAloudPrompt({
   if (done !== null) {
     return (
       <div className="text-center text-sm text-green-700 dark:text-green-400" role="status">
-        {done === "ok" ? (onAdvance ? "Tốt lắm! Sang thẻ tiếp…" : "Tốt lắm! Đọc to giúp nhớ từ lâu hơn.") : "Không sao, nghe chậm thêm vài lần là quen."}
+        {done === "ok" ? "Tốt lắm! Giờ đọc kỹ nghĩa và câu ví dụ, rồi bấm Học tiếp." : "Không sao, nghe chậm thêm vài lần là quen. Đọc kỹ nghĩa rồi bấm Học tiếp."}
       </div>
     );
   }

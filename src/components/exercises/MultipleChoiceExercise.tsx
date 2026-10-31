@@ -16,6 +16,11 @@ interface MultipleChoiceExerciseProps {
   allWords: WordDetail[];
   onComplete: (isCorrect: boolean, attempts: number, rating: Rating) => void;
   onSpeak: (text: string) => void;
+  /**
+   * A new word's first quiz: the options stay hidden until the learner has tried to recall the meaning
+   * ("Xem lựa chọn"); "Không nhớ" counts as forgotten and shows the answer.
+   */
+  recallFirst?: boolean;
 }
 
 export default function MultipleChoiceExercise({
@@ -23,12 +28,14 @@ export default function MultipleChoiceExercise({
   allWords,
   onComplete,
   onSpeak,
+  recallFirst = false,
 }: MultipleChoiceExerciseProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
   const [wrongAttempts, setWrongAttempts] = useState(0);
   const [shakeIdx, setShakeIdx] = useState<number | null>(null);
   const [wrongNote, setWrongNote] = useState<string | null>(null);
+  const [optionsOpen, setOptionsOpen] = useState(!recallFirst);
 
   // Pending completion timer, cleared on unmount so a stale card is never graded
   const completeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -55,7 +62,23 @@ export default function MultipleChoiceExercise({
     setWrongAttempts(0);
     setShakeIdx(null);
     setWrongNote(null);
+    setOptionsOpen(!recallFirst);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [word]);
+
+  // Only a question asking for the meaning is recalled first (an older card asked the other way is not new)
+  const gated = recallFirst && questionData.promptType === "en_to_vn" && !optionsOpen && !isAnswered;
+
+  /** "Không nhớ": forgotten (the card comes back a few cards later); the right option is shown */
+  const forgot = useCallback(() => {
+    if (isAnswered) return;
+    const right = questionData.options.find((o) => o.isCorrect);
+    setOptionsOpen(true);
+    setIsAnswered(true);
+    setSelectedId(right?.id ?? null);
+    onSpeak(word.word);
+    onComplete(false, 0, Rating.Again);
+  }, [isAnswered, questionData.options, onSpeak, word.word, onComplete]);
 
   const handleSelectOption = useCallback(
     (option: MultipleChoiceOption, index: number) => {
@@ -108,6 +131,14 @@ export default function MultipleChoiceExercise({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isAnswered || e.metaKey || e.ctrlKey || e.altKey) return;
       const key = e.key;
+      if (gated) {
+        // Space or Enter opens the options; the numbers do nothing yet
+        if (key === " " || key === "Enter") {
+          e.preventDefault();
+          setOptionsOpen(true);
+        }
+        return;
+      }
       if (["1", "2", "3", "4"].includes(key)) {
         const idx = parseInt(key, 10) - 1;
         if (questionData.options[idx]) {
@@ -117,7 +148,7 @@ export default function MultipleChoiceExercise({
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isAnswered, questionData.options, handleSelectOption]);
+  }, [isAnswered, questionData.options, handleSelectOption, gated]);
 
   return (
     <div className="w-full max-w-xl mx-auto space-y-3 md:space-y-6 animate-in fade-in duration-200">
@@ -159,7 +190,31 @@ export default function MultipleChoiceExercise({
         )}
       </div>
 
+      {/* Recall first: the meaning is remembered before it can be recognised among the options */}
+      {gated && (
+        <div className="space-y-3 text-center">
+          <p className="text-base text-slate-700 dark:text-zinc-300">Nghĩa là gì? Nhớ lại trong đầu trước đã.</p>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => setOptionsOpen(true)}
+              className="min-h-14 rounded-2xl bg-teal-700 px-4 text-[17px] font-semibold text-white shadow-sm hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500"
+            >
+              Nhớ rồi, xem lựa chọn
+            </button>
+            <button
+              type="button"
+              onClick={forgot}
+              className="min-h-14 rounded-2xl border border-teal-700/30 bg-white px-4 text-[17px] font-semibold text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10"
+            >
+              Không nhớ
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* 4 Choices Grid */}
+      {!gated && (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
         {questionData.options.map((opt, idx) => {
           const isSelected = selectedId === opt.id;
@@ -218,8 +273,10 @@ export default function MultipleChoiceExercise({
           );
         })}
       </div>
+      )}
 
       {/* Helpful Hint - fixed height h-7 so it NEVER jumps */}
+      {!gated && (
       <div className="flex items-center justify-between gap-3 text-xs text-slate-600 dark:text-zinc-400 px-2 min-h-[20px] md:min-h-[28px]">
         <span className="desktop-only flex items-center gap-1">
           <HelpCircle className="w-3.5 h-3.5" />
@@ -235,6 +292,7 @@ export default function MultipleChoiceExercise({
           </span>
         )}
       </div>
+      )}
     </div>
   );
 }

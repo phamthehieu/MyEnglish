@@ -59,6 +59,8 @@ import { handleSpeak, AUTO_SPEAK_DELAY_MS } from "@/components/review/speech";
 const MAX_REQUEUES_PER_WORD = 2;
 const REQUEUE_GAP = 3; // Cards shown before a forgotten word comes back
 const INTRO_GAP = 4; // Cards shown between a new word's introduction and its first quiz
+// Cards shown between that first quiz (recalled) and the second, harder one: typing the word
+const SECOND_RECALL_GAP = 8;
 /** Local day the daily goal was last celebrated with confetti (once a day, see shouldCelebrateDailyGoal) */
 const GOAL_CELEBRATED_KEY = "myenglish_goal_celebrated_v1";
 
@@ -200,6 +202,9 @@ export function useReviewSession({
   const answeredThisSessionRef = useRef<Set<string>>(new Set());
   // When each card's introduction (new word / leech relearn) was shown in this session
   const introducedAtRef = useRef<Map<string, number>>(new Map());
+  // Cards introduced in this session: how many times each was recalled since. A word is only learned here
+  // once it is recalled twice: a choice among four a few cards later, then the word typed after more cards
+  const recallsAfterIntroRef = useRef<Map<string, number>>(new Map());
   // The learner typed a synonym of the target before finding it: the exact word needed a cue
   const synonymTriedRef = useRef(false);
   // Why the last answer did not move the schedule (shown as a hint in the UI)
@@ -408,8 +413,15 @@ export function useReviewSession({
     if (fallbackMode) return fallbackMode;
     if (mode !== "mixed") return currentWord ? playableOrFallback(mode as ExerciseType, currentWord) : (mode as ExerciseType);
     if (!currentWord) return "flip";
-    // Quiz after the introduction: a cued recognition question
-    if (introducedAtRef.current.has(currentKey) && isNewCard(currentWord)) {
+    // Second recall after this session's introduction: the word typed, with its sentence when there is one
+    // (a recognition card's quiz then uses the production exercise, which proves recognition too)
+    const recalls = recallsAfterIntroRef.current.get(currentKey);
+    if (recalls === 1) {
+      return currentWord.direction === "production" || !pickExample(currentWord) ? "spelling" : "cloze";
+    }
+    // Quiz after the introduction: a cued recognition question (again after "Không nhớ", whose answer made the
+    // card no longer new)
+    if (recalls === 0 || (introducedAtRef.current.has(currentKey) && isNewCard(currentWord))) {
       return currentWord.direction === "production" ? (pickExample(currentWord) ? "cloze" : "spelling") : "multiple_choice";
     }
     const picked = selectExerciseType(currentWord);
@@ -426,7 +438,19 @@ export function useReviewSession({
       return "free_writing";
     }
     return playableOrFallback(picked, currentWord);
-  }, [mode, currentWord, fallbackMode, isIntroCard, currentKey]);
+    // currentIndex: the second recall is the same card object under the same key, later in the queue
+  }, [mode, currentWord, fallbackMode, isIntroCard, currentKey, currentIndex]);
+
+  /**
+   * A new word's first quiz (a choice among four): the learner first recalls the meaning without the options,
+   * then opens them. Recognising the right one among four is much easier than remembering it.
+   */
+  const recallFirst =
+    !isIntroCard &&
+    effectiveExerciseType === "multiple_choice" &&
+    !!currentWord &&
+    (recallsAfterIntroRef.current.get(currentKey) === 0 ||
+      (introducedAtRef.current.has(currentKey) && isNewCard(currentWord)));
 
   /** The card is quizzed right after its introduction: the answer will be practice, graded next time */
   const introAt = currentKey ? introducedAtRef.current.get(currentKey) : undefined;
@@ -512,6 +536,7 @@ export function useReviewSession({
     if (!currentWord || gradingLockRef.current || sayPassedRef.current !== currentKey) return;
     gradingLockRef.current = true;
     introducedAtRef.current.set(currentKey, Date.now());
+    recallsAfterIntroRef.current.set(currentKey, 0);
     currentWord.srs = {
       ...currentWord.srs,
       last_review: currentWord.srs.last_review ?? new Date().toISOString(),
@@ -602,7 +627,9 @@ export function useReviewSession({
     const isFirstTry = attemptCount === 0 && !showHint;
     const cardKey = `${currentWord.id}:${currentWord.direction}`;
     const isRequeuedCard =
-      (requeueCountRef.current.get(currentWord.id) ?? 0) > 0 || introRetryRef.current.has(cardKey);
+      (requeueCountRef.current.get(currentWord.id) ?? 0) > 0 ||
+      introRetryRef.current.has(cardKey) ||
+      (recallsAfterIntroRef.current.get(cardKey) ?? 0) > 0;
 
     // Only the first answer to a due card, through an exercise that tests this card's direction,
     // moves its schedule. Retries after Again, practice sessions and mismatched exercises are practice.
@@ -616,9 +643,14 @@ export function useReviewSession({
 
     const firstAnswer = !answeredThisSessionRef.current.has(cardKey);
     answeredThisSessionRef.current.add(cardKey);
+    // Introduced in this session and recalled for the first time: asked again, harder, some cards later (that
+    // answer is graded when this one came too soon after the introduction)
+    const recallsAfterIntro = recallsAfterIntroRef.current.get(cardKey);
+    const secondRecall = recallsAfterIntro === 0 && rating !== Rating.Again;
     // Quizzed seconds after its introduction (practice): asked once more at the end of the session, a minute
     // or more later, so a session of only new words still grades them. Pointless as the last card.
     const retryIntro =
+      recallsAfterIntro === undefined &&
       decision.reason === "intro_too_recent" &&
       rating !== Rating.Again &&
       !introRetryRef.current.has(cardKey) &&
@@ -667,7 +699,7 @@ export function useReviewSession({
       // The recorder may downgrade a scheduled answer to practice (card graded since the queue was built)
       const scheduled = recorded.scheduled;
       if (decision.scheduled) scheduledThisSessionRef.current.add(cardKey);
-      if (decision.reason === "intro_too_recent" && !retryIntro) {
+      if (decision.reason === "intro_too_recent" && !retryIntro && !secondRecall) {
         // Asked seconds after its introduction and not asked again here: its first graded quiz waits
         postponeNewCard(currentWord.id, currentWord.direction).catch(() => {});
       }
@@ -736,12 +768,21 @@ export function useReviewSession({
         return [...prev.slice(0, insertAt), updatedWord, ...prev.slice(insertAt)];
       });
       nextQueueLength += 1;
+    } else if (secondRecall) {
+      const card = currentWord;
+      const index = currentIndex;
+      setQueue((prev) => {
+        const insertAt = requeuePosition(prev.length, index, SECOND_RECALL_GAP);
+        return [...prev.slice(0, insertAt), card, ...prev.slice(insertAt)];
+      });
+      nextQueueLength += 1;
     } else if (retryIntro) {
       introRetryRef.current.add(cardKey);
       const card = currentWord;
       setQueue((prev) => [...prev, card]);
       nextQueueLength += 1;
     }
+    if (recallsAfterIntro !== undefined && rating !== Rating.Again) recallsAfterIntroRef.current.set(cardKey, recallsAfterIntro + 1);
     return { nextQueueLength, reviewCountAfter: nextReviewCount };
   };
 
@@ -1122,6 +1163,7 @@ export function useReviewSession({
     handlePretestDone,
     exerciseCountsForSchedule,
     quizRightAfterIntro,
+    recallFirst,
     lastPracticeReason,
     celebration,
     consecutiveCorrect,
