@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chính sách quyền riêng tư · MyEnglish</title>
+    <meta name="description" content="MyEnglish thu thập gì, gửi đi đâu, và cách bạn xóa dữ liệu của mình." />
+    <style>
+      :root {
+        --bg: #f7f8fa;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --line: #e2e8f0;
+        --accent: #0f766e;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #09090b;
+          --card: #18181b;
+          --text: #f4f4f5;
+          --muted: #a1a1aa;
+          --line: #27272a;
+          --accent: #2dd4bf;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+      h1 { font-size: 28px; line-height: 1.25; margin: 0 0 4px; }
+      h2 { font-size: 20px; margin: 36px 0 8px; }
+      p, li { color: var(--text); }
+      .muted { color: var(--muted); }
+      section { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 4px 20px 16px; margin-top: 16px; }
+      ul { padding-left: 20px; }
+      li { margin: 6px 0; }
+      a { color: var(--accent); }
+      strong { font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Chính sách quyền riêng tư</h1>
+      <p class="muted">MyEnglish · cập nhật ngày 30/10/2026 · áp dụng cho app Android, app máy tính và bản web</p>
+
+      <section>
+        <h2>Tóm tắt</h2>
+        <ul>
+          <li>Dữ liệu học của bạn nằm <strong>trên máy của bạn</strong>. Không cần tài khoản để học.</li>
+          <li>Chỉ khi bạn <strong>tạo tài khoản</strong>, dữ liệu học mới được sao lên máy chủ để đồng bộ giữa các máy và để xếp hạng.</li>
+          <li>Không quảng cáo, không bán dữ liệu, không theo dõi bạn qua app khác.</li>
+          <li>Bạn tự <strong>xóa tài khoản</strong> trong app bất cứ lúc nào: Tôi → Tài khoản → Xóa tài khoản.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>1. Dữ liệu lưu trên máy của bạn</h2>
+        <p>
+          Từ vựng, lịch ôn, lịch sử ôn tập, sổ lỗi, tiến độ ngữ pháp, điểm XP, chuỗi ngày học và cài đặt được lưu trong bộ nhớ của
+          app (bản web: bộ nhớ của trình duyệt). Chúng ở lại trên máy, kể cả khi bạn xóa tài khoản. Muốn xóa: Cài đặt → Dữ liệu &amp;
+          đặt lại, hoặc gỡ app (bản web: xóa dữ liệu trang web trong trình duyệt). Bạn có thể xuất toàn bộ ra file: Cài đặt → Dữ liệu
+          &amp; đặt lại → Sao lưu toàn bộ.
+        </p>
+      </section>
+
+      <section>
+        <h2>2. Khi bạn có tài khoản</h2>
+        <ul>
+          <li><strong>Đăng nhập:</strong> email và mật khẩu, do Supabase (nhà cung cấp máy chủ của app) quản lý; mật khẩu không được lưu ở dạng đọc được.</li>
+          <li><strong>Hồ sơ:</strong> tên hiển thị, ảnh đại diện (chọn từ bộ có sẵn), cấp độ và chuỗi ngày học.</li>
+          <li><strong>Dữ liệu đồng bộ:</strong> những gì ở mục 1, trừ sách ngữ pháp bạn tự nhập, khóa API và đường dẫn trên máy.</li>
+          <li><strong>Điểm XP</strong> theo từng ngày và từng máy (để cộng đúng khi bạn học trên nhiều máy).</li>
+          <li><strong>Bảng xếp hạng và nhóm:</strong> người dùng khác thấy tên hiển thị, ảnh đại diện, cấp độ, XP và chuỗi ngày của bạn; thành viên trong nhóm thấy nhau. Email không bao giờ hiện cho người khác.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>3. Những gì app gửi đi, kể cả khi không có tài khoản</h2>
+        <ul>
+          <li><strong>Góp ý</strong> bạn gửi (mục "Góp ý cho app"): nội dung, cách liên hệ nếu bạn để lại, phiên bản app, loại máy, cấp độ đang học. Người làm app nhận thông báo qua Telegram.</li>
+          <li><strong>Báo lỗi tự động:</strong> khi app gặp lỗi không xử lý được, nó gửi nội dung lỗi (đã xóa email, khóa và token), phiên bản app, loại máy và màn hình xảy ra lỗi. Không gửi dữ liệu học.</li>
+          <li><strong>Nhắc học trên bản web</strong> (nếu bạn bật): địa chỉ nhận thông báo của trình duyệt, giờ học bạn chọn và múi giờ.</li>
+          <li><strong>Mã thiết bị:</strong> một mã ngẫu nhiên tạo khi cài app, để giới hạn số tin gửi và tách XP theo máy. Không gắn với số điện thoại hay danh tính máy.</li>
+          <li><strong>Kiểm tra bản mới</strong> (app Android): app đọc một tệp công khai trên GitHub để biết có bản cập nhật.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>4. Dịch vụ của bên khác</h2>
+        <ul>
+          <li><strong>AI (không bắt buộc):</strong> chỉ khi bạn tự nhập khóa Gemini (hoặc cài AI CLI trên máy tính). Khi bạn dùng tính năng AI, từ vựng và câu bạn viết được gửi tới Google Gemini. Khóa được lưu trên máy (app điện thoại: bộ nhớ riêng của app; máy tính: kho khóa của hệ điều hành), không đồng bộ, không nằm trong file sao lưu.</li>
+          <li><strong>Nhận dạng giọng nói:</strong> app Android nghe và chấm ngay trên điện thoại, không gửi giọng nói đi đâu. Bản web dùng bộ nhận dạng của trình duyệt: giọng nói được gửi tới nhà làm trình duyệt (Google cho Chrome/Edge, Apple cho Safari) để nhận dạng.</li>
+          <li><strong>Giọng đọc:</strong> dùng giọng đọc có sẵn của máy hoặc trình duyệt.</li>
+          <li><strong>Shadowing:</strong> video phát từ YouTube; YouTube có thể thu thập dữ liệu theo chính sách của Google.</li>
+          <li><strong>Lưu trữ:</strong> máy chủ Supabase (tài khoản, đồng bộ, góp ý, báo lỗi); bản web và tệp cài đặt đặt trên GitHub.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>5. Giữ bao lâu, xóa thế nào</h2>
+        <ul>
+          <li>Dữ liệu tài khoản được giữ đến khi bạn xóa tài khoản.</li>
+          <li><strong>Xóa tài khoản:</strong> trong app, Tôi → Tài khoản → Xóa tài khoản (bản web: <a href="./">mở bản web</a>, đăng nhập rồi làm như trên). Hồ sơ, dữ liệu đồng bộ, XP và nhóm bạn tạo bị xóa ngay khỏi máy chủ. Góp ý, báo lỗi và đăng ký nhắc học được giữ lại nhưng không còn gắn với tài khoản.</li>
+          <li>Nếu không còn vào được app, gửi yêu cầu xóa qua mục "Góp ý cho app" (chọn loại "Khác") kèm email tài khoản.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>6. Liên hệ</h2>
+        <p>
+          Câu hỏi về dữ liệu của bạn: gửi qua mục "Góp ý cho app" trong app (Cài đặt → Góp ý cho app). Chính sách này có thể được cập
+          nhật; ngày cập nhật ghi ở đầu trang.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
