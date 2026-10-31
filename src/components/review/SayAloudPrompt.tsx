@@ -97,8 +97,17 @@ export default function SayAloudPrompt({ word, wordId, onPassed }: { word: strin
     if (!automatic) stopSpeaking();
     setPhase("preparing");
     phaseRef.current = "preparing";
+    const mine = attempt.current;
     const failure = await prepareListening({ automatic });
     if (!alive.current) return;
+    // Given up meanwhile (skipped, the word read again): this attempt does not switch the microphone on
+    if (mine !== attempt.current || doneRef.current !== null) {
+      if (phaseRef.current === "preparing") {
+        phaseRef.current = "idle";
+        setPhase("idle");
+      }
+      return;
+    }
     if (failure) {
       setMessage(
         failure === "permission"
@@ -159,9 +168,14 @@ export default function SayAloudPrompt({ word, wordId, onPassed }: { word: strin
         phaseRef.current = "idle";
         setPhase("idle");
         void listenAfterSpeech(100);
-      } else if (phaseRef.current === "idle") {
-        // After a miss: hear it, then try again without pressing anything
+      } else if (phaseRef.current === "idle" || phaseRef.current === "preparing") {
+        // After a miss: hear it, then try again without pressing anything. While the microphone is getting ready
+        // the same: that attempt is dropped (it would open during the reading), a new one follows it
         attempt.current += 1;
+        if (phaseRef.current === "preparing") {
+          phaseRef.current = "idle";
+          setPhase("idle");
+        }
         void listenAfterSpeech(100);
       }
     };
@@ -248,7 +262,7 @@ export default function SayAloudPrompt({ word, wordId, onPassed }: { word: strin
     <div className="space-y-1.5">
       <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-600 dark:text-zinc-400">
         <Mic className="w-4 h-4 text-teal-700 dark:text-teal-300" />
-        <span>Nghe rồi đọc to từ này, máy nghe đúng là tự qua thẻ:</span>
+        <span>Nghe rồi đọc to từ này cho máy nghe:</span>
         {listenButtons}
       </div>
       <div className="flex justify-center">

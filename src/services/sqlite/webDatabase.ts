@@ -9,6 +9,15 @@ export interface ByteStore {
 }
 
 const SAVE_DELAY_MS = 400;
+const FAILURES_BEFORE_WARNING = 3;
+
+/** Fired on window when the study data could not be written several times in a row, and when it is written again */
+export const STORAGE_FAILED_EVENT = "myenglish-storage-failed";
+export const STORAGE_SAVED_EVENT = "myenglish-storage-saved";
+
+function dispatch(name: string): void {
+  if (typeof window !== "undefined") window.dispatchEvent(new Event(name));
+}
 
 /**
  * SQLite in WebAssembly (sql.js) for the browser: the whole database lives in memory and its file is written to a
@@ -18,6 +27,8 @@ export class WebDatabase implements SqlDatabase {
   private timer: ReturnType<typeof setTimeout> | undefined;
   private dirty = false;
   private saving: Promise<void> = Promise.resolve();
+  /** Writes that failed in a row */
+  private failures = 0;
   /** Connection settings (foreign_keys...): writing the file reopens the database, which forgets them */
   private pragmas = new Map<string, string>();
 
@@ -31,7 +42,7 @@ export class WebDatabase implements SqlDatabase {
     const bytes = await store.load(key);
     const web = new WebDatabase(new sql.Database(bytes ?? undefined), key, store);
     // The last changes must not wait for the timer when the learner leaves
-    const flushNow = () => void web.flush();
+    const flushNow = () => void web.flush().catch(() => {});
     if (typeof window !== "undefined") window.addEventListener("pagehide", flushNow);
     if (typeof document !== "undefined") {
       document.addEventListener("visibilitychange", () => document.visibilityState === "hidden" && flushNow());
@@ -72,25 +83,45 @@ export class WebDatabase implements SqlDatabase {
     return true;
   }
 
-  /** Write the file now if anything changed since it was last written */
+  /**
+   * Write the file now if anything changed since it was last written. A write that fails (storage full, Safari
+   * losing its IndexedDB connection) leaves the changes marked unsaved and is tried again; the writes after it
+   * still run. After a few failures in a row the page is told (STORAGE_FAILED_EVENT).
+   */
   async flush(): Promise<void> {
     clearTimeout(this.timer);
     this.timer = undefined;
-    // One write at a time, in order
-    this.saving = this.saving.then(async () => {
-      if (!this.dirty) return;
-      this.dirty = false;
-      const bytes = this.db.export();
-      this.replayPragmas();
-      await this.store.save(this.key, bytes);
-    });
-    return this.saving;
+    // One write at a time, in order; a failed one does not stop those after it
+    const write = this.saving
+      .catch(() => {})
+      .then(async () => {
+        if (!this.dirty) return;
+        this.dirty = false;
+        const bytes = this.db.export();
+        this.replayPragmas();
+        try {
+          await this.store.save(this.key, bytes);
+          if (this.failures > 0) {
+            this.failures = 0;
+            dispatch(STORAGE_SAVED_EVENT);
+          }
+        } catch (err) {
+          this.dirty = true;
+          this.failures += 1;
+          if (this.failures === FAILURES_BEFORE_WARNING) dispatch(STORAGE_FAILED_EVENT);
+          clearTimeout(this.timer);
+          this.timer = setTimeout(() => void this.flush().catch(() => {}), Math.min(30_000, 1000 * 2 ** this.failures));
+          throw err;
+        }
+      });
+    this.saving = write;
+    return write;
   }
 
   private scheduleSave(): void {
     this.dirty = true;
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => void this.flush(), SAVE_DELAY_MS);
+    this.timer = setTimeout(() => void this.flush().catch(() => {}), SAVE_DELAY_MS);
   }
 
   private rememberPragma(sql: string): void {

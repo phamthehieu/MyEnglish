@@ -117,6 +117,7 @@ export default function FlashcardReview({
     introSayPassed,
     markIntroSaid,
     recallFirst,
+    answerIsPractice,
     pretest,
     isPretestCard,
     pretestResult,
@@ -369,7 +370,7 @@ export default function FlashcardReview({
           </div>
         ) : quizRightAfterIntro ? (
           <div className="mt-1 text-center text-[11px] text-cyan-700 dark:text-cyan-300">
-            Vừa xem từ này xong nên câu này chỉ để luyện — từ sẽ được hỏi lại ở cuối phiên (hoặc lần ôn sau) để tính vào lịch ôn.
+            Vừa học từ này xong nên câu này để luyện, chưa tính vào lịch ôn. Lần ôn sau mới tính.
           </div>
         ) : !practiceMode && !exerciseCountsForSchedule ? (
           <div className="mt-1 text-center text-[11px] text-amber-700 dark:text-amber-300">
@@ -594,7 +595,7 @@ export default function FlashcardReview({
         introMode={isIntroCard}
         onIntroDone={handleIntroDone}
         introLocked={isIntroCard && !introSayPassed}
-        isPractice={practiceMode}
+        isPractice={answerIsPractice}
         tilesAction={effectiveExerciseType === "letter_tiles" ? tilesAction : null}
       />}
 

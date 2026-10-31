@@ -65,6 +65,8 @@ export function MicCheck({
   const [level, setLevel] = useState<CheckLevel>(getCheckLevel);
   const timer = useRef<number | undefined>(undefined);
   const advanceTimer = useRef<number | undefined>(undefined);
+  // Bumped when the word changes or the check goes away: a begin still getting ready then gives up
+  const attempt = useRef(0);
   const onPassedRef = useRef(onPassed);
   onPassedRef.current = onPassed;
   const grammar = useRef<string[]>([]);
@@ -76,6 +78,7 @@ export function MicCheck({
     setProblem(null);
     setPhase("idle");
     return () => {
+      attempt.current += 1;
       window.clearTimeout(timer.current);
       window.clearTimeout(advanceTimer.current);
       cancelListening();
@@ -102,7 +105,10 @@ export function MicCheck({
   const finish = async () => {
     window.clearTimeout(timer.current);
     setPhase("checking");
+    const mine = attempt.current;
     const result = await finishListening(grammar.current);
+    // Another word by now: this answer is not for it
+    if (mine !== attempt.current) return;
     const next = judge(target, result, {
       level,
       mates,
@@ -123,7 +129,10 @@ export function MicCheck({
     setProblem(null);
     stopSpeaking();
     setPhase("preparing");
+    const mine = attempt.current;
     const failure = await prepareListening();
+    // The learner moved to another word (or left) while the microphone was getting ready: not for this one
+    if (mine !== attempt.current) return;
     if (failure === "declined") {
       setPhase("idle");
       return;

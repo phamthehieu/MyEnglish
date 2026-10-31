@@ -123,6 +123,34 @@ describe("restoring a backup", () => {
     const words = await conn2.select<Array<{ n: number }>>(`SELECT COUNT(*) AS n FROM words`);
     expect(Number(words[0].n)).toBe(4);
   });
+
+  it("brings back XP, the study days and the settings, which the app reads from localStorage", async () => {
+    await setup();
+    localStorage.clear();
+    localStorage.setItem("myenglish_xp_v1", "540");
+    localStorage.setItem("myenglish_study_logs_v1", JSON.stringify({ "2026-10-01": 12, "2026-10-02": 8 }));
+    localStorage.setItem("myenglish_daily_goal_v1", "30");
+    localStorage.setItem("myenglish_achievements_v1", JSON.stringify({ first_word: "2026-10-01" }));
+    localStorage.setItem("myenglish_gemini_api_key", "secret-of-the-old-machine");
+    const exp = await import("@/services/dataExport");
+    const backup = await exp.buildBackup();
+
+    // The new machine: a fresh install that studied a little already
+    await setup();
+    localStorage.clear();
+    localStorage.setItem("myenglish_xp_v1", "20");
+    localStorage.setItem("myenglish_study_logs_v1", JSON.stringify({ "2026-10-31": 3 }));
+    localStorage.setItem("myenglish_daily_goal_v1", "15");
+    const exp2 = await import("@/services/dataExport");
+    const report = await exp2.importBackup(exp2.parseBackup(JSON.stringify(backup)));
+
+    expect(report.restoredKeys).toBeGreaterThanOrEqual(4);
+    expect(localStorage.getItem("myenglish_xp_v1")).toBe("540");
+    expect(JSON.parse(localStorage.getItem("myenglish_study_logs_v1")!)).toEqual({ "2026-10-01": 12, "2026-10-02": 8, "2026-10-31": 3 });
+    expect(localStorage.getItem("myenglish_daily_goal_v1")).toBe("30");
+    expect(JSON.parse(localStorage.getItem("myenglish_achievements_v1")!)).toEqual({ first_word: "2026-10-01" });
+    expect(localStorage.getItem("myenglish_gemini_api_key")).toBeNull();
+  });
 });
 
 describe("stored values that are not what was written", () => {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import path from "node:path";
 import initSqlJs from "sql.js";
-import { WebDatabase, type ByteStore } from "@/services/sqlite/webDatabase";
+import { STORAGE_FAILED_EVENT, STORAGE_SAVED_EVENT, WebDatabase, type ByteStore } from "@/services/sqlite/webDatabase";
 import { initSchema } from "@/services/db";
 
 const sqlJs = () => initSqlJs({ locateFile: (f: string) => path.resolve(__dirname, "../node_modules/sql.js/dist", f) });
@@ -66,5 +66,61 @@ describe("the web database (SQLite in WebAssembly)", () => {
     expect(store.saves).toBe(1);
     await db.flush();
     expect(store.saves).toBe(1);
+  });
+
+  it("keeps saving after a write fails, and writes the changes the failed write lost", async () => {
+    const SQL = await sqlJs();
+    const store = memoryStore();
+    let broken = true;
+    const flaky: ByteStore = {
+      load: store.load,
+      save: async (key, bytes) => {
+        if (broken) throw new Error("Connection to Indexed Database server lost");
+        await store.save(key, bytes);
+      },
+    };
+    const db = await WebDatabase.open("sqlite:flaky.db", SQL, flaky);
+    await db.execute("CREATE TABLE t (n INTEGER)");
+    await db.execute("INSERT INTO t VALUES (1)");
+    await expect(db.flush()).rejects.toThrow();
+    expect(store.files.has("sqlite:flaky.db")).toBe(false);
+
+    broken = false;
+    await db.execute("INSERT INTO t VALUES (2)");
+    await db.flush();
+    const again = await WebDatabase.open("sqlite:flaky.db", SQL, store);
+    expect(await again.select("SELECT n FROM t ORDER BY n")).toEqual([{ n: 1 }, { n: 2 }]);
+  });
+
+  it("tells the page after repeated failures, and again once a write succeeds", async () => {
+    const SQL = await sqlJs();
+    const store = memoryStore();
+    let broken = true;
+    const flaky: ByteStore = {
+      load: store.load,
+      save: async (key, bytes) => {
+        if (broken) throw new Error("QuotaExceededError");
+        await store.save(key, bytes);
+      },
+    };
+    const events: string[] = [];
+    const record = (e: Event) => events.push(e.type);
+    window.addEventListener(STORAGE_FAILED_EVENT, record);
+    window.addEventListener(STORAGE_SAVED_EVENT, record);
+    try {
+      const db = await WebDatabase.open("sqlite:warn.db", SQL, flaky);
+      for (let i = 0; i < 3; i++) {
+        await db.execute("INSERT INTO t2 VALUES (1)").catch(() => db.execute("CREATE TABLE t2 (n INTEGER)"));
+        await db.flush().catch(() => {});
+      }
+      expect(events).toEqual([STORAGE_FAILED_EVENT]);
+      broken = false;
+      await db.flush();
+      expect(events).toEqual([STORAGE_FAILED_EVENT, STORAGE_SAVED_EVENT]);
+      await db.close();
+    } finally {
+      window.removeEventListener(STORAGE_FAILED_EVENT, record);
+      window.removeEventListener(STORAGE_SAVED_EVENT, record);
+    }
   });
 });

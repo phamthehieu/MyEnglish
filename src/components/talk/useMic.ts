@@ -41,6 +41,8 @@ export function useMic(): MicHandle {
   const grammar = useRef<Grammar | null>(null);
   const callback = useRef<((result: AsrResult, grammar: Grammar) => void) | null>(null);
   const mounted = useRef(true);
+  // Bumped by each begin and by cancel: an older begin still getting ready gives up
+  const attempt = useRef(0);
 
   useEffect(() => {
     mounted.current = true;
@@ -70,8 +72,10 @@ export function useMic(): MicHandle {
       setProblem(null);
       stopSpeaking();
       setPhase("preparing");
+      const mine = ++attempt.current;
       const failure = await prepareListening();
-      if (!mounted.current) return;
+      // Cancelled while the microphone was getting ready (the learner moved on): it must not open for that line
+      if (!mounted.current || mine !== attempt.current) return;
       if (failure === "declined") {
         setPhase("idle");
         return;
@@ -113,6 +117,7 @@ export function useMic(): MicHandle {
   );
 
   const cancel = useCallback(() => {
+    attempt.current += 1;
     window.clearTimeout(timer.current);
     grammar.current = null;
     callback.current = null;

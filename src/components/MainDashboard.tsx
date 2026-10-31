@@ -39,6 +39,7 @@ import {
 } from "@/services/smartReview";
 import LevelUpModal from "./LevelUpModal";
 import VoiceModelSheet from "./VoiceModelSheet";
+import StorageWarning from "./StorageWarning";
 
 // Tabs and modals that are not visible on startup are loaded on demand to keep the initial bundle small
 const FlashcardReview = lazy(() => import("./FlashcardReview"));
@@ -1632,6 +1633,7 @@ export default function MainDashboard({
       )}
 
       <VoiceModelSheet />
+      <StorageWarning />
 
       {!showOnboarding && vocabSetup && (
         <Suspense fallback={null}>

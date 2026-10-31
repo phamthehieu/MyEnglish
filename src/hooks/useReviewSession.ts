@@ -34,6 +34,7 @@ import {
   type XPState,
 } from "@/services/smartReview";
 import { getRecentIntros } from "@/services/intros";
+import { hasVietnameseLetters, undoTelex } from "@/lib/telex";
 import {
   cardWithResult,
   INTRO_MIN_GAP_MS,
@@ -61,6 +62,8 @@ const REQUEUE_GAP = 3; // Cards shown before a forgotten word comes back
 const INTRO_GAP = 4; // Cards shown between a new word's introduction and its first quiz
 // Cards shown between that first quiz (recalled) and the second, harder one: typing the word
 const SECOND_RECALL_GAP = 8;
+// Fewer cards than this left after the first recall: no second one this session (it would come right away)
+const MIN_SECOND_RECALL_GAP = 3;
 /** Local day the daily goal was last celebrated with confetti (once a day, see shouldCelebrateDailyGoal) */
 const GOAL_CELEBRATED_KEY = "myenglish_goal_celebrated_v1";
 
@@ -469,6 +472,20 @@ export function useReviewSession({
 
   /** Whether the current exercise can update this card's schedule (shown before answering) */
   const exerciseCountsForSchedule = !!currentWord && !practiceMode && isValidEvidence(effectiveExerciseType, currentWord.direction);
+  /**
+   * The answer on screen will not move the schedule (as recordAnswer decides): "gặp lại sau 3 ngày" would be untrue.
+   * Practice session, an exercise that does not test this card, a quiz minutes after the introduction, a card graded
+   * earlier in this session, or a recognition card's typed second recall.
+   */
+  // Read when the card shows: answering changes both refs (the card graded, one more recall)
+  const practiceByCard = useMemo(
+    () =>
+      scheduledThisSessionRef.current.has(currentKey) ||
+      (recallsAfterIntroRef.current.get(currentKey) === 1 && currentWord?.direction === "recognition"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentIndex, currentKey]
+  );
+  const answerIsPractice = practiceMode || !exerciseCountsForSchedule || quizRightAfterIntro || practiceByCard;
 
   // "Xem đáp án" pressed on a typed exercise: the word was not recalled
   const revealedWithoutRecall = effectiveExerciseType !== "flip" && hasCheckedAnswer && !isCorrect;
@@ -523,13 +540,16 @@ export function useReviewSession({
 
   // Introduction cards show the answer side and read the word aloud. Recall exercises never play the
   // word before the answer: hearing it would turn recall into dictation.
+  // A brand-new word's guess (pretest) comes first: the word is read when the introduction itself shows, so the
+  // microphone that follows it (SayAloudPrompt) has something to repeat.
   useEffect(() => {
     if (isIntroCard && currentWord) {
       setIsFlipped(true);
+      if (isPretestCard) return;
       const t = setTimeout(() => handleSpeak(currentWord.word), AUTO_SPEAK_DELAY_MS);
       return () => clearTimeout(t);
     }
-  }, [currentIndex, isIntroCard]);
+  }, [currentIndex, isIntroCard, isPretestCard]);
 
   /** The introduction was read: log it and bring the card back for its first quiz a few cards later */
   const handleIntroDone = () => {
@@ -633,20 +653,29 @@ export function useReviewSession({
 
     // Only the first answer to a due card, through an exercise that tests this card's direction,
     // moves its schedule. Retries after Again, practice sessions and mismatched exercises are practice.
-    const decision = schedulingDecision({
+    const recallsAfterIntro = recallsAfterIntroRef.current.get(cardKey);
+    const decided = schedulingDecision({
       card: currentWord,
       exerciseType: activeExType,
       practiceMode,
       alreadyGraded: scheduledThisSessionRef.current.has(cardKey),
       introducedAt: introducedAtRef.current.get(cardKey) ?? null,
     });
+    // The typed second recall of a word met minutes ago is practice on a recognition card: typing a word is much
+    // harder than knowing its meaning, and one misspelt letter as its very first grade would mark it hard for good.
+    // Not graded yet, the card is postponed (below): its first grade is a recognition quiz in a later review.
+    const decision =
+      recallsAfterIntro === 1 && currentWord.direction === "recognition" && decided.scheduled
+        ? { scheduled: false, reason: "intro_too_recent" as const }
+        : decided;
 
     const firstAnswer = !answeredThisSessionRef.current.has(cardKey);
     answeredThisSessionRef.current.add(cardKey);
     // Introduced in this session and recalled for the first time: asked again, harder, some cards later (that
-    // answer is graded when this one came too soon after the introduction)
-    const recallsAfterIntro = recallsAfterIntroRef.current.get(cardKey);
-    const secondRecall = recallsAfterIntro === 0 && rating !== Rating.Again;
+    // answer is graded when this one came too soon after the introduction). Not when too few cards are left to
+    // space it: asked right away it would only repeat what is still in mind; the card waits for a later review.
+    const firstRecall = recallsAfterIntro === 0 && rating !== Rating.Again;
+    const secondRecall = firstRecall && queueRef.current.length - currentIndex - 1 >= MIN_SECOND_RECALL_GAP;
     // Quizzed seconds after its introduction (practice): asked once more at the end of the session, a minute
     // or more later, so a session of only new words still grades them. Pointless as the last card.
     const retryIntro =
@@ -769,7 +798,10 @@ export function useReviewSession({
       });
       nextQueueLength += 1;
     } else if (secondRecall) {
-      const card = currentWord;
+      // With the schedule this answer gave it (interval previews, "new card" checks)
+      const result = recorded.result;
+      const card: ReviewCard =
+        result && result.direction === currentWord.direction ? cardWithResult(currentWord, result) : currentWord;
       const index = currentIndex;
       setQueue((prev) => {
         const insertAt = requeuePosition(prev.length, index, SECOND_RECALL_GAP);
@@ -899,25 +931,39 @@ export function useReviewSession({
     const clozeSentence = effectiveExerciseType === "cloze" ? pickExample(currentWord)?.sentence_en : undefined;
     // The form the blank needs ("deployed"); any correct form of the word counts as recalled
     const expectedForm = formInSentence(clozeSentence, currentWord.word) ?? currentWord.word;
-    const match = matchTypedAnswer(
-      userInput,
-      currentWord.word,
-      clozeSentence,
-      knownWordStrings
-    );
+    const matchOf = (text: string) => matchTypedAnswer(text, currentWord.word, clozeSentence, knownWordStrings);
+
+    // Typed with a Vietnamese keyboard (Telex turns "how" into "hơ"): read it as the keys that were pressed. Text
+    // that still does not fit is no memory failure either: the learner is asked to switch the keyboard
+    let answer = userInput;
+    if (hasVietnameseLetters(userInput)) {
+      const meant = undoTelex(userInput.trim());
+      const best = meant.find((t) => matchOf(t) === "exact") ?? meant.find((t) => matchOf(t) !== "wrong");
+      if (!best) {
+        setFeedbackMessage({
+          text: "Có vẻ bạn đang gõ bằng bộ gõ tiếng Việt (Telex). Chuyển bàn phím sang tiếng Anh rồi gõ lại nhé.",
+          type: "info",
+        });
+        setUserInput("");
+        setTimeout(() => inputRef.current?.focus(), 50);
+        return;
+      }
+      answer = best;
+    }
+    const match = matchOf(answer);
     const matched = match !== "wrong";
 
     // A synonym of the target is not a memory failure: the meaning was recalled, the exact word was not.
     // Not counted as a wrong attempt, but the final grade becomes Hard. Another deck word sharing a meaning
     // with the target ("him" for "he", "telephone" for "phone") is handled the same way (M8).
-    const typed = userInput.trim().toLowerCase();
+    const typed = answer.trim().toLowerCase();
     const listedSynonym = parseTerms(currentWord.synonyms).some((t) => t.word.trim().toLowerCase() === typed);
     if (!matched && (listedSynonym || isCatalogSynonym(typed, currentWord))) {
       synonymTriedRef.current = true;
       setFeedbackMessage({
         text: listedSynonym
-          ? `"${userInput.trim()}" là từ đồng nghĩa — đúng nghĩa nhưng cần một từ khác. Thử lại!`
-          : `"${userInput.trim()}" cùng nghĩa với từ cần tìm — đúng nghĩa nhưng cần một từ khác. Thử lại!`,
+          ? `"${answer.trim()}" là từ đồng nghĩa — đúng nghĩa nhưng cần một từ khác. Thử lại!`
+          : `"${answer.trim()}" cùng nghĩa với từ cần tìm — đúng nghĩa nhưng cần một từ khác. Thử lại!`,
         type: "info",
       });
       setUserInput("");
@@ -930,12 +976,14 @@ export function useReviewSession({
       // Lock the card right away: Enter / Skip / Show answer during the short delay are ignored
       answerLockedRef.current = true;
       setIsCorrect(true);
-      const typedForm = userInput.trim().toLowerCase();
+      const typedForm = answer.trim().toLowerCase();
       setFeedbackMessage({
         text:
           clozeSentence && typedForm !== expectedForm.toLowerCase()
             ? `Đúng từ rồi! Trong câu này dùng dạng "${expectedForm}". Bấm Tiếp tục.`
-            : "Chính xác! 🎉 Đọc lại đáp án rồi bấm Tiếp tục.",
+            : wrongAttempts > 0
+              ? "Đúng rồi! Lần đầu chưa nhớ ra nên từ này sẽ quay lại để ôn thêm. Bấm Tiếp tục."
+              : "Chính xác! 🎉 Đọc lại đáp án rồi bấm Tiếp tục.",
         type: "success",
       });
       handleSpeak(currentWord.word);
@@ -986,7 +1034,7 @@ export function useReviewSession({
           type: "error",
         });
       } else {
-        const right = firstMismatchIndex(userInput, expectedForm);
+        const right = firstMismatchIndex(answer, expectedForm);
         setFeedbackMessage({
           text:
             right > 0
@@ -1164,6 +1212,7 @@ export function useReviewSession({
     exerciseCountsForSchedule,
     quizRightAfterIntro,
     recallFirst,
+    answerIsPractice,
     lastPracticeReason,
     celebration,
     consecutiveCorrect,

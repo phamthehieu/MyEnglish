@@ -250,7 +250,8 @@ export function BackupRestoreSettings({ onWordsChanged }: { onWordsChanged?: () 
               const added = report.inserted.words ?? 0;
               setMessage(
                 `Đã khôi phục ${added} từ mới (${report.inserted.review_logs ?? 0} lượt ôn)` +
-                  (report.skippedExistingWords > 0 ? `, bỏ qua ${report.skippedExistingWords} từ đã có.` : ".")
+                  (report.skippedExistingWords > 0 ? `, bỏ qua ${report.skippedExistingWords} từ đã có` : "") +
+                  (report.restoredKeys > 0 ? `, cùng XP, chuỗi ngày, thành tích và cài đặt (${report.restoredKeys} mục).` : ".")
               );
               onWordsChanged?.();
             } catch (err) {

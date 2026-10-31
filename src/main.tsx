@@ -39,8 +39,13 @@ async function bootstrap() {
     // Words read aloud by themselves stay silent in a browser until a first tap unlocks speech
     void import("./components/review/speech").then(({ unlockWebSpeechOnFirstTap }) => unlockWebSpeechOnFirstTap());
     // The web app: offline use and updates through its service worker (not in development: it would cache the
-    // files being edited)
-    if (import.meta.env.PROD) void import("./services/webApp").then(({ startWebApp }) => startWebApp());
+    // files being edited). The browser is asked to keep the study data (it may delete a site's storage otherwise).
+    if (import.meta.env.PROD) {
+      void import("./services/webApp").then(({ startWebApp, askToKeepStorage }) => {
+        startWebApp();
+        askToKeepStorage();
+      });
+    }
     // Its database lives in this browser and one tab holds it; open it before anything shows, so a second tab says
     // so instead of showing an empty app
     try {

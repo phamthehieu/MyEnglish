@@ -8,6 +8,7 @@ import android.webkit.WebView
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.Locale
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Text-to-speech through the phone's own engine (Samsung TTS, Google TTS...), exposed to the page as
@@ -22,19 +23,23 @@ class TtsBridge(context: Context, private val webView: WebView) : TextToSpeech.O
   @Volatile
   private var ready = false
 
-  private fun dispatch(event: String) {
-    webView.post { webView.evaluateJavascript("window.dispatchEvent(new Event('$event'))", null) }
+  /** Each reading has its own id, so the end of one cut short by the next is not taken for the end of the next */
+  private val utterances = AtomicInteger(0)
+
+  private fun dispatch(event: String, utteranceId: String?) {
+    val id = JSONObject.quote(utteranceId ?: "")
+    webView.post { webView.evaluateJavascript("window.dispatchEvent(new CustomEvent('$event',{detail:$id}))", null) }
   }
 
   override fun onInit(status: Int) {
     ready = status == TextToSpeech.SUCCESS
     // The page waits for the word to be read before it switches the microphone on (it would hear the phone)
     engine.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-      override fun onStart(utteranceId: String?) = dispatch("myenglish-tts-start")
-      override fun onDone(utteranceId: String?) = dispatch("myenglish-tts-end")
+      override fun onStart(utteranceId: String?) = dispatch("myenglish-tts-start", utteranceId)
+      override fun onDone(utteranceId: String?) = dispatch("myenglish-tts-end", utteranceId)
       @Deprecated("Deprecated in Java")
-      override fun onError(utteranceId: String?) = dispatch("myenglish-tts-end")
-      override fun onStop(utteranceId: String?, interrupted: Boolean) = dispatch("myenglish-tts-end")
+      override fun onError(utteranceId: String?) = dispatch("myenglish-tts-end", utteranceId)
+      override fun onStop(utteranceId: String?, interrupted: Boolean) = dispatch("myenglish-tts-end", utteranceId)
     })
     // The voice list is only known now: tell the page, which may already have asked for it
     webView.post {
@@ -76,9 +81,10 @@ class TtsBridge(context: Context, private val webView: WebView) : TextToSpeech.O
     return out.toString()
   }
 
+  /** Read the text; returns the reading's id (carried by its myenglish-tts-start / -end events), "" when nothing is read */
   @JavascriptInterface
-  fun speak(text: String, lang: String, voiceId: String, rate: Float) {
-    if (!ready || text.isBlank()) return
+  fun speak(text: String, lang: String, voiceId: String, rate: Float): String {
+    if (!ready || text.isBlank()) return ""
     val chosen = if (voiceId.isNotEmpty()) {
       try {
         engine.voices?.firstOrNull { it.name == voiceId }
@@ -97,7 +103,8 @@ class TtsBridge(context: Context, private val webView: WebView) : TextToSpeech.O
       }
     }
     engine.setSpeechRate(rate.coerceIn(0.1f, 2.0f))
-    engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, "myenglish-tts")
+    val id = "myenglish-tts-${utterances.incrementAndGet()}"
+    return if (engine.speak(text, TextToSpeech.QUEUE_FLUSH, null, id) == TextToSpeech.SUCCESS) id else ""
   }
 
   @JavascriptInterface

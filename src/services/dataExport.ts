@@ -6,8 +6,11 @@
 import { invoke } from "@tauri-apps/api/core";
 import { isTauri } from "@/lib/platform";
 import { getDatabase } from "./db";
-import { backupLocalStorageToDb } from "./storageBackup";
+import { backupLocalStorageToDb, persistKeyNow } from "./storageBackup";
 import { resetPushCursors } from "./sync/state";
+import { mergeKv, SYNCED_KV } from "./sync/keys";
+import { KV_EVENTS } from "./sync/apply";
+import { XP_DAILY_LOG_KEY, XP_LEDGER_KEY, XP_TOTAL_KEY } from "./sync/xpLedger";
 
 const EXPORT_TABLES = [
   "words",
@@ -19,6 +22,7 @@ const EXPORT_TABLES = [
   "grammar_custom_exercises",
   "grammar_exercise_imports",
   "mistakes",
+  "learning_events",
   "app_kv",
   "grammar_book_chapters",
   "grammar_book_lessons",
@@ -38,6 +42,7 @@ const PRIMARY_KEY: Record<ExportTable, string> = {
   grammar_custom_exercises: "id",
   grammar_exercise_imports: "id",
   mistakes: "id",
+  learning_events: "id",
   app_kv: "key",
   grammar_book_chapters: "id",
   grammar_book_lessons: "id",
@@ -121,6 +126,8 @@ export interface ImportReport {
   skippedExistingWords: number;
   /** Words of the library that were still untouched buffer words, replaced by the backup's version with its progress */
   replacedUntouchedWords: number;
+  /** XP, streak, achievements and settings taken from the backup */
+  restoredKeys: number;
 }
 
 export function parseBackup(text: string): BackupFile {
@@ -163,7 +170,7 @@ function wordIdsWithProgress(backup: BackupFile): Set<string> {
  */
 export async function importBackup(backup: BackupFile): Promise<ImportReport> {
   const db = await getDatabase();
-  const report: ImportReport = { inserted: {}, skippedExistingWords: 0, replacedUntouchedWords: 0 };
+  const report: ImportReport = { inserted: {}, skippedExistingWords: 0, replacedUntouchedWords: 0, restoredKeys: 0 };
 
   const existingWords = await db.select<Array<{ id: string; word: string; catalog_id: string | null; untouched: number }>>(
     `SELECT w.id, w.word, w.catalog_id,
@@ -260,7 +267,60 @@ export async function importBackup(backup: BackupFile): Promise<ImportReport> {
     }
     report.inserted[table] = count;
   }
+  report.restoredKeys = restoreBackupKeys(backup.tables.app_kv ?? []);
   // Rows from a backup are older than the cloud sync's cursors: have the next pass send them
   await resetPushCursors().catch(() => {});
   return report;
+}
+
+/** XP, streak, achievements and settings live in localStorage, which the app reads: the app_kv rows alone do nothing */
+const NOT_RESTORED = new Set(["myenglish_gemini_api_key", "myenglish_srs_last_trigger_ms", XP_LEDGER_KEY]);
+/** Per-day maps of progress (day → number): the larger number per day */
+const PROGRESS_MAPS = new Set([XP_DAILY_LOG_KEY]);
+
+/**
+ * Merge the backup's localStorage keys into this install. Restoring is the learner's choice, so a setting takes
+ * the backup's value; progress is merged the way sync merges it (the larger count, both lists), and a total
+ * (XP) keeps the larger number. Returns how many keys changed.
+ */
+export function restoreBackupKeys(rows: Array<Record<string, unknown>>): number {
+  let changed = 0;
+  const events = new Set<string>();
+  for (const row of rows) {
+    const key = String(row.key ?? "");
+    const value = row.value;
+    if (!key.startsWith("myenglish_") || NOT_RESTORED.has(key) || typeof value !== "string") continue;
+    let local: string | null;
+    try {
+      local = localStorage.getItem(key);
+    } catch {
+      continue;
+    }
+    const strategy = SYNCED_KV[key] ?? (PROGRESS_MAPS.has(key) ? "maxMap" : null);
+    const merged = strategy ? mergeKv(strategy, local, value, true) : largerOrMissing(local, value);
+    if (merged === null || merged === local) continue;
+    try {
+      localStorage.setItem(key, merged);
+    } catch {
+      continue;
+    }
+    persistKeyNow(key);
+    events.add(KV_EVENTS[key] ?? "myenglish-activity-updated");
+    if (key === XP_TOTAL_KEY) events.add("myenglish-xp-updated");
+    changed++;
+  }
+  if (changed > 0) {
+    events.add("myenglish-activity-updated");
+    for (const ev of events) window.dispatchEvent(new CustomEvent(ev));
+  }
+  return changed;
+}
+
+/** A key with no merge rule: the backup's value when this install has none, the larger one for a number */
+function largerOrMissing(local: string | null, backup: string): string | null {
+  if (local === null) return backup;
+  const x = Number(local);
+  const y = Number(backup);
+  if (local.trim() === "" || backup.trim() === "" || !Number.isFinite(x) || !Number.isFinite(y)) return null;
+  return y > x ? backup : null;
 }

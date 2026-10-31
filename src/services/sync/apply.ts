@@ -341,7 +341,8 @@ async function applyGrammar(rows: SyncRow[]): Promise<number> {
   return applySyncedGrammarProgress(entries);
 }
 
-const KV_EVENTS: Record<string, string> = {
+/** The event that refreshes the views showing each key (also used by a backup restore) */
+export const KV_EVENTS: Record<string, string> = {
   myenglish_study_logs_v1: "myenglish-activity-updated",
   myenglish_daily_goal_v1: "myenglish-activity-updated",
   myenglish_bonus_freezes_v1: "myenglish-activity-updated",

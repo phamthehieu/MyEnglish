@@ -77,60 +77,8 @@ export function buildTiles(
   return all;
 }
 
-export interface VietDecomposition {
-  base: string;
-  telexKeys: string[];
-}
-
-/**
- * Decomposes Vietnamese accented characters back into their base ASCII vowel/consonant
- * and corresponding Telex key strokes (e.g. 'ỉ' -> { base: 'i', telexKeys: ['r'] }).
- */
-export function decomposeVietnameseChar(ch: string): VietDecomposition | null {
-  if (ch === "đ" || ch === "Đ") {
-    return { base: "d", telexKeys: ["d"] };
-  }
-  const nfd = ch.normalize("NFD");
-  if (nfd.length === 1 && nfd === ch) return null;
-
-  const base = nfd[0].toLowerCase();
-  const telexKeys: string[] = [];
-
-  for (let i = 1; i < nfd.length; i++) {
-    const code = nfd.charCodeAt(i);
-    switch (code) {
-      case 0x0309: // hỏi (e.g. ỉ, ả, ẻ, ỏ, ủ, ỷ) -> 'r'
-        telexKeys.push("r");
-        break;
-      case 0x0301: // sắc (e.g. í, á, é, ó, ú, ý) -> 's'
-        telexKeys.push("s");
-        break;
-      case 0x0300: // huyền (e.g. ì, à, è, ò, ù, ỳ) -> 'f'
-        telexKeys.push("f");
-        break;
-      case 0x0303: // ngã (e.g. ĩ, ã, ẽ, õ, ũ, ỹ) -> 'x'
-        telexKeys.push("x");
-        break;
-      case 0x0323: // nặng (e.g. ị, ạ, ẹ, ọ, ụ, ỵ) -> 'j'
-        telexKeys.push("j");
-        break;
-      case 0x0306: // ă (a + w) -> 'w'
-        telexKeys.push("w");
-        break;
-      case 0x031B: // ơ, ư (o + w, u + w) -> 'w'
-        telexKeys.push("w");
-        break;
-      case 0x0302: // â, ê, ô (a + a, e + e, o + o) -> repeat base
-        telexKeys.push(base);
-        break;
-      default:
-        break;
-    }
-  }
-
-  if (telexKeys.length === 0) return null;
-  return { base, telexKeys };
-}
+export { decomposeVietnameseChar, type VietDecomposition } from "@/lib/telex";
+import { decomposeVietnameseChar } from "@/lib/telex";
 
 /**
  * First step of the recall ladder (see selectExerciseType): the Vietnamese meaning is shown, the learner

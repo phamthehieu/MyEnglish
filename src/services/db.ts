@@ -89,6 +89,15 @@ export async function getDatabase(): Promise<Database> {
 }
 
 /**
+ * Write the web database's file now (before the page reloads for an update). Nothing to do in the apps: their
+ * SQLite writes to disk itself.
+ */
+export async function flushDatabase(): Promise<void> {
+  const db = dbInstance as unknown as { flush?: () => Promise<void> } | null;
+  await db?.flush?.();
+}
+
+/**
  * Creates required tables and indexes if they don't exist.
  */
 export async function initSchema(db: Database): Promise<void> {

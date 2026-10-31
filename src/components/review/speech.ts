@@ -48,7 +48,8 @@ export interface TtsVoice {
 interface AndroidTtsBridge {
   isReady(): boolean;
   voices(): string;
-  speak(text: string, lang: string, voiceId: string, rate: number): void;
+  /** The reading's id, "" when nothing is read (an older app returns nothing) */
+  speak(text: string, lang: string, voiceId: string, rate: number): string | void;
   stop(): void;
 }
 
@@ -115,14 +116,23 @@ export function stopSpeaking(): void {
  * What the speaker is doing, so the microphone is switched on only once the word has been read (it would hear
  * the phone). `started`: the engine said it began; an engine that never does is not waited for long.
  */
-const speaker = { playing: false, started: false, at: 0 };
+const speaker = { playing: false, started: false, at: 0, id: "" };
+
+/**
+ * Android reports each reading by its id: the end of one cut short by the next (the learner tapped "Nghe" again)
+ * arrives after the next began, and must not count as its end, or the microphone would open while the phone speaks.
+ */
+function isCurrentReading(e: Event): boolean {
+  const id = (e as CustomEvent).detail;
+  return typeof id !== "string" || id === "" || id === speaker.id;
+}
 
 if (typeof window !== "undefined") {
-  window.addEventListener("myenglish-tts-start", () => {
-    speaker.started = true;
+  window.addEventListener("myenglish-tts-start", (e) => {
+    if (isCurrentReading(e)) speaker.started = true;
   });
-  window.addEventListener("myenglish-tts-end", () => {
-    speaker.playing = false;
+  window.addEventListener("myenglish-tts-end", (e) => {
+    if (isCurrentReading(e)) speaker.playing = false;
   });
 }
 
@@ -133,6 +143,7 @@ function speechBegins(): void {
   speaker.playing = true;
   speaker.started = false;
   speaker.at = Date.now();
+  speaker.id = "";
   window.dispatchEvent(new Event(SPEAK_EVENT));
 }
 
@@ -178,7 +189,10 @@ export function handleSpeak(text: string, eOrRate?: React.MouseEvent | number, v
   if (native) {
     try {
       speechBegins();
-      native.speak(text, "en-US", settings.voiceURI, rate);
+      const id = native.speak(text, "en-US", settings.voiceURI, rate);
+      if (typeof id === "string" && id) speaker.id = id;
+      // Nothing is read (engine not ready): nothing to wait for
+      else if (id === "") speaker.playing = false;
     } catch (e) {
       console.warn("Android speech error:", e);
     }

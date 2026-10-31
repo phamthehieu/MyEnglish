@@ -34,6 +34,30 @@ describe("waiting for the word to be read before listening", () => {
     expect(over).toBe(true);
   });
 
+  it("does not take the end of a reading cut short by the next one for the end of the next", async () => {
+    vi.useFakeTimers();
+    let n = 0;
+    (window as unknown as { AndroidTTS: unknown }).AndroidTTS = {
+      isReady: () => true,
+      voices: () => "[]",
+      speak: () => `myenglish-tts-${++n}`,
+      stop: () => {},
+    };
+    const fire = (name: string, id: string) => window.dispatchEvent(new CustomEvent(name, { detail: id }));
+    handleSpeak("three");
+    fire("myenglish-tts-start", "myenglish-tts-1");
+    handleSpeak("three"); // "Nghe" tapped while it speaks: the engine flushes the first reading
+    fire("myenglish-tts-end", "myenglish-tts-1");
+    fire("myenglish-tts-start", "myenglish-tts-2");
+    let over = false;
+    void waitForSpeechToEnd().then(() => (over = true));
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(over).toBe(false);
+    fire("myenglish-tts-end", "myenglish-tts-2");
+    await vi.advanceTimersByTimeAsync(400);
+    expect(over).toBe(true);
+  });
+
   it("does not wait long for an engine that never starts", async () => {
     vi.useFakeTimers();
     fakeTts();

@@ -42,13 +42,27 @@ let migrationPromise: Promise<boolean> | null = null;
  * Wipes legacy AI-generated content, old user words, old grammar and progress.
  * Re-imports complete Oxford 5000 vocab catalog and all 31 grammar chapters.
  *
- * Runs exactly once per device upon install or update to v0.0.27.
+ * Runs exactly once per device upon install or update to v0.0.27. Never on a device that holds study data
+ * without the marker (it was made after 0.0.27): that is only marked.
  */
 export function ensureReleaseMigrationV27(): Promise<boolean> {
   migrationPromise ??= runReleaseMigrationV27().finally(() => {
     migrationPromise = null;
   });
   return migrationPromise;
+}
+
+async function markDone(db: Awaited<ReturnType<typeof getDatabase>>): Promise<void> {
+  if (typeof localStorage !== "undefined") {
+    localStorage.setItem(RELEASE_WIPE_VERSION_KEY, TARGET_RELEASE_WIPE_VERSION);
+    localStorage.setItem(GRAMMAR_CONTENT_VERSION_KEY, TARGET_GRAMMAR_CONTENT_VERSION);
+  }
+  for (const [key, value] of [
+    [RELEASE_WIPE_VERSION_KEY, TARGET_RELEASE_WIPE_VERSION],
+    [GRAMMAR_CONTENT_VERSION_KEY, TARGET_GRAMMAR_CONTENT_VERSION],
+  ]) {
+    await db.execute(`INSERT OR REPLACE INTO app_kv (key, value) VALUES ($1, $2);`, [key, value]).catch(() => {});
+  }
 }
 
 async function runReleaseMigrationV27(): Promise<boolean> {
@@ -66,9 +80,22 @@ async function runReleaseMigrationV27(): Promise<boolean> {
       if (rows && rows.length > 0) {
         dbVersion = rows[0].value;
       }
-    } catch {}
+    } catch {
+      // Unreadable: never wipe on a guess
+      return false;
+    }
 
     if (localVersion === TARGET_RELEASE_WIPE_VERSION || dbVersion === TARGET_RELEASE_WIPE_VERSION) {
+      return false;
+    }
+
+    // Study data without the marker: localStorage was cleared and the marker's write had failed. The clean slate was
+    // for 0.0.26 and older, long gone; data here was made by a later version and is never wiped. Only marked.
+    const [{ n }] = await db.select<Array<{ n: number }>>(
+      `SELECT (SELECT COUNT(*) FROM review_logs) + (SELECT COUNT(*) FROM words) + (SELECT COUNT(*) FROM grammar_progress) AS n;`
+    );
+    if (Number(n) > 0) {
+      await markDone(db);
       return false;
     }
 
@@ -111,20 +138,7 @@ async function runReleaseMigrationV27(): Promise<boolean> {
     await ensureGrammarBookSeeded({ reseed: true }).catch((err) => console.warn("[ReleaseMigration] Failed to seed grammar catalog:", err));
 
     // 6. Record release wipe completion flag
-    if (typeof localStorage !== "undefined") {
-      localStorage.setItem(RELEASE_WIPE_VERSION_KEY, TARGET_RELEASE_WIPE_VERSION);
-      localStorage.setItem(GRAMMAR_CONTENT_VERSION_KEY, TARGET_GRAMMAR_CONTENT_VERSION);
-    }
-
-    await db.execute(
-      `INSERT OR REPLACE INTO app_kv (key, value) VALUES ($1, $2);`,
-      [RELEASE_WIPE_VERSION_KEY, TARGET_RELEASE_WIPE_VERSION]
-    ).catch(() => {});
-
-    await db.execute(
-      `INSERT OR REPLACE INTO app_kv (key, value) VALUES ($1, $2);`,
-      [GRAMMAR_CONTENT_VERSION_KEY, TARGET_GRAMMAR_CONTENT_VERSION]
-    ).catch(() => {});
+    await markDone(db);
 
     // 7. Dispatch events to notify active views
     if (typeof window !== "undefined") {

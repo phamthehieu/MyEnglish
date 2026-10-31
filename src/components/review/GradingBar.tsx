@@ -29,7 +29,7 @@ interface GradingBarProps {
   onIntroDone?: () => void;
   /** The word has not been said aloud yet: the introduction cannot be finished */
   introLocked?: boolean;
-  /** Practice mode: does not move FSRS schedule */
+  /** The answer does not move the FSRS schedule (practice session, or an answer recorded as practice) */
   isPractice?: boolean;
   /** The letter tiles' check, shown here instead of on the card */
   tilesAction?: LetterTilesAction | null;
@@ -141,10 +141,10 @@ export default function GradingBar({
         >
           <span>Tiếp tục</span>
           <span className="text-xs opacity-80">
-            {isPractice
-              ? "(luyện tập củng cố)"
-              : pendingRating === Rating.Again
-              ? "(gặp lại ở cuối phiên)"
+            {pendingRating === Rating.Again
+              ? "(gặp lại sau vài thẻ)"
+              : isPractice
+              ? "(luyện thêm, lịch ôn không đổi)"
               : `(gặp lại sau ${intervalPreviews[pendingRating as keyof IntervalPreviews]})`}
           </span>
           <kbd className="px-2 py-0.5 rounded bg-white/20 dark:bg-black/10 text-[11px] font-mono">Enter ↵</kbd>
