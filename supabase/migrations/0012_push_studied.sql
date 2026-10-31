@@ -54,7 +54,9 @@ grant execute on function public.due_push_subscriptions(integer) to service_role
 create or replace function public.limit_new_push_subscriptions() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
-  if (select count(*) from public.push_subscriptions where created_at > now() - interval '1 minute') >= 60 then
+  -- An upsert goes through here before finding its row: a browser already registered changing its times is no new one
+  if not exists (select 1 from public.push_subscriptions where endpoint = new.endpoint)
+    and (select count(*) from public.push_subscriptions where created_at > now() - interval '1 minute') >= 60 then
     raise exception 'push_busy';
   end if;
   return new;
