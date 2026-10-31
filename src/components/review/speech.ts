@@ -102,12 +102,60 @@ export function onVoicesChanged(callback: () => void): () => void {
 
 /** Stop whatever is being spoken */
 export function stopSpeaking(): void {
+  speaker.playing = false;
   try {
     androidTts()?.stop();
     window.speechSynthesis?.cancel?.();
   } catch {
     /* nothing is playing */
   }
+}
+
+/**
+ * What the speaker is doing, so the microphone is switched on only once the word has been read (it would hear
+ * the phone). `started`: the engine said it began; an engine that never does is not waited for long.
+ */
+const speaker = { playing: false, started: false, at: 0 };
+
+if (typeof window !== "undefined") {
+  window.addEventListener("myenglish-tts-start", () => {
+    speaker.started = true;
+  });
+  window.addEventListener("myenglish-tts-end", () => {
+    speaker.playing = false;
+  });
+}
+
+/** Fired on window each time something is read aloud: a microphone listening then must pause */
+export const SPEAK_EVENT = "myenglish-speak";
+
+function speechBegins(): void {
+  speaker.playing = true;
+  speaker.started = false;
+  speaker.at = Date.now();
+  window.dispatchEvent(new Event(SPEAK_EVENT));
+}
+
+/** An engine that has not started a few moments after speak() is not going to */
+const START_GRACE_MS = 1500;
+/** The end of the sound can still be in the speaker when the engine says it is done */
+const END_TAIL_MS = 200;
+
+/** Resolves once nothing is being read aloud (at the latest after `maxMs`) */
+export function waitForSpeechToEnd(maxMs = 10_000): Promise<void> {
+  const begin = Date.now();
+  return new Promise((resolve) => {
+    const check = () => {
+      const now = Date.now();
+      const silent = !speaker.playing || (!speaker.started && now - speaker.at > START_GRACE_MS);
+      if (silent || now - begin > maxMs) {
+        window.setTimeout(resolve, END_TAIL_MS);
+        return;
+      }
+      window.setTimeout(check, 100);
+    };
+    check();
+  });
 }
 
 let activeUtterance: SpeechSynthesisUtterance | null = null;
@@ -129,6 +177,7 @@ export function handleSpeak(text: string, eOrRate?: React.MouseEvent | number, v
   const native = androidTts();
   if (native) {
     try {
+      speechBegins();
       native.speak(text, "en-US", settings.voiceURI, rate);
     } catch (e) {
       console.warn("Android speech error:", e);
@@ -144,12 +193,22 @@ export function handleSpeak(text: string, eOrRate?: React.MouseEvent | number, v
       utterance.lang = voice?.lang ?? "en-US";
       utterance.rate = rate;
       activeUtterance = utterance;
+      utterance.onstart = () => {
+        if (activeUtterance === utterance) speaker.started = true;
+      };
       utterance.onend = () => {
-        if (activeUtterance === utterance) activeUtterance = null;
+        if (activeUtterance === utterance) {
+          activeUtterance = null;
+          speaker.playing = false;
+        }
       };
       utterance.onerror = () => {
-        if (activeUtterance === utterance) activeUtterance = null;
+        if (activeUtterance === utterance) {
+          activeUtterance = null;
+          speaker.playing = false;
+        }
       };
+      speechBegins();
       window.speechSynthesis.speak(utterance);
     }
   } catch (e) {

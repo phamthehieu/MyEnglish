@@ -2,6 +2,7 @@ import type { PronunciationItem, PronunciationLesson } from "@/types/pronunciati
 import { CHECK_AGAINST, CHECK_NEEDS_LOOKALIKE, END_SOUND_LESSONS } from "@/data/pronunciationCheckData";
 import { features, isWeb } from "@/lib/platform";
 import { createWebSpeechBridge, webSpeechAvailable } from "./webSpeechAsr";
+import { requestVoiceModel } from "./voiceModel";
 
 /**
  * "Đọc thử cho máy nghe": on Android the phone records the learner and an offline recognizer (Vosk, see
@@ -359,24 +360,45 @@ function waitFor<T>(event: string, timeoutMs: number, parse: (detail: string) =>
   });
 }
 
-export type PrepareFailure = "no-bridge" | "permission" | "model";
+/** "declined": the model is not on the phone and the learner closed the offer to download it */
+export type PrepareFailure = "no-bridge" | "permission" | "model" | "declined";
 
-/** Get the microphone permission and the model ready; null when the check can start */
-export async function prepareListening(): Promise<PrepareFailure | null> {
+interface AsrStatus {
+  permission: boolean;
+  modelReady: boolean;
+  /** Android: a download of the model is running */
+  downloading?: boolean;
+  downloadBytes?: number;
+}
+
+let askedForMic = false;
+
+/**
+ * Get the microphone permission and the model ready; null when the check can start. `automatic`: the
+ * microphone switches itself on (nobody pressed it), so a download already declined is not offered again.
+ */
+export async function prepareListening({ automatic = false } = {}): Promise<PrepareFailure | null> {
   const asr = bridge();
   if (!asr) return "no-bridge";
   try {
-    const status = JSON.parse(asr.status()) as { permission: boolean; modelReady: boolean };
+    const status = JSON.parse(asr.status()) as AsrStatus;
     if (!status.permission) {
+      // Asked by itself once a session at most: a refusal is not met with the same question on every card
+      if (automatic && askedForMic) return "permission";
+      askedForMic = true;
       const answer = waitFor("myenglish-asr-permission", 60_000, (d) => d === "true");
       asr.requestPermission();
       if (!(await answer)) return "permission";
     }
     if (!status.modelReady) {
-      // The first time the model is copied out of the app: a few seconds
-      const ready = waitFor("myenglish-asr-ready", 120_000, (d) => (JSON.parse(d) as { ok: boolean }).ok);
+      const total = status.downloadBytes ?? 41_000_000;
+      if (status.downloading) return (await requestVoiceModel(total, true, automatic)) ? null : "declined";
+      // Loading the model takes a few seconds; the first time it has to be downloaded
+      const ready = waitFor("myenglish-asr-ready", 120_000, (d) => JSON.parse(d) as { ok: boolean; missing?: boolean });
       asr.prepare();
-      if (!(await ready)) return "model";
+      const answer = await ready;
+      if (answer.missing) return (await requestVoiceModel(total, false, automatic)) ? null : "declined";
+      if (!answer.ok) return "model";
     }
     return null;
   } catch {

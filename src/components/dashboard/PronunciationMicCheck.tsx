@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Loader2, Mic, Square, Volume2 } from "lucide-react";
 import type { PronunciationItem, PronunciationLesson } from "@/types/pronunciation";
 import { stopSpeaking } from "../review/speech";
+import { playSound } from "@/services/sound";
 import {
   asrAvailable,
   buildGrammar,
@@ -28,6 +29,9 @@ import {
   speechUnavailableText,
 } from "@/services/pronunciationCheck";
 
+/** How long a pass stays on screen before the lesson moves on by itself */
+const PASS_ADVANCE_MS = 1500;
+
 const VERDICT_TONE: Record<Verdict["kind"], string> = {
   match: "border-green-300 dark:border-green-800 bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300",
   focus_ok: "border-green-300 dark:border-green-800 bg-green-50 dark:bg-green-950/30 text-green-800 dark:text-green-300",
@@ -43,12 +47,26 @@ const VERDICT_TONE: Record<Verdict["kind"], string> = {
  * the words it is mistaken for in this lesson (the minimal pairs), so "heard tree instead of three" is a
  * real answer. Not a score, and it never replaces the learner's own rating below.
  */
-export function MicCheck({ lesson, item, compact = false }: { lesson: PronunciationLesson; item: PronunciationItem; compact?: boolean }) {
+export function MicCheck({
+  lesson,
+  item,
+  compact = false,
+  onPassed,
+}: {
+  lesson: PronunciationLesson;
+  item: PronunciationItem;
+  compact?: boolean;
+  /** Called a moment after a pass (the verdict stays on screen meanwhile): the lesson moves to the next word */
+  onPassed?: () => void;
+}) {
   const [phase, setPhase] = useState<"idle" | "preparing" | "listening" | "checking">("idle");
   const [verdict, setVerdict] = useState<Verdict | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [level, setLevel] = useState<CheckLevel>(getCheckLevel);
   const timer = useRef<number | undefined>(undefined);
+  const advanceTimer = useRef<number | undefined>(undefined);
+  const onPassedRef = useRef(onPassed);
+  onPassedRef.current = onPassed;
   const grammar = useRef<string[]>([]);
   const target = item.text;
 
@@ -59,6 +77,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
     setPhase("idle");
     return () => {
       window.clearTimeout(timer.current);
+      window.clearTimeout(advanceTimer.current);
       cancelListening();
     };
   }, [target]);
@@ -84,16 +103,19 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
     window.clearTimeout(timer.current);
     setPhase("checking");
     const result = await finishListening(grammar.current);
-    setVerdict(
-      judge(target, result, {
-        level,
-        mates,
-        ipaTarget: item.ipa,
-        ipaOf: (w) => ipaOf(lesson, w),
-        focusLabel: focusLabel(lesson, item),
-      })
-    );
+    const next = judge(target, result, {
+      level,
+      mates,
+      ipaTarget: item.ipa,
+      ipaOf: (w) => ipaOf(lesson, w),
+      focusLabel: focusLabel(lesson, item),
+    });
+    setVerdict(next);
     setPhase("idle");
+    if (next.ok && onPassedRef.current) {
+      playSound("correct");
+      advanceTimer.current = window.setTimeout(() => onPassedRef.current?.(), PASS_ADVANCE_MS);
+    }
   };
 
   const begin = async () => {
@@ -102,6 +124,10 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
     stopSpeaking();
     setPhase("preparing");
     const failure = await prepareListening();
+    if (failure === "declined") {
+      setPhase("idle");
+      return;
+    }
     if (failure) {
       setProblem(
         failure === "permission"
@@ -190,7 +216,7 @@ export function MicCheck({ lesson, item, compact = false }: { lesson: Pronunciat
       {verdict && (
         <div className={`rounded-xl border p-3 text-sm space-y-2 ${VERDICT_TONE[verdict.kind]}`} role="status">
           {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
-            <p className="text-xs font-bold uppercase tracking-wide">{verdict.ok ? "✓ Đạt" : "Chưa đạt"}</p>
+            <p className="text-xs font-bold uppercase tracking-wide">{verdict.ok ? (onPassed ? "✓ Đạt · sang từ tiếp…" : "✓ Đạt") : "Chưa đạt"}</p>
           )}
           <p>{verdict.message}</p>
           {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && canPlayRecording() && (

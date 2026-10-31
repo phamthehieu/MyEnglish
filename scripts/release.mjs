@@ -16,7 +16,7 @@
 // Needs the GitHub CLI, logged in once: winget install GitHub.cli, then gh auth login.
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -125,9 +125,10 @@ if (!badging.includes(`versionName='${version}'`)) fail(`APK không mang phiên 
 const certs = run("cmd", ["/c", join(buildTools, "apksigner.bat"), "verify", "--print-certs", apk]);
 if (!certs.includes(RELEASE_CERT)) fail("APK không được ký bằng khóa phát hành: người dùng sẽ không cập nhật được.");
 const files = run("tar", ["-tf", apk]);
-if (!files.includes("assets/vosk-model-en/am/")) fail("APK thiếu mô hình nhận dạng giọng nói.");
+// The speech model is downloaded by the app (AsrBridge.kt); a copy in the APK would add 41 MB to every update
+if (files.includes("assets/vosk-model-en/")) fail("APK còn chứa mô hình giọng nói (41 MB): app tự tải nó, bỏ khỏi assets.");
 for (const abi of ["arm64-v8a", "armeabi-v7a"]) if (!files.includes(`lib/${abi}/libtauri_app_lib.so`)) fail(`APK thiếu bản cho ${abi}.`);
-console.log(`OK: ${apk}\n    phiên bản ${version}, đúng khóa ký, có mô hình giọng nói, arm64 + armv7`);
+console.log(`OK: ${apk}\n    phiên bản ${version}, đúng khóa ký, arm64 + armv7, ${(statSync(apk).size / 1e6).toFixed(0)} MB`);
 
 const web = args.includes("--web");
 const webPublish = () =>

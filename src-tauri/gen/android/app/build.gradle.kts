@@ -25,10 +25,13 @@ android {
         versionCode = tauriProperties.getProperty("tauri.android.versionCode", "1").toInt()
         versionName = tauriProperties.getProperty("tauri.android.versionName", "1.0")
     }
-    // Only ARM phones are shipped: the x86 copies of the Vosk and JNA libraries would add 20 MB
+    // Only ARM phones are shipped: the x86 copies of the Vosk and JNA libraries would add 20 MB.
+    // The native libraries are stored compressed (13 MB less to download, the APK is sideloaded); the phone
+    // unpacks them once at install.
     packaging {
         jniLibs {
             excludes += setOf("lib/x86/**", "lib/x86_64/**")
+            useLegacyPackaging = true
         }
     }
 
@@ -97,7 +100,7 @@ dependencies {
     implementation("androidx.webkit:webkit:1.14.0")
     // Delivers a study reminder late when its alarm was lost (see Reminders.kt)
     implementation("androidx.work:work-runtime-ktx:2.10.2")
-    // Offline speech recognition for the pronunciation check (see AsrBridge.kt); its model is in assets/vosk-model-en
+    // Offline speech recognition for the pronunciation check (see AsrBridge.kt); the app downloads its model the first time it is needed
     implementation("com.alphacephei:vosk-android:0.3.75")
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("androidx.activity:activity-ktx:1.10.1")

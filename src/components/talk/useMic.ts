@@ -72,6 +72,10 @@ export function useMic(): MicHandle {
       setPhase("preparing");
       const failure = await prepareListening();
       if (!mounted.current) return;
+      if (failure === "declined") {
+        setPhase("idle");
+        return;
+      }
       if (failure) {
         setProblem(
           failure === "permission"

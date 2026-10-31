@@ -275,6 +275,10 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
     const failure = await prepareListening();
     // The learner went to another sentence while the microphone was getting ready: do not switch it on
     if (mine !== run.current) return;
+    if (failure === "declined") {
+      setPhase("idle");
+      return;
+    }
     if (failure) {
       setProblem(
         failure === "permission"

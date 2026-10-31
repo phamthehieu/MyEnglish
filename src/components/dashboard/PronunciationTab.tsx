@@ -392,7 +392,7 @@ function SayAloud({
               <Snail className="w-4 h-4" /> Chậm <Kbd>S</Kbd>
             </button>
           </div>
-          <MicCheck lesson={lesson} item={item} />
+          <MicCheck lesson={lesson} item={item} onPassed={() => rate(true)} />
         </div>
         <div className="grid grid-cols-2 gap-2">
           <button

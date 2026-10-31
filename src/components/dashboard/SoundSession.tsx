@@ -356,7 +356,7 @@ export default function SoundSession({
               <Volume2 className="w-7 h-7" />
             </button>
           </div>
-          <MicCheck lesson={lesson} item={task.item} compact />
+          <MicCheck lesson={lesson} item={task.item} compact onPassed={() => rateSaid(true)} />
         </div>
       ) : (
         <div className="space-y-5">

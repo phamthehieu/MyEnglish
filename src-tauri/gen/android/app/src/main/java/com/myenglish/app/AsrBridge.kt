@@ -22,6 +22,10 @@ import org.vosk.Recognizer
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import java.security.MessageDigest
+import java.util.zip.ZipInputStream
 
 /** The one Vosk call the Java wrapper lacks: is a word in the model's dictionary? (-1 when it is not) */
 interface VoskDictionary : Library {
@@ -91,11 +95,12 @@ class SpeechEndpoint {
  *
  * It records the learner (16 kHz mono) and runs Vosk with a grammar made of the target word, the words it is
  * easily mistaken for (the lesson's minimal pairs) and [unk]. The page learns what the machine heard and
- * shows it: "heard tree instead of three". Everything stays on the phone.
+ * shows it: "heard tree instead of three". Everything stays on the phone; only the model is downloaded, once.
  *
  * Results come back as DOM events, because a call from the page blocks the page until it returns:
  *   myenglish-asr-permission  detail: "true" | "false"
- *   myenglish-asr-ready       detail: JSON { ok, error? }
+ *   myenglish-asr-ready       detail: JSON { ok, missing?, error? }
+ *   myenglish-asr-download    while the model downloads: JSON { received, total }
  *   myenglish-asr-result      detail: JSON { ok, text, words: [{ word, conf }], peak, error? }
  *   myenglish-asr-endpoint    while recording: the learner spoke, then went quiet (the page may call stop)
  */
@@ -106,13 +111,26 @@ class AsrBridge(
   companion object {
     private const val SAMPLE_RATE = 16000
     private const val MAX_SECONDS = 15
-    private const val MODEL_ASSET_DIR = "vosk-model-en"
     private const val MODEL_DIR = "vosk-model-en-0.15"
     private const val READY_MARKER = ".complete"
+
+    // The model is not in the APK (it would add 41 MB to every download and update): it is fetched once, the
+    // first time the learner speaks. Builds up to 0.4.1 carried it and already copied it to MODEL_DIR.
+    private val MODEL_URLS = listOf("https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip")
+    private const val MODEL_SHA256 = "30f26242c4eb449f948e42cb302dd7a686cb29a3423a8367f99ff41780942498"
+    private const val MODEL_ZIP_ROOT = "vosk-model-small-en-us-0.15/"
+    private const val MODEL_ZIP_BYTES = 41_205_931L
+    // The zip and the unpacked model (71 MB) are both on disk for a moment
+    private const val SPACE_NEEDED = 130L * 1024 * 1024
   }
 
   @Volatile private var model: Model? = null
   @Volatile private var loading = false
+  @Volatile private var downloading = false
+  @Volatile private var cancelDownload = false
+
+  private val modelDir get() = File(activity.filesDir, MODEL_DIR)
+  private fun modelOnPhone() = File(modelDir, READY_MARKER).exists()
 
   @Volatile private var recording = false
   private var recorder: AudioRecord? = null
@@ -138,53 +156,165 @@ class AsrBridge(
 
   @JavascriptInterface
   fun status(): String =
-    JSONObject().put("permission", hasMic()).put("modelReady", model != null).put("loading", loading).toString()
+    JSONObject()
+      .put("permission", hasMic())
+      .put("modelReady", model != null)
+      .put("loading", loading)
+      .put("modelOnPhone", modelOnPhone())
+      .put("downloading", downloading)
+      .put("downloadBytes", MODEL_ZIP_BYTES)
+      .toString()
 
   @JavascriptInterface
   fun requestPermission() {
     if (hasMic()) emit("myenglish-asr-permission", "true") else activity.requestMic()
   }
 
-  /** Load the model (copied out of the APK the first time: a few seconds), then fire myenglish-asr-ready */
+  /**
+   * Load the model that is on the phone, then fire myenglish-asr-ready. When it was never downloaded the event
+   * says { ok: false, missing: true } and the page offers downloadModel().
+   */
   @JavascriptInterface
   fun prepare() {
     if (model != null) {
       emit("myenglish-asr-ready", JSONObject().put("ok", true).toString())
       return
     }
+    if (!modelOnPhone()) {
+      emit("myenglish-asr-ready", JSONObject().put("ok", false).put("missing", true).put("error", "missing").toString())
+      return
+    }
     if (loading) return
     loading = true
+    Thread { emit("myenglish-asr-ready", loadModel().toString()) }.start()
+  }
+
+  private fun loadModel(): JSONObject {
+    val out = JSONObject()
+    try {
+      LibVosk.setLogLevel(LogLevel.WARNINGS)
+      model = Model(modelDir.absolutePath)
+      out.put("ok", true)
+    } catch (e: Throwable) {
+      out.put("ok", false).put("error", e.message ?: e.javaClass.simpleName)
+    } finally {
+      loading = false
+    }
+    return out
+  }
+
+  /**
+   * Download the model (41 MB, once), check it, unpack it and load it. Progress comes as
+   * myenglish-asr-download { received, total }; the end as myenglish-asr-ready, with
+   * error "cancelled" | "space" | "network" | "corrupt" when it failed.
+   */
+  @JavascriptInterface
+  fun downloadModel() {
+    if (downloading || model != null) return
+    downloading = true
+    cancelDownload = false
+    loading = true
     Thread {
-      val out = JSONObject()
-      try {
-        val dir = File(activity.filesDir, MODEL_DIR)
-        if (!File(dir, READY_MARKER).exists()) {
-          dir.deleteRecursively()
-          copyAssetDir(MODEL_ASSET_DIR, dir)
-          File(dir, READY_MARKER).writeText("ok")
-        }
-        LibVosk.setLogLevel(LogLevel.WARNINGS)
-        model = Model(dir.absolutePath)
-        out.put("ok", true)
+      val zip = File(activity.cacheDir, "vosk-model.zip")
+      val out = try {
+        if (activity.filesDir.usableSpace < SPACE_NEEDED) throw ModelDownloadError("space")
+        fetchModel(zip)
+        unpackModel(zip)
+        loadModel()
       } catch (e: Throwable) {
-        out.put("ok", false).put("error", e.message ?: e.javaClass.simpleName)
-      } finally {
         loading = false
+        val reason = when {
+          cancelDownload -> "cancelled"
+          e is ModelDownloadError -> e.message
+          else -> "network"
+        }
+        JSONObject().put("ok", false).put("error", reason).put("detail", e.message ?: e.javaClass.simpleName)
+      } finally {
+        zip.delete()
+        downloading = false
       }
       emit("myenglish-asr-ready", out.toString())
     }.start()
   }
 
-  private fun copyAssetDir(assetPath: String, target: File) {
-    val children = activity.assets.list(assetPath) ?: emptyArray()
-    if (children.isEmpty()) {
-      // A file
-      target.parentFile?.mkdirs()
-      activity.assets.open(assetPath).use { input -> FileOutputStream(target).use { input.copyTo(it) } }
-      return
+  @JavascriptInterface
+  fun cancelDownload() {
+    cancelDownload = true
+  }
+
+  private class ModelDownloadError(reason: String) : Exception(reason)
+
+  /** Try each address in turn; the file must match MODEL_SHA256 */
+  private fun fetchModel(zip: File) {
+    var last: Throwable = ModelDownloadError("network")
+    for (address in MODEL_URLS) {
+      try {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val connection = URL(address).openConnection() as HttpURLConnection
+        connection.connectTimeout = 15_000
+        connection.readTimeout = 30_000
+        try {
+          if (connection.responseCode != 200) throw ModelDownloadError("network")
+          val total = connection.contentLengthLong.takeIf { it > 0 } ?: MODEL_ZIP_BYTES
+          var received = 0L
+          var lastReport = 0L
+          connection.inputStream.use { input ->
+            FileOutputStream(zip).use { file ->
+              val buffer = ByteArray(64 * 1024)
+              while (true) {
+                if (cancelDownload) throw ModelDownloadError("cancelled")
+                val n = input.read(buffer)
+                if (n < 0) break
+                file.write(buffer, 0, n)
+                digest.update(buffer, 0, n)
+                received += n
+                val now = System.currentTimeMillis()
+                if (now - lastReport > 250) {
+                  lastReport = now
+                  emit("myenglish-asr-download", JSONObject().put("received", received).put("total", total).toString())
+                }
+              }
+            }
+          }
+        } finally {
+          connection.disconnect()
+        }
+        val hash = digest.digest().joinToString("") { "%02x".format(it) }
+        if (hash != MODEL_SHA256) throw ModelDownloadError("corrupt")
+        return
+      } catch (e: Throwable) {
+        if (cancelDownload) throw ModelDownloadError("cancelled")
+        last = e
+      }
     }
-    target.mkdirs()
-    for (name in children) copyAssetDir("$assetPath/$name", File(target, name))
+    throw last
+  }
+
+  /** Unpack next to the final folder, then swap it in: a half-unpacked model is never taken for a whole one */
+  private fun unpackModel(zip: File) {
+    val staging = File(activity.filesDir, "$MODEL_DIR.part")
+    staging.deleteRecursively()
+    staging.mkdirs()
+    val root = staging.canonicalPath + File.separator
+    ZipInputStream(zip.inputStream().buffered()).use { entries ->
+      while (true) {
+        if (cancelDownload) throw ModelDownloadError("cancelled")
+        val entry = entries.nextEntry ?: break
+        if (!entry.name.startsWith(MODEL_ZIP_ROOT)) continue
+        val target = File(staging, entry.name.removePrefix(MODEL_ZIP_ROOT))
+        if (!target.canonicalPath.startsWith(root) && target.canonicalPath != staging.canonicalPath) continue
+        if (entry.isDirectory) {
+          target.mkdirs()
+        } else {
+          target.parentFile?.mkdirs()
+          FileOutputStream(target).use { entries.copyTo(it) }
+        }
+      }
+    }
+    if (!File(staging, "am/final.mdl").exists()) throw ModelDownloadError("corrupt")
+    File(staging, READY_MARKER).writeText("ok")
+    modelDir.deleteRecursively()
+    if (!staging.renameTo(modelDir)) throw ModelDownloadError("space")
   }
 
   private val dictionary: VoskDictionary? by lazy {
@@ -364,6 +494,7 @@ class AsrBridge(
   }
 
   fun shutdown() {
+    cancelDownload = true
     cancel()
     track?.release()
     track = null

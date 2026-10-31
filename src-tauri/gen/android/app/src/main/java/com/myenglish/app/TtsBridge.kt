@@ -2,6 +2,7 @@ package com.myenglish.app
 
 import android.content.Context
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import org.json.JSONArray
@@ -21,8 +22,20 @@ class TtsBridge(context: Context, private val webView: WebView) : TextToSpeech.O
   @Volatile
   private var ready = false
 
+  private fun dispatch(event: String) {
+    webView.post { webView.evaluateJavascript("window.dispatchEvent(new Event('$event'))", null) }
+  }
+
   override fun onInit(status: Int) {
     ready = status == TextToSpeech.SUCCESS
+    // The page waits for the word to be read before it switches the microphone on (it would hear the phone)
+    engine.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+      override fun onStart(utteranceId: String?) = dispatch("myenglish-tts-start")
+      override fun onDone(utteranceId: String?) = dispatch("myenglish-tts-end")
+      @Deprecated("Deprecated in Java")
+      override fun onError(utteranceId: String?) = dispatch("myenglish-tts-end")
+      override fun onStop(utteranceId: String?, interrupted: Boolean) = dispatch("myenglish-tts-end")
+    })
     // The voice list is only known now: tell the page, which may already have asked for it
     webView.post {
       webView.evaluateJavascript("window.dispatchEvent(new Event('myenglish-tts-ready'))", null)

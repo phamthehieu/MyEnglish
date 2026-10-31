@@ -38,6 +38,7 @@ import {
   type NewCardCounts,
 } from "@/services/smartReview";
 import LevelUpModal from "./LevelUpModal";
+import VoiceModelSheet from "./VoiceModelSheet";
 
 // Tabs and modals that are not visible on startup are loaded on demand to keep the initial bundle small
 const FlashcardReview = lazy(() => import("./FlashcardReview"));
@@ -1629,6 +1630,8 @@ export default function MainDashboard({
           <CaptureSheet text={incomingText} onClose={() => setIncomingText(null)} onSaved={() => void refreshWords()} />
         </Suspense>
       )}
+
+      <VoiceModelSheet />
 
       {!showOnboarding && vocabSetup && (
         <Suspense fallback={null}>
