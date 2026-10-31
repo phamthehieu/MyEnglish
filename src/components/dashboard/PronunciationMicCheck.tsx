@@ -27,6 +27,7 @@ import {
   type Verdict,
   canPlayRecording,
   speechUnavailableText,
+  micPermissionText,
 } from "@/services/pronunciationCheck";
 
 /** How long a pass stays on screen before the lesson moves on by itself */
@@ -140,7 +141,7 @@ export function MicCheck({
     if (failure) {
       setProblem(
         failure === "permission"
-          ? "Cần cho phép dùng micro: vào Cài đặt của máy, mục Ứng dụng, MyEnglish, Quyền, bật Micro."
+          ? micPermissionText()
           : "Chưa chuẩn bị được bộ nhận dạng giọng nói. Thử lại sau ít phút."
       );
       setPhase("idle");

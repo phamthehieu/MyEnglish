@@ -1,6 +1,6 @@
 import type { DialogueNode, Situation, SituationLine } from "@/types/situation";
 import type { AsrResult } from "@/services/pronunciationCheck";
-import { SILENCE_PEAK } from "@/services/pronunciationCheck";
+import { recognitionErrorText, SILENCE_PEAK } from "@/services/pronunciationCheck";
 
 /**
  * "Trò chuyện tình huống": what the speech check listens for and how its answer is read. Pure functions;
@@ -84,6 +84,26 @@ export interface SpokenVerdict {
   message: string;
 }
 
+/** Of the sentences that would pass, the one sharing most words with what was said */
+function closestLine(said: string, grammar: Grammar, valid: ReadonlySet<string>): string | null {
+  const heardWords = new Set(said.split(" "));
+  let best: { phrase: string; shared: number } | null = null;
+  for (const phrase of grammar.phrases) {
+    const id = grammar.owner.get(phrase);
+    if (!id || !valid.has(id)) continue;
+    const shared = phrase.split(" ").filter((w) => heardWords.has(w)).length;
+    if (!best || shared > best.shared) best = { phrase, shared };
+  }
+  return best?.phrase ?? null;
+}
+
+/** The words of `target` that were not heard (in its order, each once) */
+export function missingWords(said: string, target: string | null): string[] {
+  if (!target) return [];
+  const heardWords = new Set(said.split(" "));
+  return [...new Set(target.split(" ").filter((w) => w && w !== "[unk]" && !heardWords.has(w)))];
+}
+
 function averageConfidence(result: AsrResult): number {
   const words = result.words ?? [];
   if (words.length === 0) return 1;
@@ -102,7 +122,7 @@ export function judgeSpoken(
   options: { minConfidence?: number } = {}
 ): SpokenVerdict {
   if (!result.ok) {
-    return { kind: "error", message: "Không nghe được lúc này, thử lại nhé." };
+    return { kind: "error", message: recognitionErrorText(result.error) };
   }
   if ((result.peak ?? 1) < SILENCE_PEAK) {
     return { kind: "silent", message: "Không nghe thấy tiếng. Kiểm tra micro, rồi nói to và rõ hơn." };
@@ -110,6 +130,20 @@ export function judgeSpoken(
   const heard = normalizeSpeech(result.text ?? "");
   const lineId = heard ? grammar.owner.get(heard) : undefined;
   if (!heard || !lineId) {
+    // What was said, heard freely (the app's second pass, or the browser's own guess): the words the closest right
+    // sentence has and that were not heard tell the learner what to work on
+    const said = normalizeSpeech(result.free ?? (heard && heard !== "[unk]" ? heard : "")).replace(/\[unk\]/g, "").trim();
+    if (said) {
+      const missing = missingWords(said, closestLine(said, grammar, valid));
+      return {
+        kind: "unclear",
+        heard: said,
+        message:
+          `Máy nghe ra "${said}".` +
+          (missing.length > 0 ? ` Chưa nghe rõ: ${missing.slice(0, 4).map((w) => `"${w}"`).join(", ")}.` : "") +
+          " Nói chậm, rõ từng từ rồi thử lại.",
+      };
+    }
     return { kind: "unclear", message: "Máy chưa nghe rõ câu nào. Nói chậm, rõ từng từ rồi thử lại." };
   }
   const conf = averageConfidence(result);

@@ -7,6 +7,7 @@ import {
   wordsInDictionary,
   type AsrResult,
   speechUnavailableText,
+  micPermissionText,
 } from "@/services/pronunciationCheck";
 import { stopSpeaking } from "@/components/review/speech";
 import { buildGrammar, decoysFor, speakableFrom, wordsOf, type Grammar } from "@/services/talk/engine";
@@ -83,7 +84,7 @@ export function useMic(): MicHandle {
       if (failure) {
         setProblem(
           failure === "permission"
-            ? "Cần cho phép dùng micro: vào Cài đặt của máy, mục Ứng dụng, MyEnglish, Quyền, bật Micro."
+            ? micPermissionText()
             : failure === "no-bridge"
               ? speechUnavailableText()
               : "Chưa chuẩn bị được bộ nhận dạng giọng nói. Thử lại sau ít phút."

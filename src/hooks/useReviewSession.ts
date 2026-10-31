@@ -370,6 +370,8 @@ export function useReviewSession({
   // An introduction can only be finished after the learner said the word aloud (SayAloudPrompt): keyed by card,
   // so the next introduction starts locked. The ref is for the keyboard handler, which can hold an older render.
   const [sayPassedKey, setSayPassedKey] = useState<string | null>(null);
+  // "Đã biết" being checked on this card (see startKnownCheck), or failed: then it is learned as a new word
+  const [knownCheck, setKnownCheck] = useState<{ key: string; failed: boolean } | null>(null);
   const sayPassedRef = useRef<string | null>(null);
   const introSayPassed = sayPassedKey === currentKey;
   const markIntroSaid = () => {
@@ -412,7 +414,7 @@ export function useReviewSession({
 
   // Adaptive exercise type calculation
   const effectiveExerciseType: ExerciseType = useMemo(() => {
-    if (isIntroCard) return "flip";
+    if (isIntroCard) return knownCheck?.key === currentKey && !knownCheck.failed ? "multiple_choice" : "flip";
     if (fallbackMode) return fallbackMode;
     if (mode !== "mixed") return currentWord ? playableOrFallback(mode as ExerciseType, currentWord) : (mode as ExerciseType);
     if (!currentWord) return "flip";
@@ -442,7 +444,7 @@ export function useReviewSession({
     }
     return playableOrFallback(picked, currentWord);
     // currentIndex: the second recall is the same card object under the same key, later in the queue
-  }, [mode, currentWord, fallbackMode, isIntroCard, currentKey, currentIndex]);
+  }, [mode, currentWord, fallbackMode, isIntroCard, currentKey, currentIndex, knownCheck]);
 
   /**
    * A new word's first quiz (a choice among four): the learner first recalls the meaning without the options,
@@ -575,6 +577,28 @@ export function useReviewSession({
   /** "Đã biết": only for a brand-new word, never for a word being relearned */
   const canMarkKnown =
     isIntroCard && !!currentWord && currentWord.direction === "recognition" && (currentWord.srs.reps ?? 0) === 0;
+
+  /**
+   * "Đã biết" is checked first: a word that only looks familiar (a cognate, a half-known meaning) would otherwise
+   * leave the deck for weeks. The meaning is recalled, then picked among four; right at once, the word is marked
+   * known; otherwise it is learned as a new word. The check is never recorded.
+   */
+  const checkingKnown = isIntroCard && knownCheck?.key === currentKey && !knownCheck.failed;
+  const knownCheckFailed = isIntroCard && knownCheck?.key === currentKey && knownCheck.failed;
+  const startKnownCheck = () => {
+    if (!canMarkKnown || gradingLockRef.current) return;
+    setKnownCheck({ key: currentKey, failed: false });
+  };
+  const finishKnownCheck = (knewIt: boolean) => {
+    if (knownCheck?.key !== currentKey) return;
+    if (knewIt) {
+      setKnownCheck(null);
+      void handleIntroKnown();
+    } else {
+      setKnownCheck({ key: currentKey, failed: true });
+      if (currentWord) handleSpeak(currentWord.word);
+    }
+  };
 
   /**
    * The learner already knows this new word: it is scheduled as Easy without a quiz (outside the daily
@@ -1222,6 +1246,10 @@ export function useReviewSession({
     markIntroSaid,
     canMarkKnown,
     handleIntroKnown,
+    checkingKnown,
+    knownCheckFailed,
+    startKnownCheck,
+    finishKnownCheck,
     pretest,
     isPretestCard,
     pretestResult,

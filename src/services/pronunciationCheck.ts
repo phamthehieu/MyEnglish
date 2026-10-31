@@ -43,6 +43,8 @@ export interface AsrResult {
   /** Loudest sample of the recording, 0 to 1 */
   peak?: number;
   error?: string;
+  /** Android: nothing of the list was heard; what was said, heard freely (for "which words were missing") */
+  free?: string;
 }
 
 export type CheckLevel = "focus" | "word";
@@ -268,7 +270,7 @@ export function judge(
   const level = options.level ?? "focus";
   const word = target.trim().toLowerCase();
   if (!result.ok) {
-    return { kind: "error", ok: false, message: "Không nghe được lúc này, thử lại nhé." };
+    return { kind: "error", ok: false, message: recognitionErrorText(result.error) };
   }
   if ((result.peak ?? 1) < SILENCE_PEAK) {
     return { kind: "silent", ok: false, message: "Không nghe thấy tiếng. Kiểm tra micro, rồi đọc to và rõ hơn." };
@@ -490,6 +492,21 @@ export function cancelListening(): void {
 /** The learner's own recording can be heard again (the Android app keeps it; a browser's recognition does not) */
 export function canPlayRecording(): boolean {
   return features.playbackOwnVoice();
+}
+
+/** How to let the app use the microphone: the phone's settings in the app, the address bar's lock in a browser */
+export function micPermissionText(): string {
+  return isWeb()
+    ? "Cần cho phép dùng micro: bấm biểu tượng ổ khóa cạnh địa chỉ trang, mục Micro, chọn Cho phép, rồi thử lại."
+    : "Cần cho phép dùng micro: vào Cài đặt của máy, mục Ứng dụng, MyEnglish, Quyền, bật Micro.";
+}
+
+/** A recognition that failed, said for the learner (the browser's recognizer needs the internet; Vosk does not) */
+export function recognitionErrorText(error: string | undefined): string {
+  if (error === "network") return "Nghe giọng trên trình duyệt cần mạng. Kiểm tra kết nối rồi thử lại nhé.";
+  if (error === "not-allowed" || error === "service-not-allowed") return micPermissionText();
+  if (error === "audio-capture") return "Không bật được micro (có thể app khác đang dùng). Thử lại nhé.";
+  return "Không nghe được lúc này, thử lại nhé.";
 }
 
 /** Why there is no speaking check here, for the learner */

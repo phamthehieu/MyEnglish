@@ -136,3 +136,21 @@ describe("reminderRule", () => {
     expect(rule.anchors).toEqual([[17, 30]]);
   });
 });
+
+describe("a plan rebuilt by Android after a clock change", () => {
+  const now = new Date(2026, 9, 31, 15, 0);
+  const tomorrow = new Date(2026, 10, 1).getTime();
+
+  it("keeps today quiet once its goal is met, or nothing is due with only-when-due", () => {
+    const goalMet = reminderRule(settings({ stopAfterGoal: true }), { goalMetToday: true, dueToday: 5 }, now);
+    expect(goalMet?.quietUntil).toBe(tomorrow);
+    const nothingDue = reminderRule(settings({ triggerCondition: "due_only" }), { goalMetToday: false, dueToday: 0 }, now);
+    expect(nothingDue?.quietUntil).toBe(tomorrow);
+  });
+
+  it("keeps a snooze, and is not quiet on an ordinary day", () => {
+    const snoozed = now.getTime() + 30 * 60_000;
+    expect(reminderRule(settings({ snoozedUntil: snoozed }), { goalMetToday: false, dueToday: 5 }, now)?.quietUntil).toBe(snoozed);
+    expect(reminderRule(settings(), { goalMetToday: false, dueToday: 5 }, now)?.quietUntil).toBe(0);
+  });
+});

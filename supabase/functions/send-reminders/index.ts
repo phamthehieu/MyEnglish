@@ -6,7 +6,7 @@
 // SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are provided by Supabase.
 import webpush from "npm:web-push@3.6.7";
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { dueSlot, reminderText } from "../_shared/reminderSlots.ts";
+import { dueSlot, reminderText, SLOT_WINDOW_MINUTES } from "../_shared/reminderSlots.ts";
 
 interface Subscription {
   endpoint: string;
@@ -22,6 +22,8 @@ interface Subscription {
 
 /** A browser that keeps refusing is let go after this many tries */
 const MAX_FAILURES = 10;
+/** Notifications sent at the same time */
+const BATCH = 20;
 
 Deno.serve(async (req) => {
   // Only the schedule may run it: anyone else would make every learner's phone ring
@@ -38,25 +40,22 @@ Deno.serve(async (req) => {
   });
 
   const now = new Date();
-  const { data, error } = await db
-    .from("push_subscriptions")
-    .select("endpoint, p256dh, auth, times, tz, last_slot, failures, studied_on")
-    .neq("times", "{}")
-    .limit(10000);
+  // Only the subscriptions with a study time reached in the last minutes (0012_push_studied.sql), oldest first
+  const { data, error } = await db.rpc("due_push_subscriptions", { p_window: SLOT_WINDOW_MINUTES });
   if (error) return new Response(error.message, { status: 500 });
 
   let sent = 0;
   let dropped = 0;
-  for (const sub of (data ?? []) as Subscription[]) {
+  const send = async (sub: Subscription) => {
     let slot: string | null;
     try {
       slot = dueSlot(sub.times, sub.tz, now, sub.last_slot);
     } catch {
-      continue; // a time zone this runtime does not know
+      return; // a time zone this runtime does not know
     }
-    if (!slot) continue;
+    if (!slot) return;
     // The slot is "YYYY-MM-DD HH:MM" in the learner's time zone: the day's goal is already reached
-    if (sub.studied_on && slot.startsWith(sub.studied_on)) continue;
+    if (sub.studied_on && slot.startsWith(sub.studied_on)) return;
     try {
       await webpush.sendNotification(
         { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
@@ -75,6 +74,9 @@ Deno.serve(async (req) => {
         await db.from("push_subscriptions").update({ last_slot: slot, failures: sub.failures + 1 }).eq("endpoint", sub.endpoint);
       }
     }
-  }
+  };
+  // A few at a time: one slow push service must not hold up everyone's reminder past the run's time limit
+  const subs = (data ?? []) as Subscription[];
+  for (let i = 0; i < subs.length; i += BATCH) await Promise.all(subs.slice(i, i + BATCH).map(send));
   return new Response(JSON.stringify({ sent, dropped }), { headers: { "Content-Type": "application/json" } });
 });

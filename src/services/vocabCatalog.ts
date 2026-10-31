@@ -219,6 +219,30 @@ export async function findCatalogWord(text: string, lemmas: string[] = []): Prom
     .filter((e) => [...e.variants, ...e.irregular].some((f) => keys.includes(f.toLowerCase())));
 }
 
+/**
+ * The Vietnamese meaning of each of `words` that is a deck word (lower case → meaning), in one pass: what a reader
+ * sees on tapping a word, and which words can be added at all. The lower-case entry wins ("may" before "May").
+ */
+export async function catalogMeaningsOf(words: readonly string[]): Promise<Map<string, string>> {
+  const keys = [...new Set(words.map((w) => w.trim().toLowerCase()).filter(Boolean))];
+  const out = new Map<string, string>();
+  if (keys.length === 0) return out;
+  const db = await getDatabase();
+  for (let i = 0; i < keys.length; i += 500) {
+    const chunk = keys.slice(i, i + 500);
+    const rows = await db.select<Array<{ word: string; vn: string }>>(
+      `SELECT word, vn FROM vocab_catalog WHERE word COLLATE NOCASE IN (${chunk.map((_, j) => `$${j + 1}`).join(", ")})
+       ORDER BY CASE WHEN word = LOWER(word) THEN 0 ELSE 1 END, study_order`,
+      chunk
+    );
+    for (const r of rows) {
+      const key = r.word.toLowerCase();
+      if (!out.has(key) && r.vn) out.set(key, r.vn);
+    }
+  }
+  return out;
+}
+
 /** Words starting with `prefix` (search box), deck order */
 export async function searchCatalog(prefix: string, limit = 40): Promise<CatalogEntry[]> {
   const q = prefix.trim().toLowerCase();

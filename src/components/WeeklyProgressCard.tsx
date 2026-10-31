@@ -20,7 +20,7 @@ import {
   type WeeklyState,
 } from "@/services/weeklyChallenges";
 import { getFSRSSettings } from "@/services/srs";
-import { getDailyGoal } from "@/services/streak";
+import { getActivityLogs, getDailyGoal } from "@/services/streak";
 import { checkAndUnlockAchievements } from "@/services/achievements";
 
 /** "Tuần này": answers, words, active days, real retention vs target, and the three weekly challenges */
@@ -42,7 +42,7 @@ export default function WeeklyProgressCard({ words, compact = false }: { words: 
     getReviewLogsSince(startOfWeek())
       .then((logs) => {
         if (cancelled) return;
-        const summary = summarizeWeek(logs, words, getFSRSSettings().requestRetention);
+        const summary = summarizeWeek(logs, words, getFSRSSettings().requestRetention, getActivityLogs(), startOfWeek());
         setWeek(summary);
         // Badge for a week whose true retention reached the target over enough reviews
         if (summary.reviewAnswers >= 30 && summary.retention !== null && summary.retention >= summary.targetRetention) {

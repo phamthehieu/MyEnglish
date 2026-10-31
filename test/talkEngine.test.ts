@@ -208,3 +208,28 @@ describe("tiles", () => {
     expect(matchTiles([], [target])).toBeNull();
   });
 });
+
+describe("a sentence the machine did not match", () => {
+  const grammar = {
+    phrases: ["i would like a coffee", "can i have the bill", "[unk]"],
+    owner: new Map([
+      ["i would like a coffee", "l1"],
+      ["can i have the bill", "l2"],
+    ]),
+  };
+
+  it("says what it heard and which words of the closest right sentence were missing", async () => {
+    const { judgeSpoken } = await import("@/services/talk/engine");
+    const verdict = judgeSpoken({ ok: true, text: "[unk]", words: [], peak: 0.4, free: "i would like coffee" }, grammar, new Set(["l1"]));
+    expect(verdict.kind).toBe("unclear");
+    expect(verdict.message).toContain('Máy nghe ra "i would like coffee"');
+    expect(verdict.message).toContain('"a"');
+    expect(verdict.message).not.toContain('"bill"');
+  });
+
+  it("keeps the plain message when nothing at all was made out", async () => {
+    const { judgeSpoken } = await import("@/services/talk/engine");
+    const verdict = judgeSpoken({ ok: true, text: "", words: [], peak: 0.4 }, grammar, new Set(["l1"]));
+    expect(verdict.message).toBe("Máy chưa nghe rõ câu nào. Nói chậm, rõ từng từ rồi thử lại.");
+  });
+});

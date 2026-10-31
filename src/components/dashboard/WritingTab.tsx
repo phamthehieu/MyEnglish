@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { BookMarked, Loader2, Play, Sparkles, Trash2 } from "lucide-react";
+import { BookMarked, Check, Loader2, Play, Sparkles, Trash2 } from "lucide-react";
 import { useWordsStore } from "@/stores/wordsStore";
 import { correctWritingWithAI, type MistakeCategory, type WritingFeedback } from "@/services/ai";
 import {
@@ -28,6 +28,19 @@ import MistakeReview from "./MistakeReview";
 const DRAFT_KEY = "myenglish_standup_draft_v1";
 const HAS_AI_CLI = features.aiCli();
 
+/** Beginnings of a standup sentence, for a learner who does not know how to start */
+const SENTENCE_FRAMES = ["Yesterday I ", "Today I will ", "I am working on ", "I need help with ", "No blockers."];
+
+/** Without AI: the mistakes Vietnamese learners make most, to check one's own text against */
+const SELF_CHECK = [
+  "Việc đã xong hôm qua dùng quá khứ: fixed, worked, wrote (không phải fix, work, write).",
+  "Mỗi câu có chủ ngữ: \"I fixed…\", không phải \"Fixed…\" hay \"Đã fix…\".",
+  "He / she / it ở hiện tại thêm -s: \"she works\", \"it runs\".",
+  "Danh từ đếm được số nhiều thêm -s: \"two bugs\", \"many tests\".",
+  "Có a / an / the trước danh từ số ít: \"a bug\", \"the API\".",
+  "Đang làm dùng am / is / are + -ing: \"I am working on…\".",
+];
+
 interface WritingTabProps {
   onOpenGrammarLesson: (lessonId: string) => void;
   resetKey?: number;
@@ -52,6 +65,10 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
   const [recent, setRecent] = useState<Mistake[]>([]);
   const [reviewing, setReviewing] = useState<Mistake[] | null>(null);
   const [reviewResult, setReviewResult] = useState<string | null>(null);
+  // No AI: the self-check list on screen, and the note once it is done
+  const [selfCheck, setSelfCheck] = useState(false);
+  const [doneNote, setDoneNote] = useState<string | null>(null);
+  const showDone = (note: string) => setDoneNote(note);
   // The grammar lesson behind each weak category; a category with no lesson in the book gets no link
   const [categoryLessons, setCategoryLessons] = useState<Partial<Record<MistakeCategory, { id: string; title: string }>>>({});
 
@@ -159,8 +176,8 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           Viết và sửa lỗi
         </h2>
         <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-2xl">
-          Viết vài câu về công việc hôm nay như khi báo cáo standup. AI sửa từng lỗi, và mỗi lỗi được lưu vào Sổ lỗi để bạn
-          ôn lại cho đến khi không còn sai nữa.
+          Viết vài câu về công việc hôm nay như khi báo cáo standup. Có AI thì AI sửa từng lỗi và lưu vào Sổ lỗi để bạn ôn lại;
+          không có AI thì bạn tự soát theo danh sách lỗi hay gặp.
         </p>
       </div>
 
@@ -175,6 +192,20 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
         <p className="text-sm text-slate-500 dark:text-zinc-400">
           Hôm qua bạn làm gì, hôm nay làm gì, có gì đang bị chặn? 2–4 câu là đủ.
         </p>
+        {/* Sentence frames: a beginner who cannot start a sentence builds on one */}
+        <div className="flex items-center gap-1.5 flex-wrap text-xs text-slate-500 dark:text-zinc-400">
+          <span>Bắt đầu bằng:</span>
+          {SENTENCE_FRAMES.map((frame) => (
+            <button
+              key={frame}
+              type="button"
+              onClick={() => updateText(`${text.trimEnd()}${text.trim() ? " " : ""}${frame}`)}
+              className="min-h-9 px-2.5 rounded-full border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"
+            >
+              {frame}
+            </button>
+          ))}
+        </div>
         {suggestions.length > 0 && (
           <div className="flex items-center gap-1.5 flex-wrap text-xs text-slate-500 dark:text-zinc-400">
             <span>Thử dùng từ đang học:</span>
@@ -203,23 +234,57 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
         />
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className={`text-xs ${len > 600 ? "text-red-600 dark:text-red-400" : "text-slate-500 dark:text-zinc-400"}`}>{len}/600 ký tự</span>
-          <button
-            onClick={send}
-            disabled={!canSend}
-            className="inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-base font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-            {busy ? "AI đang sửa…" : used >= STANDUP_PER_DAY ? "Hết lượt hôm nay" : "Nhờ AI sửa"}
-          </button>
+          {cliReady === false ? (
+            // No AI here: the learner checks their own text against the mistakes Vietnamese learners make most
+            <button
+              onClick={() => setSelfCheck(true)}
+              disabled={len < 10}
+              className="inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-base font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Check className="w-4 h-4" />
+              Tự kiểm tra
+            </button>
+          ) : (
+            <button
+              onClick={send}
+              disabled={!canSend}
+              className="inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-base font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+              {busy ? "AI đang sửa…" : used >= STANDUP_PER_DAY ? "Hết lượt hôm nay" : "Nhờ AI sửa"}
+            </button>
+          )}
         </div>
         {cliReady === false && (
-          <p className="rounded-xl bg-amber-50 dark:bg-amber-500/10 px-3 py-2 text-sm text-amber-800 dark:text-amber-300">
+          <p className="text-xs text-slate-500 dark:text-zinc-400">
             {features.ai()
-              ? `Để nhờ AI sửa, vào Cài đặt nhập khóa Gemini${HAS_AI_CLI ? " (hoặc cài AI CLI)" : ""}.`
-              : "Nhờ AI sửa chưa có trên bản web: mở app trên điện thoại Android hoặc máy tính để dùng."}{" "}
-            Bạn vẫn viết và ôn lại lỗi đã lưu bình thường.
+              ? `Muốn AI sửa từng lỗi: vào Cài đặt nhập khóa Gemini${HAS_AI_CLI ? " (hoặc cài AI CLI)" : ""}.`
+              : "AI sửa bài chỉ có trong app trên điện thoại Android hoặc máy tính."}
           </p>
         )}
+        {selfCheck && cliReady === false && (
+          <div className="p-3 md:p-4 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2 text-sm text-slate-700 dark:text-zinc-300">
+            <p className="font-semibold text-slate-900 dark:text-zinc-100">Đọc lại bài và soát từng điều:</p>
+            <ul className="list-disc space-y-1 pl-5">
+              {SELF_CHECK.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              onClick={() => {
+                setSelfCheck(false);
+                // Counted once a visit toward the day's goal, however often it is pressed
+                if (!doneNote) recordDailyActivity(1);
+                showDone("Đã viết xong hôm nay. Viết mỗi ngày vài câu là cách nhanh nhất để nói được.");
+              }}
+              className="min-h-11 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white font-semibold"
+            >
+              Đã soát xong
+            </button>
+          </div>
+        )}
+        {doneNote && <p className="text-sm text-green-700 dark:text-green-400">{doneNote}</p>}
         {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
         {feedback && (

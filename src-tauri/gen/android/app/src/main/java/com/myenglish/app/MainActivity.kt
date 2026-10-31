@@ -56,6 +56,9 @@ class MainActivity : TauriActivity() {
 
   override fun onStop() {
     inForeground = false
+    // The app left the screen: the microphone is let go (Android's mic indicator would stay on, and the next
+    // recording could not start). The page reads it as "not recording" and asks to try again.
+    asr?.cancel()
     super.onStop()
   }
 

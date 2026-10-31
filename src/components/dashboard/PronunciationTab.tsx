@@ -301,9 +301,12 @@ function SayAloud({
   const [index, setIndex] = useState(0);
   const [round, setRound] = useState(0);
   const [okCount, setOkCount] = useState(0);
-  const total = items.length;
+  // The round's words, and once at the end again each word not read right ("Chưa chắc", or a miss on the mic)
+  const [list, setList] = useState<PronunciationItem[]>(items);
+  const retried = useRef<Set<string>>(new Set());
+  const total = list.length;
   const finished = index >= total;
-  const item = finished ? undefined : items[index];
+  const item = finished ? undefined : list[index];
 
   useEffect(() => {
     if (!item) return;
@@ -315,11 +318,17 @@ function SayAloud({
     if (!item) return;
     recordSayAloud(lessonId, item.text, ok);
     if (ok) setOkCount((n) => n + 1);
+    else if (!retried.current.has(item.text)) {
+      retried.current.add(item.text);
+      setList((l) => [...l, item]);
+    }
     setIndex((i) => i + 1);
   };
   const again = () => {
     setIndex(0);
     setOkCount(0);
+    setList(items);
+    retried.current = new Set();
     setRound((r) => r + 1);
   };
 
@@ -346,7 +355,7 @@ function SayAloud({
     return (
       <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-3 text-center">
         <p className="text-lg font-semibold text-green-700 dark:text-green-300">
-          Đã đọc to {total} từ, tự chấm đọc được {okCount}/{total} 👏
+          Đã đọc to {items.length} từ, đọc được {okCount}/{items.length} 👏
         </p>
         <p className="text-sm text-slate-600 dark:text-zinc-400">Giờ kiểm tra tai bằng bài nghe nhé.</p>
         <div className="flex flex-wrap justify-center gap-2">

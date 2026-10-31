@@ -461,6 +461,20 @@ class AsrBridge(
         }
         out.put("ok", true).put("text", result.optString("text")).put("words", words)
       }
+      // Nothing of the list was heard: what was said, heard freely, so the learner sees which words were missing
+      val heard = out.optString("text").replace("[unk]", "").trim()
+      if (!free && heard.isEmpty()) {
+        Recognizer(m, SAMPLE_RATE.toFloat()).use { rec ->
+          var offset = 0
+          while (offset < data.size) {
+            val len = minOf(4000, data.size - offset)
+            rec.acceptWaveForm(data.copyOfRange(offset, offset + len), len)
+            offset += len
+          }
+          out.put("free", JSONObject(rec.finalResult).optString("text"))
+        }
+      }
+      out
     } catch (e: Throwable) {
       out.put("ok", false).put("error", e.message ?: e.javaClass.simpleName)
     }

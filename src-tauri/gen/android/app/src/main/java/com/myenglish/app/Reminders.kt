@@ -558,6 +558,9 @@ object ReminderScheduler {
     val endHour = rule.optInt("endHour", 22)
     val cap = rule.optInt("cap", 0)
     val anchors = rule.optJSONArray("anchors") ?: JSONArray()
+    // No reminder before this (today's goal met, nothing due, a snooze): a plan rebuilt after a clock or time zone
+    // change must not bring back what the app had dropped
+    val quietUntil = rule.optLong("quietUntil", 0L)
     if (gapMs <= 0L && anchors.length() == 0) return emptyList()
 
     val cal = Calendar.getInstance()
@@ -604,7 +607,7 @@ object ReminderScheduler {
       var room = if (cap > 0) cap - (perDay[day] ?: 0) else Int.MAX_VALUE
       for (t in times) {
         if (room <= 0) break
-        if (t <= after || t < dayStart || t >= dayEnd) continue
+        if (t <= after || t < dayStart || t >= dayEnd || t < quietUntil) continue
         if (previous != 0L && t - previous < MIN_SPACING_MS) continue
         out.add(t)
         previous = t

@@ -38,6 +38,7 @@ import {
   startListening,
   canPlayRecording,
   speechUnavailableText,
+  micPermissionText,
 } from "@/services/pronunciationCheck";
 import { checkSentence, type SentenceCheck } from "@/services/sentenceCheck";
 import { countWords } from "@/services/shadowingPractice";
@@ -282,7 +283,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
     if (failure) {
       setProblem(
         failure === "permission"
-          ? "Cần cho phép dùng micro: vào Cài đặt của máy, mục Ứng dụng, MyEnglish, Quyền, bật Micro."
+          ? micPermissionText()
           : "Chưa chuẩn bị được bộ nhận dạng giọng nói. Thử lại sau ít phút."
       );
       setPhase("idle");

@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { createWebSpeechBridge, normalizeHeard, pickResult, similarity } from "@/services/webSpeechAsr";
+import { createWebSpeechBridge, joinSegments, normalizeHeard, pickResult, similarity } from "@/services/webSpeechAsr";
 import { judge } from "@/services/pronunciationCheck";
 
 const alt = (transcript: string, confidence = 0.9) => ({ transcript, confidence });
@@ -91,5 +91,32 @@ describe("the web bridge, in the Android bridge's shape", () => {
     const result = JSON.parse(events[1][1]);
     expect(result).toMatchObject({ ok: true, text: "three" });
     expect(result.words[0]).toEqual({ word: "three", conf: 0.8 });
+  });
+});
+
+describe("what the browser writes, read as the lessons are written", () => {
+  it("writes numbers in words: \"3\" is \"three\", not a miss", () => {
+    expect(normalizeHeard("3")).toBe("three");
+    expect(normalizeHeard("2 coffees, please")).toBe("two coffees please");
+    expect(normalizeHeard("Room 21")).toBe("room twenty one");
+    expect(normalizeHeard("2026")).toBe("2026");
+  });
+
+  it("only takes the word of the list from the browser's best guesses", () => {
+    const grammar = ["three", "tree", "free", "[unk]"];
+    // The learner said "free"; "three" is only the browser's fourth idea
+    const heard = pickResult([alt("free", 0.8), alt("frey", 0), alt("fri", 0), alt("three", 0)], grammar, true);
+    expect(heard.text).toBe("free");
+    // A lower guess with no confidence is a weak one
+    const second = pickResult([alt("threw", 0.6), alt("three", 0)], grammar, true);
+    expect(second.text).toBe("three");
+    expect(second.words?.[0].conf).toBeLessThan(0.5);
+  });
+
+  it("puts a sentence heard in pieces back together", () => {
+    const joined = joinSegments([[alt("I would like", 0.9)], [alt("a coffee", 0.7), alt("a copy", 0)]]);
+    expect(joined.map((a) => a.transcript)).toEqual(["I would like a coffee", "I would like a copy"]);
+    expect(joined[0].confidence).toBe(0.7);
+    expect(joinSegments([[alt("hello", 0.9)]])).toEqual([alt("hello", 0.9)]);
   });
 });

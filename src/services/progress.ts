@@ -302,14 +302,24 @@ export interface WeeklySummary {
   masteredWords: number; // stability >= MASTERED_STABILITY_DAYS now, after a real review
 }
 
-export function summarizeWeek(logs: ProgressLog[], words: WordDetail[], targetRetention: number): WeeklySummary {
+/**
+ * `activity` (the day → answers log behind the streak) and `since` (the week's start): the days of study count
+ * grammar, speaking and pronunciation too, as the streak does, not only the days with a word reviewed.
+ */
+export function summarizeWeek(
+  logs: ProgressLog[],
+  words: WordDetail[],
+  targetRetention: number,
+  activity?: Record<string, number>,
+  since?: Date
+): WeeklySummary {
   const scheduled = logs.filter((l) => l.isScheduled);
-  const days = new Set(
-    logs.map((l) => {
-      const d = new Date(l.timestamp);
-      return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-    })
-  );
+  const dayOf = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const days = new Set(logs.map((l) => dayOf(new Date(l.timestamp))));
+  if (activity && since) {
+    const first = dayOf(since);
+    for (const [day, count] of Object.entries(activity)) if (count > 0 && day >= first) days.add(day);
+  }
   return {
     answers: logs.length,
     wordsStudied: new Set(logs.map((l) => l.wordId)).size,

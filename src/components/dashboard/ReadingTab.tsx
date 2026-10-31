@@ -4,6 +4,7 @@ import { BookOpenText, Check, Pencil, Plus, Quote, Sparkles, X } from "lucide-re
 import { useWordsStore } from "@/stores/wordsStore";
 import { analyzeText, logEncounters, type BankStatus, type ReadingAnalysis } from "@/services/reading";
 import { addMetWords } from "@/services/metWords";
+import { catalogMeaningsOf } from "@/services/vocabCatalog";
 import { addUserContextExample } from "@/services/db";
 import { PAGE_CONTAINER } from "./shared";
 import { isFoundationMode } from "@/services/learnerProfile";
@@ -110,6 +111,24 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
     [reading, words, knownCommon]
   );
 
+  // The meaning of each unfamiliar word, from the app's deck: shown on a tap, and a word outside the deck (which
+  // could never be added) is not offered. null while it loads: every word can be picked meanwhile.
+  const [meanings, setMeanings] = useState<Map<string, string> | null>(null);
+  useEffect(() => {
+    setMeanings(null);
+    if (!analysis) return;
+    let cancelled = false;
+    const bases = analysis.segments.flatMap((s) => (s.token && s.token.kind === "candidate" ? [s.token.base] : []));
+    catalogMeaningsOf(bases)
+      .then((m) => !cancelled && setMeanings(m))
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [analysis]);
+  const meaningOf = (base: string) => meanings?.get(base.toLowerCase());
+  const inDeck = (base: string) => meanings === null || meanings.has(base.toLowerCase());
+
   const startReading = () => {
     const clean = text.slice(0, MAX_CHARS).trim();
     if (!clean) return;
@@ -127,13 +146,17 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
     }
   };
 
-  const togglePick = (base: string, sentence: string) =>
+  const togglePick = (base: string, sentence: string) => {
+    // Picking a word shows what it means: reading on is easier, and the learner knows what they are adding
+    const meaning = meaningOf(base);
+    if (!picked.has(base) && meaning) showMessage(`${base}: ${meaning}`, 4000);
     setPicked((prev) => {
       const next = new Map(prev);
       if (next.has(base)) next.delete(base);
       else next.set(base, sentence);
       return next;
     });
+  };
 
   const addPicked = async () => {
     setAdding(true);
@@ -227,7 +250,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
     );
   }
 
-  const shownCandidates = analysis.candidates.slice(0, MAX_CANDIDATES_SHOWN);
+  const shownCandidates = analysis.candidates.filter((c) => inDeck(c.base)).slice(0, MAX_CANDIDATES_SHOWN);
   const counts = { mastered: 0, learning: 0, new: 0 } as Record<BankStatus, number>;
   for (const h of analysis.bankHits) counts[h.status]++;
 
@@ -246,7 +269,9 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
           <span className={STATUS_STYLE.mastered}>Đã thuộc ({counts.mastered})</span>
           <span className={STATUS_STYLE.learning}>Đang học ({counts.learning})</span>
           <span className={STATUS_STYLE.new}>Mới thêm ({counts.new})</span>
-          <span className="border-b border-dotted border-slate-400">Từ lạ ({analysis.candidates.length})</span>
+          <span className="border-b border-dotted border-slate-400">
+            Từ lạ ({meanings ? analysis.candidates.filter((c) => inDeck(c.base)).length : analysis.candidates.length})
+          </span>
         </div>
         <button
           onClick={() => setReading(null)}
@@ -276,12 +301,14 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
                 </span>
               );
             }
+            // Not in the app's deck: it could not be added, so it is not offered (names, rare words)
+            if (!inDeck(t.base)) return <span key={i}>{seg.text}</span>;
             const on = picked.has(t.base);
             return (
               <span
                 key={i}
                 onClick={() => togglePick(t.base, t.sentence)}
-                title={on ? "Bỏ chọn" : `Chọn "${t.base}" để thêm vào sổ`}
+                title={on ? "Bỏ chọn" : `${t.base}${meaningOf(t.base) ? `: ${meaningOf(t.base)}` : ""} · chạm để thêm vào sổ`}
                 className={`cursor-pointer ${on ? "bg-teal-200 dark:bg-teal-500/30 rounded px-0.5" : "border-b border-dotted border-slate-400 dark:border-zinc-500 hover:bg-teal-50 dark:hover:bg-teal-500/10"}`}
               >
                 {seg.text}
@@ -302,6 +329,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
                     className="inline-flex items-center gap-1 px-3 min-h-10 rounded-full bg-white dark:bg-zinc-900 border border-teal-200 dark:border-teal-500/30 text-sm text-teal-800 dark:text-teal-200"
                   >
                     {b}
+                    {meaningOf(b) && <span className="text-teal-700/80 dark:text-teal-300/80">· {meaningOf(b)!.split(/[;,]/)[0]}</span>}
                     <X className="w-3 h-3" />
                   </button>
                 ))}
@@ -359,7 +387,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
                     <button
                       key={c.base}
                       onClick={() => togglePick(c.base, c.sentence)}
-                      title={c.sentence}
+                      title={meaningOf(c.base) ? `${meaningOf(c.base)} — ${c.sentence}` : c.sentence}
                       className={`px-3 min-h-10 rounded-full border text-sm transition-colors ${on ? "bg-teal-700 border-teal-700 !text-white dark:bg-teal-600 dark:border-teal-600" : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800"}`}
                     >
                       {c.base}
@@ -369,7 +397,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
                 })}
               </div>
               <p className="text-xs text-slate-500 dark:text-zinc-400">
-                Bấm vào từ trong bài hoặc ở đây để chọn. Danh sách chỉ loại các từ rất phổ biến, nên vẫn có thể có từ bạn đã biết.
+                Bấm vào từ trong bài hoặc ở đây để chọn và xem nghĩa. Chỉ có từ trong bộ từ của app, và vẫn có thể có từ bạn đã biết.
               </p>
             </div>
           )}

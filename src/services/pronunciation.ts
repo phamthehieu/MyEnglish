@@ -145,6 +145,11 @@ export function nextPronunciationLesson(
   return lessons.find((l) => !isLessonPassed(progress[l.id])) ?? null;
 }
 
-export function passedLessonCount(progress: PronunciationProgress = getPronunciationProgress()): number {
-  return Object.values(progress).filter(isLessonPassed).length;
+/**
+ * Lessons passed. `among`: only those lessons (the same store also holds the sound chart's lessons and the pairs, so a
+ * count against a fixed set of lessons must name them, or it reads "15/8").
+ */
+export function passedLessonCount(progress: PronunciationProgress = getPronunciationProgress(), among?: readonly string[]): number {
+  const entries = among ? among.map((id) => progress[id]).filter(Boolean) : Object.values(progress);
+  return entries.filter(isLessonPassed).length;
 }

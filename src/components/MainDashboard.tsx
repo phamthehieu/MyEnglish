@@ -328,6 +328,16 @@ export default function MainDashboard({
       document.removeEventListener("visibilitychange", tick);
     };
   }, []);
+  // A new day while the window stays open (or the phone resumes the app in the morning): everything counted per day
+  // (today's answers and goal, new words introduced, the reflex tick) is counted again
+  const day = new Date(nowTick).toDateString();
+  const dayRef = useRef(day);
+  useEffect(() => {
+    if (day === dayRef.current) return;
+    dayRef.current = day;
+    window.dispatchEvent(new CustomEvent("myenglish-activity-updated"));
+    window.dispatchEvent(new CustomEvent("myenglish-reflex-updated"));
+  }, [day]);
 
   const currentProficiency = useMemo(() => {
     return assessUserProficiency(words);

@@ -207,14 +207,26 @@ export function planReminders(
   return plan.slice(0, MAX_ENTRIES);
 }
 
-/** The rule behind a plan, for Android to keep planning with after the plan runs out */
-export function reminderRule(settings: ReminderSettings): Record<string, unknown> | null {
+/**
+ * The rule behind a plan, for Android to keep planning with after the plan runs out, and to plan again when the clock
+ * or the time zone changes. `quietUntil` (epoch ms): no reminder before it, as planReminders decided (today's goal
+ * met, nothing due with "only when due", a snooze), so a rebuilt plan does not bring them back.
+ */
+export function reminderRule(
+  settings: ReminderSettings,
+  opts: { goalMetToday: boolean; dueToday: number } = { goalMetToday: false, dueToday: 1 },
+  now: Date = new Date()
+): Record<string, unknown> | null {
   if (!settings.enabled) return null;
   const gap = reminderGapMinutes(settings);
   const anchors = anchorTimesOf(settings.anchors).map((t) => t.split(":").map(Number));
   if (gap === 0 && anchors.length === 0) return null;
   const { startHour, endHour } = reminderWindow(settings);
-  return { title: TITLE, bodies: MESSAGES, gapMin: gap, startHour, endHour, cap: settings.maxNudgesPerDay, anchors };
+  const restOfToday =
+    (settings.stopAfterGoal && opts.goalMetToday) || (settings.triggerCondition === "due_only" && opts.dueToday === 0);
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime();
+  const quietUntil = Math.max(restOfToday ? tomorrow : 0, settings.snoozedUntil ?? 0);
+  return { title: TITLE, bodies: MESSAGES, gapMin: gap, startHour, endHour, cap: settings.maxNudgesPerDay, anchors, quietUntil };
 }
 
 /** Ask for the notification permission once */
@@ -284,7 +296,7 @@ export function scheduleForBackground(now: Date = new Date()): void {
         quiz: quizFor(idx),
       }))
     ),
-    JSON.stringify(reminderRule(settings))
+    JSON.stringify(reminderRule(settings, { goalMetToday, dueToday }, now))
   );
   writeJson(PLAN_KEY, plan.map((p) => p.at));
 }

@@ -1,3 +1,4 @@
+import { Rating } from "@/services/srs";
 import { useEffect, useMemo, useState, useRef } from "react";
 import { parseTerms, type WordDetail, type ReviewCard } from "@/types/database";
 import LetterTilesExercise, { type LetterTilesAction } from "./exercises/LetterTilesExercise";
@@ -112,7 +113,10 @@ export default function FlashcardReview({
     consecutiveCorrect,
     isIntroCard,
     canMarkKnown,
-    handleIntroKnown,
+    checkingKnown,
+    knownCheckFailed,
+    startKnownCheck,
+    finishKnownCheck,
     handleIntroDone,
     introSayPassed,
     markIntroSaid,
@@ -349,19 +353,28 @@ export default function FlashcardReview({
           effectiveExerciseType={effectiveExerciseType}
           mode={mode}
         />
-        {isPretestCard ? null : isIntroCard ? (
+        {isPretestCard ? null : checkingKnown ? (
+          <div className="mt-1 text-center text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+            Kiểm tra nhanh: chọn đúng nghĩa ngay lần đầu thì app ghi là bạn đã biết từ này.
+          </div>
+        ) : isIntroCard ? (
           <div className="mt-1 space-y-1.5">
             {pretestResult && <PretestFeedback result={pretestResult} />}
+            {knownCheckFailed && (
+              <div className="text-center text-sm text-amber-700 dark:text-amber-300">
+                Chưa chắc lắm rồi: mình học từ này như từ mới nhé.
+              </div>
+            )}
             <div className="text-center text-[11px] font-semibold text-cyan-700 dark:text-cyan-300">
               {currentWord.srs.reps ? "🔁 Học lại từ hay quên" : "✨ Từ mới"} — đọc nghĩa, ví dụ và nghe phát âm. Bạn sẽ được hỏi lại sau vài thẻ.
             </div>
             <SayAloudPrompt key={currentWord.id} word={currentWord.word} wordId={currentWord.id} onPassed={markIntroSaid} />
-            {canMarkKnown && (
+            {canMarkKnown && !knownCheckFailed && (
               <div className="text-center">
                 <button
-                  onClick={handleIntroKnown}
+                  onClick={startKnownCheck}
                   className="text-[11px] font-medium px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
-                  title="Bỏ qua phần học mới; app hỏi lại một lần sau khoảng một tuần"
+                  title="Một câu kiểm tra nhanh; đúng thì bỏ qua phần học mới và app hỏi lại sau 4–21 ngày"
                 >
                   ✓ Đã biết từ này
                 </button>
@@ -392,10 +405,12 @@ export default function FlashcardReview({
               word={currentWord}
               allWords={distractorPool && distractorPool.length >= 4 ? distractorPool : wordsToReview}
               onComplete={(_isCorrect, attempts, rating) => {
-                holdExerciseAnswer(gradeExercise("multiple_choice", attempts, rating), "multiple_choice", attempts);
+                // The "Đã biết" check is not an answer: it only decides whether the word is learned
+                if (checkingKnown) finishKnownCheck(attempts === 0 && rating !== Rating.Again);
+                else holdExerciseAnswer(gradeExercise("multiple_choice", attempts, rating), "multiple_choice", attempts);
               }}
               onSpeak={(t) => handleSpeak(t)}
-              recallFirst={recallFirst}
+              recallFirst={recallFirst || checkingKnown}
             />
           </div>
         )}
@@ -577,7 +592,7 @@ export default function FlashcardReview({
       </div>
 
       {/* BOTTOM ACTION BAR - Always present with fixed height (h-14) so card NEVER jumps */}
-      {isPretestCard ? <div className="w-full mt-3 h-14 shrink-0" /> : <GradingBar
+      {isPretestCard || checkingKnown ? <div className="w-full mt-3 h-14 shrink-0" /> : <GradingBar
         effectiveExerciseType={effectiveExerciseType}
         handleGrade={handleGrade}
         isAdvancing={isAdvancing}

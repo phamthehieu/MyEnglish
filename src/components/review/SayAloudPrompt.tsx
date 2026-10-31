@@ -12,6 +12,7 @@ import {
   prepareListening,
   startListening,
   wordsInDictionary,
+  micPermissionText,
 } from "@/services/pronunciationCheck";
 import { playSound } from "@/services/sound";
 import { AUTO_SPEAK_DELAY_MS, handleSpeak, SLOW_RATE, SPEAK_EVENT, stopSpeaking, waitForSpeechToEnd } from "./speech";
@@ -111,7 +112,7 @@ export default function SayAloudPrompt({ word, wordId, onPassed }: { word: strin
     if (failure) {
       setMessage(
         failure === "permission"
-          ? "Cần cho phép dùng micro (Cài đặt, Ứng dụng, MyEnglish, Quyền). Tạm thời bạn tự xác nhận nhé."
+          ? `${micPermissionText()} Tạm thời bạn tự xác nhận nhé.`
           : failure === "declined"
             ? "Chưa tải bộ nghe giọng, nên bạn tự xác nhận nhé."
             : "Chưa chuẩn bị được bộ nhận dạng giọng nói. Tạm thời bạn tự xác nhận nhé."

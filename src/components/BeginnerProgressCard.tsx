@@ -6,11 +6,12 @@ import { getReviewLogsSince } from "@/services/progress";
 import { getLearningEventsSince } from "@/services/learningEvents";
 import { getActivityLogs } from "@/services/streak";
 import { getPronunciationProgress, passedLessonCount } from "@/services/pronunciation";
+import { PRONUNCIATION_LESSONS } from "@/data/pronunciation";
 
 /** "Is the foundation path working?" in four plain numbers, for beginners (shown first in Tiến độ) */
 export default function BeginnerProgressCard() {
   const [m, setM] = useState<BeginnerMetrics | null>(null);
-  const passed = passedLessonCount(getPronunciationProgress());
+  const passed = passedLessonCount(getPronunciationProgress(), PRONUNCIATION_LESSONS.map((l) => l.id));
 
   useEffect(() => {
     const since = new Date(Date.now() - 30 * 86_400_000);
@@ -46,7 +47,7 @@ export default function BeginnerProgressCard() {
           recallPct === null ? "Cần thêm vài lần tự gõ từ để tính" : "Lần đầu phải tự nhớ ra một từ đã học"
         )}
         {tile(`${m.sayAloud.total}`, "lần đọc to theo", "Đọc thành tiếng giúp nhớ từ lâu hơn")}
-        {tile(`${passed}/8`, "bài phát âm xong", `${m.pronunciationQuizzes} lần làm bài nghe`)}
+        {tile(`${passed}/${PRONUNCIATION_LESSONS.length}`, "bài phát âm xong", `${m.pronunciationQuizzes} lần làm bài nghe`)}
       </div>
     </Card>
   );
