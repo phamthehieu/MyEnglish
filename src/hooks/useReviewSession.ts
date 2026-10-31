@@ -1082,12 +1082,29 @@ export function useReviewSession({
     holdAnswer({ rating: shown, exerciseType, attempts, responseTimeMs: Date.now() - cardStartTime.current });
   };
 
-  // User explicitly skips this word
+  /**
+   * "Không nhớ": recorded as forgotten (Again, not counted again as revealed), and the answer stays on screen until the
+   * learner continues: giving up must still show the word, or it comes back a few cards later just as unknown.
+   * A typed exercise shows its answer; the others turn into the card's answer side.
+   */
   const handleSkip = () => {
-    if (!currentWord || isAdvancing || answerLockedRef.current) return;
+    if (!currentWord || isAdvancing || answerLockedRef.current || gradingLockRef.current) return;
     countComingBack(currentWord.id, "skippedCount");
-    // User skipped word gets Rating.Again in FSRS (not counted again as revealed)
-    handleGrade(Rating.Again);
+    const exerciseType = effectiveExerciseType;
+    if (exerciseType === "cloze" || exerciseType === "spelling") {
+      setHasCheckedAnswer(true);
+      setIsCorrect(false);
+    } else if (exerciseType !== "flip") {
+      setFallbackMode("flip");
+    }
+    setIsFlipped(true);
+    handleSpeak(currentWord.word);
+    holdAnswer({
+      rating: Rating.Again,
+      exerciseType,
+      attempts: wrongAttempts,
+      responseTimeMs: Date.now() - cardStartTime.current,
+    });
   };
 
   // User explicitly asks to see result and detailed grammar/example

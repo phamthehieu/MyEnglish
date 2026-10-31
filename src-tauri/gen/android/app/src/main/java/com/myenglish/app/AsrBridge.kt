@@ -37,10 +37,12 @@ interface VoskDictionary : Library {
  * measured over the first moments of the recording, so a noisy room does not count as speech and a quiet one
  * does not need a loud voice.
  */
-class SpeechEndpoint {
+class SpeechEndpoint(
+  /** The quiet that ends it: short for one word, longer for a sentence (a beginner pauses between words) */
+  private val silenceMs: Int = 800,
+) {
   private val calibrationMs = 300
   private val minSpeechMs = 200
-  private val silenceMs = 800
 
   private var elapsedMs = 0.0
   private var noiseSum = 0.0
@@ -352,7 +354,11 @@ class AsrBridge(
   }
 
   @JavascriptInterface
-  fun start(): Boolean {
+  fun start(): Boolean = startFor(800)
+
+  /** Record until the learner has been quiet for `silenceMs` after speaking (myenglish-asr-endpoint), at most 15 s */
+  @JavascriptInterface
+  fun startFor(silenceMs: Int): Boolean {
     if (recording || !hasMic()) return false
     val minBuffer = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
     if (minBuffer <= 0) return false
@@ -378,7 +384,7 @@ class AsrBridge(
     recordThread = Thread {
       val buffer = ByteArray(minBuffer)
       val limit = SAMPLE_RATE * 2 * MAX_SECONDS
-      val endpoint = SpeechEndpoint()
+      val endpoint = SpeechEndpoint(silenceMs.coerceIn(400, 4000))
       var announced = false
       while (recording && pcm.size() < limit) {
         val n = rec.read(buffer, 0, buffer.size)

@@ -45,6 +45,8 @@ async function bootstrap() {
         startWebApp();
         askToKeepStorage();
       });
+      // Reminders stop for the day once its goal is reached
+      void import("./services/webPush").then(({ watchGoalForWebReminders }) => watchGoalForWebReminders());
     }
     // Its database lives in this browser and one tab holds it; open it before anything shows, so a second tab says
     // so instead of showing an empty app

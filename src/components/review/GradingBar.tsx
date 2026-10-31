@@ -29,6 +29,8 @@ interface GradingBarProps {
   onIntroDone?: () => void;
   /** The word has not been said aloud yet: the introduction cannot be finished */
   introLocked?: boolean;
+  /** "Chưa nhớ từ này" on an exercise: recorded as forgotten, the answer shown before moving on */
+  onGiveUp?: () => void;
   /** The answer does not move the FSRS schedule (practice session, or an answer recorded as practice) */
   isPractice?: boolean;
   /** The letter tiles' check, shown here instead of on the card */
@@ -54,6 +56,7 @@ export default function GradingBar({
   introMode = false,
   onIntroDone,
   introLocked = false,
+  onGiveUp,
   isPractice = false,
   tilesAction = null,
 }: GradingBarProps) {
@@ -159,7 +162,7 @@ export default function GradingBar({
             <span />
           ) : (
             <GiveUpButton
-              onConfirm={() => handleGrade(Rating.Again, effectiveExerciseType)}
+              onConfirm={() => (onGiveUp ? onGiveUp() : handleGrade(Rating.Again, effectiveExerciseType))}
               disabled={isAdvancing}
               label="Chưa nhớ từ này"
               icon={<SkipForward className="w-3.5 h-3.5" />}

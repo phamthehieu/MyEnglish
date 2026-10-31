@@ -12,8 +12,8 @@ import { stopSpeaking } from "@/components/review/speech";
 import { buildGrammar, decoysFor, speakableFrom, wordsOf, type Grammar } from "@/services/talk/engine";
 import type { Situation, SituationLine } from "@/types/situation";
 
-/** The phone's recorder ends a recording after 6 s; stop a little before that */
-const MAX_SPEECH_MS = 5800;
+/** The phone's recorder ends a recording after 15 s (AsrBridge MAX_SECONDS); stop a little before that */
+const MAX_SPEECH_MS = 14000;
 
 export type MicPhase = "idle" | "preparing" | "listening" | "checking";
 
@@ -103,7 +103,7 @@ export function useMic(): MicHandle {
       }
       grammar.current = g;
       callback.current = onResult;
-      if (!startListening(finish)) {
+      if (!startListening(finish, { sentence: true })) {
         grammar.current = null;
         callback.current = null;
         setProblem("Không bật được micro (có thể app khác đang dùng). Thử lại nhé.");

@@ -366,17 +366,27 @@ export function startMobileReminders(): () => void {
     scheduleForBackground();
   }, 2000);
 
+  // The plan is handed over at once (the app may be frozen any moment once hidden), then again with the cards
+  // counted now: a learner who just cleared them must not hear "còn 30 thẻ" tonight
+  const reschedule = () => {
+    scheduleForBackground();
+    void refreshDue().then(() => scheduleForBackground());
+  };
   const onVisibility = () => {
-    if (document.visibilityState === "hidden") {
-      scheduleForBackground();
-    } else {
+    if (document.visibilityState === "visible") {
       openReviewIfFromReminder();
-      scheduleForBackground();
-      refreshDue();
       syncPendingMobileQuizResults();
     }
+    reschedule();
   };
   document.addEventListener("visibilitychange", onVisibility);
+  // Studying changes what is due and whether today's goal is met: counted again a little after the last answer
+  let studied: number | undefined;
+  const onStudied = () => {
+    window.clearTimeout(studied);
+    studied = window.setTimeout(reschedule, 5000);
+  };
+  window.addEventListener("myenglish-activity-updated", onStudied);
 
   const onSettingsUpdated = () => {
     refreshDue().then(() => scheduleForBackground());
@@ -386,7 +396,9 @@ export function startMobileReminders(): () => void {
   return () => {
     started = false;
     window.clearTimeout(launchTimer);
+    window.clearTimeout(studied);
     document.removeEventListener("visibilitychange", onVisibility);
+    window.removeEventListener("myenglish-activity-updated", onStudied);
     window.removeEventListener("myenglish-reminder-settings-updated", onSettingsUpdated);
   };
 }

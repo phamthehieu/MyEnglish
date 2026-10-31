@@ -240,3 +240,36 @@ describe("pronunciation counts for the day, one definition of 'đã thuộc' in 
     expect(bankStatus(makeWord("new"))).toBe("new");
   });
 });
+
+describe("today fits in the minutes chosen", () => {
+  const base: TodayTaskInput = {
+    minutes: 5,
+    vocab: { reviews: 12, newToday: 3, minutes: 4 },
+    grammar: { due: 1, studiedToday: false, nextTitle: null, relearnTitle: null },
+    pronunciation: { doneToday: false, lessonTitle: "Âm /θ/" },
+  };
+
+  it("keeps the words, and offers what does not fit as extra", () => {
+    const tasks = buildTodayTasks(base);
+    expect(tasks.filter((t) => !t.optional).map((t) => t.id)).toEqual(["vocab"]);
+    expect(tasks.filter((t) => t.optional).map((t) => t.id)).toEqual(["grammar"]);
+    expect(primaryTask(tasks)?.id).toBe("vocab");
+  });
+
+  it("puts an extra in the day when there is time for it", () => {
+    const tasks = buildTodayTasks({ ...base, minutes: 15, vocab: { ...base.vocab, minutes: 6 } });
+    expect(tasks.filter((t) => !t.optional).map((t) => t.id)).toEqual(["vocab", "grammar"]);
+    expect(tasks.filter((t) => t.optional).map((t) => t.id)).toEqual(["pronunciation"]);
+  });
+
+  it("still offers the next grammar lesson while the speaking goal is not chosen", () => {
+    const input = {
+      ...base,
+      minutes: 15 as const,
+      grammar: { due: 0, studiedToday: false, nextTitle: "Thì hiện tại tiếp diễn", relearnTitle: null },
+    };
+    const offer = { title: "Chọn mục tiêu cho lộ trình nói", detail: "", minutes: 1, done: false };
+    expect(buildTodayTasks({ ...input, speaking: offer }).some((t) => t.id === "grammar")).toBe(true);
+    expect(buildTodayTasks({ ...input, speaking: { ...offer, onPath: true } }).some((t) => t.id === "grammar")).toBe(false);
+  });
+});

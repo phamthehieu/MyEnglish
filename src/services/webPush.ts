@@ -93,6 +93,47 @@ export async function updateWebReminderTimes(times: string[]): Promise<void> {
   if (sub) await save(sub, times);
 }
 
+/** The local day this browser last told the server the goal was reached */
+const STUDIED_MARK_KEY = "myenglish_push_studied_on_v1";
+
+/**
+ * Once today's goal is reached, the server is told so (0012_push_studied.sql): the rest of today's reminders are
+ * not sent. Watches the learner's activity; nothing to do when reminders are off.
+ */
+export function watchGoalForWebReminders(): () => void {
+  if (!isWeb() || !PUBLIC_KEY || !("serviceWorker" in navigator)) return () => {};
+  let busy = false;
+  const check = async () => {
+    if (busy) return;
+    busy = true;
+    try {
+      const { getActivityLogs, getDailyGoal, getLocalDateString } = await import("./streak");
+      const today = getLocalDateString();
+      if (localStorage.getItem(STUDIED_MARK_KEY) === today) return;
+      if ((getActivityLogs()[today] || 0) < getDailyGoal()) return;
+      const reg = await navigator.serviceWorker.getRegistration();
+      const sub = await reg?.pushManager.getSubscription();
+      const client = sub ? await serverReady() : null;
+      if (!sub || !client) return;
+      const { error } = await client.rpc("mark_push_studied", {
+        p_endpoint: sub.endpoint,
+        p_day: today,
+        p_tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Ho_Chi_Minh",
+      });
+      // Not marked (offline, or the server not updated yet): tried again on the next answer
+      if (!error) localStorage.setItem(STUDIED_MARK_KEY, today);
+    } catch {
+      /* tried again on the next answer */
+    } finally {
+      busy = false;
+    }
+  };
+  const onActivity = () => void check();
+  window.addEventListener("myenglish-activity-updated", onActivity);
+  void check();
+  return () => window.removeEventListener("myenglish-activity-updated", onActivity);
+}
+
 export async function disableWebReminders(): Promise<WebPushState> {
   const reg = await navigator.serviceWorker?.getRegistration();
   const sub = await reg?.pushManager.getSubscription();

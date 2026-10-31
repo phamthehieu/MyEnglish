@@ -24,6 +24,7 @@ import {
   milestoneToCelebrate,
   pickNextStep,
   primaryTask,
+  coreTasks,
   quickStartMode,
   readCoverageBaseline,
   readMilestoneMark,
@@ -216,6 +217,7 @@ export default function TodayTab({
                 : "Xong phần hôm nay, phần tiếp theo vào ngày mai",
             minutes: path.plan.tasks.length > 0 ? path.plan.minutes : 0,
             done: path.plan.tasks.length === 0,
+            onPath: true,
           }
         : null;
   const tasks = buildTodayTasks({
@@ -245,7 +247,8 @@ export default function TodayTab({
   const run = (task: TodayTask) => runTodayTask(task.id, runDeps);
   // The main button, when several things are left: all of them one after the other (the bar on every tab goes on)
   const startFlowNow = () => {
-    const queue = planFlow(tasks);
+    // The day's own things one after the other; the extras stay one tap away on the list
+    const queue = planFlow(coreTasks(tasks));
     if (startFlow(queue)) runTodayTask(queue[0], runDeps);
   };
   const isCapped = unmasteredCount >= youngWordCap();

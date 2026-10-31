@@ -37,9 +37,43 @@ export function markInitialTensesDone(): void {
   } catch {}
 }
 
+/** The lessons chosen at the first run: learned first, then the rest of the book in its order */
+export const GRAMMAR_START_KEY = "myenglish_grammar_start_v1";
+/** Set once the path cut down by an older first run was opened to the whole book again */
+const PATH_REOPENED_KEY = "myenglish_grammar_path_reopened_v1";
+/** The tenses offered at the first run (TenseSelectionPicker): the book's first chapter */
+const FIRST_RUN_TENSE = /^ch01-l\d\d$/;
+
+/**
+ * The first run's choice of tenses is where the path starts, not the whole path: nothing is taken off the book.
+ * (It used to keep only the chosen tenses, so a beginner who kept the default met one lesson and then no more.)
+ */
 export function saveInitialTenses(lessonIds: string[]): void {
-  saveSelectedLessonIds(lessonIds);
+  try {
+    writeIdList(GRAMMAR_START_KEY, lessonIds);
+    localStorage.removeItem(GRAMMAR_EXCLUDED_KEY);
+    localStorage.removeItem(GRAMMAR_SELECTION_KEY);
+    localStorage.setItem(PATH_REOPENED_KEY, "1");
+  } catch {}
   markInitialTensesDone();
+  window.dispatchEvent(new CustomEvent("myenglish-grammar-updated"));
+}
+
+/**
+ * Once: a path that holds only first-run tenses was made by the older first run, which took every other lesson
+ * off the book. It is opened to the whole book again, those tenses first.
+ */
+function reopenFirstRunPath(known: string[]): void {
+  try {
+    if (localStorage.getItem(PATH_REOPENED_KEY) === "1" || !hasChosenInitialTenses()) return;
+    localStorage.setItem(PATH_REOPENED_KEY, "1");
+    const excluded = readIdList(GRAMMAR_EXCLUDED_KEY);
+    if (!excluded || excluded.length === 0) return;
+    const kept = known.filter((id) => !excluded.includes(id));
+    if (kept.length === 0 || !kept.every((id) => FIRST_RUN_TENSE.test(id))) return;
+    writeIdList(GRAMMAR_START_KEY, kept);
+    localStorage.removeItem(GRAMMAR_EXCLUDED_KEY);
+  } catch {}
 }
 
 function readIdList(key: string): string[] | null {
@@ -77,6 +111,7 @@ function migrateSelection(known: string[]): void {
 /** The lessons taken off the path (empty = the whole book) */
 export function getExcludedLessonIds(known: string[] = getKnownLessonIds()): string[] {
   migrateSelection(known);
+  if (known.length > 0) reopenFirstRunPath(known);
   return readIdList(GRAMMAR_EXCLUDED_KEY) ?? [];
 }
 
@@ -119,6 +154,8 @@ export function saveSelectedLessonIds(lessonIds: string[]): void {
       writeIdList(GRAMMAR_SELECTION_KEY, unique);
       localStorage.removeItem(GRAMMAR_EXCLUDED_KEY);
     }
+    // The learner's own choice of lessons: never "repaired" as an older first run's
+    localStorage.setItem(PATH_REOPENED_KEY, "1");
     markInitialTensesDone();
     window.dispatchEvent(new CustomEvent("myenglish-grammar-selection-updated", { detail: { lessonIds: unique } }));
     window.dispatchEvent(new CustomEvent("myenglish-grammar-updated"));
@@ -187,10 +224,17 @@ export function lessonsIntroducedToday(now: Date = new Date()): string[] {
     .map(([id]) => id);
 }
 
+/** Lessons of the path (in book order) in the order they are learned: those chosen at the first run first */
+export function learningOrder<T extends { id: string }>(path: T[]): T[] {
+  const start = new Set(readIdList(GRAMMAR_START_KEY) ?? []);
+  return [...path.filter((l) => start.has(l.id)), ...path.filter((l) => !start.has(l.id))];
+}
+
+/** The path in the order it is learned: the lessons chosen at the first run, then the book's order */
 export async function getSelectedLessonsInOrder(): Promise<GrammarBookLesson[]> {
   const all = await getAllBookLessons();
   const effective = new Set(getEffectiveLessonIds(all.map((l) => l.id)));
-  return all.filter((l) => effective.has(l.id));
+  return learningOrder(all.filter((l) => effective.has(l.id)));
 }
 
 /** Next new lesson: the first lesson of the path not studied yet */

@@ -240,7 +240,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
               <div className="space-y-2">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Chọn thì bạn muốn bắt đầu học</h1>
                 <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
-                  Mặc định là <b>Thì hiện tại đơn</b> — khởi đầu lý tưởng cho người mất gốc để xây chắc nền tảng mà không bị ngợp. Bạn có thể tích chọn thêm nhiều thì nếu muốn, và luôn có thể đổi lại trong tab Ngữ pháp sau này.
+                  Mặc định là <b>Thì hiện tại đơn</b>, bài nền tảng nhất. Các thì bạn chọn được học trước, sau đó app đưa tiếp các bài khác theo thứ tự sách, mỗi ngày một bài. Có thể đổi lại trong tab Ngữ pháp.
                 </p>
               </div>
 

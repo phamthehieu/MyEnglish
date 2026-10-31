@@ -288,7 +288,7 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
       setPhase("idle");
       return;
     }
-    if (!startListening(finish)) {
+    if (!startListening(finish, { sentence: true })) {
       setProblem("Không bật được micro (có thể app khác đang dùng). Thử lại nhé.");
       setPhase("idle");
       return;

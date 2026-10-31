@@ -101,7 +101,7 @@ Mở trình duyệt vào http://localhost:1420. Nhấn `Ctrl + C` trong PowerShe
 1. Supabase → **SQL Editor** → **New query**.
 2. Dán toàn bộ nội dung file `.sql`, rồi bấm **Run**.
 
-Đã chạy: 0001 → 0011.
+Đã chạy: 0001 → 0011. **Chưa chạy: 0012** (chạy xong 0012 rồi mới triển khai lại Edge Function).
 
 **Triển khai lại Edge Function nhắc học** (khi sửa `supabase/functions/`):
 

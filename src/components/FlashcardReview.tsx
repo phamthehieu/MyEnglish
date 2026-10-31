@@ -596,6 +596,7 @@ export default function FlashcardReview({
         onIntroDone={handleIntroDone}
         introLocked={isIntroCard && !introSayPassed}
         isPractice={answerIsPractice}
+        onGiveUp={handleSkip}
         tilesAction={effectiveExerciseType === "letter_tiles" ? tilesAction : null}
       />}
 

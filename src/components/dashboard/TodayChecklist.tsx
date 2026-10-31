@@ -57,11 +57,17 @@ export default function TodayChecklist({
   goalReached = false,
   nextReviewLine,
 }: TodayChecklistProps) {
-  const left = tasks.filter((t) => !t.done);
-  const doneCount = tasks.length - left.length;
+  // The day's progress counts the day's own things; the extras beyond the minutes chosen are listed apart
+  const core = tasks.filter((t) => !t.optional);
+  const extra = tasks.filter((t) => t.optional);
+  const left = core.filter((t) => !t.done);
+  const doneCount = core.length - left.length;
   const minutesLeft = left.reduce((sum, t) => sum + t.minutes, 0);
-  const percent = tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0;
+  const percent = core.length ? Math.round((doneCount / core.length) * 100) : 0;
   const flow = !!onStartFlow && left.length > 1;
+  // "You may stop" only once the words are done: a goal met with grammar or speaking leaves due cards to pile up
+  const wordsLeft = tasks.some((t) => t.id === "vocab" && !t.done);
+  const mayStop = goalReached && !wordsLeft;
   const label = flow ? (doneCount > 0 ? "Tiếp tục hôm nay" : "Bắt đầu hôm nay") : primaryLabel(primary, tasks.indexOf(primary) === 0);
 
   return (
@@ -78,7 +84,7 @@ export default function TodayChecklist({
         </div>
       )}
 
-      {goalReached && (
+      {mayStop && (
         <div className="-mx-1 flex items-center gap-3 rounded-xl bg-green-50 px-3 py-2.5 dark:bg-green-500/10" data-testid="goal-reached">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-600 text-white">
             <Check className="h-5 w-5" strokeWidth={3} />
@@ -100,12 +106,12 @@ export default function TodayChecklist({
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-bold text-slate-900 dark:text-white">{heading}</h2>
         <Badge tone="teal" className="shrink-0">
-          {doneCount}/{tasks.length} việc
+          {doneCount}/{core.length} việc
         </Badge>
       </div>
 
       <ol className="space-y-2">
-        {tasks.map((task) => {
+        {[...core, ...extra].map((task, i) => {
           const Icon = TASK_ICON[task.id];
           const isPrimary = task === primary;
           const body = (
@@ -140,6 +146,9 @@ export default function TodayChecklist({
           );
           return (
             <li key={task.id}>
+              {i === core.length && (
+                <p className="px-1 pb-2 pt-1 text-sm font-semibold text-slate-500 dark:text-zinc-400">Thêm nếu muốn</p>
+              )}
               {task.done ? (
                 <div className="flex min-h-16 items-center gap-3 rounded-xl bg-slate-50 px-3 py-2 dark:bg-zinc-800/40">{body}</div>
               ) : (
@@ -162,7 +171,7 @@ export default function TodayChecklist({
       <div className="space-y-2">
         <div className="flex items-center justify-between gap-3 text-sm">
           <span className="text-slate-600 dark:text-zinc-400">
-            {doneCount}/{tasks.length} việc · còn ~{minutesLeft} phút
+            {doneCount}/{core.length} việc · còn ~{minutesLeft} phút
           </span>
           <span className="font-semibold text-teal-700 dark:text-teal-300">{percent}% hoàn thành</span>
         </div>

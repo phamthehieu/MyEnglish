@@ -164,26 +164,32 @@ export function createWebSpeechBridge() {
       failure = null;
       pending = null;
       ended = false;
+      // A recognition aborted for this one still fires its events: they must not touch this one's state
+      const current = () => rec === r;
       r.onresult = (e) => {
+        if (!current()) return;
         for (let i = e.resultIndex; i < e.results.length; i++) {
           const res = e.results[i];
           if (res.isFinal) alternatives = Array.from(res, (a) => ({ transcript: a.transcript, confidence: a.confidence }));
         }
       };
       r.onspeechstart = () => {
-        heardSpeech = true;
+        if (current()) heardSpeech = true;
       };
-      r.onspeechend = () => emit("myenglish-asr-endpoint", "");
+      r.onspeechend = () => {
+        if (current()) emit("myenglish-asr-endpoint", "");
+      };
       r.onerror = (e) => {
-        failure = e.error;
+        if (current()) failure = e.error;
       };
       r.onend = () => {
+        if (!current()) return;
         ended = true;
         deliver();
       };
+      rec = r;
       try {
         r.start();
-        rec = r;
         return true;
       } catch {
         ended = true;

@@ -36,6 +36,8 @@ export interface TodayTask {
   /** Estimated minutes */
   minutes: number;
   done: boolean;
+  /** Beyond the minutes a day the learner chose: offered as extra ("Thêm nếu muốn"), not counted in the day's progress */
+  optional?: boolean;
 }
 
 export interface TodayTaskInput {
@@ -61,7 +63,14 @@ export interface TodayTaskInput {
   /** null or undefined: reflex challenge not displayed as a task */
   reflex?: { doneToday: boolean } | null;
   /** The day's work on the speaking path ("Lộ trình nói"): the spine of the list, first on it; null or undefined: no path */
-  speaking?: { title: string; detail: string; minutes: number; done: boolean } | null;
+  speaking?: {
+    title: string;
+    detail: string;
+    minutes: number;
+    done: boolean;
+    /** A speaking goal is chosen and its stages are being learned (false: only the offer to choose one) */
+    onPath?: boolean;
+  } | null;
 }
 
 export const GRAMMAR_TASK_MINUTES = 5;
@@ -89,8 +98,9 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
   const extras: TodayTask[] = [];
   const g = input.grammar;
   // A learner on the speaking path gets the grammar of each stage inside it, so a new lesson of the book (in the book's
-  // order, often far from what they are saying) is not pushed on them: only reviews, a lesson to redo, or one done today
-  const newLesson = input.speaking ? null : g?.nextTitle;
+  // order, often far from what they are saying) is not pushed on them: only reviews, a lesson to redo, or one done today.
+  // Only the offer to choose a goal on the list: no path yet, the book's next lesson is still offered.
+  const newLesson = input.speaking?.onPath ? null : g?.nextTitle;
   if (g && (g.studiedToday || g.due > 0 || g.relearnTitle || newLesson)) {
     extras.push({
       id: "grammar",
@@ -134,13 +144,35 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
   }
   const maxExtras = input.minutes >= 10 ? (r ? 3 : 2) : (r ? 2 : 1);
   // The speaking path comes first: everything else is around it
-  const spine: TodayTask[] = input.speaking ? [{ id: "speaking", ...input.speaking }] : [];
-  return [...spine, ...tasks, ...extras.slice(0, maxExtras)];
+  const spine: TodayTask[] = input.speaking
+    ? [
+        {
+          id: "speaking",
+          title: input.speaking.title,
+          detail: input.speaking.detail,
+          minutes: input.speaking.minutes,
+          done: input.speaking.done,
+        },
+      ]
+    : [];
+  // The day fits in the minutes chosen: the path and the words always, then each extra while there is time left
+  let used = [...spine, ...tasks].reduce((sum, t) => sum + t.minutes, 0);
+  const sized = extras.slice(0, maxExtras).map((t) => {
+    const fits = used + t.minutes <= input.minutes;
+    if (fits) used += t.minutes;
+    return fits ? t : { ...t, optional: true };
+  });
+  return [...spine, ...tasks, ...sized.filter((t) => !t.optional), ...sized.filter((t) => t.optional)];
 }
 
-/** The main button: the first thing not done yet (null = everything done) */
+/** The things that make the day (the extras beyond the chosen minutes left out) */
+export function coreTasks(tasks: readonly TodayTask[]): TodayTask[] {
+  return tasks.filter((t) => !t.optional);
+}
+
+/** The main button: the first thing not done yet, the day's own things before the extras (null = everything done) */
 export function primaryTask(tasks: readonly TodayTask[]): TodayTask | null {
-  return tasks.find((t) => !t.done) ?? null;
+  return tasks.find((t) => !t.done && !t.optional) ?? tasks.find((t) => !t.done) ?? null;
 }
 
 /** The tab each thing opens (words start a session instead) */

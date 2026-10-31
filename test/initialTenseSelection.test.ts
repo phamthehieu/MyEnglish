@@ -8,8 +8,8 @@ import {
   saveInitialTenses,
   getEffectiveLessonIds,
   getExcludedLessonIds,
-  toggleLessonSelection,
-  selectChapterLessons,
+  learningOrder,
+  saveSelectedLessonIds,
 } from "@/services/grammarPath";
 import { TENSE_OPTIONS } from "@/components/grammar/TenseSelectionPicker";
 
@@ -43,78 +43,38 @@ describe("Initial Tense Selection for beginners & update migration", () => {
     expect(localStorage.getItem(GRAMMAR_TENSES_INIT_KEY)).toBe("1");
   });
 
-  it("saves default Present Simple, excluding all other chapters and tenses", () => {
-    const allKnown = [
+  it("starts with the chosen tenses and keeps the whole book after them", () => {
+    const allKnown = ["ch01-l01", "ch01-l02", "ch01-l03", "ch01-l05", "ch02-l01", "ch02-l02", "ch03-l01"];
+    saveInitialTenses(["ch01-l05", "ch01-l01"]);
+    expect(hasChosenInitialTenses()).toBe(true);
+    expect(getExcludedLessonIds(allKnown)).toEqual([]);
+    expect(getEffectiveLessonIds(allKnown)).toEqual(allKnown);
+    expect(learningOrder(allKnown.map((id) => ({ id }))).map((l) => l.id)).toEqual([
       "ch01-l01",
+      "ch01-l05",
       "ch01-l02",
       "ch01-l03",
-      "ch01-l05",
       "ch02-l01",
       "ch02-l02",
       "ch03-l01",
-    ];
-
-    saveInitialTenses([...DEFAULT_INITIAL_TENSE_IDS]);
-    expect(hasChosenInitialTenses()).toBe(true);
-
-    const effective = getEffectiveLessonIds(allKnown);
-    expect(effective).toEqual(["ch01-l01"]);
-
-    const excluded = getExcludedLessonIds(allKnown);
-    expect(excluded).toEqual(["ch01-l02", "ch01-l03", "ch01-l05", "ch02-l01", "ch02-l02", "ch03-l01"]);
+    ]);
   });
 
-  it("allows selecting multiple tenses during setup", () => {
-    const allKnown = [
-      "ch01-l01",
-      "ch01-l02",
-      "ch01-l03",
-      "ch01-l05",
-      "ch02-l01",
-      "ch03-l01",
-    ];
-
-    // User chooses both Present Simple and Past Simple
-    saveInitialTenses(["ch01-l01", "ch01-l05"]);
-    expect(hasChosenInitialTenses()).toBe(true);
-
-    const effective = getEffectiveLessonIds(allKnown);
-    expect(effective).toEqual(["ch01-l01", "ch01-l05"]);
-
-    const excluded = getExcludedLessonIds(allKnown);
-    expect(excluded).toContain("ch01-l02");
-    expect(excluded).toContain("ch01-l03");
-    expect(excluded).toContain("ch02-l01");
-    expect(excluded).toContain("ch03-l01");
-    expect(excluded).not.toContain("ch01-l01");
-    expect(excluded).not.toContain("ch01-l05");
+  it("opens a path an older first run cut down to its tenses, once", () => {
+    const allKnown = ["ch01-l01", "ch01-l02", "ch02-l01", "ch03-l01"];
+    // What the older first run saved: every lesson but Present Simple taken off the path
+    markInitialTensesDone();
+    localStorage.setItem(GRAMMAR_EXCLUDED_KEY, JSON.stringify(["ch01-l02", "ch02-l01", "ch03-l01"]));
+    expect(getEffectiveLessonIds(allKnown)).toEqual(allKnown);
+    expect(learningOrder(allKnown.map((id) => ({ id })))[0].id).toBe("ch01-l01");
   });
 
-  it("allows user to modify selection in grammar tab after init", async () => {
-    const allKnown = [
-      "ch01-l01",
-      "ch01-l02",
-      "ch01-l05",
-      "ch02-l01",
-      "ch02-l02",
-    ];
-
-    // 1. Initialized with Present Simple
+  it("keeps a path the learner cut down to tenses themselves", () => {
+    const allKnown = ["ch01-l01", "ch01-l02", "ch02-l01", "ch03-l01"];
     saveInitialTenses(["ch01-l01"]);
-    expect(getEffectiveLessonIds(allKnown)).toEqual(["ch01-l01"]);
-
-    // 2. In Grammar tab, user toggles Present Continuous (ch01-l02)
-    // Mock getKnownLessonIds by passing allKnown or calling toggle
-    const current = getEffectiveLessonIds(allKnown);
-    expect(current).toEqual(["ch01-l01"]);
-
-    // User adds ch01-l02 to their path
-    saveInitialTenses(["ch01-l01", "ch01-l02"]);
+    // Later, in the grammar tab: only the first two tenses (picked before the book was cached, migrated on read)
+    saveSelectedLessonIds(["ch01-l01", "ch01-l02"]);
     expect(getEffectiveLessonIds(allKnown)).toEqual(["ch01-l01", "ch01-l02"]);
-
-    // 3. User selects entire chapter 2 in grammar tab
-    const nextWithCh2 = [...getEffectiveLessonIds(allKnown), "ch02-l01", "ch02-l02"];
-    saveInitialTenses(nextWithCh2);
-    expect(getEffectiveLessonIds(allKnown)).toEqual(["ch01-l01", "ch01-l02", "ch02-l01", "ch02-l02"]);
+    expect(getEffectiveLessonIds(allKnown)).toEqual(["ch01-l01", "ch01-l02"]);
   });
 });

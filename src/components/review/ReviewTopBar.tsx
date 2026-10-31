@@ -46,7 +46,13 @@ export default function ReviewTopBar({
 }: ReviewTopBarProps) {
   // Simple mode: no format selector (the app picks), no combo pill (a run of right answers is not the goal)
   const simple = isSimpleMode();
-  const percent = queue.length ? ((currentIndex + 1) / queue.length) * 100 : 0;
+  // Counted in cards, not in turns: the quizzes after a new word and the words that come back after a miss are the same
+  // card again, so "5/30" does not grow into "18/55" (and the bar does not go back) as they are added
+  const keyOf = (c: ReviewCard) => `${c.id}:${c.direction}`;
+  const total = new Set(queue.map(keyOf)).size;
+  const met = new Set(queue.slice(0, currentIndex + 1).map(keyOf)).size;
+  const again = !!currentWord && queue.slice(0, currentIndex).some((c) => keyOf(c) === keyOf(currentWord));
+  const percent = total ? (met / total) * 100 : 0;
   return (
     <div className="w-full shrink-0 mb-3 space-y-2">
       <div className="flex items-center gap-3">
@@ -75,7 +81,7 @@ export default function ReviewTopBar({
               {practiceMode && " · Luyện thêm"}
             </span>
             <span className="text-teal-800 dark:text-teal-300">
-              Thẻ {currentIndex + 1}/{queue.length}
+              {again ? "Ôn lại · " : ""}Thẻ {met}/{total}
             </span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">

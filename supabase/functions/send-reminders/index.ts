@@ -16,6 +16,8 @@ interface Subscription {
   tz: string;
   last_slot: string | null;
   failures: number;
+  /** The learner's local day on which they reached the day's goal (0012): no more reminders that day */
+  studied_on?: string | null;
 }
 
 /** A browser that keeps refusing is let go after this many tries */
@@ -38,7 +40,7 @@ Deno.serve(async (req) => {
   const now = new Date();
   const { data, error } = await db
     .from("push_subscriptions")
-    .select("endpoint, p256dh, auth, times, tz, last_slot, failures")
+    .select("endpoint, p256dh, auth, times, tz, last_slot, failures, studied_on")
     .neq("times", "{}")
     .limit(10000);
   if (error) return new Response(error.message, { status: 500 });
@@ -53,6 +55,8 @@ Deno.serve(async (req) => {
       continue; // a time zone this runtime does not know
     }
     if (!slot) continue;
+    // The slot is "YYYY-MM-DD HH:MM" in the learner's time zone: the day's goal is already reached
+    if (sub.studied_on && slot.startsWith(sub.studied_on)) continue;
     try {
       await webpush.sendNotification(
         { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },

@@ -24,6 +24,8 @@ interface AsrBridge {
   prepare(): void;
   knownWords(wordsJson: string): string;
   start(): boolean;
+  /** Android: start, the end of speech being this long a quiet (start() is 0.8 s, for one word) */
+  startFor?(silenceMs: number): boolean;
   stop(grammarJson: string): void;
   cancel(): void;
   playLast(): void;
@@ -418,6 +420,9 @@ export function wordsInDictionary(words: string[]): string[] {
   }
 }
 
+/** The quiet that ends a sentence: long enough for a beginner looking for the next word */
+export const SENTENCE_PAUSE_MS = 2000;
+
 let stopWatching: (() => void) | null = null;
 let finishing: Promise<AsrResult> | null = null;
 
@@ -431,10 +436,12 @@ function unwatchSpeechEnd(): void {
  * `onSpeechEnd` is called once when the learner has spoken and then gone quiet: the caller finishes the
  * recording there, so nobody has to press stop.
  */
-export function startListening(onSpeechEnd?: () => void): boolean {
+export function startListening(onSpeechEnd?: () => void, { sentence = false } = {}): boolean {
   try {
     unwatchSpeechEnd();
-    const started = bridge()?.start() ?? false;
+    const asr = bridge();
+    // A sentence waits longer for the end: a beginner stops between words. Apps before 0.4.2 only have start()
+    const started = (sentence && asr?.startFor ? asr.startFor(SENTENCE_PAUSE_MS) : asr?.start()) ?? false;
     if (started && onSpeechEnd) {
       const handler = () => {
         unwatchSpeechEnd();

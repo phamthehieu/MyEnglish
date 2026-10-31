@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { PATTERNS } from "@/data/patterns";
-import { getFocusSettings } from "@/services/focusSession";
+import { getDailyGoal } from "@/services/streak";
+import { chosenDailyMinutes } from "../dashboard/todayPlan";
 import { getStudyLevels } from "@/services/vocabFeed";
 import { allPatternStates, duePatterns, PATTERNS_UPDATED_EVENT, STEPS } from "@/services/patterns/progress";
 import { buildDayPlan } from "@/services/roadmap/plan";
@@ -19,16 +20,21 @@ export function useRoadmap() {
     window.addEventListener(PATTERNS_UPDATED_EVENT, refresh);
     window.addEventListener(ROADMAP_EVENT, refresh);
     window.addEventListener("myenglish-study-levels-changed", refresh);
+    // The daily goal (the minutes a day) changed
+    window.addEventListener("myenglish-activity-updated", refresh);
     return () => {
       window.removeEventListener(PATTERNS_UPDATED_EVENT, refresh);
       window.removeEventListener(ROADMAP_EVENT, refresh);
       window.removeEventListener("myenglish-study-levels-changed", refresh);
+      window.removeEventListener("myenglish-activity-updated", refresh);
     };
   }, []);
 
   const road = getRoadmap();
   const states = allPatternStates();
-  const minutes = getFocusSettings().minutes;
+  // The minutes a day chosen at the first run (5 / 10 / 15), not the focus session's timer: the path's day must fit
+  // in the day the learner signed up for, next to the words
+  const minutes = chosenDailyMinutes(getDailyGoal());
   // The path starts at the lowest level the learner studies
   const wantedLevel = getStudyLevels()[0];
   const stages = useMemo(() => buildPathStages(PATTERNS, road.goal ?? "all", wantedLevel), [road.goal, wantedLevel]);

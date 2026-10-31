@@ -21,7 +21,7 @@ describe("the speaking path in today's list", () => {
   });
 
   it("does not push a new lesson of the grammar book on a learner of the path, but keeps reviews, redos and what was done today", () => {
-    const speaking = { title: "Lộ trình nói", detail: "Chặng 1/48", minutes: 8, done: false };
+    const speaking = { title: "Lộ trình nói", detail: "Chặng 1/48", minutes: 8, done: false, onPath: true };
     const grammar = { due: 0, studiedToday: false, nextTitle: "Thì hiện tại đơn", relearnTitle: null };
     const ids = (g: typeof grammar, s: typeof speaking | null) => buildTodayTasks({ ...base, speaking: s, grammar: g }).map((t) => t.id);
     expect(ids(grammar, speaking)).toEqual(["speaking", "vocab"]);
