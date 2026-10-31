@@ -1,6 +1,6 @@
 {
-  "version": "0.4.1",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.1/MyEnglish-v0.4.1.apk",
-  "notes": "Lưu từ ngay khi đang làm việc: chạy chữ trong Gmail, Slack, trình duyệt… rồi chọn \"Lưu vào MyEnglish\" (hoặc Chia sẻ → MyEnglish), từ được học kèm câu bạn gặp. Chọn giờ nhắc học tùy ý ngay từ lúc bắt đầu. Xóa được tài khoản ngay trong app. Sửa vài lỗi nhỏ.",
-  "sha256": "327ee2617b95568ba67c3f7808f975099f3e56ee2d343cbf6d451aa4fa294412"
+  "version": "0.4.2",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.2/MyEnglish-v0.4.2.apk",
+  "notes": "App nhẹ hơn một nửa: bộ nghe giọng (41 MB) chỉ tải một lần khi bạn luyện nói lần đầu. Học từ mới chắc hơn: đọc to xong mic tự bật, sau vài thẻ nhớ nghĩa trước rồi mới chọn, rồi gõ lại từ. Luyện nói chỉ ra từ nào máy chưa nghe rõ, không cắt câu khi bạn ngập ngừng. Chạm từ khi Đọc để xem nghĩa. Kế hoạch mỗi ngày vừa đúng số phút bạn chọn, ngữ pháp đi tiếp cả sách. Sửa nhiều lỗi, an toàn dữ liệu hơn.",
+  "sha256": "bf05efec70f59c24166fb9aebd92eb6f2a332aaf88172ea23601fa02a72734a0"
 }
