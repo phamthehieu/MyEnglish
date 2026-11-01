@@ -1,6 +1,6 @@
 {
-  "version": "0.4.2",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.2/MyEnglish-v0.4.2.apk",
-  "notes": "App nhẹ hơn một nửa: bộ nghe giọng (41 MB) chỉ tải một lần khi bạn luyện nói lần đầu. Học từ mới chắc hơn: đọc to xong mic tự bật, sau vài thẻ nhớ nghĩa trước rồi mới chọn, rồi gõ lại từ. Luyện nói chỉ ra từ nào máy chưa nghe rõ, không cắt câu khi bạn ngập ngừng. Chạm từ khi Đọc để xem nghĩa. Kế hoạch mỗi ngày vừa đúng số phút bạn chọn, ngữ pháp đi tiếp cả sách. Sửa nhiều lỗi, an toàn dữ liệu hơn.",
-  "sha256": "bf05efec70f59c24166fb9aebd92eb6f2a332aaf88172ea23601fa02a72734a0"
+  "version": "0.4.3",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.3/MyEnglish-v0.4.3.apk",
+  "notes": "Từ mới dễ nhớ hơn: vừa học xong thì xếp chữ cái thành từ, chưa phải gõ cả từ. Lỡ chọn cấp cao hơn thì chạm lại cấp cũ là về; lộ trình nói có nút \"Quay lại\" và \"Học lại chặng này\". Đăng xuất: dữ liệu được lưu lên tài khoản rồi xóa khỏi máy, đăng nhập lại là có đủ (cả lộ trình nói, mẫu câu, hội thoại). Màn chào có nút đăng nhập để lấy lại tiến trình.",
+  "sha256": "a242e68618e78f3390af7d48e881b31c8e57694c582a5cb504a371bde4e9a75e"
 }
