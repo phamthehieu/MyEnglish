@@ -67,8 +67,10 @@ describe("study levels", () => {
   });
 
   it("change with a tap: add outside the run, drop at an end, start from a level in the middle", () => {
-    expect(toggleStudyLevel(["A1"], "B1")).toEqual(["A1", "A2", "B1"]);
-    expect(toggleStudyLevel(["B1", "B2"], "A2")).toEqual(["A2", "B1", "B2"]);
+    // Outside the run: that level only (one tap back undoes a wrong choice)
+    expect(toggleStudyLevel(["A1"], "B1")).toEqual(["B1"]);
+    expect(toggleStudyLevel(["B1"], "A1")).toEqual(["A1"]);
+    expect(toggleStudyLevel(["B1", "B2"], "A2")).toEqual(["A2"]);
     expect(toggleStudyLevel(["A1", "A2", "B1"], "B1")).toEqual(["A1", "A2"]);
     expect(toggleStudyLevel(["A1", "A2", "B1"], "A1")).toEqual(["A2", "B1"]);
     expect(toggleStudyLevel(["A1", "A2", "B1", "B2"], "B1")).toEqual(["B1", "B2"]);

@@ -67,16 +67,16 @@ export function defaultStudyLevelsFor(level: string | null | undefined): StudyLe
 }
 
 /**
- * The levels after the learner taps `level`: outside the run it is added (the run grows to it); at the top or the
- * bottom of the run it is dropped; in the middle of the run, the run starts from it. A single level stays.
+ * The levels after the learner taps `level`: outside the run it becomes the only level (a level chosen by mistake
+ * is undone with one tap on the old one; a second level is added with "Nâng lên"); at the top or the bottom of the
+ * run it is dropped; in the middle of the run, the run starts from it. A single level stays.
  */
 export function toggleStudyLevel(levels: readonly StudyLevel[], level: StudyLevel): StudyLevel[] {
   const run = normalizeStudyLevels(levels);
   const lo = STUDY_LEVELS.indexOf(run[0]);
   const hi = STUDY_LEVELS.indexOf(run[run.length - 1]);
   const i = STUDY_LEVELS.indexOf(level);
-  if (i < lo) return STUDY_LEVELS.slice(i, hi + 1);
-  if (i > hi) return STUDY_LEVELS.slice(lo, i + 1);
+  if (i < lo || i > hi) return [level];
   if (lo === hi) return run;
   if (i === hi) return STUDY_LEVELS.slice(lo, hi);
   if (i === lo) return STUDY_LEVELS.slice(lo + 1, hi + 1);

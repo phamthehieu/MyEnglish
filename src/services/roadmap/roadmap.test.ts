@@ -4,7 +4,7 @@ import { SITUATIONS } from "@/data/situations";
 import { STEPS, type PatternState } from "@/services/patterns/progress";
 import { buildDayPlan } from "./plan";
 import { buildPathStages, buildStages, estimateDays, STAGE_CONVERSATION } from "./stages";
-import { currentStage, getRoadmap, markDone, markTested, setFocus, setGoal, skipLevel, skipStage, markTipSeen } from "./state";
+import { currentStage, getRoadmap, markDone, markTested, setFocus, setGoal, skipLevel, skipStage, markTipSeen, unskipLevel, unskipStage } from "./state";
 
 const mem = new Map<string, string>();
 beforeEach(() => {
@@ -87,6 +87,21 @@ describe("state", () => {
     expect(getRoadmap().skipped).not.toContain(a1[0].id);
     expect(currentStage(stages, getRoadmap())?.level).toBe("A2");
     expect(skipLevel(stages, "A1")).toBe(0);
+  });
+
+  it("goes back to a level jumped over by mistake, and reopens one skipped stage", () => {
+    const stages = buildPathStages(PATTERNS, "all");
+    const a1 = stages.filter((s) => s.level === "A1");
+    markDone(a1[0].id);
+    skipLevel(stages, "A1");
+    expect(unskipLevel(stages, "A1")).toBe(a1.length - 1);
+    expect(getRoadmap().done).toContain(a1[0].id); // what was really done stays done
+    expect(currentStage(stages, getRoadmap())?.id).toBe(a1[1].id);
+
+    skipStage(a1[2].id);
+    unskipStage(a1[2].id);
+    expect(getRoadmap().skipped).not.toContain(a1[2].id);
+    expect(currentStage(stages, getRoadmap())?.id).toBe(a1[2].id);
   });
 
   it("remembers the grammar tips the learner read, once each", () => {

@@ -112,6 +112,22 @@ export function mergeXp(remote: XpRow[], deviceId: string, ledger: DayMap, local
 /** Pulled XP merged into the local state. Returns whether anything changed (and tells open screens). */
 export function applyRemoteXp(remote: XpRow[], deviceId: string): boolean {
   const ledger = ensureLedger();
+  // An empty ledger with rows of this device on the account: its data was cleared (signing out empties the
+  // machine). The ledger takes them back, or XP earned later the same day would hide under the old row.
+  const cleared = Object.keys(ledger).length === 0;
+  let raised = false;
+  for (const r of remote) {
+    if (cleared && r.device_id === deviceId && (Number(r.xp) || 0) > 0) {
+      ledger[r.day] = Number(r.xp);
+      raised = true;
+    }
+  }
+  if (raised) {
+    try {
+      localStorage.setItem(XP_LEDGER_KEY, JSON.stringify(ledger));
+      persistKeyNow(XP_LEDGER_KEY);
+    } catch {}
+  }
   const local: MergedXp = { total: readTotal(), log: readMap(XP_DAILY_LOG_KEY) ?? {} };
   const merged = mergeXp(remote, deviceId, ledger, local);
   const changed = merged.total !== local.total || JSON.stringify(merged.log) !== JSON.stringify(local.log);

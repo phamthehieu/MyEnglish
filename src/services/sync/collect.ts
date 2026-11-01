@@ -4,7 +4,7 @@
  * time (last_review, timestamp...), never by a dirty flag: rows written by a pull are older than the cursor.
  */
 import { getDatabase } from "../db";
-import { EPOCH, isFreeWordKey, SYNCED_KV, toIso, wordKey } from "./keys";
+import { EPOCH, isFreeWordKey, SPLIT_KV, splitEntries, SYNCED_KV, toIso, wordKey } from "./keys";
 import { getSyncState, setSyncState } from "./state";
 import type { SyncKind, SyncRow } from "./types";
 
@@ -304,10 +304,80 @@ export async function collectKv(now: Date = new Date()): Promise<{ rows: SyncRow
     rows.push({ kind: "kv", key, data: { v: value }, ts: meta.at });
     pending.push([key, { ...meta, pushedAt: meta.at }]);
   }
+  const splitPending: Array<[string, SplitMeta]> = [];
+  for (const key of Object.keys(SPLIT_KV)) {
+    let raw: string | null = null;
+    try {
+      raw = localStorage.getItem(key);
+    } catch {
+      continue;
+    }
+    if (raw === null) continue;
+    const prev = await readSplitMeta(key);
+    const next: SplitMeta = { e: {} };
+    let changed = !prev;
+    for (const [rowKey, v] of splitEntries(key, raw)) {
+      const old = prev?.e[rowKey];
+      // An entry met before the first sync is dated EPOCH (a remote one beats it), one that changed since by now
+      const entry: KvMeta = old && old.v === v ? old : { v, at: prev ? now.toISOString() : EPOCH, pushedAt: old?.pushedAt };
+      if (entry !== old) changed = true;
+      next.e[rowKey] = entry;
+      if (entry.pushedAt !== undefined && entry.pushedAt >= entry.at) continue;
+      rows.push({ kind: "kv", key: rowKey, data: { v }, ts: entry.at });
+      next.e[rowKey] = { ...entry, pushedAt: entry.at };
+      changed = true;
+    }
+    if (changed) splitPending.push([key, next]);
+  }
   return {
     rows,
     commit: async () => {
       for (const [key, meta] of pending) await writeKvMeta(key, meta);
+      for (const [key, meta] of splitPending) await writeSplitMeta(key, meta);
     },
   };
+}
+
+/** Per entry of a split key (SPLIT_KV): the value last seen here, when it changed and the change pushed */
+export interface SplitMeta {
+  e: Record<string, KvMeta>;
+}
+
+const splitMetaKey = (key: string) => `kvsplit:${key}`;
+
+export async function readSplitMeta(key: string): Promise<SplitMeta | null> {
+  const raw = await getSyncState(splitMetaKey(key));
+  if (!raw) return null;
+  try {
+    const v = JSON.parse(raw) as SplitMeta;
+    return v && typeof v.e === "object" && v.e ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+export const writeSplitMeta = (key: string, meta: SplitMeta) => setSyncState(splitMetaKey(key), JSON.stringify(meta));
+
+/** Largest `data` the server stores (0001: pg_column_size <= 20000); JSON text is kept under it with a margin */
+export const MAX_DATA_CHARS = 16000;
+
+/**
+ * Synced progress that cannot reach the account: a value too large for one row (the server would drop it). Signing
+ * out keeps the machine's data while there is any.
+ */
+export function unsyncableKv(): string[] {
+  const out: string[] = [];
+  const tooLarge = (v: string) => JSON.stringify({ v }).length > MAX_DATA_CHARS;
+  for (const key of Object.keys(SYNCED_KV)) {
+    try {
+      const v = localStorage.getItem(key);
+      if (v !== null && tooLarge(v)) out.push(key);
+    } catch {}
+  }
+  for (const key of Object.keys(SPLIT_KV)) {
+    try {
+      for (const [rowKey, v] of splitEntries(key, localStorage.getItem(key))) if (tooLarge(v)) out.push(rowKey);
+    } catch {}
+  }
+  return out;
 }

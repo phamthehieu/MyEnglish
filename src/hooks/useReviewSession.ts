@@ -418,16 +418,14 @@ export function useReviewSession({
     if (fallbackMode) return fallbackMode;
     if (mode !== "mixed") return currentWord ? playableOrFallback(mode as ExerciseType, currentWord) : (mode as ExerciseType);
     if (!currentWord) return "flip";
-    // Second recall after this session's introduction: the word typed, with its sentence when there is one
-    // (a recognition card's quiz then uses the production exercise, which proves recognition too)
+    // Second recall after this session's introduction: the word built from its letters. Typing it whole minutes
+    // after meeting it was too hard to remember anything from; typing comes on later days (selectExerciseType).
     const recalls = recallsAfterIntroRef.current.get(currentKey);
-    if (recalls === 1) {
-      return currentWord.direction === "production" || !pickExample(currentWord) ? "spelling" : "cloze";
-    }
-    // Quiz after the introduction: a cued recognition question (again after "Không nhớ", whose answer made the
-    // card no longer new)
+    if (recalls === 1) return "letter_tiles";
+    // Quiz after the introduction: a cued question (again after "Không nhớ", whose answer made the card no longer
+    // new): the meaning among four, or for a recall card the word from its letters
     if (recalls === 0 || (introducedAtRef.current.has(currentKey) && isNewCard(currentWord))) {
-      return currentWord.direction === "production" ? (pickExample(currentWord) ? "cloze" : "spelling") : "multiple_choice";
+      return currentWord.direction === "production" ? "letter_tiles" : "multiple_choice";
     }
     const picked = selectExerciseType(currentWord);
     // Mature recall cards sometimes get output practice: recall the word and write a sentence with it,

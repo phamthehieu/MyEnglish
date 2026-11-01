@@ -33,6 +33,7 @@ export default function AccountSettings() {
   const [name, setName] = useState("");
   const [editName, setEditName] = useState<string | null>(null);
   const [confirmWipe, setConfirmWipe] = useState(false);
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
   const [pickingAvatar, setPickingAvatar] = useState(false);
   const rankWidgets = useStandingStore((s) => s.enabled);
 
@@ -83,7 +84,7 @@ export default function AccountSettings() {
         <div className="flex items-start gap-3">
           <Cloud className="w-5 h-5 shrink-0 text-teal-700 dark:text-teal-300 mt-0.5" />
           <p className="text-sm text-slate-700 dark:text-zinc-300 leading-relaxed">
-            Đăng nhập để giữ tiến trình học giữa các máy và thi đua với bạn bè. Dữ liệu vẫn nằm trên máy; tài khoản chỉ đồng bộ bản sao.
+            Đăng nhập để giữ tiến trình học giữa các máy và thi đua với bạn bè. Đã có tài khoản thì đăng nhập để lấy lại tiến trình đã lưu.
             Sách ngữ pháp của bạn không bao giờ được tải lên.
           </p>
         </div>
@@ -219,10 +220,33 @@ export default function AccountSettings() {
             <div className="text-sm text-slate-500 dark:text-zinc-400 truncate">{user.email}</div>
           </div>
         </div>
-        <button type="button" className={secondary} disabled={busy || syncing} onClick={() => void store().signOut()}>
-          <LogOut className="w-4 h-4" /> Đăng xuất
-        </button>
+        {!confirmSignOut && (
+          <button type="button" className={secondary} disabled={busy || syncing} onClick={() => setConfirmSignOut(true)}>
+            <LogOut className="w-4 h-4" /> Đăng xuất
+          </button>
+        )}
       </div>
+      {confirmSignOut && (
+        <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2.5 text-sm text-slate-700 dark:text-zinc-300">
+          <p className="leading-relaxed">
+            Dữ liệu học được lưu lên tài khoản rồi xóa khỏi máy này. Đăng nhập lại là có lại đầy đủ. Nếu chưa lưu được (mất mạng),
+            dữ liệu vẫn được giữ trên máy.
+          </p>
+          {busy && notice && (
+            <p className="flex items-center gap-2 text-slate-500 dark:text-zinc-400">
+              <Loader2 className="w-4 h-4 animate-spin" /> {notice}
+            </p>
+          )}
+          <div className="flex flex-wrap gap-2">
+            <button type="button" className={secondary} disabled={busy} onClick={() => void store().signOut()}>
+              <LogOut className="w-4 h-4" /> Đăng xuất
+            </button>
+            <button type="button" className={secondary} disabled={busy} onClick={() => setConfirmSignOut(false)}>
+              Hủy
+            </button>
+          </div>
+        </div>
+      )}
       {pickingAvatar && (
         <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-950 border border-slate-200 dark:border-zinc-800 space-y-2">
           <div className="text-sm font-semibold text-slate-700 dark:text-zinc-300">Chọn ảnh đại diện</div>

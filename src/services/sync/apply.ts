@@ -15,8 +15,8 @@ import { toCatalogWordInput } from "../vocabFeed";
 import { applySyncedGrammarProgress } from "../grammarService";
 import { ensureKeyColumn, mistakeKey } from "../mistakes";
 import type { GrammarProgress } from "@/types/grammar";
-import { CARD_COLUMNS, LOG_COLUMNS, MISTAKE_COLUMNS, readKvMeta, writeKvMeta } from "./collect";
-import { EPOCH, isFreeWordKey, isSyncedKvKey, mergeKv, SYNCED_KV, toIso, wordKey } from "./keys";
+import { CARD_COLUMNS, LOG_COLUMNS, MISTAKE_COLUMNS, readKvMeta, readSplitMeta, writeKvMeta, writeSplitMeta, type SplitMeta } from "./collect";
+import { EPOCH, isFreeWordKey, isSyncedKvKey, mergeKv, parseSplitRowKey, splitEntries, SYNCED_KV, toIso, wordKey, type SplitEntry } from "./keys";
 import type { SyncRow } from "./types";
 
 type Db = Awaited<ReturnType<typeof getDatabase>>;
@@ -352,12 +352,72 @@ export const KV_EVENTS: Record<string, string> = {
   myenglish_grammar_intro_dates_v1: "myenglish-grammar-updated",
   myenglish_grammar_item_levels_v1: "myenglish-grammar-updated",
   myenglish_grammar_set_scores_v1: "myenglish-grammar-updated",
+  myenglish_roadmap_v1: "myenglish-roadmap-updated",
+  myenglish_grammar_selection_v1: "myenglish-grammar-updated",
+  myenglish_grammar_path_excluded_v1: "myenglish-grammar-updated",
+  myenglish_reminder_settings_v1: "myenglish-reminder-settings-updated",
+  myenglish_patterns_v1: "myenglish-patterns-updated",
+  myenglish_talk_v1: "myenglish-talk-updated",
+  myenglish_talk_review_v1: "myenglish-talk-updated",
+  myenglish_pronunciation_mastery_v1: "myenglish-pronunciation-updated",
 };
+
+/** Entries of split keys (SPLIT_KV), one key at a time: the newer entry wins. Returns how many changed here. */
+async function applySplitKv(rows: Array<{ row: SyncRow; at: SplitEntry }>, events: Set<string>): Promise<number> {
+  let applied = 0;
+  const byKey = new Map<string, Array<{ row: SyncRow; at: SplitEntry }>>();
+  for (const r of rows) byKey.set(r.at.key, [...(byKey.get(r.at.key) ?? []), r]);
+  for (const [key, list] of byKey) {
+    let value: Record<string, unknown> = {};
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || "{}");
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) value = parsed;
+    } catch {
+      continue; // unreadable here: left alone rather than replaced by a few entries
+    }
+    const local = splitEntries(key, JSON.stringify(value));
+    const meta: SplitMeta = (await readSplitMeta(key)) ?? { e: {} };
+    let changed = 0;
+    for (const { row, at } of list) {
+      const remote = str(row.data.v);
+      if (remote === null) continue;
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(remote);
+      } catch {
+        continue;
+      }
+      const mine = local.get(row.key);
+      if (mine === remote || (mine !== undefined && !(row.ts > (meta.e[row.key]?.at ?? EPOCH)))) continue;
+      const target = at.map === null ? value : ((value[at.map] && typeof value[at.map] === "object" ? value[at.map] : (value[at.map] = {})) as Record<string, unknown>);
+      target[at.entry] = parsed;
+      meta.e[row.key] = { v: remote, at: row.ts, pushedAt: row.ts };
+      changed++;
+    }
+    if (changed === 0) continue;
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      continue;
+    }
+    await writeSplitMeta(key, meta);
+    const ev = KV_EVENTS[key];
+    if (ev) events.add(ev);
+    applied += changed;
+  }
+  return applied;
+}
 
 async function applyKv(rows: SyncRow[]): Promise<number> {
   let applied = 0;
   const events = new Set<string>();
+  const split: Array<{ row: SyncRow; at: SplitEntry }> = [];
   for (const row of rows) {
+    const at = parseSplitRowKey(row.key);
+    if (at) {
+      split.push({ row, at });
+      continue;
+    }
     if (!isSyncedKvKey(row.key)) continue; // never trust the server with a key outside the allowlist
     const remote = str(row.data.v);
     if (remote === null) continue;
@@ -386,6 +446,7 @@ async function applyKv(rows: SyncRow[]): Promise<number> {
     if (ev) events.add(ev);
     applied++;
   }
+  if (split.length > 0) applied += await applySplitKv(split, events);
   if (applied > 0) {
     events.add("myenglish-activity-updated");
     try {

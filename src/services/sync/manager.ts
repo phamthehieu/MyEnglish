@@ -9,6 +9,7 @@ import { accountErrorMessage } from "../accountErrors";
 import { getSupabase } from "../supabase";
 import { AccountMismatchError, AccountResetElsewhereError, adoptAccount, getLastSyncAt, syncNow } from "./engine";
 import { isSyncPaused, setRunningPass } from "./pause";
+import { unsyncableKv } from "./collect";
 import { supabaseTransport } from "./supabaseTransport";
 import type { SyncReport } from "./types";
 import { WORDS_CHANGED_WHILE_HIDDEN_EVENT } from "../reviewRecorder";
@@ -56,6 +57,24 @@ export function runSync(): Promise<void> {
   })();
   setRunningPass(running);
   return running;
+}
+
+/**
+ * Before signing out, which clears this machine: a last pass, then whether everything is on the account.
+ * Returns null when it is, else why the machine's data has to stay.
+ */
+export async function finishBeforeSignOut(): Promise<string | null> {
+  if (useAuthStore.getState().sync.accountMismatch) return "Dữ liệu trên máy này chưa gộp vào tài khoản nên vẫn được giữ ở đây.";
+  const started = new Date().toISOString();
+  await runSync(); // the pass already running, if any
+  await runSync(); // and one that has the last changes
+  const s = useAuthStore.getState().sync;
+  if (s.status === "error" || s.accountMismatch || !s.lastSyncAt || s.lastSyncAt < started) {
+    return "Chưa lưu được lên tài khoản (có thể do mất mạng), nên dữ liệu học vẫn được giữ trên máy này.";
+  }
+  if (s.lastReport?.xpDeviceLimit) return "XP của máy này chưa lưu được lên tài khoản (quá nhiều thiết bị), nên dữ liệu vẫn được giữ trên máy này.";
+  if (unsyncableKv().length > 0) return "Một phần tiến độ quá lớn để lưu lên tài khoản, nên dữ liệu vẫn được giữ trên máy này.";
+  return null;
 }
 
 /** The learner chose what to do with this machine's data after signing in with another account */

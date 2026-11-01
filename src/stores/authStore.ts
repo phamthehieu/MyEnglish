@@ -44,6 +44,7 @@ interface AuthState {
   init: () => Promise<void>;
   signUp: (email: string, password: string, displayName: string) => Promise<boolean>;
   signIn: (email: string, password: string) => Promise<boolean>;
+  /** Saves to the account, then clears this machine (kept when not everything could be saved) */
   signOut: () => Promise<void>;
   /** Delete the account and everything of it on the server (the app stores require it); the device keeps its data */
   deleteAccount: () => Promise<boolean>;
@@ -138,16 +139,32 @@ export const useAuthStore = create<AuthState>((set, get) => {
 
     signOut: async () => {
       const client = getSupabase();
-      set({ busy: true, error: null, notice: null });
+      set({ busy: true, error: null, notice: "Đang lưu dữ liệu lên tài khoản..." });
+      let cleared = false;
+      let kept: string | null = null;
       try {
-        // Local data stays, still tied to this account: another account signing in here is asked first
-        const { forgetAccount } = await import("@/services/sync/engine");
-        await forgetAccount().catch(() => {});
-        if (client) await client.auth.signOut();
+        // Everything on the account: the machine is cleared (signing in again brings it back). Otherwise the
+        // data stays, still tied to this account: another account signing in here is asked first.
+        const { finishBeforeSignOut } = await import("@/services/sync/manager");
+        kept = await finishBeforeSignOut();
+        if (kept === null) {
+          set({ notice: "Đang xóa dữ liệu học khỏi máy này..." });
+          const { resetAllAppData } = await import("@/services/appReset");
+          cleared = await resetAllAppData({ keepCloud: true });
+          if (!cleared) kept = "Chưa xóa được dữ liệu trên máy này, nên nó vẫn còn ở đây.";
+        }
+        if (!cleared) {
+          const { forgetAccount } = await import("@/services/sync/engine");
+          await forgetAccount().catch(() => {});
+        }
+        // Offline: the session is dropped here at least
+        if (client) await client.auth.signOut().catch(() => client.auth.signOut({ scope: "local" }));
       } catch (err) {
         set({ error: accountErrorMessage(err) });
       } finally {
-        set({ busy: false, user: null, profile: null, sync: initialSync });
+        set({ busy: false, user: null, profile: null, sync: initialSync, notice: kept ? `Đã đăng xuất. ${kept}` : null });
+        // Every screen starts again from the emptied machine
+        if (cleared) window.location.reload();
       }
     },
 

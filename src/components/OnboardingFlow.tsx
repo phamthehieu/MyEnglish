@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "@/stores/authStore";
+import AccountSettings from "./dashboard/AccountSettings";
 import { ArrowLeft, Bell, Check, ChevronDown, ChevronRight, ClipboardCheck, Loader2 } from "lucide-react";
 import { isDesktopApp } from "@/lib/platform";
 import type { StudyLevel } from "@/services/vocabCatalog";
@@ -7,6 +9,7 @@ import {
   applyDailyPlan,
   applyLevelChoice,
   DAILY_PLANS,
+  isOnboardingDone,
   markOnboardingDone,
   type DailyMinutes,
   type LevelChoice,
@@ -35,6 +38,63 @@ const LEVELS: Array<{ level: LevelChoice; label: string; hint: string }> = [
   { level: "B2", label: "Khá", hint: "Đọc tài liệu tiếng Anh mà ít phải tra từ" },
   { level: "C1", label: "Thành thạo", hint: "Đọc, viết, họp khá tự nhiên" },
 ];
+
+/**
+ * "Đã có tài khoản?" on the first screen: sign in and get the account's progress back instead of setting up again
+ * (signing out clears the machine). The app starts again once the account's data is here.
+ */
+function AccountRestore() {
+  const configured = useAuthStore((s) => s.configured);
+  const user = useAuthStore((s) => s.user);
+  const [open, setOpen] = useState(false);
+  const [state, setState] = useState<"idle" | "loading" | "empty" | "failed">("idle");
+
+  useEffect(() => {
+    if (!open || !user) return;
+    let alive = true;
+    setState("loading");
+    void (async () => {
+      const { runSync } = await import("@/services/sync/manager");
+      await runSync();
+      if (!alive) return;
+      const { sync } = useAuthStore.getState();
+      if (sync.status === "error") setState("failed");
+      else if (isOnboardingDone() || (sync.lastReport?.applied ?? 0) > 0) window.location.reload();
+      else setState("empty"); // a new account: the setup goes on
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [open, user]);
+
+  if (!configured) return null;
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="min-h-11 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300"
+      >
+        Đã có tài khoản? Đăng nhập để lấy lại tiến trình
+      </button>
+    );
+  }
+  return (
+    <div className="space-y-2">
+      {state === "loading" ? (
+        <p className="flex items-center gap-2 text-sm text-slate-600 dark:text-zinc-400">
+          <Loader2 className="h-4 w-4 animate-spin" /> Đang tải dữ liệu học từ tài khoản...
+        </p>
+      ) : state === "empty" ? (
+        <p className="text-sm text-slate-600 dark:text-zinc-400">Tài khoản này chưa có dữ liệu học. Bạn chọn trình độ bên dưới để bắt đầu nhé.</p>
+      ) : state === "failed" ? (
+        <p className="text-sm text-red-700 dark:text-red-300">Chưa tải được dữ liệu (có thể do mất mạng). App sẽ tự thử lại; bạn cũng có thể vào Cài đặt sau.</p>
+      ) : (
+        <AccountSettings />
+      )}
+    </div>
+  );
+}
 
 /** A large selectable card: white, or teal-tinted with a teal border when chosen */
 const choiceCard = (on: boolean) =>
@@ -176,6 +236,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
                   Không sao nếu bạn đã quên gần hết: app sẽ bắt đầu từ những từ và mẫu câu cơ bản nhất, đi chậm mà chắc.
                 </p>
               </div>
+              <AccountRestore />
               <div className="space-y-3">
                 {LEVELS.map((l) => {
                   const on = level === l.level;

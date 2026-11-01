@@ -61,6 +61,18 @@ export function skipLevel(stages: readonly Stage[], level: string): number {
   if (ids.length > 0) save({ ...state, skipped: [...state.skipped, ...ids], focus: null });
   return ids.length;
 }
+/** A skipped stage learned after all: it is not finished any more, and it is the one being worked on */
+export const unskipStage = (id: string) => {
+  const state = getRoadmap();
+  return save({ ...state, skipped: state.skipped.filter((s) => s !== id), focus: id });
+};
+/** Back to a level jumped over: its skipped stages are learned again, from the first one */
+export function unskipLevel(stages: readonly Stage[], level: string): number {
+  const state = getRoadmap();
+  const ids = new Set(stages.filter((s) => s.level === level && state.skipped.includes(s.id)).map((s) => s.id));
+  if (ids.size > 0) save({ ...state, skipped: state.skipped.filter((s) => !ids.has(s)), focus: null });
+  return ids.size;
+}
 export const setFocus =(id: string | null) => save({ ...getRoadmap(), focus: id });
 
 export const isFinished = (state: RoadmapState, id: string) => state.done.includes(id) || state.skipped.includes(id);

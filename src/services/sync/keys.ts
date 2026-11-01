@@ -67,10 +67,80 @@ export const SYNCED_KV: Record<string, KvStrategy> = {
   myenglish_daily_quests_v1: "lww",
   myenglish_weekly_challenges_v1: "lww",
   myenglish_bonus_freezes_v1: "arrayUnion",
+  // The speaking path, the grammar path and the other progress kept outside SQLite (signing out clears the
+  // machine: what is not here would be lost)
+  myenglish_roadmap_v1: "lww",
+  myenglish_grammar_selection_v1: "lww",
+  myenglish_grammar_path_excluded_v1: "lww",
+  myenglish_grammar_tenses_init_v1: "lww",
+  myenglish_grammar_start_v1: "lww",
+  myenglish_grammar_path_reopened_v1: "lww",
+  myenglish_talk_level_v1: "lww",
+  myenglish_reflex_stats_v1: "lww",
+  myenglish_reminder_settings_v1: "lww",
+  myenglish_quiet_hours_v1: "lww",
+  myenglish_focus_settings_v1: "lww",
 };
 
+/**
+ * Progress maps that grow past what one row may hold (the server keeps at most 20 000 bytes a row): synced one
+ * row per entry, keyed `<key>|<entry>`, or `<key>|<map>.<entry>` for the maps listed inside an object. The newer
+ * entry wins. An entry removed on one machine is not removed elsewhere.
+ */
+export const SPLIT_KV: Record<string, readonly string[] | null> = {
+  myenglish_patterns_v1: null,
+  myenglish_talk_review_v1: null,
+  myenglish_pronunciation_mastery_v1: null,
+  myenglish_talk_v1: ["lines", "situations"],
+};
+
+const SPLIT_SEP = "|";
+
+export interface SplitEntry {
+  key: string;
+  /** The map inside the object, or null for a map at the top */
+  map: string | null;
+  entry: string;
+}
+
+export function splitRowKey(key: string, map: string | null, entry: string): string {
+  return `${key}${SPLIT_SEP}${map === null ? "" : `${map}.`}${entry}`;
+}
+
+/** The parts of a split row's key, or null when it is not one (or names a map that is not synced) */
+export function parseSplitRowKey(rowKey: string): SplitEntry | null {
+  const at = rowKey.indexOf(SPLIT_SEP);
+  if (at <= 0) return null;
+  const key = rowKey.slice(0, at);
+  if (!Object.prototype.hasOwnProperty.call(SPLIT_KV, key)) return null;
+  const rest = rowKey.slice(at + 1);
+  const maps = SPLIT_KV[key];
+  if (maps === null) return rest ? { key, map: null, entry: rest } : null;
+  const dot = rest.indexOf(".");
+  const map = rest.slice(0, dot);
+  const entry = rest.slice(dot + 1);
+  return dot > 0 && entry && maps.includes(map) ? { key, map, entry } : null;
+}
+
+/** The entries of a split key's stored value, by row key (JSON text each); empty when unreadable */
+export function splitEntries(key: string, raw: string | null): Map<string, string> {
+  const out = new Map<string, string>();
+  const value = parseObject(raw);
+  if (!value) return out;
+  const maps = SPLIT_KV[key];
+  const add = (map: string | null, obj: unknown) => {
+    if (!obj || typeof obj !== "object" || Array.isArray(obj)) return;
+    for (const [entry, v] of Object.entries(obj as Record<string, unknown>)) {
+      if (v !== undefined) out.set(splitRowKey(key, map, entry), JSON.stringify(v));
+    }
+  };
+  if (maps === null) add(null, value);
+  else for (const map of maps) add(map, value[map]);
+  return out;
+}
+
 export function isSyncedKvKey(key: string): boolean {
-  return Object.prototype.hasOwnProperty.call(SYNCED_KV, key);
+  return Object.prototype.hasOwnProperty.call(SYNCED_KV, key) || parseSplitRowKey(key) !== null;
 }
 
 function parseObject(raw: string | null | undefined): Record<string, unknown> | null {

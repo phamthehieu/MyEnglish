@@ -7,7 +7,7 @@ import { averageTime, masteredCount, rapidPool, STEP_LABELS, STEPS, type Pattern
 import { buildRapidMix, buildStepTasks, type Task } from "@/services/patterns/session";
 import { SKIP_PASS, type DayPlan } from "@/services/roadmap/plan";
 import { GOAL_HINT, GOAL_LABEL, GOALS, type RoadmapGoal, type Stage } from "@/services/roadmap/stages";
-import { isFinished, setFocus, setGoal, skipLevel, skipStage } from "@/services/roadmap/state";
+import { isFinished, setFocus, setGoal, skipLevel, skipStage, unskipLevel, unskipStage } from "@/services/roadmap/state";
 import { addStageWords } from "@/services/roadmap/words";
 import { PAGE_CONTAINER } from "../dashboard/shared";
 import GrammarTipCard from "../grammar/GrammarTipCard";
@@ -118,6 +118,8 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
   // The next level of the path above the one being worked on: the learner can jump to it when they know this one
   const upperLevel = current ? stages.find((s) => s.level > current.level)?.level ?? null : null;
   const leftInLevel = current ? stages.filter((s) => s.level === current.level && !isFinished(road, s.id)).length : 0;
+  // The nearest level below that was jumped over (or partly skipped): the learner can go back to it
+  const backLevel = current ? [...stages].reverse().find((s) => s.level < current.level && road.skipped.includes(s.id))?.level ?? null : null;
   // The level being worked on (the last one when the whole path is done)
   const level = current?.level ?? stages[stages.length - 1]?.level ?? "A1";
   const stateOf = (p: Pattern) => states[p.id] ?? fresh;
@@ -293,7 +295,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
               (jumping ? (
                 <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/50 p-3 space-y-2 text-sm text-slate-700 dark:text-zinc-300">
                   <p>
-                    Đánh dấu {leftInLevel} chặng {current.level} còn lại là đã biết và chuyển sang {upperLevel}? Bạn vẫn xem lại được từng chặng ở danh sách dưới.
+                    Đánh dấu {leftInLevel} chặng {current.level} còn lại là đã biết và chuyển sang {upperLevel}? Nhầm thì quay lại được, hoặc mở lại từng chặng ở danh sách dưới.
                   </p>
                   <div className="grid grid-cols-2 gap-2">
                     <Button
@@ -315,6 +317,17 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                   Đã vững {current.level}? Nhảy lên cấp {upperLevel}
                 </button>
               ))}
+            {backLevel && (
+              <button
+                onClick={() => {
+                  const n = unskipLevel(stages, backLevel);
+                  setNotice(`Đã mở lại ${n} chặng ${backLevel}. Bạn học tiếp từ chặng đầu chưa xong của ${backLevel}.`);
+                }}
+                className="block min-h-10 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300"
+              >
+                Nhảy nhầm? Quay lại học {backLevel}
+              </button>
+            )}
           </Card>
         ) : (
           <Card className="flex items-center gap-3">
@@ -402,6 +415,19 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
                         </button>
                       );
                     })}
+                    {status === "skipped" && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="w-full min-h-11"
+                        onClick={() => {
+                          unskipStage(stage.id);
+                          setNotice(`Chặng "${stage.title}" được mở lại: bạn đang học chặng này.`);
+                        }}
+                      >
+                        Học lại chặng này
+                      </Button>
+                    )}
                     {status !== "done" && status !== "skipped" && (
                       <div className="flex flex-wrap gap-2 pt-1">
                         {status !== "current" && (

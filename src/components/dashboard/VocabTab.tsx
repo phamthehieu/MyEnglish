@@ -84,7 +84,7 @@ export function LevelPicker({ value, onChange, disabled }: { value: StudyLevel[]
       })}
     </div>
     <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
-      Chạm một cấp để thêm vào. Chạm cấp ở đầu hoặc cuối để bỏ. Đã giỏi các cấp đầu? Bỏ chúng đi để bắt đầu từ cấp cao hơn.
+      Chạm một cấp để chọn cấp đó. Lỡ chọn nhầm thì chạm lại cấp cũ, từ đã học vẫn giữ nguyên.
     </p>
     </div>
   );
@@ -206,10 +206,9 @@ function LevelRoadmap({
               ? { text: "Vững rồi", cls: "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300" }
               : { text: "Đang học", cls: "bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300" };
         const next = toggleStudyLevel(levels, level);
-        const action =
-          next.length > levels.length
-            ? `Bấm để học thêm ${level}`
-            : next.length === levels.length
+        const action = !on
+          ? `Bấm để chuyển sang ${level}`
+          : next.length === levels.length
               ? "Cần học ít nhất một cấp"
               : next[0] !== levels[0]
                 ? `Bấm để bắt đầu từ ${next[0]}`

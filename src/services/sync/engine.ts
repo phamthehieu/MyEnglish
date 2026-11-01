@@ -7,7 +7,7 @@ import { getXPState } from "../smartReview";
 import { computeStreak, getActivityLogs } from "../streak";
 import { applyRows, createApplyContext, type ApplyContext } from "./apply";
 import { notifyWordsChanged } from "../reviewRecorder";
-import { COLLECTORS, collectKv, PUSH_BATCH } from "./collect";
+import { COLLECTORS, collectKv, MAX_DATA_CHARS, PUSH_BATCH } from "./collect";
 import { EPOCH } from "./keys";
 import {
   deleteSyncState,
@@ -41,8 +41,6 @@ export class AccountResetElsewhereError extends Error {
   }
 }
 
-/** Largest `data` the server stores (0001: pg_column_size <= 20000); JSON text is kept under it with a margin */
-const MAX_DATA_CHARS = 16000;
 /** Rows that could not be placed yet (their word is unknown here), kept across passes and crashes */
 const DEFERRED_KEY = "pull:deferred";
 const MAX_DEFERRED = 2000;

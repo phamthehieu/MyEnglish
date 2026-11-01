@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { Rating } from "ts-fsrs";
 import { mergeKv, SYNCED_KV, wordKey } from "@/services/sync/keys";
 import { initialLedger, mergeXp, BASE_DAY } from "@/services/sync/xpLedger";
-import { addDeckWord, card, device, fakeServer, review } from "./syncHarness";
+import { addDeckWord, card, device, fakeServer, review, type Device } from "./syncHarness";
 
 
 describe("cloud sync", () => {
@@ -403,6 +403,80 @@ describe("sync merge rules", () => {
     expect(merged.total).toBe(200);
     expect(merged.log["2026-01-02"]).toBe(100);
     expect(mergeXp([], "me", own, { total: 999, log: {} }).total).toBe(999);
+  });
+});
+
+describe("signing out clears the machine: what comes back", () => {
+  /** What signing out leaves on a machine: the learning data, localStorage and the sync cursors gone, the device id kept */
+  async function clearMachine(d: Device) {
+    for (const t of ["review_logs", "srs_production", "srs_reviews", "examples", "words", "learning_events"]) {
+      await d.conn.execute(`DELETE FROM ${t}`);
+    }
+    localStorage.clear();
+    await d.state.resetSyncCursors();
+  }
+
+  it("brings back the cards, the speaking path, the sentence patterns and the XP after signing in again", async () => {
+    const server = fakeServer();
+    const a = await device();
+    await review(a, await addDeckWord(a, "apple"));
+    a.smart.awardXP(100);
+    const road = JSON.stringify({ goal: "work", done: ["s1"], skipped: ["s2"], tested: [], conversed: [], wordsAdded: [], tipSeen: [], focus: null });
+    localStorage.setItem("myenglish_roadmap_v1", road);
+    localStorage.setItem("myenglish_patterns_v1", JSON.stringify({ greet: { step: 2, due: "2026-11-02", box: 0, times: [], lastDay: "2026-11-01" } }));
+    localStorage.setItem("myenglish_talk_v1", JSON.stringify({ lines: { "cafe.1": { tries: 2, ok: 1 } }, situations: { cafe: { runs: 1 } } }));
+    await a.engine.syncNow(server.transport(), "user-1");
+    expect(server.rows.has("kv|myenglish_patterns_v1|greet")).toBe(true);
+    expect(server.rows.has("kv|myenglish_talk_v1|lines.cafe.1")).toBe(true);
+
+    await clearMachine(a);
+    await a.engine.syncNow(server.transport(), "user-1");
+    expect(await card(a, "apple")).toBeDefined();
+    expect(localStorage.getItem("myenglish_roadmap_v1")).toBe(road);
+    expect(JSON.parse(localStorage.getItem("myenglish_patterns_v1")!).greet.step).toBe(2);
+    expect(JSON.parse(localStorage.getItem("myenglish_talk_v1")!)).toEqual({ lines: { "cafe.1": { tries: 2, ok: 1 } }, situations: { cafe: { runs: 1 } } });
+    expect(a.smart.getXPState().totalXP).toBe(100);
+
+    // XP earned afterwards adds to the old total instead of hiding under this device's old row of the day
+    a.smart.awardXP(20);
+    await a.engine.syncNow(server.transport(), "user-1");
+    const b = await device();
+    await b.engine.syncNow(server.transport(), "user-1");
+    expect(b.smart.getXPState().totalXP).toBe(120);
+  });
+
+  it("syncs a progress map larger than one row may hold, entry by entry, and the newer entry wins", async () => {
+    const server = fakeServer();
+    const a = await device();
+    const big: Record<string, unknown> = {};
+    for (let i = 0; i < 400; i++) big[`pattern-${i}`] = { step: 4, due: "2026-11-05", box: 2, times: [1200, 1500, 1800], lastDay: "2026-11-01" };
+    localStorage.setItem("myenglish_patterns_v1", JSON.stringify(big));
+    expect(localStorage.getItem("myenglish_patterns_v1")!.length).toBeGreaterThan(16000);
+    const { unsyncableKv } = await import("@/services/sync/collect");
+    expect(unsyncableKv()).toEqual([]);
+    await a.engine.syncNow(server.transport(), "user-1");
+
+    const b = await device();
+    localStorage.setItem("myenglish_patterns_v1", JSON.stringify({ mine: { step: 1, due: "2026-11-02", box: 0, times: [], lastDay: "2026-11-01" } }));
+    await b.engine.syncNow(server.transport(), "user-1");
+    const onB = JSON.parse(localStorage.getItem("myenglish_patterns_v1")!);
+    expect(Object.keys(onB)).toHaveLength(401); // both machines' entries
+    expect(onB.mine.step).toBe(1);
+
+    // A later change of one entry on b reaches the account; a second pass pushes nothing more
+    await new Promise((r) => setTimeout(r, 5));
+    onB["pattern-7"].step = 1;
+    localStorage.setItem("myenglish_patterns_v1", JSON.stringify(onB));
+    await b.engine.syncNow(server.transport(), "user-1");
+    expect(JSON.parse(String(server.rows.get("kv|myenglish_patterns_v1|pattern-7")?.data.v)).step).toBe(1);
+    expect((await b.engine.syncNow(server.transport(), "user-1")).pushed).toBe(0);
+  });
+
+  it("finds synced progress too large for the account (signing out then keeps the machine's data)", async () => {
+    await device();
+    const { unsyncableKv } = await import("@/services/sync/collect");
+    localStorage.setItem("myenglish_roadmap_v1", JSON.stringify({ done: Array.from({ length: 3000 }, (_, i) => `stage-${i}`) }));
+    expect(unsyncableKv()).toEqual(["myenglish_roadmap_v1"]);
   });
 });
 
