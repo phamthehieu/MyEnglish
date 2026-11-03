@@ -45,7 +45,11 @@ import RoadmapTodayCard from "../roadmap/RoadmapTodayCard";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import { PATTERNS } from "@/data/patterns";
 import { planFlow, startFlow } from "@/services/dayFlow";
-import { runTodayTask } from "./runTask";
+import { runTodayTask, weakGrammarTask } from "./runTask";
+import { dueLines } from "@/services/talk/review";
+import { TALK_UPDATED_EVENT } from "@/services/talk/progress";
+import { WEAK_POINTS_EVENT } from "@/services/weakPoints";
+import { practicedToday } from "@/services/learningLinks";
 import FocusStartCard from "./FocusStartCard";
 import DailyQuestsCard from "./DailyQuestsCard";
 import { FOCUS_SETTINGS_EVENT, getFocusSettings, nextReviewPeek } from "@/services/focusSession";
@@ -66,6 +70,8 @@ interface TodayTabProps {
   /** Words often forgotten that are due now: a hint to review them apart from 3 on */
   forgottenDue?: number;
   setActiveTab: (tab: DashboardTab) => void;
+  /** Opens a lesson of the grammar book (the grammar the learner keeps missing) */
+  openGrammarLesson?: (lessonId: string) => void;
   /** Words still loading: no "done" state yet */
   loading?: boolean;
   simpleMode?: boolean;
@@ -107,6 +113,7 @@ export default function TodayTab({
   onStartReflex,
   forgottenDue = 0,
   setActiveTab,
+  openGrammarLesson,
   loading = false,
   simpleMode = false,
   now: fixedNow,
@@ -202,6 +209,19 @@ export default function TodayTab({
   const gain = coverage ? coverageGain(coverage.percent, baseline) : null;
 
   const inComeback = !!comeback && !comeback.caughtUp;
+  // Conversation sentences missed earlier, and the grammar behind the patterns that keep failing
+  const [linksTick, setLinksTick] = useState(0);
+  useEffect(() => {
+    const bump = () => setLinksTick((t) => t + 1);
+    window.addEventListener(TALK_UPDATED_EVENT, bump);
+    window.addEventListener(WEAK_POINTS_EVENT, bump);
+    return () => {
+      window.removeEventListener(TALK_UPDATED_EVENT, bump);
+      window.removeEventListener(WEAK_POINTS_EVENT, bump);
+    };
+  }, []);
+  const talkDue = useMemo(() => dueLines(now).length, [linksTick, today]);
+  const weak = useMemo(() => weakGrammarTask(now), [linksTick, today]);
   // The speaking path is the first thing of the list: where the learner is on it and what is left of today's part
   const path = useRoadmap();
   const speaking: TodayTaskInput["speaking"] = !PATTERNS.length
@@ -222,6 +242,8 @@ export default function TodayTab({
         : null;
   const tasks = buildTodayTasks({
     speaking,
+    talkReview: { due: talkDue },
+    weakGrammar: weak,
     minutes: chosenDailyMinutes(streakStats.dailyGoal),
     vocab: {
       reviews: todayWork.reviews,
@@ -243,7 +265,7 @@ export default function TodayTab({
     canStudy: todayWork.total > 0 || hasStudied,
   });
 
-  const runDeps = { setActiveTab, startWords: onStart, startReflex: onStartReflex };
+  const runDeps = { setActiveTab, startWords: onStart, startReflex: onStartReflex, openGrammarLesson };
   const run = (task: TodayTask) => runTodayTask(task.id, runDeps);
   // The main button, when several things are left: all of them one after the other (the bar on every tab goes on)
   const startFlowNow = () => {
@@ -342,7 +364,12 @@ export default function TodayTab({
                 streakStats={streakStats}
                 laterToday={laterToday}
                 hour={now.getHours()}
-                nextStep={pickNextStep({ pronunciationAvailable: !!pron, pronunciationDone: !!pron?.doneToday, simple: simpleMode })}
+                nextStep={pickNextStep({
+                  pronunciationAvailable: !!pron,
+                  pronunciationDone: !!pron?.doneToday,
+                  simple: simpleMode,
+                  talkDone: practicedToday("talk", now),
+                })}
                 onNextStep={(step) => setActiveTab(step.tab)}
                 onQuickStart={onQuickStart}
                 more={streakStats.todayCount > 0 ? more : null}

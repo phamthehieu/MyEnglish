@@ -1,12 +1,20 @@
 import { cancel, isPermissionGranted, pending, requestPermission } from "@tauri-apps/plugin-notification";
 import { isPhoneApp } from "@/lib/platform";
-import { getReminderSettings, NIGHT_QUIET_END, NIGHT_QUIET_START, type ReminderSettings } from "./reminderSettings";
+import {
+  getReminderSettings,
+  NIGHT_QUIET_END,
+  NIGHT_QUIET_START,
+  onlyWhenDue,
+  quietAfterGoal,
+  type ReminderSettings,
+} from "./reminderSettings";
 import { anchorTimesOf } from "./reminderMoments";
 import { getActivityLogs, getDailyGoal, getLocalDateString } from "./streak";
 import { countTodayWork } from "./todayWork";
 import { getDueWordsLite, getWordsLite } from "./db";
 import { selectMicroQuizQuestion, type MicroQuizQuestion } from "./duoMotivation";
-import { buildFlashQuizSession } from "./flashQuizSession";
+import { buildFlashQuizSession, FLASH_QUIZ_SESSION_SIZE } from "./flashQuizSession";
+import { applySentenceAnswer, buildSentenceQuestions, mixQuestions } from "./sentenceQuiz";
 
 const DAYS_AHEAD = 3;
 const MAX_ENTRIES = 60;
@@ -192,8 +200,8 @@ export function planReminders(
     times = times.slice(0, cap);
 
     // Nothing to do today: no reminder for the rest of today (the other days are planned as usual)
-    if (day === 0 && settings.stopAfterGoal && opts.goalMetToday) times = [];
-    if (day === 0 && settings.triggerCondition === "due_only" && opts.dueToday === 0) times = [];
+    if (day === 0 && quietAfterGoal(settings) && opts.goalMetToday) times = [];
+    if (day === 0 && onlyWhenDue(settings) && opts.dueToday === 0) times = [];
     if (settings.snoozedUntil) times = times.filter((t) => t >= settings.snoozedUntil!);
 
     for (const t of times) {
@@ -223,7 +231,7 @@ export function reminderRule(
   if (gap === 0 && anchors.length === 0) return null;
   const { startHour, endHour } = reminderWindow(settings);
   const restOfToday =
-    (settings.stopAfterGoal && opts.goalMetToday) || (settings.triggerCondition === "due_only" && opts.dueToday === 0);
+    (quietAfterGoal(settings) && opts.goalMetToday) || (onlyWhenDue(settings) && opts.dueToday === 0);
   const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime();
   const quietUntil = Math.max(restOfToday ? tomorrow : 0, settings.snoozedUntil ?? 0);
   return { title: TITLE, bodies: MESSAGES, gapMin: gap, startHour, endHour, cap: settings.maxNudgesPerDay, anchors, quietUntil };
@@ -243,6 +251,8 @@ export async function ensureNotificationPermission(): Promise<boolean> {
 
 // Pre-cached data for handoff to Android background alarms
 let dueToday = 0;
+/** Sentences (conversation lines, patterns) due for review: with "only when due", they are a reason to remind too */
+let sentencesDue = 0;
 let cachedQuizzes: MicroQuizQuestion[] = [];
 /** Today's words + forgotten words: a whole Flash-Quiz session, sent as a JSON array in the "quiz" field */
 let sessionQuizzes: MicroQuizQuestion[] = [];
@@ -260,7 +270,10 @@ async function refreshDue(): Promise<void> {
   try {
     dueToday = (await countTodayWork()).total;
     const [dueWords, allWords] = await Promise.all([getDueWordsLite(), getWordsLite()]);
-    sessionQuizzes = await buildFlashQuizSession(allWords).catch(() => []);
+    // Conversation sentences and patterns due for review are asked too, between the words
+    const sentences = buildSentenceQuestions();
+    sentencesDue = sentences.length;
+    sessionQuizzes = mixQuestions(await buildFlashQuizSession(allWords).catch(() => []), sentences, FLASH_QUIZ_SESSION_SIZE);
     const sourceWords = dueWords.length > 0 ? dueWords : allWords;
     if (sourceWords.length > 0) {
       cachedQuizzes = [];
@@ -285,7 +298,8 @@ export function scheduleForBackground(now: Date = new Date()): void {
   if (!android || !android.canNotify()) return;
   const goalMetToday = (getActivityLogs()[getLocalDateString(now)] || 0) >= getDailyGoal();
   const settings = getReminderSettings();
-  const plan = planReminders(now, settings, { goalMetToday, dueToday });
+  const workDue = dueToday + sentencesDue;
+  const plan = planReminders(now, settings, { goalMetToday, dueToday: workDue });
   android.setPlan(
     JSON.stringify(
       plan.map((p, idx) => ({
@@ -296,7 +310,7 @@ export function scheduleForBackground(now: Date = new Date()): void {
         quiz: quizFor(idx),
       }))
     ),
-    JSON.stringify(reminderRule(settings, { goalMetToday, dueToday }, now))
+    JSON.stringify(reminderRule(settings, { goalMetToday, dueToday: workDue }, now))
   );
   writeJson(PLAN_KEY, plan.map((p) => p.at));
 }
@@ -330,6 +344,8 @@ export async function syncPendingMobileQuizResults(): Promise<void> {
 
     const { evaluateMicroQuizAnswer } = await import("@/services/duoMotivation");
     for (const res of results) {
+      // A sentence (conversation line, pattern) goes to its own schedule
+      if (res.wordId && applySentenceAnswer(res.wordId, !!res.isCorrect)) continue;
       if (res.wordId) {
         await evaluateMicroQuizAnswer({
           wordId: res.wordId,

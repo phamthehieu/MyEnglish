@@ -1,7 +1,9 @@
 import type { GrammarBookLesson, GrammarBookPracticeGroup } from "@/types/grammarBook";
 import { getAllBookLessons, getAllPracticeGroups, getKnownLessonIds } from "./grammarBook";
-import { getLessonProgress, isLessonIntroduced } from "./grammarService";
+import { getAllGrammarProgress, getLessonProgress, isLessonIntroduced } from "./grammarService";
 import { persistKeyNow } from "./storageBackup";
+import { LEVEL_TENSES, matchTenseLessons } from "./levelTenses";
+import type { GrammarLevel } from "@/types/grammar";
 
 /**
  * The grammar path: the imported book's lessons in book order, minus the lessons the learner took off it
@@ -57,6 +59,42 @@ export function saveInitialTenses(lessonIds: string[]): void {
   } catch {}
   markInitialTensesDone();
   window.dispatchEvent(new CustomEvent("myenglish-grammar-updated"));
+}
+
+/**
+ * Where the grammar path starts for a level chosen at the first run: the tenses of that level (C1 adds none, so
+ * B2's), so a B1 learner does not start again from Present Simple. The rest of the book follows in its order.
+ * A1 (or nothing found in the book): the default.
+ */
+export async function initialTensesForLevel(level: GrammarLevel): Promise<string[]> {
+  if (level === "A1") return [...DEFAULT_INITIAL_TENSE_IDS];
+  return initialTensesIn(level, await getAllBookLessons().catch(() => [] as GrammarBookLesson[]));
+}
+
+/** initialTensesForLevel on the lessons of a book */
+export function initialTensesIn(level: GrammarLevel, lessons: ReadonlyArray<{ id: string; title: string }>): string[] {
+  if (level === "A1") return [...DEFAULT_INITIAL_TENSE_IDS];
+  const tenses = LEVEL_TENSES[level].length > 0 ? LEVEL_TENSES[level] : LEVEL_TENSES.B2;
+  const ids = [...matchTenseLessons(tenses, [...lessons]).values()].map((l) => l.id);
+  return ids.length > 0 ? ids : [...DEFAULT_INITIAL_TENSE_IDS];
+}
+
+/**
+ * The study level changed (the level picker) before any grammar lesson was studied: the grammar path starts at the
+ * new level too. Once lessons are under way the path is left alone. Returns the unsubscribe function.
+ */
+export function followStudyLevel(levelNow: () => string | undefined): () => void {
+  const onChange = () => {
+    const level = levelNow();
+    if (!level || Object.keys(getAllGrammarProgress()).length > 0) return;
+    if (!["A1", "A2", "B1", "B2", "C1"].includes(level)) return;
+    void initialTensesForLevel(level as GrammarLevel).then((ids) => {
+      const current = readIdList(GRAMMAR_START_KEY);
+      if (current?.join() !== ids.join()) saveInitialTenses(ids);
+    });
+  };
+  window.addEventListener("myenglish-study-levels-changed", onChange);
+  return () => window.removeEventListener("myenglish-study-levels-changed", onChange);
 }
 
 /**

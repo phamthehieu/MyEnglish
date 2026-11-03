@@ -1,5 +1,7 @@
 import type { Pattern } from "@/types/pattern";
 import { recordDailyActivity } from "@/services/streak";
+import { notePatternMisses } from "@/services/learningLinks";
+import { getPattern } from "@/data/patterns";
 import { buildRapid, buildSubstitution, buildTilesItem, pickSlots, type RapidItem, type SubstituteItem, type TilesItem } from "./engine";
 import { allPatternStates, completeStep, recordReview, recordTime, STEPS } from "./progress";
 
@@ -51,6 +53,7 @@ export function applyTranslate(results: ReadonlyArray<{ patternId: string; ok: b
   const states = allPatternStates();
   for (const r of results) if ((states[r.patternId]?.step ?? 0) >= STEPS) recordReview(r.patternId, r.ok);
   recordDailyActivity(Math.max(1, results.length));
+  notePatternMisses(results.map((r) => ({ topic: getPattern(r.patternId)?.topic, ok: r.ok })));
 }
 
 /**
@@ -68,5 +71,8 @@ export function applySession(kind: SessionKind, pattern: Pattern | null, step: n
     for (const r of results) if ((states[r.patternId]?.step ?? 0) >= STEPS) recordReview(r.patternId, r.ok);
   }
   recordDailyActivity(Math.max(1, results.length));
+  // Misses keep coming in one stage: its grammar is offered on Today (learning a pattern, step 1, has none)
+  const topicOf = new Map(tasks.map((t) => [t.pattern.id, t.pattern.topic]));
+  notePatternMisses(results.map((r) => ({ topic: topicOf.get(r.patternId) ?? getPattern(r.patternId)?.topic, ok: r.ok })));
   return passed;
 }

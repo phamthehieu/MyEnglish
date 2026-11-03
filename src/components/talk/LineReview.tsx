@@ -6,9 +6,11 @@ import { handleSpeak } from "@/components/review/speech";
 import { asrAvailable, playRecording, canPlayRecording } from "@/services/pronunciationCheck";
 import { buildTiles, judgeSpoken, matchTiles, matchTyped, type Tile } from "@/services/talk/engine";
 import { dueLines, recordReview } from "@/services/talk/review";
+import { answeredSentence } from "@/services/learningLinks";
 import { Button, Card as Panel } from "@/components/ui/kit";
 import MicButton, { PracticeTop } from "./MicButton";
 import { useMic } from "./useMic";
+import ViText, { ViTextNote } from "./ViText";
 
 /** At most this many sentences in one sitting */
 const SESSION_SIZE = 8;
@@ -48,6 +50,8 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
   const [fails, setFails] = useState(0);
   /** After an answer: right, or the answer was shown (false) */
   const [done, setDone] = useState<boolean | null>(null);
+  /** A word of the answer was looked up: the sentence comes back sooner, as one not remembered */
+  const [hinted, setHinted] = useState(false);
   const mic = useMic();
 
   const card = cards[index];
@@ -61,6 +65,7 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
     setFeedback(null);
     setFails(0);
     setDone(null);
+    setHinted(false);
   }, [index]);
 
   if (cards.length === 0) {
@@ -96,8 +101,10 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
 
   const settle = (ok: boolean) => {
     mic.cancel();
-    recordReview(card.line.id, ok);
-    setResults((r) => [...r, ok]);
+    recordReview(card.line.id, ok && !hinted);
+    setResults((r) => [...r, ok && !hinted]);
+    // Said or typed (not built from its words) without looking a word up: its words are reviewed too
+    answeredSentence("talk", card.line.en, { ok, unaided: !hinted && method !== "tiles" });
     setDone(ok);
     handleSpeak(card.line.en);
   };
@@ -136,7 +143,10 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
 
       <Panel className="space-y-2">
         <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Nói câu này bằng tiếng Anh:</p>
-        <p className="text-xl font-bold text-slate-900 dark:text-zinc-100">«{card.line.vi}»</p>
+        <p className="text-xl font-bold text-slate-900 dark:text-zinc-100">
+          «<ViText vi={card.line.vi} en={card.line.en} onHint={() => setHinted(true)} off={done !== null} speak={method !== "say"} />»
+        </p>
+        {done === null && <ViTextNote cost="câu sẽ được ôn lại sớm hơn" />}
         {card.line.note && <p className="text-sm text-slate-500 dark:text-zinc-400">{card.line.note}</p>}
         {(done !== null || fails >= 2) && (
           <p className="text-base font-semibold text-teal-800 dark:text-teal-300 inline-flex items-center gap-2">

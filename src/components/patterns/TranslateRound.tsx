@@ -19,6 +19,8 @@ import MicButton, { PracticeTop } from "@/components/talk/MicButton";
 import { useMic } from "@/components/talk/useMic";
 import { useKeepVisible } from "./useKeepVisible";
 import { IpaLine, IpaToggle } from "./Ipa";
+import ViText, { ViTextNote } from "@/components/talk/ViText";
+import { answeredSentence } from "@/services/learningLinks";
 
 const ROUND_SIZE = 10;
 
@@ -119,7 +121,10 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
     <div ref={area} className="space-y-3 pb-[45vh]">
       <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <p className="text-xs font-semibold tracking-wide text-slate-500 dark:text-zinc-400">NGHĨA TIẾNG VIỆT:</p>
-        <p className="text-xl font-bold text-slate-900 dark:text-zinc-100">{item.vi}</p>
+        <p className="text-xl font-bold text-slate-900 dark:text-zinc-100">
+          <ViText vi={item.vi} en={item.en} fixed={[item.slot]} onHint={() => setHints((h) => h + 1)} off={level === "none" || !!verdict} speak={false} />
+        </p>
+        {level !== "none" && !verdict && <ViTextNote cost="mỗi từ trừ 25 điểm" />}
 
         {level !== "none" && (
           <div className="flex flex-wrap gap-1.5" aria-label="Khung câu tiếng Anh">
@@ -220,9 +225,11 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
             <IpaLine ipa={item.slot.ipa} />
           </div>
           <button
-            onClick={() =>
-              onDone({ patternId: item.pattern.id, vi: item.vi, en: item.en, ok: verdict.ok, ms: verdict.ms, hints: hints + mistakes, points: verdict.points })
-            }
+            onClick={() => {
+              // Written or said from the Vietnamese with no word opened: a recall of its words
+              answeredSentence("patterns", item.en, { ok: verdict.ok, unaided: hints === 0, goal: false });
+              onDone({ patternId: item.pattern.id, vi: item.vi, en: item.en, ok: verdict.ok, ms: verdict.ms, hints: hints + mistakes, points: verdict.points });
+            }}
             className={BTN_PRIMARY}
           >
             Tiếp theo

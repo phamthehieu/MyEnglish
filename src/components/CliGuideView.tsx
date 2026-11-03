@@ -1144,8 +1144,29 @@ export default function CliGuideView({ onRefreshWords, onNavigateTab }: CliGuide
                   <input
                     type="checkbox"
                     className="mt-0.5 h-5 w-5 accent-teal-700 shrink-0"
-                    checked={reminderSettings.stopAfterGoal}
-                    onChange={(e) => handleUpdateReminder({ stopAfterGoal: e.target.checked })}
+                    checked={reminderSettings.stopAfterGoal && !reminderSettings.remindAfterDone}
+                    onChange={(e) =>
+                      handleUpdateReminder({ stopAfterGoal: e.target.checked, ...(e.target.checked && { remindAfterDone: false }) })
+                    }
+                  />
+                </label>
+                <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">
+                  <span className="space-y-1">
+                    <span className="text-xs font-bold text-slate-800 dark:text-zinc-200 block">
+                      Học xong vẫn nhắc ôn tập
+                    </span>
+                    <span className="text-xs text-slate-600 dark:text-zinc-400 block leading-snug">
+                      Xong mục tiêu, hết từ đến hạn vẫn nhắc theo lịch trên, câu hỏi lấy từ những từ bạn đã học để
+                      giữ phản xạ. Ôn thêm không làm lệch lịch ôn của từ.
+                    </span>
+                  </span>
+                  <input
+                    type="checkbox"
+                    className="mt-0.5 h-5 w-5 accent-teal-700 shrink-0"
+                    checked={!!reminderSettings.remindAfterDone}
+                    onChange={(e) =>
+                      handleUpdateReminder({ remindAfterDone: e.target.checked, ...(e.target.checked && { stopAfterGoal: false }) })
+                    }
                   />
                 </label>
                 <label className="mt-3 pt-3 border-t border-slate-200/80 dark:border-zinc-800/80 flex items-start justify-between gap-3 cursor-pointer">

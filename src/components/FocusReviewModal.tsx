@@ -79,6 +79,7 @@ import {
   multipleChoiceDirection,
   type ExerciseType,
 } from "@/services/smartReview";
+import { weakWordIds } from "@/services/weakPoints";
 import type { GrammarExercise, GrammarLesson } from "@/types/grammar";
 import { Rating } from "ts-fsrs";
 import { playAnswerSound, playSound, resetSoundSession } from "@/services/sound";
@@ -744,7 +745,11 @@ export default function FocusReviewModal({ onClose, isPreview = false }: FocusRe
       } else {
         selectedWords = dueCards.slice(0, wordTarget);
         if (selectedWords.length === 0) {
-          selectedWords = practiceCards(await fullWords(smartSortReviewQueue(studiedWords).slice(0, wordTarget)));
+          // Words of sentences missed in conversations and patterns first, then the weakest
+          const weak = new Set(weakWordIds());
+          const sorted = smartSortReviewQueue(studiedWords);
+          const ordered = [...sorted.filter((w) => weak.has(w.id)), ...sorted.filter((w) => !weak.has(w.id))];
+          selectedWords = practiceCards(await fullWords(ordered.slice(0, wordTarget)));
         }
       }
 

@@ -26,6 +26,7 @@ import {
 } from "./smartReview";
 import { recordDailyActivity } from "./streak";
 import { logLearningEvent } from "./learningEvents";
+import { clearWeakWord } from "./weakPoints";
 
 /** A new word's first graded quiz must come at least this long after its introduction card */
 export const INTRO_MIN_GAP_MS = INTRO_READY_MS;
@@ -156,17 +157,26 @@ export function cardWithResult(card: ReviewCard, r: FSRSResult): ReviewCard {
 async function creditRecognition(card: ReviewCard, exerciseType: ExerciseType, now: Date): Promise<FSRSResult | null> {
   // Building the word from its own letters is not enough evidence of reading it (M9)
   if (exerciseType === "letter_tiles") return null;
+  return creditImplicitGood(card.id, exerciseType, now);
+}
+
+/**
+ * Credit a word's recognition card with Good when the learner proved they know it elsewhere, only when it is due
+ * (or fading below the target retention) and already in Review: a word still being learned keeps its own steps.
+ * Logged as implicit (is_scheduled = 2).
+ */
+async function creditImplicitGood(wordId: string, exerciseType: ExerciseType, now: Date): Promise<FSRSResult | null> {
   // Decide on the stored row, not the session snapshot: the popup window may have graded the recognition
   // card since (now Relearning or no longer due), and crediting it again would grade one recall twice
-  const rec = await readStoredSrs({ ...card, direction: "recognition" });
+  const rec = await readStoredSrs({ id: wordId, direction: "recognition" } as ReviewCard);
   if (!rec || (rec.state ?? 0) !== 2) return null;
   const due = isDueSrs(rec, now);
   const R = calculateRetrievability(rec, now);
   if (!due && R >= getFSRSSettings().requestRetention) return null;
   const before = reviewLogBefore(rec, now);
-  const result = await recordReview(card.id, Rating.Good, "recognition");
+  const result = await recordReview(wordId, Rating.Good, "recognition");
   await saveReviewLog({
-    wordId: card.id,
+    wordId,
     exerciseType,
     responseTimeMs: 0,
     isCorrect: true,
@@ -180,6 +190,16 @@ async function creditRecognition(card: ReviewCard, exerciseType: ExerciseType, n
     before,
   }).catch((err) => console.warn("Implicit review log save failed:", err));
   return result;
+}
+
+/**
+ * The learner said or wrote, unaided, a whole sentence that uses this word (a conversation line, a pattern): that
+ * is the word recalled in context, so its due recognition review is done (see creditImplicitGood). True if credited.
+ */
+export async function creditWordInContext(wordId: string, now: Date = new Date()): Promise<boolean> {
+  const result = await creditImplicitGood(wordId, "context_match", now).catch(() => null);
+  if (result) notifyWordsChanged([wordId]);
+  return !!result;
 }
 
 export async function setWordSuspended(wordId: string, suspended: boolean): Promise<void> {
@@ -296,6 +316,7 @@ export async function recordCardAnswer(input: CardAnswerInput): Promise<CardAnsw
     !!result && rating >= Rating.Hard && before?.retrievability != null && before.retrievability < RESCUE_RETRIEVABILITY;
 
   if (input.countsForDailyGoal && !gradedSince) recordDailyActivity(1);
+  if (result && rating >= Rating.Good) clearWeakWord(card.id);
   if (result || implicit || suspended) notifyWordsChanged([card.id]);
 
   return { result, xp, implicit, becameLeech, suspended, mastered, rescued, scheduled, practiceReason };

@@ -17,7 +17,7 @@ import {
 import { anchorTimesOf, type ReminderAnchor } from "@/services/reminderMoments";
 import StudyTimesField from "./dashboard/StudyTimesField";
 import type { ReminderTrigger } from "@/services/reminderSettings";
-import { DEFAULT_INITIAL_TENSE_IDS, saveInitialTenses } from "@/services/grammarPath";
+import { DEFAULT_INITIAL_TENSE_IDS, initialTensesForLevel, saveInitialTenses } from "@/services/grammarPath";
 import { GOAL_HINT, GOAL_LABEL, GOALS, type RoadmapGoal } from "@/services/roadmap/stages";
 import { setGoal as setRoadmapGoal } from "@/services/roadmap/state";
 import PlacementTest from "./PlacementTest";
@@ -162,7 +162,8 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
       if (level) applyLevelChoice(level);
       applyDailyPlan(minutes, reminders, { anchors, transitions }, triggerCondition);
       setStudyLevels(studyLevels);
-      saveInitialTenses([...DEFAULT_INITIAL_TENSE_IDS]);
+      // One level for every part: grammar starts at the tenses of the level chosen
+      saveInitialTenses(await initialTensesForLevel(!level || level === "A0" ? "A1" : level));
       if (goal) setRoadmapGoal(goal);
       await topUpNewWords();
       markOnboardingDone();

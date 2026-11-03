@@ -13,6 +13,8 @@ import { removeGenerated, TALK_GENERATED_EVENT } from "@/services/talk/custom";
 import { aiReady, generateSituation } from "@/services/talk/generateAi";
 import { batchAvailable, batchStatus, cancelBatch, importPending, startBatch, topUpBatch, type BatchStatus } from "@/services/talk/situationBatch";
 import { getActiveCefrLevel } from "@/services/pipeline";
+import { getStudyLevels } from "@/services/vocabFeed";
+import { TALK_REVIEW_AUTOSTART_KEY } from "../dashboard/runTask";
 import { isFoundationMode } from "@/services/learnerProfile";
 import { features } from "@/lib/platform";
 import { asrAvailable, speechUnavailableText } from "@/services/pronunciationCheck";
@@ -24,6 +26,13 @@ import WarmUp from "./WarmUp";
 type View = { kind: "list" } | { kind: "warmup"; id: string } | { kind: "chat"; id: string } | { kind: "review" };
 
 const LEVELS: Array<Situation["cefr"]> = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
+/** How far a conversation's level is from the study level: the same 0, a level below 2, a level above 3, … */
+function levelDistance(cefr: Situation["cefr"]): number {
+  const target = Math.max(0, LEVELS.indexOf((getStudyLevels()[0] ?? "A1") as Situation["cefr"]));
+  const at = LEVELS.indexOf(cefr);
+  return at <= target ? (target - at) * 2 : (at - target) * 2 + 1;
+}
 
 const GROUPS: Array<{ id: SituationGroup; label: string }> = [
   { id: "daily", label: "Đời thường" },
@@ -297,7 +306,18 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
 
 /** Trò chuyện tình huống: learn the sentences of a situation, then talk it through with a scripted partner */
 export default function TalkTab({ resetKey }: { resetKey?: number }) {
-  const [view, setView] = useState<View>({ kind: "list" });
+  // Opened from Today's "Ôn câu hội thoại": straight into the review
+  const [view, setView] = useState<View>(() => {
+    try {
+      if (sessionStorage.getItem(TALK_REVIEW_AUTOSTART_KEY) === "1") {
+        sessionStorage.removeItem(TALK_REVIEW_AUTOSTART_KEY);
+        if (dueLines().length > 0) return { kind: "review" };
+      }
+    } catch {
+      /* the list, as usual */
+    }
+    return { kind: "list" };
+  });
   const [, setTick] = useState(0);
   const [level, setLevel] = useState<"all" | Situation["cefr"]>("all");
   // The learner's word bank: conversations that use words they are still learning say so, and come first within a level
@@ -342,13 +362,14 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
   const all = allSituations();
   const inLevel = (s: Situation) => level === "all" || s.cefr === level;
   const due = dueLines().length;
-  // Today's suggestion: the one being learned, else the easiest new one that uses the most words the learner is learning
+  // Today's suggestion: the one being learned, else a new one at the learner's study level (then just below, then
+  // above) that uses the most words they are learning
   const statusOf = (s: Situation) => summarize(s).status;
   const suggested =
     all.find((s) => statusOf(s) === "learning") ??
     [...all]
       .filter((s) => statusOf(s) === "new")
-      .sort((a, b) => LEVELS.indexOf(a.cefr) - LEVELS.indexOf(b.cefr) || learningWordsIn(b, formIndex) - learningWordsIn(a, formIndex))[0];
+      .sort((a, b) => levelDistance(a.cefr) - levelDistance(b.cefr) || learningWordsIn(b, formIndex) - learningWordsIn(a, formIndex))[0];
   const showSuggested = !!suggested && level === "all";
   return (
     <div className={PAGE_CONTAINER}>

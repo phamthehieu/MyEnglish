@@ -1,10 +1,12 @@
-import { AlarmClock, ArrowRight, AudioLines, BookOpen, Check, Flame, Footprints, GraduationCap, Zap } from "lucide-react";
+import { AlarmClock, ArrowRight, AudioLines, BookOpen, Check, Flame, Footprints, GraduationCap, RotateCcw, Target, Zap } from "lucide-react";
 import { Button, Card, Badge, ProgressBar } from "../ui/kit";
 import type { TodayTask, TodayTaskId } from "./todayPlan";
 
 const TASK_ICON: Record<TodayTaskId, typeof BookOpen> = {
   speaking: Footprints,
+  talkReview: RotateCcw,
   vocab: BookOpen,
+  weakGrammar: Target,
   grammar: GraduationCap,
   pronunciation: AudioLines,
   reflex: Zap,

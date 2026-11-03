@@ -18,6 +18,7 @@ import { syncDailySituations } from "@/services/talk/situationFeed";
 import { allSituations } from "@/data/situations";
 import { AI_VOCAB_ENABLED } from "@/services/features";
 import { countWaitingWords, getStudyLevels, hasChosenStudyLevels, topUpNewWords, syncWordsWithCatalog } from "@/services/vocabFeed";
+import { followStudyLevel } from "@/services/grammarPath";
 import { ensureCatalogSeeded, loadCatalogDistractors } from "@/services/vocabCatalog";
 import { ensureGrammarBookSeeded } from "@/services/grammarBook";
 import { hasChosenInitialTenses } from "@/services/grammarPath";
@@ -532,6 +533,15 @@ export default function MainDashboard({
     await refreshWords();
     setActivityVersion((v) => v + 1);
   };
+
+  /** Opens one lesson of the grammar book on the grammar tab */
+  const openGrammarLessonTab = (lessonId: string) => {
+    setGrammarLessonToOpen(lessonId);
+    setActiveTab("grammar");
+  };
+
+  // One level for every part: a level changed before any grammar lesson moves where grammar starts
+  useEffect(() => followStudyLevel(() => getStudyLevels()[0]), []);
 
   // Wrong options for multiple choice: the learner's words plus unseen deck words of their levels
   const [catalogDistractors, setCatalogDistractors] = useState<WordDetail[]>([]);
@@ -1340,6 +1350,7 @@ export default function MainDashboard({
                   setActiveTab: handleSelectTab,
                   startWords: () => handleStartReview(true),
                   startReflex: () => setReflexChallengeOpen(true),
+                  openGrammarLesson: openGrammarLessonTab,
                 });
               } finally {
                 flowRunRef.current = false;
@@ -1363,6 +1374,7 @@ export default function MainDashboard({
               onStartReflex={() => setReflexChallengeOpen(true)}
               forgottenDue={forgottenDue}
               setActiveTab={handleSelectTab}
+              openGrammarLesson={openGrammarLessonTab}
               loading={loading}
               simpleMode={simpleMode}
             />

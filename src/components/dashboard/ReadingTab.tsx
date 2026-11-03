@@ -4,6 +4,7 @@ import { BookOpenText, Check, Pencil, Plus, Quote, Sparkles, X } from "lucide-re
 import { useWordsStore } from "@/stores/wordsStore";
 import { analyzeText, logEncounters, type BankStatus, type ReadingAnalysis } from "@/services/reading";
 import { addMetWords } from "@/services/metWords";
+import { creditPractice } from "@/services/learningLinks";
 import { catalogMeaningsOf } from "@/services/vocabCatalog";
 import { addUserContextExample } from "@/services/db";
 import { PAGE_CONTAINER } from "./shared";
@@ -138,6 +139,8 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
     setPicked(new Map());
     setSavedSentences(new Set());
     const met = logEncounters(computed.bankHits);
+    // A real text read (not a few words): practice of the day
+    if (computed.totalWords >= 20) creditPractice("reading");
     if (met > 0) {
       showMessage(
         `Bạn gặp lại ${met} từ đang học trong bài này. Gặp từ trong văn bản thật giúp bạn hiểu cách dùng của nó.`,

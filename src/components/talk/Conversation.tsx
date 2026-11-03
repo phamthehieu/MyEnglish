@@ -48,10 +48,12 @@ import {
   setTalkLevel,
 } from "@/services/talk/progress";
 import { scheduleMiss } from "@/services/talk/review";
+import { answeredSentence, WORDS_USED_EVENT } from "@/services/learningLinks";
 import { Button } from "@/components/ui/kit";
 import MicButton from "./MicButton";
 import TapText, { useWordTap } from "./WordTap";
 import { useMic } from "./useMic";
+import ViText, { ViTextNote } from "./ViText";
 
 const LEVEL_LABEL: Record<Level, string> = { auto: "Tự động", choose: "Chọn câu", tiles: "Ghép từ", say: "Nói", type: "Gõ" };
 const METHOD_ICON: Record<Method, typeof Mic> = { choose: ListChecks, tiles: Puzzle, say: Mic, type: Keyboard };
@@ -234,6 +236,18 @@ function ConversationChat({
   const [feedback, setFeedback] = useState<string | null>(null);
   const [fails, setFails] = useState(0);
   const [hint, setHint] = useState(false);
+  /** A word of the answer was looked up (tap on the Vietnamese): the answer is not unaided */
+  const lookedUp = useRef(false);
+  // Words of the bank credited as reviewed because the learner used them in this conversation
+  const [usedWords, setUsedWords] = useState<string[]>([]);
+  useEffect(() => {
+    const onUsed = (e: Event) => {
+      const words = (e as CustomEvent<{ words: string[] }>).detail?.words ?? [];
+      setUsedWords((prev) => [...new Set([...prev, ...words])]);
+    };
+    window.addEventListener(WORDS_USED_EVENT, onUsed);
+    return () => window.removeEventListener(WORDS_USED_EVENT, onUsed);
+  }, []);
   const [levelOpen, setLevelOpen] = useState(false);
 
   const mic = useMic();
@@ -280,6 +294,7 @@ function ConversationChat({
       setFeedback(null);
       setFails(0);
       setHint(false);
+      lookedUp.current = false;
     },
     [replies, situation, canSpeak]
   );
@@ -358,12 +373,21 @@ function ConversationChat({
       setMissed((m) => new Set(m).add(id));
       // A missed sentence comes back for review (not the made-up lines of "swap roles")
       if (!id.includes("~")) scheduleMiss(id);
+      const line = replies.find((l) => l.id === id) ?? (target?.id === id ? target : undefined);
+      if (line) answeredSentence("talk", line.en, { ok: false, unaided: false });
     }
+  };
+
+  /** A right answer: practice of the day, and (said or typed without the hint) a review of its words */
+  const answered = (lineId: string, unaided: boolean) => {
+    const line = replies.find((l) => l.id === lineId);
+    if (line) answeredSentence("talk", line.en, { ok: true, unaided: unaided && !hint && !lookedUp.current });
   };
 
   const pickChoice = (choice: Choice) => {
     if (choice.correct) {
       recordLineBuilt(choice.line.id);
+      answered(choice.line.id, false);
       send(choice.line.id);
     } else {
       setWrongPicks((w) => new Set(w).add(choice.line.id));
@@ -375,6 +399,7 @@ function ConversationChat({
     const id = matchTiles(chosen, replies);
     if (id) {
       recordLineBuilt(id);
+      answered(id, false);
       send(id);
     } else {
       wrong("Chưa đúng rồi. Bấm vào từ đã chọn để bỏ ra, xếp lại nhé.");
@@ -385,6 +410,7 @@ function ConversationChat({
     const match = matchTyped(typed, replies);
     if (match) {
       recordLineBuilt(match.lineId);
+      answered(match.lineId, true);
       send(match.lineId);
     } else {
       wrong("Chưa đúng rồi, xem lại nghĩa tiếng Việt rồi gõ lại nhé.");
@@ -412,6 +438,7 @@ function ConversationChat({
       for (const w of result.words ?? []) if (w.word && w.word !== "[unk]" && w.conf < 0.6) weakWords.current.add(w.word);
       if (id) recordLineTry(id, v.kind === "ok", v.heard);
       if (v.kind === "ok" && v.lineId) {
+        answered(v.lineId, true);
         send(v.lineId);
         return;
       }
@@ -432,6 +459,7 @@ function ConversationChat({
     const line = target ?? replies[0];
     setMissed((m) => new Set(m).add(line.id));
     if (!line.id.includes("~")) scheduleMiss(line.id);
+    answeredSentence("talk", line.en, { ok: false, unaided: false });
     send(line.id, true);
   };
 
@@ -470,6 +498,7 @@ function ConversationChat({
     setSteps([{ nodeId: situation.dialogue[0].id, v: pickVariant(situation.dialogue[0].id) }]);
     setFinished(false);
     setMissed(new Set());
+    setUsedWords([]);
     setSummary(null);
     turnCount.current = 0;
     firstTry.current = 0;
@@ -690,6 +719,12 @@ function ConversationChat({
                 )}
               </div>
             )}
+            {usedWords.length > 0 && (
+              <p className="rounded-xl bg-green-50 dark:bg-green-950/30 px-3 py-2 text-sm text-green-800 dark:text-green-200">
+                Bạn đã dùng đúng {usedWords.length} từ đang học: <span className="font-semibold">{usedWords.join(", ")}</span>. Các từ
+                này được tính là đã ôn hôm nay.
+              </p>
+            )}
             {missed.size > 0 && (
               <div className="text-sm text-slate-700 dark:text-zinc-300">
                 <p className="font-semibold text-slate-900 dark:text-zinc-100">Câu cần luyện thêm (sẽ quay lại trong phần ôn):</p>
@@ -735,14 +770,24 @@ function ConversationChat({
         <div className="shrink-0 max-h-[60%] overflow-y-auto rounded-t-2xl border border-b-0 border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 pt-4 space-y-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-1px_3px_rgba(15,23,42,0.05)]">
           {method === "tiles" || method === "choose" ? (
             <p className="text-base text-slate-700 dark:text-zinc-300">
-              Nói: <span className="font-semibold text-slate-900 dark:text-zinc-100">«{target.vi}»</span>
+              Nói:{" "}
+              <span className="font-semibold text-slate-900 dark:text-zinc-100">
+                «<ViText vi={target.vi} en={target.en} off={challenge} onHint={() => (lookedUp.current = true)} />»
+              </span>
             </p>
           ) : (
             <div className="text-base text-slate-700 dark:text-zinc-300">
               <p>
                 Bạn muốn nói:{" "}
-                <span className="font-semibold text-slate-900 dark:text-zinc-100">{replies.map((l) => `«${l.vi}»`).join(" hoặc ")}</span>
+                <span className="font-semibold text-slate-900 dark:text-zinc-100">
+                  {replies.map((l, i) => (
+                    <span key={l.id}>
+                      {i > 0 && " hoặc "}«<ViText vi={l.vi} en={l.en} off={challenge} speak={false} onHint={() => (lookedUp.current = true)} />»
+                    </span>
+                  ))}
+                </span>
               </p>
+              {!challenge && !hint && <ViTextNote />}
               {hint ? (
                 <ul className="mt-1 text-sm text-teal-800 dark:text-teal-300 list-disc pl-5">
                   {replies.map((l) => (

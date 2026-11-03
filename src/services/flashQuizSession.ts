@@ -1,13 +1,15 @@
 /**
  * The questions of the floating Flash-Quiz (Android): what the learner studied today and the words they keep
  * getting wrong, so one session revisits them instead of asking one random due word.
- * Order of priority: missed today -> "từ hay quên" (active) -> learned/reviewed today. Each word is asked once.
+ * Order of priority: missed today -> words of sentences missed in conversations and patterns (weakPoints.ts) ->
+ * "từ hay quên" (active) -> learned/reviewed today. Each word is asked once.
  */
 import type { WordDetail } from "@/types/database";
 import { shuffle } from "@/lib/utils";
 import { getDatabase, isPlaceholderMeaning } from "./db";
 import { generateMultipleChoiceQuestion, isSuspended } from "./smartReview";
 import { loadForgottenWords } from "./forgottenWords";
+import { weakWordIds } from "./weakPoints";
 import type { MicroQuizQuestion } from "./duoMotivation";
 
 /** Questions handed to one reminder (the floating card asks up to this many) */
@@ -71,6 +73,8 @@ export async function buildFlashQuizSession(
   };
 
   today.filter((r) => r.wrong > 0).forEach((r) => add(byId.get(r.word_id)));
+  // Words of sentences missed in conversations and patterns
+  weakWordIds(now).forEach((id) => add(byId.get(id)));
   forgotten?.active.forEach((e) => add(e.word));
   today.forEach((r) => add(byId.get(r.word_id)));
 

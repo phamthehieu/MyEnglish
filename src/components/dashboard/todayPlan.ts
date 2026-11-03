@@ -27,7 +27,7 @@ export function chosenDailyMinutes(dailyGoal: number): DailyMinutes {
 
 // ─── Today's list ────────────────────────────────────────────────────────────
 
-export type TodayTaskId = "speaking" | "vocab" | "grammar" | "pronunciation" | "reflex";
+export type TodayTaskId = "speaking" | "talkReview" | "vocab" | "weakGrammar" | "grammar" | "pronunciation" | "reflex";
 
 export interface TodayTask {
   id: TodayTaskId;
@@ -71,7 +71,14 @@ export interface TodayTaskInput {
     /** A speaking goal is chosen and its stages are being learned (false: only the offer to choose one) */
     onPath?: boolean;
   } | null;
+  /** Conversation sentences missed earlier and due today (talk/review.ts); null, undefined or 0: none */
+  talkReview?: { due: number } | null;
+  /** The grammar of a speaking stage whose patterns keep failing (weakPoints.ts); null or undefined: none */
+  weakGrammar?: { title: string; misses: number; reviewedToday: boolean } | null;
 }
+
+/** Minutes for reviewing missed conversation sentences: about 20 seconds each, at least 2 */
+export const talkReviewMinutes = (due: number) => Math.max(2, Math.round(due / 3));
 
 export const GRAMMAR_TASK_MINUTES = 5;
 
@@ -96,6 +103,17 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
     },
   ];
   const extras: TodayTask[] = [];
+  // The grammar behind the sentences the learner keeps missing: part of the day (a few minutes), not an extra
+  const w = input.weakGrammar;
+  if (w) {
+    tasks.push({
+      id: "weakGrammar",
+      title: `Ngữ pháp hay sai: ${w.title}`,
+      detail: w.reviewedToday ? "Đã xem lại hôm nay" : `Sai ${w.misses} câu mẫu gần đây, xem lại vài phút`,
+      minutes: 3,
+      done: w.reviewedToday,
+    });
+  }
   const g = input.grammar;
   // A learner on the speaking path gets the grammar of each stage inside it, so a new lesson of the book (in the book's
   // order, often far from what they are saying) is not pushed on them: only reviews, a lesson to redo, or one done today.
@@ -143,7 +161,7 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
     });
   }
   const maxExtras = input.minutes >= 10 ? (r ? 3 : 2) : (r ? 2 : 1);
-  // The speaking path comes first: everything else is around it
+  // The speaking path comes first, then the sentences missed in conversations: saying them again while they are fresh
   const spine: TodayTask[] = input.speaking
     ? [
         {
@@ -155,6 +173,16 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
         },
       ]
     : [];
+  const due = input.talkReview?.due ?? 0;
+  if (due > 0) {
+    spine.push({
+      id: "talkReview",
+      title: "Ôn câu hội thoại đã nói sai",
+      detail: `${due} câu đến hạn`,
+      minutes: talkReviewMinutes(due),
+      done: false,
+    });
+  }
   // The day fits in the minutes chosen: the path and the words always, then each extra while there is time left
   let used = [...spine, ...tasks].reduce((sum, t) => sum + t.minutes, 0);
   const sized = extras.slice(0, maxExtras).map((t) => {
@@ -178,6 +206,8 @@ export function primaryTask(tasks: readonly TodayTask[]): TodayTask | null {
 /** The tab each thing opens (words start a session instead) */
 export const TASK_TAB: Record<Exclude<TodayTaskId, "vocab">, DashboardTab> = {
   speaking: "patterns",
+  talkReview: "talk",
+  weakGrammar: "grammar",
   grammar: "grammar",
   pronunciation: "pronunciation",
   reflex: "leaderboard",
@@ -214,8 +244,12 @@ export interface NextStep {
   tab: DashboardTab;
 }
 
-/** The one light thing offered once the day is done */
-export function pickNextStep(s: { pronunciationAvailable: boolean; pronunciationDone: boolean; simple: boolean }): NextStep {
+/**
+ * The one light thing offered once the day is done: first using what was learned in a conversation (when none was
+ * practised today), then pronunciation, then reading
+ */
+export function pickNextStep(s: { pronunciationAvailable: boolean; pronunciationDone: boolean; simple: boolean; talkDone?: boolean }): NextStep {
+  if (s.talkDone === false) return { label: "Dùng từ vừa học trong một hội thoại", tab: "talk" };
   if (s.pronunciationAvailable && !s.pronunciationDone) return { label: "Phát âm 5 phút", tab: "pronunciation" };
   // Reading asks for a real text to paste: too much for a beginner at the end of the day
   if (!s.simple) return { label: "Đọc một đoạn thật", tab: "reading" };

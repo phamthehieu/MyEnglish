@@ -491,6 +491,8 @@ class FloatingNudgeActivity : Activity() {
     val optionsArray = quizObj.optJSONArray("options") ?: JSONArray()
     val wordId = quizObj.optString("wordId", "")
     val example = quizObj.optString("example", quizObj.optString("sentence", ""))
+    // A conversation sentence or a pattern (sentenceQuiz.ts): the Vietnamese is shown, an English sentence is picked
+    val isSentence = wordId.startsWith("talk:") || wordId.startsWith("pattern:")
 
     // 1. Top Header Bar (matches FocusReviewModal header with Zap gradient squircle)
     val topRow = LinearLayout(this).apply {
@@ -548,7 +550,7 @@ class FloatingNudgeActivity : Activity() {
     topRow.addView(counterBadge)
 
     val tagPill = TextView(this).apply {
-      text = if (direction == "production") "Nhớ lại" else "Nhận diện"
+      text = if (isSentence) "Câu" else if (direction == "production") "Nhớ lại" else "Nhận diện"
       setTextColor(Color.parseColor("#a1a1aa"))
       textSize = 10f
       background = GradientDrawable().apply {
@@ -653,7 +655,7 @@ class FloatingNudgeActivity : Activity() {
     val wordView = TextView(this).apply {
       text = if (promptTitle.isNotBlank()) promptTitle else word
       setTextColor(Color.WHITE)
-      textSize = 21f
+      textSize = if (isSentence) 16f else 21f
       setTypeface(typeface, Typeface.BOLD)
       setOnClickListener { speakWord(targetPronounceWord) }
     }
@@ -685,7 +687,7 @@ class FloatingNudgeActivity : Activity() {
 
     // Prompt Label
     val promptLabel = TextView(this).apply {
-      text = if (direction == "production") "Chọn từ tiếng Anh chính xác:" else "Chọn nghĩa đúng:"
+      text = if (isSentence) "Chọn câu tiếng Anh đúng:" else if (direction == "production") "Chọn từ tiếng Anh chính xác:" else "Chọn nghĩa đúng:"
       setTextColor(Color.parseColor("#71717a"))
       textSize = 11f
       setTypeface(typeface, Typeface.BOLD)

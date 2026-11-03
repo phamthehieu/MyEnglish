@@ -42,6 +42,8 @@ import {
 } from "@/services/pronunciationCheck";
 import { checkSentence, type SentenceCheck } from "@/services/sentenceCheck";
 import { countWords } from "@/services/shadowingPractice";
+import { creditPractice } from "@/services/learningLinks";
+import { getStudyLevels } from "@/services/vocabFeed";
 import INDEX from "@/data/shadowing/index.json";
 import { FEED_EVENT, getFeedEntries, getFeedLesson } from "@/services/shadowingFeed";
 
@@ -263,7 +265,11 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
     if (mine !== run.current) return;
     if (!heard.ok) setProblem("Máy chưa nghe được, thử lại nhé.");
     else if ((heard.peak ?? 0) < SILENCE_PEAK) setProblem("Không nghe thấy tiếng. Kiểm tra micro rồi thử lại.");
-    else setResult(checkSentence(text, heard.words ?? []));
+    else {
+      setResult(checkSentence(text, heard.words ?? []));
+      // A sentence shadowed aloud: practice of the day
+      creditPractice("shadowing");
+    }
     setPhase("idle");
   };
 
@@ -747,8 +753,11 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
     onLoop: () => setLoop((v) => !v),
   };
   const goNext = () => play(Math.min(segments.length - 1, index + 1));
-  const markDone = (kind: "dictation" | "cloze", i: number) =>
+  const markDone = (kind: "dictation" | "cloze", i: number) => {
+    // Each sentence counts once as practice of the day
+    if (!(kind === "dictation" ? doneDictation : doneCloze).has(i)) creditPractice("shadowing");
     (kind === "dictation" ? setDoneDictation : setDoneCloze)((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
+  };
 
   const tool = (on: boolean) =>
     `h-11 shrink-0 rounded-xl border inline-flex items-center justify-center gap-1.5 text-xs font-semibold transition-colors ${
@@ -1013,7 +1022,11 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
     return [...ENTRIES, ...downloaded.filter((e) => !have.has(e.id))];
   }, [downloaded]);
   const levels = useMemo(() => [...new Set(entries.map((e) => e.level))].sort(), [entries]);
-  const [level, setLevel] = useState(levels[0] ?? "A1");
+  // Opens at the learner's study level (the nearest one below when the videos have none at it)
+  const [level, setLevel] = useState(() => {
+    const study = getStudyLevels()[0] ?? "A1";
+    return [...levels].reverse().find((l) => l <= study) ?? levels[0] ?? "A1";
+  });
 
   // Tapping the tab again returns to the list
   useEffect(() => {

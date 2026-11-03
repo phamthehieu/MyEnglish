@@ -46,6 +46,8 @@ export interface TilesItem {
   /** How it is pronounced */
   ipa?: string;
   tiles: Tile[];
+  /** What fills the blank (pairs its Vietnamese with its English for the word hints) */
+  slot: PatternSlot;
 }
 
 /** "Ghép câu": the words of the sentence, plus two that do not belong (words of the other slots), in a shuffled order */
@@ -63,7 +65,7 @@ export function buildTilesItem(pattern: Pattern, slot: PatternSlot, random: () =
   ];
   const decoys = shuffled(pool, random).slice(0, 2);
   const tiles = shuffled([...words, ...decoys], random).map((text, i) => ({ id: `t${i}`, text }));
-  return { vi: filled.vi, en: filled.en, ipa: slot.ipa, tiles };
+  return { vi: filled.vi, en: filled.en, ipa: slot.ipa, tiles, slot };
 }
 
 /** Do the chosen tiles spell the sentence? (case and punctuation do not count) */

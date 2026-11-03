@@ -667,6 +667,8 @@ import {
   getNextReminderTime,
   reminderPause,
   getNudgesShownToday,
+  onlyWhenDue,
+  quietAfterGoal,
 } from "./reminderSettings";
 import { productionUnlockDays } from "./learnerProfile";
 import {
@@ -924,7 +926,7 @@ class SRSBackgroundWorker {
         const goalMet = (getActivityLogs()[getLocalDateString()] || 0) >= getDailyGoal();
         let grammarDue = 0;
         let goalWork: Awaited<ReturnType<typeof countTodayWork>> | null = null;
-        if (goalMet && settings.stopAfterGoal) {
+        if (goalMet && quietAfterGoal(settings)) {
           // Counted by the tray refresh less than a minute ago: reuse it rather than query on every tick
           // (only for this check: a reminder about to show counts afresh below)
           const recent = this.recentWork && now - this.recentWork.at < 60 * 1000 ? this.recentWork.work : null;
@@ -967,7 +969,7 @@ class SRSBackgroundWorker {
 
       if (!forceTrigger) {
         work = work ?? (await countTodayWork());
-        if (settings.triggerCondition === "due_only") {
+        if (onlyWhenDue(settings)) {
           // Grammar lessons due count too: the popup fills with grammar when no word is due
           if (work.total === 0 && (await countDueGrammarLessons()) === 0) return;
         } else {

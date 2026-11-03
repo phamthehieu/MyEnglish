@@ -47,6 +47,11 @@ describe("the day as one flow", () => {
     expect(getFlow(day)).toBeNull();
   });
 
+  it("keeps the review of missed sentences and the weak grammar in the flow", () => {
+    startFlow(["speaking", "talkReview", "vocab", "weakGrammar"], day);
+    expect(getFlow(day)?.queue).toEqual(["speaking", "talkReview", "vocab", "weakGrammar"]);
+  });
+
   it("steps back when the learner stays where they were, and never before the first thing", () => {
     startFlow(["speaking", "vocab", "grammar"], day);
     advanceFlow(day);

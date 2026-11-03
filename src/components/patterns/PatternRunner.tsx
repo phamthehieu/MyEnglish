@@ -12,6 +12,8 @@ import MicButton, { PracticeTop } from "@/components/talk/MicButton";
 import { useMic } from "@/components/talk/useMic";
 import { useKeepVisible } from "./useKeepVisible";
 import { IpaLine, IpaToggle } from "./Ipa";
+import ViText, { ViTextNote } from "@/components/talk/ViText";
+import { answeredSentence } from "@/services/learningLinks";
 
 /** How long a rapid-fire answer may take: speaking is quick, typing is slower */
 const WINDOW_SAY_MS = 10000;
@@ -130,6 +132,7 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
   const { item } = task;
   const [wrong, setWrong] = useState<Set<string>>(new Set());
   const [solved, setSolved] = useState(false);
+  const [hinted, setHinted] = useState(false);
   const pick = (en: string) => {
     if (en === item.answer.en) {
       setSolved(true);
@@ -142,7 +145,10 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
     <div className="space-y-3">
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Câu này nói bằng tiếng Anh thế nào?</p>
-        <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">«{item.vi}»</p>
+        <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">
+          «<ViText vi={item.vi} en={item.full} fixed={[item.answer]} onHint={() => setHinted(true)} off={solved} />»
+        </p>
+        {!solved && <ViTextNote />}
         <p className="text-xl text-slate-900 dark:text-zinc-100">
           <Blank frame={item.frame} fill={solved ? item.answer.en : undefined} />
         </p>
@@ -175,7 +181,14 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
             <Check className="w-4 h-4" /> {item.full} <Speaker text={item.full} />
           </p>
           <IpaLine ipa={item.answer.ipa} />
-          <button onClick={() => onNext({ ok: wrong.size === 0 })} className={BTN_PRIMARY}>
+          <button
+            onClick={() => {
+              const ok = wrong.size === 0 && !hinted;
+              answeredSentence("patterns", item.full, { ok, unaided: false, goal: false });
+              onNext({ ok });
+            }}
+            className={BTN_PRIMARY}
+          >
             Tiếp theo
           </button>
         </>
@@ -191,6 +204,7 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
   const [fails, setFails] = useState(0);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [hinted, setHinted] = useState(false);
   const rest = item.tiles.filter((t) => !chosen.some((c) => c.id === t.id));
 
   const send = () => {
@@ -208,7 +222,10 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
     <div className="space-y-3">
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Ghép câu tiếng Anh cho nghĩa này:</p>
-        <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">«{item.vi}»</p>
+        <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">
+          «<ViText vi={item.vi} en={item.en} fixed={[item.slot]} onHint={() => setHinted(true)} off={done} />»
+        </p>
+        {!done && <ViTextNote />}
       </div>
       <div className="min-h-[3.25rem] rounded-xl border-2 border-dashed border-slate-200 dark:border-zinc-700 p-2 flex flex-wrap gap-1.5">
         {chosen.map((t) => (
@@ -262,7 +279,14 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
             <Check className="w-4 h-4" /> {item.en} <Speaker text={item.en} />
           </p>
           <IpaLine ipa={item.ipa} />
-          <button onClick={() => onNext({ ok: fails === 0 })} className={BTN_PRIMARY}>
+          <button
+            onClick={() => {
+              const ok = fails === 0 && !hinted;
+              answeredSentence("patterns", item.en, { ok, unaided: false, goal: false });
+              onNext({ ok });
+            }}
+            className={BTN_PRIMARY}
+          >
             Tiếp theo
           </button>
         </>
@@ -292,6 +316,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
   const settled = useRef(false);
   const retried = useRef(false);
   const [retryNote, setRetryNote] = useState<string | null>(null);
+  const [hinted, setHinted] = useState(false);
   // The clock runs from the moment the microphone is really listening (or the learner types), not from the question
   const [started, setStarted] = useState(false);
 
@@ -382,8 +407,12 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
         </p>
         <p className="text-xs text-slate-500 dark:text-zinc-400">{item.ask.vi}</p>
         <p className="text-sm text-slate-700 dark:text-zinc-300 pt-1">
-          Bạn trả lời: <span className="font-semibold">«{item.vi}»</span>
+          Bạn trả lời:{" "}
+          <span className="font-semibold">
+            «<ViText vi={item.vi} en={item.en} fixed={[item.slot]} onHint={() => setHinted(true)} off={state === "done"} speak={false} />»
+          </span>
         </p>
+        {state !== "done" && <ViTextNote />}
         <div className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden" aria-label="Thời gian còn lại">
           <div className={`h-full rounded-full ${left < 0.3 ? "bg-red-500" : "bg-teal-700 dark:bg-teal-500"}`} style={{ width: `${state === "asking" ? 100 : left * 100}%` }} />
         </div>
@@ -460,7 +489,14 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
             </p>
             <IpaLine ipa={item.slot.ipa} />
           </div>
-          <button onClick={() => onNext({ ok: verdict.ok, ms: verdict.ms })} className={BTN_PRIMARY}>
+          <button
+            onClick={() => {
+              // Said or typed from the Vietnamese: a recall of its words, unless one was looked up
+              answeredSentence("patterns", item.en, { ok: verdict.ok, unaided: !hinted, goal: false });
+              onNext({ ok: verdict.ok && !hinted, ms: verdict.ms });
+            }}
+            className={BTN_PRIMARY}
+          >
             Tiếp theo
           </button>
         </>

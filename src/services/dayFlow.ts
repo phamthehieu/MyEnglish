@@ -18,7 +18,7 @@ export interface DayFlow {
   day: string;
 }
 
-const IDS: readonly TodayTaskId[] = ["speaking", "vocab", "grammar", "pronunciation", "reflex"];
+const IDS: readonly TodayTaskId[] = ["speaking", "talkReview", "vocab", "weakGrammar", "grammar", "pronunciation", "reflex"];
 
 /** The things not done yet, in the order of the list */
 export const planFlow = (tasks: ReadonlyArray<{ id: TodayTaskId; done: boolean }>): TodayTaskId[] => tasks.filter((t) => !t.done).map((t) => t.id);

@@ -5,6 +5,7 @@ import { handleSpeak, SLOW_RATE } from "@/components/review/speech";
 import { asrAvailable, playRecording, canPlayRecording, speechUnavailableText } from "@/services/pronunciationCheck";
 import { judgeSpoken, type SpokenVerdict } from "@/services/talk/engine";
 import { recordLineTry } from "@/services/talk/progress";
+import { answeredSentence } from "@/services/learningLinks";
 import { Button, Card } from "@/components/ui/kit";
 import MicButton, { PracticeTop } from "./MicButton";
 import { useMic } from "./useMic";
@@ -57,6 +58,8 @@ export default function WarmUp({
         result.error ?? ""
       );
       recordLineTry(line.id, v.kind === "ok", v.heard);
+      // Said after reading it: practice of the day, not a recall of its words (and a miss is the voice, not memory)
+      if (v.kind === "ok") answeredSentence("talk", line.en, { ok: true, unaided: false });
       setVerdict(v);
     });
 

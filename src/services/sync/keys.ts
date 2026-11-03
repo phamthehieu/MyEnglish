@@ -77,6 +77,9 @@ export const SYNCED_KV: Record<string, KvStrategy> = {
   myenglish_grammar_path_reopened_v1: "lww",
   myenglish_talk_level_v1: "lww",
   myenglish_reflex_stats_v1: "lww",
+  // What the learner keeps getting wrong outside the word sessions (weakPoints.ts)
+  myenglish_weak_words_v1: "lww",
+  myenglish_weak_grammar_v1: "lww",
   myenglish_reminder_settings_v1: "lww",
   myenglish_quiet_hours_v1: "lww",
   myenglish_focus_settings_v1: "lww",

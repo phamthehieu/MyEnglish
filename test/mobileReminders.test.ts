@@ -95,6 +95,13 @@ describe("planReminders", () => {
     expect(all.some((p) => dayOf(p.at) === 21)).toBe(true);
   });
 
+  it("keeps reminding today after everything is done when the learner asked for it", () => {
+    const done = { goalMetToday: true, dueToday: 0 };
+    const keep = settings({ stopAfterGoal: true, triggerCondition: "due_only", remindAfterDone: true });
+    expect(planReminders(afternoon, keep, done).some((p) => dayOf(p.at) === 21)).toBe(true);
+    expect(reminderRule(keep, done, afternoon)?.quietUntil).toBe(0);
+  });
+
   it("holds back reminders while paused", () => {
     const until = new Date(2026, 9, 22, 9, 0, 0).getTime();
     const plan = planReminders(afternoon, settings({ snoozedUntil: until }), open);

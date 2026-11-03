@@ -28,6 +28,7 @@ export interface ReminderSettings {
   contextMoments: boolean; // also remind at natural transitions: back at the computer, screen share / full screen over
   avoidQuietHours: boolean; // skip clock-based reminders in hours where they are almost always ignored
   stopAfterGoal: boolean; // no more reminders today once the daily goal is reached
+  remindAfterDone?: boolean; // keep reminding (quiz from learned words) after the goal is met and nothing is due
   nightQuiet: boolean; // no reminders from NIGHT_QUIET_START to NIGHT_QUIET_END
   maxNudgesPerDay: number; // at most this many reminders a day (0 = no limit)
   anchors: ReminderAnchor[]; // study times chosen by the learner ("after lunch"), see reminderMoments
@@ -53,6 +54,7 @@ export const DEFAULT_REMINDER_SETTINGS: ReminderSettings = {
   contextMoments: true,
   avoidQuietHours: true,
   stopAfterGoal: true,
+  remindAfterDone: false,
   nightQuiet: true,
   maxNudgesPerDay: 8,
   anchors: [],
@@ -64,16 +66,26 @@ export const NIGHT_QUIET_END = 7;
 
 export type ReminderPause = "night" | "goal_reached" | "daily_cap";
 
+/** Today's goal met: no more reminders today, unless the learner asked to keep reviewing after it */
+export function quietAfterGoal(settings: Pick<ReminderSettings, "stopAfterGoal" | "remindAfterDone">): boolean {
+  return settings.stopAfterGoal && !settings.remindAfterDone;
+}
+
+/** Reminders only while something is due, unless the learner asked to keep reviewing learned words */
+export function onlyWhenDue(settings: Pick<ReminderSettings, "triggerCondition" | "remindAfterDone">): boolean {
+  return settings.triggerCondition === "due_only" && !settings.remindAfterDone;
+}
+
 /**
  * Why a clock reminder should not be shown now, or null. A habit app that keeps asking after the day's
  * work is done, late at night or all day long teaches people to ignore it (or to quit).
  */
 export function reminderPause(
-  settings: Pick<ReminderSettings, "stopAfterGoal" | "nightQuiet" | "maxNudgesPerDay">,
+  settings: Pick<ReminderSettings, "stopAfterGoal" | "remindAfterDone" | "nightQuiet" | "maxNudgesPerDay">,
   ctx: { hour: number; goalReached: boolean; shownToday: number }
 ): ReminderPause | null {
   if (settings.nightQuiet && (ctx.hour >= NIGHT_QUIET_START || ctx.hour < NIGHT_QUIET_END)) return "night";
-  if (settings.stopAfterGoal && ctx.goalReached) return "goal_reached";
+  if (quietAfterGoal(settings) && ctx.goalReached) return "goal_reached";
   if (settings.maxNudgesPerDay > 0 && ctx.shownToday >= settings.maxNudgesPerDay) return "daily_cap";
   return null;
 }

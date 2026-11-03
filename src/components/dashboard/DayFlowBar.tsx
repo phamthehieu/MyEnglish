@@ -5,7 +5,9 @@ import type { TodayTaskId } from "./todayPlan";
 
 const LABEL: Record<TodayTaskId, string> = {
   speaking: "Lộ trình nói",
+  talkReview: "Ôn câu hội thoại",
   vocab: "Ôn từ và học từ mới",
+  weakGrammar: "Ngữ pháp hay sai",
   grammar: "Ngữ pháp",
   pronunciation: "Phát âm",
   reflex: "Luyện phản xạ",
