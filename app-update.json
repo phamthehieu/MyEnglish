@@ -1,6 +1,6 @@
 {
-  "version": "0.4.3",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.3/MyEnglish-v0.4.3.apk",
-  "notes": "Từ mới dễ nhớ hơn: vừa học xong thì xếp chữ cái thành từ, chưa phải gõ cả từ. Lỡ chọn cấp cao hơn thì chạm lại cấp cũ là về; lộ trình nói có nút \"Quay lại\" và \"Học lại chặng này\". Đăng xuất: dữ liệu được lưu lên tài khoản rồi xóa khỏi máy, đăng nhập lại là có đủ (cả lộ trình nói, mẫu câu, hội thoại). Màn chào có nút đăng nhập để lấy lại tiến trình.",
-  "sha256": "a242e68618e78f3390af7d48e881b31c8e57694c582a5cb504a371bde4e9a75e"
+  "version": "0.4.4",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.4/MyEnglish-v0.4.4.apk",
+  "notes": "Các phần học nối với nhau: nói hội thoại, shadowing, đọc và mẫu câu đều được tính vào mục tiêu ngày và XP. Nói đúng câu có từ đang học thì từ đó được tính là đã ôn; câu nói sai thì từ khó được ôn lại sớm, sai nhiều ở một chặng thì Hôm nay gợi ý đúng bài ngữ pháp. Hôm nay có thêm \"Ôn câu hội thoại đã nói sai\". Câu hỏi nhanh trên điện thoại có cả câu hội thoại và mẫu câu. Ngữ pháp và hội thoại bắt đầu theo cấp bạn chọn. Chạm chữ tiếng Việt trong mẫu câu và hội thoại để xem từ tiếng Anh. Thêm tùy chọn \"Học xong vẫn nhắc ôn tập\".",
+  "sha256": "049e8c3e9df63cd5d5aaf185a399f8cbcb0fdfc200553c2f123d3bd73b493759"
 }
