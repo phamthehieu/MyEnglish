@@ -1,5 +1,13 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from "react";
-import { ArrowRight, Check, ChevronDown, Layers } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  Calendar,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  Layers,
+} from "lucide-react";
 import type { GrammarBookFile, GrammarBookLesson } from "@/types/grammarBook";
 import {
   getEffectiveLessonIds,
@@ -12,6 +20,7 @@ import { lessonStatus } from "@/services/grammarSession";
 import { formatNextReviewRelative } from "@/utils/reviewSchedule";
 import { buildTenseGrid, TENSE_COLUMNS, TENSE_ROWS } from "@/utils/tenseGrid";
 import type { GrammarLessonTab } from "./GrammarLessonView";
+import SpeakingGrammar from "./SpeakingGrammar";
 
 export type PathPickerMode = "path" | "practice";
 export type LessonStatus = ReturnType<typeof lessonStatus>;
@@ -32,7 +41,6 @@ const STATUS_STYLE: Record<LessonStatus, { label: string; className: string }> =
   mastered: { label: "Đã thuộc", className: "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-300" },
 };
 
-/** Lesson card colours by status: white cards with a thin accent on top (the status), and the legend dot */
 const CARD_STYLE: Record<LessonStatus, { accent: string; surface: string; dot: string }> = {
   new: {
     accent: "bg-slate-300 dark:bg-zinc-600",
@@ -46,7 +54,8 @@ const CARD_STYLE: Record<LessonStatus, { accent: string; surface: string; dot: s
   },
   due: {
     accent: "bg-amber-500",
-    surface: "border-amber-200 bg-amber-50/60 hover:bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10 dark:hover:bg-amber-500/15",
+    surface:
+      "border-amber-200 bg-amber-50/60 hover:bg-amber-50 dark:border-amber-500/30 dark:bg-amber-500/10 dark:hover:bg-amber-500/15",
     dot: "bg-amber-500",
   },
   mastered: {
@@ -79,14 +88,20 @@ export function MasteryBar({ mastery, className = "w-16 sm:w-24" }: { mastery: n
   );
 }
 
-/** A small circular gauge (the mastery of one lesson) */
 function ProgressRing({ value, size = 18, stroke = 3 }: { value: number; size?: number; stroke?: number }) {
   const pct = Math.max(0, Math.min(100, value));
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="shrink-0 -rotate-90" aria-hidden="true">
-      <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-slate-200 dark:stroke-zinc-700" />
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        strokeWidth={stroke}
+        className="stroke-slate-200 dark:stroke-zinc-700"
+      />
       <circle
         cx={size / 2}
         cy={size / 2}
@@ -96,7 +111,9 @@ function ProgressRing({ value, size = 18, stroke = 3 }: { value: number; size?: 
         strokeLinecap="round"
         strokeDasharray={c}
         strokeDashoffset={c * (1 - pct / 100)}
-        className={`transition-[stroke-dashoffset] duration-300 ${pct >= 80 ? "stroke-green-600" : "stroke-teal-700 dark:stroke-teal-500"}`}
+        className={`transition-[stroke-dashoffset] duration-300 ${
+          pct >= 80 ? "stroke-green-600" : "stroke-teal-700 dark:stroke-teal-500"
+        }`}
       />
     </svg>
   );
@@ -104,28 +121,27 @@ function ProgressRing({ value, size = 18, stroke = 3 }: { value: number; size?: 
 
 interface LessonRow {
   lesson: GrammarBookLesson;
+  chapterTitle: string;
   status: LessonStatus;
   mastery: number;
-  /** "Ôn sau 3 ngày" and the like; null for a lesson not studied yet */
   reviewText: string | null;
 }
 
-/** "Sau 3 ngày" -> "Ôn sau 3 ngày"; overdue labels already read as a sentence */
 function reviewText(label: string): string {
   const clean = label.replace(/\s*\(.*?\)\s*/g, " ").trim();
   if (/^(Đến hạn|Quá hạn)/.test(clean)) return clean;
   return `Ôn ${clean.charAt(0).toLowerCase()}${clean.slice(1)}`;
 }
 
-/** The book prints chapter titles in capitals ("CÁC THÌ"); only those are turned into sentence case */
 function sentenceCase(text: string): string {
   const s = text.trim();
   if (!s || s !== s.toUpperCase() || s === s.toLowerCase()) return s;
   const lower = s.toLowerCase();
-  return lower.charAt(0).toUpperCase() + lower.slice(1);
+  return lower.charAt(0).toLowerCase() === lower.charAt(0)
+    ? lower.charAt(0).toUpperCase() + lower.slice(1)
+    : s;
 }
 
-/** Width of an element, kept up to date; measured before the first paint so the layout does not jump */
 function useMeasuredWidth<T extends HTMLElement>(): [(el: T | null) => void, number] {
   const [el, setEl] = useState<T | null>(null);
   const [width, setWidth] = useState(0);
@@ -143,11 +159,8 @@ function useMeasuredWidth<T extends HTMLElement>(): [(el: T | null) => void, num
 interface LessonCardProps {
   row: LessonRow;
   mode: PathPickerMode;
-  /** Path mode: the lesson is on the learning path */
   onPath: boolean;
-  /** Practice mode: the lesson is picked */
   picked: boolean;
-  /** The next lesson of the path */
   isNext: boolean;
   onOpen: () => void;
   onToggle: () => void;
@@ -187,13 +200,15 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
           </span>
         )}
 
-        {/* Room on the right for the switch / check in the corner */}
-        <span className={`line-clamp-2 break-words text-sm font-semibold leading-snug text-slate-900 dark:text-zinc-100 ${isPractice ? "pr-7" : ""}`}>
+        <span
+          className={`line-clamp-2 break-words text-sm font-semibold leading-snug text-slate-900 dark:text-zinc-100 ${
+            isPractice ? "pr-7" : ""
+          }`}
+        >
           {name}
         </span>
         {showEn && <span className="mt-0.5 block truncate text-xs text-slate-500 dark:text-zinc-400">{lesson.title}</span>}
 
-        {/* Wraps when the card is narrow: the review date drops under the gauge */}
         <span className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-0.5 pt-2 text-xs">
           <span className="inline-flex items-center gap-1.5">
             <ProgressRing value={mastery} />
@@ -209,7 +224,6 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
         </span>
       </button>
 
-      {/* A sibling of the card button (not inside it) so toggling never opens the lesson */}
       {!isPractice && (
         <button
           type="button"
@@ -221,9 +235,13 @@ function LessonCard({ row, mode, onPath, picked, isNext, onOpen, onToggle }: Les
             e.stopPropagation();
             onToggle();
           }}
-          className="mt-1 flex min-h-11 w-full items-center gap-2 rounded-xl px-1.5 text-left text-xs font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 dark:text-zinc-300"
+          className="mt-1 flex min-h-10 w-full items-center gap-2 rounded-xl px-1.5 text-left text-xs font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600 dark:text-zinc-300"
         >
-          <span className={`relative h-4 w-7 shrink-0 rounded-full transition-colors ${onPath ? "bg-teal-700 dark:bg-teal-500" : "bg-slate-300 dark:bg-zinc-600"}`}>
+          <span
+            className={`relative h-4 w-7 shrink-0 rounded-full transition-colors ${
+              onPath ? "bg-teal-700 dark:bg-teal-500" : "bg-slate-300 dark:bg-zinc-600"
+            }`}
+          >
             <span
               className={`absolute left-0.5 top-0.5 h-3 w-3 rounded-full bg-white shadow transition-transform ${
                 onPath ? "translate-x-3" : ""
@@ -255,15 +273,12 @@ function SubHeading({ children }: { children: ReactNode }) {
   );
 }
 
-/** Content width (px) from which a tense chapter is drawn as a table */
 const TABLE_MIN_WIDTH = 680;
-
 const COLUMN_HEAD =
   "flex items-end justify-center px-1 pb-0.5 text-center text-xs font-semibold leading-tight text-slate-500 dark:text-zinc-400";
 const ROW_HEAD =
   "flex items-center justify-center rounded-2xl bg-slate-100 px-1 text-center text-xs font-semibold leading-tight text-slate-600 dark:bg-zinc-800/70 dark:text-zinc-300";
 
-/** The lessons of one chapter: the tense table for a tense chapter, a grid of cards otherwise */
 function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row: LessonRow) => ReactNode }) {
   const [ref, width] = useMeasuredWidth<HTMLDivElement>();
 
@@ -272,7 +287,6 @@ function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row
     [rows]
   );
 
-  // Layout follows the room the chapter really has (the app sidebar takes some), not the window width
   const plainColumns = width < 440 ? 1 : width < 720 ? 2 : 3;
   const cardGrid = (items: LessonRow[]) => (
     <div className="grid gap-2.5" style={{ gridTemplateColumns: `repeat(${plainColumns}, minmax(0, 1fr))` }}>
@@ -289,7 +303,6 @@ function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row
   }
 
   const { cells, near, others } = tense;
-  // Four columns of cards need room: below it each row of the table becomes a group of its own
   const asTable = width >= TABLE_MIN_WIDTH;
 
   return (
@@ -321,7 +334,6 @@ function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row
             </Fragment>
           ))}
 
-          {/* "Near future" (be going to) has no cell of its own: it sits right under the future row */}
           {near && (
             <>
               <div className={ROW_HEAD}>Tương lai gần</div>
@@ -330,7 +342,6 @@ function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row
           )}
         </div>
       ) : (
-        // Narrow: one group per row of the table, two cards across
         <div className="space-y-3.5">
           {TENSE_ROWS.map((r) => {
             const items = TENSE_COLUMNS.map((col) => cells.get(`${r.time}:${col.aspect}`)).filter(
@@ -358,15 +369,381 @@ function ChapterBody({ rows, renderCard }: { rows: LessonRow[]; renderCard: (row
   );
 }
 
-/** The chapter that opens by default: the first with lessons still to learn (or the first one) */
 function pickDefaultChapter(chapters: GrammarBookFile[]): string | null {
   const first = chapters.find((ch) => (ch.lessons ?? []).some((l) => !isLessonStudied(l.id))) ?? chapters[0];
   return first ? first.chapterId : null;
 }
 
-export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: modeProp, onModeChange }: PathPickerProps) {
+const LESSONS_PER_WEEK = 5;
+
+interface WeekModule {
+  weekNumber: number;
+  title: string;
+  subtitle: string;
+  days: LessonRow[];
+  studiedCount: number;
+  masteredCount: number;
+}
+
+/**
+ * Weekly & Daily Roadmap View (matches the screenshot: "Tuần 1" expanded with numbered circles & sub-steps,
+ * and "Tuần 2..N" with Ngày 1..Ngày 6 rows and time estimates).
+ */
+function WeeklySyllabusView({
+  allRows,
+  nextLessonId,
+  onOpenLesson,
+  onPractice,
+}: {
+  allRows: LessonRow[];
+  nextLessonId: string | null;
+  onOpenLesson: (lessonId: string, tab?: GrammarLessonTab) => void;
+  onPractice: (lessonIds: string[]) => void;
+}) {
+  const weeks = useMemo<WeekModule[]>(() => {
+    const out: WeekModule[] = [];
+    for (let i = 0; i < allRows.length; i += LESSONS_PER_WEEK) {
+      const chunk = allRows.slice(i, i + LESSONS_PER_WEEK);
+      if (chunk.length === 0) continue;
+      const weekNumber = out.length + 1;
+      const uniqueChapters = [...new Set(chunk.map((r) => r.chapterTitle))];
+      const title = uniqueChapters.slice(0, 2).join(" & ");
+      const lessonNames = chunk
+        .slice(0, 3)
+        .map((r) => r.lesson.titleVn || r.lesson.title)
+        .join(", ");
+      const studiedCount = chunk.filter((r) => r.status !== "new").length;
+      const masteredCount = chunk.filter((r) => r.status === "mastered").length;
+      out.push({
+        weekNumber,
+        title: title || `Chặng ${weekNumber}`,
+        subtitle: `Nắm vững và vận dụng: ${lessonNames}${chunk.length > 3 ? "..." : ""}`,
+        days: chunk,
+        studiedCount,
+        masteredCount,
+      });
+    }
+    return out;
+  }, [allRows]);
+
+  // Default expanded week is the week containing `nextLessonId` (or Week 1)
+  const activeWeekNum = useMemo(() => {
+    if (nextLessonId) {
+      const found = weeks.find((w) => w.days.some((d) => d.lesson.id === nextLessonId));
+      if (found) return found.weekNumber;
+    }
+    const firstIncomplete = weeks.find((w) => w.studiedCount < w.days.length);
+    return firstIncomplete?.weekNumber ?? 1;
+  }, [weeks, nextLessonId]);
+
+  const [expandedWeek, setExpandedWeek] = useState<number>(activeWeekNum);
+
+  useEffect(() => {
+    setExpandedWeek(activeWeekNum);
+  }, [activeWeekNum]);
+
+  if (weeks.length === 0) return null;
+
+  return (
+    <div className="space-y-4">
+      {weeks.map((week) => {
+        const isExpanded = expandedWeek === week.weekNumber;
+        const isCurrentWeek = activeWeekNum === week.weekNumber;
+        const allDone = week.studiedCount >= week.days.length && week.days.length > 0;
+        const weekLessonIds = week.days.map((d) => d.lesson.id);
+
+        if (isExpanded) {
+          // Expanded Week View (Just like "Tuần 1" in the user's screenshot: numbered circles 1..5, each with Theory / Practice / Quick Test rows)
+          return (
+            <div
+              key={week.weekNumber}
+              className="overflow-hidden rounded-3xl border-2 border-teal-600/35 bg-white shadow-sm dark:border-teal-500/40 dark:bg-zinc-900"
+            >
+              {/* Week Header */}
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-teal-500/15 bg-teal-50/70 px-4 py-3.5 dark:bg-teal-950/30 md:px-6">
+                <div className="space-y-0.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-base font-extrabold text-slate-900 dark:text-white">
+                      Tuần {week.weekNumber}
+                    </span>
+                    <span className="rounded-full bg-teal-700 px-2.5 py-0.5 text-[11px] font-bold text-white dark:bg-teal-500 dark:text-slate-950">
+                      {allDone ? "Đã hoàn thành ✓" : isCurrentWeek ? "Đang học" : "Chi tiết tuần"}
+                    </span>
+                    <span className="text-xs font-semibold text-teal-800 dark:text-teal-300">· {week.title}</span>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-zinc-400">{week.subtitle}</p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="rounded-xl bg-white/80 px-3 py-1 text-xs font-bold text-teal-800 ring-1 ring-teal-600/20 dark:bg-zinc-800 dark:text-teal-300">
+                    {week.studiedCount}/{week.days.length} ngày
+                  </span>
+                </div>
+              </div>
+
+              {/* Numbered Day Blocks (1..5) + Day 6 Weekly Synthesis */}
+              <div className="divide-y divide-slate-100 p-4 dark:divide-zinc-800/80 md:p-6 space-y-5">
+                {week.days.map((row, idx) => {
+                  const dayNum = idx + 1;
+                  const lessonName = row.lesson.titleVn || row.lesson.title;
+                  const isDone = row.status !== "new";
+                  const isNext = row.lesson.id === nextLessonId;
+
+                  return (
+                    <div key={row.lesson.id} className={`${idx > 0 ? "pt-5" : ""} space-y-2.5`}>
+                      {/* Day Header with Numbered Circle */}
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span
+                            className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-extrabold ${
+                              isDone
+                                ? "bg-emerald-600 text-white"
+                                : isNext
+                                  ? "bg-teal-700 text-white ring-4 ring-teal-500/20 dark:bg-teal-500 dark:text-slate-950"
+                                  : "bg-teal-700/15 text-teal-800 dark:bg-teal-500/20 dark:text-teal-300"
+                            }`}
+                          >
+                            {isDone ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : dayNum}
+                          </span>
+                          <div className="min-w-0">
+                            <h4 className="truncate text-sm font-bold text-slate-900 dark:text-white">
+                              Ngày {dayNum}: {lessonName}
+                            </h4>
+                            <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                              {row.chapterTitle} · 3 bước khép kín (~20 phút)
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          {row.mastery > 0 && (
+                            <span className="text-xs font-semibold text-teal-700 dark:text-teal-300">
+                              {Math.round(row.mastery)}%
+                            </span>
+                          )}
+                          <LessonStatusChip status={row.status} />
+                        </div>
+                      </div>
+
+                      {/* Sub-steps inside the Day (Matches the light-teal rows inside Tuần 1 of the screenshot) */}
+                      <div className="ml-3.5 border-l-2 border-teal-600/20 pl-4 space-y-1.5 dark:border-teal-500/20">
+                        {/* Step 1: Sổ tay Lý thuyết & Công thức */}
+                        <button
+                          type="button"
+                          onClick={() => onOpenLesson(row.lesson.id, "handbook")}
+                          className="group flex w-full items-center justify-between gap-2 rounded-xl bg-teal-50/70 px-3 py-2 text-left transition-colors hover:bg-teal-100/80 dark:bg-teal-500/10 dark:hover:bg-teal-500/20"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="shrink-0 rounded-md bg-teal-700/15 px-2 py-0.5 text-[10px] font-bold text-teal-800 dark:bg-teal-400/20 dark:text-teal-300">
+                              Lý thuyết
+                            </span>
+                            <span className="truncate text-xs font-medium text-slate-800 dark:text-zinc-200">
+                              Công thức, cách dùng & ví dụ: {lessonName}
+                            </span>
+                          </div>
+                          <span className="shrink-0 text-xs font-bold text-teal-700 group-hover:underline dark:text-teal-300">
+                            {isDone ? "Xem lại" : "Vào học →"}
+                          </span>
+                        </button>
+
+                        {/* Step 2: Bài tập thực hành */}
+                        <button
+                          type="button"
+                          onClick={() => onOpenLesson(row.lesson.id, "practice")}
+                          className="group flex w-full items-center justify-between gap-2 rounded-xl bg-teal-50/70 px-3 py-2 text-left transition-colors hover:bg-teal-100/80 dark:bg-teal-500/10 dark:hover:bg-teal-500/20"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="shrink-0 rounded-md bg-indigo-500/15 px-2 py-0.5 text-[10px] font-bold text-indigo-700 dark:bg-indigo-400/20 dark:text-indigo-300">
+                              Bài tập
+                            </span>
+                            <span className="truncate text-xs font-medium text-slate-800 dark:text-zinc-200">
+                              Luyện tập vận dụng câu thực tế ({lessonName})
+                            </span>
+                          </div>
+                          <span className="shrink-0 text-xs font-bold text-teal-700 group-hover:underline dark:text-teal-300">
+                            {row.mastery >= 80 ? `Đã đạt ${Math.round(row.mastery)}%` : "Làm bài →"}
+                          </span>
+                        </button>
+
+                        {/* Step 3: Kiểm tra nhanh */}
+                        <button
+                          type="button"
+                          onClick={() => onOpenLesson(row.lesson.id, "diagnostic")}
+                          className="group flex w-full items-center justify-between gap-2 rounded-xl bg-teal-50/70 px-3 py-2 text-left transition-colors hover:bg-teal-100/80 dark:bg-teal-500/10 dark:hover:bg-teal-500/20"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="shrink-0 rounded-md bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-400/20 dark:text-amber-300">
+                              Kiểm tra
+                            </span>
+                            <span className="truncate text-xs font-medium text-slate-800 dark:text-zinc-200">
+                              Kiểm tra nhanh mức độ nắm bài (10 câu)
+                            </span>
+                          </div>
+                          <span className="shrink-0 text-xs font-bold text-teal-700 group-hover:underline dark:text-teal-300">
+                            Kiểm tra →
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Final Day of the Week: Synthesis & Review */}
+                <div className="pt-5 space-y-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-purple-600/15 text-xs font-extrabold text-purple-700 dark:bg-purple-500/20 dark:text-purple-300">
+                        {week.days.length + 1}
+                      </span>
+                      <div>
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                          Ngày {week.days.length + 1}: Ôn tập & Tổng kết Tuần {week.weekNumber}
+                        </h4>
+                        <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+                          Trộn ngẫu nhiên câu hỏi từ cả {week.days.length} bài trong tuần để chống quên
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ml-3.5 border-l-2 border-purple-500/20 pl-4">
+                    <button
+                      type="button"
+                      onClick={() => onPractice(weekLessonIds)}
+                      className="group flex w-full items-center justify-between gap-2 rounded-xl bg-purple-50/80 px-3 py-2.5 text-left transition-colors hover:bg-purple-100/80 dark:bg-purple-500/10 dark:hover:bg-purple-500/20"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="shrink-0 rounded-md bg-purple-600 px-2 py-0.5 text-[10px] font-bold text-white">
+                          Tổng hợp
+                        </span>
+                        <span className="truncate text-xs font-semibold text-slate-800 dark:text-zinc-200">
+                          Làm bài kiểm tra tổng hợp Tuần {week.weekNumber} ({week.days.length} chủ điểm)
+                        </span>
+                      </div>
+                      <span className="shrink-0 text-xs font-bold text-purple-700 group-hover:underline dark:text-purple-300">
+                        Bắt đầu ôn →
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // Compact Week Card (Just like "Tuần 2, Tuần 3, Tuần 4..." in the screenshot: lists Ngày 1..Ngày 6 with ~20 phút on the right)
+        return (
+          <div
+            key={week.weekNumber}
+            className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.04)] transition-all hover:border-teal-500/40 dark:border-zinc-800 dark:bg-zinc-900"
+          >
+            {/* Clickable Week Header */}
+            <button
+              type="button"
+              onClick={() => setExpandedWeek(week.weekNumber)}
+              className="flex w-full items-start justify-between gap-3 border-b border-slate-100 bg-slate-50/60 px-4 py-3 text-left transition-colors hover:bg-slate-100/70 dark:border-zinc-800/80 dark:bg-zinc-800/40 dark:hover:bg-zinc-800/70 md:px-5"
+            >
+              <div className="flex items-start gap-2.5 min-w-0">
+                <Calendar className="mt-0.5 h-4 w-4 shrink-0 text-teal-700 dark:text-teal-400" />
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-sm font-bold text-slate-900 dark:text-white">
+                      Tuần {week.weekNumber}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-600 dark:text-zinc-300">— {week.title}</span>
+                    {allDone && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
+                        <CheckCircle2 className="w-3 h-3" /> Hoàn thành
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-zinc-400">{week.subtitle}</p>
+                </div>
+              </div>
+
+              <div className="flex shrink-0 items-center gap-2 text-xs font-semibold text-teal-700 dark:text-teal-300">
+                <span>
+                  {week.studiedCount}/{week.days.length} bài
+                </span>
+                <ChevronDown className="h-4 w-4 text-slate-400" />
+              </div>
+            </button>
+
+            {/* Compact Day 1..Day 6 List (Matches the lower half of the screenshot) */}
+            <div className="divide-y divide-slate-100 px-4 py-1 dark:divide-zinc-800/60 md:px-5">
+              {week.days.map((row, idx) => {
+                const dayNum = idx + 1;
+                const lessonName = row.lesson.titleVn || row.lesson.title;
+                const isDone = row.status !== "new";
+                return (
+                  <button
+                    key={row.lesson.id}
+                    type="button"
+                    onClick={() => onOpenLesson(row.lesson.id, "handbook")}
+                    className="flex w-full items-center justify-between gap-3 py-2.5 text-left text-xs transition-colors hover:text-teal-700 dark:hover:text-teal-300"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="w-12 shrink-0 font-mono text-[11px] font-semibold text-slate-400 dark:text-zinc-500">
+                        Ngày {dayNum}
+                      </span>
+                      <span
+                        className={`truncate font-medium ${
+                          isDone
+                            ? "text-slate-900 dark:text-zinc-100"
+                            : "text-slate-700 dark:text-zinc-300"
+                        }`}
+                      >
+                        {lessonName}
+                      </span>
+                    </div>
+
+                    <div className="flex shrink-0 items-center gap-2">
+                      {isDone ? (
+                        <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+                          {Math.round(row.mastery)}% ✓
+                        </span>
+                      ) : (
+                        <span className="font-mono text-[11px] text-slate-400 dark:text-zinc-500">20 phút</span>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+
+              {/* Day N+1: Weekly Review Row */}
+              <button
+                type="button"
+                onClick={() => onPractice(weekLessonIds)}
+                className="flex w-full items-center justify-between gap-3 py-2.5 text-left text-xs transition-colors hover:text-teal-700 dark:hover:text-teal-300"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="w-12 shrink-0 font-mono text-[11px] font-semibold text-slate-400 dark:text-zinc-500">
+                    Ngày {week.days.length + 1}
+                  </span>
+                  <span className="truncate font-semibold text-teal-800 dark:text-teal-300">
+                    Ôn tập & Kiểm tra tổng hợp Tuần {week.weekNumber}
+                  </span>
+                </div>
+                <span className="shrink-0 font-mono text-[11px] text-slate-400 dark:text-zinc-500">15 phút</span>
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export default function PathPicker({
+  chapters,
+  onOpenLesson,
+  onPractice,
+  mode: modeProp,
+  onModeChange,
+}: PathPickerProps) {
   const [innerMode, setInnerMode] = useState<PathPickerMode>(modeProp ?? "path");
   const mode = modeProp ?? innerMode;
+  const [viewStyle, setViewStyle] = useState<"weekly" | "chapters" | "speaking">("weekly");
+
   const changeMode = (next: PathPickerMode) => {
     setInnerMode(next);
     onModeChange?.(next);
@@ -374,23 +751,19 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
 
   const [tick, setTick] = useState(0);
   const [picked, setPicked] = useState<Set<string>>(() => new Set());
-  // Chapters the learner opened or closed by hand; the others follow the default
   const [openOverride, setOpenOverride] = useState<Record<string, boolean>>({});
   const [defaultOpen, setDefaultOpen] = useState<string | null>(() => pickDefaultChapter(chapters));
 
-  // The book may arrive after the first render
   useEffect(() => {
     if (defaultOpen === null && chapters.length > 0) setDefaultOpen(pickDefaultChapter(chapters));
   }, [chapters, defaultOpen]);
 
-  // Progress and path changes come through these events
   useEffect(() => {
     const bump = () => setTick((t) => t + 1);
     window.addEventListener("myenglish-grammar-updated", bump);
     return () => window.removeEventListener("myenglish-grammar-updated", bump);
   }, []);
 
-  // A practice selection does not outlive practice mode
   useEffect(() => {
     if (mode !== "practice") setPicked(new Set());
   }, [mode]);
@@ -398,15 +771,16 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
   const pathSet = useMemo(() => new Set(getEffectiveLessonIds()), [chapters, tick]);
 
   const summaries = useMemo(() => {
-    // The lessons due now, worked out once for the whole list instead of once per lesson
     const now = new Date();
     const due = new Set(getDueGrammarLessons(now));
     return chapters.map((chapter) => {
+      const chTitle = sentenceCase(chapter.chapter?.titleVn || chapter.chapter?.title || chapter.chapterId);
       const rows: LessonRow[] = (chapter.lessons ?? []).map((lesson) => {
         const status = lessonStatus(lesson.id, now, due);
         const progress = getLessonProgress(lesson.id);
         return {
           lesson,
+          chapterTitle: chTitle,
           status,
           mastery: progress.mastery,
           reviewText: status === "new" ? null : reviewText(formatNextReviewRelative(progress.nextReviewDate).label),
@@ -416,7 +790,11 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
     });
   }, [chapters, tick]);
 
-  // The first lesson of the path, in book order, that the learner has not met yet
+  const allPathRows = useMemo(
+    () => summaries.flatMap((s) => s.rows).filter((r) => pathSet.has(r.lesson.id)),
+    [summaries, pathSet]
+  );
+
   const nextLessonId = useMemo(() => {
     for (const { rows } of summaries) {
       for (const r of rows) if (r.status === "new" && pathSet.has(r.lesson.id)) return r.lesson.id;
@@ -476,115 +854,186 @@ export default function PathPicker({ chapters, onOpenLesson, onPractice, mode: m
     <section className="space-y-4">
       <div className="space-y-2 px-1">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">
-            {isPractice ? "Luyện theo thì" : "Lộ trình theo sách"}
-          </h2>
-          {/* Same lessons, two uses: the daily path, or picking tenses to practise */}
-          <div role="tablist" aria-label="Chế độ" className="inline-flex flex-wrap items-center gap-2">
-            {(
-              [
-                ["path", "Lộ trình"],
-                ["practice", "Luyện theo thì"],
-              ] as const
-            ).map(([m, label]) => (
-              <button
-                key={m}
-                type="button"
-                role="tab"
-                aria-selected={mode === m}
-                onClick={() => changeMode(m)}
-                className={`min-h-10 rounded-full px-4 text-sm font-semibold transition-colors ${
-                  mode === m
-                    ? "bg-teal-700 text-white dark:bg-teal-600"
-                    : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
+          <div className="flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-teal-700 dark:text-teal-400" />
+            <h2 className="text-lg font-bold text-slate-900 dark:text-zinc-100">
+              {isPractice
+                ? "Luyện theo thì & Chủ điểm"
+                : viewStyle === "weekly"
+                  ? "Nội dung khóa học · Lộ trình theo Tuần"
+                  : viewStyle === "speaking"
+                    ? "Ngữ pháp thực tế khi giao tiếp"
+                    : "Tra cứu theo Chương sách"}
+            </h2>
+          </div>
+
+          <div role="tablist" aria-label="Chế độ hiển thị" className="inline-flex flex-wrap items-center gap-1.5">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!isPractice && viewStyle === "weekly"}
+              onClick={() => {
+                changeMode("path");
+                setViewStyle("weekly");
+              }}
+              className={`min-h-9 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                !isPractice && viewStyle === "weekly"
+                  ? "bg-teal-700 text-white dark:bg-teal-500 dark:text-slate-950"
+                  : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+              }`}
+            >
+              📅 Theo Tuần & Ngày
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!isPractice && viewStyle === "chapters"}
+              onClick={() => {
+                changeMode("path");
+                setViewStyle("chapters");
+              }}
+              className={`min-h-9 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                !isPractice && viewStyle === "chapters"
+                  ? "bg-teal-700 text-white dark:bg-teal-500 dark:text-slate-950"
+                  : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+              }`}
+            >
+              📚 Theo Chương
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!isPractice && viewStyle === "speaking"}
+              onClick={() => {
+                changeMode("path");
+                setViewStyle("speaking");
+              }}
+              className={`min-h-9 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                !isPractice && viewStyle === "speaking"
+                  ? "bg-teal-700 text-white dark:bg-teal-500 dark:text-slate-950"
+                  : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+              }`}
+            >
+              💬 Khi nói
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={isPractice}
+              onClick={() => changeMode("practice")}
+              className={`min-h-9 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                isPractice
+                  ? "bg-teal-700 text-white dark:bg-teal-500 dark:text-slate-950"
+                  : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300"
+              }`}
+            >
+              ⚡ Chọn bài luyện riêng
+            </button>
           </div>
         </div>
-        <p className="text-sm leading-relaxed text-slate-500 dark:text-zinc-400">
-          {isPractice
-            ? "Chọn 1 thì, 2 thì hoặc nhiều thì: app lấy các câu chỉ dùng những thì này."
-            : "Công tắc \"Trên lộ trình\" ở mỗi bài: bật là bài đó nằm trong lịch học hằng ngày, tắt là bỏ qua. Bài mới đến theo thứ tự sách, mỗi ngày một bài."}
-        </p>
-        {!isPractice && pathNote && <p className="text-sm text-amber-800 dark:text-amber-300">{pathNote}</p>}
-        <ul className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-xs text-slate-500 dark:text-zinc-400">
-          {LEGEND_ORDER.map((s) => (
-            <li key={s} className="inline-flex items-center gap-1.5">
-              <span aria-hidden="true" className={`h-2 w-2 rounded-full ${CARD_STYLE[s].dot}`} />
-              {STATUS_STYLE[s].label}
-            </li>
-          ))}
-        </ul>
+
+        {!isPractice && viewStyle === "weekly" ? (
+          <p className="text-xs leading-relaxed text-slate-500 dark:text-zinc-400">
+            Lộ trình chia sẵn theo từng <b>Tuần (Ngày 1 → Ngày 6)</b>. Tuần đang học được mở rộng thành 3 bước: <b>Lý thuyết → Bài tập → Kiểm tra nhanh</b>. Bấm vào bất kỳ tuần nào để xem chi tiết.
+          </p>
+        ) : (
+          <>
+            <p className="text-xs leading-relaxed text-slate-500 dark:text-zinc-400">
+              {isPractice
+                ? "Tích chọn 1 hoặc nhiều bài ngữ pháp bên dưới để tạo đề luyện tập tổng hợp."
+                : 'Công tắc "Trên lộ trình" ở mỗi bài: bật là bài đó nằm trong lịch học hằng ngày, tắt là bỏ qua.'}
+            </p>
+            {!isPractice && pathNote && <p className="text-sm text-amber-800 dark:text-amber-300">{pathNote}</p>}
+            <ul className="flex flex-wrap items-center gap-x-3.5 gap-y-1 text-xs text-slate-500 dark:text-zinc-400">
+              {LEGEND_ORDER.map((s) => (
+                <li key={s} className="inline-flex items-center gap-1.5">
+                  <span aria-hidden="true" className={`h-2 w-2 rounded-full ${CARD_STYLE[s].dot}`} />
+                  {STATUS_STYLE[s].label}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
 
-      <div className="space-y-3">
-        {summaries.map(({ chapter, rows, studied }) => {
-          const ids = rows.map((r) => r.lesson.id);
-          const isOpen = openOverride[chapter.chapterId] ?? chapter.chapterId === defaultOpen;
-          const allChecked = ids.length > 0 && ids.every(isChecked);
-          const order = chapter.chapter?.order ?? (parseInt(chapter.chapterId.replace(/\D/g, ""), 10) || 0);
-          const titleVn = sentenceCase(chapter.chapter?.titleVn || chapter.chapter?.title || chapter.chapterId);
-          const percent = rows.length > 0 ? Math.round((studied / rows.length) * 100) : 0;
+      {/* 1. Weekly & Daily Syllabus View (Default) */}
+      {!isPractice && viewStyle === "speaking" ? (
+        <SpeakingGrammar onOpenLesson={onOpenLesson} />
+      ) : !isPractice && viewStyle === "weekly" ? (
+        <WeeklySyllabusView
+          allRows={allPathRows.length > 0 ? allPathRows : summaries.flatMap((s) => s.rows)}
+          nextLessonId={nextLessonId}
+          onOpenLesson={onOpenLesson}
+          onPractice={onPractice}
+        />
+      ) : (
+        /* 2. Chapter / Tense Matrix View & Multi-select Practice View */
+        <div className="space-y-3">
+          {summaries.map(({ chapter, rows, studied }) => {
+            const ids = rows.map((r) => r.lesson.id);
+            const isOpen = openOverride[chapter.chapterId] ?? chapter.chapterId === defaultOpen;
+            const allChecked = ids.length > 0 && ids.every(isChecked);
+            const order = chapter.chapter?.order ?? (parseInt(chapter.chapterId.replace(/\D/g, ""), 10) || 0);
+            const titleVn = sentenceCase(chapter.chapter?.titleVn || chapter.chapter?.title || chapter.chapterId);
+            const percent = rows.length > 0 ? Math.round((studied / rows.length) * 100) : 0;
 
-          return (
-            <div key={chapter.chapterId}>
-              <div className="space-y-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-4">
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpenOverride((prev) => ({ ...prev, [chapter.chapterId]: !isOpen }))}
-                    className="flex min-h-11 min-w-0 flex-1 items-center gap-2.5 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600"
-                  >
-                    <ChevronDown
-                      className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200 dark:text-zinc-400 ${isOpen ? "" : "-rotate-90"}`}
-                    />
-                    <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-teal-50 px-2.5 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
-                      Ch.{order}
-                    </span>
-                    <span className="min-w-0 flex-1 break-words text-base font-semibold leading-snug text-slate-900 dark:text-zinc-100">
-                      {titleVn}
-                    </span>
-                  </button>
-                </div>
-                {/* Progress and the chapter action on their own line: the title keeps the whole width (long Vietnamese
-                    chapter names ran to four lines next to the button on a phone) */}
-                <div className="flex items-center gap-2 pl-[1.625rem] text-xs text-slate-500 dark:text-zinc-400">
-                  <span className="h-2 min-w-0 flex-1 max-w-[14rem] overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
-                    <span
-                      className={`block h-full rounded-full transition-[width] duration-300 ${
-                        percent >= 100 ? "bg-green-600" : "bg-teal-700 dark:bg-teal-500"
-                      }`}
-                      style={{ width: `${percent}%` }}
-                    />
-                  </span>
-                  <span className="shrink-0 whitespace-nowrap">
-                    {studied}/{rows.length} đã học
-                  </span>
-                  {ids.length > 0 && (
+            return (
+              <div key={chapter.chapterId}>
+                <div className="space-y-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-4">
+                  <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => toggleChapter(ids)}
-                      className="ml-auto shrink-0 whitespace-nowrap min-h-10 rounded-full border border-teal-700/30 px-3 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:text-teal-300 dark:hover:bg-teal-400/10"
+                      aria-expanded={isOpen}
+                      onClick={() => setOpenOverride((prev) => ({ ...prev, [chapter.chapterId]: !isOpen }))}
+                      className="flex min-h-11 min-w-0 flex-1 items-center gap-2.5 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600"
                     >
-                      {allChecked ? "Bỏ cả chương" : "Chọn cả chương"}
+                      <ChevronDown
+                        className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-200 dark:text-zinc-400 ${
+                          isOpen ? "" : "-rotate-90"
+                        }`}
+                      />
+                      <span className="inline-flex h-6 shrink-0 items-center rounded-full bg-teal-50 px-2.5 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
+                        Ch.{order}
+                      </span>
+                      <span className="min-w-0 flex-1 break-words text-base font-semibold leading-snug text-slate-900 dark:text-zinc-100">
+                        {titleVn}
+                      </span>
                     </button>
-                  )}
+                  </div>
+                  <div className="flex items-center gap-2 pl-[1.625rem] text-xs text-slate-500 dark:text-zinc-400">
+                    <span className="h-2 min-w-0 flex-1 max-w-[14rem] overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
+                      <span
+                        className={`block h-full rounded-full transition-[width] duration-300 ${
+                          percent >= 100 ? "bg-green-600" : "bg-teal-700 dark:bg-teal-500"
+                        }`}
+                        style={{ width: `${percent}%` }}
+                      />
+                    </span>
+                    <span className="shrink-0 whitespace-nowrap">
+                      {studied}/{rows.length} đã học
+                    </span>
+                    {ids.length > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => toggleChapter(ids)}
+                        className="ml-auto shrink-0 whitespace-nowrap min-h-10 rounded-full border border-teal-700/30 px-3 text-xs font-semibold text-teal-800 transition-colors hover:bg-teal-50 dark:border-teal-400/40 dark:text-teal-300 dark:hover:bg-teal-400/10"
+                      >
+                        {allChecked ? "Bỏ cả chương" : "Chọn cả chương"}
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              {isOpen && (
-                <div className="mt-3 px-0.5">
-                  <ChapterBody rows={rows} renderCard={renderCard} />
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                {isOpen && (
+                  <div className="mt-3 px-0.5">
+                    <ChapterBody rows={rows} renderCard={renderCard} />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {isPractice && (
         <div className="sticky bottom-2 z-20 flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-md dark:border-zinc-800 dark:bg-zinc-900">

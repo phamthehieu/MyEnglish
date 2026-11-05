@@ -38,6 +38,10 @@ export function applyTheme(mode: ThemeMode): void {
     root.classList.remove("dark");
     root.classList.add("light");
   }
+  try {
+    (window as unknown as { AndroidReminders?: { setWidgetTheme?(mode: string): void } }).AndroidReminders?.setWidgetTheme?.(mode);
+  } catch {
+  }
 }
 
 /**

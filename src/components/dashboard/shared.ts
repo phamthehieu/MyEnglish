@@ -59,13 +59,10 @@ export const NAV_SECTIONS: NavSection[] = [
     id: "vocab",
     label: "Từ vựng",
     tabs: [
+      { tab: "capture", label: AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Bộ từ" },
       { tab: "review", label: "Ôn tập" },
-      // Reading is where words are met and saved: next to the words, not hidden behind grammar
+      { tab: "library", label: "Sổ từ" },
       { tab: "reading", label: "Đọc" },
-      { tab: "library", label: "Kho từ" },
-      { tab: "forgotten", label: "Từ hay quên" },
-      { tab: "known", label: "Đã biết" },
-      { tab: "capture", label: AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Lộ trình" },
     ],
   },
   {
@@ -76,7 +73,6 @@ export const NAV_SECTIONS: NavSection[] = [
       { tab: "patterns", label: "Mẫu câu" },
       { tab: "talk", label: "Hội thoại" },
       { tab: "pronunciation", label: "Phát âm" },
-      { tab: "shadowing", label: "Shadowing" },
     ],
   },
   {
@@ -94,20 +90,29 @@ export const NAV_SECTIONS: NavSection[] = [
     tabs: [
       { tab: "analytics", label: "Tiến độ" },
       { tab: "leaderboard", label: "Xếp hạng" },
-      { tab: "account", label: "Tài khoản" },
       { tab: "guide", label: "Cài đặt" },
     ],
   },
 ];
 
-/** The section a tab belongs to */
-export function navSectionOf(tab: DashboardTab): NavSection {
-  return NAV_SECTIONS.find((s) => s.tabs.some((t) => t.tab === tab)) ?? NAV_SECTIONS[0];
+/** Maps consolidated child tabs (forgotten, known, shadowing, account) to their parent sub-tab in NAV_SECTIONS */
+export function canonicalSubTab(tab: DashboardTab): DashboardTab {
+  if (tab === "forgotten" || tab === "known") return "library";
+  if (tab === "shadowing") return "pronunciation";
+  if (tab === "account") return "guide";
+  return tab;
 }
 
-/** The name of a tab inside its section ("Kho từ", "Cài đặt") */
+/** The section a tab belongs to */
+export function navSectionOf(tab: DashboardTab): NavSection {
+  const canonical = canonicalSubTab(tab);
+  return NAV_SECTIONS.find((s) => s.tabs.some((t) => t.tab === canonical)) ?? NAV_SECTIONS[0];
+}
+
+/** The name of a tab inside its section ("Sổ từ", "Cài đặt") */
 export function tabLabel(tab: DashboardTab): string {
-  return navSectionOf(tab).tabs.find((t) => t.tab === tab)?.label ?? "";
+  const canonical = canonicalSubTab(tab);
+  return navSectionOf(canonical).tabs.find((t) => t.tab === canonical)?.label ?? "";
 }
 
 /** Text-To-Speech Pronunciation (module-level, so its identity is stable for memoized cards) */

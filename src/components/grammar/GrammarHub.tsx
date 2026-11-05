@@ -1,5 +1,20 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, BookOpen, Check, ChevronDown, Clock, CircleAlert, Eye, Layers, Loader2, RefreshCw, RotateCcw, Sparkles, Trash2, Upload, Wrench } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  ArrowRight,
+  BookOpen,
+  ChevronDown,
+  Clock,
+  CircleAlert,
+  Eye,
+  Layers,
+  Loader2,
+  RefreshCw,
+  RotateCcw,
+  Sparkles,
+  Trash2,
+  Upload,
+  Wrench,
+} from "lucide-react";
 import { Button } from "@/components/ui/kit";
 import { SHOW_DEV_TOOLS } from "@/lib/devTools";
 import type { GrammarBookFile } from "@/types/grammarBook";
@@ -23,7 +38,7 @@ import { tipForStage } from "@/data/grammarTips";
 import { SHOW_TIP_EVENT, SHOW_TIP_KEY } from "@/services/weakPoints";
 import GrammarExerciseImportModal from "./GrammarExerciseImportModal";
 import GrammarPlayer from "./GrammarPlayer";
-import SpeakingGrammar from "./SpeakingGrammar";
+
 import { PAGE_CONTAINER } from "../dashboard/shared";
 
 interface GrammarHubProps {
@@ -55,7 +70,6 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
   const [plan, setPlan] = useState<TodayGrammarPlan | null>(null);
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
-  // The data could not be read (as opposed to: the book is simply not imported yet)
   const [loadError, setLoadError] = useState(false);
   const [managed, setManaged] = useState<ManagedItems>(() => readManagedItems());
   const [activeLesson, setActiveLesson] = useState<{ chapterId: string; lessonId: string; tab: GrammarLessonTab } | null>(null);
@@ -65,8 +79,8 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
   const [pickerMode, setPickerMode] = useState<PathPickerMode>("path");
   const [starting, setStarting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
-  // The tip Today asked to show: the grammar of a stage the learner keeps missing
   const [tipStage, setTipStage] = useState<string | null>(null);
+
   useEffect(() => {
     const read = () => {
       try {
@@ -115,7 +129,6 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
     try {
       await initGrammarStorage();
       let chs = await getAllBookChapters();
-      // Only an empty book is worth asking the seeding about (it counts rows in SQL)
       if (chs.length === 0) {
         await ensureGrammarBookSeeded().catch(() => {});
         chs = await getAllBookChapters();
@@ -126,10 +139,8 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
       setPlan(nextPlan);
       setStats(getGrammarSummaryStats());
       setManaged(readManagedItems());
-      // The book loader reports a failed read as an empty book: ask it why
       setLoadError(getBookLoadError() !== null);
 
-      // Open the requested lesson once (e.g. from the mistake notebook), not on every refresh
       if (initialLessonId && !initialHandled.current) {
         initialHandled.current = true;
         const ch = chs.find((c) => (c.lessons ?? []).some((l) => l.id === initialLessonId));
@@ -143,14 +154,12 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
     }
   }, [initialLessonId]);
 
-  // Every graded answer fires "myenglish-grammar-updated"; closing the player reloads the hub already
   const playerOpen = useRef(false);
   playerOpen.current = player !== null;
 
   useEffect(() => {
     void loadData();
     const onUpdate = (e: Event) => {
-      // The book itself changed (import, undo, other window): the hub must reload even behind the player
       const bookChanged = !!(e as CustomEvent<{ book?: boolean } | undefined>).detail?.book;
       if (playerOpen.current && !bookChanged) return;
       void loadData();
@@ -226,7 +235,7 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
       setPlayer({
         entries,
         mode: "practice",
-        title: "Luyện theo thì",
+        title: "Luyện tập tổng hợp",
         subtitle: names.length <= 3 ? names.join(" + ") : `${names.slice(0, 3).join(" + ")} và ${names.length - 3} bài khác`,
       });
     } catch (err) {
@@ -289,36 +298,24 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
 
   return (
     <div className={PAGE_CONTAINER}>
-      <div className="mx-auto max-w-5xl space-y-4 pb-6">
+      <div className="mx-auto max-w-5xl space-y-5 pb-6">
         {weakTip && (
-          <section aria-label="Ngữ pháp hay sai" className="rounded-2xl border border-amber-300 dark:border-amber-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-3">
+          <section
+            aria-label="Ngữ pháp hay sai"
+            className="rounded-2xl border border-amber-300 dark:border-amber-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-3"
+          >
             <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">Điểm bạn hay sai gần đây:</p>
             <GrammarTipCard tip={weakTip} onOpenLesson={openLesson} />
-            <button onClick={() => setTipStage(null)} className="min-h-11 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300">
+            <button
+              onClick={() => setTipStage(null)}
+              className="min-h-11 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300"
+            >
               Đã hiểu
             </button>
           </section>
         )}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="min-w-0 text-sm text-slate-500 dark:text-zinc-400">
-            Mỗi ngày học một bài mới, và ôn lại những bài sắp quên.
-          </p>
 
-          {/* Importing exercises is occasional: a quiet button, the learning actions stay the loud ones */}
-          {SHOW_DEV_TOOLS && (
-            <button
-              type="button"
-              onClick={() => setExerciseImportOpen(true)}
-              className="inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-50 hover:text-teal-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-teal-300"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Nhập bài tập AI & Lịch sử</span>
-            </button>
-          )}
-        </div>
 
-        {/* Grammar for speaking needs no book: with no book it is all there is, so it opens; otherwise it sits folded under "Tiếp theo" */}
-        {!hasBook && !loading && <SpeakingGrammar defaultOpen />}
 
         {loading && !hasBook ? (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-slate-500 dark:text-zinc-400">
@@ -370,16 +367,17 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
           </div>
         ) : (
           <>
-            <TodayPanel
+            <CourseHeroBanner
               stats={stats}
               plan={plan}
               starting={starting}
               onReview={startReview}
               onOpenLesson={openLesson}
               onPractice={openPractice}
+              onOpenImport={SHOW_DEV_TOOLS ? () => setExerciseImportOpen(true) : undefined}
             />
 
-            <SpeakingGrammar onOpenLesson={openLesson} />
+
 
             <div ref={pickerRef} className="scroll-mt-2">
               <PathPicker
@@ -411,7 +409,11 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
       </div>
 
       <GrammarImportDialog isOpen={importOpen} onClose={() => setImportOpen(false)} onImportComplete={() => void loadData()} />
-      <GrammarExerciseImportModal isOpen={exerciseImportOpen} onClose={() => setExerciseImportOpen(false)} onImportComplete={() => void loadData()} />
+      <GrammarExerciseImportModal
+        isOpen={exerciseImportOpen}
+        onClose={() => setExerciseImportOpen(false)}
+        onImportComplete={() => void loadData()}
+      />
 
       {notice && (
         <div
@@ -422,6 +424,179 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * Hero Banner at the top of GrammarHub (styled after the course header in the user's screenshot,
+ * replacing the sales box on the right with the learner's real Today Action Card).
+ */
+function CourseHeroBanner({
+  stats,
+  plan,
+  starting,
+  onReview,
+  onOpenLesson,
+  onPractice,
+  onOpenImport,
+}: {
+  stats: Stats | null;
+  plan: TodayGrammarPlan | null;
+  starting: boolean;
+  onReview: () => void;
+  onOpenLesson: (lessonId: string) => void;
+  onPractice: () => void;
+  onOpenImport?: () => void;
+}) {
+  const due = stats?.dueCount ?? 0;
+  const total = stats?.totalLessons ?? 0;
+  const mastered = stats?.masteredCount ?? 0;
+  const learning = stats?.learningCount ?? 0;
+  const studied = mastered + learning;
+  const pct = total > 0 ? Math.min(100, Math.round((studied * 100) / total)) : 0;
+  const lessonName = (l: { titleVn?: string; title: string }) => l.titleVn || l.title;
+
+  const nextAction =
+    due > 0
+      ? {
+          badge: `${due} bài đến hạn ôn`,
+          title: `Ôn tập ${due} bài ngữ pháp sắp quên`,
+          desc: "Ôn lại các công thức đến hạn trước khi học bài mới để nhớ lâu.",
+          btnText: `Ôn tập ${due} bài ngay`,
+          icon: <Clock className="h-4 w-4" />,
+          onClick: onReview,
+        }
+      : plan?.relearn
+        ? {
+            badge: "Cần củng cố lại",
+            title: lessonName(plan.relearn),
+            desc: "Xem lại công thức và làm lại bài kiểm tra nhanh của chủ điểm này.",
+            btnText: "Học lại bài này",
+            icon: <RotateCcw className="h-4 w-4" />,
+            onClick: () => onOpenLesson(plan.relearn!.id),
+          }
+        : plan?.nextLesson
+          ? {
+              badge: plan.newLessonDoneToday ? "Học vượt tiến độ" : "Bài học hôm nay",
+              title: lessonName(plan.nextLesson),
+              desc: "3 bước: Đọc lý thuyết ngắn → Làm bài tập thực hành → Kiểm tra nhanh.",
+              btnText: plan.newLessonDoneToday ? "Học tiếp bài mới" : "Bắt đầu bài học hôm nay",
+              icon: <Sparkles className="h-4 w-4" />,
+              onClick: () => onOpenLesson(plan.nextLesson!.id),
+            }
+          : {
+              badge: "Luyện tập tự chọn",
+              title: "Luyện tập tổng hợp các thì & cấu trúc",
+              desc: "Chọn các chủ điểm bạn muốn rèn phản xạ chắc chắn hơn.",
+              btnText: "Chọn bài để luyện",
+              icon: <Layers className="h-4 w-4" />,
+              onClick: onPractice,
+            };
+
+  return (
+    <section
+      aria-label="Tổng quan khóa học ngữ pháp"
+      className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-[#2B1B64] via-[#1E1B4B] to-[#0F172A] p-5 text-white shadow-lg md:p-7"
+    >
+      <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-purple-500/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-16 left-1/3 h-48 w-48 rounded-full bg-teal-500/15 blur-3xl" />
+
+      <div className="relative grid grid-cols-1 items-center gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+        {/* Left: Course Title, Description & Overall Progress */}
+        <div className="space-y-3.5">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-indigo-200">
+            <span className="rounded-full bg-teal-400/20 px-2.5 py-0.5 font-bold text-teal-300 ring-1 ring-teal-400/30">
+              Lộ trình Lấy gốc → Nâng cao
+            </span>
+            <span>· ~20 phút mỗi ngày</span>
+            {onOpenImport && (
+              <button
+                type="button"
+                onClick={onOpenImport}
+                className="ml-auto inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-100 hover:bg-white/20"
+              >
+                <Sparkles className="w-3 h-3" /> Nhập bài tập AI
+              </button>
+            )}
+          </div>
+
+          <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
+            Lộ trình Ngữ pháp Tiếng Anh Cơ bản đến Nâng cao
+          </h1>
+
+          <p className="text-sm leading-relaxed text-indigo-100/85">
+            Được chia thành từng <b>Tuần</b> và từng <b>Ngày học cụ thể</b>. Mỗi ngày tập trung làm chủ 1 chủ điểm qua 3
+            bước khép kín: <b>Lý thuyết cô đọng → Bài tập thực tế → Kiểm tra phản xạ</b>.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
+            <span className="rounded-xl bg-white/10 px-3 py-1.5 font-semibold text-white ring-1 ring-white/15">
+              📚 {total} bài học
+            </span>
+            <span className="rounded-xl bg-teal-500/20 px-3 py-1.5 font-semibold text-teal-200 ring-1 ring-teal-400/30">
+              ✓ {studied} đã học ({mastered} đã thuộc)
+            </span>
+            {due > 0 && (
+              <span className="rounded-xl bg-amber-500/20 px-3 py-1.5 font-semibold text-amber-200 ring-1 ring-amber-400/30">
+                ⏰ {due} bài đến hạn ôn
+              </span>
+            )}
+          </div>
+
+          <div className="space-y-1.5 pt-1 max-w-md">
+            <div className="flex items-center justify-between text-xs text-indigo-200">
+              <span>Tiến độ toàn khóa</span>
+              <span className="font-mono font-bold text-teal-300">{pct}%</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-white/15">
+              <div className="h-full bg-teal-400 transition-all duration-300" style={{ width: `${pct}%` }} />
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Today's Active Study Card (Replaces the commercial price box in the screenshot) */}
+        <div className="flex flex-col justify-between gap-4 rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur-md md:p-5">
+          <div className="space-y-1.5">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-400/20 px-2.5 py-0.5 text-xs font-bold text-teal-300">
+              {nextAction.icon}
+              {nextAction.badge}
+            </span>
+            <h2 className="text-lg font-extrabold leading-snug text-white">{nextAction.title}</h2>
+            <p className="text-xs leading-relaxed text-indigo-100/80">{nextAction.desc}</p>
+          </div>
+
+          <div className="space-y-2">
+            <button
+              type="button"
+              disabled={starting}
+              onClick={nextAction.onClick}
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-teal-400 px-4 text-sm font-extrabold text-slate-950 shadow-sm transition-colors hover:bg-teal-300 disabled:opacity-50"
+            >
+              {starting ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+              <span>{nextAction.btnText}</span>
+              <ArrowRight className="h-4 w-4" />
+            </button>
+
+            <div className="flex items-center justify-between gap-2 pt-1 text-[11px] text-indigo-200">
+              {due > 0 && plan?.nextLesson ? (
+                <button
+                  type="button"
+                  onClick={() => onOpenLesson(plan.nextLesson!.id)}
+                  className="font-semibold text-teal-300 hover:underline"
+                >
+                  Học bài mới: {lessonName(plan.nextLesson)} →
+                </button>
+              ) : (
+                <span>Học tuần tự từng ngày để nhớ lâu nhất</span>
+              )}
+              <button type="button" onClick={onPractice} className="ml-auto font-semibold text-indigo-200 hover:text-white hover:underline">
+                Luyện tự chọn
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -453,7 +628,10 @@ function ManagedItemsPanel({
           ) : (
             <ul className="space-y-1">
               {managed.hidden.map((itemKey) => (
-                <li key={itemKey} className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-0.5 dark:bg-zinc-800/60">
+                <li
+                  key={itemKey}
+                  className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-0.5 dark:bg-zinc-800/60"
+                >
                   <span className="min-w-0 truncate font-mono text-slate-700 dark:text-zinc-300">{itemKey}</span>
                   <button
                     type="button"
@@ -470,7 +648,9 @@ function ManagedItemsPanel({
         </section>
 
         <section className="space-y-1.5">
-          <h3 className="font-semibold text-slate-700 dark:text-zinc-200">Đáp án mình tự công nhận ({managed.accepted.length})</h3>
+          <h3 className="font-semibold text-slate-700 dark:text-zinc-200">
+            Đáp án mình tự công nhận ({managed.accepted.length})
+          </h3>
           {managed.accepted.length === 0 ? (
             <p className="text-slate-500 dark:text-zinc-400">Chưa có đáp án nào.</p>
           ) : (
@@ -482,7 +662,9 @@ function ManagedItemsPanel({
                 >
                   <span className="min-w-0 truncate">
                     <span className="font-mono text-slate-500 dark:text-zinc-400">{item.itemKey}</span>
-                    {item.blankIndex > 0 && <span className="text-slate-500 dark:text-zinc-400"> · ô {item.blankIndex + 1}</span>}
+                    {item.blankIndex > 0 && (
+                      <span className="text-slate-500 dark:text-zinc-400"> · ô {item.blankIndex + 1}</span>
+                    )}
                     <span className="text-slate-700 dark:text-zinc-200">: {item.answer}</span>
                   </span>
                   <button
@@ -500,198 +682,5 @@ function ManagedItemsPanel({
         </section>
       </div>
     </details>
-  );
-}
-
-type TodayStep = {
-  key: "review" | "lesson" | "practice";
-  icon: ReactNode;
-  label: string;
-  /** What it is today ("2 bài đến hạn", the lesson's name) */
-  detail: string;
-  done: boolean;
-  /** null: nothing to do (done, or the path is finished) */
-  action: (() => void) | null;
-  actionText: string;
-};
-
-/**
- * Today's grammar in one card: the one thing to do next, big, with the day's three steps beside it (review,
- * new lesson, practice) and the progress of the whole path underneath.
- */
-function TodayPanel({
-  stats,
-  plan,
-  starting,
-  onReview,
-  onOpenLesson,
-  onPractice,
-}: {
-  stats: Stats | null;
-  plan: TodayGrammarPlan | null;
-  starting: boolean;
-  onReview: () => void;
-  onOpenLesson: (lessonId: string) => void;
-  onPractice: () => void;
-}) {
-  const due = stats?.dueCount ?? 0;
-  const total = stats?.totalLessons ?? 0;
-  const mastered = stats?.masteredCount ?? 0;
-  const learning = stats?.learningCount ?? 0;
-  const pct = (n: number) => `${total > 0 ? Math.min(100, (n * 100) / total) : 0}%`;
-  const lessonName = (l: { titleVn?: string; title: string }) => l.titleVn || l.title;
-
-  const lessonStep: TodayStep = plan?.relearn
-    ? {
-        key: "lesson",
-        icon: <RotateCcw className="h-4 w-4" />,
-        label: "Học lại",
-        detail: lessonName(plan.relearn),
-        done: false,
-        action: () => onOpenLesson(plan.relearn!.id),
-        actionText: "Học lại bài này",
-      }
-    : plan?.nextLesson && !plan.newLessonDoneToday
-      ? {
-          key: "lesson",
-          icon: <Sparkles className="h-4 w-4" />,
-          label: "Bài mới",
-          detail: lessonName(plan.nextLesson),
-          done: false,
-          action: () => onOpenLesson(plan.nextLesson!.id),
-          actionText: "Học bài mới",
-        }
-      : {
-          key: "lesson",
-          icon: <Sparkles className="h-4 w-4" />,
-          label: "Bài mới",
-          detail: plan?.nextLesson ? "Đã học bài mới hôm nay" : "Đã đi hết lộ trình",
-          done: true,
-          // Wanting more is fine: the next lesson stays one click away
-          action: plan?.nextLesson ? () => onOpenLesson(plan.nextLesson!.id) : null,
-          actionText: plan?.nextLesson ? `Học tiếp: ${lessonName(plan.nextLesson)}` : "",
-        };
-  const steps: TodayStep[] = [
-    {
-      key: "review",
-      icon: <Clock className="h-4 w-4" />,
-      label: "Ôn lại",
-      detail: due > 0 ? `${due} bài đến hạn` : "Không có bài đến hạn",
-      done: due === 0,
-      action: due > 0 ? onReview : null,
-      actionText: `Ôn tập ${due} bài`,
-    },
-    lessonStep,
-    {
-      key: "practice",
-      icon: <Layers className="h-4 w-4" />,
-      label: "Luyện theo thì",
-      detail: "Chọn thì muốn luyện, làm các câu chỉ dùng thì đó",
-      done: false,
-      action: onPractice,
-      actionText: "Chọn thì để luyện",
-    },
-  ];
-  // The next thing: due reviews first (they are about to be forgotten), then the lesson, then practice
-  const primary = steps.find((s) => s.key !== "practice" && !s.done && s.action) ?? steps[2];
-  const allDone = steps[0].done && lessonStep.done;
-
-  return (
-    <section aria-label="Hôm nay" className="grid grid-cols-1 gap-3 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-      {/* The one thing to do next */}
-      <div className="flex min-w-0 flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900 md:p-5">
-        <div className="space-y-1.5">
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-teal-700 dark:text-teal-300">
-            {primary.icon}
-            {allDone ? "Hôm nay đã xong · muốn luyện thêm?" : `Tiếp theo · ${primary.label}`}
-          </span>
-          <p className="break-words text-xl font-semibold leading-snug text-slate-900 dark:text-zinc-100">
-            {primary.key === "practice" ? "Luyện các thì bạn muốn chắc hơn" : primary.detail}
-          </p>
-          {primary.key === "lesson" && plan?.relearn && (
-            <p className="text-sm text-slate-500 dark:text-zinc-400">Lần kiểm tra nhanh trước chưa đạt: xem lại bài rồi làm lại phần kiểm tra.</p>
-          )}
-          {primary.key === "review" && (
-            <p className="text-sm text-slate-500 dark:text-zinc-400">Các bài này sắp quên: ôn trước rồi mới học bài mới.</p>
-          )}
-        </div>
-        <div className="space-y-3">
-          <Button
-            size="lg"
-            onClick={primary.action ?? undefined}
-            disabled={starting && primary.key === "review"}
-            className="w-full min-w-0 sm:w-auto"
-          >
-            {starting && primary.key === "review" ? <Loader2 className="h-4 w-4 shrink-0 animate-spin" /> : null}
-            <span className="min-w-0 truncate">{primary.actionText}</span>
-            <ArrowRight className="h-4 w-4 shrink-0" />
-          </Button>
-          {/* The whole path: remembered (green) and still learning (blue) */}
-          <div className="space-y-1">
-            <div className="flex h-2 overflow-hidden rounded-full bg-slate-100 dark:bg-zinc-800">
-              <div className="h-full bg-green-600 transition-all duration-300" style={{ width: pct(mastered) }} />
-              <div className="h-full bg-teal-700 transition-all duration-300 dark:bg-teal-500" style={{ width: pct(learning) }} />
-            </div>
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-slate-500 dark:text-zinc-400">
-              <span>
-                <b className="font-semibold tabular-nums text-slate-900 dark:text-zinc-100">{mastered + learning}/{total}</b> bài đã học
-              </span>
-              <span className="inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-green-600" />{mastered} đã thuộc</span>
-              <span className="inline-flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-teal-700 dark:bg-teal-500" />{learning} đang học</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* The day's steps */}
-      <ol className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:grid-cols-1">
-        {steps.map((step) => {
-          const isPrimary = step === primary;
-          const clickable = !!step.action && !isPrimary;
-          const body = (
-            <>
-              <span
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-                  step.done
-                    ? "bg-green-50 text-green-700 dark:bg-green-500/10 dark:text-green-400"
-                    : isPrimary
-                      ? "bg-teal-700 text-white dark:bg-teal-600"
-                      : "bg-slate-100 text-slate-500 dark:bg-zinc-800 dark:text-zinc-400"
-                }`}
-              >
-                {step.done ? <Check className="h-4 w-4" /> : step.icon}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100">{step.label}</span>
-                <span className="block truncate text-xs text-slate-500 dark:text-zinc-400" title={step.detail}>
-                  {step.done && step.action ? step.actionText : step.detail}
-                </span>
-              </span>
-              {isPrimary ? (
-                <span className="shrink-0 rounded-full bg-teal-50 px-2.5 py-1 text-xs font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">Tiếp theo</span>
-              ) : clickable ? (
-                <ArrowRight className="h-4 w-4 shrink-0 text-slate-500 dark:text-zinc-400" />
-              ) : null}
-            </>
-          );
-          const cls = `flex min-h-14 w-full items-center gap-3 rounded-2xl border px-3.5 py-3 text-left md:px-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition-colors ${
-            isPrimary
-              ? "border-teal-700/30 bg-teal-50 dark:border-teal-400/30 dark:bg-teal-400/10"
-              : "border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-          } ${clickable ? "hover:bg-slate-50 dark:hover:bg-zinc-800" : ""}`;
-          return (
-            <li key={step.key} className="min-w-0">
-              {clickable ? (
-                <button type="button" onClick={step.action!} className={`${cls} h-full`}>
-                  {body}
-                </button>
-              ) : (
-                <div className={`${cls} h-full`}>{body}</div>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </section>
   );
 }

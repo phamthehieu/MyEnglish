@@ -8,7 +8,7 @@ export const ASK_COLLEAGUE: Situation = {
   cefr: "A2",
   goal_vi: "Xin đồng nghiệp chút thời gian, nói bạn gặp vấn đề gì và cảm ơn.",
   partner_vi: "Đồng nghiệp",
-  partner_emoji: "🧑‍💻",
+  partner_emoji: "🧑‍💼",
   lines: [
     {
       id: "ask-colleague.l1",
@@ -19,9 +19,9 @@ export const ASK_COLLEAGUE: Situation = {
     },
     {
       id: "ask-colleague.l2",
-      en: "I have a problem with this code.",
-      vi: "Tôi gặp vấn đề với đoạn mã này.",
-      accept: ["I have a problem with the code", "I'm having a problem with this code"],
+      en: "I have a problem with this report.",
+      vi: "Tôi gặp vấn đề với bản báo cáo này.",
+      accept: ["I have a problem with the report", "I'm having a problem with this report", "I have a problem with this code", "I have a problem with the code", "I'm having a problem with this code"],
     },
     {
       id: "ask-colleague.l3",

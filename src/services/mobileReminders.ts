@@ -11,10 +11,11 @@ import {
 import { anchorTimesOf } from "./reminderMoments";
 import { getActivityLogs, getDailyGoal, getLocalDateString } from "./streak";
 import { countTodayWork } from "./todayWork";
-import { getDueWordsLite, getWordsLite } from "./db";
+import { getDatabase, getDueWordsLite, getWordsLite } from "./db";
 import { selectMicroQuizQuestion, type MicroQuizQuestion } from "./duoMotivation";
 import { buildFlashQuizSession, FLASH_QUIZ_SESSION_SIZE } from "./flashQuizSession";
 import { applySentenceAnswer, buildSentenceQuestions, mixQuestions } from "./sentenceQuiz";
+import { listMistakes } from "./mistakes";
 
 const DAYS_AHEAD = 3;
 const MAX_ENTRIES = 60;
@@ -45,6 +46,30 @@ interface RemindersBridge {
   testFloatingNudgeIn?(seconds: number, title: string, body: string, dueCount: number, quizJson: string): boolean;
   getPendingQuizAnswers?(): string;
   clearPendingQuizAnswers?(): void;
+  setWidgetData?(cardsJson: string, quizJson: string): boolean;
+  requestPinWidget?(): boolean;
+  isWidgetPinned?(): boolean;
+}
+
+export function canPinHomeWidget(): boolean {
+  const b = bridge();
+  if (!b || typeof b.requestPinWidget !== "function") return false;
+  try {
+    return !b.isWidgetPinned?.();
+  } catch {
+    return true;
+  }
+}
+
+export function pinHomeWidget(): boolean {
+  try {
+    return !!bridge()?.requestPinWidget?.();
+  } catch {
+    return false;
+  }
+}
+
+export interface WidgetCardItem {
 }
 
 function bridge(): RemindersBridge | null {
@@ -270,6 +295,7 @@ async function refreshDue(): Promise<void> {
   try {
     dueToday = (await countTodayWork()).total;
     const [dueWords, allWords] = await Promise.all([getDueWordsLite(), getWordsLite()]);
+    const mistakes = await listMistakes(6).catch(() => []);
     // Conversation sentences and patterns due for review are asked too, between the words
     const sentences = buildSentenceQuestions();
     sentencesDue = sentences.length;
@@ -280,6 +306,90 @@ async function refreshDue(): Promise<void> {
       for (let i = 0; i < 5; i++) {
         const q = selectMicroQuizQuestion(sourceWords, allWords);
         if (q) cachedQuizzes.push(q);
+      }
+    }
+    const widgetCards: Array<{ wordId?: string; tag: string; word: string; pos?: string; ipa: string; meaning: string; example: string; exampleVn?: string }> = [];
+    const formatPos = (raw?: string | null): string => {
+      if (!raw) return "";
+      const p = raw.toLowerCase().trim();
+      if (p.startsWith("verb") || p === "v") return "(v.)";
+      if (p.startsWith("noun") || p === "n") return "(n.)";
+      if (p.startsWith("adj")) return "(adj.)";
+      if (p.startsWith("adv")) return "(adv.)";
+      return `(${p.slice(0, 6)})`;
+    };
+    const seen = new Set<string>();
+    const forgotten = [...allWords]
+      .filter((w) => (w.srs?.lapses ?? 0) > 0 || (w.srs?.difficulty ?? 0) >= 7)
+      .sort((a, b) => (b.srs?.lapses ?? 0) - (a.srs?.lapses ?? 0));
+    for (const f of forgotten.slice(0, 8)) {
+      const key = f.word.toLowerCase();
+      if (seen.has(key) || !f.meaning_vn) continue;
+      seen.add(key);
+      widgetCards.push({
+        tag: "Từ hay nhầm",
+        wordId: f.id,
+        word: f.word,
+        pos: formatPos(f.part_of_speech),
+        ipa: f.phonetic || "",
+        meaning: f.meaning_vn.split(/[;\n]/)[0].trim(),
+        example: "",
+      });
+    }
+    for (const m of mistakes.slice(0, 4)) {
+      if (!m.wrong_text || !m.right_text) continue;
+      widgetCards.push({
+        tag: "Lỗi hay mắc",
+        word: `❌ ${m.wrong_text}`,
+        ipa: `→ ✅ ${m.right_text}`,
+        meaning: m.why_vn || `Sửa thành: ${m.right_text}`,
+        example: m.sentence || "",
+      });
+    }
+    for (const w of sourceWords) {
+      if (widgetCards.length >= 16) break;
+      const key = w.word.toLowerCase();
+      if (seen.has(key) || !w.meaning_vn) continue;
+      seen.add(key);
+      widgetCards.push({
+        tag: (w.srs?.lapses ?? 0) > 0 ? "Từ hay nhầm" : "Từ cần ôn",
+        wordId: w.id,
+        word: w.word,
+        pos: formatPos(w.part_of_speech),
+        ipa: w.phonetic || "",
+        meaning: w.meaning_vn.split(/[;\n]/)[0].trim(),
+        example: "",
+      });
+    }
+    if (widgetCards.length > 0) {
+      try {
+        const ids = widgetCards.map((c) => c.wordId).filter((id): id is string => !!id);
+        if (ids.length > 0) {
+          const db = await getDatabase();
+          const ph = ids.map((_, i) => `$${i + 1}`).join(", ");
+          const exRows = await db.select<Array<{ word_id: string; sentence_en: string; sentence_vn: string | null }>>(
+            `SELECT word_id, sentence_en, sentence_vn FROM examples WHERE word_id IN (${ph});`,
+            ids
+          );
+          const exMap = new Map<string, { en: string; vi: string }>();
+          for (const r of exRows) {
+            if (!exMap.has(r.word_id) && r.sentence_en?.trim()) {
+              exMap.set(r.word_id, { en: r.sentence_en.trim(), vi: (r.sentence_vn || "").trim() });
+            }
+          }
+          for (const c of widgetCards) {
+            if (c.wordId && exMap.has(c.wordId)) {
+              const ex = exMap.get(c.wordId)!;
+              c.example = ex.en;
+              c.exampleVn = ex.vi;
+            }
+          }
+        }
+      } catch {}
+      bridge()?.setWidgetData?.(JSON.stringify(widgetCards), quizFor(0));
+    }
+    {
+      {
       }
     }
   } catch {

@@ -129,7 +129,7 @@ export default function LibraryFilterToolbar({
   const helpLine =
     selectedConfig && selectedConfig.id !== "all"
       ? `${selectedConfig.label}: ${selectedConfig.hint}`
-      : (bucketCounts.waiting || 0) > 0
+      : false
         ? `Chờ lượt: ${BUCKET_CONFIGS.find((c) => c.id === "waiting")?.hint}`
         : null;
 
@@ -142,15 +142,15 @@ export default function LibraryFilterToolbar({
 
   return (
     <div className="relative z-20 rounded-2xl border border-slate-200 bg-white text-sm shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="flex flex-col gap-2 p-2 sm:flex-row sm:items-center">
+      <div className="flex items-center gap-1.5 p-1.5 sm:gap-2 sm:p-2">
       {/* Phone: the dropdown (and review / reset) on top, the chips below */}
-      <div className="flex min-w-0 flex-wrap items-center gap-2 sm:shrink-0 sm:flex-nowrap">
+      <div className="flex min-w-0 shrink-0 items-center gap-1.5">
       {/* 1. Level / Topic Dropdown Selector */}
       <div className="relative shrink-0 min-w-0" ref={dropdownRef}>
         <button
           type="button"
           onClick={() => setIsLevelMenuOpen((prev) => !prev)}
-          className={`inline-flex min-h-11 max-w-full items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-colors ${
+          className={`inline-flex min-h-9 max-w-full items-center gap-1.5 rounded-full border px-3 text-xs sm:text-sm font-semibold transition-colors ${
             isTopicFiltered
               ? "border-teal-700 bg-teal-50 text-teal-800 dark:border-teal-400 dark:bg-teal-400/10 dark:text-teal-200"
               : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -284,7 +284,7 @@ export default function LibraryFilterToolbar({
               type="button"
               onClick={() => onSelectBucket(config.id)}
               title={config.hint}
-              className={`flex min-h-10 shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium transition-colors ${
+              className={`flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border px-3 text-xs sm:text-sm font-medium transition-colors ${
                 isSelected
                   ? config.activeClass
                   : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"

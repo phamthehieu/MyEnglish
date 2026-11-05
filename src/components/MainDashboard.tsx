@@ -678,7 +678,12 @@ export default function MainDashboard({
         setShowReviewModalPreview(true);
       }
     };
+    const handleOpenQuickAddWord = () => {
+      setActiveTab("capture");
+      setTabResetKey((k) => k + 1);
+    };
     window.addEventListener("open-quick-quiz", handleOpenQuickQuiz);
+    window.addEventListener("open-quick-add-word", handleOpenQuickAddWord);
 
     // Reviews recorded in the popup / other windows
     let unlistenWordsChangedFn: (() => void) | null = null;
@@ -745,6 +750,7 @@ export default function MainDashboard({
       window.removeEventListener("open-review-popup-preview", handleOpenPreview);
       window.removeEventListener("close-review-popup-preview", handleClosePreview);
       window.removeEventListener("open-quick-quiz", handleOpenQuickQuiz);
+      window.removeEventListener("open-quick-add-word", handleOpenQuickAddWord);
       window.removeEventListener("focus", handleFocus);
       document.removeEventListener("visibilitychange", handleVisible);
       if (unlistenWordsChangedFn) unlistenWordsChangedFn();
@@ -1379,6 +1385,144 @@ export default function MainDashboard({
               simpleMode={simpleMode}
             />
           </Suspense>
+        )}
+
+        {/* CONSOLIDATED SWITCHER BARS FOR MERGED TABS */}
+        {(activeTab === "library" || activeTab === "forgotten" || activeTab === "known") && (
+          <div className="shrink-0 bg-[#f7f8fa] dark:bg-zinc-950 px-3 md:px-6 pt-2.5 pb-0.5 max-w-6xl mx-auto w-full">
+            <div
+              role="tablist"
+              aria-label="Phân loại sổ từ"
+              className="inline-flex flex-wrap items-center gap-1.5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 shadow-sm"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === "library"}
+                onClick={() => handleSelectTab("library")}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                  activeTab === "library"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                <span>📚 Từ đang học ({words.length})</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === "forgotten"}
+                onClick={() => handleSelectTab("forgotten")}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                  activeTab === "forgotten"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                <span>🔥 Từ hay quên</span>
+                {forgottenCount > 0 && (
+                  <span
+                    className={`rounded-full px-1.5 py-0.2 text-[10px] font-extrabold ${
+                      activeTab === "forgotten"
+                        ? "bg-white/20 text-white"
+                        : forgottenDue > 0
+                          ? "bg-red-600 text-white"
+                          : "bg-slate-200 text-slate-700 dark:bg-zinc-800 dark:text-zinc-300"
+                    }`}
+                  >
+                    {forgottenCount}
+                  </span>
+                )}
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === "known"}
+                onClick={() => handleSelectTab("known")}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                  activeTab === "known"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                <span>✓ Từ đã biết</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {(activeTab === "pronunciation" || activeTab === "shadowing") && (
+          <div className="shrink-0 bg-[#f7f8fa] dark:bg-zinc-950 px-3 md:px-6 pt-2.5 pb-0.5 max-w-6xl mx-auto w-full">
+            <div
+              role="tablist"
+              aria-label="Chế độ luyện phát âm"
+              className="inline-flex flex-wrap items-center gap-1.5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 shadow-sm"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === "pronunciation"}
+                onClick={() => handleSelectTab("pronunciation")}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                  activeTab === "pronunciation"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                <span>🎙️ Luyện âm & Từ</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === "shadowing"}
+                onClick={() => handleSelectTab("shadowing")}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                  activeTab === "shadowing"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                <span>🎬 Nhại câu (Shadowing)</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {(activeTab === "guide" || activeTab === "account") && (
+          <div className="shrink-0 bg-[#f7f8fa] dark:bg-zinc-950 px-3 md:px-6 pt-2.5 pb-0.5 max-w-6xl mx-auto w-full">
+            <div
+              role="tablist"
+              aria-label="Cài đặt và tài khoản"
+              className="inline-flex flex-wrap items-center gap-1.5 rounded-2xl border border-slate-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 shadow-sm"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === "guide"}
+                onClick={() => handleSelectTab("guide")}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                  activeTab === "guide"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                <span>⚙️ Tùy chỉnh & Nhắc học</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === "account"}
+                onClick={() => handleSelectTab("account")}
+                className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl px-3.5 text-xs font-bold transition-colors ${
+                  activeTab === "account"
+                    ? "bg-teal-700 text-white dark:bg-teal-600"
+                    : "text-slate-600 hover:bg-slate-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                }`}
+              >
+                <span>👤 Tài khoản & Đồng bộ</span>
+              </button>
+            </div>
+          </div>
         )}
 
         {/* TAB 1: VOCABULARY LIBRARY */}

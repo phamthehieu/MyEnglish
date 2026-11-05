@@ -83,8 +83,8 @@ export const SLOTS: Record<string, Slot[]> = {
       { en: [["Vietnam", "Thailand"]], vi: [["Việt Nam", "Thái Lan"]] },
     ],
     [
-      { en: [["a software engineer", "a teacher"], ["I work with computers", "I work at a school"]], vi: [["kỹ sư phần mềm", "giáo viên"]] },
-      { en: [["a software engineer", "a doctor"], ["I work with computers", "I work in a hospital"]], vi: [["kỹ sư phần mềm", "bác sĩ"]] },
+      { en: [["an office worker", "a teacher"], ["I work in an office", "I work at a school"]], vi: [["nhân viên văn phòng", "giáo viên"]] },
+      { en: [["an office worker", "a doctor"], ["I work in an office", "I work in a hospital"]], vi: [["nhân viên văn phòng", "bác sĩ"]] },
     ],
   ],
 };

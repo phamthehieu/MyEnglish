@@ -124,6 +124,7 @@ class MainActivity : TauriActivity() {
     when (action) {
       "start_review" -> wv.evaluateJavascript("window.dispatchEvent(new CustomEvent('open-review-popup-preview'));", null)
       "quick_quiz" -> wv.evaluateJavascript("window.dispatchEvent(new CustomEvent('open-quick-quiz'));", null)
+      "quick_add_word" -> wv.evaluateJavascript("window.dispatchEvent(new CustomEvent('open-quick-add-word'));", null)
       "focus" -> wv.evaluateJavascript("window.dispatchEvent(new CustomEvent('start-focus-session', { detail: { minutes: $focusMinutes } }));", null)
     }
   }

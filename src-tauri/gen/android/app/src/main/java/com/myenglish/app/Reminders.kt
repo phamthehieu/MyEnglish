@@ -140,6 +140,23 @@ class RemindersBridge(private val context: Context) {
 
   @JavascriptInterface
   fun clearPendingQuizAnswers() = ReminderScheduler.clearPendingQuizAnswers(context)
+
+  @JavascriptInterface
+  fun setWidgetData(cardsJson: String, quizJson: String): Boolean = try {
+    VocabWidgetProvider.saveWidgetData(context, cardsJson, quizJson)
+    true
+  } catch (_: Exception) {
+    false
+  }
+
+  @JavascriptInterface
+  fun requestPinWidget(): Boolean = VocabWidgetProvider.requestPin(context)
+
+  @JavascriptInterface
+  fun isWidgetPinned(): Boolean = VocabWidgetProvider.isWidgetPinned(context)
+
+  @JavascriptInterface
+  fun setWidgetTheme(mode: String) = VocabWidgetProvider.saveThemeMode(context, mode)
 }
 
 object ReminderScheduler {

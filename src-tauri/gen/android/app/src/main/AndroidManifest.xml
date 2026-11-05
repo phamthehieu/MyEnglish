@@ -75,6 +75,18 @@
 
         <!-- Study reminders: alarms fire the receiver with the app closed; the boot receiver sets them again -->
         <receiver android:name=".ReminderReceiver" android:exported="false" />
+        <receiver android:name=".VocabWidgetProvider" android:exported="true" android:label="MyEnglish · Ôn từ &amp; Thêm từ">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.myenglish.app.WIDGET_NEXT_WORD" />
+                <action android:name="com.myenglish.app.WIDGET_AUTO_ROTATE" />
+                <action android:name="com.myenglish.app.WIDGET_SPEAK_WORD" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/vocab_widget_info" />
+        </receiver>
         <receiver android:name=".ReminderActionReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="com.myenglish.app.SNOOZE_10" />

@@ -8,6 +8,9 @@ import { completeStep, getPatternState } from "../src/services/patterns/progress
 import { buildDayPlan } from "../src/services/roadmap/plan";
 import { buildPathStages } from "../src/services/roadmap/stages";
 import { READING_SAMPLES } from "../src/data/readingSamples";
+import { INTRODUCE_YOURSELF } from "../src/data/situations/introduce-yourself";
+import { ASK_COLLEAGUE } from "../src/data/situations/ask-colleague";
+import SHADOWING_INDEX from "../src/data/shadowing/index.json";
 
 const files = (catalogRaw as unknown as { files: GrammarBookFile[] }).files;
 const setTypeById = new Map<string, GrammarExerciseSetType>();
@@ -122,6 +125,13 @@ describe("Curriculum & UX Improvements for Working Adults", () => {
     expect(levels.has("A1")).toBe(true);
     expect(levels.has("A2")).toBe(true);
     expect(levels.has("B1")).toBe(true);
+    expect(levels.has("B2")).toBe(true);
+    for (const s of READING_SAMPLES) {
+      expect(s.translationVi.length).toBeGreaterThan(30);
+    }
+    expect(INTRODUCE_YOURSELF.lines.find((l) => l.id === "introduce-yourself.l3")?.en).toBe("I'm an office worker.");
+    expect(ASK_COLLEAGUE.lines.find((l) => l.id === "ask-colleague.l2")?.en).toBe("I have a problem with this report.");
+    expect((SHADOWING_INDEX as Array<{ hasVi?: boolean }>).some((x) => x.hasVi)).toBe(true);
     for (const s of READING_SAMPLES) {
       expect(s.text.split(/\s+/).length).toBeGreaterThanOrEqual(35);
       expect(s.titleVi.length).toBeGreaterThan(3);

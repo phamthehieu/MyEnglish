@@ -92,7 +92,7 @@ export interface EligibilityResult {
  * 3. Has NOT already auto-replenished today
  */
 /** Default when the learner has no clear topic yet */
-const DEFAULT_REPLENISH_TOPIC = "Software Engineering & Professional Work";
+const DEFAULT_REPLENISH_TOPIC = "Everyday Communication & Workplace English";
 
 /**
  * Topic for AI-added words: the one the learner adds most words to themselves (their real interests),

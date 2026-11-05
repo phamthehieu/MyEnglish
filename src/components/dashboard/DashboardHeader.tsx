@@ -7,7 +7,7 @@ import { useAuthStore } from "@/stores/authStore";
 import Avatar from "../Avatar";
 import { SubTabs } from "../ui/kit";
 import type { GlobalToastData } from "./DashboardBanners";
-import { navSectionOf, type DashboardTab } from "./shared";
+import { canonicalSubTab, navSectionOf, type DashboardTab } from "./shared";
 import { AI_VOCAB_ENABLED } from "@/services/features";
 import type { TodayWork } from "@/services/smartReview";
 import { vocabDetail } from "./todayPlan";
@@ -282,12 +282,12 @@ export default function DashboardHeader({
       <div className="shrink-0 border-b border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 px-4 md:px-6 py-2">
         <SubTabs
           label={section.label}
-          value={activeTab}
+          value={canonicalSubTab(activeTab)}
           onChange={setActiveTab}
           items={subTabs.map((t) => ({
             id: t.tab,
             label: t.label,
-            badge: t.tab === "review" ? countChip(dueCount, "amber") : t.tab === "forgotten" ? countChip(forgottenCount, forgottenDue > 0 ? "red" : "neutral") : undefined,
+            badge: t.tab === "review" ? countChip(dueCount, "amber") : t.tab === "library" ? countChip(forgottenCount, forgottenDue > 0 ? "red" : "neutral") : undefined,
           }))}
         />
       </div>

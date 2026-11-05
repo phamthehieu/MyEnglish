@@ -14,6 +14,7 @@ import { getAllGrammarProgress, getDueGrammarLessons, initGrammarStorage } from 
 import { getTodayGrammarPlan } from "@/services/grammarPath";
 import { countWordStatus, WORD_STATUS_LABELS } from "@/services/wordStatus";
 import { AI_VOCAB_ENABLED } from "@/services/features";
+import { canPinHomeWidget, pinHomeWidget } from "@/services/mobileReminders";
 import { PAGE_CONTAINER, type DashboardTab } from "./shared";
 import { useAuthStore } from "@/stores/authStore";
 import {
@@ -21,15 +22,12 @@ import {
   cardsLaterToday,
   chosenDailyMinutes,
   coverageGain,
-  milestoneToCelebrate,
   pickNextStep,
   primaryTask,
   coreTasks,
   quickStartMode,
   readCoverageBaseline,
-  readMilestoneMark,
   saveCoverageBaseline,
-  saveMilestoneMark,
   type TodayTask,
   type TodayTaskInput,
 } from "./todayPlan";
@@ -37,7 +35,6 @@ import TodayChecklist from "./TodayChecklist";
 import DayCloseCard from "./DayCloseCard";
 import { FeedbackDialog } from "./FeedbackForm";
 import { isCloudConfigured } from "@/services/supabase";
-import TodayRoadmapCard from "./TodayRoadmapCard";
 import StudyLevelBar from "./StudyLevelBar";
 import AppUpdateBanner from "./AppUpdateBanner";
 import InstallAppCard from "./InstallAppCard";
@@ -51,11 +48,9 @@ import { getLine } from "@/data/situations";
 import { TALK_UPDATED_EVENT } from "@/services/talk/progress";
 import { WEAK_POINTS_EVENT } from "@/services/weakPoints";
 import { practicedToday } from "@/services/learningLinks";
-import FocusStartCard from "./FocusStartCard";
 import DailyQuestsCard from "./DailyQuestsCard";
 import { FOCUS_SETTINGS_EVENT, getFocusSettings, nextReviewPeek } from "@/services/focusSession";
 import { nextReviewText } from "@/services/dayClose";
-import WeeklySummaryCard from "./WeeklySummaryCard";
 
 interface TodayTabProps {
   words: WordDetail[];
@@ -84,8 +79,7 @@ interface TodayTabProps {
 const FORGOTTEN_HINT_MIN = 3;
 
 function greeting(hour: number, name?: string | null): string {
-  // Short and in English, the language the learner is here for
-  const base = hour < 12 ? "Morning" : hour < 18 ? "Hi" : "Evening";
+  const base = hour < 12 ? "Chào buổi sáng" : hour < 18 ? "Chào buổi chiều" : "Chào buổi tối";
   const clean = name?.trim();
   return clean ? `${base}, ${clean} 👋` : `${base} 👋`;
 }
@@ -96,12 +90,11 @@ function todayMinutes(work: TodayWork): number {
 }
 
 /**
- * The opening screen, built to show as much as fits without scrolling. Top: the greeting and three compact numbers
- * (streak, words learnt in the sidebar's two tiers, how much of a real IT text the learner recognises). Then, on
- * wide windows, two columns: today as a short list (words, one grammar lesson, one pronunciation lesson, sized by
- * the minutes chosen at onboarding) with one main button, or the day close once everything is done, plus the
- * focus card; on the right the daily quests and the weekly race. Below the list: the Oxford path and last week's
- * summary on the first day of a new week.
+ * Redesigned Mobile-First Today Screen:
+ * 1. Unified Hero Overview Card (Greeting + Active Level Pill + Daily Goal Ring + 3-Metric Glass Strip)
+ * 2. Primary Action Checklist (`TodayChecklist` / `DayCloseCard`)
+ * 3. Balanced 2-Column Quick Utility Grid (`Luyện phản xạ` + `Ghim Widget`)
+ * 4. Collapsible Quests & Leaderboard section
  */
 export default function TodayTab({
   words,
@@ -121,7 +114,6 @@ export default function TodayTab({
 }: TodayTabProps) {
   const now = fixedNow ?? new Date();
   const today = getLocalDateString(now);
-  // Signed in: the account's display name in the greeting (none while signed out, or before the profile loads)
   const signedIn = useAuthStore((s) => s.user != null);
   const displayName = useAuthStore((s) => s.profile?.displayName);
   const showRank = useRankPanelVisible();
@@ -138,7 +130,6 @@ export default function TodayTab({
     return () => window.removeEventListener("myenglish-reflex-updated", onReflexUpdate);
   }, [fixedNow]);
 
-  // Length of a focus session, as last chosen on the focus card
   const [focusMinutes, setFocusMinutes] = useState(() => getFocusSettings().minutes);
   useEffect(() => {
     const onChange = () => setFocusMinutes(getFocusSettings().minutes);
@@ -186,20 +177,12 @@ export default function TodayTab({
     };
   }, [streakStats.todayCount, fixedNow]);
 
-  // The same two tiers as the sidebar and the word library (U9)
   const status = useMemo(() => countWordStatus(words), [words]);
   const hasStudied = useMemo(() => words.some((w) => (w.srs?.reps ?? 0) > 0 || (w.srs?.state ?? 0) > 0), [words]);
   const unmasteredCount = useMemo(() => getUnmasteredWords(words).length, [words]);
   const laterToday = useMemo(() => cardsLaterToday(words, now), [words, todayWork.total]);
   const nextReview = useMemo(() => nextReviewPeek(words, now), [words, todayWork.total]);
 
-  // A "Nhớ lâu" milestone, celebrated once (the line stays for the day it is reached)
-  const milestone = useMemo(() => milestoneToCelebrate(status.rememberedLong, readMilestoneMark(), today), [status.rememberedLong, today]);
-  useEffect(() => {
-    if (milestone.next) saveMilestoneMark(milestone.next);
-  }, [milestone.next]);
-
-  // Coverage: the first measure is kept to show the gain later ("46% → 52%")
   const [baseline, setBaseline] = useState(readCoverageBaseline);
   useEffect(() => {
     if (!coverage || loading || baseline) return;
@@ -210,7 +193,6 @@ export default function TodayTab({
   const gain = coverage ? coverageGain(coverage.percent, baseline) : null;
 
   const inComeback = !!comeback && !comeback.caughtUp;
-  // Conversation sentences missed earlier, and the grammar behind the patterns that keep failing
   const [linksTick, setLinksTick] = useState(0);
   useEffect(() => {
     const bump = () => setLinksTick((t) => t + 1);
@@ -221,10 +203,9 @@ export default function TodayTab({
       window.removeEventListener(WEAK_POINTS_EVENT, bump);
     };
   }, []);
-  // (only sentences that still exist: the review cannot ask a line of a deleted conversation)
+
   const talkDue = useMemo(() => dueLines(now).filter((id) => !!getLine(id)).length, [linksTick, today]);
   const weak = useMemo(() => weakGrammarTask(now), [linksTick, today]);
-  // The speaking path is the first thing of the list: where the learner is on it and what is left of today's part
   const path = useRoadmap();
   const speaking: TodayTaskInput["speaking"] = !PATTERNS.length
     ? null
@@ -258,7 +239,6 @@ export default function TodayTab({
     reflex: onStartReflex ? { doneToday: reflexDone } : null,
   });
   const primary = primaryTask(tasks);
-  // Nothing to do and nothing ever studied: no "done", but where words come from (U6)
   const empty = !loading && todayWork.total === 0 && !hasStudied;
   const quickMode = quickStartMode({
     goalReached: streakStats.goalReached,
@@ -269,78 +249,121 @@ export default function TodayTab({
 
   const runDeps = { setActiveTab, startWords: onStart, startReflex: onStartReflex, openGrammarLesson };
   const run = (task: TodayTask) => runTodayTask(task.id, runDeps);
-  // The main button, when several things are left: all of them one after the other (the bar on every tab goes on)
   const startFlowNow = () => {
-    // The day's own things one after the other; the extras stay one tap away on the list
     const queue = planFlow(coreTasks(tasks));
     if (startFlow(queue)) runTodayTask(queue[0], runDeps);
   };
   const isCapped = unmasteredCount >= youngWordCap();
   const more = {
-    // While a comeback plan runs, "more" is the backlog, not new words (P12)
     label: inComeback ? "Ôn thêm thẻ tồn" : isCapped ? `Ôn từ đang học (${unmasteredCount})` : "Học thêm từ mới",
     onClick: onStart,
   };
-  const pathLabel = AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Lộ trình từ vựng";
+  const pathLabel = AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Bộ từ theo cấp độ";
 
   const showQuests = !loading && !empty;
   const twoColumns = showQuests || showRank || !!onStartReflex;
-  // Closed on a phone until "Xem thêm" is pressed; always shown on wide windows
   const [moreOpen, setMoreOpen] = useState(false);
+  const [showWidgetPin, setShowWidgetPin] = useState(() => canPinHomeWidget());
   const moreClass = moreOpen ? "" : "hidden min-[1000px]:block";
 
   return (
     <div className={PAGE_CONTAINER}>
       <div className="space-y-4">
-        {/* The greeting, and the day's goal as a ring */}
-        <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <h2 className="text-lg font-semibold leading-snug text-slate-900 dark:text-white">
-              {greeting(now.getHours(), signedIn ? displayName : null)}
-            </h2>
-            <p className="text-sm text-slate-500 first-letter:uppercase dark:text-zinc-400">
-              {now.toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "long" })}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setActiveTab("analytics")}
-            title="Mục tiêu hôm nay (bấm để xem tiến độ)"
-            className="flex shrink-0 items-center gap-2 rounded-2xl border border-slate-200 bg-white py-1.5 pl-1.5 pr-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)] dark:border-zinc-800 dark:bg-zinc-900"
-          >
-            <ProgressRing value={streakStats.goalPercentage} size={36} stroke={4} done={streakStats.goalReached}>
-              {streakStats.goalReached && <Check className="h-4 w-4 text-green-600" strokeWidth={3} />}
-            </ProgressRing>
-            <span className="text-left leading-tight">
-              <span className="block text-sm font-bold text-slate-900 dark:text-white">
-                {streakStats.todayCount}/{streakStats.dailyGoal} câu
-              </span>
-              <span className="block text-xs text-slate-500 dark:text-zinc-400">Mục tiêu</span>
-            </span>
-          </button>
-        </div>
+        {/* 1. Unified Hero Overview Card (Greeting + Level Selector + Daily Goal Ring + 3 Key Metrics) */}
+        <section
+          aria-label="Tổng quan hôm nay"
+          className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-[#2B1B64] via-[#1E1B4B] to-[#0F172A] p-4 text-white shadow-lg sm:p-6"
+        >
+          <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-purple-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-12 left-1/4 h-40 w-40 rounded-full bg-teal-500/15 blur-3xl" />
 
-        {/*
-          Wide windows: today's plan on the left, quests (and the weekly race) on the right, both in view without
-          scrolling. Narrow: one column with only the day's plan and the level; the rest behind "Xem thêm".
-        */}
-        <div className={twoColumns ? "grid gap-4 items-start min-[1000px]:grid-cols-[minmax(0,1fr)_320px] min-[1000px]:grid-rows-[auto_1fr]" : "max-w-3xl mx-auto space-y-4"}>
+          <div className="relative space-y-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 space-y-1.5">
+                <p className="text-xs font-medium text-indigo-200/85 first-letter:uppercase">
+                  {now.toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "long" })}
+                </p>
+                <h2 className="text-xl font-extrabold leading-tight tracking-tight text-white sm:text-2xl">
+                  {greeting(now.getHours(), signedIn ? displayName : null)}
+                </h2>
+                {!loading && (
+                  <div className="pt-0.5">
+                    <StudyLevelBar variant="hero-pill" />
+                  </div>
+                )}
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("analytics")}
+                title="Mục tiêu hôm nay (bấm để xem tiến độ)"
+                className="flex shrink-0 items-center gap-2.5 rounded-2xl border border-white/15 bg-white/10 py-2 pl-2 pr-3.5 text-left backdrop-blur-md transition-colors hover:bg-white/15"
+              >
+                <ProgressRing value={streakStats.goalPercentage} size={38} stroke={4} done={streakStats.goalReached}>
+                  {streakStats.goalReached ? (
+                    <Check className="h-4 w-4 text-emerald-400" strokeWidth={3} />
+                  ) : (
+                    <span className="text-[10px] font-extrabold text-teal-300">{streakStats.goalPercentage}%</span>
+                  )}
+                </ProgressRing>
+                <span className="leading-tight">
+                  <span className="block text-sm font-extrabold text-white">
+                    {streakStats.todayCount}/{streakStats.dailyGoal} câu
+                  </span>
+                  <span className="block text-[11px] text-indigo-200">Mục tiêu ngày</span>
+                </span>
+              </button>
+            </div>
+
+            {!loading && !empty && (
+              <div className="grid grid-cols-3 divide-x divide-white/15 rounded-2xl border border-white/15 bg-white/10 py-2.5 text-center backdrop-blur-md">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("library")}
+                  className="px-2 transition-opacity hover:opacity-85"
+                >
+                  <div className="font-mono text-lg font-extrabold text-teal-300 sm:text-xl">{status.rememberedLong}</div>
+                  <div className="text-[11px] text-indigo-100/85">từ {WORD_STATUS_LABELS.remembered_long.toLowerCase()}</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("library")}
+                  className="px-2 transition-opacity hover:opacity-85"
+                >
+                  <div className="font-mono text-lg font-extrabold text-white sm:text-xl">{status.learning}</div>
+                  <div className="text-[11px] text-indigo-100/85">từ {WORD_STATUS_LABELS.learning.toLowerCase()}</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("analytics")}
+                  title={gain && baseline ? `Tăng từ ngày ${baseline.day.split("-").slice(1).reverse().map(Number).join("/")}` : "Số từ bạn đã nhận ra trong văn bản giao tiếp & công việc thực tế"}
+                  className="px-2 transition-opacity hover:opacity-85"
+                >
+                  <div className="font-mono text-lg font-extrabold text-amber-300 sm:text-xl">
+                    {gain ? `${gain.from}%→${gain.to}%` : coverage ? `~${coverage.percent}%` : "…"}
+                  </div>
+                  <div className="text-[11px] text-indigo-100/85">hiểu văn bản</div>
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <div className={twoColumns ? "grid gap-4 items-start min-[1000px]:grid-cols-[minmax(0,1fr)_320px]" : "max-w-3xl mx-auto space-y-4"}>
           <div className="min-w-0 space-y-4">
-            {/* A new version of the app (Android) */}
             {!loading && <AppUpdateBanner />}
-            {/* The web app, not installed yet: put it on the home screen */}
             {!loading && <InstallAppCard />}
 
-            {/* The one thing to do now */}
+            {/* 2. Primary Action Checklist */}
             {loading ? (
-              <div className="h-80 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 animate-pulse" />
+              <div className="h-72 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 animate-pulse" />
             ) : empty ? (
               <Card className="space-y-3">
                 <p className="text-lg font-bold text-slate-900 dark:text-white">Chưa có từ nào để học</p>
                 <p className="text-slate-600 dark:text-zinc-300">
                   {AI_VOCAB_ENABLED
                     ? `Mở "${pathLabel}" để thêm vài từ đầu tiên.`
-                    : `Mở "${pathLabel}" và chọn cấp độ (ví dụ A1): mỗi ngày app chọn vài từ thông dụng nhất trong bộ Oxford để bạn lấy lại gốc từng bước.`}
+                    : `Mở "${pathLabel}" và chọn cấp độ (ví dụ A1): mỗi ngày app chọn các bộ từ thông dụng nhất để bạn lấy lại gốc từng bước.`}
                 </p>
                 <Button size="lg" block autoFocus onClick={() => setActiveTab("capture")}>
                   <Layers className="h-5 w-5" /> Mở {pathLabel}
@@ -350,7 +373,7 @@ export default function TodayTab({
               <TodayChecklist
                 tasks={tasks}
                 primary={primary}
-                heading={inComeback ? `Kế hoạch quay lại · ngày ${comeback.dayNumber}` : "Hôm nay của bạn"}
+                heading={inComeback ? `Kế hoạch quay lại · ngày ${comeback.dayNumber}` : "Nhiệm vụ học hôm nay"}
                 onRun={run}
                 onStartFlow={startFlowNow}
                 quickMode={quickMode}
@@ -390,96 +413,93 @@ export default function TodayTab({
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-300">
                   <Bug className="h-5 w-5" />
                 </span>
-                <span className="flex-1">
+                <span className="flex-1 text-sm">
                   <b>{forgottenDue} từ hay quên</b> đang chờ. Ôn riêng nhóm này để nhớ chắc hơn?
                 </span>
                 <ChevronRight className="h-5 w-5 shrink-0 text-slate-400" />
               </button>
             )}
 
-            {/* The learner's levels, with the way to change them */}
-            {!loading && <StudyLevelBar />}
+            {/* 3. Quick Utility Grid (Reflex Challenge & Home Screen Widget) */}
+            {(onStartReflex || showWidgetPin) && (
+              <div className={`grid gap-3 ${onStartReflex && showWidgetPin ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"}`}>
+                {onStartReflex && (
+                  <Card className="flex items-center gap-3 p-3.5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300">
+                      <Zap className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-bold text-slate-900 dark:text-white">Phản xạ nhanh</span>
+                      <span className="block text-xs text-slate-500 dark:text-zinc-400">Ôn tốc độ · +80 XP</span>
+                    </span>
+                    <Button size="sm" variant="secondary" onClick={onStartReflex}>
+                      Chơi
+                    </Button>
+                  </Card>
+                )}
 
-            {/* No list yet: the speaking path with its own start button */}
+                {showWidgetPin && (
+                  <Card className="flex items-center gap-3 p-3.5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-500/10 dark:text-teal-300">
+                      <Layers className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-sm font-bold text-slate-900 dark:text-white">Widget màn hình</span>
+                      <span className="block text-xs text-slate-500 dark:text-zinc-400">Tự đổi từ mỗi 4 phút</span>
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => {
+                        if (pinHomeWidget()) setShowWidgetPin(false);
+                      }}
+                    >
+                      Ghim
+                    </Button>
+                  </Card>
+                )}
+              </div>
+            )}
+
             {!loading && empty && <RoadmapTodayCard setActiveTab={setActiveTab} showStart />}
           </div>
 
-          {/* Phones: everything that is not today's main action sits behind one row; wide windows show it all */}
-          <button
-            type="button"
-            onClick={() => setMoreOpen((v) => !v)}
-            aria-expanded={moreOpen}
-            className="min-[1000px]:hidden w-full min-w-0 min-h-14 flex items-center gap-3 px-3.5 md:px-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-left text-slate-700 dark:text-zinc-200"
-          >
-            <Compass className="h-5 w-5 shrink-0 text-teal-700 dark:text-teal-300" />
-            <span className="min-w-0 flex-1 truncate font-medium">{moreOpen ? "Thu gọn" : "Xem thêm: nhiệm vụ, xếp hạng tuần, lộ trình từ vựng"}</span>
-            <ChevronDown className={`h-5 w-5 shrink-0 transition-transform ${moreOpen ? "rotate-180" : ""}`} />
-          </button>
+          {/* 4. Secondary Quests & Weekly Rank */}
+          {(showQuests || showRank) && (
+            <>
+              <button
+                type="button"
+                onClick={() => setMoreOpen((v) => !v)}
+                aria-expanded={moreOpen}
+                className="min-[1000px]:hidden w-full min-w-0 min-h-12 flex items-center gap-3 px-3.5 md:px-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-left text-slate-700 dark:text-zinc-200"
+              >
+                <Compass className="h-5 w-5 shrink-0 text-teal-700 dark:text-teal-300" />
+                <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                  {moreOpen ? "Thu gọn nhiệm vụ thưởng & xếp hạng" : "Xem thêm: Nhiệm vụ thưởng XP & Đua top tuần"}
+                </span>
+                <ChevronDown className={`h-5 w-5 shrink-0 transition-transform ${moreOpen ? "rotate-180" : ""}`} />
+              </button>
 
-          {twoColumns && (
-            <aside className={`min-w-0 space-y-4 ${moreClass} min-[1000px]:col-start-2 min-[1000px]:row-start-1 min-[1000px]:row-span-2`}>
-              {showQuests && (
-                <DailyQuestsCard
-                  words={words}
-                  newToday={todayWork.newToday}
-                  dailyGoal={streakStats.dailyGoal}
-                  hasStudied={hasStudied}
-                  freezesAvailable={streakStats.freezesAvailable}
-                  refreshKey={streakStats.todayCount}
-                  onStartReview={onStart}
-                  onStartFocus={onStartFocus ? () => onStartFocus(focusMinutes) : undefined}
-                  onStartReflex={onStartReflex}
-                  setActiveTab={setActiveTab}
-                  now={fixedNow}
-                />
-              )}
-              {showRank && <RankPanel onNavigate={setActiveTab} />}
-
-              {/* The reflex challenge, one quiet card */}
-              {onStartReflex && (
-                <Card className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300">
-                    <Zap className="h-5 w-5" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-semibold text-slate-900 dark:text-white">Luyện phản xạ</span>
-                    <span className="block text-sm text-slate-500 dark:text-zinc-400">Trả lời nhanh các từ đã học, +80 XP</span>
-                  </span>
-                  <Button size="sm" variant="secondary" onClick={onStartReflex}>
-                    Bắt đầu
-                  </Button>
-                </Card>
-              )}
-            </aside>
+              <aside className={`min-w-0 space-y-4 ${moreClass} min-[1000px]:col-start-2 min-[1000px]:row-start-1`}>
+                {showQuests && (
+                  <DailyQuestsCard
+                    words={words}
+                    newToday={todayWork.newToday}
+                    dailyGoal={streakStats.dailyGoal}
+                    hasStudied={hasStudied}
+                    freezesAvailable={streakStats.freezesAvailable}
+                    refreshKey={streakStats.todayCount}
+                    onStartReview={onStart}
+                    onStartFocus={onStartFocus ? () => onStartFocus(focusMinutes) : undefined}
+                    onStartReflex={onStartReflex}
+                    setActiveTab={setActiveTab}
+                    now={fixedNow}
+                  />
+                )}
+                {showRank && <RankPanel onNavigate={setActiveTab} />}
+              </aside>
+            </>
           )}
-
-          <div className={`min-w-0 space-y-4 ${moreClass} ${twoColumns ? "min-[1000px]:col-start-1 min-[1000px]:row-start-2" : ""}`}>
-            {/* The learner's words in numbers (they used to sit on top of the screen) */}
-            {!loading && !empty && (
-              <Card className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                <div>
-                  <div className="text-xl font-bold text-slate-900 dark:text-white">{status.rememberedLong}</div>
-                  <div className="text-sm text-slate-500 dark:text-zinc-400">từ {WORD_STATUS_LABELS.remembered_long.toLowerCase()}</div>
-                </div>
-                <div>
-                  <div className="text-xl font-bold text-slate-900 dark:text-white">{status.learning}</div>
-                  <div className="text-sm text-slate-500 dark:text-zinc-400">từ {WORD_STATUS_LABELS.learning.toLowerCase()}</div>
-                </div>
-                <div title={gain && baseline ? `Tăng từ ngày ${baseline.day.split("-").slice(1).reverse().map(Number).join("/")}` : "Số từ bạn đã nhận ra trong văn bản giao tiếp & công việc thực tế"}>
-                  <div className="text-xl font-bold text-slate-900 dark:text-white">
-                    {gain ? `${gain.from}% → ${gain.to}%` : coverage ? `~${coverage.percent}%` : "…"}
-                  </div>
-                  <div className="text-sm text-slate-500 dark:text-zinc-400">hiểu văn bản thực tế</div>
-                </div>
-              </Card>
-            )}
-            {!loading && !empty && onStartFocus && (todayWork.total > 0 || hasStudied) && (
-              <FocusStartCard onStart={onStartFocus} due={todayWork.total} shortcut quiet />
-            )}
-            {!loading && !empty && <RoadmapTodayCard setActiveTab={setActiveTab} showStart={false} />}
-            <TodayRoadmapCard simple={simpleMode} milestone={milestone.show} onOpenPath={() => setActiveTab("capture")} />
-            <WeeklySummaryCard simple={simpleMode} now={fixedNow} />
-          </div>
         </div>
       </div>
       <FeedbackDialog open={feedbackOpen} onClose={closeFeedback} />

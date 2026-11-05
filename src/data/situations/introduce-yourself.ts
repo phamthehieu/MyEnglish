@@ -25,9 +25,9 @@ export const INTRODUCE_YOURSELF: Situation = {
     },
     {
       id: "introduce-yourself.l3",
-      en: "I'm a software engineer.",
-      vi: "Tôi là kỹ sư phần mềm.",
-      accept: ["I am a software engineer", "I work with computers"],
+      en: "I'm an office worker.",
+      vi: "Tôi là nhân viên văn phòng.",
+      accept: ["I am an office worker", "I work in an office", "I'm a software engineer", "I am a software engineer", "I work with computers"],
     },
     {
       id: "introduce-yourself.l4",
