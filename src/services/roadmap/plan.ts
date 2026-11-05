@@ -28,7 +28,7 @@ export interface DayPlan {
 export const TEST_PASS = 6;
 /** The test that skips a stage the learner already knows needs this many */
 export const SKIP_PASS = 8;
-/** At most this many new patterns are opened in a day, and this many are asked again for review */
+/** At most this many new patterns are opened in a batch, and this many are asked again for review */
 const MAX_NEW = 2;
 const MAX_REVIEW = 4;
 const stepMinutes = (step: number) => (step === 2 ? MINUTES.substitute : step === 3 ? MINUTES.tiles : MINUTES.rapid);
@@ -41,7 +41,8 @@ export function buildDayPlan(
   states: Record<string, PatternState>,
   dueReview: readonly string[],
   budgetMinutes: number,
-  now: Date = new Date()
+  now: Date = new Date(),
+  allowAhead = false
 ): DayPlan {
   const today = getLocalDateString(now);
   const stateOf = (id: string) => states[id] ?? fresh(today);
@@ -61,6 +62,17 @@ export function buildDayPlan(
   // New patterns: learn it and substitute in the blank on the same day
   const fresher = stage.patterns.filter((p) => stateOf(p.id).step === 0).slice(0, MAX_NEW);
   for (const p of fresher) units.push({ kind: "step", patternId: p.id, steps: [1, 2], minutes: MINUTES.learn + MINUTES.substitute });
+
+  // If the learner already finished today's scheduled batch and chooses to keep going, let them continue the next step
+  if (allowAhead && ready.length === 0 && fresher.length === 0) {
+    const continuing = stage.patterns
+      .map((p) => ({ p, s: stateOf(p.id) }))
+      .filter(({ s }) => s.step >= 1 && s.step < STEPS)
+      .sort((a, b) => b.s.step - a.s.step);
+    for (const { p, s } of continuing) {
+      units.push({ kind: "step", patternId: p.id, steps: [s.step + 1], minutes: stepMinutes(s.step + 1) });
+    }
+  }
 
   const allMastered = stage.patterns.every((p) => stateOf(p.id).step >= STEPS);
   const tested = roadmap.tested.includes(stage.id);

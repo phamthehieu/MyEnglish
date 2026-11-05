@@ -205,10 +205,12 @@ export async function buildLearnSession(lessonId: string, size = 8, random: () =
   };
   const othersStudied = (it: IndexedItem) => it.lessonIds.every((id) => id === lessonId || studiedOnce(id));
   const mixed = index.items.filter((it) => learnable(it) && it.lessonIds.length > 1 && (solo.length === 0 || othersStudied(it)));
-  const picked = [...spread(solo, size), ...spread(mixed, Math.max(0, size - solo.length))].slice(0, size);
+  const byBlanks = (list: IndexedItem[]) =>
+    list.length <= size ? list : [...list].sort((a, b) => (a.item.prompt.match(/_{3,}/g)?.length ?? 0) - (b.item.prompt.match(/_{3,}/g)?.length ?? 0));
+  const picked = [...spread(byBlanks(solo), size), ...spread(byBlanks(mixed), Math.max(0, size - solo.length))].slice(0, size);
   const production = Math.min(3, Math.floor(picked.length / 3));
   return picked.map((it, i) => {
-    const level = i >= picked.length - production ? 2 : 0;
+    const level = i >= picked.length - production ? 1 : 0;
     return entry(it, buildTask(it.item, it.setType, formatForLevel(it.item, it.setType, level), random));
   });
 }

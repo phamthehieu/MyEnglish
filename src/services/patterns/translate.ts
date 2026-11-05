@@ -52,10 +52,58 @@ function sameWord(typed: string, expected: string): boolean {
 
 /** How many words from the start of the sentence the typed text has right: these light up as the learner types */
 export function matchedWords(typed: string, words: readonly string[]): number {
-  const t = normalizeSpeech(typed).split(" ").filter(Boolean);
+  const t = normalizeTokens(typed).split(" ").filter(Boolean);
   let n = 0;
   while (n < t.length && n < words.length && sameWord(t[n], bare(words[n]))) n++;
   return n;
+}
+
+const NUMBER_WORDS: Record<string, string> = {
+  "0": "zero",
+  "1": "one",
+  "2": "two",
+  "3": "three",
+  "4": "four",
+  "5": "five",
+  "6": "six",
+  "7": "seven",
+  "8": "eight",
+  "9": "nine",
+  "10": "ten",
+  "11": "eleven",
+  "12": "twelve",
+  "13": "thirteen",
+  "14": "fourteen",
+  "15": "fifteen",
+  "16": "sixteen",
+  "17": "seventeen",
+  "18": "eighteen",
+  "19": "nineteen",
+  "20": "twenty",
+  "21": "twenty one",
+  "22": "twenty two",
+  "23": "twenty three",
+  "24": "twenty four",
+  "25": "twenty five",
+  "26": "twenty six",
+  "27": "twenty seven",
+  "28": "twenty eight",
+  "29": "twenty nine",
+  "30": "thirty",
+  "35": "thirty five",
+  "40": "forty",
+  "45": "forty five",
+  "50": "fifty",
+  "60": "sixty",
+};
+
+/** Expand digits and clock times ("5:30" -> "five thirty", "25" -> "twenty five") before comparing */
+function normalizeTokens(text: string): string {
+  const withNumbers = text
+    .replace(/\b(\d{1,2}):00\b/g, "$1")
+    .replace(/\b(\d{1,2}):(\d{2})\b/g, (_, h: string, m: string) => `${NUMBER_WORDS[h] ?? h} ${NUMBER_WORDS[String(Number(m))] ?? m}`)
+    .replace(/\b(\d{1,2})\b/g, (d) => NUMBER_WORDS[d] ?? d);
+  return normalizeSpeech(withNumbers.replace(/-/g, " "));
 }
 
 const CONTRACTIONS: Array<[string, string]> = [
@@ -64,23 +112,59 @@ const CONTRACTIONS: Array<[string, string]> = [
   ["i'd", "i would"],
   ["don't", "do not"],
   ["doesn't", "does not"],
+  ["didn't", "did not"],
   ["isn't", "is not"],
+  ["aren't", "are not"],
+  ["wasn't", "was not"],
+  ["weren't", "were not"],
   ["can't", "cannot"],
+  ["couldn't", "could not"],
+  ["shouldn't", "should not"],
+  ["wouldn't", "would not"],
+  ["won't", "will not"],
+  ["haven't", "have not"],
+  ["hasn't", "has not"],
+  ["hadn't", "had not"],
   ["let's", "let us"],
   ["that's", "that is"],
   ["what's", "what is"],
   ["where's", "where is"],
+  ["who's", "who is"],
+  ["how's", "how is"],
+  ["there's", "there is"],
+  ["here's", "here is"],
+  ["name's", "name is"],
   ["he's", "he is"],
   ["she's", "she is"],
   ["you're", "you are"],
   ["we're", "we are"],
   ["they're", "they are"],
+  ["i'll", "i will"],
+  ["you'll", "you will"],
+  ["we'll", "we will"],
+  ["they'll", "they will"],
+  ["he'll", "he will"],
+  ["she'll", "she will"],
+  ["it'll", "it will"],
+  ["i've", "i have"],
+  ["you've", "you have"],
+  ["we've", "we have"],
+  ["they've", "they have"],
+];
+
+const EQUIVALENT_PHRASES: Array<[string, string]> = [
+  ["get up", "wake up"],
+  ["am from", "come from"],
+  ["are from", "come from"],
+  ["is from", "comes from"],
+  ["ok", "okay"],
+  ["thanks", "thank you"],
 ];
 
 /** The sentence and the same sentence with its contractions written out (or the other way round): both are right */
 export function acceptedForms(en: string): string[] {
-  const forms = new Set([normalizeSpeech(en)]);
-  for (const [short, long] of CONTRACTIONS) {
+  const forms = new Set([normalizeTokens(en)]);
+  for (const [short, long] of [...CONTRACTIONS, ...EQUIVALENT_PHRASES]) {
     for (const f of [...forms]) {
       if (f.includes(short)) forms.add(f.split(short).join(long));
       if (f.includes(long)) forms.add(f.split(long).join(short));
@@ -89,14 +173,25 @@ export function acceptedForms(en: string): string[] {
   return [...forms];
 }
 
-/** Is what was typed the sentence? Contractions either way and one slip in a longer word are forgiven */
+/** Optional trailing time qualifiers a learner naturally adds ("at 7 am", "at seven o'clock") */
+function stripOptionalTimeSuffix(tokens: string): string {
+  return tokens.replace(/\s+(?:o'clock|oclock|am|a m|pm|p m)$/, "");
+}
+
+/** Is what was typed the sentence? Contractions, digits/words, and one slip in a longer word are forgiven */
 export function isTranslation(typed: string, en: string): boolean {
-  const t = normalizeSpeech(typed);
+  const t = normalizeTokens(typed);
   if (!t) return false;
+  const candidates = new Set([t, stripOptionalTimeSuffix(t)]);
   return acceptedForms(en).some((form) => {
     const want = form.split(" ");
-    const got = t.split(" ");
-    return want.length === got.length && want.every((w, i) => sameWord(got[i], w));
+    const wantStripped = stripOptionalTimeSuffix(form).split(" ");
+    for (const cand of candidates) {
+      const got = cand.split(" ");
+      if (want.length === got.length && want.every((w, i) => sameWord(got[i], w))) return true;
+      if (wantStripped.length === got.length && wantStripped.every((w, i) => sameWord(got[i], w))) return true;
+    }
+    return false;
   });
 }
 

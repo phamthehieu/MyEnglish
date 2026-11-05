@@ -113,7 +113,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
     setSkipTest(null);
   }, [resetKey]);
 
-  const { road, states, minutes, stages, current, plan, finishedCount, etaText, wantedLevel, startsLower } = useRoadmap();
+  const { road, states, minutes, stages, current, plan, aheadPlan, finishedCount, etaText, wantedLevel, startsLower } = useRoadmap();
   const [jumping, setJumping] = useState(false);
   // The next level of the path above the one being worked on: the learner can jump to it when they know this one
   const upperLevel = current ? stages.find((s) => s.level > current.level)?.level ?? null : null;
@@ -270,7 +270,14 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
               </Button>
             ) : (
               <p className="rounded-xl bg-slate-50 dark:bg-zinc-800/50 px-3 py-2.5 text-sm text-slate-700 dark:text-zinc-300">
-                {plan.complete ? "Chặng này đã đủ điều kiện hoàn thành: bấm vào chặng ở dưới để đóng lại." : "Hôm nay bạn đã xong phần của chặng này. Quay lại vào ngày mai để làm bước tiếp theo (mỗi bước cách nhau một ngày để nhớ lâu)."}
+                {plan.complete ? "Chặng này đã đủ điều kiện hoàn thành: bấm vào chặng ở dưới để đóng lại." : "Hôm nay bạn đã xong phần được lên lịch của chặng này. Nghỉ đến ngày mai sẽ nhớ lâu hơn, hoặc bạn có thể học tiếp bước sau ngay."}
+                {aheadPlan && aheadPlan.tasks.length > 0 && (
+                  <span className="block mt-2">
+                    <Button variant="secondary" size="md" block onClick={() => begin(current, aheadPlan)}>
+                      <Play className="w-4 h-4" /> Học tiếp bước sau ngay (~{aheadPlan.minutes} phút)
+                    </Button>
+                  </span>
+                )}
               </p>
             )}
             <div className="space-y-1.5">

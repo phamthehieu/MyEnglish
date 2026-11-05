@@ -30,7 +30,7 @@ const BTN_PRIMARY = "w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-
 const dots = (word: string) => "•".repeat(Math.min(10, Math.max(2, word.replace(/[^A-Za-z']/g, "").length)));
 
 /** One sentence: the Vietnamese, the skeleton of the English one, the box to write it in, and the clock */
-function Question({ item, onDone }: { item: TranslateItem; onDone: (r: TranslateResult) => void }) {
+function Question({ item, forceNoHints = false, onDone }: { item: TranslateItem; forceNoHints?: boolean; onDone: (r: TranslateResult) => void }) {
   const canSpeak = asrAvailable();
   const mic = useMic();
   const limit = limitFor(item.words.length);
@@ -126,7 +126,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
         </p>
         {level !== "none" && !verdict && <ViTextNote cost="mỗi từ trừ 25 điểm" />}
 
-        {level !== "none" && (
+        {(level !== "none" || !forceNoHints) && (
           <div className="flex flex-wrap gap-1.5" aria-label="Khung câu tiếng Anh">
             {level === "full" ? (
               item.words.map((w, i) =>
@@ -147,7 +147,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
                 )
               )
             ) : (
-              <span className="text-sm text-slate-600 dark:text-zinc-400">Câu tiếng Anh có {item.words.length} từ.</span>
+              <span className="text-sm text-slate-600 dark:text-zinc-400">Mẫu câu: <strong className="font-mono text-teal-800 dark:text-teal-300">{item.pattern.frame_en}</strong> ({item.words.length} từ)</span>
             )}
           </div>
         )}
@@ -357,7 +357,7 @@ export default function TranslateRound({
           </div>
         </div>
       ) : (
-        <Question key={`${items.length}-${index}-${results.length}`} item={items[index]} onDone={finish} />
+        <Question key={`${items.length}-${index}-${results.length}`} item={items[index]} forceNoHints={forceNoHints} onDone={finish} />
       )}
     </div>
   );

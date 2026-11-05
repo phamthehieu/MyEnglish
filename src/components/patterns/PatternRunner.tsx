@@ -183,7 +183,8 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
           <IpaLine ipa={item.answer.ipa} />
           <button
             onClick={() => {
-              const ok = wrong.size === 0 && !hinted;
+              const ok = wrong.size === 0;
+              void hinted;
               answeredSentence("patterns", item.full, { ok, unaided: false, goal: false });
               onNext({ ok });
             }}
@@ -281,7 +282,8 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
           <IpaLine ipa={item.ipa} />
           <button
             onClick={() => {
-              const ok = fails === 0 && !hinted;
+              const ok = fails <= 1;
+              void hinted;
               answeredSentence("patterns", item.en, { ok, unaided: false, goal: false });
               onNext({ ok });
             }}
@@ -493,7 +495,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
             onClick={() => {
               // Said or typed from the Vietnamese: a recall of its words, unless one was looked up
               answeredSentence("patterns", item.en, { ok: verdict.ok, unaided: !hinted, goal: false });
-              onNext({ ok: verdict.ok && !hinted, ms: verdict.ms });
+              onNext({ ok: verdict.ok, ms: verdict.ms });
             }}
             className={BTN_PRIMARY}
           >

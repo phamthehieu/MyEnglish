@@ -11,6 +11,7 @@ import { PAGE_CONTAINER } from "./shared";
 import { isFoundationMode } from "@/services/learnerProfile";
 import { COMMON_WORDS, FUNCTION_WORDS } from "@/data/commonWords";
 import { AI_VOCAB_ENABLED } from "@/services/features";
+import { READING_SAMPLES } from "@/data/readingSamples";
 
 const DRAFT_KEY = "myenglish_reading_draft_v1";
 /** Long texts are cut so highlighting stays instant */
@@ -130,6 +131,25 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
   const meaningOf = (base: string) => meanings?.get(base.toLowerCase());
   const inDeck = (base: string) => meanings === null || meanings.has(base.toLowerCase());
 
+  const startWithText = (raw: string) => {
+    const clean = raw.slice(0, MAX_CHARS).trim();
+    if (!clean) return;
+    setText(clean);
+    saveDraft(clean);
+    const computed = getAnalysis(clean);
+    setReading(clean);
+    setPicked(new Map());
+    setSavedSentences(new Set());
+    const met = logEncounters(computed.bankHits);
+    if (computed.totalWords >= 20) creditPractice("reading");
+    if (met > 0) {
+      showMessage(
+        `Bạn gặp lại ${met} từ đang học trong bài này. Gặp từ trong văn bản thật giúp bạn hiểu cách dùng của nó.`,
+        5000
+      );
+    }
+  };
+
   const startReading = () => {
     const clean = text.slice(0, MAX_CHARS).trim();
     if (!clean) return;
@@ -193,7 +213,7 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
             Đọc với sổ từ của bạn
           </h2>
           <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-2xl">
-            Dán một đoạn tài liệu, mô tả PR, email hay bài viết tiếng Anh. App tô màu những từ bạn đã thuộc và đang học, gợi ý
+            Chọn một bài đọc ngắn bên dưới hoặc dán email, tin nhắn, bài viết tiếng Anh của bạn vào đây. App tô màu những từ bạn đã thuộc và đang học, gợi ý
             từ lạ đáng học, và lưu câu bạn gặp chúng làm ví dụ.
           </p>
         </div>
@@ -205,6 +225,29 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
             </button>
           </div>
         )}
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-2.5">
+          <div className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">
+            Bài đọc ngắn theo cấp độ (bấm để đọc ngay)
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {READING_SAMPLES.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                onClick={() => startWithText(s.text)}
+                className="text-left p-3 rounded-xl border border-slate-200 dark:border-zinc-800 hover:border-teal-600/50 dark:hover:border-teal-500/50 hover:bg-teal-50/40 dark:hover:bg-teal-500/5 transition-colors flex items-start justify-between gap-2"
+              >
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold text-slate-900 dark:text-zinc-100 truncate">{s.titleVi}</div>
+                  <div className="text-xs text-slate-500 dark:text-zinc-400 truncate">{s.titleEn}</div>
+                </div>
+                <span className="shrink-0 px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300 text-xs font-semibold">
+                  {s.level}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-3">
         <textarea
           value={text}

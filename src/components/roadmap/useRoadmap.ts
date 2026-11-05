@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { PATTERNS } from "@/data/patterns";
 import { getDailyGoal } from "@/services/streak";
 import { chosenDailyMinutes } from "../dashboard/todayPlan";
-import { getStudyLevels, type StudyLevel } from "@/services/vocabFeed";
+import { getStudyLevels } from "@/services/vocabFeed";
+import type { StudyLevel } from "@/services/vocabCatalog";
 import { chosenLevel } from "@/services/learnerProfile";
 import { allPatternStates, duePatterns, PATTERNS_UPDATED_EVENT, STEPS } from "@/services/patterns/progress";
 import { buildDayPlan } from "@/services/roadmap/plan";
@@ -57,10 +58,11 @@ export function useRoadmap() {
       )
     : null;
   const finishedCount = stages.filter((s) => isFinished(road, s.id)).length;
+  const aheadPlan = current && plan?.waiting ? buildDayPlan(current, road, states, duePatterns().filter((id) => (states[id]?.step ?? 0) >= STEPS), minutes, undefined, true) : null;
   const etaDays = estimateDays(
     stages.filter((s) => !isFinished(road, s.id)),
     minutes
   );
   const etaText = etaDays <= 14 ? `${etaDays} ngày` : etaDays <= 60 ? `khoảng ${Math.round(etaDays / 7)} tuần` : `khoảng ${Math.round(etaDays / 30)} tháng`;
-  return { road, states, minutes, stages, current, plan, finishedCount, etaText, wantedLevel, startsLower };
+  return { road, states, minutes, stages, current, plan, aheadPlan, finishedCount, etaText, wantedLevel, startsLower };
 }

@@ -121,6 +121,40 @@ export function acceptedAnswers(item: GrammarBookItem): string[][] {
 export { matchesAny };
 
 /** Wrong options for blank i: the AI's distractors minus anything that is in fact accepted, deduplicated */
+function fallbackDistractors(item: GrammarBookItem, blankIndex: number, accepted: string[]): string[] {
+  const firstAns = (accepted[0] ?? "").trim();
+  if (!firstAns) return [];
+  const cues = [...item.prompt.matchAll(/_{3,}\s*\(([^)]+)\)/g)].map((m) => m[1].trim());
+  const cue = cues[blankIndex] ?? "";
+  const rawVerb = cue.replace(/^not\s+/i, "").trim().split(/\s+/)[0]?.toLowerCase() || firstAns.toLowerCase().split(/\s+/).pop() || "";
+  const isNeg = /^not\s+/i.test(cue) || /\b(?:not|n't)\b/i.test(firstAns);
+  const candidates: string[] = [];
+  if (!rawVerb || rawVerb === "be" || /^(?:am|is|are|was|were|been|will be|would be|have been|has been|had been)$/i.test(firstAns)) {
+    candidates.push(
+      ...(isNeg
+        ? ["isn't", "aren't", "wasn't", "weren't", "won't be", "haven't been"]
+        : ["is", "are", "was", "were", "will be", "would be", "has been", "had been"])
+    );
+  } else {
+    const v = rawVerb.replace(/[^a-z']/g, "") || "work";
+    const v3s = v.endsWith("y") && !/[aeiou]y$/.test(v) ? `${v.slice(0, -1)}ies` : /(?:s|sh|ch|x|z|o)$/.test(v) ? `${v}es` : `${v}s`;
+    const ving = v.endsWith("ie") ? `${v.slice(0, -2)}ying` : v.endsWith("e") && !v.endsWith("ee") ? `${v.slice(0, -1)}ing` : `${v}ing`;
+    const ved = v.endsWith("e") ? `${v}d` : v.endsWith("y") && !/[aeiou]y$/.test(v) ? `${v.slice(0, -1)}ied` : `${v}ed`;
+    if (isNeg) {
+      candidates.push(`don't ${v}`, `doesn't ${v}`, `didn't ${v}`, `won't ${v}`, `wouldn't ${v}`, `haven't ${ved}`);
+    } else {
+      candidates.push(v, v3s, ved, `is ${ving}`, `will ${v}`, `would ${v}`, `have ${ved}`, `had ${ved}`);
+    }
+  }
+  const out: string[] = [];
+  for (const c of candidates) {
+    if (!c || matchesAny(c, accepted) || out.some((o) => normalizeTypedText(o) === normalizeTypedText(c))) continue;
+    out.push(c);
+    if (out.length >= 3) break;
+  }
+  return out;
+}
+
 export function cleanDistractors(item: GrammarBookItem, blankIndex: number): string[] {
   const accepted = acceptedAnswers(item)[blankIndex] ?? [];
   const out: string[] = [];
@@ -128,6 +162,9 @@ export function cleanDistractors(item: GrammarBookItem, blankIndex: number): str
     const v = String(d ?? "").trim();
     if (!v || matchesAny(v, accepted) || out.some((o) => normalizeTypedText(o) === normalizeTypedText(v))) continue;
     out.push(v);
+  }
+  if (out.length === 0 && countBlanks(item.prompt) > 0 && accepted.length > 0) {
+    return fallbackDistractors(item, blankIndex, accepted);
   }
   return out;
 }

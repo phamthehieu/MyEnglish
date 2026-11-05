@@ -120,7 +120,9 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       return pickedSuggestionsRef.current;
     }
     if (!hasWords) return [];
-    const picked = shuffle(words.filter((w) => bankStatus(w) === "learning" && !/\s/.test(w.word))).slice(0, 4);
+    const learningPool = words.filter((w) => bankStatus(w) === "learning" && !/\s/.test(w.word));
+    const pool = learningPool.length >= 4 ? learningPool : words.filter((w) => bankStatus(w) !== "mastered" && !/\s/.test(w.word));
+    const picked = shuffle(pool).slice(0, 4);
     pickedSuggestionsRef.current = picked;
     return picked;
     // Picked once when words become available, not reshuffled on every word refresh
@@ -211,11 +213,27 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
         {suggestions.length > 0 && (
           <div className="flex items-center gap-1.5 flex-wrap text-xs text-slate-500 dark:text-zinc-400">
             <span>Thử dùng từ đang học:</span>
-            {suggestions.map((w) => (
-              <span key={w.id} title={w.meaning_vn} className="px-2.5 py-1 rounded-full bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300 font-semibold">
-                {w.word}
-              </span>
-            ))}
+            {suggestions.map((w) => {
+              const usedInText = new RegExp(`\\b${w.word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:s|es|ed|d|ing)?\\b`, "i").test(text);
+              const shortMeaning = w.meaning_vn?.split(/[;,]/)[0]?.trim();
+              return (
+                <button
+                  key={w.id}
+                  type="button"
+                  onClick={() => updateText(`${text.trimEnd()}${text.trim() ? " " : ""}${w.word} `)}
+                  title={w.meaning_vn}
+                  className={`inline-flex items-center gap-1 min-h-8 px-2.5 py-1 rounded-full font-semibold transition-colors ${
+                    usedInText
+                      ? "bg-green-100 dark:bg-green-500/20 text-green-800 dark:text-green-200 border border-green-300 dark:border-green-500/40"
+                      : "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-400/20"
+                  }`}
+                >
+                  {usedInText && <Check className="w-3 h-3 shrink-0" />}
+                  <span>{w.word}</span>
+                  {shortMeaning && <span className="font-normal opacity-80">· {shortMeaning}</span>}
+                </button>
+              );
+            })}
           </div>
         )}
         <textarea
