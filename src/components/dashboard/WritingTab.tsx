@@ -29,15 +29,15 @@ const DRAFT_KEY = "myenglish_standup_draft_v1";
 const HAS_AI_CLI = features.aiCli();
 
 /** Beginnings of a standup sentence, for a learner who does not know how to start */
-const SENTENCE_FRAMES = ["Yesterday I ", "Today I will ", "I am working on ", "I need help with ", "No blockers."];
+const SENTENCE_FRAMES = ["Yesterday I ", "Today I will ", "I am working on ", "I need help with ", "Everything is going well."];
 
 /** Without AI: the mistakes Vietnamese learners make most, to check one's own text against */
 const SELF_CHECK = [
-  "Việc đã xong hôm qua dùng quá khứ: fixed, worked, wrote (không phải fix, work, write).",
-  "Mỗi câu có chủ ngữ: \"I fixed…\", không phải \"Fixed…\" hay \"Đã fix…\".",
+  "Việc đã xong hôm qua dùng quá khứ: finished, worked, wrote (không phải finish, work, write).",
+  "Mỗi câu có chủ ngữ: \"I finished…\", không phải \"Finished…\" hay \"Đã xong…\".",
   "He / she / it ở hiện tại thêm -s: \"she works\", \"it runs\".",
-  "Danh từ đếm được số nhiều thêm -s: \"two bugs\", \"many tests\".",
-  "Có a / an / the trước danh từ số ít: \"a bug\", \"the API\".",
+  "Danh từ đếm được số nhiều thêm -s: \"two emails\", \"many tasks\".",
+  "Có a / an / the trước danh từ số ít: \"a report\", \"the meeting\".",
   "Đang làm dùng am / is / are + -ing: \"I am working on…\".",
 ];
 
@@ -176,7 +176,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           Viết và sửa lỗi
         </h2>
         <p className="text-sm text-slate-500 dark:text-zinc-400 max-w-2xl">
-          Viết vài câu về công việc hôm nay như khi báo cáo standup. Có AI thì AI sửa từng lỗi và lưu vào Sổ lỗi để bạn ôn lại;
+          Viết vài câu về công việc hoặc một ngày của bạn. Có AI thì AI sửa từng lỗi và lưu vào Sổ lỗi để bạn ôn lại;
           không có AI thì bạn tự soát theo danh sách lỗi hay gặp.
         </p>
       </div>
@@ -184,7 +184,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
       {/* Daily standup */}
       <div className="p-3.5 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-          <span className="text-base font-semibold text-slate-900 dark:text-zinc-100">Standup hôm nay</span>
+          <span className="text-base font-semibold text-slate-900 dark:text-zinc-100">Viết ngắn mỗi ngày</span>
           {cliReady !== false && (
             <span className="text-xs tabular-nums text-slate-500 dark:text-zinc-400">
               {used}/{STANDUP_PER_DAY} lượt sửa hôm nay
@@ -192,7 +192,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           )}
         </div>
         <p className="text-sm text-slate-500 dark:text-zinc-400">
-          Hôm qua bạn làm gì, hôm nay làm gì, có gì đang bị chặn? 2–4 câu là đủ.
+          Hôm qua bạn làm gì, hôm nay dự định làm gì, có việc gì cần hỗ trợ? 2–4 câu ngắn là đủ.
         </p>
         {/* Sentence frames: a beginner who cannot start a sentence builds on one */}
         <div className="flex items-center gap-1.5 flex-wrap text-xs text-slate-500 dark:text-zinc-400">
@@ -222,7 +222,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           value={text}
           onChange={(e) => updateText(e.target.value)}
           rows={4}
-          placeholder="Yesterday I fixed the login bug. Today I am working on the payment API. No blockers."
+          placeholder="Yesterday I finished the monthly report. Today I am preparing for the client meeting. Everything is going well."
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
@@ -353,7 +353,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           />
         ) : !summary || summary.total === 0 ? (
           <p className="text-sm text-slate-500 dark:text-zinc-400">
-            Chưa có lỗi nào. Lỗi từ bài standup ở trên và từ bài "Tự viết câu" trong phiên ôn sẽ được lưu ở đây.
+            Chưa có lỗi nào. Lỗi từ bài viết mỗi ngày ở trên và từ bài "Tự viết câu" trong phiên ôn sẽ được lưu ở đây.
           </p>
         ) : (
           <>

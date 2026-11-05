@@ -14,7 +14,7 @@ export interface CoverageText {
 export const COVERAGE_TEXTS: CoverageText[] = [
   {
     id: "readme",
-    title: "README: bắt đầu",
+    title: "Hướng dẫn bắt đầu công việc",
     text:
       "Getting started. This guide will help you run the project on your own computer in a few minutes. " +
       "First, install the tools listed in the requirements file. You will also need Git and a code editor. " +
@@ -29,7 +29,7 @@ export const COVERAGE_TEXTS: CoverageText[] = [
   },
   {
     id: "bug-report",
-    title: "Báo cáo lỗi",
+    title: "Báo cáo sự cố hệ thống",
     text:
       "Title. The app crashes when a user uploads a large image. Description. When I upload a profile picture " +
       "that is bigger than 10 megabytes, the app stops working and shows a white screen. Smaller images work " +
@@ -44,7 +44,7 @@ export const COVERAGE_TEXTS: CoverageText[] = [
   },
   {
     id: "standup",
-    title: "Ghi chú họp standup hằng ngày",
+    title: "Ghi chú cập nhật công việc hằng ngày",
     text:
       "Daily standup, Tuesday. Yesterday I finished the login page and fixed two small bugs in the search " +
       "feature. I also reviewed a pull request from a teammate and left a few comments. The changes look " +
@@ -73,7 +73,7 @@ export const COVERAGE_TEXTS: CoverageText[] = [
   },
   {
     id: "api-docs",
-    title: "Tài liệu API ngắn",
+    title: "Hướng dẫn sử dụng hệ thống quản lý",
     text:
       "Users API. This page explains how to get, create and update users. Every request must include your " +
       "access token in the header. If the token is missing or has expired, the server returns an error with " +
@@ -89,7 +89,7 @@ export const COVERAGE_TEXTS: CoverageText[] = [
   },
   {
     id: "code-review",
-    title: "Bình luận review code",
+    title: "Trao đổi góp ý công việc",
     text:
       "Comment from the reviewer. Thanks for this change, it looks much cleaner now. I have a few small " +
       "questions. In the main function, why do we load all the users before we check the filter? This could " +

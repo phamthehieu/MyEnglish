@@ -338,7 +338,7 @@ export default function TodayTab({
                 <p className="text-slate-600 dark:text-zinc-300">
                   {AI_VOCAB_ENABLED
                     ? `Mở "${pathLabel}" để thêm vài từ đầu tiên.`
-                    : `Mở "${pathLabel}" và chọn cấp độ (ví dụ A1): mỗi ngày app lấy vài từ trong bộ Oxford cho bạn, từ IT trước.`}
+                    : `Mở "${pathLabel}" và chọn cấp độ (ví dụ A1): mỗi ngày app chọn vài từ thông dụng nhất trong bộ Oxford để bạn lấy lại gốc từng bước.`}
                 </p>
                 <Button size="lg" block autoFocus onClick={() => setActiveTab("capture")}>
                   <Layers className="h-5 w-5" /> Mở {pathLabel}
@@ -463,11 +463,11 @@ export default function TodayTab({
                   <div className="text-xl font-bold text-slate-900 dark:text-white">{status.learning}</div>
                   <div className="text-sm text-slate-500 dark:text-zinc-400">từ {WORD_STATUS_LABELS.learning.toLowerCase()}</div>
                 </div>
-                <div title={gain && baseline ? `Tăng từ ngày ${baseline.day.split("-").slice(1).reverse().map(Number).join("/")}` : "Số từ bạn đã nhận ra trong một tài liệu IT"}>
+                <div title={gain && baseline ? `Tăng từ ngày ${baseline.day.split("-").slice(1).reverse().map(Number).join("/")}` : "Số từ bạn đã nhận ra trong văn bản giao tiếp & công việc thực tế"}>
                   <div className="text-xl font-bold text-slate-900 dark:text-white">
                     {gain ? `${gain.from}% → ${gain.to}%` : coverage ? `~${coverage.percent}%` : "…"}
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-zinc-400">hiểu tài liệu IT</div>
+                  <div className="text-sm text-slate-500 dark:text-zinc-400">hiểu văn bản thực tế</div>
                 </div>
               </Card>
             )}

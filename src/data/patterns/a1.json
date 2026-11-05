@@ -47,7 +47,7 @@
       {
         "en": "My name is Hoa.",
         "vi": "Tên tôi là Hoa.",
-        "ipa": "/maɪ neɪm ɪz Hoa/"
+        "ipa": "/maɪ neɪm ɪz hwa/"
       },
       {
         "en": "My name is David.",
@@ -114,7 +114,7 @@
       {
         "en": "Nice to meet you, Hoa.",
         "vi": "Rất vui được gặp bạn, Hoa.",
-        "ipa": "/naɪs tu mit ju Hoa/"
+        "ipa": "/naɪs tu mit ju hwa/"
       },
       {
         "en": "Nice to meet you, Mr Smith.",
@@ -2300,7 +2300,7 @@
       {
         "en": "Three tickets to Dalat, please.",
         "vi": "Cho tôi ba vé đi Đà Lạt.",
-        "ipa": "/θri ˈtɪkəts tu Dalat pliz/"
+        "ipa": "/θri ˈtɪkəts tu dɑˈlɑt pliz/"
       }
     ],
     "asks": [
@@ -5355,7 +5355,7 @@
       {
         "en": "Zalo name",
         "vi": "Tên Zalo",
-        "ipa": "/wʌt ɪz jɔr Zalo neɪm/"
+        "ipa": "/wʌt ɪz jɔr ˈzɑloʊ neɪm/"
       }
     ],
     "examples": [

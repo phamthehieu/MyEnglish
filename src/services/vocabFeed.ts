@@ -3,7 +3,7 @@
  *
  *  - Levels: the learner studies A1, or A1 + the next levels (always contiguous from A1).
  *  - Order: the chosen levels are mixed, lower levels more often (weights k…1: A1+A2 = 2:1,
- *    A1–B1 = 3:2:1), counted since the levels were chosen. Within a level, the IT words come first, then
+ *    A1–B1 = 3:2:1), counted since the levels were chosen. Within a level, words follow the
  *    the deck's study order (frequency).
  *  - Words enter `words` a few at a time: a buffer of unstudied words a little larger than the daily
  *    new-word budget. The scheduler then works as before (one budget for new cards, oldest first), and
@@ -340,7 +340,7 @@ async function nextIdsOfLevel(level: StudyLevel, limit: number): Promise<string[
     `SELECT id FROM vocab_catalog c
      WHERE cefr = $1 AND NOT EXISTS (SELECT 1 FROM words w WHERE w.catalog_id = c.id)
        AND NOT EXISTS (SELECT 1 FROM sync_tombstones t WHERE t.kind = 'word' AND t.key = c.id)
-     ORDER BY it DESC, study_order LIMIT $2`,
+     ORDER BY study_order LIMIT $2`,
     [level, limit]
   );
   return rows.map((r) => r.id);
@@ -599,7 +599,7 @@ export async function nextUnstudiedEntries(level: StudyLevel, limit = 30): Promi
      LEFT JOIN words w ON w.catalog_id = c.id
      LEFT JOIN srs_reviews s ON s.word_id = w.id
      WHERE c.cefr = $1 AND (w.id IS NULL OR (COALESCE(s.reps, 0) = 0 AND COALESCE(s.state, 0) = 0))
-     ORDER BY c.it DESC, c.study_order LIMIT $2`,
+     ORDER BY c.study_order LIMIT $2`,
     [level, limit]
   );
   return rowsToEntries(rows);
@@ -636,7 +636,7 @@ export async function getUnstudiedCatalogIdsForLevel(level: StudyLevel): Promise
      LEFT JOIN srs_reviews s ON s.word_id = w.id
      WHERE c.cefr = $1 AND (w.id IS NULL OR (COALESCE(s.reps, 0) = 0 AND COALESCE(s.state, 0) = 0))
        AND NOT EXISTS (SELECT 1 FROM sync_tombstones t WHERE t.kind = 'word' AND t.key = c.id)
-     ORDER BY c.it DESC, c.study_order`,
+     ORDER BY c.study_order`,
     [level]
   );
   return rows.map((r) => r.id);

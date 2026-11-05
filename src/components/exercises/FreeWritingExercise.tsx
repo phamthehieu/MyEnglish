@@ -115,7 +115,7 @@ export default function FreeWritingExercise({ word, level, onComplete, onSpeak, 
         data-lpignore="true"
         data-1p-ignore="true"
         data-form-type="other"
-        placeholder="Một câu ngắn là đủ. Ví dụ: I fixed a bug today."
+        placeholder="Một câu ngắn là đủ. Ví dụ: I finished the report today."
         className="w-full px-4 py-3 rounded-2xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-base text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-700/20 dark:focus:border-teal-400 dark:focus:ring-teal-400/20"
       />
 

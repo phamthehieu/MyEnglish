@@ -21,24 +21,24 @@ const t = (time: TenseCell["time"], aspect: TenseCell["aspect"], name: string, f
  */
 export const LEVEL_TENSES: Record<GrammarLevel, LevelTense[]> = {
   A1: [
-    t("present", "simple", "Hiện tại đơn", "S + V(s/es)", "Thói quen, sự thật, lịch cố định", "We deploy every Friday."),
-    t("present", "continuous", "Hiện tại tiếp diễn", "S + am/is/are + V-ing", "Việc đang diễn ra lúc nói", "I'm fixing a bug right now."),
+    t("present", "simple", "Hiện tại đơn", "S + V(s/es)", "Thói quen, sự thật, lịch cố định", "We have a team meeting every Monday."),
+    t("present", "continuous", "Hiện tại tiếp diễn", "S + am/is/are + V-ing", "Việc đang diễn ra lúc nói", "I'm writing an email right now."),
   ],
   A2: [
-    t("past", "simple", "Quá khứ đơn", "S + V2/V-ed", "Việc đã xong trong quá khứ, có thời điểm rõ", "The build failed yesterday."),
-    t("past", "continuous", "Quá khứ tiếp diễn", "S + was/were + V-ing", "Việc đang diễn ra thì bị việc khác xen vào", "I was testing when the server crashed."),
-    t("future", "simple", "Tương lai đơn", "S + will + V", "Quyết định tức thời, dự đoán, hứa hẹn", "I'll check the logs."),
-    t("future", "near", "Tương lai gần", "S + am/is/are going to + V", "Kế hoạch đã định, dự đoán có dấu hiệu", "We're going to release v2 next week."),
-    t("present", "perfect", "Hiện tại hoàn thành", "S + have/has + V3", "Trải nghiệm, việc vừa xong còn ảnh hưởng đến hiện tại", "I've already merged the PR."),
+    t("past", "simple", "Quá khứ đơn", "S + V2/V-ed", "Việc đã xong trong quá khứ, có thời điểm rõ", "The meeting ended early yesterday."),
+    t("past", "continuous", "Quá khứ tiếp diễn", "S + was/were + V-ing", "Việc đang diễn ra thì bị việc khác xen vào", "I was working on the report when the client called."),
+    t("future", "simple", "Tương lai đơn", "S + will + V", "Quyết định tức thời, dự đoán, hứa hẹn", "I'll send you the schedule right away."),
+    t("future", "near", "Tương lai gần", "S + am/is/are going to + V", "Kế hoạch đã định, dự đoán có dấu hiệu", "We're going to start the new project next week."),
+    t("present", "perfect", "Hiện tại hoàn thành", "S + have/has + V3", "Trải nghiệm, việc vừa xong còn ảnh hưởng đến hiện tại", "I've already sent the report to the manager."),
   ],
   B1: [
-    t("present", "perfect_continuous", "Hiện tại hoàn thành tiếp diễn", "S + have/has been + V-ing", "Việc kéo dài từ quá khứ đến giờ, nhấn mạnh quá trình", "I've been debugging this for two hours."),
-    t("past", "perfect", "Quá khứ hoàn thành", "S + had + V3", "Việc xảy ra trước một việc khác trong quá khứ", "The tests had passed before we deployed."),
-    t("future", "continuous", "Tương lai tiếp diễn", "S + will be + V-ing", "Việc đang diễn ra tại một thời điểm trong tương lai", "I'll be presenting the demo at 3 pm."),
+    t("present", "perfect_continuous", "Hiện tại hoàn thành tiếp diễn", "S + have/has been + V-ing", "Việc kéo dài từ quá khứ đến giờ, nhấn mạnh quá trình", "I've been preparing this presentation for two hours."),
+    t("past", "perfect", "Quá khứ hoàn thành", "S + had + V3", "Việc xảy ra trước một việc khác trong quá khứ", "The train had left before we arrived at the station."),
+    t("future", "continuous", "Tương lai tiếp diễn", "S + will be + V-ing", "Việc đang diễn ra tại một thời điểm trong tương lai", "I'll be meeting with the client at 3 pm."),
   ],
   B2: [
-    t("past", "perfect_continuous", "Quá khứ hoàn thành tiếp diễn", "S + had been + V-ing", "Việc kéo dài đến trước một mốc trong quá khứ", "We had been waiting for an hour when the fix arrived."),
-    t("future", "perfect", "Tương lai hoàn thành", "S + will have + V3", "Việc sẽ xong trước một mốc trong tương lai", "We'll have finished the migration by Monday."),
+    t("past", "perfect_continuous", "Quá khứ hoàn thành tiếp diễn", "S + had been + V-ing", "Việc kéo dài đến trước một mốc trong quá khứ", "We had been waiting for an hour when the bus finally arrived."),
+    t("future", "perfect", "Tương lai hoàn thành", "S + will have + V3", "Việc sẽ xong trước một mốc trong tương lai", "We'll have finished the monthly report by Monday."),
     t("future", "perfect_continuous", "Tương lai hoàn thành tiếp diễn", "S + will have been + V-ing", "Việc sẽ kéo dài được bao lâu tính đến một mốc tương lai", "By June, I'll have been working here for a year."),
   ],
   C1: [],

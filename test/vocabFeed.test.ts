@@ -95,15 +95,15 @@ describe("study levels", () => {
 });
 
 describe("feeding words from the deck", () => {
-  it("adds nothing before the levels are chosen, then keeps a buffer of budget + 5, IT words first", async () => {
+  it("adds nothing before the levels are chosen, then keeps a buffer of budget + 5, in study order", async () => {
     const { feed, db } = await setup(4);
     expect(await feed.topUpNewWords()).toEqual({ added: 0, exhausted: false });
 
     feed.setStudyLevels(["A1"]);
     expect(await feed.topUpNewWords()).toEqual({ added: 9, exhausted: false });
     const order = await introductionOrder(db);
-    expect(order.map((w) => w.word).slice(0, 3)).toEqual(["server", "laptop", "aone0"]);
-    expect(order[0]).toMatchObject({ topic: "A1", cefr_level: "A1", catalog_id: "server", phonetic: "/server/" });
+    expect(order.map((w) => w.word).slice(0, 3)).toEqual(["aone0", "aone1", "aone2"]);
+    expect(order[0]).toMatchObject({ topic: "A1", cefr_level: "A1", catalog_id: "aone0", phonetic: "/aone0/" });
     expect(order[0].examples[0]).toMatchObject({ sentence_vn: "Tôi thấy nó ở đây.", source: "catalog" });
 
     // Full buffer: nothing to add
@@ -160,8 +160,8 @@ describe("feeding words from the deck", () => {
     feed.setStudyLevels(["A1"]);
     await feed.topUpNewWords();
     const pool = await catalog.loadCatalogDistractors(["A1"]);
-    expect(pool.map((w) => w.word)).toEqual(["aone7"]); // the other A1 words are already in the buffer
-    expect(pool[0]).toMatchObject({ meaning_vn: "nghĩa của aone7", topic: "A1" });
+    expect(pool.map((w) => w.word)).toEqual(["laptop"]); // the other A1 words are already in the buffer
+    expect(pool[0]).toMatchObject({ meaning_vn: "nghĩa của laptop", topic: "A1" });
   });
 });
 
@@ -207,7 +207,7 @@ describe("words the learner already knows", () => {
     feed.setStudyLevels(["A1", "A2"]);
     await feed.topUpNewWords();
     const next = await feed.nextUnstudiedEntries("A1", 30);
-    expect(next.map((e) => e.word).slice(0, 2)).toEqual(["server", "laptop"]);
+    expect(next.map((e) => e.word).slice(0, 2)).toEqual(["aone0", "aone1"]);
     expect(next).toHaveLength(10);
 
     expect(await feed.markCatalogWordsKnown(["server", "aone7", "atwo3"])).toBe(3);

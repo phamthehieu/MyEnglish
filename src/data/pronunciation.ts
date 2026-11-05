@@ -107,7 +107,7 @@ export const PRONUNCIATION_LESSONS: PronunciationLesson[] = [
     tagline: "Sau bài này bạn đọc đúng đuôi -s trong tests, bugs, fixes và biết khi nào phải thêm một âm tiết.",
     intro: [
       "Đuôi -s/-es xuất hiện ở khắp nơi: danh từ số nhiều (one bug → two bugs) và động từ đi với he/she/it (She fixes the bug). Tiếng Việt không đổi hình dạng từ — 'một lỗi', 'hai lỗi' — nên người Việt rất hay quên đọc đuôi này.",
-      "Bỏ đuôi -s, người nghe không biết bạn nói một hay nhiều: 'I found a bug' hay 'I found bugs'? Trong standup hay code review, chi tiết nhỏ này có thể gây hiểu nhầm.",
+      "Bỏ đuôi -s, người nghe không biết bạn nói một hay nhiều: 'I found a problem' hay 'I found problems'? Trong cuộc họp hay trao đổi công việc, chi tiết nhỏ này có thể gây hiểu nhầm.",
       "Đuôi -s có ba cách đọc: /s/, /z/ và /ɪz/. Cách đọc phụ thuộc vào ÂM cuối của từ gốc, không phải chữ cái cuối. Ví dụ 'files' viết có chữ 'e' nhưng đọc /faɪlz/ — vẫn chỉ một âm tiết. Quan trọng nhất là đừng bỏ đuôi; lẫn /s/ với /z/ một chút người nghe vẫn hiểu.",
     ],
     tips: [
@@ -192,7 +192,7 @@ export const PRONUNCIATION_LESSONS: PronunciationLesson[] = [
     id: "pron-ed-endings",
     order: 3,
     title: "Đuôi -ed: /t/, /d/ hay /ɪd/",
-    tagline: "Sau bài này bạn đọc đúng fixed, saved, updated và kể việc đã làm trong standup rõ ràng hơn.",
+    tagline: "Sau bài này bạn đọc đúng fixed, saved, updated và kể lại việc đã làm rõ ràng hơn.",
     intro: [
       "Đuôi -ed biến động từ thành quá khứ: 'I fix the bug' (tôi sửa lỗi) và 'I fixed the bug' (tôi đã sửa xong lỗi). Tiếng Việt thêm chữ 'đã', còn tiếng Anh chỉ thêm một âm rất nhỏ ở cuối. Bỏ âm này thì phần 'hôm qua tôi đã làm gì' trong standup nghe như đang nói về hiện tại.",
       "Người Việt hay mắc hai lỗi: bỏ hẳn đuôi -ed, hoặc đọc theo mặt chữ, thêm một âm tiết 'ed' cho mọi từ. Thực ra phần lớn từ có -ed KHÔNG thêm âm tiết: 'fixed' /fɪkst/ và 'saved' /seɪvd/ đều chỉ có một âm tiết.",
@@ -656,10 +656,10 @@ export const PRONUNCIATION_LESSONS: PronunciationLesson[] = [
   {
     id: "pron-it-words",
     order: 8,
-    title: "Từ IT hay đọc sai",
-    tagline: "Sau bài này bạn đọc đúng cache, queue, suite, schema, SQL, JSON — những từ dân IT nói mỗi ngày.",
+    title: "Từ công việc & công nghệ hay đọc sai",
+    tagline: "Sau bài này bạn đọc đúng cache, queue, suite, archive, height — những từ công việc & công nghệ rất dễ đoán sai theo mặt chữ.",
     intro: [
-      "Nhiều từ IT bạn đọc mỗi ngày nhưng hiếm khi nghe ai nói, nên ta đoán cách đọc theo mặt chữ — và thường đoán sai: 'cache', 'queue', 'suite', 'schema' đều không đọc như cách viết.",
+      "Nhiều từ công việc và công nghệ bạn thấy mỗi ngày nhưng hiếm khi nghe đọc chuẩn, nên ta hay đoán theo mặt chữ — và thường đoán sai: 'cache', 'queue', 'suite', 'archive' đều không đọc như cách viết.",
       "Đọc sai những từ này trong buổi họp hay phỏng vấn sẽ khiến người nghe khựng lại vài giây để đoán bạn đang nói gì. Đọc đúng giúp bạn nghe chuyên nghiệp và tự tin hơn ngay lập tức.",
       "Với các tên viết tắt như SQL, JSON, GUI hay Nginx, dân IT có cách đọc riêng. Ở những từ này, app cho máy đọc một từ có cách phát âm giống hệt (ví dụ 'sequel' cho SQL) — ghi chú bên dưới cho biết đó là cách đọc của từ nào.",
     ],

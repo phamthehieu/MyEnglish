@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { PATTERNS } from "@/data/patterns";
 import { getDailyGoal } from "@/services/streak";
 import { chosenDailyMinutes } from "../dashboard/todayPlan";
-import { getStudyLevels } from "@/services/vocabFeed";
+import { getStudyLevels, type StudyLevel } from "@/services/vocabFeed";
+import { chosenLevel } from "@/services/learnerProfile";
 import { allPatternStates, duePatterns, PATTERNS_UPDATED_EVENT, STEPS } from "@/services/patterns/progress";
 import { buildDayPlan } from "@/services/roadmap/plan";
 import { buildPathStages, estimateDays } from "@/services/roadmap/stages";
@@ -36,7 +37,12 @@ export function useRoadmap() {
   // in the day the learner signed up for, next to the words
   const minutes = chosenDailyMinutes(getDailyGoal());
   // The path starts at the lowest level the learner studies
-  const wantedLevel = getStudyLevels()[0];
+  const studyLevels = getStudyLevels();
+  const profileLevel = chosenLevel();
+  const wantedLevel: StudyLevel =
+    profileLevel && profileLevel !== "A0" && studyLevels.includes(profileLevel as StudyLevel)
+      ? (profileLevel as StudyLevel)
+      : studyLevels[0];
   const stages = useMemo(() => buildPathStages(PATTERNS, road.goal ?? "all", wantedLevel), [road.goal, wantedLevel]);
   // Sentences of the wanted level may not exist yet: the path then starts lower than the learner's level
   const startsLower = stages.length > 0 && stages[0].level < wantedLevel;

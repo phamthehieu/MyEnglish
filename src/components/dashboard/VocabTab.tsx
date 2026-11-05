@@ -92,9 +92,9 @@ export function LevelPicker({ value, onChange, disabled }: { value: StudyLevel[]
 
 export function mixDescription(levels: StudyLevel[]): string {
   const skipped = levels[0] !== "A1" ? ` Bạn bỏ qua các cấp thấp hơn ${levels[0]}.` : "";
-  if (levels.length === 1) return `Học các từ ${levels[0]}, từ IT trước, rồi theo độ phổ biến.${skipped}`;
+  if (levels.length === 1) return `Học các từ ${levels[0]} theo thứ tự phổ biến nhất trong giao tiếp & công việc.${skipped}`;
   const ratio = levels.map((_, i) => levels.length - i).join(":");
-  return `Từ mới trộn các cấp ${levels.join(", ")} theo tỉ lệ ${ratio} (cấp thấp nhiều hơn). Trong mỗi cấp, từ IT học trước.${skipped}`;
+  return `Từ mới trộn các cấp ${levels.join(", ")} theo tỉ lệ ${ratio} (cấp thấp nhiều hơn). Trong mỗi cấp, từ thông dụng học trước.${skipped}`;
 }
 
 function useLevelProgress() {
@@ -581,7 +581,7 @@ function CatalogSearch({ onChanged }: { onChanged: () => void }) {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Tìm trong 5.004 từ Oxford (ví dụ: deploy, meeting)…"
+          placeholder="Tìm trong 5.004 từ Oxford (ví dụ: schedule, meeting, report)…"
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"

@@ -225,8 +225,8 @@ fn build_recommend_prompt(level: &str, topic: &str, count: u32, known_words: &[S
     let exclusions = known_words.iter().take(80).cloned().collect::<Vec<_>>().join(",");
     let word_policy = match level {
         "A1" | "A2" => "high-frequency everyday words that are also used at work (no technical jargon)",
-        "B1" => "common work and IT words that a non-specialist also meets",
-        _ => "professional and technical words used in real engineering work",
+        "B1" => "common workplace and everyday words that any working adult meets",
+        _ => "professional and practical vocabulary used in real workplace and adult life",
     };
     format!(
         "Suggest {count} English words whose CEFR level is exactly {level} (English Vocabulary Profile / Oxford 3000-5000), \
@@ -1804,7 +1804,7 @@ async fn generate_vocabulary_recommendations_ai(
     let target_topic = topic
         .map(|t| sanitize_prompt_field(&t, 120))
         .filter(|t| !t.is_empty())
-        .unwrap_or_else(|| "Software Engineering & Technical Work".to_string());
+        .unwrap_or_else(|| "Everyday Life & Workplace Communication".to_string());
     // Stored words are embedded in the prompt: keep only plain vocabulary terms
     let existing_words: Vec<String> = existing_words
         .into_iter()

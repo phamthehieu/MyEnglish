@@ -40,8 +40,8 @@ function entry(word: string, cefr: StudyLevel, order: number, extra: Partial<Cat
 // 10 A1 words (two IT words), 10 A2, 5 B1
 const DECK: CatalogEntry[] = [
   ...Array.from({ length: 8 }, (_, i) => entry(`aone${i}`, "A1", i + 1)),
-  entry("server", "A1", 50, { it: true }),
-  entry("laptop", "A1", 60, { it: true }),
+  entry("server", "A1", 0, { it: true }),
+  entry("laptop", "A1", 0, { it: true }),
   ...Array.from({ length: 10 }, (_, i) => entry(`atwo${i}`, "A2", 100 + i)),
   ...Array.from({ length: 5 }, (_, i) => entry(`bone${i}`, "B1", 200 + i)),
 ];

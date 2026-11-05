@@ -88,7 +88,7 @@ export function generateExercisePrompt(options?: GeneratePromptOptions): string 
     const firstTense = activeTenses[0];
     const secondTense = activeTenses.length > 1 ? activeTenses[1] : activeTenses[0];
 
-    return `Bạn là chuyên gia biên soạn bài tập ngữ pháp tiếng Anh (chuyên ngành Công nghệ Thông tin & Tiếng Anh giao tiếp công sở).
+    return `Bạn là chuyên gia biên soạn bài tập ngữ pháp tiếng Anh dành cho người đi làm muốn lấy lại gốc và giao tiếp tự nhiên.
 Dưới đây là yêu cầu tạo bộ câu hỏi bài tập ngữ pháp tiếng Anh theo ĐÚNG danh sách các thì và số lượng cụ thể sau:
 
 DANH SÁCH THÌ VÀ SỐ LƯỢNG BÀI TẬP YÊU CẦU:
@@ -96,7 +96,7 @@ ${tenseListLines.join("\n")}
 => TỔNG CỘNG: ${totalCount} câu hỏi.
 
 ---
-[NẾU CÓ TÀI LIỆU HOẶC GHI CHÚ RIÊNG, HÃY DÁN VÀO ĐÂY ĐỂ AI DỰA VÀO ĐÓ SOẠN BÀI, HOẶC ĐỂ TRỐNG ĐỂ AI TỰ BIÊN SOẠN CÂU HỎI THEO CHỦ ĐỀ CÔNG NGHỆ THÔNG TIN / VĂN PHÒNG]
+[NẾU CÓ TÀI LIỆU HOẶC GHI CHÚ RIÊNG, HÃY DÁN VÀO ĐÂY ĐỂ AI DỰA VÀO ĐÓ SOẠN BÀI, HOẶC ĐỂ TRỐNG ĐỂ AI TỰ BIÊN SOẠN CÂU HỎI THEO CHỦ ĐỀ GIAO TIẾP ĐỜI SỐNG & CÔNG VIỆC HÀNG NGÀY]
 ---
 
 Yêu cầu về nội dung & phân bổ:
@@ -104,7 +104,7 @@ Yêu cầu về nội dung & phân bổ:
 - BẮT BUỘC gán thuộc tính "lessonId" chính xác cho từng câu hỏi tương ứng với mã bài của thì đó (Ví dụ: các câu của "${firstTense.titleVn}" phải có "lessonId": "${firstTense.id}"${
       secondTense.id !== firstTense.id ? `, các câu của "${secondTense.titleVn}" phải có "lessonId": "${secondTense.id}"` : ""
     }).
-- Câu hỏi có ngữ cảnh tự nhiên, ưu tiên công việc ngành IT, lập trình, văn phòng hoặc giao tiếp hàng ngày.
+- Câu hỏi có ngữ cảnh tự nhiên, gần gũi với người đi làm (văn phòng, trao đổi công việc, sinh hoạt và giao tiếp hàng ngày).
 - Đa dạng giữa 2 dạng: "choose" (trắc nghiệm chọn 1 trong 4 đáp án) và "fill_blank" (điền từ / chia động từ vào chỗ trống).
 - Mỗi câu PHẢI có giải thích ngữ pháp bằng tiếng Việt ("explainVn") và dịch nghĩa câu ("vi").
 
@@ -120,12 +120,12 @@ BẮT BUỘC xuất ra DUY NHẤT một khối mã JSON hợp lệ theo định 
     {
       "lessonId": "${firstTense.id}",
       "type": "choose",
-      "prompt": "Our DevOps engineer usually ___ the production server every Sunday midnight.",
-      "options": ["restarts", "restart", "is restarting", "restarted"],
-      "answers": [["restarts"]],
-      "answerSentence": "Our DevOps engineer usually restarts the production server every Sunday midnight.",
+      "prompt": "Our manager usually ___ the weekly schedule every Monday morning.",
+      "options": ["checks", "check", "is checking", "checked"],
+      "answers": [["checks"]],
+      "answerSentence": "Our manager usually checks the weekly schedule every Monday morning.",
       "explainVn": "Diễn tả hành động lặp đi lặp lại có chu kỳ, chủ ngữ số ít nên động từ thêm 's'.",
-      "vi": "Kỹ sư DevOps của chúng tôi thường khởi động lại máy chủ production vào nửa đêm mỗi Chủ nhật."
+      "vi": "Quản lý của chúng tôi thường kiểm tra lịch làm việc hàng tuần vào sáng thứ Hai."
     },
     {
       "lessonId": "${secondTense.id}",
@@ -159,7 +159,7 @@ Quy tắc cấu trúc JSON:
     ? `Bài học: ${options.lessonTitle}${options.lessonId ? ` [${options.lessonId}]` : ""}`
     : `Chương: ${chapterName} [${chapterId}]`;
 
-  return `Bạn là chuyên gia biên soạn bài tập ngữ pháp tiếng Anh (chuyên ngành Công nghệ Thông tin & Tiếng Anh giao tiếp công sở).
+  return `Bạn là chuyên gia biên soạn bài tập ngữ pháp tiếng Anh dành cho người đi làm muốn lấy lại gốc và giao tiếp tự nhiên.
 Dưới đây là tài liệu / ghi chú ngữ pháp của tôi (hoặc yêu cầu tạo bài tập cho ${lessonContext}):
 ---
 [DÁN NỘI DUNG TÀI LIỆU HOẶC GHI YÊU CẦU CỦA BẠN VÀO ĐÂY]
@@ -167,7 +167,7 @@ Dưới đây là tài liệu / ghi chú ngữ pháp của tôi (hoặc yêu c�
 
 Hãy tạo cho tôi một bộ bài tập ngữ pháp gồm 5 đến 15 câu hỏi.
 Yêu cầu về nội dung:
-- Câu hỏi có ngữ cảnh tự nhiên, ưu tiên công việc ngành IT, lập trình, văn phòng hoặc giao tiếp hàng ngày.
+- Câu hỏi có ngữ cảnh tự nhiên, gần gũi với người đi làm (văn phòng, trao đổi công việc, sinh hoạt và giao tiếp hàng ngày).
 - Đa dạng giữa 2 dạng: "choose" (trắc nghiệm chọn 1 trong 4 đáp án) và "fill_blank" (điền từ / chia động từ vào chỗ trống).
 - Mỗi câu PHẢI có giải thích ngữ pháp bằng tiếng Việt ("explainVn") và dịch nghĩa câu ("vi").
 
@@ -183,12 +183,12 @@ BẮT BUỘC xuất ra DUY NHẤT một khối mã JSON hợp lệ theo định 
     {
       "lessonId": "${options?.lessonId || `${chapterId}-l01`}",
       "type": "choose",
-      "prompt": "Our DevOps engineer usually ___ the production server every Sunday midnight.",
-      "options": ["restarts", "restart", "is restarting", "restarted"],
-      "answers": [["restarts"]],
-      "answerSentence": "Our DevOps engineer usually restarts the production server every Sunday midnight.",
+      "prompt": "Our manager usually ___ the weekly schedule every Monday morning.",
+      "options": ["checks", "check", "is checking", "checked"],
+      "answers": [["checks"]],
+      "answerSentence": "Our manager usually checks the weekly schedule every Monday morning.",
       "explainVn": "Diễn tả hành động lặp đi lặp lại có chu kỳ (thì hiện tại đơn), chủ ngữ 'DevOps engineer' là số ít nên động từ thêm 's'.",
-      "vi": "Kỹ sư DevOps của chúng tôi thường khởi động lại máy chủ production vào nửa đêm mỗi Chủ nhật."
+      "vi": "Quản lý của chúng tôi thường kiểm tra lịch làm việc hàng tuần vào sáng thứ Hai."
     },
     {
       "lessonId": "${options?.lessonId || `${chapterId}-l01`}",

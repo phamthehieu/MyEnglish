@@ -31,9 +31,9 @@ const TRIGGER_OPTIONS: Array<{ value: ReminderTrigger; title: string; desc: stri
 ];
 
 const LEVELS: Array<{ level: LevelChoice; label: string; hint: string }> = [
-  { level: "A0", label: "Mất gốc", hint: "Quên gần hết, muốn học lại từ đầu" },
-  { level: "A1", label: "Mới bắt đầu", hint: "Biết vài từ cơ bản" },
-  { level: "A2", label: "Cơ bản", hint: "Hiểu câu ngắn, quen thuộc" },
+  { level: "A0", label: "Mất gốc", hint: "Quên gần hết, muốn lấy lại gốc từ đầu cho người đi làm" },
+  { level: "A1", label: "Mới bắt đầu", hint: "Nhớ vài từ cơ bản nhưng chưa ghép câu tự nhiên" },
+  { level: "A2", label: "Cơ bản", hint: "Hiểu câu ngắn trong giao tiếp & công việc quen thuộc" },
   { level: "B1", label: "Trung cấp", hint: "Đọc được tài liệu đơn giản" },
   { level: "B2", label: "Khá", hint: "Đọc tài liệu tiếng Anh mà ít phải tra từ" },
   { level: "C1", label: "Thành thạo", hint: "Đọc, viết, họp khá tự nhiên" },
@@ -325,7 +325,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
                 })}
               </div>
               <p className="text-sm text-slate-600 dark:text-zinc-400">
-                Ngữ pháp bắt đầu từ thì hiện tại đơn, mỗi ngày một bài theo thứ tự sách (đổi được trong tab Ngữ pháp).
+                Ngữ pháp bắt đầu từ thì hiện tại đơn kèm mẹo ngữ pháp giao tiếp cho từng chặng nói (đổi được trong tab Ngữ pháp).
               </p>
             </>
           )}

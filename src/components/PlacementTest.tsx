@@ -20,11 +20,11 @@ const KIND_LABEL: Record<AdaptiveQuestion["kind"], string> = { vocab: "Từ vự
 const TYPICAL_MAX_QUESTIONS = 12;
 
 const RESULT_TEXT: Record<PlacementBlockLevel, string> = {
-  A0: "Mất gốc (A0): bắt đầu từ các từ A1 của bộ Oxford (từ IT trước), phát âm và ngữ pháp cơ bản. Đi chậm mà chắc.",
+  A0: "Mất gốc (A0): bắt đầu từ những từ A1 thông dụng nhất của bộ Oxford, phát âm chuẩn và ngữ pháp nền tảng cho người đi làm. Đi chậm mà chắc.",
   A1: "A1: bạn biết những từ cơ bản nhất. Học tiếp các từ A1 và ngữ pháp nền để đọc được câu ngắn.",
   A2: "A2: bạn hiểu câu ngắn, quen thuộc. Học trộn từ A1 và A2; từ nào đã biết thì bấm “Đã biết” để bỏ qua.",
-  B1: "B1: bạn đọc được tài liệu đơn giản. Học từ chuyên ngành và ngữ pháp trung cấp.",
-  B2: "B2: bạn đọc tài liệu khá tốt. Tập trung từ chuyên sâu, viết và diễn đạt tự nhiên.",
+  B1: "B1: bạn giao tiếp và đọc hiểu văn bản công việc, đời sống đơn giản. Học tiếp từ vựng thông dụng và ngữ pháp trung cấp.",
+  B2: "B2: bạn đọc hiểu và trao đổi công việc khá tốt. Tập trung mở rộng vốn từ, viết và diễn đạt tự nhiên.",
   C1: "C1: trình độ cao. Tập trung sắc thái, văn phong và từ hiếm.",
 };
 
