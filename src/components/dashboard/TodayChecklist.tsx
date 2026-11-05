@@ -195,20 +195,23 @@ export default function TodayChecklist({
       </Button>
 
       {(quickMode !== "hidden" || onFocus) && (
-        <div className="flex items-center justify-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center justify-center gap-2 pt-1 border-t border-slate-100 dark:border-zinc-800/80">
           {quickMode !== "hidden" && (
-            <button onClick={onQuickStart} title="3 thẻ ôn nhanh, đủ để giữ chuỗi ngày học" className="min-h-10 rounded-lg px-3 font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10">
-              Chỉ 1 phút
+            <button
+              onClick={onQuickStart}
+              title="3 thẻ ôn nhanh, đủ để giữ chuỗi ngày học"
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-amber-500/10 px-3.5 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 transition-colors"
+            >
+              <span>⚡ Học nhanh 1 phút (Giữ chuỗi)</span>
             </button>
           )}
-          {quickMode !== "hidden" && onFocus && <span className="text-slate-300 dark:text-zinc-600">·</span>}
           {onFocus && (
             <button
               onClick={onFocus}
               title="Học trong một phiên có hẹn giờ: ẩn mọi thứ khác, tắt nhắc nhở"
-              className="min-h-10 rounded-lg px-3 font-semibold text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-teal-400/10"
+              className="inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-teal-600/30 bg-teal-50/50 px-3.5 py-1.5 text-xs font-bold text-teal-800 dark:bg-teal-500/10 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-500/20 transition-colors"
             >
-              Tập trung {focusMinutes ?? 10} phút
+              <span>🎯 Tập trung {focusMinutes ?? 10} phút</span>
             </button>
           )}
         </div>

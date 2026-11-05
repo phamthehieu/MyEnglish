@@ -54,6 +54,7 @@ import { estimateNewWordsPerDay, levelEtaDays } from "@/services/progress";
 import { getStudyLimits } from "@/services/srs";
 import { useWordsStore } from "@/stores/wordsStore";
 import { PAGE_CONTAINER, handleSpeak } from "./shared";
+import { triggerConfetti } from "@/utils/confetti";
 
 const LEVEL_NAMES: Record<StudyLevel, string> = {
   A1: "Mới bắt đầu",
@@ -666,6 +667,7 @@ function PackDetailView({
       const count = await markCatalogWordsKnown([...picked]);
       setPicked(new Set());
       setBannerMsg(`Đã đánh dấu ${count} từ là Đã biết.`);
+      triggerConfetti(2500);
       onChanged();
       load();
     } finally {
