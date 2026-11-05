@@ -89,9 +89,14 @@ describe("exercise builders", () => {
 
   it("builds the tasks of every step", () => {
     expect(buildStepTasks(pattern, 1)).toHaveLength(1);
-    expect(buildStepTasks(pattern, 2).every((t) => t.kind === "substitute")).toBe(true);
+    // Each step goes from easy to hard
+    expect(buildStepTasks(pattern, 2).map((t) => t.kind)).toEqual(["listen", "listen", "substitute", "substitute", "substitute", "substitute"]);
+    expect(buildStepTasks(pattern, 2).map((t) => t.kind === "substitute" && !!t.withMeaning)).toEqual([false, false, true, true, false, false]);
     expect(buildStepTasks(pattern, 3).every((t) => t.kind === "tiles")).toBe(true);
+    const tiles = buildStepTasks(pattern, 3).map((t) => (t.kind === "tiles" ? t.item.tiles.length - t.item.en.replace(/[.,?!]/g, "").split(/\s+/).length : -1));
+    expect(tiles.slice(0, 2)).toEqual([0, 0]);
     expect(buildStepTasks(pattern, 4).every((t) => t.kind === "rapid")).toBe(true);
+    expect(buildStepTasks(pattern, 4).map((t) => t.kind === "rapid" && !!t.letters)).toEqual([true, true, true, false, false]);
     expect(buildRapidMix([pattern, { ...pattern, id: "a1.x" }], 8)).toHaveLength(2);
   });
 });
@@ -113,8 +118,11 @@ describe("progress", () => {
     expect(getPatternState(pattern.id).step).toBe(STEPS);
     recordReview(pattern.id, true, new Date(2026, 0, 12));
     expect(getPatternState(pattern.id).box).toBe(1);
+    // A miss brings it back tomorrow: it stays mastered, so a stage can still finish
     recordReview(pattern.id, false, new Date(2026, 0, 20));
-    expect(getPatternState(pattern.id).step).toBe(STEPS - 1);
+    expect(getPatternState(pattern.id).step).toBe(STEPS);
+    expect(getPatternState(pattern.id).box).toBe(0);
+    expect(getPatternState(pattern.id).due).toBe("2026-01-21");
   });
 
   it("keeps the last ten response times and their average", () => {
@@ -128,6 +136,8 @@ describe("progress", () => {
     const tasks = buildStepTasks(pattern, 2);
     const results = tasks.map((t, i) => ({ patternId: t.pattern.id, kind: t.kind, ok: i !== 0 }));
     expect(sessionPassed(tasks, results)).toBe(true);
-    expect(sessionPassed(tasks, results.map((r, i) => ({ ...r, ok: i > 1 })))).toBe(false);
+    // Six questions: four right pass, three do not
+    expect(sessionPassed(tasks, results.map((r, i) => ({ ...r, ok: i > 1 })))).toBe(true);
+    expect(sessionPassed(tasks, results.map((r, i) => ({ ...r, ok: i > 2 })))).toBe(false);
   });
 });

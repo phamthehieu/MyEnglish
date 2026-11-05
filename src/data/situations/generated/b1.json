@@ -48,8 +48,8 @@
       },
       {
         "id": "asking-for-a-day-off-b1.l5",
-        "en": "I will try, although it is long.",
-        "vi": "Tôi sẽ cố, dù nó khá dài.",
+        "en": "I will try, although it is a lot of work.",
+        "vi": "Tôi sẽ cố, dù khối lượng khá nhiều.",
         "accept": [
           "I can try, but it is long",
           "I will try, but it is quite long"
@@ -161,7 +161,7 @@
       },
       {
         "id": "welcoming-a-new-colleague-b1.l4",
-        "en": "Yes, there is a cheap noodle shop.",
+        "en": "Yes, there is a cheap pho shop.",
         "vi": "Có, có một quán phở rẻ.",
         "accept": [
           "Yes, there is a cheap noodle place",
@@ -406,7 +406,7 @@
       },
       {
         "id": "choosing-an-evening-course-b1.l3",
-        "en": "Marketing, because it may give me more jobs.",
+        "en": "Marketing, because it may offer more job opportunities.",
         "vi": "Marketing, vì nó có thể có nhiều việc hơn.",
         "accept": [
           "I prefer marketing because it has more job chances",
@@ -1936,8 +1936,8 @@
       },
       {
         "id": "thinking-about-a-job-offer-b1.l3",
-        "en": "That sounds fine, but what about benefits?",
-        "vi": "Nghe ổn, nhưng còn phúc lợi thì sao?",
+        "en": "That sounds fine. Is there a bonus as well?",
+        "vi": "Nghe ổn. Có thưởng nữa không?",
         "accept": [
           "That is fine. What about the benefits",
           "Okay. Can you tell me about the benefits"
@@ -3267,7 +3267,7 @@
       },
       {
         "id": "n2",
-        "npc_en": "Of course. What seems to be the problem?",
+        "npc_en": "Of course. What is the problem?",
         "npc_vi": "Được ạ. Vấn đề là gì vậy?",
         "replies": [
           {
@@ -3886,7 +3886,7 @@
     "dialogue": [
       {
         "id": "n1",
-        "npc_en": "Come in. What seems to be the problem?",
+        "npc_en": "Come in. What is the problem?",
         "npc_vi": "Mời vào. Bạn bị sao vậy?",
         "replies": [
           {

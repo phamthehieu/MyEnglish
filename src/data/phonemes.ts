@@ -354,7 +354,7 @@ const SPECS: PhonemeSpec[] = [
     vn: "Giống 'i' đọc lướt đầu từ trong tiếng Việt ('yên', 'iu'). Hay bị đọc thành /dʒ/ nên 'yes' nghe như 'Jess'.",
     how: "Lưỡi đưa lên cao gần vòm miệng như bắt đầu đọc /iː/, rồi trượt nhanh sang nguyên âm sau. Không bật như /dʒ/.",
     words: ["yes|/jes/", "you|/juː/", "year|/jɪə/", "young|/jʌŋ/", "use|/juːz/", "yellow|/ˈjeləʊ/"],
-    pairs: [["yes|/jes/", "Jess|/dʒes/"], ["year|/jɪə/", "gear|/dʒɪə/"], ["yet|/jet/", "jet|/dʒet/"], ["you|/juː/", "Jew|/dʒuː/"]],
+    pairs: [["yes|/jes/", "Jess|/dʒes/"], ["year|/jɪə/", "jeer|/dʒɪə/"], ["yet|/jet/", "jet|/dʒet/"], ["you|/juː/", "Jew|/dʒuː/"]],
   },
 ];
 

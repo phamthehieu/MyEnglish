@@ -28,8 +28,8 @@ export interface DayPlan {
 export const TEST_PASS = 6;
 /** The test that skips a stage the learner already knows needs this many */
 export const SKIP_PASS = 8;
-/** At most this many new patterns are opened in a batch, and this many are asked again for review */
-const MAX_NEW = 2;
+/** A day works on at most this many patterns of the stage (old and new together), and asks this many again for review */
+export const PATTERNS_A_DAY = 2;
 const MAX_REVIEW = 4;
 const stepMinutes = (step: number) => (step === 2 ? MINUTES.substitute : step === 3 ? MINUTES.tiles : MINUTES.rapid);
 
@@ -57,10 +57,19 @@ export function buildDayPlan(
     .map((p) => ({ p, s: stateOf(p.id) }))
     .filter(({ s }) => s.step >= 1 && s.step < STEPS && (s.due <= today || (s.step === 1 && s.lastDay === today)))
     .sort((a, b) => b.s.step - a.s.step);
-  for (const { p, s } of ready) units.push({ kind: "step", patternId: p.id, steps: [s.step + 1], minutes: stepMinutes(s.step + 1) });
+  // Two patterns a day, however many sessions: what was worked on today counts, and goes on if it has a step left today
+  const workedToday = (id: string) => stateOf(id).step > 0 && stateOf(id).lastDay === today;
+  let room = Math.max(0, PATTERNS_A_DAY - stage.patterns.filter((p) => workedToday(p.id)).length);
+  for (const { p, s } of ready) {
+    if (!workedToday(p.id)) {
+      if (room === 0) continue;
+      room--;
+    }
+    units.push({ kind: "step", patternId: p.id, steps: [s.step + 1], minutes: stepMinutes(s.step + 1) });
+  }
 
-  // New patterns: learn it and substitute in the blank on the same day
-  const fresher = stage.patterns.filter((p) => stateOf(p.id).step === 0).slice(0, MAX_NEW);
+  // New patterns, when there is room: learn it and substitute in the blank on the same day
+  const fresher = stage.patterns.filter((p) => stateOf(p.id).step === 0).slice(0, room);
   for (const p of fresher) units.push({ kind: "step", patternId: p.id, steps: [1, 2], minutes: MINUTES.learn + MINUTES.substitute });
 
   // If the learner already finished today's scheduled batch and chooses to keep going, let them continue the next step

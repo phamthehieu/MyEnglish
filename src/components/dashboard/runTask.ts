@@ -1,6 +1,6 @@
 import { AUTOSTART_KEY } from "../patterns/PatternsTab";
 import { getRoadmap } from "@/services/roadmap/state";
-import { markGrammarReviewed, weakGrammarStage } from "@/services/weakPoints";
+import { markGrammarReviewed, SHOW_TIP_EVENT, SHOW_TIP_KEY, weakGrammarStage } from "@/services/weakPoints";
 import { tipForStage } from "@/data/grammarTips";
 import { TASK_TAB, type TodayTaskId } from "./todayPlan";
 import type { DashboardTab } from "./shared";
@@ -49,7 +49,16 @@ export function runTodayTask(id: TodayTaskId, deps: RunDeps): void {
     const weak = weakGrammarTask();
     if (weak) markGrammarReviewed(weak.stageId);
     if (weak?.lessonId && deps.openGrammarLesson) deps.openGrammarLesson(weak.lessonId);
-    else deps.setActiveTab("grammar");
+    else {
+      // No lesson of the book explains it: the tab opens with the stage's own tip, not on a list to search
+      try {
+        if (weak) sessionStorage.setItem(SHOW_TIP_KEY, weak.stageId);
+      } catch {
+        /* the tab opens without it */
+      }
+      deps.setActiveTab("grammar");
+      window.dispatchEvent(new Event(SHOW_TIP_EVENT));
+    }
   } else if (id === "vocab") deps.startWords();
   else if (id === "reflex") {
     if (deps.startReflex) deps.startReflex();

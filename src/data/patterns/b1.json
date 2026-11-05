@@ -406,8 +406,8 @@
     ],
     "asks": [
       {
-        "en": "Do you like spicy food?",
-        "vi": "Bạn có thích đồ ăn cay không?"
+        "en": "Will you join us tonight?",
+        "vi": "Tối nay bạn đi cùng chúng tôi chứ?"
       },
       {
         "en": "Have your tastes changed?",
@@ -440,17 +440,17 @@
       },
       {
         "en": "driving here",
-        "vi": "lái xe ở đây",
+        "vi": "việc lái xe ở đây",
         "ipa": "/aɪm nɑt juzd tu ˈdraɪvɪŋ hir jɛt/"
       },
       {
         "en": "working nights",
-        "vi": "làm ca đêm",
+        "vi": "việc làm ca đêm",
         "ipa": "/aɪm nɑt juzd tu ˈwɝkɪŋ naɪts jɛt/"
       },
       {
         "en": "eating so late",
-        "vi": "ăn tối muộn thế",
+        "vi": "việc ăn muộn thế",
         "ipa": "/aɪm nɑt juzd tu ˈitɪŋ soʊ leɪt jɛt/"
       },
       {
@@ -507,7 +507,7 @@
       },
       {
         "en": "living alone",
-        "vi": "sống một mình",
+        "vi": "việc sống một mình",
         "ipa": "/aɪm ˈsloʊli ˈɡɛtɪŋ juzd tu ˈlɪvɪŋ əˈloʊn/"
       },
       {
@@ -579,7 +579,7 @@
       },
       {
         "en": "living alone",
-        "vi": "sống một mình",
+        "vi": "việc sống một mình",
         "ipa": "/aɪv bɪn ˈlɪvɪŋ əˈloʊn fɔr ə fju mʌnθs/"
       },
       {
@@ -651,17 +651,17 @@
       },
       {
         "en": "I got married",
-        "vi": "tôi kết hôn",
+        "vi": "khi tôi kết hôn",
         "ipa": "/aɪv lɪvd hir sɪns aɪ ɡɑt ˈmɛrid/"
       },
       {
         "en": "I changed jobs",
-        "vi": "tôi đổi việc",
+        "vi": "khi tôi đổi việc",
         "ipa": "/aɪv lɪvd hir sɪns aɪ tʃeɪndʒd dʒɑbz/"
       },
       {
         "en": "twenty twenty",
-        "vi": "năm hai nghìn không trăm hai mươi",
+        "vi": "năm 2020",
         "ipa": "/aɪv lɪvd hir sɪns ˈtwɛnti ˈtwɛnti/"
       }
     ],
@@ -703,7 +703,7 @@
     "slots": [
       {
         "en": "I moved here",
-        "vi": "tôi chuyển đến đây",
+        "vi": "khi tôi chuyển đến đây",
         "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns aɪ muvd hir/"
       },
       {
@@ -718,7 +718,7 @@
       },
       {
         "en": "I got married",
-        "vi": "tôi kết hôn",
+        "vi": "khi tôi kết hôn",
         "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns aɪ ɡɑt ˈmɛrid/"
       },
       {
@@ -728,12 +728,12 @@
       },
       {
         "en": "I left school",
-        "vi": "tôi nghỉ học",
+        "vi": "khi tôi nghỉ học",
         "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns aɪ lɛft skul/"
       },
       {
         "en": "my promotion",
-        "vi": "tôi được thăng chức",
+        "vi": "khi tôi được thăng chức",
         "ipa": "/laɪf hæz tʃeɪndʒd ə lɑt sɪns maɪ prəˈmoʊʃən/"
       }
     ],
@@ -913,9 +913,9 @@
     "note_vi": "You'd better (had better) + động từ nguyên mẫu không to, dùng khi việc đó khá gấp và nếu không làm có thể gặp rắc rối.",
     "slots": [
       {
-        "en": "hurry up",
-        "vi": "nhanh lên",
-        "ipa": "/jud ˈbɛtər ˈhɝi ʌp sun/"
+        "en": "finish it",
+        "vi": "làm xong",
+        "ipa": "/jud ˈbɛtər ˈfɪnɪʃ ɪt sun/"
       },
       {
         "en": "call him",
@@ -938,9 +938,9 @@
         "ipa": "/jud ˈbɛtər peɪ ðə bɪl sun/"
       },
       {
-        "en": "leave now",
-        "vi": "đi ngay",
-        "ipa": "/jud ˈbɛtər liv naʊ sun/"
+        "en": "leave",
+        "vi": "đi",
+        "ipa": "/jud ˈbɛtər liv sun/"
       },
       {
         "en": "fix it",
@@ -1030,7 +1030,7 @@
     "asks": [
       {
         "en": "I can't sleep. Any ideas?",
-        "vi": "Tôi không ngủ được. Có ý gì không?"
+        "vi": "Tôi không ngủ được. Bạn có ý kiến gì không?"
       },
       {
         "en": "I feel so stressed.",
@@ -1206,7 +1206,7 @@
         "ipa": "/ʃæl wi ˈɔrdər sʌm fud/"
       },
       {
-        "en": "leave now",
+        "en": "leave",
         "vi": "đi bây giờ",
         "ipa": "/ʃæl wi liv naʊ/"
       },
@@ -1800,7 +1800,7 @@
     "asks": [
       {
         "en": "Tell me about your background.",
-        "vi": "Hãy kể về nền tảng của bạn."
+        "vi": "Hãy kể về quá trình học tập và làm việc của bạn."
       },
       {
         "en": "What experience do you have?",
@@ -1936,8 +1936,8 @@
     ],
     "asks": [
       {
-        "en": "Where do you see yourself later?",
-        "vi": "Sau này bạn thấy mình ở đâu?"
+        "en": "Where do you see yourself in five years?",
+        "vi": "Năm năm nữa bạn thấy mình ở đâu?"
       },
       {
         "en": "What are your career goals?",
@@ -3481,7 +3481,7 @@
         "vi": "Tôi có thể giúp gì cho bạn?"
       },
       {
-        "en": "What seems to be the problem?",
+        "en": "What is the problem?",
         "vi": "Có vấn đề gì vậy?"
       }
     ],
@@ -6479,7 +6479,7 @@
       "work"
     ],
     "frame_en": "Would you mind ___?",
-    "frame_vi": "Bạn có phiền nếu ___ không?",
+    "frame_vi": "Bạn có phiền ___ không?",
     "note_vi": "Would you mind cộng động từ thêm ing để nhờ lịch sự. Trả lời Not at all hoặc Of course not nghĩa là đồng ý.",
     "slots": [
       {

@@ -860,7 +860,7 @@
     "asks": [
       {
         "en": "We can't finish by Friday. Any ideas?",
-        "vi": "Chúng ta không kịp xong trước thứ Sáu. Có ý gì không?"
+        "vi": "Chúng ta không kịp xong trước thứ Sáu. Bạn có ý kiến gì không?"
       },
       {
         "en": "How can we save money on the trip?",
@@ -4320,7 +4320,7 @@
         "vi": "Kỳ nghỉ của anh chị có ổn không ạ?"
       },
       {
-        "en": "What seems to be the problem?",
+        "en": "What is the problem?",
         "vi": "Có vấn đề gì vậy ạ?"
       }
     ],
@@ -5199,7 +5199,7 @@
       "social"
     ],
     "frame_en": "I was just ___ when the phone rang.",
-    "frame_vi": "Tôi vừa đang ___ thì điện thoại reo.",
+    "frame_vi": "Tôi đang ___ thì điện thoại reo.",
     "note_vi": "Quá khứ tiếp diễn làm nền, quá khứ đơn sau when là việc chen ngang. Đây là cách kể chuyện rất phổ biến.",
     "slots": [
       {
@@ -5759,7 +5759,7 @@
       },
       {
         "en": "many people left",
-        "vi": "nhiều người đã nghỉ việc",
+        "vi": "nhiều người đã rời đi",
         "ipa": "/æz ə rɪˈzʌlt ˈmɛni ˈpipəl lɛft/"
       },
       {
@@ -5962,9 +5962,9 @@
         "ipa": "/ðə ˈnʌmbər ʌv ˈjuzərz fɛl ˈslaɪtli tu hæf ə ˈmɪljən/"
       },
       {
-        "en": "forty per cent",
-        "vi": "bốn mươi phần trăm",
-        "ipa": "/ðə ˈnʌmbər ʌv ˈjuzərz fɛl ˈslaɪtli tu ˈfɔrti pɝ sɛnt/"
+        "en": "forty thousand",
+        "vi": "bốn mươi nghìn",
+        "ipa": "/ðə ˈnʌmbər ʌv ˈjuzərz fɛl ˈslaɪtli tu ˈfɔrti ˈθaʊzənd/"
       }
     ],
     "examples": [

@@ -436,9 +436,20 @@ function ConversationChat({
       const id = v.lineId ?? (replies.length === 1 ? replies[0].id : undefined);
       // Words the machine was unsure about: listed in the summary as the ones to say more clearly
       for (const w of result.words ?? []) if (w.word && w.word !== "[unk]" && w.conf < 0.6) weakWords.current.add(w.word);
-      if (id) recordLineTry(id, v.kind === "ok", v.heard);
-      if (v.kind === "ok" && v.lineId) {
-        answered(v.lineId, true);
+      // A microphone problem says nothing about the learner: try again, nothing is counted
+      if (v.kind === "error" || v.kind === "silent") {
+        setFeedback(v.message);
+        if (handsFreeRef.current && autoTries.current < 2) {
+          autoTries.current++;
+          armAuto(1800);
+        }
+        return;
+      }
+      // The right sentence with the machine only unsure of it is right
+      const right = (v.kind === "ok" || v.kind === "shaky") && !!v.lineId;
+      if (id) recordLineTry(id, right, v.heard);
+      if (right && v.lineId) {
+        answered(v.lineId, v.kind === "ok");
         send(v.lineId);
         return;
       }
@@ -506,7 +517,8 @@ function ConversationChat({
     setRound((r) => r + 1);
   };
 
-  const methods: Method[] = canSpeak ? ["choose", "tiles", "say", "type"] : ["choose", "tiles", "type"];
+  // A challenge is said or typed (as its label promises)
+  const methods: Method[] = challenge ? (canSpeak ? ["say", "type"] : ["type"]) : canSpeak ? ["choose", "tiles", "say", "type"] : ["choose", "tiles", "type"];
   const levels = (Object.keys(LEVEL_LABEL) as Level[]).filter((l) => canSpeak || l !== "say");
   const notChosen = bank.filter((t) => !chosen.some((c) => c.id === t.id));
   // Everything that changes how the talk goes, in one panel, each with what it does

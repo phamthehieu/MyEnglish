@@ -22,6 +22,25 @@ export function normalizeSpeech(text: string): string {
     .trim();
 }
 
+/**
+ * A normalized sentence with its contractions written out, to compare what was typed: "I'm" and "I am", "don't" and
+ * "do not", "can't" and "cannot" are the same answer. ('d is read as would; a possessive 's stays.)
+ */
+export function fullForm(normalized: string): string {
+  return normalized
+    .replace(/\bwon't\b/g, "will not")
+    .replace(/\bcan't\b|\bcannot\b/g, "can not")
+    .replace(/\bshan't\b/g, "shall not")
+    .replace(/n't\b/g, " not")
+    .replace(/\bi'm\b/g, "i am")
+    .replace(/'re\b/g, " are")
+    .replace(/'ll\b/g, " will")
+    .replace(/'ve\b/g, " have")
+    .replace(/'d\b/g, " would")
+    .replace(/\blet's\b/g, "let us")
+    .replace(/\b(it|that|what|where|who|how|he|she|there|here)'s\b/g, "$1 is");
+}
+
 /** Every wording of a line the learner may say, normalized and without repeats */
 export function variantsOf(line: SituationLine): string[] {
   return [...new Set([line.en, ...line.accept].map(normalizeSpeech).filter(Boolean))];
@@ -261,12 +280,14 @@ function allowedSlips(length: number): number {
 export function matchTyped(text: string, lines: SituationLine[]): TypedMatch | null {
   const typed = normalizeSpeech(text);
   if (!typed) return null;
+  const typedFull = fullForm(typed);
   let best: { lineId: string; distance: number } | null = null;
   for (const line of lines) {
     for (const variant of variantsOf(line)) {
-      if (variant === typed) return { lineId: line.id, exact: true };
-      const d = editDistance(variant, typed);
-      if (d <= allowedSlips(variant.length) && (!best || d < best.distance)) best = { lineId: line.id, distance: d };
+      const full = fullForm(variant);
+      if (variant === typed || full === typedFull) return { lineId: line.id, exact: true };
+      const d = editDistance(full, typedFull);
+      if (d <= allowedSlips(full.length) && (!best || d < best.distance)) best = { lineId: line.id, distance: d };
     }
   }
   return best ? { lineId: best.lineId, exact: false } : null;

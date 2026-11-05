@@ -441,7 +441,7 @@
     ],
     "frame_en": "The ___ was better than I expected.",
     "frame_vi": "___ tốt hơn tôi mong đợi.",
-    "note_vi": "So sánh hơn: better than cộng người hoặc vật so sánh. Với danh từ không đếm được hoặc số ít dùng was, ví dụ The food was.",
+    "note_vi": "Better than I expected nghĩa là tốt hơn điều tôi mong đợi. Với danh từ không đếm được hoặc số ít dùng was, ví dụ The food was.",
     "slots": [
       {
         "en": "food",
@@ -512,7 +512,7 @@
       "social"
     ],
     "frame_en": "I took a lot of photos of ___.",
-    "frame_vi": "Tôi đã chụp rất nhiều ảnh của ___.",
+    "frame_vi": "Tôi đã chụp rất nhiều ảnh ___.",
     "note_vi": "Took là quá khứ của take. Take photos of cộng thứ được chụp. A lot of dùng với danh từ số nhiều như photos.",
     "slots": [
       {
@@ -554,12 +554,12 @@
     "examples": [
       {
         "en": "I took a lot of photos of the lake.",
-        "vi": "Tôi đã chụp rất nhiều ảnh của hồ nước.",
+        "vi": "Tôi đã chụp rất nhiều ảnh hồ nước.",
         "ipa": "/aɪ tʊk ə lɑt ʌv ˈfoʊˌtoʊz ʌv ðə leɪk/"
       },
       {
         "en": "I took a lot of photos of my friends.",
-        "vi": "Tôi đã chụp rất nhiều ảnh của bạn bè.",
+        "vi": "Tôi đã chụp rất nhiều ảnh bạn bè.",
         "ipa": "/aɪ tʊk ə lɑt ʌv ˈfoʊˌtoʊz ʌv maɪ frɛndz/"
       }
     ],
@@ -2559,7 +2559,7 @@
     ],
     "asks": [
       {
-        "en": "What seems to be the problem?",
+        "en": "What is the problem?",
         "vi": "Bạn bị làm sao vậy?"
       },
       {
@@ -2670,7 +2670,7 @@
       },
       {
         "en": "stay home from work",
-        "vi": "ở nhà không đi làm",
+        "vi": "nghỉ làm ở nhà",
         "ipa": "/ʃʊd aɪ steɪ hoʊm frʌm wɝk təˈdeɪ/"
       },
       {
@@ -3565,7 +3565,7 @@
     "slots": [
       {
         "en": "get the bill",
-        "vi": "lấy hóa đơn",
+        "vi": "xin hóa đơn",
         "ipa": "/kʊd wi ɡɛt ðə bɪl pliz/"
       },
       {
@@ -3600,7 +3600,7 @@
       },
       {
         "en": "have some water",
-        "vi": "lấy ít nước",
+        "vi": "xin ít nước",
         "ipa": "/kʊd wi hæv sʌm ˈwɔtər pliz/"
       }
     ],
@@ -3997,7 +3997,7 @@
       "travel"
     ],
     "frame_en": "It doesn't ___ properly.",
-    "frame_vi": "Nó không ___ đúng cách.",
+    "frame_vi": "Nó không ___ bình thường.",
     "note_vi": "Dùng để báo món đồ bị lỗi. Sau doesn't luôn dùng động từ nguyên mẫu, không thêm s.",
     "slots": [
       {
@@ -4039,23 +4039,23 @@
     "examples": [
       {
         "en": "It doesn't print properly.",
-        "vi": "Nó không in đúng cách.",
+        "vi": "Nó không in được bình thường.",
         "ipa": "/ɪt ˈdʌzənt prɪnt ˈprɑpərli/"
       },
       {
         "en": "It doesn't stay open properly.",
-        "vi": "Nó không giữ mở đúng cách.",
+        "vi": "Nó không giữ được ở vị trí mở.",
         "ipa": "/ɪt ˈdʌzənt steɪ ˈoʊpən ˈprɑpərli/"
       }
     ],
     "asks": [
       {
-        "en": "What seems to be the problem?",
+        "en": "What is the problem?",
         "vi": "Có vấn đề gì vậy?"
       },
       {
-        "en": "Have you tried turning it off?",
-        "vi": "Bạn đã thử tắt nó đi chưa?"
+        "en": "Did you turn it off?",
+        "vi": "Bạn đã tắt nó đi chưa?"
       }
     ],
     "id": "a2.it-doesnt-properly"
@@ -4070,7 +4070,7 @@
     ],
     "frame_en": "Could I get ___ for this?",
     "frame_vi": "Tôi có thể ___ cho món này không?",
-    "note_vi": "Câu lịch sự khi muốn đổi hoặc trả hàng. Nhớ dùng a hoặc my trước danh từ số ít.",
+    "note_vi": "Câu lịch sự khi muốn đổi hoặc trả hàng. Dùng a, my hoặc some tùy từ theo sau.",
     "slots": [
       {
         "en": "a refund",
@@ -4774,7 +4774,7 @@
       "travel"
     ],
     "frame_en": "Could you send ___ to my room?",
-    "frame_vi": "Bạn có thể gửi ___ lên phòng tôi không?",
+    "frame_vi": "Bạn có thể mang ___ lên phòng tôi không?",
     "note_vi": "Nhờ khách sạn mang đồ hoặc người lên phòng. Send + thứ cần + to my room. Could you là cách nhờ lịch sự.",
     "slots": [
       {
@@ -4811,12 +4811,12 @@
     "examples": [
       {
         "en": "Could you send a doctor to my room?",
-        "vi": "Bạn có thể gửi bác sĩ lên phòng tôi không?",
+        "vi": "Bạn có thể mời bác sĩ lên phòng tôi không?",
         "ipa": "/kʊd ju sɛnd ə ˈdɑktər tu maɪ rum/"
       },
       {
         "en": "Could you send the manager to my room?",
-        "vi": "Bạn có thể gửi quản lý lên phòng tôi không?",
+        "vi": "Bạn có thể mời quản lý lên phòng tôi không?",
         "ipa": "/kʊd ju sɛnd ðə ˈmænədʒər tu maɪ rum/"
       }
     ],
@@ -5015,7 +5015,7 @@
       },
       {
         "en": "the bakery",
-        "vi": "tiệm bánh mì",
+        "vi": "tiệm bánh",
         "ipa": "/ɪts ˈɑpəzət ðə ˈbeɪkəri/"
       },
       {
@@ -5250,7 +5250,7 @@
       },
       {
         "en": "I agree with you about the teacher.",
-        "vi": "Mình đồng ý với bạn về cô giáo.",
+        "vi": "Mình đồng ý với bạn về giáo viên.",
         "ipa": "/aɪ əˈɡri wɪð ju əˈbaʊt ðə ˈtitʃər/"
       }
     ],
@@ -5633,7 +5633,7 @@
       "social"
     ],
     "frame_en": "I'd rather ___ than stay at home.",
-    "frame_vi": "Mình thà ___ còn hơn ở nhà.",
+    "frame_vi": "Mình thích ___ hơn là ở nhà.",
     "note_vi": "I'd rather là cách nói thích làm gì hơn. Sau rather và sau than đều dùng động từ nguyên mẫu, không có to.",
     "slots": [
       {
@@ -5675,12 +5675,12 @@
     "examples": [
       {
         "en": "I'd rather play football than stay at home.",
-        "vi": "Mình thà chơi bóng đá còn hơn ở nhà.",
+        "vi": "Mình thích chơi bóng đá hơn là ở nhà.",
         "ipa": "/aɪd ˈræðər pleɪ ˈfʊtˌbɔl ðæn steɪ æt hoʊm/"
       },
       {
         "en": "I'd rather help you than stay at home.",
-        "vi": "Mình thà giúp bạn còn hơn ở nhà.",
+        "vi": "Mình thích giúp bạn hơn là ở nhà.",
         "ipa": "/aɪd ˈræðər hɛlp ju ðæn steɪ æt hoʊm/"
       }
     ],
@@ -6186,7 +6186,7 @@
       },
       {
         "en": "How about later this week?",
-        "vi": "Cuối tuần này thì sao?",
+        "vi": "Mấy hôm nữa trong tuần này thì sao?",
         "ipa": "/haʊ əˈbaʊt ˈleɪtər ðɪs wik/"
       }
     ],

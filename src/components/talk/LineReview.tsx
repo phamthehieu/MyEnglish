@@ -101,10 +101,12 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
 
   const settle = (ok: boolean) => {
     mic.cancel();
-    recordReview(card.line.id, ok && !hinted);
-    setResults((r) => [...r, ok && !hinted]);
-    // Said or typed (not built from its words) without looking a word up: its words are reviewed too
-    answeredSentence("talk", card.line.en, { ok, unaided: !hinted && method !== "tiles" });
+    // After two misses the answer is on the screen: copying it is not remembering it
+    const helped = hinted || fails >= 2;
+    recordReview(card.line.id, ok && !helped);
+    setResults((r) => [...r, ok && !helped]);
+    // Said or typed (not built from its words) without help: its words are reviewed too
+    answeredSentence("talk", card.line.en, { ok, unaided: !helped && method !== "tiles" });
     setDone(ok);
     handleSpeak(card.line.en);
   };
@@ -117,7 +119,9 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
   const say = () =>
     mic.begin(card.situation, [card.line], (result, grammar) => {
       const v = judgeSpoken(result, grammar, new Set([card.line.id]));
-      if (v.kind === "ok") settle(true);
+      // Right sentence, the machine only unsure: right. A microphone problem is not a miss
+      if (v.kind === "ok" || v.kind === "shaky") settle(true);
+      else if (v.kind === "error" || v.kind === "silent") setFeedback(v.message);
       else miss(v.message);
     });
 

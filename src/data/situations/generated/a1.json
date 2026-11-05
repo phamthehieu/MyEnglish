@@ -130,7 +130,7 @@
       {
         "id": "telling-the-time-a1.l2",
         "en": "Yes, it closes at five.",
-        "vi": "Có, nó đóng cửa lúc năm giờ.",
+        "vi": "Có, ngân hàng đóng cửa lúc năm giờ.",
         "accept": [
           "Yes, it is open until five",
           "Yes, it closes at five o'clock"
@@ -227,7 +227,7 @@
     "lines": [
       {
         "id": "talking-about-family-a1.l1",
-        "en": "Yes, I have five people.",
+        "en": "Yes, there are five people in my family.",
         "vi": "Vâng, nhà tôi có năm người.",
         "accept": [
           "Yes, there are five people",
@@ -273,8 +273,8 @@
       },
       {
         "id": "talking-about-family-a1.l6",
-        "en": "Yes, he likes it.",
-        "vi": "Vâng, ông ấy thích nó.",
+        "en": "He likes it very much.",
+        "vi": "Bố tôi rất thích công việc đó.",
         "accept": [
           "Yes, he loves it",
           "Yes, he likes his job"
@@ -326,7 +326,7 @@
       {
         "id": "n4",
         "npc_en": "That sounds like a good job.",
-        "npc_vi": "Nghe là một công việc tốt.",
+        "npc_vi": "Nghe có vẻ là một công việc tốt.",
         "replies": [
           {
             "lineId": "talking-about-family-a1.l6",
@@ -919,7 +919,7 @@
       {
         "id": "buying-a-shirt-a1.l5",
         "en": "It fits very well.",
-        "vi": "Nó vừa rất tốt.",
+        "vi": "Nó rất vừa.",
         "accept": [
           "It fits me well",
           "It fits perfectly"
@@ -1067,7 +1067,7 @@
       {
         "id": "n1",
         "npc_en": "You look sick. What's wrong?",
-        "npc_vi": "Con trông ốm. Con sao vậy?",
+        "npc_vi": "Trông con có vẻ ốm. Con sao vậy?",
         "replies": [
           {
             "lineId": "stomachache-at-home-a1.l1",
@@ -2065,10 +2065,9 @@
       },
       {
         "id": "exchanging-phone-numbers-a1.l3",
-        "en": "Yes, please send me one.",
-        "vi": "Có, hãy gửi cho tôi một tin.",
+        "en": "Yes, please send me a message.",
+        "vi": "Có, bạn nhắn tin cho tôi nhé.",
         "accept": [
-          "Yes, please send me a message",
           "Sure, send me a message"
         ]
       },
@@ -2119,7 +2118,7 @@
       {
         "id": "n4",
         "npc_en": "Done! Talk to you soon.",
-        "npc_vi": "Xong! Nói chuyện sớm nhé.",
+        "npc_vi": "Xong rồi! Hẹn nói chuyện sớm nhé.",
         "replies": [
           {
             "lineId": "exchanging-phone-numbers-a1.l4",
@@ -2177,7 +2176,7 @@
       },
       {
         "id": "looking-for-my-cat-a1.l5",
-        "en": "Yes, it is not there.",
+        "en": "Yes, but it isn't there.",
         "vi": "Có, nó không ở đó.",
         "accept": [
           "Yes, it's not there",
@@ -3149,7 +3148,7 @@
       },
       {
         "id": "taxi-to-the-airport-a1.l5",
-        "en": "Here you are. Keep the change.",
+        "en": "Here you are. Thank you.",
         "vi": "Của bạn đây. Không cần thối.",
         "accept": [
           "Here is the money. Keep the change",

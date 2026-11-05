@@ -395,7 +395,8 @@ function mistakeCategory(chapterId: string | undefined): MistakeCategory {
 
 /**
  * One answer (the first one given to the question in this session).
- *  - every mode: the question's history (cooldown, priority) and its ladder level (a hint counts as a miss)
+ *  - every mode: the question's history (cooldown, priority) and its ladder level (a hint counts as a miss there,
+ *    so the question comes back sooner; for the lesson's grade a right answer after a hint is right)
  *  - skipped ("Mình chưa biết"): a miss, whatever `correct` says
  *  - selfAccepted ("Tính là đúng"): shown as right, but the ladder stays and the lesson grade never sees it;
  *    for the question's history it is not a success (it comes back soon)
@@ -424,7 +425,7 @@ export async function recordGrammarAnswer(
   if ((opts.mode === "review" || opts.mode === "popup") && !selfAccepted && e.task.format !== "self") {
     for (const id of e.lessonIds) {
       if (!isLessonStudied(id)) continue;
-      const score = poolLessonAnswer(id, clean);
+      const score = poolLessonAnswer(id, isCorrect);
       if (score !== null) await recordPracticeResult(id, score);
     }
   }

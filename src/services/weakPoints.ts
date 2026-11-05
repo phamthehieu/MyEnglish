@@ -11,6 +11,10 @@ export const WEAK_WORDS_KEY = "myenglish_weak_words_v1";
 export const WEAK_GRAMMAR_KEY = "myenglish_weak_grammar_v1";
 export const WEAK_POINTS_EVENT = "myenglish-weak-points-updated";
 
+/** The grammar tab shows the tip of this stage on top (sessionStorage): a weak stage whose tip has no lesson of the book */
+export const SHOW_TIP_KEY = "myenglish_show_grammar_tip";
+export const SHOW_TIP_EVENT = "myenglish-show-grammar-tip";
+
 /** A weak point older than this is let go */
 export const WEAK_DAYS = 7;
 /** Misses of one stage's patterns within WEAK_DAYS before its grammar is offered */

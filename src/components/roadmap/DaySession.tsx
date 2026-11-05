@@ -92,7 +92,7 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
               <p className="text-sm text-emerald-900 dark:text-emerald-100">Chặng tiếp theo đã mở.</p>
             </>
           ) : (
-            <p className="text-sm text-emerald-900 dark:text-emerald-100">Phần tiếp theo của chặng sẽ sẵn sàng vào ngày mai. Mỗi bước cần cách nhau một ngày để nhớ lâu hơn.</p>
+            <p className="text-sm text-emerald-900 dark:text-emerald-100">Bấm Xong để xem phần tiếp theo của chặng. Các bước của một mẫu câu cách nhau một ngày để nhớ lâu hơn.</p>
           )}
         </div>
         <button onClick={onExit} className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
@@ -170,6 +170,9 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
         key={index}
         patterns={stage.patterns}
         title={`Thử thách: ${stage.title}`}
+        passMark={TEST_PASS}
+        studied
+        forceFullHints={stage.level === "A1" || stage.level === "A2"}
         onExit={onExit}
         onDone={next}
         onFinish={(results) => {

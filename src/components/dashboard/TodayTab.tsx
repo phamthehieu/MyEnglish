@@ -47,6 +47,7 @@ import { PATTERNS } from "@/data/patterns";
 import { planFlow, startFlow } from "@/services/dayFlow";
 import { runTodayTask, weakGrammarTask } from "./runTask";
 import { dueLines } from "@/services/talk/review";
+import { getLine } from "@/data/situations";
 import { TALK_UPDATED_EVENT } from "@/services/talk/progress";
 import { WEAK_POINTS_EVENT } from "@/services/weakPoints";
 import { practicedToday } from "@/services/learningLinks";
@@ -220,7 +221,8 @@ export default function TodayTab({
       window.removeEventListener(WEAK_POINTS_EVENT, bump);
     };
   }, []);
-  const talkDue = useMemo(() => dueLines(now).length, [linksTick, today]);
+  // (only sentences that still exist: the review cannot ask a line of a deleted conversation)
+  const talkDue = useMemo(() => dueLines(now).filter((id) => !!getLine(id)).length, [linksTick, today]);
   const weak = useMemo(() => weakGrammarTask(now), [linksTick, today]);
   // The speaking path is the first thing of the list: where the learner is on it and what is left of today's part
   const path = useRoadmap();

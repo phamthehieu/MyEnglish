@@ -109,7 +109,8 @@ export function DictationCard({
   total: number;
   bar: Omit<PracticeBarProps, "index" | "total">;
   onNext: () => void;
-  onDone: () => void;
+  /** Done with this sentence; credit false: the answer was shown, so it does not count as practice */
+  onDone: (credit?: boolean) => void;
 }) {
   const [typed, setTyped] = useState("");
   const [result, setResult] = useState<DictationResult | null>(null);
@@ -124,7 +125,7 @@ export function DictationCard({
   };
   const reveal = () => {
     setRevealed(true);
-    onDone();
+    onDone(false);
   };
   const wrong = result && !result.correct ? result.check.words.filter((w) => w.status === "wrong") : [];
 
@@ -217,7 +218,8 @@ export function ClozeCard({
   unlearned: (word: string) => boolean;
   fontScale: number;
   onNext: () => void;
-  onDone: () => void;
+  /** Done with this sentence; credit false: the answer was shown, so it does not count as practice */
+  onDone: (credit?: boolean) => void;
 }) {
   const tokens = useMemo(() => sentence.text.split(/\s+/).filter(Boolean), [sentence.text]);
   const blanks = useMemo(() => pickBlanks(tokens, unlearned), [tokens, unlearned]);
@@ -236,9 +238,9 @@ export function ClozeCard({
     setAnswers(solutions);
     setGraded(solutions.map(() => true));
     setRevealed(true);
-    onDone();
+    onDone(false);
   };
-  const change = (b: number, value: string) => {
+  const change =(b: number, value: string) => {
     setAnswers((prev) => prev.map((a, i) => (i === b ? value : a)));
     setGraded(null);
   };

@@ -1283,6 +1283,9 @@ let bookSeeding: Promise<void> | null = null;
 
 /** app_kv flag: this database has had a book (seeded or imported). Not a localStorage key (not mirrored). */
 const BOOK_SEEDED_KEY = "grammar_book_seeded_v1";
+const BUNDLED_REVISION_KEY = "grammar_book_revision";
+/** Must match `version` in grammarCatalog.json: a new revision is written over a book seeded earlier */
+export const GRAMMAR_BOOK_REVISION = 2;
 
 /**
  * Seed all 31 chapters into SQLite from the bundled grammarCatalog.json, once per database: a book the
@@ -1309,6 +1312,7 @@ async function seedGrammarBook(reseed: boolean): Promise<void> {
     const rows = await db.select<Array<{ count: number }>>("SELECT count(*) as count FROM grammar_book_chapters;");
     if (rows[0] && rows[0].count > 0) {
       await markBookSeeded(db);
+      await updateBundledChapters(db);
       return;
     }
     if (!reseed) {
@@ -1333,11 +1337,46 @@ async function seedGrammarBook(reseed: boolean): Promise<void> {
         console.warn(`Failed to seed grammar chapter ${chapter.chapterId}:`, err);
       }
     }
-    if (written > 0) await markBookSeeded(db);
+    if (written > 0) {
+      await markBookSeeded(db);
+      await markBookRevision(db);
+    }
     notifyBookUpdated(Array.from(merged.keys()));
   } catch (err) {
     console.warn("Failed to seed grammar book:", err);
   }
+}
+
+async function markBookRevision(db: BookDb): Promise<void> {
+  await db.execute(`INSERT OR REPLACE INTO app_kv (key, value) VALUES ('${BUNDLED_REVISION_KEY}', '${GRAMMAR_BOOK_REVISION}');`).catch(() => {});
+}
+
+/** Sets of the first book that were its answer-key pages, or lost their task when it was converted */
+const REMOVED_BOOK_SETS = new Set(["ch11-s11", "ch12-s09", "ch12-s11", "ch12-s12", "ch12-s13", "ch12-s14", "ch12-s15", "ch13-s04", "ch13-s05", "ch13-s06", "ch21-s01", "ch21-s02"]);
+
+/**
+ * Corrections to the bundled book reach a database seeded earlier, once per revision: the book's own sets and items
+ * are written again over the stored ones. What the learner added (their exercises) stays, and a chapter they
+ * cleared stays cleared.
+ */
+async function updateBundledChapters(db: BookDb): Promise<void> {
+  const done = await db.select<Array<{ value: string }>>(`SELECT value FROM app_kv WHERE key = '${BUNDLED_REVISION_KEY}';`).catch(() => []);
+  if (Number(done[0]?.value ?? 1) >= GRAMMAR_BOOK_REVISION) return;
+  const catalog = await import("@/data/grammarCatalog.json").then((m) => m.default as unknown as { files: GrammarBookFile[] });
+  const updated: string[] = [];
+  for (const own of mergeChapterParts(catalog.files).values()) {
+    const stored = await readStoredChapter(db, own.chapterId).catch(() => null);
+    if (!stored) continue;
+    const kept: GrammarBookFile = {
+      ...stored,
+      exerciseSets: (stored.exerciseSets ?? []).filter((s) => !REMOVED_BOOK_SETS.has(s.id)),
+      practiceGroups: (stored.practiceGroups ?? []).map((g) => ({ ...g, items: g.items.filter((it) => !it.setId || !REMOVED_BOOK_SETS.has(it.setId)) })),
+    };
+    await writeChapter(db, mergeChapterParts([kept, own], { overwrite: true }).get(own.chapterId)!, { mode: "replace" });
+    updated.push(own.chapterId);
+  }
+  await markBookRevision(db);
+  if (updated.length > 0) notifyBookUpdated(updated);
 }
 
 let cachedChapters: GrammarBookFile[] | null = null;

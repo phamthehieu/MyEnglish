@@ -1,4 +1,5 @@
 import type { Situation } from "@/types/situation";
+import { dropReview } from "./review";
 
 /**
  * Conversations the AI wrote for the learner, kept in localStorage (like the rest of the talk feature).
@@ -36,6 +37,8 @@ export function addGenerated(situation: Situation): void {
 }
 
 export function removeGenerated(id: string): void {
+  // Its sentences leave the review too: nothing could ask them any more
+  for (const line of getGenerated().find((s) => s.id === id)?.lines ?? []) dropReview(line.id);
   save(getGenerated().filter((s) => s.id !== id));
 }
 

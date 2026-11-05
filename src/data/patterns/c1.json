@@ -100,7 +100,7 @@
       },
       {
         "en": "she's irreplaceable",
-        "vi": "cô ấy là không thể thay thế",
+        "vi": "không ai thay thế được cô ấy",
         "ipa": "/aɪd ɡoʊ æz fɑr æz tu seɪ ʃiz ˌɪrəˈpleɪsəbəl/"
       },
       {
@@ -172,7 +172,7 @@
       },
       {
         "en": "she's rather unhappy",
-        "vi": "cô ấy khá không vui",
+        "vi": "cô ấy có vẻ khá buồn",
         "ipa": "/ɪt straɪks mi ðæt ʃiz ˈræðər ənˈhæpi/"
       }
     ],
@@ -921,7 +921,7 @@
       },
       {
         "en": "Were it not for the cost, I'd buy it.",
-        "vi": "Nếu không vì giá, tôi đã mua nó.",
+        "vi": "Nếu không vì giá, tôi sẽ mua nó.",
         "ipa": "/wɝ ɪt nɑt fɔr ðə kɑst aɪd baɪ ɪt/"
       }
     ],
@@ -1013,7 +1013,7 @@
       "daily"
     ],
     "frame_en": "If it weren't for ___, I'd move abroad.",
-    "frame_vi": "Nếu không vì ___, tôi đã ra nước ngoài sống.",
+    "frame_vi": "Nếu không vì ___, tôi sẽ ra nước ngoài sống.",
     "note_vi": "If it weren't for nói về lý do ở hiện tại đang ngăn bạn làm điều gì. Vế sau dùng would cộng động từ.",
     "slots": [
       {
@@ -3090,7 +3090,7 @@
     ],
     "frame_en": "We were supposed to ___.",
     "frame_vi": "Đáng lẽ chúng ta phải ___.",
-    "note_vi": "Was hoặc were supposed to nói về điều đã hẹn hoặc đã dự kiến, nhưng cuối cùng lại không xảy ra.",
+    "note_vi": "Was hoặc were supposed to nói về điều đã hẹn hoặc đã dự kiến, và thường ngụ ý việc đó đã không diễn ra.",
     "slots": [
       {
         "en": "finish by Friday",
@@ -5165,39 +5165,39 @@
       "social",
       "daily"
     ],
-    "frame_en": "I'm not in the slightest ___.",
+    "frame_en": "I'm not ___ in the slightest.",
     "frame_vi": "Tôi chẳng ___ chút nào.",
     "note_vi": "Not in the slightest nghĩa là không một chút nào. Cũng có thể đặt cuối câu: I'm not worried in the slightest.",
     "slots": [
       {
         "en": "worried",
         "vi": "lo lắng",
-        "ipa": "/aɪm nɑt ɪn ðə ˈslaɪtəst ˈwɝid/"
+        "ipa": "/aɪm nɑt ˈwɝid ɪn ðə ˈslaɪtəst/"
       },
       {
         "en": "surprised",
         "vi": "ngạc nhiên",
-        "ipa": "/aɪm nɑt ɪn ðə ˈslaɪtəst sərˈpraɪzd/"
+        "ipa": "/aɪm nɑt sərˈpraɪzd ɪn ðə ˈslaɪtəst/"
       },
       {
         "en": "interested",
         "vi": "quan tâm",
-        "ipa": "/aɪm nɑt ɪn ðə ˈslaɪtəst ˈɪntrəstɪd/"
+        "ipa": "/aɪm nɑt ˈɪntrəstɪd ɪn ðə ˈslaɪtəst/"
       },
       {
         "en": "offended",
         "vi": "phật lòng",
-        "ipa": "/aɪm nɑt ɪn ðə ˈslaɪtəst əˈfɛndəd/"
+        "ipa": "/aɪm nɑt əˈfɛndəd ɪn ðə ˈslaɪtəst/"
       },
       {
         "en": "tired",
         "vi": "mệt",
-        "ipa": "/aɪm nɑt ɪn ðə ˈslaɪtəst ˈtaɪərd/"
+        "ipa": "/aɪm nɑt ˈtaɪərd ɪn ðə ˈslaɪtəst/"
       },
       {
         "en": "jealous",
         "vi": "ghen tị",
-        "ipa": "/aɪm nɑt ɪn ðə ˈslaɪtəst ˈdʒɛləs/"
+        "ipa": "/aɪm nɑt ˈdʒɛləs ɪn ðə ˈslaɪtəst/"
       }
     ],
     "examples": [
@@ -5553,8 +5553,8 @@
         "vi": "Tối qua bạn có được nghỉ ngơi không?"
       },
       {
-        "en": "Why did the meeting end early?",
-        "vi": "Sao cuộc họp kết thúc sớm vậy?"
+        "en": "What interrupted you?",
+        "vi": "Điều gì đã làm gián đoạn bạn?"
       }
     ],
     "id": "c1.hardly-had-we-when"

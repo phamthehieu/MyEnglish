@@ -2,16 +2,19 @@ import type { Pattern } from "@/types/pattern";
 import { recordDailyActivity } from "@/services/streak";
 import { notePatternMisses } from "@/services/learningLinks";
 import { getPattern } from "@/data/patterns";
-import { buildRapid, buildSubstitution, buildTilesItem, pickSlots, type RapidItem, type SubstituteItem, type TilesItem } from "./engine";
+import { buildListen, buildRapid, buildSubstitution, buildTilesItem, firstLetters, pickSlots, type ListenItem, type RapidItem, type SubstituteItem, type TilesItem } from "./engine";
 import { allPatternStates, completeStep, recordReview, recordTime, STEPS } from "./progress";
 
 /** What one sitting with a pattern (or a mix of patterns) is made of, and what it does to the progress when it is over */
 
 export type Task =
   | { kind: "learn"; pattern: Pattern }
-  | { kind: "substitute"; pattern: Pattern; item: SubstituteItem }
+  | { kind: "listen"; pattern: Pattern; item: ListenItem }
+  /** `withMeaning`: the options show their Vietnamese, the easier first round */
+  | { kind: "substitute"; pattern: Pattern; item: SubstituteItem; withMeaning?: boolean }
   | { kind: "tiles"; pattern: Pattern; item: TilesItem }
-  | { kind: "rapid"; pattern: Pattern; item: RapidItem };
+  /** `letters`: the first letter of each word is shown and there is more time, the easier first round */
+  | { kind: "rapid"; pattern: Pattern; item: RapidItem; letters?: string };
 
 export type SessionKind = "ladder" | "rapid-mix";
 
@@ -24,14 +27,33 @@ export interface TaskResult {
   ms?: number;
 }
 
-const COUNTS = { substitute: 5, tiles: 4, rapid: 5 } as const;
-
-/** The tasks of the step after the ones the pattern has done (step 1 to 4) */
+/**
+ * The tasks of the step after the ones the pattern has done (step 1 to 4). Each step goes from easy to hard, so what
+ * was just recognised is then used: hear and pick the meaning, then fill the blank with and without the meanings shown;
+ * build the sentence from its own words, then with words that do not belong; say it with its first letters shown, then
+ * without. Saying a whole sentence from memory comes last.
+ */
 export function buildStepTasks(pattern: Pattern, step: number, random: () => number = Math.random): Task[] {
   if (step <= 1) return [{ kind: "learn", pattern }];
-  if (step === 2) return pickSlots(pattern, COUNTS.substitute, random).map((slot) => ({ kind: "substitute", pattern, item: buildSubstitution(pattern, slot, random) }));
-  if (step === 3) return pickSlots(pattern, COUNTS.tiles, random).map((slot) => ({ kind: "tiles", pattern, item: buildTilesItem(pattern, slot, random) }));
-  return pickSlots(pattern, COUNTS.rapid, random).map((slot) => ({ kind: "rapid", pattern, item: buildRapid(pattern, slot, random) }));
+  const slots = pickSlots(pattern, pattern.slots.length, random);
+  const slot = (i: number) => slots[i % slots.length];
+  if (step === 2) {
+    return [
+      ...[0, 1].map((i): Task => ({ kind: "listen", pattern, item: buildListen(pattern, slot(i), random) })),
+      ...[2, 3].map((i): Task => ({ kind: "substitute", pattern, item: buildSubstitution(pattern, slot(i), random), withMeaning: true })),
+      ...[4, 5].map((i): Task => ({ kind: "substitute", pattern, item: buildSubstitution(pattern, slot(i), random) })),
+    ];
+  }
+  if (step === 3) {
+    return [
+      ...[0, 1].map((i): Task => ({ kind: "tiles", pattern, item: buildTilesItem(pattern, slot(i), random, { decoys: false }) })),
+      ...[2, 3].map((i): Task => ({ kind: "tiles", pattern, item: buildTilesItem(pattern, slot(i), random) })),
+    ];
+  }
+  return [0, 1, 2, 3, 4].map((i): Task => {
+    const item = buildRapid(pattern, slot(i), random);
+    return i < 3 ? { kind: "rapid", pattern, item, letters: firstLetters(item.en) } : { kind: "rapid", pattern, item };
+  });
 }
 
 /** Rapid-fire over several patterns: one question from each, in a random order */
@@ -40,20 +62,33 @@ export function buildRapidMix(patterns: Pattern[], size = 8, random: () => numbe
   return chosen.map((pattern) => ({ kind: "rapid", pattern, item: buildRapid(pattern, pickSlots(pattern, 1, random)[0], random) }));
 }
 
-/** Did the sitting pass its step? (learn and tiles are finished when done, the others need four right in five) */
+/** Right answers a step needs: enough to show it is coming, and a step can be done again */
+const PASS_SHARE = 0.6;
+
+/** Did the sitting pass its step? (learn and tiles are finished when done, the others need PASS_SHARE right) */
 export function sessionPassed(tasks: readonly Task[], results: readonly TaskResult[]): boolean {
   if (results.length === 0) return false;
-  const kind = tasks[0]?.kind;
-  if (kind === "substitute" || kind === "rapid") return results.filter((r) => r.ok).length >= Math.ceil(results.length * 0.8);
+  const kind = tasks[tasks.length - 1]?.kind;
+  if (kind === "substitute" || kind === "rapid") return results.filter((r) => r.ok).length >= Math.ceil(results.length * PASS_SHARE);
   return true;
 }
 
-/** Save a round of "Dịch câu": a mastered pattern goes through its review schedule, and the round counts as activity of the day */
-export function applyTranslate(results: ReadonlyArray<{ patternId: string; ok: boolean }>): void {
+/** The right answers of a sitting count toward the daily goal (wrong ones would fill the day by trying again and again) */
+function countRightAnswers(results: ReadonlyArray<{ ok: boolean }>): void {
+  const right = results.filter((r) => r.ok).length;
+  if (right > 0) recordDailyActivity(right);
+}
+
+/**
+ * Save a round of "Dịch câu": a mastered pattern goes through its review schedule, and its right answers count as
+ * activity of the day. `studied`: the round is on what the learner has learned (the stage's final challenge), so its
+ * misses say the stage's grammar may be weak; a round on anything of the level, or a test to skip a stage, says nothing.
+ */
+export function applyTranslate(results: ReadonlyArray<{ patternId: string; ok: boolean }>, opts: { studied?: boolean } = {}): void {
   const states = allPatternStates();
   for (const r of results) if ((states[r.patternId]?.step ?? 0) >= STEPS) recordReview(r.patternId, r.ok);
-  recordDailyActivity(Math.max(1, results.length));
-  notePatternMisses(results.map((r) => ({ topic: getPattern(r.patternId)?.topic, ok: r.ok })));
+  countRightAnswers(results);
+  if (opts.studied) notePatternMisses(results.map((r) => ({ topic: getPattern(r.patternId)?.topic, ok: r.ok })));
 }
 
 /**
@@ -70,9 +105,8 @@ export function applySession(kind: SessionKind, pattern: Pattern | null, step: n
     const states = allPatternStates();
     for (const r of results) if ((states[r.patternId]?.step ?? 0) >= STEPS) recordReview(r.patternId, r.ok);
   }
-  recordDailyActivity(Math.max(1, results.length));
-  // Misses keep coming in one stage: its grammar is offered on Today (learning a pattern, step 1, has none)
-  const topicOf = new Map(tasks.map((t) => [t.pattern.id, t.pattern.topic]));
-  notePatternMisses(results.map((r) => ({ topic: topicOf.get(r.patternId) ?? getPattern(r.patternId)?.topic, ok: r.ok })));
+  countRightAnswers(results);
+  // Misses keep coming while learning a stage: its grammar is offered on Today
+  if (kind === "ladder" && pattern) notePatternMisses(results.map((r) => ({ topic: pattern.topic, ok: r.ok })));
   return passed;
 }

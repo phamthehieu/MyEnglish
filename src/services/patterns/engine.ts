@@ -50,8 +50,34 @@ export interface TilesItem {
   slot: PatternSlot;
 }
 
-/** "Ghép câu": the words of the sentence, plus two that do not belong (words of the other slots), in a shuffled order */
-export function buildTilesItem(pattern: Pattern, slot: PatternSlot, random: () => number = Math.random): TilesItem {
+export interface ListenItem {
+  /** The sentence the learner hears and reads */
+  en: string;
+  /** Its meaning, and two others of the same pattern, in a random order */
+  options: string[];
+  answer: string;
+  ipa?: string;
+}
+
+/** The easiest exercise: hear a sentence (it is also written) and pick what it means */
+export function buildListen(pattern: Pattern, slot: PatternSlot, random: () => number = Math.random): ListenItem {
+  const filled = fillPattern(pattern, slot);
+  const others = shuffled(pattern.slots.filter((s) => s.en !== slot.en), random)
+    .map((s) => fillPattern(pattern, s).vi)
+    .filter((vi) => vi !== filled.vi);
+  return { en: filled.en, options: shuffled([filled.vi, ...new Set(others.slice(0, 2))], random), answer: filled.vi, ipa: slot.ipa };
+}
+
+/** The first letter of each word and a dash per other letter: "My name is Anna." gives "M_ n___ i_ A___." */
+export function firstLetters(en: string): string {
+  return en.replace(/[A-Za-z]+/g, (w) => w[0] + "_".repeat(w.length - 1));
+}
+
+/**
+ * "Ghép câu": the words of the sentence, plus two that do not belong (words of the other slots), in a shuffled order.
+ * `decoys`: false for the easier first round, only the words of the sentence.
+ */
+export function buildTilesItem(pattern: Pattern, slot: PatternSlot, random: () => number = Math.random, opts: { decoys?: boolean } = {}): TilesItem {
   const filled = fillPattern(pattern, slot);
   const words = filled.en.replace(/[.,?!]/g, "").split(/\s+/).filter(Boolean);
   const own = new Set(words.map((w) => w.toLowerCase()));
@@ -63,7 +89,7 @@ export function buildTilesItem(pattern: Pattern, slot: PatternSlot, random: () =
         .filter((w) => !own.has(w.toLowerCase()))
     ),
   ];
-  const decoys = shuffled(pool, random).slice(0, 2);
+  const decoys = opts.decoys === false ? [] : shuffled(pool, random).slice(0, 2);
   const tiles = shuffled([...words, ...decoys], random).map((text, i) => ({ id: `t${i}`, text }));
   return { vi: filled.vi, en: filled.en, ipa: slot.ipa, tiles, slot };
 }

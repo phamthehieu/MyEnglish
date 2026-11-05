@@ -5,10 +5,10 @@ import { chosenDailyMinutes } from "../dashboard/todayPlan";
 import { getStudyLevels } from "@/services/vocabFeed";
 import type { StudyLevel } from "@/services/vocabCatalog";
 import { chosenLevel } from "@/services/learnerProfile";
-import { allPatternStates, duePatterns, PATTERNS_UPDATED_EVENT, STEPS } from "@/services/patterns/progress";
+import { allPatternStates, completeStep, duePatterns, PATTERNS_UPDATED_EVENT, STEPS } from "@/services/patterns/progress";
 import { buildDayPlan } from "@/services/roadmap/plan";
 import { buildPathStages, estimateDays } from "@/services/roadmap/stages";
-import { currentStage, getRoadmap, isFinished, ROADMAP_EVENT } from "@/services/roadmap/state";
+import { currentStage, getRoadmap, isFinished, markDone, ROADMAP_EVENT } from "@/services/roadmap/state";
 
 /**
  * Everything the screens need about the path: the stages for the learner's goal (from their lowest level up), the one being
@@ -57,6 +57,21 @@ export function useRoadmap() {
         minutes
       )
     : null;
+  // Every part of the stage is done, whichever screen finished it (a test closed on its results, say): it closes
+  const completeStage = current && plan?.complete ? current.id : null;
+  useEffect(() => {
+    if (completeStage) markDone(completeStage);
+  }, [completeStage]);
+  // An older version sent a pattern of a finished stage back a step on a miss, and nothing asked it again: mastered again
+  const sentBack = stages
+    .filter((s) => isFinished(road, s.id))
+    .flatMap((s) => s.patterns)
+    .filter((p) => states[p.id]?.step === STEPS - 1)
+    .map((p) => p.id)
+    .join();
+  useEffect(() => {
+    if (sentBack) for (const id of sentBack.split(",")) completeStep(id, STEPS);
+  }, [sentBack]);
   const finishedCount = stages.filter((s) => isFinished(road, s.id)).length;
   const aheadPlan = current && plan?.waiting ? buildDayPlan(current, road, states, duePatterns().filter((id) => (states[id]?.step ?? 0) >= STEPS), minutes, undefined, true) : null;
   const etaDays = estimateDays(
