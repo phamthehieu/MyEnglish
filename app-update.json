@@ -1,6 +1,6 @@
 {
-  "version": "0.4.4",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.4/MyEnglish-v0.4.4.apk",
-  "notes": "Các phần học nối với nhau: nói hội thoại, shadowing, đọc và mẫu câu đều được tính vào mục tiêu ngày và XP. Nói đúng câu có từ đang học thì từ đó được tính là đã ôn; câu nói sai thì từ khó được ôn lại sớm, sai nhiều ở một chặng thì Hôm nay gợi ý đúng bài ngữ pháp. Hôm nay có thêm \"Ôn câu hội thoại đã nói sai\". Câu hỏi nhanh trên điện thoại có cả câu hội thoại và mẫu câu. Ngữ pháp và hội thoại bắt đầu theo cấp bạn chọn. Chạm chữ tiếng Việt trong mẫu câu và hội thoại để xem từ tiếng Anh. Thêm tùy chọn \"Học xong vẫn nhắc ôn tập\".",
-  "sha256": "049e8c3e9df63cd5d5aaf185a399f8cbcb0fdfc200553c2f123d3bd73b493759"
+  "version": "0.4.6",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.4.6/MyEnglish-v0.4.6.apk",
+  "notes": "Tinh gọn điều hướng: Gom gọn mục Từ vựng từ 6 tab xuống 4 tab cốt lõi (Bộ từ, Ôn tập, Sổ từ, Đọc). Gộp các danh sách vào Sổ từ với bộ lọc nhanh.\nTái cấu trúc Màn hình Hôm nay: Tích hợp Hero Overview Card hiện đại (chứa Lời chào, Cấp độ đang học, Vòng mục tiêu ngày và 3 chỉ số từ vựng), danh sách nhiệm vụ ưu tiên và lưới tiện ích 2 cột cân đối.\nTối ưu Lộ trình Bộ từ: Hỗ trợ thanh cấp độ A1–C1 cuộn ngang 1 dòng mượt mà trên mobile, cân đối khối thống kê trong Banner và tích hợp tiện ích Tìm/Lướt từ.\nNâng cấp Động lực học tập: Nổi bật nút \"⚡ Học nhanh 1 phút (Giữ chuỗi)\" và \"🎯 Tập trung\", thêm hiệu ứng pháo hoa chúc mừng (Confetti) khi hoàn thành/đánh dấu từ đã biết trong bộ.\nĐồng bộ bảng màu và phong cách thiết kế Mobile-First trên toàn bộ ứng dụng.",
+  "sha256": "1d9f7b5846b89204fafc83379e537d75c0973453221f514c405544e057829e23"
 }
