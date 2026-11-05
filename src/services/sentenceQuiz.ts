@@ -80,7 +80,8 @@ export function applySentenceAnswer(id: string, ok: boolean, now: Date = new Dat
   }
   if (id.startsWith(PATTERN_QUIZ_PREFIX)) {
     const patternId = id.slice(PATTERN_QUIZ_PREFIX.length);
-    recordPatternReview(patternId, ok, now);
+    // Picked among three in a few seconds: a right answer moves the schedule, a mis-tap is not held against it
+    if (ok) recordPatternReview(patternId, ok, now);
     const pattern = getPattern(patternId);
     if (pattern) answeredSentence("patterns", pattern.frame_en, { ok, unaided: false }, now);
     return true;

@@ -64,7 +64,9 @@ describe("stages", () => {
   it("estimates how long the path takes from the minutes of a day", () => {
     const stages = buildStages(A1, "all");
     expect(estimateDays(stages, 5)).toBeGreaterThan(estimateDays(stages, 10));
-    expect(estimateDays(stages, 10)).toBeGreaterThan(estimateDays(stages, 25));
+    // The pace of the path (two patterns at a time) sets a floor that more minutes cannot lower
+    expect(estimateDays(stages, 10)).toBeGreaterThanOrEqual(estimateDays(stages, 25));
+    expect(estimateDays(stages, 60)).toBeGreaterThanOrEqual(stages.length * 3);
   });
 });
 
@@ -129,6 +131,19 @@ describe("the plan of a day", () => {
     expect(steps.length).toBeGreaterThan(0);
     expect(steps[0]).toMatchObject({ kind: "step", steps: [1, 2] });
     expect(plan.minutes).toBeLessThanOrEqual(10);
+  });
+
+  it("works on two patterns a day, however many sessions and however many are waiting", () => {
+    const [a, b, c] = stage.patterns;
+    const today = "2026-01-10";
+    // Two opened today: their next step is tomorrow, and no third is opened
+    const opened = { [a.id]: stateAt(2, "2026-01-11", today), [b.id]: stateAt(2, "2026-01-11", today) };
+    expect(buildDayPlan(stage, getRoadmap(), opened, [], 25, day).tasks).toEqual([]);
+    // Three waiting from earlier days: only two today
+    const waiting = { [a.id]: stateAt(2), [b.id]: stateAt(2), [c.id]: stateAt(2) };
+    expect(buildDayPlan(stage, getRoadmap(), waiting, [], 25, day).tasks.filter((t) => t.kind === "step")).toHaveLength(2);
+    // Learned step 1 today, step 2 failed: it can be done again today
+    expect(buildDayPlan(stage, getRoadmap(), { [a.id]: stateAt(1, "2026-01-11", today) }, [], 25, day).tasks[0]).toMatchObject({ kind: "step", patternId: a.id, steps: [2] });
   });
 
   it("takes at least one task even when it is longer than the minutes of the day", () => {

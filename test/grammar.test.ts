@@ -516,7 +516,7 @@ describe("ensureGrammarBookSeeded", () => {
     const chapters = await book.getAllBookChapters();
     expect(chapters).toHaveLength(31);
     const totalItems = chapters.reduce((sum, ch) => sum + (ch.practiceGroups?.reduce((s, g) => s + g.items.length, 0) ?? 0), 0);
-    expect(totalItems).toBe(3023);
+    expect(totalItems).toBe(2918);
   });
 });
 

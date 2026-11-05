@@ -33,6 +33,7 @@ const dots = (word: string) => "•".repeat(Math.min(10, Math.max(2, word.replac
 function Question({ item, onDone }: { item: TranslateItem; onDone: (r: TranslateResult) => void }) {
   const canSpeak = asrAvailable();
   const mic = useMic();
+  const level = item.hint;
   const limit = limitFor(item.words.length);
   const [typed, setTyped] = useState("");
   const [revealed, setRevealed] = useState<Set<number>>(new Set());
@@ -57,16 +58,22 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
     handleSpeak(item.en);
   };
 
-  // The clock waits while the microphone is still being prepared for the first time
+  // The clock waits while the microphone is being prepared and while the machine checks what it heard
   const preparing = useRef(false);
-  preparing.current = mic.phase === "preparing";
+  preparing.current = mic.phase === "preparing" || mic.phase === "checking";
+  const typedNow = useRef(typed);
+  typedNow.current = typed;
 
   useEffect(() => {
     const tick = window.setInterval(() => {
       if (preparing.current) startedAt.current += 100;
       const e = Date.now() - startedAt.current;
       setElapsed(e);
-      if (e >= limit) settle(false, "Hết giờ rồi.");
+      // What was typed in time and not sent yet still counts
+      if (e >= limit) {
+        if (isTranslation(typedNow.current, item.en)) settle(true, "Đúng rồi!");
+        else settle(false, "Hết giờ rồi.");
+      }
     }, 100);
     return () => window.clearInterval(tick);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,7 +100,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
       settle(true, "Đúng rồi!");
     } else {
       setMistakes((m) => m + 1);
-      setFeedback("Chưa đúng, xem lại các ô rồi sửa nhé.");
+      setFeedback(level === "full" ? "Chưa đúng, xem lại các ô rồi sửa nhé." : "Chưa đúng, sửa lại rồi kiểm tra tiếp nhé.");
     }
   };
 
@@ -104,7 +111,9 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
       (result, grammar) => {
         const line = lineOfSlot(item.pattern, item.slot);
         const v = judgeSpoken(result, grammar, new Set([line.id]));
-        if (v.kind === "ok") settle(true, "Máy nghe đúng. Tốt lắm!");
+        // The right sentence with the machine only unsure is right; a microphone problem is not a mistake
+        if (v.kind === "ok" || v.kind === "shaky") settle(true, "Máy nghe đúng. Tốt lắm!");
+        else if (v.kind === "error" || v.kind === "silent") setFeedback(v.message);
         else if (!settled.current) {
           setMistakes((m) => m + 1);
           setFeedback(v.message);
@@ -114,7 +123,6 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
     );
 
   const left = Math.max(0, 1 - elapsed / limit);
-  const level = item.hint;
 
   return (
     // The bottom padding leaves room to scroll the box above the keyboard
@@ -172,7 +180,7 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 if (typed.trim()) check();
-              } else if (e.key === " " && e.ctrlKey) {
+              } else if (e.key === " " && e.ctrlKey && level === "full") {
                 e.preventDefault();
                 hint();
               }
@@ -187,9 +195,12 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
           />
           {feedback && <p className="rounded-xl border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200 px-3 py-2 text-sm">{feedback}</p>}
           <div className="flex gap-2">
-            <button onClick={hint} className="min-h-14 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 font-semibold inline-flex items-center justify-center gap-2 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300">
-              <Lightbulb className="w-4 h-4" /> Gợi ý
-            </button>
+            {/* The hint opens a box of the sentence's skeleton: without the skeleton it would cost points and show nothing */}
+            {level === "full" && (
+              <button onClick={hint} className="min-h-14 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 font-semibold inline-flex items-center justify-center gap-2 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300">
+                <Lightbulb className="w-4 h-4" /> Gợi ý
+              </button>
+            )}
             <button onClick={check} disabled={!typed.trim()} className="flex-1 min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-50">
               <Send className="w-5 h-5" /> Kiểm tra
             </button>
@@ -200,7 +211,9 @@ function Question({ item, onDone }: { item: TranslateItem; onDone: (r: Translate
               {mic.problem && <p className="text-sm text-red-700 dark:text-red-300">{mic.problem}</p>}
             </>
           )}
-          <p className="text-sm text-slate-500 dark:text-zinc-400">Mỗi gợi ý trừ 25 điểm, mỗi lần sai trừ 12 điểm. Bấm vào ô chấm để mở đúng từ đó.</p>
+          <p className="text-sm text-slate-500 dark:text-zinc-400">
+            {level === "full" ? "Mỗi gợi ý trừ 25 điểm, mỗi lần sai trừ 12 điểm. Bấm vào ô chấm để mở đúng từ đó." : "Mỗi lần sai trừ 12 điểm."}
+          </p>
         </>
       ) : (
         <>
@@ -249,6 +262,9 @@ export default function TranslateRound({
   size = ROUND_SIZE,
   forceNoHints = false,
   title = "Dịch câu",
+  passMark,
+  studied = false,
+  forceFullHints = false,
 }: {
   patterns: Pattern[];
   onExit: () => void;
@@ -260,8 +276,14 @@ export default function TranslateRound({
   /** No skeleton of the English sentence at all (a test of what the learner already knows) */
   forceNoHints?: boolean;
   title?: string;
+  /** A test: this many right answers pass it. The screen says so, and says whether it was passed */
+  passMark?: number;
+  /** The round is on what the learner has learned: its misses say the stage's grammar may be weak */
+  studied?: boolean;
+  /** The boxes of the English sentence stay, whatever the pattern's step (a beginner's stage challenge) */
+  forceFullHints?: boolean;
 }) {
-  const make = () => buildTranslateRound(patterns, size).map((it) => (forceNoHints ? { ...it, hint: "none" as const } : it));
+  const make = () => buildTranslateRound(patterns, size).map((it) => (forceNoHints ? { ...it, hint: "none" as const } : forceFullHints ? { ...it, hint: "full" as const } : it));
   const [items, setItems] = useState<TranslateItem[]>(make);
   const [index, setIndex] = useState(0);
   const [results, setResults] = useState<TranslateResult[]>([]);
@@ -273,7 +295,7 @@ export default function TranslateRound({
     setResults(all);
     setStreak(r.ok ? streak + 1 : 0);
     if (index + 1 >= items.length) {
-      applyTranslate(all);
+      applyTranslate(all, { studied });
       onFinish?.(all);
     }
     setIndex(index + 1);
@@ -318,6 +340,7 @@ export default function TranslateRound({
         right={<IpaToggle />}
       />
       <div className="flex flex-wrap items-center justify-end gap-2 -mt-2">
+        {passMark !== undefined && !done && <span className="mr-auto text-sm text-slate-600 dark:text-zinc-400">Cần đúng {passMark}/{items.length} câu</span>}
         <span className="shrink-0 text-sm font-semibold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300">🪙 {points}</span>
         {streak >= 2 && <span className="shrink-0 text-sm font-semibold px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-300">🔥 {streak}</span>}
       </div>
@@ -325,7 +348,13 @@ export default function TranslateRound({
       {done ? (
         <div className="space-y-3">
           <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-1 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
-            <p className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Xong vòng này! 🎉 {points} điểm</p>
+            <p className="text-lg font-semibold text-slate-900 dark:text-zinc-100">
+              {passMark === undefined
+                ? `Xong vòng này! 🎉 ${points} điểm`
+                : right.length >= passMark
+                  ? `Đạt! 🎉 Đúng ${right.length}/${results.length} câu (cần ${passMark})`
+                  : `Chưa đạt: đúng ${right.length}/${results.length} câu, cần ${passMark}. Bạn làm lại được ngay.`}
+            </p>
             <p className="text-sm text-slate-700 dark:text-zinc-300">
               Đúng {right.length}/{results.length} câu
               {avg !== null ? `, trả lời trung bình ${avg.toFixed(1)} giây` : ""}. Dùng {results.reduce((a, r) => a + r.hints, 0)} lần gợi ý hoặc sửa.

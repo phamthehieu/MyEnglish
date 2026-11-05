@@ -498,7 +498,7 @@
       {
         "id": "sending-a-parcel-a2.l4",
         "en": "Fast delivery, please.",
-        "vi": "Giao nhanh, làm ơn.",
+        "vi": "Cho tôi giao nhanh.",
         "accept": [
           "Fast one, please",
           "I want fast delivery"
@@ -1043,7 +1043,7 @@
       {
         "id": "n4",
         "npc_en": "We will call you if we find it. Can you write your number?",
-        "npc_vi": "Tìm thấy chúng tôi sẽ gọi. Bạn viết số điện thoại được không?",
+        "npc_vi": "Nếu tìm thấy, chúng tôi sẽ gọi cho bạn. Bạn viết số điện thoại được không?",
         "replies": [
           {
             "lineId": "lost-bag-on-the-train-a2.l5",
@@ -1737,7 +1737,7 @@
     "dialogue": [
       {
         "id": "n1",
-        "npc_en": "Come in. What seems to be the problem?",
+        "npc_en": "Come in. What is the problem?",
         "npc_vi": "Mời vào. Bạn bị sao?",
         "replies": [
           {
@@ -2181,7 +2181,7 @@
       },
       {
         "id": "n4",
-        "npc_en": "We will find it. How should we return it?",
+        "npc_en": "We will find it. How should we deliver it to you?",
         "npc_vi": "Chúng tôi sẽ tìm thấy. Chúng tôi trả bạn bằng cách nào?",
         "replies": [
           {
@@ -2466,7 +2466,7 @@
       {
         "id": "complaining-about-hotel-noise-a2.l5",
         "en": "That sounds good, thank you.",
-        "vi": "Nghe được đấy, cảm ơn.",
+        "vi": "Vậy thì tốt, cảm ơn bạn.",
         "accept": [
           "That is good, thanks",
           "That sounds great, thanks"
@@ -3466,7 +3466,7 @@
       {
         "id": "going-to-the-cinema-a2.l5",
         "en": "Ha ha, okay. See you soon.",
-        "vi": "Ha ha, được rồi. Hẹn sớm gặp.",
+        "vi": "Ha ha, được rồi. Hẹn gặp lại sớm.",
         "accept": [
           "Ha ha, OK. See you later",
           "Ha ha, sure. See you soon"
@@ -3591,7 +3591,7 @@
       {
         "id": "n1",
         "npc_en": "I need a gift for my mom's birthday. Any ideas?",
-        "npc_vi": "Mình cần quà sinh nhật cho mẹ. Có ý gì không?",
+        "npc_vi": "Mình cần quà sinh nhật cho mẹ. Bạn có ý tưởng gì không?",
         "replies": [
           {
             "lineId": "buying-a-gift-for-mom-a2.l1",
@@ -3732,7 +3732,7 @@
       },
       {
         "id": "n3",
-        "npc_en": "Did you ever go to a concert?",
+        "npc_en": "Have you ever been to a concert?",
         "npc_vi": "Bạn từng đi xem hòa nhạc chưa?",
         "replies": [
           {
@@ -4231,7 +4231,7 @@
     "id": "school-day-with-brother-a2",
     "group": "daily",
     "title_vi": "Kể về ngày đi học",
-    "title_en": "Telling about the school day",
+    "title_en": "Talking about the school day",
     "cefr": "A2",
     "goal_vi": "Kể cho anh chị về bài kiểm tra và bữa trưa.",
     "partner_vi": "Anh trai",

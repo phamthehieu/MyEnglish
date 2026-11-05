@@ -180,6 +180,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
           <TranslateRound
             patterns={skipTest.patterns}
             forceNoHints
+            passMark={SKIP_PASS}
             title={`Kiểm tra: ${skipTest.title}`}
             onExit={() => setSkipTest(null)}
             onDone={() => setSkipTest(null)}
@@ -270,7 +271,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
               </Button>
             ) : (
               <p className="rounded-xl bg-slate-50 dark:bg-zinc-800/50 px-3 py-2.5 text-sm text-slate-700 dark:text-zinc-300">
-                {plan.complete ? "Chặng này đã đủ điều kiện hoàn thành: bấm vào chặng ở dưới để đóng lại." : "Hôm nay bạn đã xong phần của chặng này. Quay lại vào ngày mai để làm bước tiếp theo (mỗi bước cách nhau một ngày để nhớ lâu)."}
+                {plan.complete ? "Chặng này đã hoàn thành." : "Hôm nay bạn đã xong phần của chặng này. Quay lại vào ngày mai để làm bước tiếp theo (mỗi bước cách nhau một ngày để nhớ lâu)."}
               </p>
             )}
             <div className="space-y-1.5">

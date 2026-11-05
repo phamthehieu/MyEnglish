@@ -71,7 +71,7 @@ export const WEEKEND_CHAT: Situation = {
     {
       id: "n3",
       npc_en: "Oh, I'm sorry to hear that. What did you do at the weekend?",
-      npc_vi: "Ôi, mình tiếc khi nghe vậy. Cuối tuần bạn làm gì?",
+      npc_vi: "Ôi, mình rất tiếc. Cuối tuần bạn làm gì?",
       replies: [
         { lineId: "weekend-chat.l3", next: "n4" },
         { lineId: "weekend-chat.l4", next: "n4" },
@@ -80,7 +80,7 @@ export const WEEKEND_CHAT: Situation = {
     {
       id: "n4",
       npc_en: "That sounds nice!",
-      npc_vi: "Nghe thích đấy!",
+      npc_vi: "Nghe hay quá!",
       replies: [{ lineId: "weekend-chat.l5", next: "n5" }],
     },
     {

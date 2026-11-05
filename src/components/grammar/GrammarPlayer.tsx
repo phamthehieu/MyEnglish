@@ -1044,7 +1044,8 @@ function Run({ entries, mode, title, subtitle, onExit, onComplete, onOpenLesson 
       } catch (err) {
         console.warn("[GrammarPlayer] could not record the answer", err);
       }
-      resultsRef.current.push({ entry, correct: correct && !hinted, hinted, selfAccepted });
+      // A right answer after a hint is right: only the question's own ladder treats it as a miss (it comes back sooner)
+      resultsRef.current.push({ entry, correct, hinted, selfAccepted });
       await advance();
     });
 

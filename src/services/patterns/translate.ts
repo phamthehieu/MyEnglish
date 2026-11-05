@@ -1,5 +1,5 @@
 import { fillPattern, type Pattern, type PatternSlot } from "@/types/pattern";
-import { editDistance, normalizeSpeech } from "@/services/talk/engine";
+import { editDistance, fullForm, normalizeSpeech } from "@/services/talk/engine";
 import { getPatternState } from "./progress";
 
 /** "Dịch câu": the Vietnamese sentence is shown, the learner writes (or says) it in English against the clock */
@@ -93,15 +93,15 @@ export function acceptedForms(en: string): string[] {
 export function isTranslation(typed: string, en: string): boolean {
   const t = normalizeSpeech(typed);
   if (!t) return false;
+  const got = fullForm(t).split(" ");
   return acceptedForms(en).some((form) => {
-    const want = form.split(" ");
-    const got = t.split(" ");
+    const want = fullForm(form).split(" ");
     return want.length === got.length && want.every((w, i) => sameWord(got[i], w));
   });
 }
 
-/** Time for one sentence: more words, more time (typing is slow on a phone) */
-export const limitFor = (wordCount: number): number => 10000 + 2500 * wordCount;
+/** Time for one sentence: reading it, recalling it and typing it on a phone. More words, more time */
+export const limitFor = (wordCount: number): number => 15000 + 4000 * wordCount;
 
 /**
  * Points: a right answer is worth 100, less 25 for each help and 12 for each wrong try, never less than 20,

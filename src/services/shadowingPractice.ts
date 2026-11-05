@@ -1,4 +1,5 @@
 import { checkSentence, normalizeWord, type SentenceCheck } from "@/services/sentenceCheck";
+import { fullForm, normalizeSpeech } from "@/services/talk/engine";
 
 /**
  * The two typing exercises of the Shadowing screen: dictation (hear a sentence, type all of it) and filling blanks
@@ -23,8 +24,26 @@ export function gradeDictation(target: string, typed: string): DictationResult {
     .filter((w) => normalizeWord(w) !== "")
     .map((word) => ({ word, conf: 1 }));
   const check = checkSentence(target, heard);
-  const correct = check.words.every((w) => w.status === "ok" || w.status === "skip") && check.extra.length === 0;
+  const correct = (check.words.every((w) => w.status === "ok" || w.status === "skip") && check.extra.length === 0) || nearlyTheSame(target, typed);
   return { correct, check };
+}
+
+/**
+ * What was typed with its contractions written out, a "not" contraction also without its apostrophe ("dont"). Only
+ * those: "its" stays another word than "it's", and a wrong letter stays wrong (spelling is what these exercises train).
+ */
+function typedForm(text: string): string {
+  return fullForm(
+    normalizeSpeech(text)
+      .replace(/\bcant\b/g, "can't")
+      .replace(/\bwont\b/g, "won't")
+      .replace(/\b(do|does|did|is|are|was|were|have|has|had|would|could|should)nt\b/g, "$1n't")
+  );
+}
+
+/** The whole sentence typed right, contractions either way ("I am" for "I'm"), a hyphen as a space */
+function nearlyTheSame(target: string, typed: string): boolean {
+  return typedForm(target) === typedForm(typed);
 }
 
 /** How many words a text has, for the "3/14" counter */
@@ -59,5 +78,8 @@ export function pickBlanks(words: string[], unlearned: (word: string) => boolean
 
 /** For each blank: is what was typed the missing word (case and spaces around it do not matter)? */
 export function gradeBlanks(answers: string[], solutions: string[]): boolean[] {
-  return solutions.map((solution, i) => normalizeWord(answers[i] ?? "") !== "" && normalizeWord(answers[i] ?? "") === normalizeWord(solution));
+  return solutions.map((solution, i) => {
+    const typed = typedForm(answers[i] ?? "");
+    return typed !== "" && typed === typedForm(solution);
+  });
 }

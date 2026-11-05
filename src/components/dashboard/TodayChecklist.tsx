@@ -16,7 +16,16 @@ const TASK_ICON: Record<TodayTaskId, typeof BookOpen> = {
 function primaryLabel(task: TodayTask, first: boolean): string {
   if (task.id === "vocab") return `Học hôm nay (~${task.minutes} phút)`;
   if (task.id === "speaking") return `${first ? "Bắt đầu" : "Tiếp"}: lộ trình nói (~${task.minutes} phút)`;
-  const what = task.id === "grammar" ? "1 bài ngữ pháp" : task.id === "pronunciation" ? "Phát âm" : "Luyện phản xạ";
+  const what =
+    task.id === "grammar"
+      ? "1 bài ngữ pháp"
+      : task.id === "pronunciation"
+        ? "Phát âm"
+        : task.id === "talkReview"
+          ? "Ôn câu hội thoại"
+          : task.id === "weakGrammar"
+            ? "Ngữ pháp hay sai"
+            : "Luyện phản xạ";
   return `${first ? "" : "Tiếp: "}${what} (~${task.minutes} phút)`;
 }
 

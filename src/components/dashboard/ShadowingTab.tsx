@@ -266,9 +266,10 @@ function SentenceReader({ text, seconds, onStart, trailing }: { text: string; se
     if (!heard.ok) setProblem("Máy chưa nghe được, thử lại nhé.");
     else if ((heard.peak ?? 0) < SILENCE_PEAK) setProblem("Không nghe thấy tiếng. Kiểm tra micro rồi thử lại.");
     else {
-      setResult(checkSentence(text, heard.words ?? []));
-      // A sentence shadowed aloud: practice of the day
-      creditPractice("shadowing");
+      const check = checkSentence(text, heard.words ?? []);
+      setResult(check);
+      // A sentence shadowed aloud and mostly heard: practice of the day
+      if (check.judged > 0 && check.clear / check.judged >= 0.6) creditPractice("shadowing");
     }
     setPhase("idle");
   };
@@ -753,9 +754,9 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
     onLoop: () => setLoop((v) => !v),
   };
   const goNext = () => play(Math.min(segments.length - 1, index + 1));
-  const markDone = (kind: "dictation" | "cloze", i: number) => {
-    // Each sentence counts once as practice of the day
-    if (!(kind === "dictation" ? doneDictation : doneCloze).has(i)) creditPractice("shadowing");
+  const markDone = (kind: "dictation" | "cloze", i: number, credit = true) => {
+    // Each sentence counts once as practice of the day (an answer that was only shown does not)
+    if (credit && !(kind === "dictation" ? doneDictation : doneCloze).has(i)) creditPractice("shadowing");
     (kind === "dictation" ? setDoneDictation : setDoneCloze)((prev) => (prev.has(i) ? prev : new Set(prev).add(i)));
   };
 
@@ -911,7 +912,7 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
           />
         )}
         {view === "dictation" && seg && (
-          <DictationCard key={index} sentence={seg} index={index} total={segments.length} bar={practiceBar} onNext={goNext} onDone={() => markDone("dictation", index)} />
+          <DictationCard key={index} sentence={seg} index={index} total={segments.length} bar={practiceBar} onNext={goNext} onDone={(credit) => markDone("dictation", index, credit)} />
         )}
         {view === "cloze" && seg && (
           <ClozeCard
@@ -923,7 +924,7 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
             unlearned={unlearned}
             fontScale={fontScale}
             onNext={goNext}
-            onDone={() => markDone("cloze", index)}
+            onDone={(credit) => markDone("cloze", index, credit)}
           />
         )}
         {segments.map((s, i) => {

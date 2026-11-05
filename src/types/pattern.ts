@@ -49,5 +49,7 @@ export const BLANK = "___";
 
 /** The frame with one of its slots in the blank */
 export function fillPattern(pattern: Pick<Pattern, "frame_en" | "frame_vi">, slot: PatternSlot): { en: string; vi: string } {
-  return { en: pattern.frame_en.replace(BLANK, slot.en), vi: pattern.frame_vi.replace(BLANK, slot.vi) };
+  const vi = pattern.frame_vi.replace(BLANK, slot.vi);
+  // A frame starting with the blank: the sentence still starts with a capital ("Thứ Bảy này thì sao?")
+  return { en: pattern.frame_en.replace(BLANK, slot.en), vi: vi.charAt(0).toLocaleUpperCase("vi") + vi.slice(1) };
 }

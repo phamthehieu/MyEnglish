@@ -18,6 +18,9 @@ import { buildPracticeSession, buildReviewSession, type SessionEntry } from "@/s
 import PathPicker, { type PathPickerMode } from "./PathPicker";
 import GrammarLessonView, { type GrammarLessonTab } from "./GrammarLessonView";
 import GrammarImportDialog from "./GrammarImportDialog";
+import GrammarTipCard from "./GrammarTipCard";
+import { tipForStage } from "@/data/grammarTips";
+import { SHOW_TIP_EVENT, SHOW_TIP_KEY } from "@/services/weakPoints";
 import GrammarExerciseImportModal from "./GrammarExerciseImportModal";
 import GrammarPlayer from "./GrammarPlayer";
 import SpeakingGrammar from "./SpeakingGrammar";
@@ -62,6 +65,25 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
   const [pickerMode, setPickerMode] = useState<PathPickerMode>("path");
   const [starting, setStarting] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  // The tip Today asked to show: the grammar of a stage the learner keeps missing
+  const [tipStage, setTipStage] = useState<string | null>(null);
+  useEffect(() => {
+    const read = () => {
+      try {
+        const stage = sessionStorage.getItem(SHOW_TIP_KEY);
+        if (stage) {
+          sessionStorage.removeItem(SHOW_TIP_KEY);
+          setTipStage(stage);
+        }
+      } catch {
+        /* no tip */
+      }
+    };
+    read();
+    window.addEventListener(SHOW_TIP_EVENT, read);
+    return () => window.removeEventListener(SHOW_TIP_EVENT, read);
+  }, []);
+  const weakTip = tipStage ? tipForStage(tipStage) : undefined;
 
   const loadSeq = useRef(0);
   const initialHandled = useRef(false);
@@ -268,6 +290,15 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
   return (
     <div className={PAGE_CONTAINER}>
       <div className="mx-auto max-w-5xl space-y-4 pb-6">
+        {weakTip && (
+          <section aria-label="Ngữ pháp hay sai" className="rounded-2xl border border-amber-300 dark:border-amber-800 bg-white dark:bg-zinc-900 p-3.5 md:p-5 space-y-3">
+            <p className="text-sm font-semibold text-amber-800 dark:text-amber-300">Điểm bạn hay sai gần đây:</p>
+            <GrammarTipCard tip={weakTip} onOpenLesson={openLesson} />
+            <button onClick={() => setTipStage(null)} className="min-h-11 text-sm font-semibold text-teal-700 hover:underline dark:text-teal-300">
+              Đã hiểu
+            </button>
+          </section>
+        )}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="min-w-0 text-sm text-slate-500 dark:text-zinc-400">
             Mỗi ngày học một bài mới, và ôn lại những bài sắp quên.

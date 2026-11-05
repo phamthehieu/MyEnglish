@@ -227,7 +227,7 @@ export const B1_SITUATIONS: Situation[] = [
     partner_emoji: "🛒",
     lines: [
       ["First, let's make chicken soup.", "Trước hết, mình nấu súp gà nhé.", ["First let us make chicken soup", "First let's cook chicken soup"], "First, then, after that, finally: các từ nối chỉ thứ tự."],
-      ["Because it's cold, so we need something warm.", "Vì trời lạnh, nên mình cần món ấm.", ["Because it is cold so we need something warm", "Because it's cold we need something warm"]],
+      ["Because it's cold, we need something warm.", "Vì trời lạnh, nên mình cần món ấm.", ["Because it is cold so we need something warm", "Because it's cold we need something warm"]],
       ["We need chicken, and also some carrots.", "Mình cần gà, và cả ít cà rốt nữa.", ["We need chicken and also some carrots", "We need chicken and some carrots too"]],
       ["That's true, but they look very fresh.", "Đúng vậy, nhưng trông chúng rất tươi.", ["That is true but they look very fresh", "True but they look very fresh"], "but: nối hai ý trái ngược nhau."],
       ["Then let's get potatoes instead.", "Vậy mình mua khoai tây thay thế.", ["Then let us get potatoes instead", "Then let's buy potatoes instead"]],
@@ -318,7 +318,7 @@ export const B1_SITUATIONS: Situation[] = [
     partner_vi: "Hướng dẫn viên khu cắm trại",
     partner_emoji: "🏕️",
     lines: [
-      ["Yes, I want to stay safe.", "Vâng, tôi muốn giữ an toàn.", ["Yes I want to be safe", "Yes I want to stay safe here"]],
+      ["It's my first time, so I want to be safe.", "Vâng, đây là lần đầu nên tôi muốn giữ an toàn.", ["Yes I want to be safe", "Yes I want to stay safe here"]],
       ["I brought a first aid kit and a flashlight.", "Tôi mang theo bộ sơ cứu và đèn pin.", ["I have a first aid kit and a flashlight", "I brought a first aid kit and a torch"]],
       ["I'll call for help and stay calm.", "Tôi sẽ gọi người giúp và giữ bình tĩnh.", ["I will call for help and stay calm", "I'll call for help and keep calm"]],
       ["I'll use the first aid kit first.", "Tôi sẽ dùng bộ sơ cứu trước.", ["I will use the first aid kit first", "First I'll use the first aid kit"]],

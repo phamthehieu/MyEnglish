@@ -155,6 +155,12 @@ export function buildPathStages(patterns: readonly Pattern[], goal: RoadmapGoal,
   return levels.slice(at === -1 ? levels.length - 1 : at).flatMap((level) => buildStages(patterns.filter((p) => p.level === level), goal));
 }
 
-/** Days to finish `stages` at `minutesPerDay` */
-export const estimateDays = (stages: readonly Stage[], minutesPerDay: number): number =>
-  Math.ceil(stages.reduce((a, s) => a + s.minutes, 0) / Math.max(1, minutesPerDay));
+/**
+ * Days to finish `stages` at `minutesPerDay`: what the minutes allow, and never fewer than the pace of the path (a
+ * pattern takes 3 days, two patterns at a time, then a day for the stage's challenge and conversation)
+ */
+export const estimateDays = (stages: readonly Stage[], minutesPerDay: number): number => {
+  const byMinutes = Math.ceil(stages.reduce((a, s) => a + s.minutes, 0) / Math.max(1, minutesPerDay));
+  const byPace = stages.reduce((a, s) => a + Math.ceil(s.patterns.length / 2) * 3 + 1, 0);
+  return Math.max(byMinutes, byPace);
+};

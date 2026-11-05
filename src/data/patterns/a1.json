@@ -552,7 +552,7 @@
     ],
     "frame_en": "I'm ___ years old.",
     "frame_vi": "Tôi ___ tuổi.",
-    "note_vi": "Nói tuổi của bạn. Dùng số đếm viết bằng chữ rồi thêm years old, không dùng have như tiếng Việt.",
+    "note_vi": "Nói tuổi của bạn. Dùng I'm + số + years old, không dùng I have.",
     "slots": [
       {
         "en": "ten",
@@ -1233,8 +1233,8 @@
         "vi": "Bạn có thích cá không?"
       },
       {
-        "en": "Is there a food you don't like?",
-        "vi": "Có món nào bạn không thích không?"
+        "en": "What food don't you like?",
+        "vi": "Bạn không thích món gì?"
       }
     ],
     "id": "a1.i-dont-like"
@@ -2323,7 +2323,7 @@
       "travel"
     ],
     "frame_en": "What time does ___ leave?",
-    "frame_vi": "___ chạy lúc mấy giờ?",
+    "frame_vi": "___ khởi hành lúc mấy giờ?",
     "note_vi": "Hỏi giờ khởi hành. Sau does động từ leave giữ nguyên, không thêm s. Thêm the trước phương tiện.",
     "slots": [
       {
@@ -2376,8 +2376,8 @@
     ],
     "asks": [
       {
-        "en": "Which one do you want?",
-        "vi": "Bạn muốn chuyến nào?"
+        "en": "When are you leaving?",
+        "vi": "Khi nào bạn đi?"
       },
       {
         "en": "Are you going today?",
@@ -2455,7 +2455,7 @@
       "travel"
     ],
     "frame_en": "Is this the right ___?",
-    "frame_vi": "Đây có phải ___ đúng không?",
+    "frame_vi": "Đây có đúng là ___ cần tìm không?",
     "note_vi": "Hỏi để chắc mình không đi nhầm. The right nghĩa là đúng, đứng trước danh từ số ít như bus hay platform.",
     "slots": [
       {
@@ -2497,12 +2497,12 @@
     "examples": [
       {
         "en": "Is this the right door?",
-        "vi": "Đây có phải cửa đúng không?",
+        "vi": "Đây có đúng là cửa cần tìm không?",
         "ipa": "/ɪz ðɪs ðə raɪt dɔr/"
       },
       {
         "en": "Is this the right road?",
-        "vi": "Đây có phải đường đúng không?",
+        "vi": "Đây có đúng là đường cần tìm không?",
         "ipa": "/ɪz ðɪs ðə raɪt roʊd/"
       }
     ],
@@ -2929,8 +2929,8 @@
         "vi": "Hôm nay tôi nên mang gì?"
       },
       {
-        "en": "Is it going to rain?",
-        "vi": "Trời sắp mưa à?"
+        "en": "Is it rainy today?",
+        "vi": "Hôm nay trời có mưa không?"
       }
     ],
     "id": "a1.take-with-you"
@@ -2996,8 +2996,8 @@
         "vi": "Ở đây khi nào trời mưa?"
       },
       {
-        "en": "When is the best time to visit?",
-        "vi": "Khi nào là thời gian tốt nhất để đến?"
+        "en": "Does it rain a lot here?",
+        "vi": "Ở đây có mưa nhiều không?"
       }
     ],
     "id": "a1.it-rains-a-lot-in"
@@ -3063,8 +3063,8 @@
         "vi": "Bạn thức dậy lúc mấy giờ?"
       },
       {
-        "en": "Are you an early bird?",
-        "vi": "Bạn dậy sớm à?"
+        "en": "Do you get up early?",
+        "vi": "Bạn có dậy sớm không?"
       }
     ],
     "id": "a1.i-get-up-at"
@@ -3145,7 +3145,7 @@
       "travel"
     ],
     "frame_en": "I have a pain in my ___.",
-    "frame_vi": "Tôi bị đau ở ___ của tôi.",
+    "frame_vi": "Tôi bị đau ở ___.",
     "note_vi": "Nói chỗ đau với bác sĩ. Dùng my trước bộ phận cơ thể, số nhiều thêm s như legs.",
     "slots": [
       {
@@ -3375,9 +3375,9 @@
         "ipa": "/aɪ nid ə ˈdɑktər/"
       },
       {
-        "en": "a rest",
+        "en": "some rest",
         "vi": "nghỉ ngơi",
-        "ipa": "/aɪ nid ə rɛst/"
+        "ipa": "/aɪ nid səm rɛst/"
       },
       {
         "en": "some water",
@@ -3613,9 +3613,9 @@
     ],
     "examples": [
       {
-        "en": "I am happy because I pass the test.",
-        "vi": "Tôi vui vì tôi đậu bài kiểm tra.",
-        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz aɪ pæs ðə tɛst/"
+        "en": "I am happy because I passed the test.",
+        "vi": "Tôi vui vì tôi đã đậu bài kiểm tra.",
+        "ipa": "/aɪ æm ˈhæpi bɪˈkɔz aɪ pæst ðə tɛst/"
       },
       {
         "en": "I am happy because we are friends.",
@@ -3787,7 +3787,7 @@
       "travel"
     ],
     "frame_en": "I lost my ___.",
-    "frame_vi": "Tôi bị mất ___ của tôi.",
+    "frame_vi": "Tôi bị mất ___.",
     "note_vi": "Báo mất đồ. Dùng my trước đồ vật, không dùng a. Lost là quá khứ của lose.",
     "slots": [
       {
@@ -5019,7 +5019,7 @@
       },
       {
         "en": "I start work at night.",
-        "vi": "Tôi bắt đầu làm việc vào buổi tối.",
+        "vi": "Tôi bắt đầu làm việc vào ban đêm.",
         "ipa": "/aɪ stɑrt wɝk æt naɪt/"
       }
     ],
@@ -5085,9 +5085,9 @@
         "ipa": "/aɪ ˈstʌdi frɛntʃ æt skul/"
       },
       {
-        "en": "I study sport at school.",
-        "vi": "Tôi học thể thao ở trường.",
-        "ipa": "/aɪ ˈstʌdi spɔrt æt skul/"
+        "en": "I study art at school.",
+        "vi": "Tôi học mĩ thuật ở trường.",
+        "ipa": "/aɪ ˈstʌdi ɑrt æt skul/"
       }
     ],
     "asks": [
@@ -5583,8 +5583,8 @@
         "vi": "Bạn muốn làm gì?"
       },
       {
-        "en": "Where shall we go?",
-        "vi": "Chúng ta đi đâu?"
+        "en": "Where do you want to go?",
+        "vi": "Bạn muốn đi đâu?"
       }
     ],
     "id": "a1.lets-go-to"
@@ -5719,11 +5719,11 @@
     ],
     "asks": [
       {
-        "en": "What time shall we meet?",
+        "en": "What time can we meet?",
         "vi": "Mấy giờ mình gặp nhau?"
       },
       {
-        "en": "Where shall we meet?",
+        "en": "Where can we meet?",
         "vi": "Mình gặp nhau ở đâu?"
       }
     ],
@@ -5967,9 +5967,9 @@
         "ipa": "/haʊ du ju spɛl ðɪs wɝd/"
       },
       {
-        "en": "the street",
+        "en": "the street name",
         "vi": "tên đường",
-        "ipa": "/haʊ du ju spɛl ðə strit/"
+        "ipa": "/haʊ du ju spɛl ðə strit neɪm/"
       },
       {
         "en": "your email",
@@ -6061,8 +6061,8 @@
         "vi": "Bạn có đặt phòng trước không?"
       },
       {
-        "en": "How long will you stay?",
-        "vi": "Bạn ở bao lâu?"
+        "en": "How many nights?",
+        "vi": "Mấy đêm ạ?"
       }
     ],
     "id": "a1.i-have-a-reservation-for"
@@ -6076,7 +6076,7 @@
     ],
     "frame_en": "I'd like to book ___.",
     "frame_vi": "Tôi muốn đặt ___.",
-    "note_vi": "I'd like to book + loại phòng. Trước room dùng a, còn a double room thì vẫn dùng a.",
+    "note_vi": "I'd like to book + loại phòng. Trước tên loại phòng dùng a: a single room, a double room.",
     "slots": [
       {
         "en": "a single room",
@@ -6177,9 +6177,9 @@
     ],
     "examples": [
       {
-        "en": "What time is the pool open?",
-        "vi": "Mấy giờ hồ bơi mở cửa?",
-        "ipa": "/wʌt taɪm ɪz ðə pul ˈoʊpən/"
+        "en": "What time is the meeting?",
+        "vi": "Mấy giờ họp?",
+        "ipa": "/wʌt taɪm ɪz ðə ˈmitɪŋ/"
       },
       {
         "en": "What time is the last bus?",

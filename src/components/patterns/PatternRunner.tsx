@@ -84,7 +84,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
 
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-600 dark:text-zinc-400">Nghe và nhắc lại: <span className="font-normal">(IPA = ký hiệu cách đọc)</span></p>
-        {pattern.slots.slice(0, 4).map((s) => {
+        {pattern.slots.slice(0, 3).map((s) => {
           const f = fillPattern(pattern, s);
           return (
             <div key={s.en} className="flex items-center gap-2">
@@ -97,7 +97,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
             </div>
           );
         })}
-        {pattern.examples.slice(0, 2).map((e) => (
+        {pattern.examples.slice(0, 1).map((e) => (
           <div key={e.en} className="flex items-center gap-2">
             <Speaker text={e.en} />
             <div className="min-w-0">
@@ -127,12 +127,67 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
   );
 }
 
+/** The easiest exercise: the sentence is heard and written, pick what it means */
+function ListenCard({ task, onNext }: { task: Extract<Task, { kind: "listen" }>; onNext: (o: Outcome) => void }) {
+  const { item } = task;
+  const [wrong, setWrong] = useState<Set<string>>(new Set());
+  const [solved, setSolved] = useState(false);
+  useEffect(() => {
+    handleSpeak(item.en);
+    // the card is created once per question
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return (
+    <div className="space-y-3">
+      <div className={CARD}>
+        <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Nghe câu này rồi chọn nghĩa đúng:</p>
+        <p className="text-xl font-bold text-slate-900 dark:text-zinc-100 inline-flex items-center gap-2">
+          {item.en} <Speaker text={item.en} />
+        </p>
+        <IpaLine ipa={item.ipa} />
+      </div>
+      <div className="space-y-2">
+        {item.options.map((vi) => {
+          const bad = wrong.has(vi);
+          const good = solved && vi === item.answer;
+          return (
+            <button
+              key={vi}
+              disabled={bad || solved}
+              onClick={() => (vi === item.answer ? setSolved(true) : setWrong((w) => new Set(w).add(vi)))}
+              className={`w-full min-h-12 text-left rounded-xl border px-4 py-2.5 text-base font-semibold ${
+                good
+                  ? "border-green-300 bg-green-50 dark:border-green-800 dark:bg-green-950/30 text-green-800 dark:text-green-200"
+                  : bad
+                    ? "border-red-300 dark:border-red-900 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 opacity-70"
+                    : "border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 hover:border-teal-600/50 hover:bg-teal-50/50 dark:hover:bg-teal-400/5"
+              }`}
+            >
+              {vi}
+            </button>
+          );
+        })}
+      </div>
+      {solved && (
+        <button
+          onClick={() => {
+            answeredSentence("patterns", item.en, { ok: wrong.size === 0, unaided: false, goal: false });
+            onNext({ ok: wrong.size === 0 });
+          }}
+          className={BTN_PRIMARY}
+        >
+          Tiếp theo
+        </button>
+      )}
+    </div>
+  );
+}
+
 /** Step 2: read the Vietnamese, pick the word that fills the blank */
 function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substitute" }>; onNext: (o: Outcome) => void }) {
   const { item } = task;
   const [wrong, setWrong] = useState<Set<string>>(new Set());
   const [solved, setSolved] = useState(false);
-  const [hinted, setHinted] = useState(false);
   const pick = (en: string) => {
     if (en === item.answer.en) {
       setSolved(true);
@@ -146,7 +201,7 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Câu này nói bằng tiếng Anh thế nào?</p>
         <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">
-          «<ViText vi={item.vi} en={item.full} fixed={[item.answer]} onHint={() => setHinted(true)} off={solved} />»
+          «<ViText vi={item.vi} en={item.full} fixed={[item.answer]} off={solved} />»
         </p>
         {!solved && <ViTextNote />}
         <p className="text-xl text-slate-900 dark:text-zinc-100">
@@ -171,6 +226,7 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
               }`}
             >
               {o.en}
+              {task.withMeaning && o.vi !== o.en && <span className="block text-sm font-normal text-slate-500 dark:text-zinc-400">{o.vi}</span>}
             </button>
           );
         })}
@@ -183,7 +239,8 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
           <IpaLine ipa={item.answer.ipa} />
           <button
             onClick={() => {
-              const ok = wrong.size === 0 && !hinted;
+              // Looking a word up is part of learning here: it does not fail the step
+              const ok = wrong.size === 0;
               answeredSentence("patterns", item.full, { ok, unaided: false, goal: false });
               onNext({ ok });
             }}
@@ -204,7 +261,6 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
   const [fails, setFails] = useState(0);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [done, setDone] = useState(false);
-  const [hinted, setHinted] = useState(false);
   const rest = item.tiles.filter((t) => !chosen.some((c) => c.id === t.id));
 
   const send = () => {
@@ -223,7 +279,7 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
       <div className={CARD}>
         <p className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Ghép câu tiếng Anh cho nghĩa này:</p>
         <p className="text-lg font-bold text-slate-900 dark:text-zinc-100">
-          «<ViText vi={item.vi} en={item.en} fixed={[item.slot]} onHint={() => setHinted(true)} off={done} />»
+          «<ViText vi={item.vi} en={item.en} fixed={[item.slot]} off={done} />»
         </p>
         {!done && <ViTextNote />}
       </div>
@@ -281,7 +337,7 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
           <IpaLine ipa={item.ipa} />
           <button
             onClick={() => {
-              const ok = fails === 0 && !hinted;
+              const ok = fails === 0;
               answeredSentence("patterns", item.en, { ok, unaided: false, goal: false });
               onNext({ ok });
             }}
@@ -297,17 +353,21 @@ function TilesCard({ task, onNext }: { task: Extract<Task, { kind: "tiles" }>; o
 
 /** Step 4 and the rapid-fire mix: the other person asks, the learner has a few seconds to say the sentence */
 function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; onNext: (o: Outcome) => void }) {
-  const { item, pattern } = task;
+  const { item, pattern, letters } = task;
   const canSpeak = asrAvailable();
   // The learner answers by voice or on the keyboard, and may switch at any moment; typing gets more time
   const [mode, setMode] = useState<"say" | "type">(canSpeak ? "say" : "type");
   const modeRef = useRef(mode);
   modeRef.current = mode;
   const bonusMs = useRef(0);
-  const windowFor = () => (modeRef.current === "type" ? WINDOW_TYPE_MS : WINDOW_SAY_MS) + bonusMs.current;
+  // With the first letters shown (the easier round) the learner also has twice the time
+  const sayMs = letters ? WINDOW_SAY_MS * 2 : WINDOW_SAY_MS;
+  const windowFor = () => (modeRef.current === "type" ? (letters ? WINDOW_TYPE_MS * 2 : WINDOW_TYPE_MS) : sayMs) + bonusMs.current;
   const mic = useMic();
   const line = useMemo(() => lineOfSlot(pattern, item.slot), [pattern, item.slot]);
   const [typed, setTyped] = useState("");
+  const typedNow = useRef(typed);
+  typedNow.current = typed;
   const [state, setState] = useState<"asking" | "answering" | "done">("asking");
   const [verdict, setVerdict] = useState<{ ok: boolean; ms: number; message: string } | null>(null);
   const [elapsed, setElapsed] = useState(0);
@@ -317,6 +377,10 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
   const retried = useRef(false);
   const [retryNote, setRetryNote] = useState<string | null>(null);
   const [hinted, setHinted] = useState(false);
+  // Read when the clock ends and the answer is settled (the microphone's callback keeps the first render)
+  const startedRef = useRef(false);
+  const checking = useRef(false);
+  checking.current = mic.phase === "checking";
   // The clock runs from the moment the microphone is really listening (or the learner types), not from the question
   const [started, setStarted] = useState(false);
 
@@ -324,7 +388,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
     if (settled.current) return;
     settled.current = true;
     mic.cancel();
-    const ms = started ? Math.min(windowFor(), Date.now() - readyAt.current) : windowFor();
+    const ms = startedRef.current ? Math.min(windowFor(), Date.now() - readyAt.current) : windowFor();
     setVerdict({ ok, ms, message });
     setState("done");
     handleSpeak(item.en);
@@ -347,6 +411,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
     if (state !== "answering" || started) return;
     if (mode === "type" || mic.phase === "listening" || mic.problem) {
       readyAt.current = Date.now();
+      startedRef.current = true;
       setStarted(true);
     }
   }, [state, started, mode, mic.phase, mic.problem]);
@@ -355,9 +420,15 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
   useEffect(() => {
     if (state !== "answering" || !started) return;
     const tick = window.setInterval(() => {
+      // The clock waits while the machine checks what it heard
+      if (checking.current) readyAt.current += 100;
       const e = Date.now() - readyAt.current;
       setElapsed(e);
-      if (e >= windowFor()) settle(false, "Hết giờ rồi. Xem câu đúng bên dưới và nói lại nhé.");
+      if (e >= windowFor()) {
+        // What was typed in time and not sent yet still counts
+        if (modeRef.current === "type" && matchTyped(typedNow.current, [line])) settle(true, "Đúng rồi!");
+        else settle(false, "Hết giờ rồi. Xem câu đúng bên dưới và nói lại nhé.");
+      }
     }, 100);
     return () => window.clearInterval(tick);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -369,8 +440,12 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
       [line],
       (result, grammar) => {
         const v = judgeSpoken(result, grammar, new Set([line.id]));
-        if (v.kind === "ok") settle(true, "Đúng rồi!");
-        else if (!settled.current) {
+        // The right sentence with the machine only unsure is right
+        if (v.kind === "ok" || v.kind === "shaky") settle(true, "Đúng rồi!");
+        else if (v.kind === "error" || v.kind === "silent") {
+          // A microphone problem is not a wrong answer and uses no try: typing is always there
+          if (!settled.current) setRetryNote(`${v.message} Bạn có thể nói lại hoặc chuyển sang gõ.`);
+        } else if (!settled.current) {
           // One more try before the answer counts as wrong
           if (!retried.current && modeRef.current === "say") {
             retried.current = true;
@@ -380,7 +455,7 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
           } else settle(false, v.message);
         }
       },
-      WINDOW_SAY_MS
+      sayMs
     );
 
   const switchTo = (next: "say" | "type") => {
@@ -393,7 +468,12 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
 
   const submitTyped = () => {
     if (matchTyped(typed, [line])) settle(true, "Đúng rồi!");
-    else settle(false, "Chưa đúng. Xem câu đúng bên dưới.");
+    // One more try, as for an answer said aloud
+    else if (!retried.current) {
+      retried.current = true;
+      bonusMs.current = RETRY_BONUS_MS;
+      setRetryNote("Chưa đúng. Bạn còn một lần sửa lại.");
+    } else settle(false, "Chưa đúng. Xem câu đúng bên dưới.");
   };
 
   const left = Math.max(0, 1 - elapsed / windowFor());
@@ -412,6 +492,11 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
             «<ViText vi={item.vi} en={item.en} fixed={[item.slot]} onHint={() => setHinted(true)} off={state === "done"} speak={false} />»
           </span>
         </p>
+        {letters && state !== "done" && (
+          <p className="text-lg font-mono tracking-wide text-teal-800 dark:text-teal-300" aria-label="Gợi ý chữ cái đầu">
+            {letters}
+          </p>
+        )}
         {state !== "done" && <ViTextNote />}
         <div className="h-2 rounded-full bg-slate-100 dark:bg-zinc-800 overflow-hidden" aria-label="Thời gian còn lại">
           <div className={`h-full rounded-full ${left < 0.3 ? "bg-red-500" : "bg-teal-700 dark:bg-teal-500"}`} style={{ width: `${state === "asking" ? 100 : left * 100}%` }} />
@@ -445,29 +530,32 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
               {!started && !mic.problem && <p className="text-xs text-slate-500 dark:text-zinc-400">Đồng hồ sẽ chạy khi micro sẵn sàng.</p>}
             </>
           ) : (
-            <form
-              className="flex gap-2"
-              onSubmit={(e) => {
-                e.preventDefault();
-                submitTyped();
-              }}
-            >
-              <input
-                ref={input}
-                autoFocus
-                value={typed}
-                onChange={(e) => setTyped(e.target.value)}
-                autoCapitalize="off"
-                autoCorrect="off"
-                autoComplete="off"
-                spellCheck={false}
-                placeholder="Gõ câu tiếng Anh…"
-                className="flex-1 min-w-0 min-h-12 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-base text-slate-900 dark:text-zinc-100 focus:border-teal-600 focus:outline-none"
-              />
-              <button type="submit" disabled={!typed.trim()} className="px-4 min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 disabled:opacity-50 text-white min-w-[52px]" aria-label="Gửi">
-                <Send className="w-4 h-4 mx-auto" />
-              </button>
-            </form>
+            <>
+              <form
+                className="flex gap-2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitTyped();
+                }}
+              >
+                <input
+                  ref={input}
+                  autoFocus
+                  value={typed}
+                  onChange={(e) => setTyped(e.target.value)}
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  autoComplete="off"
+                  spellCheck={false}
+                  placeholder="Gõ câu tiếng Anh…"
+                  className="flex-1 min-w-0 min-h-12 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2.5 text-base text-slate-900 dark:text-zinc-100 focus:border-teal-600 focus:outline-none"
+                />
+                <button type="submit" disabled={!typed.trim()} className="px-4 min-h-12 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 disabled:opacity-50 text-white min-w-[52px]" aria-label="Gửi">
+                  <Send className="w-4 h-4 mx-auto" />
+                </button>
+              </form>
+              {retryNote && <p className="text-sm text-amber-800 dark:text-amber-300">{retryNote}</p>}
+            </>
           )}
         </>
       )}
@@ -492,8 +580,8 @@ function RapidCard({ task, onNext }: { task: Extract<Task, { kind: "rapid" }>; o
           <button
             onClick={() => {
               // Said or typed from the Vietnamese: a recall of its words, unless one was looked up
-              answeredSentence("patterns", item.en, { ok: verdict.ok, unaided: !hinted, goal: false });
-              onNext({ ok: verdict.ok && !hinted, ms: verdict.ms });
+              answeredSentence("patterns", item.en, { ok: verdict.ok, unaided: !hinted && !letters, goal: false });
+              onNext({ ok: verdict.ok, ms: verdict.ms });
             }}
             className={BTN_PRIMARY}
           >
@@ -573,7 +661,7 @@ export default function PatternRunner({
                 Đúng {right}/{results.length} câu{avg !== null ? `, trả lời nhanh trung bình ${avg.toFixed(1)} giây` : ""}.
               </p>
             )}
-            {kind === "ladder" && passed && step < 4 && <p className="text-sm text-slate-700 dark:text-zinc-300">Bước tiếp theo sẽ đến vào ngày mai (hoặc bạn học tiếp ngay).</p>}
+            {kind === "ladder" && passed && step > 1 && step < 4 && <p className="text-sm text-slate-700 dark:text-zinc-300">Bước tiếp theo sẽ đến vào ngày mai.</p>}
             {kind === "ladder" && passed && step >= 4 && <p className="text-sm text-slate-700 dark:text-zinc-300">Bạn đã thuộc mẫu này. App sẽ hỏi lại sau vài ngày để bạn nhớ lâu.</p>}
           </div>
           <button onClick={() => (onDone ? onDone(passed === true) : onExit())} className={BTN_PRIMARY}>
@@ -583,6 +671,7 @@ export default function PatternRunner({
       ) : (
         <>
           {task.kind === "learn" && <LearnCard key={index} pattern={task.pattern} onNext={next} />}
+          {task.kind === "listen" && <ListenCard key={index} task={task} onNext={next} />}
           {task.kind === "substitute" && <SubstituteCard key={index} task={task} onNext={next} />}
           {task.kind === "tiles" && <TilesCard key={index} task={task} onNext={next} />}
           {task.kind === "rapid" && <RapidCard key={index} task={task} onNext={next} />}

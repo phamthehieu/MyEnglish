@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { alignVi, baseForms, englishWords, meaningPhrases } from "@/services/viHints";
+import catalogFile from "@/data/vocabCatalog.json";
 
 /** What a learner sees: [chunk=English] for a word that can be tapped */
 const show = (segs: ReturnType<typeof alignVi>) => segs.map((s) => (s.en ? `[${s.text}=${s.en}]` : s.text)).join("");
@@ -15,6 +16,20 @@ const MEANINGS = new Map([
   ["time", "thời gian; lần"],
   ["would", "sẽ (tương lai trong quá khứ); có muốn … không (lời mời)"],
 ]);
+
+describe("the deck's corrected meanings", () => {
+  it("has the meaning a learner expects, each example still on its own sense", () => {
+    const words = (catalogFile as unknown as { words: Array<{ word: string; vn: string; senses: Array<{ vn: string }>; examples: Array<{ en: string; senseIndex: number }> }> }).words;
+    const of = (w: string) => words.find((x) => x.word === w)!;
+    expect(of("give").vn.startsWith("cho, đưa")).toBe(true);
+    expect(of("free").vn).toContain("rảnh");
+    expect(of("by").vn).toContain("by bus");
+    // An example stays on the sense it illustrates after a new sense went in before it
+    const give = of("give");
+    expect(give.senses[give.examples[0].senseIndex].vn).toBe("tặng");
+    for (const w of words) for (const e of w.examples) expect(w.senses[e.senseIndex], w.word).toBeDefined();
+  });
+});
 
 describe("tap a Vietnamese word to see its English", () => {
   it("pairs words with the words of the answer, keeping the sentence as written", () => {

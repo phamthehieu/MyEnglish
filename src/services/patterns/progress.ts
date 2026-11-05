@@ -76,7 +76,11 @@ export function completeStep(id: string, step: number, now: Date = new Date()): 
   save(store);
 }
 
-/** The result of asking a mastered pattern again: right moves it to a later day, wrong sends it back to the ladder's last step */
+/**
+ * The result of asking a mastered pattern again: right moves it to a later day, wrong brings it back tomorrow. A
+ * miss never takes it off the mastered ones (that kept a stage from finishing, or lost the pattern when its stage was
+ * done).
+ */
 export function recordReview(id: string, ok: boolean, now: Date = new Date()): void {
   const store = load();
   const prev = store[id];
@@ -85,7 +89,7 @@ export function recordReview(id: string, ok: boolean, now: Date = new Date()): v
     const box = Math.min(prev.box + 1, MASTERED_BOX_DAYS.length - 1);
     store[id] = { ...prev, box, due: dayAfter(now, MASTERED_BOX_DAYS[box]), lastDay: getLocalDateString(now) };
   } else {
-    store[id] = { ...prev, step: STEPS - 1, box: 0, due: dayAfter(now, 1), lastDay: getLocalDateString(now) };
+    store[id] = { ...prev, box: 0, due: dayAfter(now, 1), lastDay: getLocalDateString(now) };
   }
   save(store);
 }
