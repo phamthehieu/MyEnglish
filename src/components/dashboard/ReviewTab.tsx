@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Play, CheckCircle, Sparkles, RotateCcw, AlertCircle, Crosshair, CalendarDays, Layers, ArrowRight, Dumbbell } from "lucide-react";
 import { useWordsStore } from "@/stores/wordsStore";
 import { PAGE_CONTAINER, type LibraryStats } from "./shared";
@@ -21,7 +21,7 @@ interface ReviewTabProps {
   comeback?: ComebackStatus | null;
   libraryStats: LibraryStats;
   availableTopics: string[];
-  handleStartReview: (onlyDue?: boolean, topicFilter?: string) => void;
+  handleStartReview: (onlyDue?: boolean, topicFilter?: string, maxCards?: number) => void;
   /** Timed focus session (minutes) */
   onStartFocus?: (minutes: number) => void;
   /** The word library showing the words due */
@@ -48,6 +48,21 @@ export default function ReviewTab({
   onStartFocus,
   onOpenDueWords,
 }: ReviewTabProps) {
+  const [preferredBatch, setPreferredBatch] = useState<number>(() => {
+    try {
+      const v = Number(localStorage.getItem("myenglish_batch_size"));
+      return [10, 15, 0].includes(v) ? v : 10;
+    } catch {
+      return 10;
+    }
+  });
+
+  const selectBatch = (size: number) => {
+    setPreferredBatch(size);
+    try {
+      localStorage.setItem("myenglish_batch_size", String(size));
+    } catch {}
+  };
   const words = useWordsStore((s) => s.words);
   const setSelectedWord = useWordsStore((s) => s.setSelectedWord);
   const inComeback = !!comeback && !comeback.caughtUp;
@@ -113,9 +128,77 @@ export default function ReviewTab({
                 </p>
               </div>
 
-              <Button size="lg" block onClick={() => handleStartReview(true)} disabled={words.length === 0}>
+              {/* Batch size selector chips */}
+              {dueCount > 0 && (
+                <div className="space-y-1.5 pt-0.5">
+                  <div className="flex items-center justify-between text-xs text-slate-500 dark:text-zinc-400">
+                    <span className="font-semibold text-slate-700 dark:text-zinc-300">Gói ôn mỗi hiệp:</span>
+                    <span className="text-teal-700 dark:text-teal-400 font-medium">
+                      {preferredBatch === 0 ? `Ôn hết một đợt (${dueCount} thẻ)` : `Gói ${preferredBatch} thẻ (~${Math.round(preferredBatch * 0.35)} phút)`}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {[
+                      { count: 10, label: "10 thẻ", note: "Nhanh ~3p" },
+                      { count: 15, label: "15 thẻ", note: "Vừa ~5p" },
+                      { count: 0, label: `Hết (${dueCount})`, note: "Toàn bộ" },
+                    ].map((b) => {
+                      const active = preferredBatch === b.count;
+                      return (
+                        <button
+                          key={b.count}
+                          type="button"
+                          onClick={() => selectBatch(b.count)}
+                          className={`px-2 py-1.5 rounded-xl border text-center transition-all cursor-pointer ${
+                            active
+                              ? "border-teal-600 bg-teal-50 dark:bg-teal-950/40 text-teal-800 dark:text-teal-300 ring-1 ring-teal-600/30 font-bold shadow-2xs"
+                              : "border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400"
+                          }`}
+                        >
+                          <div className="text-xs">{b.label}</div>
+                          <div className="text-[10px] opacity-75">{b.note}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Pace Relief Suggestion */}
+              {dueCount >= 20 && (
+                <div className="flex items-center justify-between p-3 rounded-xl border border-amber-200/80 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/20 text-left gap-3">
+                  <div className="space-y-0.5 min-w-0">
+                    <p className="text-xs font-bold text-amber-900 dark:text-amber-200 flex items-center gap-1.5">
+                      <span>🧘</span>
+                      <span>Thấy nhiều thẻ quá? Giãn bớt lịch ôn</span>
+                    </p>
+                    <p className="text-[11px] text-slate-600 dark:text-zinc-400">
+                      Chia {dueCount} thẻ thành các hiệp 10 thẻ để học nhẹ nhàng hơn
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => selectBatch(10)}
+                    className="shrink-0 px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold shadow-2xs cursor-pointer active:scale-95"
+                  >
+                    Gói 10 thẻ
+                  </button>
+                </div>
+              )}
+
+              <Button
+                size="lg"
+                block
+                onClick={() => handleStartReview(true, undefined, preferredBatch > 0 ? preferredBatch : undefined)}
+                disabled={words.length === 0}
+              >
                 {dueCount > 0 ? <Play className="h-5 w-5" /> : isCapped ? <RotateCcw className="h-5 w-5" /> : <Sparkles className="h-5 w-5" />}
                 {startLabel}
+                {dueCount > 0 && preferredBatch > 0 && (
+                  <span className="text-xs opacity-85 font-normal ml-1">
+                    (gói {preferredBatch} thẻ)
+                  </span>
+                )}
               </Button>
 
               <div className="grid grid-cols-2 gap-2">

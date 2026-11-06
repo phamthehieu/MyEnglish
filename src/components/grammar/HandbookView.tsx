@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { Volume2, Lightbulb } from "lucide-react";
+import { Volume2, Lightbulb, Snail } from "lucide-react";
 import type { GrammarBlock } from "@/types/grammarBook";
-import { handleSpeak } from "@/components/review/speech";
+import { handleSpeak, SLOW_RATE } from "@/components/review/speech";
 
 interface HandbookViewProps {
   blocks: GrammarBlock[];
@@ -92,14 +92,24 @@ export default function HandbookView({
                 </div>
               )}
             </div>
-            <button
-              onClick={() => speakText(txt(block.en))}
-              className="w-11 h-11 inline-flex items-center justify-center rounded-full text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors shrink-0"
-              aria-label="Phát âm tiếng Anh"
-              title="Phát âm tiếng Anh"
-            >
-              <Volume2 className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                onClick={() => speakText(txt(block.en))}
+                className="w-10 h-10 inline-flex items-center justify-center rounded-full text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 transition-colors"
+                aria-label="Phát âm tiếng Anh chuẩn"
+                title="Nghe chuẩn"
+              >
+                <Volume2 className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleSpeak(txt(block.en), SLOW_RATE)}
+                className="w-10 h-10 inline-flex items-center justify-center rounded-full text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-400/10 transition-colors"
+                aria-label="Phát âm tiếng Anh chậm"
+                title="Nghe chậm"
+              >
+                <Snail className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         );
 

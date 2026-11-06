@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Loader2, Mic, Snail, Square, Volume2 } from "lucide-react";
+import { Loader2, Mic, Square } from "lucide-react";
 import { logLearningEvent } from "@/services/learningEvents";
 import {
   asrAvailable,
@@ -15,7 +15,7 @@ import {
   micPermissionText,
 } from "@/services/pronunciationCheck";
 import { playSound } from "@/services/sound";
-import { AUTO_SPEAK_DELAY_MS, handleSpeak, SLOW_RATE, SPEAK_EVENT, stopSpeaking, waitForSpeechToEnd } from "./speech";
+import { handleSpeak, SLOW_RATE, SPEAK_EVENT, stopSpeaking } from "./speech";
 
 /** Common words the recognizer can pick instead of the target, so it does not accept any sound as the word */
 const DECOY_POOL = ["water", "house", "people", "time", "work", "money", "family", "problem", "city", "friend", "morning", "number"];
@@ -140,161 +140,112 @@ export default function SayAloudPrompt({ word, wordId, onPassed }: { word: strin
     timer.current = window.setTimeout(finish, MAX_LISTEN_MS);
   };
 
-  /** Once the reading going on now is over, switch the microphone on by itself */
-  const listenAfterSpeech = async (delayMs: number) => {
-    const mine = attempt.current;
-    await new Promise((r) => window.setTimeout(r, delayMs));
-    await waitForSpeechToEnd();
-    if (alive.current && mine === attempt.current) void begin(true);
-  };
-
-  // Hands free: the card reads the word when it opens (useReviewSession), then the microphone comes on
-  useEffect(() => {
-    if (!useMic) return;
-    void listenAfterSpeech(AUTO_SPEAK_DELAY_MS + 150);
-    // Only when the card opens, and when it falls back from the self-rating (never: manual is one way)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useMic]);
-
-  // The word is read again (a button, a shortcut) while listening: pause, so the microphone does not hear the
-  // phone, and listen again once it is over
+  // When speaking starts externally, cancel any active listening
   useEffect(() => {
     if (!useMic) return;
     const onSpeak = () => {
-      if (doneRef.current !== null) return;
       if (phaseRef.current === "listening") {
         attempt.current += 1;
         window.clearTimeout(timer.current);
         cancelListening();
         phaseRef.current = "idle";
         setPhase("idle");
-        void listenAfterSpeech(100);
-      } else if (phaseRef.current === "idle" || phaseRef.current === "preparing") {
-        // After a miss: hear it, then try again without pressing anything. While the microphone is getting ready
-        // the same: that attempt is dropped (it would open during the reading), a new one follows it
-        attempt.current += 1;
-        if (phaseRef.current === "preparing") {
-          phaseRef.current = "idle";
-          setPhase("idle");
-        }
-        void listenAfterSpeech(100);
       }
     };
     window.addEventListener(SPEAK_EVENT, onSpeak);
     return () => window.removeEventListener(SPEAK_EVENT, onSpeak);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useMic]);
 
   if (done !== null) {
     return (
-      <div className="text-center text-sm text-green-700 dark:text-green-400" role="status">
-        {done === "ok" ? "Tốt lắm! Giờ đọc kỹ nghĩa và câu ví dụ, rồi bấm Học tiếp." : "Không sao, nghe chậm thêm vài lần là quen. Đọc kỹ nghĩa rồi bấm Học tiếp."}
+      <div className="rounded-xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800/50 p-2.5 text-center text-xs font-semibold text-green-800 dark:text-green-300 animate-in fade-in" role="status">
+        {done === "ok" ? "🎉 Phát âm rất chuẩn! Hãy xem câu ví dụ rồi bấm Học tiếp ở dưới." : "👍 Đã ghi nhận! Hãy xem câu ví dụ rồi bấm Học tiếp ở dưới."}
       </div>
     );
   }
 
-  const listenButtons = (
-    <>
-      <button
-        onClick={() => handleSpeak(word)}
-        className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 transition-colors"
-        title="Nghe"
-        aria-label="Nghe"
-      >
-        <Volume2 className="w-4 h-4" />
-      </button>
-      <button
-        onClick={() => handleSpeak(word, SLOW_RATE)}
-        className="min-w-10 min-h-10 inline-flex items-center justify-center rounded-xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 transition-colors"
-        title="Nghe chậm"
-        aria-label="Nghe chậm"
-      >
-        <Snail className="w-4 h-4" />
-      </button>
-    </>
-  );
-
-  // Always offered: logged like the other ways out, with how: "skip"
-  const skipButton = (
-    <div className="text-center">
-      <button
-        onClick={() => {
-          attempt.current += 1;
-          window.clearTimeout(timer.current);
-          cancelListening();
-          setPhase("idle");
-          pass(false, "skip");
-        }}
-        disabled={phase === "preparing" || phase === "checking"}
-        className="min-h-10 px-3 text-sm underline text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-200 disabled:opacity-50"
-      >
-        Tôi không nói to được lúc này
-      </button>
-    </div>
-  );
-
   if (!useMic) {
     return (
-      <div className="space-y-1">
-        <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-600 dark:text-zinc-400">
-          <Mic className="w-4 h-4 text-teal-700 dark:text-teal-300" />
-          <span>Nghe rồi đọc to từ này, xong bấm xác nhận:</span>
-          {listenButtons}
-          <button onClick={() => pass(true, "self")} className="min-h-10 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white font-semibold transition-colors">
-            Đọc được
+      <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-800/40 p-3 space-y-2 mt-2">
+        <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-zinc-300">
+          <span className="inline-flex items-center gap-1.5 text-teal-800 dark:text-teal-300">
+            <Mic className="w-3.5 h-3.5" />
+            <span>Luyện phát âm từ này:</span>
+          </span>
+        </div>
+        <div className="flex items-center justify-center gap-2 flex-wrap">
+          <button
+            type="button"
+            onClick={() => pass(true, "self")}
+            className="min-h-10 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-xs font-semibold inline-flex items-center gap-1.5 transition-colors shadow-2xs"
+          >
+            Đã tự đọc chuẩn ✓
           </button>
           <button
+            type="button"
             onClick={() => {
-              setMessage("Không sao, nghe chậm thêm vài lần rồi đọc lại nhé.");
+              setMessage("Hãy nghe lại chậm rồi thử nhẩm theo nhé.");
               handleSpeak(word, SLOW_RATE);
             }}
-            className="min-h-10 px-4 rounded-xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 font-semibold transition-colors"
+            className="min-h-10 px-3.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 text-xs font-semibold hover:bg-slate-100 transition-colors shadow-2xs"
           >
-            Chưa chắc
+            Chưa chắc lắm
           </button>
         </div>
-        {message && <div className="text-center text-sm text-amber-700 dark:text-amber-300">{message}</div>}
-        {skipButton}
+        {message && <div className="text-center text-xs text-amber-700 dark:text-amber-300">{message}</div>}
       </div>
     );
   }
 
   return (
-    <div className="space-y-1.5">
-      <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-600 dark:text-zinc-400">
-        <Mic className="w-4 h-4 text-teal-700 dark:text-teal-300" />
-        <span>Nghe rồi đọc to từ này cho máy nghe:</span>
-        {listenButtons}
+    <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-800/40 p-3 space-y-2 mt-2">
+      <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-zinc-300">
+        <span className="inline-flex items-center gap-1.5 text-teal-800 dark:text-teal-300">
+          <Mic className="w-3.5 h-3.5" />
+          <span>Luyện phát âm (tùy chọn):</span>
+        </span>
+        <button
+          type="button"
+          onClick={() => pass(false, "skip")}
+          className="text-[11px] text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 underline"
+        >
+          Bỏ qua
+        </button>
       </div>
-      <div className="flex justify-center">
+
+      <div className="flex items-center justify-center gap-2">
         {phase === "listening" ? (
           <button
+            type="button"
             onClick={finish}
-            className="min-h-12 px-5 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-base font-semibold inline-flex items-center gap-1.5 animate-pulse motion-reduce:animate-none"
+            className="min-h-11 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold inline-flex items-center gap-2 animate-pulse shadow-sm"
           >
-            <Square className="w-3.5 h-3.5 fill-white" /> Đang nghe… đọc to "{word}"
+            <Square className="w-3.5 h-3.5 fill-white" />
+            <span>Đang nghe... hãy đọc "{word}"</span>
           </button>
         ) : (
           <button
+            type="button"
             onClick={() => void begin()}
             disabled={phase !== "idle"}
-            className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-60 text-white text-base font-semibold inline-flex items-center gap-1.5 transition-colors"
+            className="min-h-11 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:opacity-60 text-white text-sm font-semibold inline-flex items-center gap-2 shadow-sm transition-all active:scale-95"
           >
             {phase === "idle" ? (
               <>
-                <Mic className="w-4 h-4" /> {message ? `Đọc lại "${word}"` : `Bấm rồi đọc to "${word}"`}
+                <Mic className="w-4 h-4" />
+                <span>{message ? `Đọc lại "${word}"` : `Bấm micro đọc thử "${word}"`}</span>
               </>
             ) : (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                {phase === "preparing" ? "Đang bật micro…" : "Đang nghe lại…"}
+                <span>{phase === "preparing" ? "Đang bật micro..." : "Đang chấm điểm..."}</span>
               </>
             )}
           </button>
         )}
       </div>
-      {message && <div className="text-center text-sm text-amber-700 dark:text-amber-300">{message}</div>}
-      {skipButton}
+
+      {message && <div className="text-center text-xs text-amber-700 dark:text-amber-300">{message}</div>}
     </div>
   );
 }

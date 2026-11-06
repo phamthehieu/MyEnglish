@@ -18,7 +18,7 @@ import { anchorTimesOf, type ReminderAnchor } from "@/services/reminderMoments";
 import StudyTimesField from "./dashboard/StudyTimesField";
 import type { ReminderTrigger } from "@/services/reminderSettings";
 import { DEFAULT_INITIAL_TENSE_IDS, initialTensesForLevel, saveInitialTenses } from "@/services/grammarPath";
-import { GOAL_HINT, GOAL_LABEL, GOALS, type RoadmapGoal } from "@/services/roadmap/stages";
+import { type RoadmapGoal } from "@/services/roadmap/stages";
 import { setGoal as setRoadmapGoal } from "@/services/roadmap/state";
 import PlacementTest from "./PlacementTest";
 import { LevelPicker, mixDescription } from "./dashboard/VocabTab";
@@ -137,8 +137,8 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
   const [level, setLevel] = useState<LevelChoice | null>(null);
   const [placementOpen, setPlacementOpen] = useState(false);
   const [placementDone, setPlacementDone] = useState(false);
-  // What the learner wants English for: the speaking path's order (null: chosen later, on the speaking tab)
-  const [goal, setGoal] = useState<RoadmapGoal | null>(null);
+  // Default goal for working adult learners is "work" (practical communication)
+  const [goal] = useState<RoadmapGoal>("work");
   const [minutes, setMinutes] = useState<DailyMinutes>(10);
   const [reminders, setReminders] = useState(true);
   const [triggerCondition, setTriggerCondition] = useState<ReminderTrigger>("due_only");
@@ -164,7 +164,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
       setStudyLevels(studyLevels);
       // One level for every part: grammar starts at the tenses of the level chosen
       saveInitialTenses(await initialTensesForLevel(!level || level === "A0" ? "A1" : level));
-      if (goal) setRoadmapGoal(goal);
+      setRoadmapGoal(goal);
       await topUpNewWords();
       markOnboardingDone();
       onFinish(startNow);
@@ -183,6 +183,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
       setStudyLevels(["A1"]);
       applyDailyPlan(10, reminders, { anchors, transitions });
       saveInitialTenses([...DEFAULT_INITIAL_TENSE_IDS]);
+      setRoadmapGoal("work");
       await topUpNewWords().catch(() => {});
       markOnboardingDone();
       onFinish(false);
@@ -195,7 +196,7 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
   return (
     <div className="popup-backdrop-enter fixed inset-0 z-50 overflow-y-auto bg-[#F7F8FA] dark:bg-zinc-950">
       <div className="mx-auto flex min-h-full w-full max-w-xl flex-col px-4">
-        {/* Top: back, "Bước n/4", skip, one progress bar */}
+        {/* Top: back, "Bước n/3", skip, one progress bar */}
         <div className="sticky top-0 z-10 -mx-4 bg-[#F7F8FA]/95 px-4 pb-3 pt-[calc(env(safe-area-inset-top)+0.5rem)] backdrop-blur dark:bg-zinc-950/95">
           <div className="grid min-h-12 grid-cols-[1fr_auto_1fr] items-center gap-2">
             <div>
@@ -204,14 +205,14 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
                   type="button"
                   aria-label="Quay lại"
                   onClick={() => setStep(step - 1)}
-                  disabled={step === 4 && busy}
+                  disabled={step === 3 && busy}
                   className="-ml-2 inline-flex h-12 w-12 items-center justify-center rounded-full text-slate-700 hover:bg-slate-200/60 disabled:opacity-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </button>
               )}
             </div>
-            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 dark:text-zinc-400">Bước {step}/4</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600 dark:text-zinc-400">Bước {step}/3</span>
             <div className="flex justify-end">
               <button
                 onClick={skipAll}
@@ -223,11 +224,11 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
               </button>
             </div>
           </div>
-          <ProgressBar value={step * 25} className="mt-2 h-1.5" />
+          <ProgressBar value={Math.round((step / 3) * 100)} className="mt-2 h-1.5" />
         </div>
 
         <div className="flex-1 space-y-6 pb-6 pt-3">
-          {error && step !== 4 && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
+          {error && step !== 3 && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
           {step === 1 && (
             <>
@@ -301,36 +302,6 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
           )}
 
           {step === 3 && (
-            <>
-              <div className="space-y-2">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Bạn học tiếng Anh để làm gì?</h1>
-                <p className="text-sm leading-relaxed text-slate-600 dark:text-zinc-400">
-                  App xếp lộ trình nói theo mục tiêu này: những câu bạn sẽ cần trước được học trước. Đổi lại được bất cứ lúc nào.
-                </p>
-              </div>
-              <div className="space-y-3">
-                {GOALS.map((g) => {
-                  const on = goal === g;
-                  return (
-                    <button key={g} aria-pressed={on} onClick={() => setGoal(g)} className={`${choiceCard(on)} flex min-h-16 items-center gap-4 p-4`}>
-                      <span className="min-w-0 flex-1">
-                        <span className={`block text-base font-semibold ${on ? "text-teal-800 dark:text-teal-200" : "text-slate-900 dark:text-white"}`}>
-                          {GOAL_LABEL[g]}
-                        </span>
-                        <span className="mt-0.5 block text-sm leading-snug text-slate-600 dark:text-zinc-400">{GOAL_HINT[g]}</span>
-                      </span>
-                      <CheckDot on={on} />
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="text-sm text-slate-600 dark:text-zinc-400">
-                Ngữ pháp bắt đầu từ thì hiện tại đơn kèm mẹo ngữ pháp giao tiếp cho từng chặng nói (đổi được trong tab Ngữ pháp).
-              </p>
-            </>
-          )}
-
-          {step === 4 && (
             <>
               <div className="space-y-2">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Mỗi ngày bạn học bao lâu, vào lúc nào?</h1>
@@ -448,16 +419,6 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
             </Button>
           )}
           {step === 3 && (
-            <div className="space-y-2">
-              <Button size="lg" block onClick={() => setStep(4)} disabled={goal === null}>
-                Tiếp
-              </Button>
-              <Button size="lg" block variant="ghost" onClick={() => setStep(4)}>
-                Chưa biết, chọn sau
-              </Button>
-            </div>
-          )}
-          {step === 4 && (
             <>
               <Button size="lg" block onClick={() => finish(true)} disabled={busy}>
                 {busy && <Loader2 className="h-4 w-4 animate-spin" />}

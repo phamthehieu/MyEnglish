@@ -11,10 +11,11 @@ interface FlipCardProps {
   setIsFlipped: (value: boolean) => void;
   /** Introduction cards stay on the answer side: no way back to the front */
   isIntro?: boolean;
+  introPrompt?: React.ReactNode;
 }
 
 /** MODE 1: STANDARD FLIP */
-export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlipped, isIntro }: FlipCardProps) {
+export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlipped, isIntro, introPrompt }: FlipCardProps) {
   return (
     <div className="flex-1 min-h-0 flex flex-col justify-between">
       {!isFlipped ? (
@@ -61,11 +62,14 @@ export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlippe
           </div>
         </div>
       ) : (
-        <RevealedWordContent
-          currentWord={currentWord}
-          handleSpeak={handleSpeak}
-          onFlipBack={isIntro ? undefined : () => setIsFlipped(false)}
-        />
+        <div className="flex-1 min-h-0 flex flex-col justify-between space-y-3">
+          <RevealedWordContent
+            currentWord={currentWord}
+            handleSpeak={handleSpeak}
+            onFlipBack={isIntro ? undefined : () => setIsFlipped(false)}
+          />
+          {introPrompt}
+        </div>
       )}
     </div>
   );

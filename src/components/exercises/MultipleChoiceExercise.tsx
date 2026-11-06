@@ -151,7 +151,7 @@ export default function MultipleChoiceExercise({
   }, [isAnswered, questionData.options, handleSelectOption, gated]);
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-3 md:space-y-6 animate-in fade-in duration-200">
+    <div className="w-full max-w-xl mx-auto space-y-3 md:space-y-6">
       {/* Question Card: on a phone it drops its own frame (a card inside the card ate the space) */}
       <div className="rounded-2xl md:border border-slate-200 dark:border-zinc-800 md:bg-white md:dark:bg-zinc-900 py-1 md:p-8 text-center space-y-1.5 md:space-y-3 md:shadow-[0_1px_3px_rgba(15,23,42,0.05)] relative overflow-hidden">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">

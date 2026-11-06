@@ -138,7 +138,7 @@ export default function ReverseClozeExercise({
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-6 animate-in fade-in duration-200">
+    <div className="w-full max-w-xl mx-auto space-y-6">
       {/* Context Sentence Card */}
       <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-8 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-center">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300">

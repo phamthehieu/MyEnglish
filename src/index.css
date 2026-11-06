@@ -10,6 +10,18 @@
   }
 }
 
+/* On mobile / touch screens, disable GPU-heavy backdrop-filter blurs to guarantee silky 60 FPS */
+@media (hover: none) and (pointer: coarse) {
+  .backdrop-blur,
+  .backdrop-blur-sm,
+  .backdrop-blur-md,
+  .backdrop-blur-lg,
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
 /* Text under 11px is hard to read on a phone held at arm's length: lift the tiniest sizes one step on touch screens */
 @media (hover: none) and (pointer: coarse) {
   .text-\[9px\],
@@ -100,6 +112,9 @@
     height: 100%;
     overflow: hidden;
     user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -289,7 +304,8 @@ pre code {
   }
 }
 .tab-enter {
-  animation: tab-fade 0.2s ease-out;
+  animation: tab-fade 0.12s ease-out;
+  will-change: opacity;
 }
 /* A bottom sheet rises from the edge, a bar drops in from the top */
 @keyframes sheet-enter {
@@ -301,7 +317,8 @@ pre code {
   }
 }
 .sheet-enter {
-  animation: sheet-enter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: sheet-enter 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 @keyframes bar-enter {
   from {
@@ -314,7 +331,8 @@ pre code {
   }
 }
 .bar-enter {
-  animation: bar-enter 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: bar-enter 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
 }
 @media (prefers-reduced-motion: reduce) {
   .tab-enter,
@@ -324,15 +342,27 @@ pre code {
   }
 }
 
-/* Press feedback on every button: it sinks a little under the finger. The individual "scale" property is used, so
-   it never replaces the transform a button may already have (centering, translations). */
+/* Press feedback on every button: GPU-accelerated and instant on touch */
 button,
 [role="button"] {
-  transition: scale 0.12s ease-out;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
-button:not(:disabled):active,
-[role="button"]:not([aria-disabled="true"]):active {
-  scale: 0.97;
+@media (hover: hover) and (pointer: fine) {
+  button,
+  [role="button"] {
+    transition: transform 0.1s ease-out;
+  }
+  button:not(:disabled):active,
+  [role="button"]:not([aria-disabled="true"]):active {
+    transform: scale(0.98);
+  }
+}
+@media (hover: none) and (pointer: coarse) {
+  button:not(:disabled):active,
+  [role="button"]:not([aria-disabled="true"]):active {
+    transform: scale(0.98);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   button,
@@ -341,7 +371,7 @@ button:not(:disabled):active,
   }
   button:not(:disabled):active,
   [role="button"]:not([aria-disabled="true"]):active {
-    scale: 1;
+    transform: none;
   }
 }
 

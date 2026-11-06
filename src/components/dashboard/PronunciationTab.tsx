@@ -12,6 +12,7 @@ import {
   Mic,
   RotateCcw,
   Snail,
+  Sparkles,
   Volume2,
   X,
 } from "lucide-react";
@@ -44,6 +45,11 @@ import { getWordsLite } from "@/services/db";
 import { MicCheck } from "./PronunciationMicCheck";
 import SoundSession, { lessonFromPair } from "./SoundSession";
 import SoundIntro from "./SoundIntro";
+import { asrAvailable } from "@/services/pronunciationCheck";
+import { getTeacherGuide } from "@/services/pronunciationTips";
+
+const PRACTICE_OVERLAY =
+  "fixed inset-0 z-40 flex flex-col bg-[#f7f8fa] dark:bg-zinc-950 overflow-y-auto p-4 md:p-6 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-[calc(env(safe-area-inset-bottom)+1.5rem)] select-none animate-in fade-in duration-200";
 
 /** The three steps of a lesson, one on screen at a time so the exercise is never below the theory */
 type Step = "learn" | "say" | "quiz";
@@ -401,22 +407,75 @@ function SayAloud({
               <Snail className="w-4 h-4" /> Chậm <Kbd>S</Kbd>
             </button>
           </div>
+          {getTeacherGuide(item.text, item.ipa, lesson.title) && (
+            <div className="w-full rounded-2xl border border-amber-200/80 dark:border-amber-900/60 bg-amber-50/70 dark:bg-amber-950/20 p-3.5 space-y-2 text-left my-2">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-200 uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <span>Mẹo giáo viên · {getTeacherGuide(item.text, item.ipa, lesson.title)!.soundTitle}</span>
+              </div>
+              <div className="space-y-1.5 text-xs text-slate-700 dark:text-zinc-300 leading-relaxed">
+                <p>
+                  <span className="font-bold text-slate-900 dark:text-zinc-100">👄 Khẩu hình: </span>
+                  {getTeacherGuide(item.text, item.ipa, lesson.title)!.mouthAnchor}
+                </p>
+                {getTeacherGuide(item.text, item.ipa, lesson.title)!.phonicsRule && (
+                  <p>
+                    <span className="font-bold text-slate-900 dark:text-zinc-100">🔤 Mẹo mặt chữ: </span>
+                    {getTeacherGuide(item.text, item.ipa, lesson.title)!.phonicsRule}
+                  </p>
+                )}
+                {getTeacherGuide(item.text, item.ipa, lesson.title)!.pitfall && (
+                  <p className="text-amber-800 dark:text-amber-300/90">
+                    <span className="font-bold">⚠️ Tránh nhầm: </span>
+                    {getTeacherGuide(item.text, item.ipa, lesson.title)!.pitfall}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+          <div className="w-full border-t border-slate-100 dark:border-zinc-800/80 my-2" />
           <MicCheck lesson={lesson} item={item} onPassed={() => rate(true)} />
         </div>
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            onClick={() => rate(true)}
-            className="min-h-14 px-3 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm inline-flex items-center justify-center gap-2"
-          >
-            <Check className="w-4 h-4" /> Mình đọc được <Kbd>1</Kbd>
-          </button>
-          <button
-            onClick={() => rate(false)}
-            className="min-h-14 px-3 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold inline-flex items-center justify-center gap-2"
-          >
-            Chưa chắc, từ khác <Kbd>2</Kbd>
-          </button>
-        </div>
+        {asrAvailable() ? (
+          <div className="pt-1 text-center space-y-2">
+            <p className="text-xs text-slate-500 dark:text-zinc-400">
+              Không tiện bật micro? Bạn có thể tự đọc to rồi bấm:
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => rate(true)}
+                className="min-h-12 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-teal-50 dark:hover:bg-teal-950/30 text-slate-700 dark:text-zinc-200 text-sm font-semibold inline-flex items-center justify-center gap-2 transition-colors"
+              >
+                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400" /> Tự chấm: Đọc được <Kbd>1</Kbd>
+              </button>
+              <button
+                type="button"
+                onClick={() => rate(false)}
+                className="min-h-12 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-sm font-semibold inline-flex items-center justify-center gap-2 transition-colors"
+              >
+                Chưa chắc, từ khác <Kbd>2</Kbd>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => rate(true)}
+              className="min-h-14 px-3 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm inline-flex items-center justify-center gap-2"
+            >
+              <Check className="w-4 h-4" /> Mình đọc được <Kbd>1</Kbd>
+            </button>
+            <button
+              type="button"
+              onClick={() => rate(false)}
+              className="min-h-14 px-3 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold inline-flex items-center justify-center gap-2"
+            >
+              Chưa chắc, từ khác <Kbd>2</Kbd>
+            </button>
+          </div>
+        )}
       </div>
       <p className="text-xs text-center text-slate-500 dark:text-zinc-400">
         Nghe 2 lần, đọc to (không đọc thầm), rồi tự so với tiếng máy. Phần này không chấm điểm.
@@ -939,7 +998,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
 
   if (showPhonemeModal && phonemeSession) {
     return (
-      <div className={PAGE_CONTAINER}>
+      <div className={PRACTICE_OVERLAY}>
         <SoundSession
           key={phonemeSession.pair.id}
           lesson={lessonFromPair(phonemeSession.pair)}
@@ -957,7 +1016,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
     const isSound = openSeries === phonemes;
     if (isSound && open.intro) {
       return (
-        <div className={PAGE_CONTAINER}>
+        <div className={PRACTICE_OVERLAY}>
           <SoundIntro
             key={`${lesson.id}-${open.n}`}
             lesson={lesson}
@@ -970,7 +1029,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
     }
     if (isSound && open.session) {
       return (
-        <div className={PAGE_CONTAINER}>
+        <div className={PRACTICE_OVERLAY}>
           <SoundSession
             key={`${lesson.id}-${open.n}`}
             lesson={lesson}
@@ -983,7 +1042,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
       );
     }
     return (
-      <div className={PAGE_CONTAINER}>
+      <div className={PRACTICE_OVERLAY}>
         <LessonView
           key={`${lesson.id}-${open.n}`}
           lesson={lesson}
@@ -1062,6 +1121,55 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
             </button>
           </div>
         )}
+
+        {/* Featured Practical Pronunciation Skills for Vietnamese Learners */}
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-base font-bold text-slate-900 dark:text-zinc-100 flex items-center gap-1.5">
+                <span>🎯</span>
+                <span>Kỹ năng thực chiến cho người Việt</span>
+              </span>
+            </div>
+            <span className="text-xs text-slate-500 dark:text-zinc-400">Khắc phục 2 lỗi lớn nhất</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button
+              type="button"
+              onClick={() => openLesson("pron-final-sounds", "learn")}
+              className="p-3 rounded-xl border border-teal-200/80 dark:border-teal-900/60 bg-teal-50/50 hover:bg-teal-100/60 dark:bg-teal-950/20 dark:hover:bg-teal-950/40 text-left transition-all group flex items-start gap-3 active:scale-98 cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs font-mono">
+                /k/
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-bold text-slate-900 dark:text-zinc-100 group-hover:text-teal-700 dark:group-hover:text-teal-300 transition-colors">
+                  Bật âm cuối (Ending Sounds)
+                </div>
+                <div className="text-xs text-slate-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
+                  Khắc phục nuốt âm: /t/, /d/, /k/, /s/, /z/, /p/
+                </div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => openLesson("pron-word-stress", "learn")}
+              className="p-3 rounded-xl border border-amber-200/80 dark:border-amber-900/60 bg-amber-50/50 hover:bg-amber-100/60 dark:bg-amber-950/20 dark:hover:bg-amber-950/40 text-left transition-all group flex items-start gap-3 active:scale-98 cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-lg bg-amber-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs font-mono">
+                ˈ●
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-bold text-slate-900 dark:text-zinc-100 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
+                  Trọng âm từ (Word Stress)
+                </div>
+                <div className="text-xs text-slate-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
+                  Nhấn đúng nhịp com-PU-ter, de-VE-lo-per
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
 
         <div role="tablist" className="grid grid-cols-2 gap-1 p-1 rounded-2xl bg-slate-100 dark:bg-zinc-800/70">
           {(

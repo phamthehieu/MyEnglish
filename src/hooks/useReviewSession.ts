@@ -422,10 +422,10 @@ export function useReviewSession({
     // after meeting it was too hard to remember anything from; typing comes on later days (selectExerciseType).
     const recalls = recallsAfterIntroRef.current.get(currentKey);
     if (recalls === 1) return "letter_tiles";
-    // Quiz after the introduction: a cued question (again after "Không nhớ", whose answer made the card no longer
-    // new): the meaning among four, or for a recall card the word from its letters
+    // Quiz after the introduction: ALWAYS multiple choice first (recognition before production)
+    // to build passive familiarity with meaning and spelling before asking to build letters.
     if (recalls === 0 || (introducedAtRef.current.has(currentKey) && isNewCard(currentWord))) {
-      return currentWord.direction === "production" ? "letter_tiles" : "multiple_choice";
+      return "multiple_choice";
     }
     const picked = selectExerciseType(currentWord);
     // Mature recall cards sometimes get output practice: recall the word and write a sentence with it,
@@ -553,8 +553,11 @@ export function useReviewSession({
 
   /** The introduction was read: log it and bring the card back for its first quiz a few cards later */
   const handleIntroDone = () => {
-    if (!currentWord || gradingLockRef.current || sayPassedRef.current !== currentKey) return;
+    if (!currentWord || gradingLockRef.current) return;
     gradingLockRef.current = true;
+    if (sayPassedRef.current !== currentKey) {
+      logLearningEvent("say_aloud", { wordId: currentWord.id, meta: { ok: false, surface: "intro", how: "skip" } });
+    }
     introducedAtRef.current.set(currentKey, Date.now());
     recallsAfterIntroRef.current.set(currentKey, 0);
     currentWord.srs = {

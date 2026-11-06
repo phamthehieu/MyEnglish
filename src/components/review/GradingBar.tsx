@@ -52,13 +52,13 @@ export default function GradingBar({
   onlyAgain,
   allowEasy,
   pendingRating,
-  onContinue,
+  onContinue: _onContinue,
   introMode = false,
   onIntroDone,
-  introLocked = false,
+  introLocked: _introLocked = false,
   onGiveUp,
-  isPractice = false,
-  tilesAction = null,
+  isPractice: _isPractice = false,
+  tilesAction: _tilesAction = null,
 }: GradingBarProps) {
   // Simple mode: Vietnamese labels only (no Again/Hard/Good/Easy, no exercise code names)
   const simple = isSimpleMode();
@@ -106,52 +106,20 @@ export default function GradingBar({
     },
   ].filter((g) => (onlyAgain ? g.rating === Rating.Again : g.rating !== Rating.Easy || allowEasy));
 
-  // The letter tiles: their "Kiểm tra" here, in the place and look of "Tiếp tục" (their other buttons are on the card)
-  if (effectiveExerciseType === "letter_tiles" && !introMode && pendingRating === null) {
-    if (!tilesAction) return null;
-    return (
-      <div className="w-full mt-3 shrink-0">
-        <button
-          onClick={tilesAction.check}
-          disabled={!tilesAction.canCheck || isAdvancing}
-          className="w-full h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-800 dark:disabled:text-zinc-500 text-white text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
-        >
-          <span>Kiểm tra</span>
-          <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="w-full mt-3 min-h-14 shrink-0 flex items-center justify-center">
       {introMode ? (
         <button
           onClick={onIntroDone}
-          disabled={isAdvancing || introLocked}
-          autoFocus
-          className="w-full min-h-14 px-3 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white disabled:opacity-40 text-base font-semibold leading-tight flex items-center justify-center gap-2 transition-colors shadow-sm"
-        >
-          <span>{introLocked ? "🎤 Đọc to từ này, hoặc chọn \"không nói to được\" ở trên" : "Học tiếp (sẽ hỏi lại sau vài thẻ)"}</span>
-          {!introLocked && <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>}
-        </button>
-      ) : pendingRating !== null ? (
-        <button
-          onClick={onContinue}
           disabled={isAdvancing}
           autoFocus
-          className="w-full h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white disabled:opacity-40 text-base font-semibold flex items-center justify-center gap-2 transition-colors shadow-sm"
+          className="w-full h-14 px-4 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold leading-tight flex items-center justify-center gap-2 transition-all shadow-sm active:scale-98"
         >
-          <span>Tiếp tục</span>
-          <span className="text-xs opacity-80">
-            {pendingRating === Rating.Again
-              ? "(gặp lại sau vài thẻ)"
-              : isPractice
-              ? "(luyện thêm, lịch ôn không đổi)"
-              : `(gặp lại sau ${intervalPreviews[pendingRating as keyof IntervalPreviews]})`}
-          </span>
-          <kbd className="px-2 py-0.5 rounded bg-white/20 dark:bg-black/10 text-[11px] font-mono">Enter ↵</kbd>
+          <span>Học tiếp (gặp lại sau vài thẻ)</span>
+          <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>
         </button>
+      ) : pendingRating !== null ? (
+        <div className="w-full h-14" />
       ) : ["multiple_choice", "sentence_builder", "context_match", "meaning_match", "listening", "reverse_cloze", "free_writing", "letter_tiles"].includes(
         effectiveExerciseType
       ) ? (

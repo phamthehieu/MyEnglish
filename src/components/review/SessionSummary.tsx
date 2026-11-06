@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { AlarmClock, Award, CalendarCheck, Check, RotateCcw, Sparkles, Zap } from "lucide-react";
+import { AlarmClock, Award, CalendarCheck, Check, Play, RotateCcw, Sparkles, Zap } from "lucide-react";
 import type { FSRSResult } from "@/services/srs";
 import type { WordDetail, ReviewCard } from "@/types/database";
 import type { XPState } from "@/services/smartReview";
@@ -24,6 +24,7 @@ interface SessionSummaryProps {
   bonusXp?: number;
   /** When the next card comes due (undefined: the header already says it, e.g. a focus session) */
   nextReview?: NextReview | null;
+  onRestartWithNext?: () => void;
 }
 
 /**
@@ -42,6 +43,7 @@ export default function SessionSummary({
   header,
   bonusXp = 0,
   nextReview,
+  onRestartWithNext,
 }: SessionSummaryProps) {
   const simple = isSimpleMode();
   const [tomorrow, setTomorrow] = useState<number | null>(null);
@@ -52,7 +54,8 @@ export default function SessionSummary({
   }, []);
 
   const day = sessionStats.day;
-  const close = day ? dayCloseStatus({ goalReached: day.goalReached, todayCount: day.todayCount, dailyGoal: day.dailyGoal, dueNow: day.dueLeft }) : null;
+  const dueLeft = typeof day?.dueLeft === "number" ? day.dueLeft : 0;
+  const close = day ? dayCloseStatus({ goalReached: day.goalReached, todayCount: day.todayCount, dailyGoal: day.dailyGoal, dueNow: dueLeft }) : null;
   const remembered = sessionStats.firstTryCorrect + sessionStats.retryCorrect;
   const newWords = wordsToReview.filter((w) => (w.srs?.reps ?? 0) === 0).length;
   const comingBack = sessionStats.revealedCount + sessionStats.skippedCount;
@@ -200,20 +203,44 @@ export default function SessionSummary({
         </div>
       )}
 
-      <div className="flex gap-3 pt-1">
+      {dueLeft > 0 && (
+        <div className="w-full p-3 rounded-2xl bg-teal-50/70 dark:bg-teal-950/30 border border-teal-200/80 dark:border-teal-800/60 text-center space-y-1">
+          <p className="text-xs font-semibold text-teal-900 dark:text-teal-200">
+            Hôm nay bạn còn <span className="font-bold">{dueLeft}</span> thẻ cần ôn tập nữa.
+          </p>
+          <p className="text-[11px] text-slate-500 dark:text-zinc-400">
+            Bạn có thể nghỉ ngơi hoặc làm tiếp 1 hiệp ngắn nữa để duy trì phong độ!
+          </p>
+        </div>
+      )}
+
+      <div className="flex flex-col sm:flex-row gap-2.5 pt-1 w-full justify-center">
+        {dueLeft > 0 && onRestartWithNext && (
+          <button
+            type="button"
+            onClick={onRestartWithNext}
+            className="w-full sm:w-auto justify-center px-6 min-h-12 rounded-xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-sm font-semibold shadow-sm transition-all inline-flex items-center gap-2 active:scale-98 cursor-pointer"
+          >
+            <Play className="w-4 h-4 fill-white" /> Ôn tiếp 1 hiệp ({Math.min(10, dueLeft)} thẻ)
+          </button>
+        )}
         <button
           onClick={onFinish}
-          autoFocus
-          className="w-full sm:w-auto justify-center px-8 min-h-14 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white text-base font-semibold shadow-sm transition-colors inline-flex items-center gap-2"
+          autoFocus={dueLeft === 0}
+          className={`w-full sm:w-auto justify-center px-6 min-h-12 rounded-xl text-sm font-semibold transition-all inline-flex items-center gap-2 active:scale-98 cursor-pointer ${
+            dueLeft > 0
+              ? "border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 hover:bg-slate-50 shadow-2xs"
+              : "bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 !text-white shadow-sm"
+          }`}
         >
-          <Sparkles className="w-4 h-4" /> Hoàn tất
+          <Sparkles className="w-4 h-4" /> {dueLeft > 0 ? "Nghỉ ngơi & Hoàn tất" : "Hoàn tất"}
         </button>
-        {comingBack > 0 && (
-          <span className="self-center text-xs text-slate-600 dark:text-zinc-400 inline-flex items-center gap-1">
-            <RotateCcw className="w-3.5 h-3.5" /> Từ chưa nhớ đã được hẹn lại
-          </span>
-        )}
       </div>
+      {comingBack > 0 && (
+        <div className="text-center pt-1 text-xs text-slate-500 dark:text-zinc-400 inline-flex items-center justify-center gap-1">
+          <RotateCcw className="w-3.5 h-3.5" /> {comingBack} từ chưa nhớ đã được hẹn lại trong lịch ôn.
+        </div>
+      )}
     </div>
   </div>
   );

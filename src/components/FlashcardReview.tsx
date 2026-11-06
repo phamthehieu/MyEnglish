@@ -56,6 +56,7 @@ interface FlashcardReviewProps {
   onNavigate?: (tab: DashboardTab) => void;
   /** Notifies parent when the session completion state changes */
   onSessionCompleted?: (completed: boolean) => void;
+  onRestartWithNext?: () => void;
 }
 
 export default function FlashcardReview({
@@ -69,6 +70,7 @@ export default function FlashcardReview({
   onStartFocus,
   onNavigate,
   onSessionCompleted,
+  onRestartWithNext,
 }: FlashcardReviewProps) {
   const focusSession = useFocusSession(focus);
   const {
@@ -144,6 +146,17 @@ export default function FlashcardReview({
   useEffect(() => {
     onSessionCompleted?.(sessionCompleted);
   }, [sessionCompleted, onSessionCompleted]);
+  // Auto-advance when an answer is completed so the learner never has to tap "Tiếp tục"
+  useEffect(() => {
+    if (pendingRating !== null) {
+      const delay = pendingRating === Rating.Again ? 1200 : 500;
+      const t = setTimeout(() => {
+        confirmCorrectAnswer();
+      }, delay);
+      return () => clearTimeout(t);
+    }
+  }, [pendingRating, confirmCorrectAnswer]);
+
   const [confirmingExit, setConfirmingExit] = useState(false);
   // The letter tiles' "Kiểm tra", drawn in the bar under the card (where "Tiếp tục" comes)
   const [tilesAction, setTilesAction] = useState<LetterTilesAction | null>(null);
@@ -234,6 +247,7 @@ export default function FlashcardReview({
         xpState={xpState}
         lastResult={lastResult}
         onFinish={onFinish}
+        onRestartWithNext={onRestartWithNext}
         bonusXp={focusSession.result?.xp ?? 0}
         // A focus session's own summary already says when the next review is
         nextReview={focusSession.result ? undefined : nextReview}
@@ -333,7 +347,7 @@ export default function FlashcardReview({
               }
             : undefined
         }
-        className={`w-full flex-1 min-h-[200px] md:max-h-[620px] my-auto overflow-y-auto overflow-x-hidden rounded-2xl border bg-white dark:bg-zinc-900 p-5 md:p-6 shadow-[0_4px_12px_rgba(15,23,42,0.06)] flex flex-col justify-between transition-all relative ${
+        className={`w-full flex-1 min-h-0 md:max-h-[620px] my-2 overflow-y-auto overflow-x-hidden rounded-2xl border bg-white dark:bg-zinc-900 p-4 md:p-6 shadow-[0_4px_12px_rgba(15,23,42,0.06)] flex flex-col justify-between transition-colors duration-150 relative ${
           answerShown ? "select-text" : ""
         } ${
           effectiveExerciseType === "flip" ? "cursor-pointer hover:border-slate-400 dark:hover:border-zinc-700/80" : ""
@@ -352,35 +366,25 @@ export default function FlashcardReview({
           lastXPReward={lastXPReward}
           effectiveExerciseType={effectiveExerciseType}
           mode={mode}
+          isIntro={isIntroCard}
+          canMarkKnown={canMarkKnown && !knownCheckFailed}
+          onMarkKnown={startKnownCheck}
         />
         {isPretestCard ? null : checkingKnown ? (
           <div className="mt-1 text-center text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
             Kiểm tra nhanh: chọn đúng nghĩa ngay lần đầu thì app ghi là bạn đã biết từ này.
           </div>
         ) : isIntroCard ? (
-          <div className="mt-1 space-y-1.5">
-            {pretestResult && <PretestFeedback result={pretestResult} />}
-            {knownCheckFailed && (
-              <div className="text-center text-sm text-amber-700 dark:text-amber-300">
-                Chưa chắc lắm rồi: mình học từ này như từ mới nhé.
-              </div>
-            )}
-            <div className="text-center text-[11px] font-semibold text-cyan-700 dark:text-cyan-300">
-              {currentWord.srs.reps ? "🔁 Học lại từ hay quên" : "✨ Từ mới"} — đọc nghĩa, ví dụ và nghe phát âm. Bạn sẽ được hỏi lại sau vài thẻ.
+          (pretestResult || knownCheckFailed) ? (
+            <div className="mt-1 space-y-1">
+              {pretestResult && <PretestFeedback result={pretestResult} />}
+              {knownCheckFailed && (
+                <div className="text-center text-xs text-amber-700 dark:text-amber-300">
+                  Chưa chắc lắm rồi: mình học từ này như từ mới nhé.
+                </div>
+              )}
             </div>
-            <SayAloudPrompt key={currentWord.id} word={currentWord.word} wordId={currentWord.id} onPassed={markIntroSaid} />
-            {canMarkKnown && !knownCheckFailed && (
-              <div className="text-center">
-                <button
-                  onClick={startKnownCheck}
-                  className="text-[11px] font-medium px-2.5 py-1 rounded-lg border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
-                  title="Một câu kiểm tra nhanh; đúng thì bỏ qua phần học mới và app hỏi lại sau 4–21 ngày"
-                >
-                  ✓ Đã biết từ này
-                </button>
-              </div>
-            )}
-          </div>
+          ) : null
         ) : quizRightAfterIntro ? (
           <div className="mt-1 text-center text-[11px] text-cyan-700 dark:text-cyan-300">
             Vừa học từ này xong nên câu này để luyện, chưa tính vào lịch ôn. Lần ôn sau mới tính.
@@ -399,7 +403,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: MULTIPLE CHOICE ----------------- */}
         {effectiveExerciseType === "multiple_choice" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <MultipleChoiceExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -417,7 +421,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: LETTER TILES (first step of typed recall) ----------------- */}
         {effectiveExerciseType === "letter_tiles" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <LetterTilesExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -432,7 +436,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: SENTENCE BUILDER ----------------- */}
         {effectiveExerciseType === "sentence_builder" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <SentenceBuilderExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -447,7 +451,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: CONTEXT MATCH ----------------- */}
         {effectiveExerciseType === "context_match" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <ContextMatchExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -464,7 +468,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: MEANING MATCH (MINI-GAME) ----------------- */}
         {effectiveExerciseType === "meaning_match" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <MeaningMatchExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -481,7 +485,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: LISTENING DICTATION ----------------- */}
         {effectiveExerciseType === "listening" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <ListeningDictationExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -496,7 +500,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: FREE WRITING (AI-graded own sentence) ----------------- */}
         {effectiveExerciseType === "free_writing" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <FreeWritingExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -512,7 +516,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: REVERSE CLOZE ----------------- */}
         {effectiveExerciseType === "reverse_cloze" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
             <ReverseClozeExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -529,7 +533,7 @@ export default function FlashcardReview({
         {/* ----------------- MODE 1: STANDARD FLIP ----------------- */}
         {effectiveExerciseType === "flip" &&
           (isPretestCard && pretest ? (
-            <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto [&>*:first-child]:mt-auto [&>*:last-child]:mb-auto">
+            <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
               <PretestCard question={pretest} phonetic={currentWord.phonetic} onDone={handlePretestDone} />
             </div>
           ) : (
@@ -540,6 +544,16 @@ export default function FlashcardReview({
               isFlipped={isFlipped || isIntroCard}
               setIsFlipped={setIsFlipped}
               isIntro={isIntroCard}
+              introPrompt={
+                isIntroCard ? (
+                  <SayAloudPrompt
+                    key={currentWord.id}
+                    word={currentWord.word}
+                    wordId={currentWord.id}
+                    onPassed={markIntroSaid}
+                  />
+                ) : null
+              }
             />
           ))}
 

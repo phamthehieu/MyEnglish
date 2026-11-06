@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AlertCircle, CheckCircle2, Eye, HelpCircle, RotateCcw } from "lucide-react";
 import { Rating } from "@/services/srs";
 import type { WordDetail } from "@/types/database";
-import { pickExample } from "@/services/smartReview";
+import { isLeech, maskWordInSentence, pickExample } from "@/services/smartReview";
 import { getConciseMeaning } from "@/services/meaningText";
 import { maskTargetInMeaning } from "@/utils/exerciseHints";
 import { playWrongTry } from "@/services/sound";
@@ -99,6 +99,7 @@ export default function LetterTilesExercise({
   const [picked, setPicked] = useState<number[]>([]); // tile ids, in slot order (letters only)
   const [wrongAttempts, setWrongAttempts] = useState(0);
   const [hint, setHint] = useState(false);
+  const [hintsUsed, setHintsUsed] = useState(0);
   const [state, setState] = useState<"building" | "wrong" | "correct" | "give_up">("building");
   // "Không nhớ" was pressed once: the next press gives up (it falls back after a few seconds, or when the learner goes on)
   const [confirmGiveUp, setConfirmGiveUp] = useState(false);
@@ -111,6 +112,7 @@ export default function LetterTilesExercise({
     setPicked([]);
     setWrongAttempts(0);
     setHint(false);
+    setHintsUsed(0);
     setState("building");
     doneRef.current = false;
     recentUndosRef.current = [];
@@ -135,6 +137,31 @@ export default function LetterTilesExercise({
 
   const letterCount = slots.filter((c) => !FIXED.test(c)).length;
   const example = pickExample(word);
+  const maskedExampleSentence = useMemo(() => {
+    if (!example?.sentence_en) return null;
+    return maskWordInSentence(example.sentence_en, target, "____") || example.sentence_en;
+  }, [example, target]);
+
+  // Adaptive Scaffolding: calculate max allowed hints based on SRS memory stability
+  const maxHints = useMemo(() => {
+    const srs = word.srs;
+    const reps = srs?.reps ?? 0;
+    const stability = srs?.stability ?? 0;
+
+    // Stage 1: New card, low reps, low stability (< 2 days), or leech
+    if (reps === 0 || stability < 2 || isLeech(srs)) {
+      // 50% of the word's letters, rounded up for odd numbers (e.g. 5 letters -> 3 hints)
+      return Math.max(1, Math.ceil(letterCount * 0.5));
+    }
+    // Stage 2: Intermediate familiarity (2 - 7 days stability)
+    if (stability < 7) {
+      // Faded assistance: ~30% of letters
+      return Math.max(1, Math.floor(letterCount * 0.3));
+    }
+    // Stage 3: Mature word (stability >= 7 days)
+    // Only give 1 hint if user has made at least 2 wrong attempts
+    return wrongAttempts >= 2 ? 1 : 0;
+  }, [word.srs, letterCount, wrongAttempts]);
 
   const builtLetters = picked.map((id) => tiles.find((t) => t.id === id)?.ch ?? "");
   const slotIndices = useMemo(() => {
@@ -165,7 +192,7 @@ export default function LetterTilesExercise({
         setState("correct");
         onSpeak(target);
         // Reported at once: the session keeps the built word on screen until the learner continues
-        onComplete(true, wrongAttempts, hint ? Rating.Hard : Rating.Good);
+        onComplete(true, wrongAttempts, (hint || hintsUsed > 0) ? Rating.Hard : Rating.Good);
       } else {
         setState("wrong");
         playWrongTry();
@@ -179,8 +206,50 @@ export default function LetterTilesExercise({
         }, 900);
       }
     },
-    [tiles, slots, onSpeak, target, onComplete, wrongAttempts, hint, letterCount, state]
+    [tiles, slots, onSpeak, target, onComplete, wrongAttempts, hint, hintsUsed, letterCount, state]
   );
+
+  const applyNextLetterHint = useCallback(() => {
+    if (doneRef.current || state === "correct" || state === "give_up") return;
+    if (hintsUsed >= maxHints) return;
+
+    const expectedLetters = slots.filter((c) => !FIXED.test(c));
+
+    // Determine how many prefix letters in `picked` are currently correct
+    let correctPrefixCount = 0;
+    for (let i = 0; i < picked.length; i++) {
+      const tile = tiles.find((t) => t.id === picked[i]);
+      if (tile && tile.ch === expectedLetters[i]) {
+        correctPrefixCount++;
+      } else {
+        break;
+      }
+    }
+
+    const nextIdx = correctPrefixCount;
+    if (nextIdx >= expectedLetters.length) return;
+
+    const targetChar = expectedLetters[nextIdx];
+    const validPickedPrefix = picked.slice(0, correctPrefixCount);
+
+    // Find a tile with targetChar that isn't already used in validPickedPrefix
+    const tileToPick = tiles.find((t) => t.ch === targetChar && !validPickedPrefix.includes(t.id));
+    if (!tileToPick) return;
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    setState("building");
+    const nextPicked = [...validPickedPrefix, tileToPick.id];
+    setPicked(nextPicked);
+    setHintsUsed((prev) => prev + 1);
+
+    // If hint completes all letters, trigger check
+    if (nextPicked.length === letterCount) {
+      check(nextPicked);
+    }
+  }, [state, hintsUsed, maxHints, slots, picked, tiles, letterCount, check]);
 
   // The parent draws "Kiểm tra": tell it whether the word is complete, and how to check it
   const answered = state === "correct" || state === "give_up";
@@ -204,10 +273,14 @@ export default function LetterTilesExercise({
       setState("building");
       setPicked((prev) => {
         if (prev.includes(id) || prev.length >= letterCount) return prev;
-        return [...prev, id];
+        const next = [...prev, id];
+        if (next.length === letterCount) {
+          setTimeout(() => check(next), 40);
+        }
+        return next;
       });
     },
-    [letterCount, state]
+    [letterCount, state, check]
   );
 
   const unpickAt = useCallback(
@@ -354,13 +427,27 @@ export default function LetterTilesExercise({
   }, [tiles, picked, pick, undo, check, letterCount, state]);
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-4 animate-in fade-in duration-200">
+    <div className="w-full max-w-xl mx-auto space-y-4">
       {!hideHeader ? (
         <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-4 text-center space-y-1.5 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
           <div className="text-xs font-semibold text-teal-700 dark:text-teal-300">Xếp chữ cái thành từ tiếng Anh có nghĩa:</div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{maskTargetInMeaning(getConciseMeaning(word.meaning_vn, target, example), target)}</h2>
-          {/* The pronunciation as a hint (no example sentence: in Vietnamese alone it says nothing about the word) */}
+          {/* The pronunciation as a hint */}
           {word.phonetic && <p className="font-mono text-base text-teal-700 dark:text-teal-300">{word.phonetic}</p>}
+
+          {/* Context Example Sentence with Blank */}
+          {maskedExampleSentence && (
+            <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-zinc-800/80 text-center space-y-0.5">
+              <p className="text-sm sm:text-base font-semibold text-slate-800 dark:text-zinc-200">
+                "{maskedExampleSentence}"
+              </p>
+              {example?.sentence_vn && (
+                <p className="text-xs text-slate-500 dark:text-zinc-400 italic">
+                  {example.sentence_vn}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       ) : (
         <div className="flex items-center justify-between text-sm font-semibold text-slate-600 dark:text-zinc-400 pt-1">
@@ -416,7 +503,7 @@ export default function LetterTilesExercise({
                   ? "border-red-600 bg-red-50 text-red-800 dark:bg-red-500/10 dark:border-red-500 dark:text-red-200 font-bold"
                   : state === "wrong"
                   ? "border-amber-500 bg-amber-50 dark:bg-amber-500/10 text-amber-800 dark:text-amber-200"
-                  : "border-dashed border-slate-300 bg-white dark:bg-zinc-900 dark:border-zinc-700 text-slate-400"
+                  : nonFixedIdx === picked.length && state === "building" ? "border-teal-500 dark:border-teal-400 bg-teal-50/50 dark:bg-teal-950/30 text-teal-700 ring-2 ring-teal-500/20" : "border-dashed border-slate-300 bg-white dark:bg-zinc-900 dark:border-zinc-700 text-slate-400"
               }`}
             >
               {state === "give_up"
@@ -440,17 +527,27 @@ export default function LetterTilesExercise({
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Làm lại</span>
           </button>
-          {!hideHints && !hint && (
+          {!hideHints && maxHints > 0 && (
             <button
               type="button"
-              onClick={() => setHint(true)}
-              className="inline-flex items-center gap-1.5 h-10 px-3 rounded-xl text-slate-600 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800/60 transition-colors font-medium cursor-pointer"
-              title="Hiện chữ cái đầu tiên làm gợi ý (từ này sẽ được chấm Khó)"
+              onClick={applyNextLetterHint}
+              disabled={hintsUsed >= maxHints || picked.length === letterCount}
+              className={`inline-flex items-center gap-1.5 h-10 px-3.5 rounded-xl font-medium transition-colors ${
+                hintsUsed < maxHints && picked.length < letterCount
+                  ? "bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/40 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60 shadow-2xs cursor-pointer active:scale-95"
+                  : "opacity-40 text-slate-400 dark:text-zinc-600 border border-slate-200 dark:border-zinc-800 cursor-not-allowed"
+              }`}
+              title={
+                hintsUsed < maxHints
+                  ? `Gợi ý ký tự tiếp theo (còn ${maxHints - hintsUsed}/${maxHints} lần)`
+                  : "Đã dùng hết số lượt gợi ý cho từ này"
+              }
             >
-              <HelpCircle className="w-3.5 h-3.5" />
-              <span>Gợi ý</span>
+              <HelpCircle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>Gợi ý ({Math.max(0, maxHints - hintsUsed)})</span>
             </button>
           )}
+
           {/* Giving up counts the word as forgotten: it asks twice */}
           <button
             type="button"

@@ -204,40 +204,63 @@ export function MicCheck({
         </div>
       )}
       {phase === "listening" ? (
-        <button onClick={finish} className="group mx-auto flex w-full flex-col items-center gap-2 rounded-2xl py-1 text-sm font-semibold">
-          <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-sm ring-8 ring-red-500/15 animate-pulse group-hover:bg-red-700 motion-reduce:animate-none">
-            <Square className="h-6 w-6 fill-white" />
+        <button
+          type="button"
+          onClick={finish}
+          className="group mx-auto flex w-full flex-col items-center gap-2.5 rounded-2xl py-2 text-sm font-semibold"
+        >
+          <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-lg ring-8 ring-red-500/20 animate-pulse group-hover:bg-red-700 motion-reduce:animate-none">
+            <Square className="h-7 w-7 fill-white" />
           </span>
-          <span className="max-w-xs text-center text-red-700 dark:text-red-300">Đang nghe… đọc "{target}". Đọc xong thì dừng lại, máy sẽ tự chấm (hoặc bấm để dừng)</span>
+          <div className="text-center space-y-0.5">
+            <span className="block text-base font-bold text-red-600 dark:text-red-400">Đang nghe… hãy đọc "{target}"</span>
+            <span className="block text-xs text-slate-500 dark:text-zinc-400">Đọc xong dừng lại máy sẽ tự chấm (hoặc bấm để dừng)</span>
+          </div>
         </button>
       ) : (
         <button
+          type="button"
           onClick={begin}
           disabled={phase !== "idle"}
-          className="group mx-auto flex w-full flex-col items-center gap-2 rounded-2xl py-1 text-sm font-semibold disabled:cursor-not-allowed"
+          className="group mx-auto flex w-full flex-col items-center gap-2.5 rounded-2xl py-2 text-sm font-semibold disabled:cursor-not-allowed"
         >
           <span
-            className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-white shadow-sm transition-transform group-active:scale-95 ${
-              phase === "idle" ? "bg-teal-700 group-hover:bg-teal-800 dark:bg-teal-600 dark:group-hover:bg-teal-500" : "bg-teal-700/60 dark:bg-teal-600/60"
+            className={`flex h-20 w-20 shrink-0 items-center justify-center rounded-full text-white shadow-md transition-all group-active:scale-95 ${
+              phase === "idle"
+                ? "bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 ring-4 ring-teal-500/10"
+                : "bg-teal-600/60 dark:bg-teal-500/60"
             }`}
           >
-            {phase === "idle" ? <Mic className="h-7 w-7" /> : <Loader2 className="h-7 w-7 animate-spin" />}
+            {phase === "idle" ? <Mic className="h-8 w-8" /> : <Loader2 className="h-8 w-8 animate-spin" />}
           </span>
-          <span className="text-center text-teal-800 dark:text-teal-300">
-            {phase === "idle" ? "Đọc thử cho máy nghe" : phase === "preparing" ? "Đang chuẩn bị (lần đầu hơi lâu)…" : "Đang chấm…"}
-          </span>
+          <div className="text-center space-y-0.5">
+            <span className="block text-base font-bold text-teal-800 dark:text-teal-300">
+              {phase === "idle" ? "Bấm micro để đọc" : phase === "preparing" ? "Đang chuẩn bị micro…" : "Đang chấm điểm…"}
+            </span>
+            {phase === "idle" && (
+              <span className="block text-xs text-slate-500 dark:text-zinc-400">
+                Đọc to từ trên cho máy nghe và chấm
+              </span>
+            )}
+          </div>
         </button>
       )}
       {problem && <p className="text-sm text-red-700 dark:text-red-300">{problem}</p>}
       {verdict && (
-        <div className={`rounded-xl border p-3 text-sm space-y-2 ${VERDICT_TONE[verdict.kind]}`} role="status">
+        <div className={`rounded-xl border p-3.5 text-sm space-y-2 shadow-xs ${VERDICT_TONE[verdict.kind]}`} role="status">
           {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && (
-            <p className="text-xs font-bold uppercase tracking-wide">{verdict.ok ? (onPassed ? "✓ Đạt · sang từ tiếp…" : "✓ Đạt") : "Chưa đạt"}</p>
+            <p className="text-xs font-bold uppercase tracking-wide">
+              {verdict.ok ? (onPassed ? "✓ Phát âm chuẩn · đang chuyển từ…" : "✓ Phát âm chuẩn") : "Chưa đạt · thử đọc lại"}
+            </p>
           )}
-          <p>{verdict.message}</p>
+          <p className="font-medium">{verdict.message}</p>
           {(verdict.kind === "match" || verdict.kind === "focus_ok" || verdict.kind === "weak" || verdict.kind === "confused") && canPlayRecording() && (
-            <button onClick={playRecording} className="min-h-10 text-sm font-semibold underline underline-offset-2 inline-flex items-center gap-1">
-              <Volume2 className="w-4 h-4" /> Nghe lại giọng mình
+            <button
+              type="button"
+              onClick={playRecording}
+              className="min-h-9 text-xs font-semibold underline underline-offset-2 inline-flex items-center gap-1.5 opacity-90 hover:opacity-100"
+            >
+              <Volume2 className="w-3.5 h-3.5" /> Nghe lại giọng mình
             </button>
           )}
         </div>

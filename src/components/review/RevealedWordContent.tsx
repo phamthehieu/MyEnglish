@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Volume2, RotateCcw, Quote, BookOpen } from "lucide-react";
+import { Volume2, RotateCcw, Quote, BookOpen, Snail } from "lucide-react";
+import { SLOW_RATE } from "./speech";
 import type { WordDetail } from "@/types/database";
 import { isLeech } from "@/services/smartReview";
 import { getCatalogEntries, type CatalogEntry } from "@/services/vocabCatalog";
@@ -16,7 +17,7 @@ export default function RevealedWordContent({
   compact = false,
 }: {
   currentWord: WordDetail;
-  handleSpeak: (text: string, e?: React.MouseEvent) => void;
+  handleSpeak: (text: string, eOrRate?: React.MouseEvent | number) => void;
   onFlipBack?: () => void;
   compact?: boolean;
 }) {
@@ -42,7 +43,7 @@ export default function RevealedWordContent({
     <div
       className={`flex flex-col ${
         compact ? "space-y-3" : "flex-1 min-h-0 justify-between h-full"
-      } animate-in fade-in duration-200`}
+      }`}
     >
       {/* Top Header Section */}
       <div className="space-y-2 shrink-0 pb-2 border-b border-slate-200 dark:border-zinc-800">
@@ -58,10 +59,21 @@ export default function RevealedWordContent({
             )}
             <button
               onClick={(e) => handleSpeak(currentWord.word, e)}
-              className="min-w-10 min-h-10 inline-flex items-center justify-center text-teal-700 hover:text-teal-800 dark:text-teal-300 dark:hover:text-teal-200 transition-colors rounded-full hover:bg-teal-50 dark:hover:bg-teal-400/10"
+              className="min-w-9 min-h-9 inline-flex items-center justify-center text-teal-700 hover:text-teal-800 dark:text-teal-300 dark:hover:text-teal-200 transition-colors rounded-full hover:bg-teal-50 dark:hover:bg-teal-400/10"
               title="Phát âm từ vựng"
             >
               <Volume2 className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSpeak(currentWord.word, SLOW_RATE);
+              }}
+              className="min-w-9 min-h-9 inline-flex items-center justify-center text-amber-700 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300 transition-colors rounded-full hover:bg-amber-50 dark:hover:bg-amber-400/10"
+              title="Nghe phát âm chậm"
+            >
+              <Snail className="w-4 h-4" />
             </button>
           </div>
 

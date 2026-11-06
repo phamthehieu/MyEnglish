@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
-import { ArrowLeft, BookOpen, CheckCircle2, ChevronDown, CircleHelp, Clock, Eraser, EyeOff, Flag, Lightbulb, RotateCcw, Undo2, Volume2, XCircle } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ChevronDown, CircleHelp, Clock, Eraser, EyeOff, Flag, Lightbulb, Loader2, Mic, RotateCcw, Snail, Sparkles, Undo2, Volume2, XCircle } from "lucide-react";
 import {
   availableFormats,
   buildTask,
@@ -15,8 +15,10 @@ import { lessonFormulaText, recordGrammarAnswer, type GrammarSessionMode, type S
 import { getBookLesson, hideItem, unhideItem } from "@/services/grammarBook";
 import { getLessonNextReview, GRAMMAR_PASS_SCORE } from "@/services/grammarService";
 import type { GrammarBookLesson } from "@/types/grammarBook";
-import { handleSpeak } from "@/components/review/speech";
+import { handleSpeak, SLOW_RATE } from "@/components/review/speech";
 import { setMainSessionActive } from "@/services/activeSession";
+import { asrAvailable, cancelListening, finishListening, startListening } from "@/services/pronunciationCheck";
+import { playSound } from "@/services/sound";
 
 interface GrammarPlayerProps {
   entries: SessionEntry[];
@@ -240,6 +242,155 @@ const GIVEN_LABELS: Partial<Record<GrammarFormat, string>> = {
   error: "Bạn chạm",
 };
 
+function SentenceOralPractice({ sentence }: { sentence: string }) {
+  const [phase, setPhase] = useState<"idle" | "listening" | "success" | "retry">("idle");
+  const [heard, setHeard] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  const hasAsr = asrAvailable();
+
+  useEffect(() => {
+    return () => {
+      cancelListening();
+    };
+  }, []);
+
+  const tokens = useMemo(() => {
+    return sentence
+      .toLowerCase()
+      .replace(/[^a-z0-9' ]+/g, " ")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+  }, [sentence]);
+
+  const toggleMic = async () => {
+    if (phase === "listening") {
+      cancelListening();
+      setPhase("idle");
+      return;
+    }
+
+    setPhase("listening");
+    setMsg(null);
+    setHeard(null);
+
+    const started = startListening(undefined, { sentence: true });
+    if (!started) {
+      setPhase("retry");
+      setMsg("Không thể bật micro lúc này. Bạn hãy tự đọc to câu nhé!");
+      return;
+    }
+
+    try {
+      const res = await finishListening(tokens);
+      if (res.ok || (res.words && res.words.length > 0)) {
+        setPhase("success");
+        setHeard(res.text || res.free || null);
+        playSound("correct");
+      } else {
+        setPhase("retry");
+        setHeard(res.free || null);
+        setMsg("Chưa bắt rõ âm. Bạn hãy thử đọc lại to và rõ ràng hơn nhé.");
+      }
+    } catch {
+      setPhase("idle");
+    }
+  };
+
+  const selfConfirm = () => {
+    setPhase("success");
+    playSound("correct");
+  };
+
+  return (
+    <div className="rounded-2xl border border-teal-500/30 bg-teal-50/60 dark:bg-teal-950/20 p-3.5 md:p-4 space-y-3">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-xs font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+          <span>Luyện phản xạ cơ miệng · Đọc to câu chuẩn</span>
+        </span>
+        {phase === "success" && (
+          <span className="inline-flex items-center gap-1 text-xs font-bold text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-950/60 px-2.5 py-0.5 rounded-full">
+            <CheckCircle2 className="w-3.5 h-3.5" /> Đã đọc chuẩn!
+          </span>
+        )}
+      </div>
+
+      <div className="text-base font-bold text-slate-900 dark:text-zinc-100 leading-snug break-words">
+        {sentence}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <button
+          type="button"
+          data-own-enter
+          onClick={() => handleSpeak(sentence, 0.95)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800 transition active:scale-95 shadow-2xs"
+          title="Nghe chuẩn"
+        >
+          <Volume2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+          <span>Nghe chuẩn</span>
+        </button>
+
+        <button
+          type="button"
+          data-own-enter
+          onClick={() => handleSpeak(sentence, SLOW_RATE)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800 transition active:scale-95 shadow-2xs"
+          title="Nghe chậm để bắt rõ từng từ"
+        >
+          <Snail className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+          <span>Nghe chậm</span>
+        </button>
+
+        {hasAsr ? (
+          <button
+            type="button"
+            data-own-enter
+            onClick={toggleMic}
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition active:scale-95 shadow-2xs ${
+              phase === "listening"
+                ? "bg-red-500 text-white animate-pulse"
+                : phase === "success"
+                  ? "bg-green-600 text-white hover:bg-green-700"
+                  : "bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white"
+            }`}
+          >
+            {phase === "listening" ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>Đang nghe... (bấm để dừng)</span>
+              </>
+            ) : (
+              <>
+                <Mic className="w-3.5 h-3.5" />
+                <span>{phase === "success" ? "Đọc lại lần nữa" : "Đọc cho máy nghe"}</span>
+              </>
+            )}
+          </button>
+        ) : (
+          <button
+            type="button"
+            data-own-enter
+            onClick={selfConfirm}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 text-white text-xs font-bold transition active:scale-95 shadow-2xs"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Tự đọc to xong</span>
+          </button>
+        )}
+      </div>
+
+      {msg && <p className="text-xs text-amber-800 dark:text-amber-300 pt-0.5">{msg}</p>}
+      {heard && (
+        <p className="text-xs text-slate-500 dark:text-zinc-400">
+          Máy nghe được: <span className="italic font-semibold text-slate-700 dark:text-zinc-200">"{heard}"</span>
+        </p>
+      )}
+    </div>
+  );
+}
+
 function Feedback({
   task,
   outcome,
@@ -267,10 +418,10 @@ function Feedback({
   return (
     <div
       ref={innerRef}
-      className={`rounded-2xl border p-4 md:p-5 space-y-3 animate-in fade-in duration-200 ${
+      className={`rounded-2xl border p-4 md:p-5 space-y-3.5 ${
         ok
-          ? "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/30 text-green-900 dark:text-green-100"
-          : "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30 text-red-900 dark:text-red-100"
+          ? "bg-green-50/70 dark:bg-green-500/10 border-green-200 dark:border-green-500/30 text-green-900 dark:text-green-100"
+          : "bg-red-50/70 dark:bg-red-500/10 border-red-200 dark:border-red-500/30 text-red-900 dark:text-red-100"
       }`}
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -301,26 +452,31 @@ function Feedback({
       {hinted && <p className="text-xs opacity-80">Bạn đã dùng gợi ý nên câu này sẽ được ôn lại.</p>}
 
       {!ok && task.format !== "self" && (
-        <div className="space-y-1 text-sm break-words">
+        <div className="space-y-1.5 text-sm break-words bg-white/80 dark:bg-black/25 rounded-xl p-3 border border-red-200/50 dark:border-red-900/30">
           {outcome.expected && (
             <p>
-              <span className="font-semibold">{task.format === "error" ? "Phần sai" : "Đáp án"}:</span> {outcome.expected}
+              <span className="font-bold text-green-700 dark:text-green-400">{task.format === "error" ? "Phần sai" : "Đáp án đúng"}:</span>{" "}
+              <span className="font-semibold underline underline-offset-2">{outcome.expected}</span>
             </p>
           )}
           {givenLabel && outcome.given.trim() && (
             <p className="opacity-80">
-              {givenLabel}: {outcome.given}
+              <span className="font-medium">{givenLabel}:</span> {outcome.given}
             </p>
           )}
         </div>
       )}
 
+      {/* Formula & Rule Box */}
       {!ok && (formula || (lesson && onOpenLesson)) && (
-        <div className="space-y-2 rounded-xl bg-white/70 dark:bg-black/25 px-3 py-2.5">
+        <div className="space-y-2 rounded-xl bg-white/80 dark:bg-black/30 p-3.5 border border-amber-200/60 dark:border-amber-900/40">
           {formula && (
             <div className="space-y-1">
-              <div className="text-xs font-bold uppercase tracking-wide opacity-80">Công thức{lessonName ? ` · ${lessonName}` : ""}</div>
-              <p className="text-sm leading-relaxed whitespace-pre-line break-words">{formula}</p>
+              <div className="text-xs font-bold uppercase tracking-wide text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span>Công thức cần nhớ{lessonName ? ` · ${lessonName}` : ""}</span>
+              </div>
+              <p className="text-sm font-mono font-medium leading-relaxed whitespace-pre-line break-words text-slate-800 dark:text-zinc-200">{formula}</p>
             </div>
           )}
           {lesson && onOpenLesson && (
@@ -328,33 +484,46 @@ function Feedback({
               type="button"
               data-own-enter
               onClick={() => onOpenLesson(lesson.id)}
-              className="min-h-10 text-sm font-semibold text-teal-800 dark:text-teal-300 hover:underline flex items-center gap-1"
+              className="min-h-10 text-xs font-bold text-teal-800 dark:text-teal-300 hover:underline flex items-center gap-1.5"
             >
               <BookOpen className="w-3.5 h-3.5" />
-              Xem lại bài
+              Xem lại toàn bộ bài học & ví dụ →
             </button>
           )}
         </div>
       )}
 
-      {task.full && (
-        <div className="flex items-start justify-between gap-2 rounded-xl bg-white/70 dark:bg-black/25 px-3 py-2">
-          <p className="text-sm font-semibold leading-relaxed break-words min-w-0">{task.full}</p>
-          <button
-            type="button"
-            data-own-enter
-            onClick={() => handleSpeak(task.full, 0.95)}
-            className="flex h-10 w-10 items-center justify-center rounded-full opacity-70 hover:opacity-100 hover:bg-white/70 dark:hover:bg-black/20 transition shrink-0"
-            title="Nghe câu"
-          >
-            <Volume2 className="w-4 h-4" />
-          </button>
+      {/* Oral sentence practice area: Full Sentence with Audio & Mic */}
+      {task.full && <SentenceOralPractice sentence={task.full} />}
+
+      {/* Self graded answer */}
+      {task.format === "self" && task.item.keyRaw && (
+        <div className="rounded-xl bg-white/70 dark:bg-black/25 p-3">
+          <FeedbackRow label="Đáp án sách">{task.item.keyRaw}</FeedbackRow>
         </div>
       )}
 
-      {task.format === "self" && task.item.keyRaw && <FeedbackRow label="Đáp án sách">{task.item.keyRaw}</FeedbackRow>}
-      {task.vi && <FeedbackRow label="Dịch (AI)">{task.vi}</FeedbackRow>}
-      {task.explain && <FeedbackRow label="Giải thích (AI)">{task.explain}</FeedbackRow>}
+      {/* Vietnamese Meaning Box */}
+      {task.vi && (
+        <div className="rounded-xl bg-teal-50/70 dark:bg-teal-950/20 p-3 border border-teal-200/60 dark:border-teal-800/40 text-teal-950 dark:text-teal-200 space-y-0.5">
+          <div className="text-xs font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+            <span>Nghĩa câu tiếng Việt</span>
+          </div>
+          <div className="text-sm leading-relaxed">{task.vi}</div>
+        </div>
+      )}
+
+      {/* Pedagogical Explanation Box */}
+      {task.explain && (
+        <div className="rounded-xl bg-amber-50/70 dark:bg-amber-950/20 p-3 border border-amber-200/70 dark:border-amber-900/50 text-amber-950 dark:text-amber-200 space-y-0.5">
+          <div className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+            <Lightbulb className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <span>Mẹo giáo viên & Giải thích ngữ pháp</span>
+          </div>
+          <div className="text-sm leading-relaxed whitespace-pre-line">{task.explain}</div>
+        </div>
+      )}
     </div>
   );
 }
@@ -535,6 +704,16 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
     if (!outcome || busy) return;
     onNext({ correct: outcome.correct, given: outcome.given, skipped: outcome.skipped, selfAccepted: outcome.selfAccepted });
   };
+
+  // Auto-advance for multiple-choice grammar questions when correct so the user doesn't have to tap "Tiếp tục"
+  useEffect(() => {
+    if (outcome?.correct && (task.format === "choice" || task.format === "pick_sentence") && !busy) {
+      const t = setTimeout(() => {
+        onNext({ correct: outcome.correct, given: outcome.given, skipped: outcome.skipped, selfAccepted: outcome.selfAccepted });
+      }, 850);
+      return () => clearTimeout(t);
+    }
+  }, [outcome, task.format, busy, onNext]);
 
   const pickOption = (index: number) => {
     if (outcome) return;
@@ -916,11 +1095,11 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
               type="button"
               data-own-enter
               onClick={useHint}
-              className="min-h-11 px-3.5 rounded-full border border-amber-200 dark:border-amber-500/40 bg-white dark:bg-zinc-900 text-amber-800 dark:text-amber-300 text-xs font-semibold hover:bg-amber-50 dark:hover:bg-amber-500/10 transition-colors flex items-center gap-1.5"
-              title="Chuyển sang dạng dễ hơn (câu này sẽ được ôn lại)"
+              className="min-h-11 px-4 rounded-full border border-amber-300 dark:border-amber-500/50 bg-amber-50/90 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/50 text-amber-900 dark:text-amber-200 text-xs font-bold transition-all active:scale-98 flex items-center gap-1.5 shadow-2xs"
+              title="Chuyển sang dạng xếp thẻ từ hoặc trắc nghiệm (không cần gõ bàn phím)"
             >
-              <Lightbulb className="w-3.5 h-3.5" />
-              Gợi ý
+              <Lightbulb className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>{task.format === "type" ? "Đổi sang xếp thẻ từ" : "Gợi ý dạng dễ hơn"}</span>
             </button>
           )}
           {canGiveUp && (
@@ -955,13 +1134,15 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
           </button>
         </div>
         {answered ? (
-          <button type="button" disabled={busy} onClick={next} className={PRIMARY_BTN}>
-            <span>Tiếp tục</span>
-            <span className="text-sm opacity-90 font-normal">
-              {outcome?.correct ? "(đã ghi nhận tiến độ)" : "(gặp lại ở cuối bài)"}
-            </span>
-            <span className="desktop-only font-mono text-xs">↵</span>
-          </button>
+          (task.format === "choice" || task.format === "pick_sentence") ? null : (
+            <button type="button" disabled={busy} onClick={next} className={PRIMARY_BTN}>
+              <span>Tiếp tục</span>
+              <span className="text-sm opacity-90 font-normal">
+                {outcome?.correct ? "(đã ghi nhận tiến độ)" : "(gặp lại ở cuối bài)"}
+              </span>
+              <span className="desktop-only font-mono text-xs">↵</span>
+            </button>
+          )
         ) : showCheck ? (
           <button type="button" disabled={!canCheck} onClick={check} className={PRIMARY_BTN}>
             Kiểm tra

@@ -132,6 +132,17 @@ function ListenCard({ task, onNext }: { task: Extract<Task, { kind: "listen" }>;
   const { item } = task;
   const [wrong, setWrong] = useState<Set<string>>(new Set());
   const [solved, setSolved] = useState(false);
+
+  // Auto-advance when correct so the user does not have to tap "Tiếp theo"
+  useEffect(() => {
+    if (solved) {
+      const t = setTimeout(() => {
+        answeredSentence("patterns", item.en, { ok: wrong.size === 0, unaided: false, goal: false });
+        onNext({ ok: wrong.size === 0 });
+      }, 750);
+      return () => clearTimeout(t);
+    }
+  }, [solved, item.en, onNext, wrong.size]);
   useEffect(() => {
     handleSpeak(item.en);
     // the card is created once per question
@@ -168,17 +179,6 @@ function ListenCard({ task, onNext }: { task: Extract<Task, { kind: "listen" }>;
           );
         })}
       </div>
-      {solved && (
-        <button
-          onClick={() => {
-            answeredSentence("patterns", item.en, { ok: wrong.size === 0, unaided: false, goal: false });
-            onNext({ ok: wrong.size === 0 });
-          }}
-          className={BTN_PRIMARY}
-        >
-          Tiếp theo
-        </button>
-      )}
     </div>
   );
 }
@@ -188,6 +188,17 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
   const { item } = task;
   const [wrong, setWrong] = useState<Set<string>>(new Set());
   const [solved, setSolved] = useState(false);
+
+  // Auto-advance when correct so the user does not have to tap "Tiếp theo"
+  useEffect(() => {
+    if (solved) {
+      const t = setTimeout(() => {
+        answeredSentence("patterns", item.full, { ok: wrong.size === 0, unaided: false, goal: false });
+        onNext({ ok: wrong.size === 0 });
+      }, 900);
+      return () => clearTimeout(t);
+    }
+  }, [solved, item.full, onNext, wrong.size]);
   const pick = (en: string) => {
     if (en === item.answer.en) {
       setSolved(true);
@@ -237,17 +248,6 @@ function SubstituteCard({ task, onNext }: { task: Extract<Task, { kind: "substit
             <Check className="w-4 h-4" /> {item.full} <Speaker text={item.full} />
           </p>
           <IpaLine ipa={item.answer.ipa} />
-          <button
-            onClick={() => {
-              // Looking a word up is part of learning here: it does not fail the step
-              const ok = wrong.size === 0;
-              answeredSentence("patterns", item.full, { ok, unaided: false, goal: false });
-              onNext({ ok });
-            }}
-            className={BTN_PRIMARY}
-          >
-            Tiếp theo
-          </button>
         </>
       )}
     </div>

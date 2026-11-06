@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { Snail, Volume2, X } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { CheckCircle2, Snail, Volume2, X, XCircle } from "lucide-react";
+import { playSound } from "@/services/sound";
 import {
   BLOCK_PASS,
   buildPlacementBlock,
@@ -39,7 +40,16 @@ export default function PlacementTest({ onDone, onClose }: { onDone: (level: Lev
   const [correctInBlock, setCorrectInBlock] = useState(0);
   const [asked, setAsked] = useState(0);
   const [result, setResult] = useState<PlacementBlockLevel | null>(null);
+  const [selectedChoice, setSelectedChoice] = useState<string | null>(null);
+  const [isEvaluating, setIsEvaluating] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const q = block[index];
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (q?.kind === "listening" && q.say) {
@@ -49,22 +59,37 @@ export default function PlacementTest({ onDone, onClose }: { onDone: (level: Lev
   }, [q]);
 
   const answer = (choice: string) => {
-    if (!q || result) return;
-    const correct = correctInBlock + (choice === q.answer ? 1 : 0);
-    setAsked((n) => n + 1);
-    if (index + 1 < block.length) {
-      setCorrectInBlock(correct);
-      setIndex(index + 1);
-      return;
-    }
-    const step = placementStep(q.level, correct >= Math.min(BLOCK_PASS, block.length));
-    if ("result" in step) {
-      setResult(step.result);
-    } else {
-      setBlock(buildPlacementBlock(step.next, BANK));
-      setIndex(0);
-      setCorrectInBlock(0);
-    }
+    if (!q || result || isEvaluating) return;
+    setIsEvaluating(true);
+    setSelectedChoice(choice);
+
+    const isDontKnow = choice === DONT_KNOW;
+    const isCorrect = !isDontKnow && choice === q.answer;
+    playSound(isCorrect ? "correct" : "wrong");
+
+    const correct = correctInBlock + (isCorrect ? 1 : 0);
+
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null;
+      setSelectedChoice(null);
+      setIsEvaluating(false);
+
+      setAsked((n) => n + 1);
+      if (index + 1 < block.length) {
+        setCorrectInBlock(correct);
+        setIndex(index + 1);
+        return;
+      }
+      const step = placementStep(q.level, correct >= Math.min(BLOCK_PASS, block.length));
+      if ("result" in step) {
+        setResult(step.result);
+      } else {
+        setBlock(buildPlacementBlock(step.next, BANK));
+        setIndex(0);
+        setCorrectInBlock(0);
+      }
+    }, isCorrect ? 750 : 1300);
   };
 
   return (
@@ -111,16 +136,41 @@ export default function PlacementTest({ onDone, onClose }: { onDone: (level: Lev
               <p className="text-center text-sm text-slate-600 dark:text-zinc-400">{q.question}</p>
             </Card>
             <div className="space-y-3">
-              {q.options.map((opt) => (
-                <button
-                  key={opt}
-                  onClick={() => answer(opt)}
-                  className="flex min-h-16 w-full items-center rounded-2xl border border-slate-200 bg-white p-4 text-left text-base font-medium text-slate-900 transition-colors hover:border-teal-700 hover:bg-teal-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-teal-400 dark:hover:bg-teal-400/10"
-                >
-                  {opt}
-                </button>
-              ))}
-              <Button variant="ghost" block onClick={() => answer(DONT_KNOW)} className="text-slate-600 dark:text-zinc-400">
+              {q.options.map((opt) => {
+                const isPicked = selectedChoice === opt;
+                const isTrueAnswer = opt === q.answer;
+                const showCorrect = isEvaluating && isTrueAnswer;
+                const showWrong = isEvaluating && isPicked && !isTrueAnswer;
+
+                let cls = "flex min-h-16 w-full items-center justify-between rounded-2xl border p-4 text-left text-base font-medium transition-colors ";
+                if (showCorrect) {
+                  cls += "border-green-600 bg-green-50 text-green-900 dark:border-green-500 dark:bg-green-500/10 dark:text-green-200 font-semibold";
+                } else if (showWrong) {
+                  cls += "border-red-600 bg-red-50 text-red-900 dark:border-red-500 dark:bg-red-500/10 dark:text-red-200";
+                } else {
+                  cls += "border-slate-200 bg-white text-slate-900 hover:border-teal-700 hover:bg-teal-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:border-teal-400 dark:hover:bg-teal-400/10";
+                }
+
+                return (
+                  <button
+                    key={opt}
+                    disabled={isEvaluating}
+                    onClick={() => answer(opt)}
+                    className={cls}
+                  >
+                    <span>{opt}</span>
+                    {showCorrect && <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400 shrink-0" />}
+                    {showWrong && <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 shrink-0" />}
+                  </button>
+                );
+              })}
+              <Button
+                variant="ghost"
+                block
+                disabled={isEvaluating}
+                onClick={() => answer(DONT_KNOW)}
+                className={`text-slate-600 dark:text-zinc-400 ${selectedChoice === DONT_KNOW ? "border-amber-400 bg-amber-50 dark:bg-amber-500/10" : ""}`}
+              >
                 {DONT_KNOW}
               </Button>
             </div>

@@ -881,7 +881,18 @@ export default function MainDashboard({
       const backlog = summarizeTodayWork(useWordsStore.getState().words, newToday, now).reviews;
       const cb = resolveComeback(backlog, getStudyLimits().maxSessionSize, now);
       const plan = cb && !cb.caughtUp ? cb : null;
-      const cap = Math.min(maxCards ?? Infinity, plan && plan.todayRemaining > 0 ? plan.todayRemaining : Infinity);
+      const userBatch = (() => {
+        try {
+          const raw = localStorage.getItem("myenglish_batch_size");
+          if (raw === null) return 10; // default micro-session is 10 cards
+          const v = Number(raw);
+          return v > 0 ? v : undefined;
+        } catch {
+          return 10;
+        }
+      })();
+      const targetMax = maxCards !== undefined ? maxCards : userBatch;
+      const cap = Math.min(targetMax ?? Infinity, plan && plan.todayRemaining > 0 ? plan.todayRemaining : Infinity);
       session = buildReviewSession(due, newToday, now, {
         maxCards: Number.isFinite(cap) ? cap : undefined,
         comebackNewCards: plan ? plan.newWordsPerDay : undefined,
@@ -1701,6 +1712,14 @@ export default function MainDashboard({
                 focus={focusPlan}
                 onSessionCompleted={(completed) => {
                   sessionCompletedRef.current = completed;
+                }}
+                onRestartWithNext={() => {
+                  sessionCompletedRef.current = false;
+                  refreshDirtyRef.current = false;
+                  setIsReviewing(false);
+                  refreshWords().finally(() => {
+                    void handleStartReview(true);
+                  });
                 }}
                 onStartFocus={(minutes) => {
                   sessionCompletedRef.current = false;
