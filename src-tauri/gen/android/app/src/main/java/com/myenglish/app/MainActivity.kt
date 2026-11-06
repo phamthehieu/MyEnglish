@@ -3,6 +3,7 @@ package com.myenglish.app
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.webkit.WebView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,6 +36,11 @@ class MainActivity : TauriActivity() {
     }
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    // Chống chụp màn hình, quay phim màn hình và ẩn bản xem trước ứng dụng
+    window.setFlags(
+      WindowManager.LayoutParams.FLAG_SECURE,
+      WindowManager.LayoutParams.FLAG_SECURE
+    )
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
     handleIncomingIntent(intent)
@@ -133,6 +139,9 @@ class MainActivity : TauriActivity() {
   override fun onWebViewCreate(webView: WebView) {
     super.onWebViewCreate(webView)
     appWebView = webView
+
+    // Vô hiệu hóa DevTools USB debugging trên Android WebView
+    WebView.setWebContentsDebuggingEnabled(false)
 
     val speaker = TtsBridge(this, webView)
     tts = speaker

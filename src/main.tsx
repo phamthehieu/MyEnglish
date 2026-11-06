@@ -8,6 +8,7 @@ import { restoreLocalStorageFromDb, startLocalStorageBackup } from "./services/s
 import { getInitialWindowLabel } from "./lib/windowLabel";
 import { initStrictInputGuards } from "./lib/inputGuards";
 import { installErrorReporting } from "./services/errorReport";
+import { initAppSecurity } from "./services/appSecurity";
 
 // Errors nothing handles go to the developer (src/services/errorReport.ts), from the very start
 installErrorReporting();
@@ -15,6 +16,8 @@ installErrorReporting();
 initTheme();
 // Enforce strict raw keyboard input across all inputs in the system
 initStrictInputGuards();
+// Activate security & anti-inspection guard (block F12, DevTools, screenshots, copy, right-click)
+initAppSecurity();
 
 async function bootstrap() {
   // Restore learning progress mirrored in SQLite before services read localStorage.

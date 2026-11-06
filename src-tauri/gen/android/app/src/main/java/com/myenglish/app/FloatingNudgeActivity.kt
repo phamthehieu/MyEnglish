@@ -61,6 +61,11 @@ class FloatingNudgeActivity : Activity() {
   private var ttsReady = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
+    // Chống chụp màn hình và quay video màn hình trên thông báo nổi
+    window.setFlags(
+      WindowManager.LayoutParams.FLAG_SECURE,
+      WindowManager.LayoutParams.FLAG_SECURE
+    )
     super.onCreate(savedInstanceState)
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {

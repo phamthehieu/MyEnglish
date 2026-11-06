@@ -420,3 +420,23 @@ textarea:-webkit-autofill:focus {
   .space-y-5 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.875rem; }
   .rounded-3xl { border-radius: 1rem; }
 }
+
+/* =========================================================
+   SECURITY & ANTI-SCREENSHOT SHIELD
+   ========================================================= */
+/* Complete print and PDF export blackout */
+@media print {
+  html, body {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
+/* Screen blur shield active when window loses focus (Snipping tool / screenshot protection) */
+html.app-screen-shield-active body {
+  filter: blur(28px) grayscale(60%) !important;
+  user-select: none !important;
+  pointer-events: none !important;
+  transition: filter 0.08s ease-out;
+}
+
