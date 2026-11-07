@@ -403,7 +403,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: MULTIPLE CHOICE ----------------- */}
         {effectiveExerciseType === "multiple_choice" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <MultipleChoiceExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -421,7 +421,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: LETTER TILES (first step of typed recall) ----------------- */}
         {effectiveExerciseType === "letter_tiles" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <LetterTilesExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -436,7 +436,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: SENTENCE BUILDER ----------------- */}
         {effectiveExerciseType === "sentence_builder" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <SentenceBuilderExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -451,7 +451,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: CONTEXT MATCH ----------------- */}
         {effectiveExerciseType === "context_match" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <ContextMatchExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -468,7 +468,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: MEANING MATCH (MINI-GAME) ----------------- */}
         {effectiveExerciseType === "meaning_match" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <MeaningMatchExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -485,7 +485,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: LISTENING DICTATION ----------------- */}
         {effectiveExerciseType === "listening" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <ListeningDictationExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -500,7 +500,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: FREE WRITING (AI-graded own sentence) ----------------- */}
         {effectiveExerciseType === "free_writing" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <FreeWritingExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -516,7 +516,7 @@ export default function FlashcardReview({
 
         {/* ----------------- MODE: REVERSE CLOZE ----------------- */}
         {effectiveExerciseType === "reverse_cloze" && (
-          <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+          <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
             <ReverseClozeExercise
               key={`${currentWord.id}-${currentIndex}`}
               word={currentWord}
@@ -533,7 +533,7 @@ export default function FlashcardReview({
         {/* ----------------- MODE 1: STANDARD FLIP ----------------- */}
         {effectiveExerciseType === "flip" &&
           (isPretestCard && pretest ? (
-            <div className="flex-1 min-h-[160px] flex flex-col py-2 overflow-y-auto justify-center">
+            <div className="flex-1 min-h-0 flex flex-col py-2 overflow-y-auto [&>*]:my-auto">
               <PretestCard question={pretest} phonetic={currentWord.phonetic} onDone={handlePretestDone} />
             </div>
           ) : (

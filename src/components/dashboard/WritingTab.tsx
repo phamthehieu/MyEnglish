@@ -24,43 +24,13 @@ import { shuffle } from "@/lib/utils";
 import { features } from "@/lib/platform";
 import { PAGE_CONTAINER } from "./shared";
 import MistakeReview from "./MistakeReview";
+import { useBackHandler } from "@/lib/backNavigation";
 
 const DRAFT_KEY = "myenglish_standup_draft_v1";
 const HAS_AI_CLI = features.aiCli();
 
 /** Beginnings of a standup sentence, for a learner who does not know how to start */
 const SENTENCE_FRAMES = ["Yesterday I ", "Today I will ", "I am working on ", "I need help with ", "Everything is going well."];
-
-const WRITING_TOPICS = [
-  {
-    id: "intro-work",
-    level: "A1",
-    label: "Tự giới thiệu công việc",
-    hint: "Giới thiệu tên, nơi làm việc và 1 việc bạn làm mỗi ngày.",
-    starter: "My name is Minh. I work at an office. Every day, I check emails and talk with customers.",
-  },
-  {
-    id: "work-day",
-    level: "A1",
-    label: "Một ngày đi làm",
-    hint: "Kể lại sáng nay, buổi trưa và buổi chiều bạn đã làm gì.",
-    starter: "This morning I started work at eight thirty. At noon, I had lunch with my colleagues. In the afternoon, I finished my report.",
-  },
-  {
-    id: "late-leave",
-    level: "A2",
-    label: "Nhắn xin đến muộn / nghỉ phép",
-    hint: "Viết tin nhắn ngắn báo lý do và thời gian hoàn thành công việc.",
-    starter: "Hi Anna, I am sorry that I will arrive thirty minutes late this morning because of heavy traffic. I will finish the report this afternoon.",
-  },
-  {
-    id: "weekly-update",
-    level: "B1",
-    label: "Tóm tắt công việc trong tuần",
-    hint: "Nêu việc đã hoàn thành, việc đang làm và kế hoạch tuần tới.",
-    starter: "This week, I completed the monthly summary and sent it to the team. Right now, I am preparing for Friday's meeting.",
-  },
-];
 
 /** Without AI: the mistakes Vietnamese learners make most, to check one's own text against */
 const SELF_CHECK = [
@@ -112,6 +82,14 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
   useEffect(() => {
     setReviewing(null);
   }, [resetKey]);
+
+  useBackHandler(() => {
+    if (reviewing) {
+      setReviewing(null);
+      return true;
+    }
+    return false;
+  }, !!reviewing);
 
   // Checked once per visit: without an AI CLI the correction button is off, not an error after a click
   const [cliReady, setCliReady] = useState<boolean | null>(null);
@@ -227,23 +205,6 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
         <p className="text-sm text-slate-500 dark:text-zinc-400">
           Hôm qua bạn làm gì, hôm nay dự định làm gì, có việc gì cần hỗ trợ? 2–4 câu ngắn là đủ.
         </p>
-        <div className="space-y-1.5">
-          <div className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Chủ đề gợi ý cho người đi làm (bấm để lấy mẫu câu sườn):</div>
-          <div className="flex flex-wrap gap-1.5">
-            {WRITING_TOPICS.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                title={t.hint}
-                onClick={() => updateText(t.starter)}
-                className="inline-flex items-center gap-1.5 min-h-9 px-3 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50/70 dark:bg-zinc-800/60 text-xs font-medium text-slate-800 dark:text-zinc-200 hover:border-teal-600/50 hover:bg-teal-50/50 dark:hover:bg-teal-500/10 transition-colors"
-              >
-                <span className="px-1.5 py-0.5 rounded bg-teal-100 dark:bg-teal-500/20 text-teal-800 dark:text-teal-300 font-semibold text-[11px]">{t.level}</span>
-                <span>{t.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
         {/* Sentence frames: a beginner who cannot start a sentence builds on one */}
         <div className="flex items-center gap-1.5 flex-wrap text-xs text-slate-500 dark:text-zinc-400">
           <span>Bắt đầu bằng:</span>

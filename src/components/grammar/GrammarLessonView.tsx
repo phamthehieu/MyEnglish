@@ -22,6 +22,7 @@ import GrammarPlayer from "./GrammarPlayer";
 import GrammarExerciseImportModal from "./GrammarExerciseImportModal";
 import { LessonStatusChip, MasteryBar } from "./PathPicker";
 import { Button } from "@/components/ui/kit";
+import { useBackHandler } from "@/lib/backNavigation";
 
 export type GrammarLessonTab = "handbook" | "practice" | "diagnostic";
 
@@ -53,6 +54,15 @@ export default function GrammarLessonView({ lesson, chapterId, initialTab = "han
   const [chapter, setChapter] = useState<GrammarBookFile | null>(null);
   const [player, setPlayer] = useState<PlayerState | null>(null);
   const [starting, setStarting] = useState<string | null>(null);
+
+  useBackHandler(() => {
+    if (player) {
+      setPlayer(null);
+      return true;
+    }
+    onBack();
+    return true;
+  }, true);
   const [message, setMessage] = useState<string | null>(null);
   const [importModalOpen, setImportModalOpen] = useState(false);
   // Null while the lesson's questions are being looked up

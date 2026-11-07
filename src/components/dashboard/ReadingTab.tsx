@@ -12,6 +12,7 @@ import { isFoundationMode } from "@/services/learnerProfile";
 import { COMMON_WORDS, FUNCTION_WORDS } from "@/data/commonWords";
 import { AI_VOCAB_ENABLED } from "@/services/features";
 import { READING_SAMPLES } from "@/data/readingSamples";
+import { useBackHandler } from "@/lib/backNavigation";
 
 const DRAFT_KEY = "myenglish_reading_draft_v1";
 /** Long texts are cut so highlighting stays instant */
@@ -58,7 +59,6 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
   const [picked, setPicked] = useState<Map<string, string>>(() => new Map());
   const [savedSentences, setSavedSentences] = useState<Set<string>>(() => new Set());
   const [adding, setAdding] = useState(false);
-  const [showSampleVi, setShowSampleVi] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   // Clears the message after a while: a newer message restarts the wait, and leaving the tab cancels it
   const messageTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -85,6 +85,14 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
   useEffect(() => {
     setReading(null);
   }, [resetKey]);
+
+  useBackHandler(() => {
+    if (reading) {
+      setReading(null);
+      return true;
+    }
+    return false;
+  }, !!reading);
 
   const lastAnalyzedRef = useRef<{
     text: string;
@@ -139,7 +147,6 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
     saveDraft(clean);
     const computed = getAnalysis(clean);
     setReading(clean);
-    setShowSampleVi(false);
     setPicked(new Map());
     setSavedSentences(new Set());
     const met = logEncounters(computed.bankHits);
@@ -158,7 +165,6 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
     saveDraft(clean);
     const computed = getAnalysis(clean);
     setReading(clean);
-    setShowSampleVi(false);
     setPicked(new Map());
     setSavedSentences(new Set());
     const met = logEncounters(computed.bankHits);
@@ -300,7 +306,6 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
   }
 
   const shownCandidates = analysis.candidates.filter((c) => inDeck(c.base)).slice(0, MAX_CANDIDATES_SHOWN);
-  const matchedSample = READING_SAMPLES.find((s) => s.text.trim() === reading?.trim());
   const counts = { mastered: 0, learning: 0, new: 0 } as Record<BankStatus, number>;
   for (const h of analysis.bankHits) counts[h.status]++;
 
@@ -333,7 +338,6 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_280px] gap-4 items-start">
-        <div className="min-w-0 space-y-3">
         <article className="min-w-0 p-3.5 md:p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-base leading-8 text-slate-800 dark:text-zinc-200 whitespace-pre-wrap break-words">
           {analysis.segments.map((seg, i) => {
             const t = seg.token;
@@ -367,28 +371,6 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
             );
           })}
         </article>
-        {matchedSample && (
-          <div className="p-3.5 md:p-4 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-2.5">
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-zinc-400">
-                {matchedSample.titleVi} · {matchedSample.level}
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowSampleVi((v) => !v)}
-                className="min-h-9 px-3 rounded-full border border-teal-700/30 dark:border-teal-400/40 text-xs font-semibold text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10"
-              >
-                {showSampleVi ? "Ẩn dịch nghĩa" : "Xem dịch nghĩa toàn bài"}
-              </button>
-            </div>
-            {showSampleVi && (
-              <p className="text-sm leading-relaxed text-slate-700 dark:text-zinc-300 whitespace-pre-wrap pt-1 border-t border-slate-100 dark:border-zinc-800">
-                {matchedSample.translationVi}
-              </p>
-            )}
-          </div>
-        )}
-        </div>
 
         <aside className="space-y-4 lg:sticky lg:top-4">
           {picked.size > 0 && (

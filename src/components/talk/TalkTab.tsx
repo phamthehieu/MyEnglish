@@ -22,6 +22,7 @@ import { PAGE_CONTAINER } from "../dashboard/shared";
 import { Badge, Button, Card } from "../ui/kit";
 import Conversation from "./Conversation";
 import WarmUp from "./WarmUp";
+import { useBackHandler } from "@/lib/backNavigation";
 
 type View = { kind: "list" } | { kind: "warmup"; id: string } | { kind: "chat"; id: string } | { kind: "review" };
 
@@ -337,6 +338,14 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
   useEffect(() => {
     setView({ kind: "list" });
   }, [resetKey]);
+
+  useBackHandler(() => {
+    if (view.kind !== "list") {
+      setView({ kind: "list" });
+      return true;
+    }
+    return false;
+  }, view.kind !== "list");
 
   useEffect(() => {
     const refresh = () => setTick((t) => t + 1);

@@ -23,6 +23,7 @@ import { setGoal as setRoadmapGoal } from "@/services/roadmap/state";
 import PlacementTest from "./PlacementTest";
 import { LevelPicker, mixDescription } from "./dashboard/VocabTab";
 import { Button, ProgressBar } from "./ui/kit";
+import { useBackHandler } from "@/lib/backNavigation";
 
 const TRIGGER_OPTIONS: Array<{ value: ReminderTrigger; title: string; desc: string }> = [
   { value: "due_only", title: "Chỉ từ đến hạn ôn", desc: "Hết từ thì dừng nhắc" },
@@ -148,6 +149,18 @@ export default function OnboardingFlow({ onFinish }: OnboardingFlowProps) {
   const [showMore, setShowMore] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useBackHandler(() => {
+    if (placementOpen) {
+      setPlacementOpen(false);
+      return true;
+    }
+    if (step > 1) {
+      setStep(step - 1);
+      return true;
+    }
+    return false;
+  }, placementOpen || step > 1);
 
   const goToLevels = () => {
     // Up to the learner's own level (A0 = A1): words they may know are skipped with "Đã biết"

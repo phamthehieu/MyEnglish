@@ -48,9 +48,10 @@ import SoundIntro from "./SoundIntro";
 import { asrAvailable, canCheck } from "@/services/pronunciationCheck";
 import { getTeacherGuide } from "@/services/pronunciationTips";
 import { playSound } from "@/services/sound";
+import { useBackHandler } from "@/lib/backNavigation";
 
 const PRACTICE_OVERLAY =
-  "fixed inset-0 z-40 flex flex-col bg-[#f7f8fa] dark:bg-zinc-950 overflow-hidden p-3 sm:p-4 md:p-6 pt-[calc(env(safe-area-inset-top)+0.5rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] select-none";
+  "fixed inset-0 z-40 flex flex-col bg-[#f7f8fa] dark:bg-zinc-950 overflow-hidden px-3 sm:px-4 md:px-6 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] select-none";
 
 /** The three steps of a lesson, one on screen at a time so the exercise is never below the theory */
 type Step = "learn" | "say" | "quiz";
@@ -784,9 +785,15 @@ function LessonView({
   unit: string;
 }) {
   const [step, setStep] = useState<Step>(initialStep);
+  const bodyScrollRef = useRef<HTMLDivElement>(null);
   const passed = isLessonPassed(progress);
   const mastery = summarizeMastery(masteryEntry, lesson.examples.length);
   const sayItems = dedupeByText([...lesson.examples, ...(lesson.pairs ?? []).flatMap((p) => [p.a, p.b])]);
+  useEffect(() => {
+    if (bodyScrollRef.current) {
+      bodyScrollRef.current.scrollTop = 0;
+    }
+  }, [step, lesson.id]);
   useShortcuts((e) => {
     if (e.key === "Escape") {
       onBack();
@@ -846,7 +853,7 @@ function LessonView({
         </div>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden space-y-4 pb-2">
+      <div ref={bodyScrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden space-y-4 pb-4">
         {step === "learn" && mastery.level !== "new" && <MasteryPanel summary={mastery} />}
         {step === "learn" && <LearnStep lesson={lesson} onNext={() => setStep("say")} onQuiz={() => setStep("quiz")} />}
         {step === "say" && <SayAloud lessonId={lesson.id} lesson={lesson} items={sayItems} onQuiz={() => setStep("quiz")} />}
@@ -974,6 +981,18 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
   useEffect(() => {
     setOpen(null);
   }, [resetKey]);
+
+  useBackHandler(() => {
+    if (showPhonemeModal) {
+      setShowPhonemeModal(false);
+      return true;
+    }
+    if (open) {
+      setOpen(null);
+      return true;
+    }
+    return false;
+  }, showPhonemeModal || !!open);
 
   // The lessons could not be read (as opposed to: still loading)
   const [loadFailed, setLoadFailed] = useState(false);

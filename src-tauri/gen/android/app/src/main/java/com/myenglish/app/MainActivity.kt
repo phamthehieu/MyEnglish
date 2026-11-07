@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import android.webkit.WebView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.ViewCompat
@@ -43,6 +44,20 @@ class MainActivity : TauriActivity() {
     )
     enableEdgeToEdge()
     super.onCreate(savedInstanceState)
+    onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+      override fun handleOnBackPressed() {
+        val wv = appWebView
+        if (wv == null) {
+          moveTaskToBack(true)
+          return
+        }
+        wv.evaluateJavascript("(window.__handleAndroidBack && window.__handleAndroidBack()) || 'exit'") { result ->
+          if (result?.contains("handled") != true) {
+            moveTaskToBack(true)
+          }
+        }
+      }
+    })
     handleIncomingIntent(intent)
   }
 

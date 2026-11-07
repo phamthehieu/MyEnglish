@@ -31,6 +31,7 @@ import {
 import { playSound } from "@/services/sound";
 import { handleSpeak } from "@/components/review/speech";
 import { cn } from "@/lib/utils";
+import { useBackHandler } from "@/lib/backNavigation";
 
 interface ReflexChallengeModalProps {
   words: readonly WordDetail[];
@@ -496,8 +497,19 @@ export default function ReflexChallengeModal({
   // Filter wrong answers for review list
   const wrongAnswerRecords = answerRecords.filter((a) => !a.isCorrect);
 
+  useBackHandler(() => {
+    if (confirmExit) {
+      setConfirmExit(false);
+    } else if (phase === "playing") {
+      setConfirmExit(true);
+    } else {
+      onClose();
+    }
+    return true;
+  }, isOpen);
+
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white p-4 select-none animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex flex-col items-center overflow-y-auto bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-white px-4 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] select-none animate-in fade-in duration-200 [&>*]:my-auto">
       {/* ── PHASE 1: READY / ONBOARDING ── */}
       {phase === "ready" && (
         <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-7 shadow-xl text-center space-y-6 animate-in zoom-in-95">
@@ -927,8 +939,8 @@ export default function ReflexChallengeModal({
 
       {/* ── PHASE 5: GAME OVER / VICTORY RESULTS WITH DETAILED MISTAKE REVIEW ── */}
       {phase === "game_over" && (
-        <div className="max-w-lg w-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-xl text-center space-y-5 animate-in zoom-in-95 max-h-[90vh] flex flex-col justify-between">
-          <div className="space-y-4">
+        <div className="max-w-lg w-full bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-7 shadow-xl text-center space-y-5 animate-in zoom-in-95 max-h-full flex flex-col justify-between overflow-hidden">
+          <div className="space-y-4 overflow-y-auto min-h-0 flex-1 pr-1">
             <div
               className={cn(
                 "w-16 h-16 rounded-full flex items-center justify-center mx-auto",

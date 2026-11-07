@@ -19,7 +19,8 @@ export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlippe
   return (
     <div className="flex-1 min-h-0 flex flex-col justify-between">
       {!isFlipped ? (
-        <div className="flex-1 min-h-0 flex flex-col items-center justify-center text-center space-y-4 py-8">
+        <div className="flex-1 min-h-0 flex flex-col overflow-y-auto">
+          <div className="my-auto flex flex-col items-center text-center space-y-4 py-6">
           <span className="text-xs font-semibold text-teal-700 dark:text-teal-300">
             Từ vựng
           </span>
@@ -59,6 +60,7 @@ export default function FlipCard({ currentWord, synonyms, isFlipped, setIsFlippe
           <div className="pt-8 text-sm text-slate-600 dark:text-zinc-400 flex items-center gap-1.5 animate-pulse">
             <Eye className="w-4 h-4" />
             <span>{isTouchDevice() ? "Chạm vào thẻ để xem định nghĩa" : "Nhấn Space hoặc click vào thẻ để xem định nghĩa"}</span>
+          </div>
           </div>
         </div>
       ) : (

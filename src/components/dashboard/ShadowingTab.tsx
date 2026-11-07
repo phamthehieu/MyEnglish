@@ -22,6 +22,7 @@ import {
 import { COMMON_WORDS, FUNCTION_WORDS } from "@/data/commonWords";
 import { getAllWords } from "@/services/db";
 import { isFoundationMode } from "@/services/learnerProfile";
+import { useBackHandler } from "@/lib/backNavigation";
 import { buildWordIndex, classifyToken } from "@/services/reading";
 import type { WordDetail } from "@/types/database";
 import { PAGE_CONTAINER } from "./shared";
@@ -44,7 +45,6 @@ import { checkSentence, type SentenceCheck } from "@/services/sentenceCheck";
 import { countWords } from "@/services/shadowingPractice";
 import { creditPractice } from "@/services/learningLinks";
 import { getStudyLevels } from "@/services/vocabFeed";
-import { catalogMeaningsOf } from "@/services/vocabCatalog";
 import INDEX from "@/data/shadowing/index.json";
 import { FEED_EVENT, getFeedEntries, getFeedLesson } from "@/services/shadowingFeed";
 
@@ -80,7 +80,6 @@ interface ShadowingEntry {
   duration: number;
   /** Number of sentences */
   count: number;
-  hasVi?: boolean;
 }
 
 /** The list (built with the lessons by scripts/build-shadowing.mjs) */
@@ -581,7 +580,7 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
   const [speed, setSpeed] = useState(1);
   const [loop, setLoop] = useState(false);
   const [showIpa, setShowIpa] = useState(true);
-  const hasVi = true;
+  const hasVi = segments.some((s) => s.vi);
   const canShadow = asrAvailable();
   // The poll below runs outside React: it reads these through refs
   const indexRef = useRef(0);
@@ -692,28 +691,6 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
   // The learner's own words: a word is gold when it is not in their word bank (and not one of the very common words),
   // or it is in the bank but they have never studied it. The very common words stay plain, as in the Đọc tab.
   const [bank, setBank] = useState<WordDetail[]>([]);
-  const [catMeanings, setCatMeanings] = useState<Map<string, string>>(() => new Map());
-  useEffect(() => {
-    let dead = false;
-    const allWords = [...new Set(segments.flatMap((s) => s.text.toLowerCase().match(/[a-z]{3,}/g) ?? []))];
-    catalogMeaningsOf(allWords).then((m) => !dead && setCatMeanings(m)).catch(() => {});
-    return () => {
-      dead = true;
-    };
-  }, [segments]);
-  const sentenceGlossary = (text: string): string => {
-    const words = [...new Set(text.toLowerCase().match(/[a-z]{3,}/g) ?? [])];
-    const pairs: string[] = [];
-    for (const w of words) {
-      if (FUNCTION_WORDS.has(w)) continue;
-      const m = catMeanings.get(w);
-      if (m) {
-        pairs.push(`${w}: ${m.split(/[;,]/)[0].trim()}`);
-        if (pairs.length >= 4) break;
-      }
-    }
-    return pairs.join(" · ");
-  };
   useEffect(() => {
     let dead = false;
     getAllWords()
@@ -755,6 +732,19 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
       .catch(() => {});
   }, []);
   const closeLookup = useCallback(() => setLookup(null), []);
+
+  useBackHandler(() => {
+    if (lookup) {
+      setLookup(null);
+      return true;
+    }
+    if (fontOpen) {
+      setFontOpen(false);
+      return true;
+    }
+    onBack();
+    return true;
+  }, true);
 
   const seg = segments[index];
   const getTime = useCallback(() => player.current?.getCurrentTime() ?? 0, []);
@@ -1000,12 +990,12 @@ function Lesson({ lesson, onBack }: { lesson: ShadowingLesson; onBack: () => voi
                         <PlainSentence text={s.text} unlearned={unlearned} onWord={(w) => openWord(w, i)} />
                       )}
                     </p>
-                    {showVi && (s.vi || (active && sentenceGlossary(s.text))) && (
+                    {showVi && s.vi && (
                       <p
                         className="mt-1.5 leading-[1.5] font-normal text-slate-500 dark:text-zinc-400"
                         style={{ ...SENTENCE_FONT, fontSize: MEANING_PX * fontScale }}
                       >
-                        {s.vi || `Từ vựng: ${sentenceGlossary(s.text)}`}
+                        {s.vi}
                       </p>
                     )}
                   </>
@@ -1058,6 +1048,14 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
     setOpenId(null);
   }, [resetKey]);
 
+  useBackHandler(() => {
+    if (openId) {
+      setOpenId(null);
+      return true;
+    }
+    return false;
+  }, !!openId);
+
   // A lesson is only loaded when it is opened: the list needs just the small index
   useEffect(() => {
     setLesson(null);
@@ -1079,9 +1077,7 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
       const name = e.group || OTHER_GROUP;
       byGroup.set(name, [...(byGroup.get(name) ?? []), e]);
     }
-    return [...byGroup.entries()]
-      .map(([k, list]) => [k, [...list].sort((a, b) => Number(!!b.hasVi) - Number(!!a.hasVi))] as [string, ShadowingEntry[]])
-      .sort(([a], [b]) => Number(a === OTHER_GROUP) - Number(b === OTHER_GROUP));
+    return [...byGroup.entries()].sort(([a], [b]) => Number(a === OTHER_GROUP) - Number(b === OTHER_GROUP));
   }, [level, entries]);
 
   if (openId && lesson) return <Lesson key={lesson.id} lesson={lesson} onBack={() => setOpenId(null)} />;
@@ -1165,11 +1161,6 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
                   <div className="font-semibold text-slate-900 dark:text-zinc-100 line-clamp-2">{l.title}</div>
                   <div className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
                     {l.level} · {Math.max(1, Math.round(l.duration / 60))} phút · {l.count} câu
-                    {l.hasVi && (
-                      <span className="ml-1.5 inline-flex items-center px-2 py-0.5 rounded-full bg-teal-50 dark:bg-teal-500/15 text-teal-800 dark:text-teal-300 font-semibold text-[11px]">
-                        Có phụ đề Việt
-                      </span>
-                    )}
                   </div>
                 </div>
               </button>

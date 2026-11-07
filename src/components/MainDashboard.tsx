@@ -41,6 +41,7 @@ import {
 import LevelUpModal from "./LevelUpModal";
 import VoiceModelSheet from "./VoiceModelSheet";
 import StorageWarning from "./StorageWarning";
+import { useBackHandler } from "@/lib/backNavigation";
 
 // Tabs and modals that are not visible on startup are loaded on demand to keep the initial bundle small
 const FlashcardReview = lazy(() => import("./FlashcardReview"));
@@ -283,6 +284,20 @@ export default function MainDashboard({
     return () => window.removeEventListener("keydown", onKey, true);
   }, [confirmExitNav, cancelExit]);
 
+  // Prevent Chromium/WebView focus-scroll from shifting scrollTop of any overflow-hidden container
+  // (which would push pinned top headers off-screen without allowing touch-scroll back).
+  useEffect(() => {
+    const onScroll = (e: Event) => {
+      const t = e.target;
+      if (t instanceof HTMLElement && t.classList.contains("overflow-hidden")) {
+        if (t.scrollTop !== 0) t.scrollTop = 0;
+        if (t.scrollLeft !== 0) t.scrollLeft = 0;
+      }
+    };
+    window.addEventListener("scroll", onScroll, { capture: true, passive: true });
+    return () => window.removeEventListener("scroll", onScroll, { capture: true });
+  }, []);
+
   // The word panel belongs to the screen it was opened from: a tab change closes it, unless the same click
   // picked the word (Capture's "Xem chi tiết" opens the library with it). A new session closes it too, so the
   // meaning of a word being asked is never on screen.
@@ -485,6 +500,36 @@ export default function MainDashboard({
   // Text met at work, shared to the app or chosen in another app's selection menu: the capture sheet ("Lưu từ")
   const [incomingText, setIncomingText] = useState<string | null>(null);
   useEffect(() => onIncomingText(setIncomingText), []);
+
+  // Root Android hardware Back handler: Registered in MainDashboard before child tabs mount,
+  // so child tabs/modals run first (LIFO) and fall back here when at their top view.
+  useBackHandler(() => {
+    if (confirmExitNav) {
+      cancelExit();
+      return true;
+    }
+    if (wordToDelete) {
+      setWordToDelete(null);
+      return true;
+    }
+    if (selectedWord) {
+      setSelectedWord(null);
+      return true;
+    }
+    if (incomingText !== null) {
+      setIncomingText(null);
+      return true;
+    }
+    if (showReviewModalPreview) {
+      setShowReviewModalPreview(false);
+      return true;
+    }
+    if (activeTab !== "today") {
+      handleSelectTab("today");
+      return true;
+    }
+    return false;
+  }, true);
 
   // First run (no words yet): goal -> level -> minutes per day, then the first session
   const [showOnboarding, setShowOnboarding] = useState(false);

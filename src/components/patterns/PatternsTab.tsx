@@ -17,6 +17,7 @@ import DaySession from "../roadmap/DaySession";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import PatternRunner from "./PatternRunner";
 import TranslateRound from "./TranslateRound";
+import { useBackHandler } from "@/lib/backNavigation";
 
 /** Set by the Today screen: open the day's work at once */
 export const AUTOSTART_KEY = "roadmap.autostart";
@@ -112,6 +113,15 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
     setDay(null);
     setSkipTest(null);
   }, [resetKey]);
+
+  useBackHandler(() => {
+    if (day) { setDay(null); return true; }
+    if (skipTest) { setSkipTest(null); return true; }
+    if (translating) { setTranslating(false); return true; }
+    if (session) { setSession(null); return true; }
+    if (changingGoal) { setChangingGoal(false); return true; }
+    return false;
+  }, !!(day || skipTest || translating || session || changingGoal));
 
   const { road, states, minutes, stages, current, plan, aheadPlan, finishedCount, etaText, wantedLevel, startsLower } = useRoadmap();
   const [jumping, setJumping] = useState(false);

@@ -353,12 +353,19 @@ export default function SoundSession({
     return getWordCollocation(currentTask.item.text, currentTask.item.note);
   }, [currentTask]);
 
+  const cardScrollRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (cardScrollRef.current) {
+      cardScrollRef.current.scrollTop = 0;
+    }
+  }, [index]);
+
   if (flat.length === 0) {
     return (
       <div className="w-full max-w-md mx-auto flex-1 flex flex-col h-full min-h-0 justify-between gap-2 pb-2 overflow-hidden">
         <div className="shrink-0">{header}</div>
-        <div className="flex-1 min-h-0 flex flex-col justify-center py-4">
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-center">
+        <div className="flex-1 min-h-0 flex flex-col overflow-y-auto py-4">
+          <div className="my-auto rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-center">
             <p className="text-base text-slate-700 dark:text-zinc-300">Chưa có bài tập cho phần này.</p>
           </div>
         </div>
@@ -374,8 +381,8 @@ export default function SoundSession({
         <div className="shrink-0">
           {top({ label: `${subject} /${sym}/`, count: null, percent: 100 })}
         </div>
-        <div className="flex-1 min-h-0 flex flex-col justify-center py-4">
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-8 text-center space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+        <div className="flex-1 min-h-0 flex flex-col overflow-y-auto py-4">
+          <div className="my-auto rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-8 text-center space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
             <div className="text-5xl">🎉</div>
             <h2 className="text-xl font-semibold text-slate-900 dark:text-zinc-100">Xong {subject.toLowerCase()} /{sym}/</h2>
             {answered > 0 && (
@@ -427,7 +434,7 @@ export default function SoundSession({
       </div>
 
       {/* Main Exercise Card: scrolls internally when content is tall, never overflowing or crushing bottom bar */}
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden my-1 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-3.5">
+      <div ref={cardScrollRef} className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden my-1 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-3.5">
         {index === 0 && lesson.tips[0] && (
           <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/50">
             <button onClick={() => setTipOpen((o) => !o)} className="w-full min-h-11 flex items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 dark:text-zinc-300">
