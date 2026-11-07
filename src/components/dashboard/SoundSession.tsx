@@ -289,67 +289,12 @@ export default function SoundSession({
   );
   const header = top();
 
-  if (flat.length === 0) {
-    return (
-      <div className="w-full max-w-md mx-auto flex-1 flex flex-col min-h-full justify-between gap-4 pb-4">
-        <div className="shrink-0">{header}</div>
-        <div className="flex-1 flex flex-col justify-center py-4 min-h-0">
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-center">
-            <p className="text-base text-slate-700 dark:text-zinc-300">Chưa có bài tập cho phần này.</p>
-          </div>
-        </div>
-        <div className="shrink-0 min-h-[56px]" />
-      </div>
-    );
-  }
+  const currentTask = current?.task;
 
-  if (finished) {
-    const summary = pair ? null : summarizeMastery(getMastery()[lesson.id], lesson.examples.length);
-    return (
-      <div className="w-full max-w-md mx-auto flex-1 flex flex-col min-h-full justify-between gap-4 pb-4">
-        <div className="shrink-0">
-          {top({ label: `${subject} /${sym}/`, count: null, percent: 100 })}
-        </div>
-        <div className="flex-1 flex flex-col justify-center py-4 min-h-0">
-          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-8 text-center space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
-            <div className="text-5xl">🎉</div>
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-zinc-100">Xong {subject.toLowerCase()} /{sym}/</h2>
-            {answered > 0 && (
-              <p className="text-slate-700 dark:text-zinc-300">
-                Đúng <span className="font-bold text-green-700 dark:text-green-300">{correct}/{answered}</span> câu
-              </p>
-            )}
-            <p className="text-sm text-slate-500 dark:text-zinc-400">
-              {summary?.level === "mastered" ? "Thành thạo ✓" : summary?.level === "learning" ? `Thành thạo ${summary.percent}%` : ""}
-            </p>
-          </div>
-        </div>
-        <div className="shrink-0 space-y-2">
-          {nextLesson && onNext ? (
-            <button onClick={() => onNext(nextLesson.id)} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2 transition-transform active:scale-98">
-              Âm tiếp theo
-            </button>
-          ) : (
-            <button onClick={onBack} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2 transition-transform active:scale-98">
-              {pair ? "Xong" : "Về bảng âm"}
-            </button>
-          )}
-          <button onClick={restart} className="w-full min-h-14 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 text-[17px] font-semibold inline-flex items-center justify-center gap-2 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 transition-transform active:scale-98">
-            Học lại {pair ? "cặp này" : "âm này"}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!current) return null;
-  const { task, round, ri, ti } = current;
-  const roundCount = rounds.filter((r) => r.title === round.title).length;
-  const roundNo = rounds.slice(0, ri + 1).filter((r) => r.title === round.title).length;
-
+  // React Rules of Hooks: Hooks MUST be called unconditionally at the top level before any early returns
   const contrastPair = useMemo(() => {
-    if (task.kind !== "say") return null;
-    const targetWord = task.item.text.toLowerCase();
+    if (!currentTask || currentTask.kind !== "say") return null;
+    const targetWord = currentTask.item.text.toLowerCase();
     if (pair) {
       const found = pair.defaultPairs.find(
         (p) => p.wordA.toLowerCase() === targetWord || p.wordB.toLowerCase() === targetWord
@@ -395,20 +340,78 @@ export default function SoundSession({
       }
     }
     return null;
-  }, [task, pair, lesson.pairs, sym]);
+  }, [currentTask, pair, lesson.pairs, sym]);
 
   const teacherGuide = useMemo(() => {
-    if (task.kind !== "say") return null;
-    return getTeacherGuide(task.item.text, task.item.ipa, sym, pair);
-  }, [task, sym, pair]);
+    if (!currentTask || currentTask.kind !== "say") return null;
+    return getTeacherGuide(currentTask.item.text, currentTask.item.ipa, sym, pair);
+  }, [currentTask, sym, pair]);
 
   const collocation = useMemo(() => {
-    if (task.kind !== "say") return null;
-    return getWordCollocation(task.item.text, task.item.note);
-  }, [task]);
+    if (!currentTask || currentTask.kind !== "say") return null;
+    return getWordCollocation(currentTask.item.text, currentTask.item.note);
+  }, [currentTask]);
+
+  if (flat.length === 0) {
+    return (
+      <div className="w-full max-w-md mx-auto flex-1 flex flex-col h-full min-h-0 justify-between gap-2 pb-2 overflow-hidden">
+        <div className="shrink-0">{header}</div>
+        <div className="flex-1 min-h-0 flex flex-col justify-center py-4">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] text-center">
+            <p className="text-base text-slate-700 dark:text-zinc-300">Chưa có bài tập cho phần này.</p>
+          </div>
+        </div>
+        <div className="shrink-0 min-h-[56px]" />
+      </div>
+    );
+  }
+
+  if (finished) {
+    const summary = pair ? null : summarizeMastery(getMastery()[lesson.id], lesson.examples?.length ?? 0);
+    return (
+      <div className="w-full max-w-md mx-auto flex-1 flex flex-col h-full min-h-0 justify-between gap-2 pb-2 overflow-hidden">
+        <div className="shrink-0">
+          {top({ label: `${subject} /${sym}/`, count: null, percent: 100 })}
+        </div>
+        <div className="flex-1 min-h-0 flex flex-col justify-center py-4">
+          <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-8 text-center space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.05)]">
+            <div className="text-5xl">🎉</div>
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-zinc-100">Xong {subject.toLowerCase()} /{sym}/</h2>
+            {answered > 0 && (
+              <p className="text-slate-700 dark:text-zinc-300">
+                Đúng <span className="font-bold text-green-700 dark:text-green-300">{correct}/{answered}</span> câu
+              </p>
+            )}
+            <p className="text-sm text-slate-500 dark:text-zinc-400">
+              {summary?.level === "mastered" ? "Thành thạo ✓" : summary?.level === "learning" ? `Thành thạo ${summary.percent}%` : ""}
+            </p>
+          </div>
+        </div>
+        <div className="shrink-0 space-y-2">
+          {nextLesson && onNext ? (
+            <button onClick={() => onNext(nextLesson.id)} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2 transition-transform active:scale-98">
+              Âm tiếp theo
+            </button>
+          ) : (
+            <button onClick={onBack} className="w-full min-h-14 px-6 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-[17px] font-semibold shadow-sm inline-flex items-center justify-center gap-2 transition-transform active:scale-98">
+              {pair ? "Xong" : "Về bảng âm"}
+            </button>
+          )}
+          <button onClick={restart} className="w-full min-h-14 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 text-[17px] font-semibold inline-flex items-center justify-center gap-2 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 transition-transform active:scale-98">
+            Học lại {pair ? "cặp này" : "âm này"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!current) return null;
+  const { task, round, ri, ti } = current;
+  const roundCount = rounds.filter((r) => r.title === round.title).length;
+  const roundNo = rounds.slice(0, ri + 1).filter((r) => r.title === round.title).length;
 
   return (
-    <div className="w-full max-w-md mx-auto flex-1 flex flex-col justify-between min-h-full gap-3 sm:gap-4 pb-2">
+    <div className="w-full max-w-md mx-auto flex-1 flex flex-col h-full min-h-0 justify-between gap-2 overflow-hidden">
       <div className="shrink-0">
         {top({
           label: (
@@ -422,8 +425,8 @@ export default function SoundSession({
         })}
       </div>
 
-      <div className="flex-1 flex flex-col justify-center py-1 sm:py-2 min-h-0">
-        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-4">
+      {/* Main Exercise Card: scrolls internally when content is tall, never overflowing or crushing bottom bar */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden my-1 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.05)] space-y-3.5">
         {index === 0 && lesson.tips[0] && (
           <div className="rounded-xl bg-slate-50 dark:bg-zinc-800/50">
             <button onClick={() => setTipOpen((o) => !o)} className="w-full min-h-11 flex items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 dark:text-zinc-300">
@@ -647,20 +650,19 @@ export default function SoundSession({
             </div>
           </div>
         )}
-        </div>
       </div>
 
-      <div className="shrink-0 min-h-[56px] flex flex-col justify-end">
+      <div className="shrink-0 min-h-[56px] flex flex-col justify-end pt-1 pb-1">
         {task.kind === "say" ? (
-          <div className="pt-1 text-center space-y-2">
-            <p className="text-xs text-slate-500 dark:text-zinc-400">
+          <div className="text-center space-y-1.5">
+            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400">
               {hasAsr ? "🤫 Không tiện nói to lúc này? Bạn có thể tự nhẩm rồi chọn:" : "Hãy đọc to từ trên rồi đánh giá kết quả:"}
             </p>
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => rateSaid(true)}
-                className="w-full min-h-12 px-3 py-2 rounded-xl border border-teal-600/30 dark:border-teal-500/30 bg-teal-50/60 hover:bg-teal-100/70 dark:bg-teal-950/40 dark:hover:bg-teal-900/50 text-teal-800 dark:text-teal-300 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
+                className="w-full min-h-11 px-3 py-2 rounded-xl border border-teal-600/30 dark:border-teal-500/30 bg-teal-50/60 hover:bg-teal-100/70 dark:bg-teal-950/40 dark:hover:bg-teal-900/50 text-teal-800 dark:text-teal-300 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
               >
                 <Check className="w-4 h-4 text-teal-600 dark:text-teal-400" />
                 <span>Đã đọc chuẩn ✓</span>
@@ -668,14 +670,14 @@ export default function SoundSession({
               <button
                 type="button"
                 onClick={() => rateSaid(false)}
-                className="w-full min-h-12 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
+                className="w-full min-h-11 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
               >
                 <span>Chưa chắc</span>
               </button>
             </div>
           </div>
         ) : (
-          <div className="w-full min-h-14" />
+          <div className="w-full min-h-12" />
         )}
       </div>
     </div>

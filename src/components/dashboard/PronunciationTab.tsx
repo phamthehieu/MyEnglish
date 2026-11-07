@@ -49,7 +49,7 @@ import { asrAvailable } from "@/services/pronunciationCheck";
 import { getTeacherGuide } from "@/services/pronunciationTips";
 
 const PRACTICE_OVERLAY =
-  "fixed inset-0 z-40 flex flex-col bg-[#f7f8fa] dark:bg-zinc-950 overflow-y-auto p-4 md:p-6 pt-[calc(env(safe-area-inset-top)+0.75rem)] pb-[calc(env(safe-area-inset-bottom)+1.5rem)] select-none animate-in fade-in duration-200";
+  "fixed inset-0 z-40 flex flex-col bg-[#f7f8fa] dark:bg-zinc-950 overflow-hidden p-3 sm:p-4 md:p-6 pt-[calc(env(safe-area-inset-top)+0.5rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] select-none";
 
 /** The three steps of a lesson, one on screen at a time so the exercise is never below the theory */
 type Step = "learn" | "say" | "quiz";

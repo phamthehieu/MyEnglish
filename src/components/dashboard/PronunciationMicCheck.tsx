@@ -189,7 +189,7 @@ export function MicCheck({
   );
 
   return (
-    <div className="w-full space-y-2 pt-3">
+    <div className={`w-full space-y-2 ${compact ? "pt-1" : "pt-3"}`}>
       {!compact && (
         <div className="space-y-1">
           <div role="radiogroup" aria-label="Mức chấm" className="flex gap-1 p-1 rounded-xl bg-slate-100 dark:bg-zinc-800/70">
