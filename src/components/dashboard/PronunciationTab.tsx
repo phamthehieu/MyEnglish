@@ -45,8 +45,9 @@ import { getWordsLite } from "@/services/db";
 import { MicCheck } from "./PronunciationMicCheck";
 import SoundSession, { lessonFromPair } from "./SoundSession";
 import SoundIntro from "./SoundIntro";
-import { asrAvailable } from "@/services/pronunciationCheck";
+import { asrAvailable, canCheck } from "@/services/pronunciationCheck";
 import { getTeacherGuide } from "@/services/pronunciationTips";
+import { playSound } from "@/services/sound";
 
 const PRACTICE_OVERLAY =
   "fixed inset-0 z-40 flex flex-col bg-[#f7f8fa] dark:bg-zinc-950 overflow-hidden p-3 sm:p-4 md:p-6 pt-[calc(env(safe-area-inset-top)+0.5rem)] pb-[calc(env(safe-area-inset-bottom)+0.75rem)] select-none";
@@ -436,27 +437,24 @@ function SayAloud({
           <div className="w-full border-t border-slate-100 dark:border-zinc-800/80 my-2" />
           <MicCheck lesson={lesson} item={item} onPassed={() => rate(true)} />
         </div>
-        {asrAvailable() ? (
-          <div className="pt-1 text-center space-y-2">
-            <p className="text-xs text-slate-500 dark:text-zinc-400">
-              Không tiện bật micro? Bạn có thể tự đọc to rồi bấm:
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => rate(true)}
-                className="min-h-12 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-teal-50 dark:hover:bg-teal-950/30 text-slate-700 dark:text-zinc-200 text-sm font-semibold inline-flex items-center justify-center gap-2 transition-colors"
-              >
-                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400" /> Tự chấm: Đọc được <Kbd>1</Kbd>
-              </button>
-              <button
-                type="button"
-                onClick={() => rate(false)}
-                className="min-h-12 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-sm font-semibold inline-flex items-center justify-center gap-2 transition-colors"
-              >
-                Chưa chắc, từ khác <Kbd>2</Kbd>
-              </button>
-            </div>
+        {asrAvailable() && canCheck(lesson, item.text) ? (
+          <div className="pt-1 flex items-center justify-center gap-3 text-xs text-slate-500 dark:text-zinc-400">
+            <span>🤫 Không tiện nói to?</span>
+            <button
+              type="button"
+              onClick={() => rate(true)}
+              className="font-semibold text-teal-700 dark:text-teal-400 underline underline-offset-2 hover:text-teal-800 dark:hover:text-teal-300"
+            >
+              Tự nhẩm · Qua từ →
+            </button>
+            <span className="text-slate-300 dark:text-zinc-700">·</span>
+            <button
+              type="button"
+              onClick={() => rate(false)}
+              className="font-medium text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"
+            >
+              Chưa chắc
+            </button>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-2">
@@ -465,7 +463,7 @@ function SayAloud({
               onClick={() => rate(true)}
               className="min-h-14 px-3 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm inline-flex items-center justify-center gap-2"
             >
-              <Check className="w-4 h-4" /> Mình đọc được <Kbd>1</Kbd>
+              <Check className="w-4 h-4" /> Đã đọc chuẩn <Kbd>1</Kbd>
             </button>
             <button
               type="button"
@@ -515,7 +513,19 @@ function Quiz({
     return () => clearTimeout(t);
   }, [q]);
 
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    };
+  }, []);
+
   const restart = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
     setIndex(0);
     setPicked(null);
     setCorrect(0);
@@ -523,21 +533,39 @@ function Quiz({
     setResult(null);
   };
 
-  const choose = (opt: string) => {
-    if (!q || picked) return;
-    setPicked(opt);
-    if (opt === q.answer) setCorrect((n) => n + 1);
-    else setWrong((w) => [...w, q]);
-  };
-  const next = () => {
-    if (!picked) return;
+  const advance = (nextCorrect: number) => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
     if (index + 1 >= total) {
-      const passed = recordPronunciationQuiz(lesson.id, correct, total, new Date(), lesson.quiz.map((x) => x.say));
-      setResult({ correct, passed, next: passed ? nextLesson() : null });
+      const passed = recordPronunciationQuiz(lesson.id, nextCorrect, total, new Date(), lesson.quiz.map((x) => x.say));
+      playSound("complete");
+      setResult({ correct: nextCorrect, passed, next: passed ? nextLesson() : null });
     } else {
       setIndex((i) => i + 1);
       setPicked(null);
     }
+  };
+
+  const choose = (opt: string) => {
+    if (!q || picked) return;
+    setPicked(opt);
+    const ok = opt === q.answer;
+    playSound(ok ? "correct" : "wrong");
+    const nextCorrect = ok ? correct + 1 : correct;
+    if (ok) setCorrect(nextCorrect);
+    else setWrong((w) => [...w, q]);
+
+    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    advanceTimerRef.current = setTimeout(() => {
+      advanceTimerRef.current = null;
+      advance(nextCorrect);
+    }, ok ? 750 : 1600);
+  };
+  const next = () => {
+    if (!picked || !q) return;
+    advance(correct);
   };
 
   const primary = () => {
@@ -694,12 +722,12 @@ function Quiz({
         </div>
         {picked && (
           <div
-            className={`rounded-xl px-4 py-3 space-y-2 ${
+            className={`rounded-xl px-4 py-3 space-y-1.5 animate-in fade-in duration-150 ${
               answeredRight ? "bg-green-50 dark:bg-green-950/30" : "bg-red-50 dark:bg-red-950/20"
             }`}
           >
             <p className={`text-sm ${answeredRight ? "text-green-800 dark:text-green-300" : "text-red-800 dark:text-red-300"}`}>
-              <span className="font-bold">{answeredRight ? "Đúng rồi! " : `Chưa đúng. Đáp án: ${q.answer}. `}</span>
+              <span className="font-bold">{answeredRight ? "✓ Đúng rồi! " : `✗ Chưa đúng. Đáp án: ${q.answer}. `}</span>
               {q.explanation}
             </p>
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -707,12 +735,9 @@ function Quiz({
                 Từ vừa nghe: <span className="font-semibold text-slate-900 dark:text-zinc-100">{q.say}</span>
                 <PlayButton text={q.say} className="!p-1" />
               </span>
-              <button
-                onClick={next}
-                className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 transition-all"
-              >
-                {index + 1 >= total ? "Xem kết quả" : "Câu tiếp"} <Kbd>Enter</Kbd>
-              </button>
+              <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">
+                Đang tự chuyển câu…
+              </span>
             </div>
           </div>
         )}
@@ -769,8 +794,8 @@ function LessonView({
     }
   });
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
-      <div className="space-y-3">
+    <div className="w-full max-w-3xl mx-auto flex-1 flex flex-col h-full min-h-0 gap-4 overflow-hidden">
+      <div className="shrink-0 space-y-3">
         <div className="flex items-center justify-between gap-3">
           <button onClick={onBack} className="min-h-11 pr-3 rounded-full text-sm font-semibold text-slate-700 hover:text-slate-900 dark:text-zinc-300 dark:hover:text-zinc-100 inline-flex items-center gap-2">
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 dark:bg-zinc-800">
@@ -821,12 +846,14 @@ function LessonView({
         </div>
       </div>
 
-      {step === "learn" && mastery.level !== "new" && <MasteryPanel summary={mastery} />}
-      {step === "learn" && <LearnStep lesson={lesson} onNext={() => setStep("say")} onQuiz={() => setStep("quiz")} />}
-      {step === "say" && <SayAloud lessonId={lesson.id} lesson={lesson} items={sayItems} onQuiz={() => setStep("quiz")} />}
-      {step === "quiz" && (
-        <Quiz lesson={lesson} nextLesson={nextLesson} onOpenNext={(id) => onOpen(id, "learn")} onReview={() => setStep("learn")} onBack={onBack} />
-      )}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden space-y-4 pb-2">
+        {step === "learn" && mastery.level !== "new" && <MasteryPanel summary={mastery} />}
+        {step === "learn" && <LearnStep lesson={lesson} onNext={() => setStep("say")} onQuiz={() => setStep("quiz")} />}
+        {step === "say" && <SayAloud lessonId={lesson.id} lesson={lesson} items={sayItems} onQuiz={() => setStep("quiz")} />}
+        {step === "quiz" && (
+          <Quiz lesson={lesson} nextLesson={nextLesson} onOpenNext={(id) => onOpen(id, "learn")} onReview={() => setStep("learn")} onBack={onBack} />
+        )}
+      </div>
     </div>
   );
 }

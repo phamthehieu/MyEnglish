@@ -15,7 +15,7 @@ import {
   micPermissionText,
 } from "@/services/pronunciationCheck";
 import { playSound } from "@/services/sound";
-import { handleSpeak, SLOW_RATE, SPEAK_EVENT, stopSpeaking } from "./speech";
+import { AUTO_SPEAK_DELAY_MS, handleSpeak, SLOW_RATE, SPEAK_EVENT, stopSpeaking, waitForSpeechToEnd } from "./speech";
 
 /** Common words the recognizer can pick instead of the target, so it does not accept any sound as the word */
 const DECOY_POOL = ["water", "house", "people", "time", "work", "money", "family", "problem", "city", "friend", "morning", "number"];
@@ -140,20 +140,39 @@ export default function SayAloudPrompt({ word, wordId, onPassed }: { word: strin
     timer.current = window.setTimeout(finish, MAX_LISTEN_MS);
   };
 
-  // When speaking starts externally, cancel any active listening
+  /** Once the reading going on now is over, switch the microphone on by itself */
+  const listenAfterSpeech = async (delayMs: number) => {
+    const mine = ++attempt.current;
+    await new Promise((r) => window.setTimeout(r, delayMs));
+    if (!alive.current || mine !== attempt.current || doneRef.current !== null) return;
+    await waitForSpeechToEnd();
+    if (alive.current && mine === attempt.current && doneRef.current === null) void begin(true);
+  };
+
+  // Hands free: the card reads the word when it opens (useReviewSession), then the microphone comes on
+  useEffect(() => {
+    if (!useMic) return;
+    void listenAfterSpeech(AUTO_SPEAK_DELAY_MS + 150);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useMic]);
+
+  // When speaking starts externally, pause active listening and resume once the reading finishes
   useEffect(() => {
     if (!useMic) return;
     const onSpeak = () => {
-      if (phaseRef.current === "listening") {
-        attempt.current += 1;
-        window.clearTimeout(timer.current);
-        cancelListening();
+      if (doneRef.current !== null) return;
+      attempt.current += 1;
+      window.clearTimeout(timer.current);
+      cancelListening();
+      if (phaseRef.current === "listening" || phaseRef.current === "preparing") {
         phaseRef.current = "idle";
         setPhase("idle");
       }
+      void listenAfterSpeech(150);
     };
     window.addEventListener(SPEAK_EVENT, onSpeak);
     return () => window.removeEventListener(SPEAK_EVENT, onSpeak);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useMic]);
 
   if (done !== null) {

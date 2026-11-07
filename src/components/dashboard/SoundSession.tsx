@@ -9,7 +9,7 @@ import { playSound } from "@/services/sound";
 import { handleSpeak, SLOW_RATE, AUTO_SPEAK_DELAY_MS } from "../review/speech";
 import { MicCheck } from "./PronunciationMicCheck";
 import { PracticeTop } from "../talk/MicButton";
-import { asrAvailable } from "@/services/pronunciationCheck";
+import { asrAvailable, canCheck } from "@/services/pronunciationCheck";
 import { getTeacherGuide, getWordCollocation } from "@/services/pronunciationTips";
 
 /**
@@ -237,6 +237,7 @@ export default function SoundSession({
   const rateSaid = (ok: boolean) => {
     if (!current || current.task.kind !== "say") return;
     recordSayAloud(lesson.id, current.task.item.text, ok);
+    heard.current.push(current.task.item.text);
     advance();
   };
 
@@ -598,11 +599,6 @@ export default function SoundSession({
                 </div>
               </div>
             )}
-
-            <div className="border-t border-slate-100 dark:border-zinc-800/80 my-1" />
-
-            {/* Hero Microphone Practice */}
-            <MicCheck lesson={lesson} item={task.item} compact onPassed={() => rateSaid(true)} />
           </div>
         ) : (
           <div className="space-y-5">
@@ -654,28 +650,52 @@ export default function SoundSession({
 
       <div className="shrink-0 min-h-[56px] flex flex-col justify-end pt-1 pb-1">
         {task.kind === "say" ? (
-          <div className="text-center space-y-1.5">
-            <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400">
-              {hasAsr ? "🤫 Không tiện nói to lúc này? Bạn có thể tự nhẩm rồi chọn:" : "Hãy đọc to từ trên rồi đánh giá kết quả:"}
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => rateSaid(true)}
-                className="w-full min-h-11 px-3 py-2 rounded-xl border border-teal-600/30 dark:border-teal-500/30 bg-teal-50/60 hover:bg-teal-100/70 dark:bg-teal-950/40 dark:hover:bg-teal-900/50 text-teal-800 dark:text-teal-300 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
-              >
-                <Check className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                <span>Đã đọc chuẩn ✓</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => rateSaid(false)}
-                className="w-full min-h-11 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
-              >
-                <span>Chưa chắc</span>
-              </button>
+          hasAsr && canCheck(lesson, task.item.text) ? (
+            <div className="space-y-1.5">
+              <MicCheck lesson={lesson} item={task.item} compact onPassed={() => rateSaid(true)} />
+              <div className="flex items-center justify-center gap-3 text-xs text-slate-500 dark:text-zinc-400">
+                <span>🤫 Không tiện nói to?</span>
+                <button
+                  type="button"
+                  onClick={() => rateSaid(true)}
+                  className="font-semibold text-teal-700 dark:text-teal-400 underline underline-offset-2 hover:text-teal-800 dark:hover:text-teal-300"
+                >
+                  Tự nhẩm · Qua từ →
+                </button>
+                <span className="text-slate-300 dark:text-zinc-700">·</span>
+                <button
+                  type="button"
+                  onClick={() => rateSaid(false)}
+                  className="font-medium text-slate-500 dark:text-zinc-400 hover:text-slate-700 dark:hover:text-zinc-300"
+                >
+                  Chưa chắc
+                </button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-center space-y-1.5">
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400">
+                Hãy đọc to từ trên rồi đánh giá kết quả:
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => rateSaid(true)}
+                  className="w-full min-h-11 px-3 py-2 rounded-xl border border-teal-600/30 dark:border-teal-500/30 bg-teal-50/60 hover:bg-teal-100/70 dark:bg-teal-950/40 dark:hover:bg-teal-900/50 text-teal-800 dark:text-teal-300 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
+                >
+                  <Check className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+                  <span>Đã đọc chuẩn ✓</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => rateSaid(false)}
+                  className="w-full min-h-11 px-3 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-600 dark:text-zinc-400 text-sm font-semibold inline-flex items-center justify-center gap-1.5 transition-colors active:scale-98 shadow-2xs"
+                >
+                  <span>Chưa chắc</span>
+                </button>
+              </div>
+            </div>
+          )
         ) : (
           <div className="w-full min-h-12" />
         )}
