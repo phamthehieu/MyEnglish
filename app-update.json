@@ -1,6 +1,6 @@
 {
-  "version": "0.5.1",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.5.1/MyEnglish-v0.5.1.apk",
+  "version": "0.5.2",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.5.2/MyEnglish-v0.5.2.apk",
   "notes": "Tinh gọn điều hướng: Gom gọn mục Từ vựng từ 6 tab xuống 4 tab cốt lõi (Bộ từ, Ôn tập, Sổ từ, Đọc). Gộp các danh sách vào Sổ từ với bộ lọc nhanh.\nTái cấu trúc Màn hình Hôm nay: Tích hợp Hero Overview Card hiện đại (chứa Lời chào, Cấp độ đang học, Vòng mục tiêu ngày và 3 chỉ số từ vựng), danh sách nhiệm vụ ưu tiên và lưới tiện ích 2 cột cân đối.\nTối ưu Lộ trình Bộ từ: Hỗ trợ thanh cấp độ A1–C1 cuộn ngang 1 dòng mượt mà trên mobile, cân đối khối thống kê trong Banner và tích hợp tiện ích Tìm/Lướt từ.\nNâng cấp Động lực học tập: Nổi bật nút \"⚡ Học nhanh 1 phút (Giữ chuỗi)\" và \"🎯 Tập trung\", thêm hiệu ứng pháo hoa chúc mừng (Confetti) khi hoàn thành/đánh dấu từ đã biết trong bộ.\nĐồng bộ bảng màu và phong cách thiết kế Mobile-First trên toàn bộ ứng dụng.",
-  "sha256": "f837ac5a6af2eba1a332420efd127795db4f9b1e8b9bca4c1b6f09599c604df8"
+  "sha256": "c8190ca7542ba1a3bc6f32976f95cc32bfc8c592b7b603ad5c715d8b7b026c89"
 }
