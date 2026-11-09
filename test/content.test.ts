@@ -101,8 +101,8 @@ describe("grammar book chapters", () => {
 });
 
 describe("pronunciation lessons", () => {
-  it("8 lessons in order, each quiz answer offered exactly once", () => {
-    expect(PRONUNCIATION_LESSONS.map((l) => l.order)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  it("10 lessons in order, each quiz answer offered exactly once", () => {
+    expect(PRONUNCIATION_LESSONS.map((l) => l.order)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     for (const l of PRONUNCIATION_LESSONS) {
       expect(l.quiz.length, l.id).toBeGreaterThanOrEqual(6);
       for (const q of l.quiz) {

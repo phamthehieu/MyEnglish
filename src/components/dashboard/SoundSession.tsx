@@ -62,7 +62,7 @@ export function lessonFromPair(pair: ConfusablePhonemePair): PronunciationLesson
 
 function buildRounds(lesson: PronunciationLesson, pair?: ConfusablePhonemePair): Round[] {
   const sym = lesson.title.match(/\/(.+?)\//)?.[1] ?? "";
-  const need = ROUND_SIZE * 2;
+  const need = ROUND_SIZE;
 
   // For a pair of sounds the listening questions are its minimal pairs: which of the two words was said
   const listen: Task[] = pair
@@ -135,16 +135,14 @@ function buildRounds(lesson: PronunciationLesson, pair?: ConfusablePhonemePair):
   }
 
   const rounds: Array<[string, string, Task[]]> = [
-    ["Nghe", "Luyện tai: Bạn nghe thấy từ nào?", listen],
-    ["Đọc", "Luyện nói & Nhại câu thực tế", say],
+    ["Nghe", "Luyện tai: Bạn nghe thấy từ/cụm nào?", listen],
+    ["Đọc câu", "Đọc to theo cụm từ & câu thực tế", say],
     ["Phân biệt", "Phản xạ: Từ này thuộc về âm nào?", tell],
   ];
-  return rounds.flatMap(([title, prompt, tasks]) =>
-    [0, 1].flatMap((r) => {
-      const slice = tasks.slice(r * ROUND_SIZE, (r + 1) * ROUND_SIZE);
-      return slice.length > 0 ? [{ title, prompt, tasks: slice }] : [];
-    })
-  );
+  return rounds.flatMap(([title, prompt, tasks]) => {
+    const slice = tasks.slice(0, ROUND_SIZE);
+    return slice.length > 0 ? [{ title, prompt, tasks: slice }] : [];
+  });
 }
 
 export default function SoundSession({
@@ -195,8 +193,16 @@ export default function SoundSession({
 
   useEffect(() => {
     if (!current) return;
-    const word = current.task.kind === "say" ? current.task.item.text : current.task.say;
-    const t = setTimeout(() => handleSpeak(word), AUTO_SPEAK_DELAY_MS);
+    const textToSpeak =
+      current.task.kind === "say"
+        ? getWordCollocation(
+            current.task.item.text,
+            current.task.item.note,
+            current.task.item.phrase,
+            current.task.item.phraseVn
+          ).phrase
+        : current.task.say;
+    const t = setTimeout(() => handleSpeak(textToSpeak), AUTO_SPEAK_DELAY_MS);
     return () => clearTimeout(t);
   }, [current]);
 
@@ -350,7 +356,12 @@ export default function SoundSession({
 
   const collocation = useMemo(() => {
     if (!currentTask || currentTask.kind !== "say") return null;
-    return getWordCollocation(currentTask.item.text, currentTask.item.note);
+    return getWordCollocation(
+      currentTask.item.text,
+      currentTask.item.note,
+      currentTask.item.phrase,
+      currentTask.item.phraseVn
+    );
   }, [currentTask]);
 
   const cardScrollRef = useRef<HTMLDivElement>(null);
@@ -463,81 +474,71 @@ export default function SoundSession({
 
         {task.kind === "say" ? (
           <div className="space-y-3.5">
-            {/* Main Word Display */}
-            <div className="text-center space-y-1 pt-0.5">
-              <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/60 px-3 py-0.5 rounded-full">
-                Từ đang luyện
-              </span>
-              <div className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-zinc-100 tracking-tight break-words">
-                {task.item.text}
-              </div>
-              <div className="flex items-center justify-center gap-2 flex-wrap">
-                <span className="font-mono text-base font-semibold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 px-2.5 py-0.5 rounded-lg border border-teal-200/60 dark:border-teal-800/40">
-                  {task.item.ipa}
-                </span>
-                {task.item.note && (
-                  <span className="text-sm font-medium text-slate-500 dark:text-zinc-400">
-                    ({task.item.note})
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Audio Listen Buttons: Normal & Slow */}
-            <div className="flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => handleSpeak(task.item.text)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-teal-50 hover:bg-teal-100 dark:bg-teal-950/40 dark:hover:bg-teal-900/40 text-teal-800 dark:text-teal-300 text-sm font-semibold transition-all active:scale-95 border border-teal-200 dark:border-teal-800/60 shadow-2xs"
-              >
-                <Volume2 className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                <span>Nghe từ</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSpeak(task.item.text, SLOW_RATE)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-slate-100 hover:bg-slate-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-sm font-semibold transition-all active:scale-95 shadow-2xs"
-                title="Nghe chậm để bắt rõ từng âm"
-              >
-                <Snail className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                <span>Nghe chậm</span>
-              </button>
-            </div>
-
-            {/* Mini-Phrase Real Context Box (Không đọc từ cộc lốc) */}
+            {/* Hero Real-Context Phrase / Sentence Display */}
             {collocation && (
-              <div className="rounded-xl border border-teal-200/80 dark:border-teal-900/50 bg-teal-50/70 dark:bg-teal-950/30 p-2.5 sm:p-3 space-y-1 text-center transition-all">
-                <div className="flex items-center justify-center gap-1.5 text-[11px] font-bold text-teal-800 dark:text-teal-300 uppercase tracking-wider">
-                  <span>💬 Ghép vào câu thực tế:</span>
+              <div className="rounded-2xl border-2 border-teal-500/40 dark:border-teal-500/30 bg-teal-50/60 dark:bg-teal-950/30 p-3.5 sm:p-4 space-y-2 text-center">
+                <span className="inline-block text-[11px] font-bold uppercase tracking-wider text-teal-800 dark:text-teal-300 bg-white/80 dark:bg-teal-900/50 px-3 py-0.5 rounded-full">
+                  💬 Câu / Cụm từ thực tế
+                </span>
+                <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-zinc-100 tracking-tight leading-snug break-words">
+                  "{collocation.phrase}"
                 </div>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-lg sm:text-xl font-bold text-slate-900 dark:text-zinc-100 tracking-tight">
-                    "{collocation.phrase}"
-                  </span>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-zinc-300">
+                  Nghĩa: <span className="font-medium italic">{collocation.translation}</span>
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
                   <button
                     type="button"
                     onClick={() => handleSpeak(collocation.phrase)}
-                    className="p-1.5 rounded-full text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/50 transition-colors active:scale-95"
-                    title="Nghe câu mẫu"
-                    aria-label="Nghe câu mẫu"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-xs sm:text-sm font-semibold transition-all active:scale-95 shadow-2xs"
                   >
                     <Volume2 className="w-4 h-4" />
+                    <span>Nghe cả câu</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => handleSpeak(collocation.phrase, SLOW_RATE)}
-                    className="p-1.5 rounded-full text-slate-500 dark:text-zinc-400 hover:bg-slate-200 dark:hover:bg-zinc-800 transition-colors active:scale-95"
-                    title="Nghe chậm câu mẫu"
-                    aria-label="Nghe chậm câu mẫu"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-slate-700 dark:text-zinc-200 text-xs sm:text-sm font-semibold transition-all active:scale-95 border border-slate-200 dark:border-zinc-700 shadow-2xs"
                   >
-                    <Snail className="w-3.5 h-3.5" />
+                    <Snail className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                    <span>Nghe chậm câu</span>
                   </button>
                 </div>
-                <p className="text-xs text-slate-600 dark:text-zinc-400">
-                  Ý nghĩa: <span className="italic">{collocation.translation}</span>
-                </p>
               </div>
             )}
+
+            {/* Target Word & IPA Focus Pill */}
+            <div className="rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-800/40 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-zinc-400 shrink-0">
+                  Từ trọng tâm:
+                </span>
+                <span className="text-lg font-extrabold text-teal-800 dark:text-teal-300 truncate">
+                  {task.item.text}
+                </span>
+                <span className="font-mono text-sm font-semibold text-slate-600 dark:text-zinc-300 bg-white dark:bg-zinc-900 px-2 py-0.5 rounded border border-slate-200 dark:border-zinc-700">
+                  {task.item.ipa}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleSpeak(task.item.text)}
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-950/40"
+                >
+                  <Volume2 className="w-3.5 h-3.5" />
+                  <span>Nghe từ</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSpeak(task.item.text, SLOW_RATE)}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 text-xs font-semibold text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800"
+                  title="Nghe chậm từ này"
+                >
+                  <Snail className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                </button>
+              </div>
+            </div>
 
             {/* Minimal Pair Ear Tuning Contrast Bar (So sánh đối chiếu liền tai) */}
             {contrastPair && (
@@ -659,7 +660,7 @@ export default function SoundSession({
         {task.kind === "say" ? (
           hasAsr && canCheck(lesson, task.item.text) ? (
             <div className="space-y-1.5">
-              <MicCheck lesson={lesson} item={task.item} compact onPassed={() => rateSaid(true)} />
+              <MicCheck lesson={lesson} item={task.item} phrase={collocation?.phrase} compact onPassed={() => rateSaid(true)} />
               <div className="flex items-center justify-center gap-3 text-xs text-slate-500 dark:text-zinc-400">
                 <span>🤫 Không tiện nói to?</span>
                 <button
@@ -667,7 +668,7 @@ export default function SoundSession({
                   onClick={() => rateSaid(true)}
                   className="font-semibold text-teal-700 dark:text-teal-400 underline underline-offset-2 hover:text-teal-800 dark:hover:text-teal-300"
                 >
-                  Tự nhẩm · Qua từ →
+                  Tự nhẩm · Qua câu →
                 </button>
                 <span className="text-slate-300 dark:text-zinc-700">·</span>
                 <button
@@ -682,7 +683,7 @@ export default function SoundSession({
           ) : (
             <div className="text-center space-y-1.5">
               <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400">
-                Hãy đọc to từ trên rồi đánh giá kết quả:
+                Hãy đọc to câu mẫu trên rồi đánh giá kết quả:
               </p>
               <div className="grid grid-cols-2 gap-2">
                 <button
@@ -703,6 +704,14 @@ export default function SoundSession({
               </div>
             </div>
           )
+        ) : picked !== null ? (
+          <button
+            type="button"
+            onClick={advance}
+            className="w-full min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm inline-flex items-center justify-center gap-2 transition-transform active:scale-98"
+          >
+            <span>Câu tiếp theo →</span>
+          </button>
         ) : (
           <div className="w-full min-h-12" />
         )}

@@ -50,26 +50,28 @@ describe("one definition of 'đã thuộc': Đang học / Nhớ lâu (U9)", () =
 });
 
 describe("the five sections of the app", () => {
-  const ALL_TABS: DashboardTab[] = [
-    "today", "library", "known", "capture", "reading", "writing", "review", "forgotten", "analytics", "guide", "grammar", "talk", "patterns", "pronunciation", "shadowing", "leaderboard", "account",
+  const VISIBLE_TABS: DashboardTab[] = [
+    "today", "capture", "review", "library", "dictionary", "reading", "patterns", "talk", "pronunciation", "grammar", "writing", "analytics", "leaderboard", "guide",
   ];
 
-  it("has five sections in order, and every tab belongs to exactly one", () => {
+  it("has five sections in order, and every visible tab belongs to exactly one", () => {
     expect(NAV_SECTIONS.map((s) => s.label)).toEqual(["Hôm nay", "Từ vựng", "Luyện nói", "Ngữ pháp & Viết", "Tôi"]);
     const tabs = NAV_SECTIONS.flatMap((s) => s.tabs.map((t) => t.tab));
-    expect([...tabs].sort()).toEqual([...ALL_TABS].sort());
+    expect([...tabs].sort()).toEqual([...VISIBLE_TABS].sort());
   });
 
   it("each section opens its main tab and holds the tabs that belong with it", () => {
-    expect(navSectionOf("review").tabs[0].tab).toBe("review");
+    expect(navSectionOf("review").tabs[0].tab).toBe("capture");
     expect(navSectionOf("forgotten").id).toBe("vocab");
     expect(navSectionOf("capture").id).toBe("vocab");
-    expect(navSectionOf("patterns").tabs.map((t) => t.tab)).toEqual(["patterns", "talk", "pronunciation", "shadowing"]);
+    expect(navSectionOf("dictionary").id).toBe("vocab");
+    expect(navSectionOf("patterns").tabs.map((t) => t.tab)).toEqual(["patterns", "talk", "pronunciation"]);
     expect(navSectionOf("writing").tabs.map((t) => t.tab)).toEqual(["grammar", "writing"]);
     // Reading is where words are met and saved: it sits with the words
     expect(navSectionOf("reading").id).toBe("vocab");
     expect(navSectionOf("leaderboard").id).toBe("me");
     expect(navSectionOf("guide").tabs[0].tab).toBe("analytics");
-    expect(tabLabel("library")).toBe("Kho từ");
+    expect(tabLabel("library")).toBe("Sổ từ");
+    expect(tabLabel("dictionary")).toBe("Từ điển");
   });
 });

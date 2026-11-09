@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { features, isTouchDevice } from "@/lib/platform";
-import { BookOpenText, Check, Pencil, Plus, Quote, Sparkles, X } from "lucide-react";
+import { BookOpenText, Check, Pencil, Plus, Quote, Search, Sparkles, X } from "lucide-react";
+import { openQuickDictionary } from "@/services/dictionary";
 import { useWordsStore } from "@/stores/wordsStore";
 import { analyzeText, logEncounters, type BankStatus, type ReadingAnalysis } from "@/services/reading";
 import { addMetWords } from "@/services/metWords";
@@ -356,8 +357,19 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
                 </span>
               );
             }
-            // Not in the app's deck: it could not be added, so it is not offered (names, rare words)
-            if (!inDeck(t.base)) return <span key={i}>{seg.text}</span>;
+            // Words outside the 5,000 Oxford deck can still be tapped to open the 161,500-word Dictionary Popup
+            if (!inDeck(t.base)) {
+              return (
+                <span
+                  key={i}
+                  onClick={() => openQuickDictionary(t.base)}
+                  title={`Tra từ điển Anh-Việt / Anh-Anh cho "${t.base}"`}
+                  className="cursor-pointer border-b border-dotted border-slate-300 dark:border-zinc-600 hover:bg-teal-50 dark:hover:bg-teal-500/10"
+                >
+                  {seg.text}
+                </span>
+              );
+            }
             const on = picked.has(t.base);
             return (
               <span
@@ -378,15 +390,29 @@ export default function ReadingTab({ resetKey }: { resetKey?: number }) {
               <div className="text-sm font-semibold text-teal-900 dark:text-teal-200">Đã chọn {picked.size} từ</div>
               <div className="flex flex-wrap gap-1.5">
                 {[...picked.keys()].map((b) => (
-                  <button
+                  <div
                     key={b}
-                    onClick={() => togglePick(b, "")}
-                    className="inline-flex items-center gap-1 px-3 min-h-10 rounded-full bg-white dark:bg-zinc-900 border border-teal-200 dark:border-teal-500/30 text-sm text-teal-800 dark:text-teal-200"
+                    className="inline-flex items-center gap-1 pl-3 pr-1.5 min-h-10 rounded-full bg-white dark:bg-zinc-900 border border-teal-200 dark:border-teal-500/30 text-sm text-teal-800 dark:text-teal-200"
                   >
-                    {b}
-                    {meaningOf(b) && <span className="text-teal-700/80 dark:text-teal-300/80">· {meaningOf(b)!.split(/[;,]/)[0]}</span>}
-                    <X className="w-3 h-3" />
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => openQuickDictionary(b)}
+                      title={`Xem chi tiết từ điển "${b}"`}
+                      className="inline-flex items-center gap-1 hover:underline"
+                    >
+                      <Search className="w-3 h-3 text-teal-600" />
+                      <span className="font-semibold">{b}</span>
+                      {meaningOf(b) && <span className="text-teal-700/80 dark:text-teal-300/80">· {meaningOf(b)!.split(/[;,]/)[0]}</span>}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => togglePick(b, "")}
+                      title="Bỏ chọn"
+                      className="p-1 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
                 ))}
               </div>
               <button

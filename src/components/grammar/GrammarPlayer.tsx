@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
-import { ArrowLeft, BookOpen, CheckCircle2, ChevronDown, CircleHelp, Clock, Eraser, EyeOff, Flag, Lightbulb, Loader2, Mic, RotateCcw, Snail, Sparkles, Undo2, Volume2, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, ChevronDown, CircleHelp, Clock, Eraser, EyeOff, Flag, Lightbulb, Loader2, Mic, RotateCcw, Snail, Sparkles, Undo2, Volume2, XCircle } from "lucide-react";
 import {
   availableFormats,
   buildTask,
@@ -17,7 +17,7 @@ import { getLessonNextReview, GRAMMAR_PASS_SCORE } from "@/services/grammarServi
 import type { GrammarBookLesson } from "@/types/grammarBook";
 import { handleSpeak, SLOW_RATE } from "@/components/review/speech";
 import { setMainSessionActive } from "@/services/activeSession";
-import { asrAvailable, cancelListening, finishListening, startListening } from "@/services/pronunciationCheck";
+import { asrAvailable, cancelListening, finishListening, prepareListening, startListening } from "@/services/pronunciationCheck";
 import { playSound } from "@/services/sound";
 
 interface GrammarPlayerProps {
@@ -242,14 +242,21 @@ const GIVEN_LABELS: Partial<Record<GrammarFormat, string>> = {
   error: "Bạn chạm",
 };
 
-function SentenceOralPractice({ sentence }: { sentence: string }) {
-  const [phase, setPhase] = useState<"idle" | "listening" | "success" | "retry">("idle");
+function SentenceOralPractice({ sentence, onContinue }: { sentence: string; onContinue?: () => void }) {
+  const [phase, setPhase] = useState<"idle" | "preparing" | "listening" | "checking" | "success" | "retry">("idle");
   const [heard, setHeard] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
+  const timerRef = useRef<number | undefined>(undefined);
+  const aliveRef = useRef(true);
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
   const hasAsr = asrAvailable();
 
   useEffect(() => {
+    aliveRef.current = true;
     return () => {
+      aliveRef.current = false;
+      window.clearTimeout(timerRef.current);
       cancelListening();
     };
   }, []);
@@ -263,41 +270,70 @@ function SentenceOralPractice({ sentence }: { sentence: string }) {
       .filter(Boolean);
   }, [sentence]);
 
-  const toggleMic = async () => {
-    if (phase === "listening") {
-      cancelListening();
-      setPhase("idle");
-      return;
-    }
-
-    setPhase("listening");
-    setMsg(null);
-    setHeard(null);
-
-    const started = startListening(undefined, { sentence: true });
-    if (!started) {
-      setPhase("retry");
-      setMsg("Không thể bật micro lúc này. Bạn hãy tự đọc to câu nhé!");
-      return;
-    }
-
+  const finish = async () => {
+    window.clearTimeout(timerRef.current);
+    if (phaseRef.current !== "listening") return;
+    phaseRef.current = "checking";
+    setPhase("checking");
     try {
       const res = await finishListening(tokens);
+      if (!aliveRef.current) return;
       if (res.ok || (res.words && res.words.length > 0)) {
+        phaseRef.current = "success";
         setPhase("success");
         setHeard(res.text || res.free || null);
         playSound("correct");
       } else {
+        phaseRef.current = "retry";
         setPhase("retry");
         setHeard(res.free || null);
         setMsg("Chưa bắt rõ âm. Bạn hãy thử đọc lại to và rõ ràng hơn nhé.");
       }
     } catch {
+      if (!aliveRef.current) return;
+      phaseRef.current = "idle";
       setPhase("idle");
     }
   };
 
+  const toggleMic = async () => {
+    if (phaseRef.current === "listening") {
+      await finish();
+      return;
+    }
+    if (phaseRef.current === "preparing" || phaseRef.current === "checking") return;
+
+    setMsg(null);
+    setHeard(null);
+    phaseRef.current = "preparing";
+    setPhase("preparing");
+
+    const failure = await prepareListening({ automatic: false });
+    if (!aliveRef.current) return;
+    if (failure) {
+      phaseRef.current = "retry";
+      setPhase("retry");
+      setMsg("Chưa bật được micro lúc này. Bạn có thể tự đọc to rồi bấm 'Tự đọc to xong' nhé!");
+      return;
+    }
+
+    const started = startListening(() => void finish(), { sentence: true });
+    if (!started) {
+      phaseRef.current = "retry";
+      setPhase("retry");
+      setMsg("Không thể bật micro lúc này. Bạn hãy tự đọc to câu nhé!");
+      return;
+    }
+
+    phaseRef.current = "listening";
+    setPhase("listening");
+    timerRef.current = window.setTimeout(() => void finish(), 5500);
+  };
+
   const selfConfirm = () => {
+    window.clearTimeout(timerRef.current);
+    cancelListening();
+    phaseRef.current = "success";
     setPhase("success");
     playSound("correct");
   };
@@ -348,18 +384,26 @@ function SentenceOralPractice({ sentence }: { sentence: string }) {
             type="button"
             data-own-enter
             onClick={toggleMic}
+            disabled={phase === "preparing" || phase === "checking"}
             className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold transition active:scale-95 shadow-2xs ${
               phase === "listening"
                 ? "bg-red-500 text-white animate-pulse"
-                : phase === "success"
-                  ? "bg-green-600 text-white hover:bg-green-700"
-                  : "bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white"
+                : phase === "preparing" || phase === "checking"
+                  ? "bg-slate-500 text-white opacity-80"
+                  : phase === "success"
+                    ? "bg-green-600 text-white hover:bg-green-700"
+                    : "bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white"
             }`}
           >
             {phase === "listening" ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                <span>Đang nghe... (bấm để dừng)</span>
+                <span>Đang nghe... (bấm để chấm)</span>
+              </>
+            ) : phase === "preparing" || phase === "checking" ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>{phase === "preparing" ? "Đang bật mic..." : "Đang chấm..."}</span>
               </>
             ) : (
               <>
@@ -368,15 +412,29 @@ function SentenceOralPractice({ sentence }: { sentence: string }) {
               </>
             )}
           </button>
-        ) : (
+        ) : null}
+
+        {phase !== "success" && (
           <button
             type="button"
             data-own-enter
             onClick={selfConfirm}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 text-white text-xs font-bold transition active:scale-95 shadow-2xs"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-zinc-900 border border-teal-600/30 dark:border-teal-400/30 text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 text-xs font-semibold transition active:scale-95 shadow-2xs"
           >
-            <CheckCircle2 className="w-3.5 h-3.5" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
             <span>Tự đọc to xong</span>
+          </button>
+        )}
+
+        {phase === "success" && onContinue && (
+          <button
+            type="button"
+            data-own-enter
+            onClick={onContinue}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-xs font-bold transition active:scale-95 shadow-2xs"
+          >
+            <span>Câu tiếp theo</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
@@ -397,6 +455,7 @@ function Feedback({
   hinted,
   canAccept,
   onAccept,
+  onContinue,
   innerRef,
   lesson,
   onOpenLesson,
@@ -406,6 +465,7 @@ function Feedback({
   hinted: boolean;
   canAccept: boolean;
   onAccept: () => void;
+  onContinue?: () => void;
   innerRef: RefObject<HTMLDivElement>;
   /** The lesson of the question: its formulas are shown on a wrong answer */
   lesson: GrammarBookLesson | null;
@@ -494,7 +554,7 @@ function Feedback({
       )}
 
       {/* Oral sentence practice area: Full Sentence with Audio & Mic */}
-      {task.full && <SentenceOralPractice sentence={task.full} />}
+      {task.full && <SentenceOralPractice sentence={task.full} onContinue={onContinue} />}
 
       {/* Self graded answer */}
       {task.format === "self" && task.item.keyRaw && (
@@ -1068,6 +1128,7 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
           hinted={hinted}
           canAccept={canAccept}
           onAccept={acceptAsCorrect}
+          onContinue={next}
           innerRef={feedbackRef}
           lesson={lesson}
           onOpenLesson={onOpenLesson}
@@ -1089,6 +1150,21 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
       )}
 
       <div className="space-y-3">
+        {answered ? (
+          outcome?.correct && (task.format === "choice" || task.format === "pick_sentence") ? null : (
+            <button type="button" disabled={busy} onClick={next} className={PRIMARY_BTN}>
+              <span>Tiếp tục</span>
+              <span className="text-sm opacity-90 font-normal">
+                {outcome?.correct ? "(đã ghi nhận tiến độ)" : "(gặp lại ở cuối bài)"}
+              </span>
+              <span className="desktop-only font-mono text-xs">↵</span>
+            </button>
+          )
+        ) : showCheck ? (
+          <button type="button" disabled={!canCheck} onClick={check} className={PRIMARY_BTN}>
+            Kiểm tra
+          </button>
+        ) : null}
         <div className="flex flex-wrap items-center gap-2">
           {canHint && (
             <button
@@ -1133,21 +1209,6 @@ function Question({ entry, task, hinted, busy, onHint, onNext, onHide, onFinishE
             Kết thúc sớm
           </button>
         </div>
-        {answered ? (
-          (task.format === "choice" || task.format === "pick_sentence") ? null : (
-            <button type="button" disabled={busy} onClick={next} className={PRIMARY_BTN}>
-              <span>Tiếp tục</span>
-              <span className="text-sm opacity-90 font-normal">
-                {outcome?.correct ? "(đã ghi nhận tiến độ)" : "(gặp lại ở cuối bài)"}
-              </span>
-              <span className="desktop-only font-mono text-xs">↵</span>
-            </button>
-          )
-        ) : showCheck ? (
-          <button type="button" disabled={!canCheck} onClick={check} className={PRIMARY_BTN}>
-            Kiểm tra
-          </button>
-        ) : null}
       </div>
     </div>
   );

@@ -7,6 +7,10 @@ export interface PronunciationItem {
   ipa: string;
   /** Short Vietnamese note (meaning, or what to pay attention to) */
   note?: string;
+  /** Practical phrase or short sentence putting the word/sound into real communication */
+  phrase?: string;
+  /** Vietnamese translation of `phrase` */
+  phraseVn?: string;
 }
 
 /** Two words that differ by the one sound the lesson is about (ship / sheep) */
@@ -32,6 +36,10 @@ export interface PronunciationLesson {
   id: string;
   order: number;
   title: string;
+  /** Curriculum stage (1: Core Endings, 2: Confusable Sounds in Context, 3: Stress, Linking & Rhythm) */
+  stage?: 1 | 2 | 3;
+  /** Short stage label */
+  stageTitle?: string;
   /** One line: what the learner will be able to do */
   tagline: string;
   /** 2–4 short Vietnamese paragraphs: what the sound is and why Vietnamese speakers get it wrong */

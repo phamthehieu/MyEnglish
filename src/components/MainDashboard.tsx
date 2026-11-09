@@ -51,6 +51,8 @@ const FocusReviewModal = lazy(() => import("./FocusReviewModal"));
 const GrammarHub = lazy(() => import("./grammar/GrammarHub"));
 const OnboardingFlow = lazy(() => import("./OnboardingFlow"));
 const CaptureSheet = lazy(() => import("./dashboard/CaptureSheet"));
+const DictionaryTab = lazy(() => import("./dashboard/DictionaryTab"));
+const DictionaryQuickModal = lazy(() => import("./dashboard/DictionaryQuickModal"));
 const ReadingTab = lazy(() => import("./dashboard/ReadingTab"));
 const WritingTab = lazy(() => import("./dashboard/WritingTab"));
 const ForgottenTab = lazy(() => import("./dashboard/ForgottenTab"));
@@ -1631,6 +1633,9 @@ export default function MainDashboard({
         )}
 
         <Suspense fallback={<TabFallback />}>
+        {/* DICTIONARY: 161,500+ entries EN-VI, EN-EN, VI-EN */}
+        {activeTab === "dictionary" && <DictionaryTab resetKey={tabResetKey} />}
+
         {/* READING MODE: real text with the learner's words highlighted */}
         {activeTab === "reading" && <ReadingTab resetKey={tabResetKey} />}
 
@@ -1864,6 +1869,9 @@ export default function MainDashboard({
 
       <VoiceModelSheet />
       <StorageWarning />
+      <Suspense fallback={null}>
+        <DictionaryQuickModal />
+      </Suspense>
 
       {!showOnboarding && vocabSetup && (
         <Suspense fallback={null}>

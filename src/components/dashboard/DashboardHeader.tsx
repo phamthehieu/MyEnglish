@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Sparkles, RefreshCw, Plus, X, Flame, Loader2, Zap, Crosshair, BellOff, UserRound } from "lucide-react";
+import { Sparkles, RefreshCw, Plus, X, Flame, Loader2, Zap, Crosshair, BellOff, UserRound, Search } from "lucide-react";
+import { openQuickDictionary } from "@/services/dictionary";
 import type { calculateStreakAndGoal } from "@/services/streak";
 import { triggerAutoReplenish } from "@/services/autoReplenish";
 import { useWordsStore } from "@/stores/wordsStore";
@@ -104,6 +105,19 @@ export default function DashboardHeader({
 
       {/* Right Header Controls: strictly 1 row on mobile and desktop without staircase wrapping */}
       <div className="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
+        {/* Global Quick Dictionary Button (Anh-Việt & Anh-Anh & Việt-Anh) */}
+        {activeTab !== "dictionary" && (
+          <button
+            type="button"
+            onClick={() => openQuickDictionary()}
+            title="Mở nhanh Từ điển Anh-Việt & Anh-Anh (Ctrl+K)"
+            aria-label="Tra từ điển nhanh"
+            className="inline-flex items-center justify-center gap-1.5 min-h-10 min-w-10 px-2.5 sm:px-3 rounded-xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-800/70 text-slate-700 dark:text-zinc-200 hover:border-teal-600/50 hover:text-teal-700 dark:hover:text-teal-300 text-xs sm:text-sm font-semibold transition-colors shrink-0"
+          >
+            <Search className="w-4 h-4 text-teal-700 dark:text-teal-400" />
+            <span className="hidden md:inline">Từ điển</span>
+          </button>
+        )}
         {/* Reminders snoozed (corner reminder, popup or tray): until when, and undo in one click */}
         {snooze.snoozedUntil && (
           <div

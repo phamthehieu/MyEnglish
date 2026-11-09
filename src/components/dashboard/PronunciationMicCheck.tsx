@@ -8,9 +8,11 @@ import {
   asrAvailable,
   buildGrammar,
   canCheck,
+  canCheckSpeech,
   cancelListening,
   confusablesFor,
   decoysFor,
+  extractWords,
   finishListening,
   focusLabel,
   focusMates,
@@ -52,11 +54,14 @@ const VERDICT_TONE: Record<Verdict["kind"], string> = {
 export function MicCheck({
   lesson,
   item,
+  phrase,
   compact = false,
   onPassed,
 }: {
   lesson: PronunciationLesson;
   item: PronunciationItem;
+  /** Optional contextual phrase/sentence; the learner can read either this phrase or `item.text` */
+  phrase?: string;
   compact?: boolean;
   /** Called a moment after a pass (the verdict stays on screen meanwhile): the lesson moves to the next word */
   onPassed?: () => void;
@@ -78,11 +83,14 @@ export function MicCheck({
   onPassedRef.current = onPassed;
   const grammar = useRef<string[]>([]);
   const target = item.text;
+  const targetWords = extractWords(target);
+  const phraseWords = phrase ? extractWords(phrase) : [];
+  const isSentenceMode = phraseWords.length > 1 || targetWords.length > 1;
 
-  const canUseMic = asrAvailable() && canCheck(lesson, target);
+  const canUseMic = asrAvailable() && canCheckSpeech(lesson, target, phrase);
   const confusables = isCheckableWord(target) ? confusablesFor(lesson, target) : [];
   const mates = isCheckableWord(target) ? focusMates(lesson, target) : [];
-  const decoys = canUseMic ? decoysFor(lesson, target, [...confusables, ...mates]) : [];
+  const decoys = canUseMic && isCheckableWord(target) ? decoysFor(lesson, target, [...confusables, ...mates]) : [];
 
   const finish = async () => {
     window.clearTimeout(timer.current);
@@ -96,6 +104,8 @@ export function MicCheck({
     const next = judge(target, result, {
       level,
       mates,
+      confusables,
+      phrase,
       ipaTarget: item.ipa,
       ipaOf: (w) => ipaOf(lesson, w),
       focusLabel: focusLabel(lesson, item),
@@ -152,15 +162,15 @@ export function MicCheck({
       return;
     }
     // A word outside the recognizer's dictionary can never be heard: say so instead of failing every time
-    const list = wordsInDictionary(buildGrammar(target, confusables, [...mates, ...decoys]));
-    if (!list.includes(target.trim().toLowerCase())) {
+    const list = wordsInDictionary(buildGrammar(target, confusables, [...mates, ...decoys], phraseWords));
+    if (targetWords.length > 0 && !targetWords.some((w) => list.includes(w))) {
       setProblem(`Bộ nhận dạng offline chưa biết từ "${target}", nên không chấm được từ này. Bạn tự chấm bên dưới nhé.`);
       phaseRef.current = "idle";
       setPhase("idle");
       return;
     }
     grammar.current = list;
-    if (!startListening(finish)) {
+    if (!startListening(finish, { sentence: isSentenceMode })) {
       setProblem("Không bật được micro (có thể app khác đang dùng). Bấm micro để thử lại nhé.");
       phaseRef.current = "idle";
       setPhase("idle");
@@ -168,7 +178,7 @@ export function MicCheck({
     }
     phaseRef.current = "listening";
     setPhase("listening");
-    timer.current = window.setTimeout(finish, MAX_LISTEN_MS);
+    timer.current = window.setTimeout(finish, isSentenceMode ? 5000 : MAX_LISTEN_MS);
   };
 
   const beginRef = useRef(begin);
@@ -293,10 +303,10 @@ export function MicCheck({
             </span>
             <div className="text-left min-w-0 flex-1">
               <span className="block text-sm sm:text-base font-bold leading-tight truncate">
-                Đang nghe… hãy đọc "{target}"
+                {phrase ? `Đang nghe… đọc câu mẫu hoặc "${target}"` : `Đang nghe… hãy đọc "${target}"`}
               </span>
               <span className="block text-[11px] text-red-100 leading-tight">
-                Đọc xong máy tự chấm & qua từ (hoặc chạm để dừng)
+                Đọc xong máy tự chấm & qua câu (hoặc chạm để dừng)
               </span>
             </div>
           </button>
@@ -318,15 +328,19 @@ export function MicCheck({
               <span className="block text-sm sm:text-base font-bold leading-tight truncate">
                 {phase === "idle"
                   ? verdict && !verdict.ok
-                    ? `Bấm để đọc lại "${target}"`
-                    : `Bấm micro để đọc "${target}"`
+                    ? phrase
+                      ? `Bấm để đọc lại câu hoặc "${target}"`
+                      : `Bấm để đọc lại "${target}"`
+                    : phrase
+                      ? `Bấm micro để đọc câu mẫu hoặc "${target}"`
+                      : `Bấm micro để đọc "${target}"`
                   : phase === "preparing"
                     ? "Đang bật micro…"
                     : "Đang chấm điểm…"}
               </span>
               {phase === "idle" && (
                 <span className="block text-[11px] text-teal-100 leading-tight">
-                  Đọc chuẩn máy sẽ tự động chuyển qua từ tiếp theo
+                  Đọc cả câu mẫu hoặc từ trọng tâm đều được máy ghi nhận
                 </span>
               )}
             </div>

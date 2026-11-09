@@ -45,8 +45,8 @@ import { getWordsLite } from "@/services/db";
 import { MicCheck } from "./PronunciationMicCheck";
 import SoundSession, { lessonFromPair } from "./SoundSession";
 import SoundIntro from "./SoundIntro";
-import { asrAvailable, canCheck } from "@/services/pronunciationCheck";
-import { getTeacherGuide } from "@/services/pronunciationTips";
+import { asrAvailable, canCheckSpeech } from "@/services/pronunciationCheck";
+import { getTeacherGuide, getWordCollocation } from "@/services/pronunciationTips";
 import { playSound } from "@/services/sound";
 import { useBackHandler } from "@/lib/backNavigation";
 
@@ -187,29 +187,54 @@ function PlayButton({ text, slow, title, className = "" }: { text: string; slow?
   );
 }
 
-/** One word with its IPA: the whole tile plays it, the snail plays it slowly */
+/** One word/phrase with its IPA and real-life sentence context: click to hear phrase or word, snail plays it slowly */
 function SoundItem({ item }: { item: PronunciationItem }) {
+  const collocation = getWordCollocation(item.text, item.note, item.phrase, item.phraseVn);
+  const hasDistinctPhrase = collocation.phrase.toLowerCase() !== item.text.toLowerCase();
   return (
-    <div className="flex items-stretch rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden hover:border-teal-600/50">
-      <button
-        onClick={() => handleSpeak(item.text)}
-        title="Nghe"
-        className="flex-1 min-w-0 min-h-12 flex items-center gap-2.5 px-3 py-2 text-left hover:bg-teal-50/60 dark:hover:bg-teal-400/5"
-      >
-        <Volume2 className="w-4 h-4 shrink-0 text-teal-700 dark:text-teal-400" />
-        <span className="min-w-0">
-          <span className="block text-base font-semibold text-slate-900 dark:text-zinc-100">{item.text}</span>
-          <span className="block text-sm font-mono text-slate-500 dark:text-zinc-400">{item.ipa}</span>
-          {item.note && <span className="block text-xs text-slate-500 dark:text-zinc-400">{item.note}</span>}
-        </span>
-      </button>
-      <button
-        onClick={() => handleSpeak(item.text, SLOW_RATE)}
-        title="Nghe chậm"
-        className="px-2.5 border-l border-slate-100 dark:border-zinc-800 text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800"
-      >
-        <Snail className="w-4 h-4" />
-      </button>
+    <div className="flex flex-col rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden hover:border-teal-600/50 transition-colors">
+      <div className="flex items-stretch">
+        <button
+          onClick={() => handleSpeak(hasDistinctPhrase ? collocation.phrase : item.text)}
+          title="Nghe câu mẫu"
+          className="flex-1 min-w-0 min-h-12 flex items-start gap-2.5 px-3 py-2.5 text-left hover:bg-teal-50/60 dark:hover:bg-teal-400/5"
+        >
+          <Volume2 className="w-4 h-4 mt-1 shrink-0 text-teal-700 dark:text-teal-400" />
+          <span className="min-w-0 flex-1 space-y-0.5">
+            <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+              <span className="text-base font-bold text-slate-900 dark:text-zinc-100">{item.text}</span>
+              <span className="text-xs font-mono text-teal-700 dark:text-teal-400">{item.ipa}</span>
+            </span>
+            {item.note && <span className="block text-xs text-slate-500 dark:text-zinc-400">{item.note}</span>}
+            {hasDistinctPhrase && (
+              <span className="block pt-1 mt-1 border-t border-slate-100 dark:border-zinc-800/80">
+                <span className="block text-xs font-semibold text-teal-800 dark:text-teal-300">“{collocation.phrase}”</span>
+                {collocation.translation && (
+                  <span className="block text-[11px] text-slate-500 dark:text-zinc-400 italic">{collocation.translation}</span>
+                )}
+              </span>
+            )}
+          </span>
+        </button>
+        <div className="flex flex-col border-l border-slate-100 dark:border-zinc-800">
+          {hasDistinctPhrase && (
+            <button
+              onClick={() => handleSpeak(item.text)}
+              title={`Nghe riêng từ "${item.text}"`}
+              className="flex-1 px-2.5 text-[11px] font-semibold text-teal-700 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10 border-b border-slate-100 dark:border-zinc-800"
+            >
+              Từ
+            </button>
+          )}
+          <button
+            onClick={() => handleSpeak(hasDistinctPhrase ? collocation.phrase : item.text, SLOW_RATE)}
+            title="Nghe chậm"
+            className="flex-1 px-2.5 flex items-center justify-center text-slate-500 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800"
+          >
+            <Snail className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -255,8 +280,8 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
       </div>
 
       <div className="space-y-2">
-        <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Bấm vào từ để nghe</p>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-2">
+        <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Bấm vào câu mẫu để nghe ngữ cảnh thực tế (nút "Từ" bên phải để nghe lẻ)</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           {lesson.examples.map((item) => (
             <SoundItem key={item.text} item={item} />
           ))}
@@ -265,12 +290,12 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
 
       {lesson.pairs && lesson.pairs.length > 0 && (
         <div className="space-y-2">
-          <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Cặp dễ nhầm: nghe sự khác nhau</p>
-          <div className="grid gap-2 min-[1000px]:grid-cols-2">
+          <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Cặp dễ nhầm: đặt cạnh nhau trong câu để nghe sự khác biệt</p>
+          <div className="grid gap-2.5">
             {lesson.pairs.map((pair) => (
-              <div key={`${pair.a.text}-${pair.b.text}`} className="grid grid-cols-[1fr_auto_1fr] items-center gap-1.5">
+              <div key={`${pair.a.text}-${pair.b.text}`} className="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-stretch gap-2">
                 <SoundItem item={pair.a} />
-                <span className="text-xs text-slate-500">vs</span>
+                <span className="text-xs font-bold text-slate-400 self-center text-center">vs</span>
                 <SoundItem item={pair.b} />
               </div>
             ))}
@@ -286,7 +311,7 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
           onClick={onNext}
           className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5"
         >
-          Tiếp: Đọc to theo <ArrowRight className="w-4 h-4" /> <Kbd>Enter</Kbd>
+          Tiếp: Luyện đọc câu mẫu <ArrowRight className="w-4 h-4" /> <Kbd>Enter</Kbd>
         </button>
       </div>
     </div>
@@ -294,7 +319,7 @@ function LearnStep({ lesson, onNext, onQuiz }: { lesson: PronunciationLesson; on
 }
 
 
-/** Step 2: listen, say it aloud, rate yourself: never graded, each word logged as a "say_aloud" event */
+/** Step 2: listen, say the sentence/phrase aloud, rate yourself: each item logged as a "say_aloud" event */
 function SayAloud({
   lessonId,
   lesson,
@@ -309,18 +334,20 @@ function SayAloud({
   const [index, setIndex] = useState(0);
   const [round, setRound] = useState(0);
   const [okCount, setOkCount] = useState(0);
-  // The round's words, and once at the end again each word not read right ("Chưa chắc", or a miss on the mic)
+  // The round's items, and once at the end again each item not read right ("Chưa chắc", or a miss on the mic)
   const [list, setList] = useState<PronunciationItem[]>(items);
   const retried = useRef<Set<string>>(new Set());
   const total = list.length;
   const finished = index >= total;
   const item = finished ? undefined : list[index];
+  const collocation = item ? getWordCollocation(item.text, item.note, item.phrase, item.phraseVn) : null;
+  const targetSpeech = collocation ? collocation.phrase : item?.text ?? "";
 
   useEffect(() => {
-    if (!item) return;
-    const t = setTimeout(() => handleSpeak(item.text), AUTO_SPEAK_DELAY_MS);
+    if (!item || !targetSpeech) return;
+    const t = setTimeout(() => handleSpeak(targetSpeech), AUTO_SPEAK_DELAY_MS);
     return () => clearTimeout(t);
-  }, [item, round]);
+  }, [item, targetSpeech, round]);
 
   const rate = (ok: boolean) => {
     if (!item) return;
@@ -349,8 +376,8 @@ function SayAloud({
     }
     if (!item) return false;
     const k = e.key.toLowerCase();
-    if (e.key === " ") handleSpeak(item.text);
-    else if (k === "s") handleSpeak(item.text, SLOW_RATE);
+    if (e.key === " ") handleSpeak(targetSpeech);
+    else if (k === "s") handleSpeak(targetSpeech, SLOW_RATE);
     else if (e.key === "1" || e.key === "Enter") rate(true);
     else if (e.key === "2") rate(false);
     else return false;
@@ -363,9 +390,9 @@ function SayAloud({
     return (
       <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-5 space-y-3 text-center">
         <p className="text-lg font-semibold text-green-700 dark:text-green-300">
-          Đã đọc to {items.length} từ, đọc được {okCount}/{items.length} 👏
+          Đã luyện đọc {items.length} câu mẫu, đạt {okCount}/{items.length} 👏
         </p>
-        <p className="text-sm text-slate-600 dark:text-zinc-400">Giờ kiểm tra tai bằng bài nghe nhé.</p>
+        <p className="text-sm text-slate-600 dark:text-zinc-400">Giờ kiểm tra phản xạ tai nghe qua bài tập ngắn nhé.</p>
         <div className="flex flex-wrap justify-center gap-2">
           <button onClick={again} className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5">
             <RotateCcw className="w-4 h-4" /> Đọc lại vòng nữa <Kbd>R</Kbd>
@@ -377,40 +404,70 @@ function SayAloud({
       </div>
     );
   }
-  if (!item) return null;
+  if (!item || !collocation) return null;
+
+  const hasDistinctPhrase = collocation.phrase.toLowerCase() !== item.text.toLowerCase();
 
   return (
     <div className="space-y-3">
       <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-[0_1px_3px_rgba(15,23,42,0.05)] p-3.5 md:p-5 space-y-4">
         <div className="flex items-center justify-between gap-3 text-xs text-slate-500 dark:text-zinc-400">
           <span className="inline-flex items-center gap-1.5 font-semibold text-teal-800 dark:text-teal-300">
-            <Mic className="w-4 h-4" /> Nghe rồi đọc to thành tiếng
+            <Mic className="w-4 h-4" /> Đọc câu giao tiếp thực tế có chứa âm trọng tâm
           </span>
           <span>
-            Từ {index + 1}/{total}
+            Câu {index + 1}/{total}
           </span>
         </div>
         <ProgressBar value={index / total} tone="emerald" />
-        <div className="flex flex-col items-center gap-1 py-2">
-          <div className="text-3xl font-bold text-slate-900 dark:text-zinc-100">{item.text}</div>
-          <div className="text-base font-mono text-slate-500 dark:text-zinc-400">{item.ipa}</div>
-          {item.note && <div className="text-xs text-slate-500 dark:text-zinc-400">{item.note}</div>}
-          <div className="flex gap-2 pt-2">
-            <button
-              onClick={() => handleSpeak(item.text)}
-              className="min-h-11 px-4 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-sm font-semibold inline-flex items-center gap-1.5"
-            >
-              <Volume2 className="w-4 h-4" /> Nghe <Kbd>Space</Kbd>
-            </button>
-            <button
-              onClick={() => handleSpeak(item.text, SLOW_RATE)}
-              className="min-h-11 px-3 rounded-2xl border border-slate-200 dark:border-zinc-700 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800 inline-flex items-center gap-1.5 text-slate-700 dark:text-zinc-300"
-            >
-              <Snail className="w-4 h-4" /> Chậm <Kbd>S</Kbd>
-            </button>
+        <div className="flex flex-col items-center gap-2.5 py-2">
+          <div className="w-full rounded-2xl border border-teal-200/80 dark:border-teal-900/60 bg-teal-50/40 dark:bg-teal-950/20 p-4 text-center space-y-2">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">
+              💬 Câu / Cụm từ thực tế
+            </div>
+            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-zinc-100 leading-snug">
+              “{collocation.phrase}”
+            </div>
+            {collocation.translation && (
+              <div className="text-sm text-slate-600 dark:text-zinc-400 italic">
+                {collocation.translation}
+              </div>
+            )}
+            <div className="flex flex-wrap justify-center gap-2 pt-1">
+              <button
+                onClick={() => handleSpeak(collocation.phrase)}
+                className="min-h-10 px-4 rounded-xl bg-teal-700 hover:bg-teal-800 text-white text-xs sm:text-sm font-semibold inline-flex items-center gap-1.5 shadow-2xs"
+              >
+                <Volume2 className="w-4 h-4" /> Nghe cả câu <Kbd>Space</Kbd>
+              </button>
+              <button
+                onClick={() => handleSpeak(collocation.phrase, SLOW_RATE)}
+                className="min-h-10 px-3.5 rounded-xl border border-teal-700/30 dark:border-teal-500/30 bg-white dark:bg-zinc-900 text-teal-800 dark:text-teal-300 text-xs sm:text-sm font-semibold hover:bg-teal-50 dark:hover:bg-teal-950/40 inline-flex items-center gap-1.5"
+              >
+                <Snail className="w-4 h-4" /> Nghe chậm <Kbd>S</Kbd>
+              </button>
+            </div>
           </div>
+
+          {hasDistinctPhrase && (
+            <div className="w-full rounded-xl border border-slate-200/80 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-800/40 px-3.5 py-2 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-baseline gap-2">
+                <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">Từ / Cụm trọng tâm:</span>
+                <span className="text-base font-bold text-slate-900 dark:text-zinc-100">{item.text}</span>
+                <span className="text-sm font-mono text-teal-700 dark:text-teal-400">{item.ipa}</span>
+                {item.note && <span className="text-xs text-slate-500 dark:text-zinc-400">({item.note})</span>}
+              </div>
+              <button
+                onClick={() => handleSpeak(item.text)}
+                className="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-semibold text-teal-700 dark:text-teal-300 hover:bg-teal-50 inline-flex items-center gap-1"
+              >
+                <Volume2 className="w-3.5 h-3.5" /> Nghe riêng từ
+              </button>
+            </div>
+          )}
+
           {getTeacherGuide(item.text, item.ipa, lesson.title) && (
-            <div className="w-full rounded-2xl border border-amber-200/80 dark:border-amber-900/60 bg-amber-50/70 dark:bg-amber-950/20 p-3.5 space-y-2 text-left my-2">
+            <div className="w-full rounded-2xl border border-amber-200/80 dark:border-amber-900/60 bg-amber-50/70 dark:bg-amber-950/20 p-3.5 space-y-2 text-left my-1">
               <div className="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-200 uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0" />
                 <span>Mẹo giáo viên · {getTeacherGuide(item.text, item.ipa, lesson.title)!.soundTitle}</span>
@@ -435,10 +492,10 @@ function SayAloud({
               </div>
             </div>
           )}
-          <div className="w-full border-t border-slate-100 dark:border-zinc-800/80 my-2" />
-          <MicCheck lesson={lesson} item={item} onPassed={() => rate(true)} />
+          <div className="w-full border-t border-slate-100 dark:border-zinc-800/80 my-1" />
+          <MicCheck lesson={lesson} item={item} phrase={collocation.phrase} onPassed={() => rate(true)} />
         </div>
-        {asrAvailable() && canCheck(lesson, item.text) ? (
+        {asrAvailable() && canCheckSpeech(lesson, item.text, collocation.phrase) ? (
           <div className="pt-1 flex items-center justify-center gap-3 text-xs text-slate-500 dark:text-zinc-400">
             <span>🤫 Không tiện nói to?</span>
             <button
@@ -446,7 +503,7 @@ function SayAloud({
               onClick={() => rate(true)}
               className="font-semibold text-teal-700 dark:text-teal-400 underline underline-offset-2 hover:text-teal-800 dark:hover:text-teal-300"
             >
-              Tự nhẩm · Qua từ →
+              Tự nhẩm · Qua câu →
             </button>
             <span className="text-slate-300 dark:text-zinc-700">·</span>
             <button
@@ -471,13 +528,13 @@ function SayAloud({
               onClick={() => rate(false)}
               className="min-h-14 px-3 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold inline-flex items-center justify-center gap-2"
             >
-              Chưa chắc, từ khác <Kbd>2</Kbd>
+              Chưa chắc, câu khác <Kbd>2</Kbd>
             </button>
           </div>
         )}
       </div>
       <p className="text-xs text-center text-slate-500 dark:text-zinc-400">
-        Nghe 2 lần, đọc to (không đọc thầm), rồi tự so với tiếng máy. Phần này không chấm điểm.
+        Đọc cả câu mẫu (hoặc từ trọng tâm) thành tiếng để luyện nối âm và ngữ điệu tự nhiên.
       </p>
     </div>
   );
@@ -736,9 +793,13 @@ function Quiz({
                 Từ vừa nghe: <span className="font-semibold text-slate-900 dark:text-zinc-100">{q.say}</span>
                 <PlayButton text={q.say} className="!p-1" />
               </span>
-              <span className="text-xs font-medium text-slate-500 dark:text-zinc-400">
-                Đang tự chuyển câu…
-              </span>
+              <button
+                type="button"
+                onClick={next}
+                className="px-3 py-1.5 rounded-lg bg-teal-700 hover:bg-teal-800 text-white text-xs font-semibold inline-flex items-center gap-1 shadow-2xs"
+              >
+                Câu tiếp theo <ArrowRight className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
         )}
@@ -753,7 +814,7 @@ function Quiz({
 
 const STEPS: { id: Step; label: string; icon: typeof Ear }[] = [
   { id: "learn", label: "Nghe mẫu", icon: Volume2 },
-  { id: "say", label: "Đọc to", icon: Mic },
+  { id: "say", label: "Đọc câu mẫu", icon: Mic },
   { id: "quiz", label: "Bài nghe", icon: Ear },
 ];
 
@@ -788,7 +849,7 @@ function LessonView({
   const bodyScrollRef = useRef<HTMLDivElement>(null);
   const passed = isLessonPassed(progress);
   const mastery = summarizeMastery(masteryEntry, lesson.examples.length);
-  const sayItems = dedupeByText([...lesson.examples, ...(lesson.pairs ?? []).flatMap((p) => [p.a, p.b])]);
+  const sayItems = dedupeByText(lesson.examples).slice(0, 6);
   useEffect(() => {
     if (bodyScrollRef.current) {
       bodyScrollRef.current.scrollTop = 0;
@@ -960,7 +1021,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
   const [lessons, setLessons] = useState<PronunciationLesson[]>([]);
   const [phonemes, setPhonemes] = useState<PronunciationLesson[]>([]);
   const [chart, setChart] = useState<PhonemeChartGroup[]>([]);
-  const [view, setView] = useState<"chart" | "topics">("chart");
+  const [view, setView] = useState<"chart" | "topics">("topics");
   const [progress, setProgress] = useState<PronunciationProgress>(getPronunciationProgress);
   const [open, setOpen] = useState<{ id: string; step: Step; n: number; session: boolean; intro?: boolean } | null>(null);
 
@@ -1117,9 +1178,9 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
       <div className="max-w-3xl mx-auto space-y-4">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           <div className="min-w-0">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Phát âm</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-zinc-100">Phát âm & Giao tiếp chuẩn</h2>
             <p className="text-sm text-slate-600 dark:text-zinc-400">
-              Mỗi bài ~5 phút: nghe mẫu → đọc to → bài nghe. Đúng {Math.round(PRONUNCIATION_PASS_RATIO * 100)}% là xong bài.
+              Luyện phát âm theo câu giao tiếp thực tế qua 3 chặng (Âm cuối → Cặp âm dễ nhầm → Nối âm & Nhịp câu).
             </p>
           </div>
           {(view === "chart" ? phonemes.length : lessons.length) > 0 && (
@@ -1177,9 +1238,9 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
                 <span>Kỹ năng thực chiến cho người Việt</span>
               </span>
             </div>
-            <span className="text-xs text-slate-500 dark:text-zinc-400">Khắc phục 2 lỗi lớn nhất</span>
+            <span className="text-xs text-slate-500 dark:text-zinc-400">3 trụ cột nói tự nhiên</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <button
               type="button"
               onClick={() => openLesson("pron-final-sounds", "learn")}
@@ -1193,7 +1254,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
                   Bật âm cuối (Ending Sounds)
                 </div>
                 <div className="text-xs text-slate-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
-                  Khắc phục nuốt âm: /t/, /d/, /k/, /s/, /z/, /p/
+                  Khắc phục nuốt âm: /t/, /d/, /k/, /s/, /z/
                 </div>
               </div>
             </button>
@@ -1214,14 +1275,31 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
                 </div>
               </div>
             </button>
+            <button
+              type="button"
+              onClick={() => openLesson("pron-linking", "learn")}
+              className="p-3 rounded-xl border border-indigo-200/80 dark:border-indigo-900/60 bg-indigo-50/50 hover:bg-indigo-100/60 dark:bg-indigo-950/20 dark:hover:bg-indigo-950/40 text-left transition-all group flex items-start gap-3 active:scale-98 cursor-pointer"
+            >
+              <div className="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-2xs font-mono">
+                ‿
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-bold text-slate-900 dark:text-zinc-100 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors">
+                  Nối âm & Nhịp câu (Linking)
+                </div>
+                <div className="text-xs text-slate-500 dark:text-zinc-400 line-clamp-1 mt-0.5">
+                  Đọc liền mạch: check‿it‿out, pick‿it‿up
+                </div>
+              </div>
+            </button>
           </div>
         </div>
 
         <div role="tablist" className="grid grid-cols-2 gap-1 p-1 rounded-2xl bg-slate-100 dark:bg-zinc-800/70">
           {(
             [
-              ["chart", "Bảng 44 âm"],
-              ["topics", "Bài theo chủ đề"],
+              ["topics", "Giáo trình 3 chặng (Theo câu)"],
+              ["chart", "Bảng 44 âm IPA"],
             ] as const
           ).map(([id, label]) => (
             <button
@@ -1256,11 +1334,12 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold text-teal-800 dark:text-teal-300">
                   {nextProgress ? "Đang học dở" : passedCount === 0 ? "Bắt đầu từ đây" : "Bài tiếp theo"}
+                  {next.stageTitle ? ` · ${next.stageTitle}` : ""}
                 </div>
                 <div className="text-lg font-semibold text-slate-900 dark:text-zinc-100">{next.title}</div>
                 <div className="text-sm text-slate-600 dark:text-zinc-400">{next.tagline}</div>
                 <div className="text-xs text-slate-500 dark:text-zinc-400 pt-1">
-                  {next.examples.length} từ mẫu · {next.quiz.length} câu nghe
+                  {next.examples.length} câu mẫu thực tế · {next.quiz.length} câu nghe phản xạ
                   {nextProgress ? ` · tốt nhất ${nextProgress.best}/${nextProgress.total}, cần ${passMark(nextProgress.total)}` : ""}
                 </div>
               </div>
@@ -1278,7 +1357,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
                     onClick={() => openLesson(next.id, "learn")}
                     className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5"
                   >
-                    Nghe lại từ mẫu
+                    Nghe lại câu mẫu
                   </button>
                 </>
               ) : (
@@ -1291,7 +1370,7 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
                   </button>
                   <button
                     onClick={() => openLesson(next.id, "quiz")}
-                    className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5 inline-flex items-center gap-1.5"
+                    className="min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5"
                   >
                     <Ear className="w-4 h-4" /> Làm bài nghe ngay
                   </button>
@@ -1311,49 +1390,73 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
         )}
 
         {view === "topics" && (
-        <div className="space-y-2">
-          <p className="text-sm font-semibold text-slate-500 dark:text-zinc-400">Tất cả bài</p>
-          <div className="grid gap-2 min-[1000px]:grid-cols-2">
-            {lessons.map((l, i) => {
-              const status = lessonStatus(progress[l.id], l.id === next?.id);
-              const badge =
-                status.tone === "done"
-                  ? "bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300"
-                  : status.tone === "next"
-                    ? "bg-teal-700 text-white dark:bg-teal-600"
-                    : status.tone === "tried"
-                      ? "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
-                      : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400";
-              const statusText =
-                status.tone === "done"
-                  ? "text-green-600 dark:text-green-400"
-                  : status.tone === "next"
-                    ? "text-teal-800 dark:text-teal-300"
-                    : status.tone === "tried"
-                      ? "text-teal-800 dark:text-teal-300"
-                      : "text-slate-500 dark:text-zinc-400";
+          <div className="space-y-4">
+            {([1, 2, 3] as const).map((stageNum) => {
+              const stageLessons = lessons
+                .map((l, i) => ({ lesson: l, index: i }))
+                .filter(({ lesson }) => (lesson.stage ?? 1) === stageNum);
+              if (stageLessons.length === 0) return null;
+              const stageTitle =
+                stageLessons[0].lesson.stageTitle ??
+                (stageNum === 1
+                  ? "Chặng 1 · Âm cuối & Đuôi từ sinh tử"
+                  : stageNum === 2
+                    ? "Chặng 2 · Phản xạ cặp âm dễ nhầm trong câu"
+                    : "Chặng 3 · Trọng âm, Nối âm & Nhịp câu tự nhiên");
+              const stageDone = stageLessons.filter(({ lesson }) => isLessonPassed(progress[lesson.id])).length;
               return (
-                <button
-                  key={l.id}
-                  onClick={() => openLesson(l.id, "learn")}
-                  title={l.tagline}
-                  className={`group w-full min-h-14 text-left flex items-center gap-3 px-3 py-2.5 rounded-xl border bg-white dark:bg-zinc-900 hover:border-teal-600/50 ${
-                    status.tone === "next" ? "border-teal-600/60 dark:border-teal-500/50" : "border-slate-200 dark:border-zinc-800"
-                  }`}
-                >
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${badge}`}>
-                    {status.tone === "done" ? <Check className="w-4 h-4" /> : i + 1}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100 truncate">{l.title}</span>
-                    <span className={`block text-xs ${statusText}`}>{status.label}</span>
-                  </span>
-                  <ChevronRight className="w-4 h-4 shrink-0 text-slate-400 dark:text-zinc-500 group-hover:text-teal-700" />
-                </button>
+                <div key={stageNum} className="space-y-2">
+                  <div className="flex items-center justify-between gap-2 px-1">
+                    <p className="text-sm font-bold text-slate-700 dark:text-zinc-200">{stageTitle}</p>
+                    <span className="text-xs font-semibold text-slate-500 dark:text-zinc-400">
+                      {stageDone}/{stageLessons.length} bài
+                    </span>
+                  </div>
+                  <div className="grid gap-2 min-[1000px]:grid-cols-2">
+                    {stageLessons.map(({ lesson: l, index: i }) => {
+                      const status = lessonStatus(progress[l.id], l.id === next?.id);
+                      const badge =
+                        status.tone === "done"
+                          ? "bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300"
+                          : status.tone === "next"
+                            ? "bg-teal-700 text-white dark:bg-teal-600"
+                            : status.tone === "tried"
+                              ? "bg-teal-50 dark:bg-teal-400/10 text-teal-800 dark:text-teal-300"
+                              : "bg-slate-100 dark:bg-zinc-800 text-slate-500 dark:text-zinc-400";
+                      const statusText =
+                        status.tone === "done"
+                          ? "text-green-600 dark:text-green-400"
+                          : status.tone === "next"
+                            ? "text-teal-800 dark:text-teal-300"
+                            : status.tone === "tried"
+                              ? "text-teal-800 dark:text-teal-300"
+                              : "text-slate-500 dark:text-zinc-400";
+                      return (
+                        <button
+                          key={l.id}
+                          onClick={() => openLesson(l.id, "learn")}
+                          title={l.tagline}
+                          className={`group w-full min-h-14 text-left flex items-center gap-3 px-3 py-2.5 rounded-xl border bg-white dark:bg-zinc-900 hover:border-teal-600/50 ${
+                            status.tone === "next" ? "border-teal-600/60 dark:border-teal-500/50" : "border-slate-200 dark:border-zinc-800"
+                          }`}
+                        >
+                          <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${badge}`}>
+                            {status.tone === "done" ? <Check className="w-4 h-4" /> : i + 1}
+                          </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block text-sm font-semibold text-slate-900 dark:text-zinc-100 truncate">{l.title}</span>
+                            <span className="block text-xs text-slate-500 dark:text-zinc-400 truncate">{l.tagline}</span>
+                            <span className={`block text-[11px] font-medium mt-0.5 ${statusText}`}>{status.label}</span>
+                          </span>
+                          <ChevronRight className="w-4 h-4 shrink-0 text-slate-400 dark:text-zinc-500 group-hover:text-teal-700" />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               );
             })}
           </div>
-        </div>
         )}
       </div>
     </div>

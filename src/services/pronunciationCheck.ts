@@ -99,6 +99,16 @@ export function isCheckableWord(text: string): boolean {
   return SINGLE_WORD.test(text.trim().toLowerCase());
 }
 
+/** Extract lowercase English words from a word, phrase, or short sentence */
+export function extractWords(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z\s']/g, " ")
+    .split(/\s+/)
+    .map((w) => w.replace(/^'+|'+$/g, ""))
+    .filter((w) => SINGLE_WORD.test(w));
+}
+
 function lessonItems(lesson: PronunciationLesson): PronunciationItem[] {
   return [...lesson.examples, ...(lesson.pairs ?? []).flatMap((p) => [p.a, p.b])];
 }
@@ -134,12 +144,22 @@ export function confusablesFor(lesson: PronunciationLesson, target: string): str
 const MIN_ALTERNATIVES = 4;
 
 /**
- * Whether "Đọc thử cho máy nghe" is offered for this word: any single word, except in the lessons whose skill
- * a recognizer cannot judge (see CHECK_NEEDS_LOOKALIKE), where it needs a known look-alike.
+ * Whether "Đọc thử cho máy nghe" is offered for this word: one plain word, and in lessons that need a
+ * look-alike to tell anything (stress, homophones), only when the word has one.
  */
 export function canCheck(lesson: PronunciationLesson, target: string): boolean {
   if (!isCheckableWord(target)) return false;
-  return !CHECK_NEEDS_LOOKALIKE.has(lesson.id) || confusablesFor(lesson, target).length > 0;
+  if (CHECK_NEEDS_LOOKALIKE.has(lesson.id)) return confusablesFor(lesson, target).length > 0;
+  return true;
+}
+
+/**
+ * Whether "Đọc thử cho máy nghe" is offered for a word or its communicative phrase/sentence.
+ */
+export function canCheckSpeech(lesson: PronunciationLesson, target: string, phrase?: string): boolean {
+  if (canCheck(lesson, target)) return true;
+  if (phrase && extractWords(phrase).length >= 2) return true;
+  return extractWords(target).length >= 2;
 }
 
 /**
@@ -248,10 +268,10 @@ export function focusMates(lesson: PronunciationLesson, target: string): string[
   return mates.slice(0, MAX_MATES);
 }
 
-/** The list handed to the recognizer: the target, what it is mistaken for, (focus level) its mates, and "something else" */
-export function buildGrammar(target: string, confusables: string[], mates: string[] = []): string[] {
-  const words = [target, ...confusables, ...mates].map((w) => w.trim().toLowerCase());
-  return [...new Set(words.filter(Boolean)), UNKNOWN];
+/** The list handed to the recognizer: the target, what it is mistaken for, (focus level) its mates, optional phrase tokens, and "something else" */
+export function buildGrammar(target: string, confusables: string[], mates: string[] = [], phraseWords: string[] = []): string[] {
+  const raw = [...extractWords(target), ...confusables, ...mates, ...phraseWords].map((w) => w.trim().toLowerCase());
+  return [...new Set(raw.filter(Boolean)), UNKNOWN];
 }
 
 /** What to tell the learner: pure, so it can be tested */
@@ -261,6 +281,8 @@ export function judge(
   options: {
     level?: CheckLevel;
     mates?: string[];
+    confusables?: string[];
+    phrase?: string;
     ipaTarget?: string;
     ipaOf?: (word: string) => string | undefined;
     /** The sound the lesson is about, written for the learner (e.g. "/d/") */
@@ -269,19 +291,23 @@ export function judge(
 ): Verdict {
   const level = options.level ?? "focus";
   const word = target.trim().toLowerCase();
+  const targetTokens = extractWords(word);
   if (!result.ok) {
     return { kind: "error", ok: false, message: recognitionErrorText(result.error) };
   }
   if ((result.peak ?? 1) < SILENCE_PEAK) {
     return { kind: "silent", ok: false, message: "Không nghe thấy tiếng. Kiểm tra micro, rồi đọc to và rõ hơn." };
   }
-  const heard = (result.text ?? "").trim().toLowerCase();
+  const heard = (result.text ?? result.free ?? "").trim().toLowerCase().replace(/\b\[unk\]\b/g, "").replace(/\s+/g, " ").trim();
   if (!heard || heard === UNKNOWN) {
-    return { kind: "unclear", ok: false, message: "Máy chưa nghe rõ từ nào. Đọc chậm, rõ từng âm rồi thử lại." };
+    return { kind: "unclear", ok: false, message: "Máy chưa nghe rõ câu/từ nào. Đọc chậm, rõ từng âm rồi thử lại." };
   }
+  const heardTokens = extractWords(heard);
+
+  // Exact match on single word or full phrase
   if (heard === word) {
     const conf = result.words?.find((w) => w.word.toLowerCase() === word)?.conf ?? 1;
-    if (level === "word" && conf < WEAK_CONFIDENCE) {
+    if (level === "word" && targetTokens.length === 1 && conf < WEAK_CONFIDENCE) {
       return {
         kind: "weak",
         ok: false,
@@ -289,7 +315,38 @@ export function judge(
         message: `Máy nghe ra "${word}" nhưng chưa chắc. Mức Khó cần cả từ thật rõ, thử đọc rõ từng âm hơn.`,
       };
     }
-    return { kind: "match", ok: true, heard, message: `Máy nghe ra đúng "${word}". Tốt lắm!` };
+    return { kind: "match", ok: true, heard, message: `Máy nghe ra đúng "${target}". Tốt lắm!` };
+  }
+
+  // If the learner read the multi-word phrase or sentence containing the target word/chunk
+  if (targetTokens.length > 0 && heardTokens.length >= 1) {
+    const hitCount = targetTokens.filter((t) => heardTokens.includes(t)).length;
+    const hitAllTarget = hitCount === targetTokens.length;
+    const hitMostPhrase = targetTokens.length >= 2 && hitCount >= Math.ceil(targetTokens.length * 0.65);
+    const heardConfusable = (options.confusables ?? []).find((c) => heardTokens.includes(c.toLowerCase()));
+
+    if (heardConfusable && !hitAllTarget) {
+      const ipaHeard = options.ipaOf?.(heardConfusable);
+      const compare =
+        options.ipaTarget && ipaHeard ? ` Hai từ khác nhau ở âm: ${options.ipaTarget} (cần đọc) và ${ipaHeard} (máy nghe).` : "";
+      return {
+        kind: "confused",
+        ok: false,
+        heard,
+        message: `Máy nghe ra "${heardConfusable}" thay vì "${target}".${compare} Nghe lại mẫu rồi đọc lại nhé.`,
+      };
+    }
+
+    if (hitAllTarget || hitMostPhrase) {
+      return {
+        kind: "match",
+        ok: true,
+        heard,
+        message: heardTokens.length > targetTokens.length
+          ? `Máy nghe rõ cả cụm "${heard}" có đúng "${target}". Rất tự nhiên!`
+          : `Máy nghe ra đúng "${heard}". Tốt lắm!`,
+      };
+    }
   }
   if (options.mates?.includes(heard)) {
     if (level === "focus") {

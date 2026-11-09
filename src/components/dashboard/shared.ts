@@ -4,6 +4,7 @@ import { AI_VOCAB_ENABLED } from "@/services/features";
 export type DashboardTab =
   | "today"
   | "library"
+  | "dictionary"
   | "known"
   | "capture"
   | "reading"
@@ -62,6 +63,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { tab: "capture", label: AI_VOCAB_ENABLED ? "Thêm từ bằng AI" : "Bộ từ" },
       { tab: "review", label: "Ôn tập" },
       { tab: "library", label: "Sổ từ" },
+      { tab: "dictionary", label: "Từ điển" },
       { tab: "reading", label: "Đọc" },
     ],
   },
