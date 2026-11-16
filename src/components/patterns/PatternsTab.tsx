@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, GraduationCap, Languages, Play, SkipForward, Zap } from "lucide-react";
 import { getPattern, PATTERNS } from "@/data/patterns";
 import { tipForStage } from "@/data/grammarTips";
@@ -107,11 +107,30 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
   const [notice, setNotice] = useState<string | null>(null);
   const [open, setOpen] = useState<string | null>(null);
   const [changingGoal, setChangingGoal] = useState(false);
+  // Today asked for the day's work: it starts as soon as there is a goal and a plan (at once, or once the goal is picked)
+  const startWanted = useRef(false);
+  const [startTick, setStartTick] = useState(0);
+  const takeStartWanted = () => {
+    try {
+      if (sessionStorage.getItem(AUTOSTART_KEY) !== "1") return;
+      sessionStorage.removeItem(AUTOSTART_KEY);
+      startWanted.current = true;
+    } catch {
+      /* the learner presses the button instead */
+    }
+  };
+  // Tapping the tab again returns to the path (not when the tab opens: that would close the day Today just started)
+  const prevResetKey = useRef(resetKey);
   useEffect(() => {
+    if (prevResetKey.current === resetKey) return;
+    prevResetKey.current = resetKey;
     setSession(null);
     setTranslating(false);
     setDay(null);
     setSkipTest(null);
+    startWanted.current = false;
+    takeStartWanted();
+    setStartTick((t) => t + 1);
   }, [resetKey]);
 
   useBackHandler(() => {
@@ -145,19 +164,15 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
     if (current && plan && plan.tasks.length > 0) begin(current, plan);
   };
 
-  // The Today screen asks to start the day's work at once
+  // The Today screen asks to start the day's work at once; with no goal yet, it starts when the goal is picked
   useEffect(() => {
-    let wanted = false;
-    try {
-      wanted = sessionStorage.getItem(AUTOSTART_KEY) === "1";
-      if (wanted) sessionStorage.removeItem(AUTOSTART_KEY);
-    } catch {
-      /* ignore */
-    }
-    if (wanted && current && plan && plan.tasks.length > 0) begin(current, plan);
-    // only once, when the screen opens
+    takeStartWanted();
+    if (!startWanted.current || road.goal === null) return;
+    startWanted.current = false;
+    if (current && plan && plan.tasks.length > 0) begin(current, plan);
+    // when the screen opens, when the flow comes back to it, and when the goal is chosen
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [road.goal, startTick]);
 
   const learn = (p: Pattern) => {
     const step = stateOf(p).step;

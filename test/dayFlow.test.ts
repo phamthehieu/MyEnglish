@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { advanceFlow, getFlow, nextInFlow, planFlow, retreatFlow, startFlow, stopFlow } from "@/services/dayFlow";
+import { advanceFlow, getFlow, jumpFlow, nextInFlow, planFlow, retreatFlow, startFlow, stopFlow } from "@/services/dayFlow";
 
 const mem = new Map<string, string>();
 beforeEach(() => {
@@ -60,6 +60,28 @@ describe("the day as one flow", () => {
     expect(getFlow(day)?.index).toBe(0);
     retreatFlow(day);
     expect(getFlow(day)?.index).toBe(0);
+  });
+
+  it("passes over the things already done some other way", () => {
+    const flow = startFlow(["speaking", "vocab", "grammar", "pronunciation"], day)!;
+    const done = (id: string) => id === "vocab" || id === "pronunciation";
+    expect(nextInFlow(flow, done)).toBe("grammar");
+    expect(advanceFlow(day, done)).toBe("grammar");
+    expect(getFlow(day)?.index).toBe(2);
+    // Only done things are left: the flow ends
+    expect(nextInFlow(getFlow(day)!, done)).toBeNull();
+    expect(advanceFlow(day, done)).toBeNull();
+    expect(getFlow(day)).toBeNull();
+  });
+
+  it("moves to a thing opened from the list, when it is in the flow", () => {
+    startFlow(["speaking", "vocab", "grammar"], day);
+    expect(jumpFlow("grammar", day)).toBe(true);
+    expect(getFlow(day)?.index).toBe(2);
+    expect(jumpFlow("reflex", day)).toBe(false);
+    expect(getFlow(day)?.index).toBe(2);
+    stopFlow();
+    expect(jumpFlow("grammar", day)).toBe(false);
   });
 
   it("can be stopped, and does not outlive its day", () => {

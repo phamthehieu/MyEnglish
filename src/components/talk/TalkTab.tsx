@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, MessageCircle, PlayCircle, RotateCcw, Sparkles, Trash2 } from "lucide-react";
 import { dueLines } from "@/services/talk/review";
 import { getAllWords } from "@/services/db";
@@ -14,7 +14,7 @@ import { aiReady, generateSituation } from "@/services/talk/generateAi";
 import { batchAvailable, batchStatus, cancelBatch, importPending, startBatch, topUpBatch, type BatchStatus } from "@/services/talk/situationBatch";
 import { getActiveCefrLevel } from "@/services/pipeline";
 import { getStudyLevels } from "@/services/vocabFeed";
-import { TALK_REVIEW_AUTOSTART_KEY } from "../dashboard/runTask";
+import { TALK_REVIEW_AUTOSTART_KEY, takeAutostart } from "../dashboard/runTask";
 import { isFoundationMode } from "@/services/learnerProfile";
 import { features } from "@/lib/platform";
 import { asrAvailable, speechUnavailableText } from "@/services/pronunciationCheck";
@@ -309,15 +309,7 @@ function GenerateCard({ onCreated }: { onCreated: (s: Situation) => void }) {
 export default function TalkTab({ resetKey }: { resetKey?: number }) {
   // Opened from Today's "Ôn câu hội thoại": straight into the review
   const [view, setView] = useState<View>(() => {
-    try {
-      if (sessionStorage.getItem(TALK_REVIEW_AUTOSTART_KEY) === "1") {
-        sessionStorage.removeItem(TALK_REVIEW_AUTOSTART_KEY);
-        if (dueLines().length > 0) return { kind: "review" };
-      }
-    } catch {
-      /* the list, as usual */
-    }
-    return { kind: "list" };
+    return takeAutostart(TALK_REVIEW_AUTOSTART_KEY) && dueLines().length > 0 ? { kind: "review" } : { kind: "list" };
   });
   const [, setTick] = useState(0);
   const [level, setLevel] = useState<"all" | Situation["cefr"]>("all");
@@ -334,9 +326,13 @@ export default function TalkTab({ resetKey }: { resetKey?: number }) {
   }, []);
   const formIndex = useMemo(() => buildWordIndex(bank).formIndex, [bank]);
 
-  // Tapping the tab again returns to the list
+  // Tapping the tab again returns to the list (not when the tab opens: Today may have asked for the review)
+  const prevResetKey = useRef(resetKey);
   useEffect(() => {
-    setView({ kind: "list" });
+    if (prevResetKey.current === resetKey) return;
+    prevResetKey.current = resetKey;
+    // Unless the day's flow came here for the review while the tab was already open
+    setView(takeAutostart(TALK_REVIEW_AUTOSTART_KEY) && dueLines().length > 0 ? { kind: "review" } : { kind: "list" });
   }, [resetKey]);
 
   useBackHandler(() => {

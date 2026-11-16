@@ -41,7 +41,7 @@ import InstallAppCard from "./InstallAppCard";
 import RoadmapTodayCard from "../roadmap/RoadmapTodayCard";
 import { useRoadmap } from "../roadmap/useRoadmap";
 import { PATTERNS } from "@/data/patterns";
-import { planFlow, startFlow } from "@/services/dayFlow";
+import { jumpFlow, planFlow, startFlow } from "@/services/dayFlow";
 import { runTodayTask, weakGrammarTask } from "./runTask";
 import { dueLines } from "@/services/talk/review";
 import { getLine } from "@/data/situations";
@@ -248,7 +248,12 @@ export default function TodayTab({
   });
 
   const runDeps = { setActiveTab, startWords: onStart, startReflex: onStartReflex, openGrammarLesson };
-  const run = (task: TodayTask) => runTodayTask(task.id, runDeps);
+  // One thing opened from the list is a flow too (the running one moved to it, or a flow of its own), so the end of
+  // its lesson leads back here. The words and the reflex challenge come back to Today by themselves.
+  const run = (task: TodayTask) => {
+    if (!jumpFlow(task.id) && task.id !== "vocab" && task.id !== "reflex") startFlow([task.id]);
+    runTodayTask(task.id, runDeps);
+  };
   const startFlowNow = () => {
     const queue = planFlow(coreTasks(tasks));
     if (startFlow(queue)) runTodayTask(queue[0], runDeps);

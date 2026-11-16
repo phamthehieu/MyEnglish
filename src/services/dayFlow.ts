@@ -54,20 +54,35 @@ export function startFlow(queue: readonly TodayTaskId[], now: Date = new Date())
   return flow;
 }
 
+/** Index of the thing after the current one, the ones to skip (done some other way) left out; -1 at the end */
+function nextIndex(flow: DayFlow, skip?: (id: TodayTaskId) => boolean): number {
+  for (let i = flow.index + 1; i < flow.queue.length; i++) if (!skip?.(flow.queue[i])) return i;
+  return -1;
+}
+
 /** The thing after the current one (null at the last) */
-export const nextInFlow = (flow: DayFlow): TodayTaskId | null => flow.queue[flow.index + 1] ?? null;
+export const nextInFlow = (flow: DayFlow, skip?: (id: TodayTaskId) => boolean): TodayTaskId | null => flow.queue[nextIndex(flow, skip)] ?? null;
 
 /** Moves to the next thing and returns it; at the last one the flow ends and null comes back */
-export function advanceFlow(now: Date = new Date()): TodayTaskId | null {
+export function advanceFlow(now: Date = new Date(), skip?: (id: TodayTaskId) => boolean): TodayTaskId | null {
   const flow = getFlow(now);
   if (!flow) return null;
-  const next = nextInFlow(flow);
-  if (!next) {
+  const index = nextIndex(flow, skip);
+  if (index < 0) {
     write(null);
     return null;
   }
-  write({ ...flow, index: flow.index + 1 });
-  return next;
+  write({ ...flow, index });
+  return flow.queue[index];
+}
+
+/** Moves the flow in progress to one of its things (the learner opened it from the list); false when it is not in the flow */
+export function jumpFlow(id: TodayTaskId, now: Date = new Date()): boolean {
+  const flow = getFlow(now);
+  const index = flow ? flow.queue.indexOf(id) : -1;
+  if (!flow || index < 0) return false;
+  write({ ...flow, index });
+  return true;
 }
 
 /**

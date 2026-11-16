@@ -1,38 +1,15 @@
-import { useEffect, useState } from "react";
 import { ArrowRight, Check, X } from "lucide-react";
-import { advanceFlow, DAYFLOW_EVENT, getFlow, nextInFlow, stopFlow } from "@/services/dayFlow";
-import type { TodayTaskId } from "./todayPlan";
-
-const LABEL: Record<TodayTaskId, string> = {
-  speaking: "Lộ trình nói",
-  talkReview: "Ôn câu hội thoại",
-  vocab: "Ôn từ và học từ mới",
-  weakGrammar: "Ngữ pháp hay sai",
-  grammar: "Ngữ pháp",
-  pronunciation: "Phát âm",
-  reflex: "Luyện phản xạ",
-};
+import { stopFlow } from "@/services/dayFlow";
+import { FLOW_LABEL, useDayFlow } from "./DayFlowContext";
 
 /**
- * The bar of the day's flow, on every tab while the flow runs: which thing the learner is on, and one button to go
- * to the next (or to finish the day), so they never go back to the list to choose.
+ * The bar of the day's flow, on every tab while the flow runs: which thing the learner is on, whether it is done, and
+ * one button to go to the next (or back to Today), so they never go back to the list to choose. A thing not done yet
+ * can still be passed over, and the button says so.
  */
-export default function DayFlowBar({ onRun, onFinish }: { onRun: (id: TodayTaskId) => void; onFinish: () => void }) {
-  const [flow, setFlow] = useState(() => getFlow());
-  useEffect(() => {
-    const sync = () => setFlow(getFlow());
-    window.addEventListener(DAYFLOW_EVENT, sync);
-    return () => window.removeEventListener(DAYFLOW_EVENT, sync);
-  }, []);
-  if (!flow) return null;
-
-  const next = nextInFlow(flow);
-  const current = flow.queue[flow.index];
-  const go = () => {
-    const id = advanceFlow();
-    if (id) onRun(id);
-    else onFinish();
-  };
+export default function DayFlowBar() {
+  const { flow, current, currentDone, next, go } = useDayFlow();
+  if (!flow || !current) return null;
 
   return (
     <div role="status" aria-label="Luồng hôm nay" className="bar-enter shrink-0 flex items-center gap-2 border-b border-emerald-200 dark:border-emerald-900/60 bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1.5">
@@ -40,20 +17,29 @@ export default function DayFlowBar({ onRun, onFinish }: { onRun: (id: TodayTaskI
         <b>
           Hôm nay · {flow.index + 1}/{flow.queue.length}
         </b>
-        <span className="block truncate text-emerald-800/80 dark:text-emerald-300/80">{LABEL[current]}</span>
+        <span className="block truncate text-emerald-800/80 dark:text-emerald-300/80">
+          {FLOW_LABEL[current]}
+          {currentDone ? " · đã xong ✓" : ""}
+        </span>
       </span>
       <button
         onClick={go}
-        className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] px-3 py-1.5 text-xs font-bold text-white"
+        className={`shrink-0 inline-flex items-center gap-1.5 rounded-lg active:scale-[0.98] px-3 text-xs font-bold ${
+          currentDone
+            ? "min-h-10 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+            : "min-h-9 border border-emerald-600/40 text-emerald-800 hover:bg-emerald-100 dark:text-emerald-200 dark:hover:bg-emerald-900/50"
+        }`}
       >
         {next ? (
           <>
-            Xong, tiếp: {LABEL[next]} <ArrowRight className="w-3.5 h-3.5" />
+            {currentDone ? "Tiếp" : "Bỏ qua, sang"}: {FLOW_LABEL[next]} <ArrowRight className="w-3.5 h-3.5" />
+          </>
+        ) : currentDone ? (
+          <>
+            Xong, về Hôm nay <Check className="w-3.5 h-3.5" />
           </>
         ) : (
-          <>
-            Xong cả ngày <Check className="w-3.5 h-3.5" />
-          </>
+          <>Về Hôm nay</>
         )}
       </button>
       <button onClick={stopFlow} aria-label="Dừng luồng hôm nay" title="Dừng, không đi tiếp việc kế" className="shrink-0 p-1 rounded-md text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50">

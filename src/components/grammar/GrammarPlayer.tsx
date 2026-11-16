@@ -19,6 +19,8 @@ import { handleSpeak, SLOW_RATE } from "@/components/review/speech";
 import { setMainSessionActive } from "@/services/activeSession";
 import { asrAvailable, cancelListening, finishListening, prepareListening, startListening } from "@/services/pronunciationCheck";
 import { playSound } from "@/services/sound";
+import { DayFlowNext, useDayFlow } from "@/components/dashboard/DayFlowContext";
+import type { TodayTaskId } from "@/components/dashboard/todayPlan";
 
 interface GrammarPlayerProps {
   entries: SessionEntry[];
@@ -1382,6 +1384,9 @@ function EmptyState({ title, subtitle, onExit }: { title: string; subtitle?: str
   );
 }
 
+/** The things of the day a grammar run belongs to */
+const FLOW_TASKS: readonly TodayTaskId[] = ["grammar", "weakGrammar"];
+
 function Summary({
   results,
   title,
@@ -1399,6 +1404,8 @@ function Summary({
   onExit: () => void;
   onOpenLesson?: (lessonId: string) => void;
 }) {
+  const flowCurrent = useDayFlow().current;
+  const inFlow = !!flowCurrent && FLOW_TASKS.includes(flowCurrent);
   // Answers the learner marked "tự công nhận" are noted but never counted
   const scored = results.filter((r) => !r.selfAccepted);
   const selfCount = results.length - scored.length;
@@ -1469,13 +1476,15 @@ function Summary({
       )}
 
       <div className="space-y-3">
+        {/* In the day's flow: straight on to the next thing of the day (nothing when the run was cut short) */}
+        {!early && !retry && <DayFlowNext task={FLOW_TASKS} />}
         {missed.length > 0 && (
           <button type="button" onClick={onRetry} className={`${SECONDARY_BTN} w-full`}>
             <RotateCcw className="w-4 h-4" />
             Làm lại câu sai
           </button>
         )}
-        <button type="button" onClick={onExit} className={PRIMARY_BTN}>
+        <button type="button" onClick={onExit} className={inFlow && !early && !retry ? `${SECONDARY_BTN} w-full` : PRIMARY_BTN}>
           Đóng
         </button>
       </div>

@@ -1,5 +1,4 @@
 import { AUTOSTART_KEY } from "../patterns/PatternsTab";
-import { getRoadmap } from "@/services/roadmap/state";
 import { markGrammarReviewed, SHOW_TIP_EVENT, SHOW_TIP_KEY, weakGrammarStage } from "@/services/weakPoints";
 import { tipForStage } from "@/data/grammarTips";
 import { TASK_TAB, type TodayTaskId } from "./todayPlan";
@@ -7,6 +6,31 @@ import type { DashboardTab } from "./shared";
 
 /** The talk tab opens the review of missed sentences at once when this is set (sessionStorage) */
 export const TALK_REVIEW_AUTOSTART_KEY = "myenglish_talk_review_autostart";
+
+/** The grammar tab starts the day's grammar at once when this is set: the reviews due, else the lesson to learn */
+export const GRAMMAR_AUTOSTART_KEY = "myenglish_grammar_autostart";
+/** The pronunciation tab opens its next lesson at once when this is set */
+export const PRONUNCIATION_AUTOSTART_KEY = "myenglish_pronunciation_autostart";
+
+/** Asks the tab about to open to start its work of the day at once (read and cleared by the tab) */
+function autostart(key: string): void {
+  try {
+    sessionStorage.setItem(key, "1");
+  } catch {
+    /* the learner presses the button in the tab instead */
+  }
+}
+
+/** Whether a tab was asked to start at once; the mark is cleared by the read */
+export function takeAutostart(key: string): boolean {
+  try {
+    if (sessionStorage.getItem(key) !== "1") return false;
+    sessionStorage.removeItem(key);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 /** What opening each thing of the day needs from the dashboard */
 export interface RunDeps {
@@ -31,19 +55,11 @@ export function weakGrammarTask(now: Date = new Date()): { stageId: string; titl
 /** Opens a thing of the day: the same from the list on Today and from the flow bar */
 export function runTodayTask(id: TodayTaskId, deps: RunDeps): void {
   if (id === "speaking") {
-    // With a goal chosen the day's work starts at once; without one the tab asks for the goal first
-    try {
-      if (getRoadmap().goal !== null) sessionStorage.setItem(AUTOSTART_KEY, "1");
-    } catch {
-      /* the learner presses the button in the tab instead */
-    }
+    // The day's work starts at once; without a goal the tab asks for it first, then starts
+    autostart(AUTOSTART_KEY);
     deps.setActiveTab("patterns");
   } else if (id === "talkReview") {
-    try {
-      sessionStorage.setItem(TALK_REVIEW_AUTOSTART_KEY, "1");
-    } catch {
-      /* the learner presses "Ôn lại" in the tab instead */
-    }
+    autostart(TALK_REVIEW_AUTOSTART_KEY);
     deps.setActiveTab("talk");
   } else if (id === "weakGrammar") {
     const weak = weakGrammarTask();
@@ -63,5 +79,9 @@ export function runTodayTask(id: TodayTaskId, deps: RunDeps): void {
   else if (id === "reflex") {
     if (deps.startReflex) deps.startReflex();
     else deps.setActiveTab("leaderboard");
-  } else deps.setActiveTab(TASK_TAB[id]);
+  } else {
+    // Grammar and pronunciation open on the lesson of the day, not on a list to search
+    autostart(id === "grammar" ? GRAMMAR_AUTOSTART_KEY : PRONUNCIATION_AUTOSTART_KEY);
+    deps.setActiveTab(TASK_TAB[id]);
+  }
 }

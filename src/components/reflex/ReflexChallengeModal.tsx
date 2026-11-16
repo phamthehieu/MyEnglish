@@ -32,6 +32,7 @@ import { playSound } from "@/services/sound";
 import { handleSpeak } from "@/components/review/speech";
 import { cn } from "@/lib/utils";
 import { useBackHandler } from "@/lib/backNavigation";
+import { DayFlowNext } from "@/components/dashboard/DayFlowContext";
 
 interface ReflexChallengeModalProps {
   words: readonly WordDetail[];
@@ -1091,6 +1092,9 @@ export default function ReflexChallengeModal({
               )}
             </div>
           </div>
+
+          {/* In the day's flow: on to the next thing of the day (the challenge closes first) */}
+          <DayFlowNext task="reflex" onBefore={onClose} />
 
           {/* Action buttons */}
           <div className="flex gap-3 pt-2">

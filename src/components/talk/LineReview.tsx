@@ -10,6 +10,7 @@ import { answeredSentence } from "@/services/learningLinks";
 import { Button, Card as Panel } from "@/components/ui/kit";
 import MicButton, { PracticeTop } from "./MicButton";
 import { useMic } from "./useMic";
+import { DayFlowNext, useDayFlow } from "@/components/dashboard/DayFlowContext";
 import ViText, { ViTextNote } from "./ViText";
 
 /** At most this many sentences in one sitting */
@@ -53,6 +54,7 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
   /** A word of the answer was looked up: the sentence comes back sooner, as one not remembered */
   const [hinted, setHinted] = useState(false);
   const mic = useMic();
+  const inFlow = useDayFlow().current === "talkReview";
 
   const card = cards[index];
   const tiles = useMemo(() => (card ? buildTiles(card.line, card.situation) : []), [card]);
@@ -92,7 +94,8 @@ export default function LineReview({ onBack }: { onBack: () => void }) {
             Nhớ đúng {right}/{results.length} câu. Câu nào chưa nhớ sẽ quay lại vào ngày mai, câu đã nhớ sẽ cách xa dần.
           </p>
         </Panel>
-        <Button size="lg" block onClick={onBack}>
+        <DayFlowNext task="talkReview" />
+        <Button size="lg" block variant={inFlow ? "secondary" : "primary"} onClick={onBack}>
           Về danh sách
         </Button>
       </div>

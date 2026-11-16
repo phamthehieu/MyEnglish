@@ -88,6 +88,8 @@ import { GlobalToast, AutoReplenishBanner, type GlobalToastData } from "./dashbo
 import Sidebar from "./dashboard/Sidebar";
 import DashboardHeader from "./dashboard/DashboardHeader";
 import DayFlowBar from "./dashboard/DayFlowBar";
+import { DayFlowProvider } from "./dashboard/DayFlowContext";
+import type { TodayTaskId } from "./dashboard/todayPlan";
 import { runTodayTask } from "./dashboard/runTask";
 import { retreatFlow } from "@/services/dayFlow";
 import LibraryTab from "./dashboard/LibraryTab";
@@ -1319,8 +1321,31 @@ export default function MainDashboard({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isReviewing, wordToDelete, selectedWord, filteredWords, searchQuery, activeTab, showOnboarding, vocabSetup, showTenseSetup]);
 
+  /** Opens a thing of the day for the flow (the bar, or the end of the lesson before it) */
+  const runFlowTask = (id: TodayTaskId) => {
+    // The reflex challenge opens over the screen: a finished session's summary must not stay under it
+    if (id === "reflex" && autoFinishCompletedReview()) setActiveTab("today");
+    flowRunRef.current = true;
+    try {
+      runTodayTask(id, {
+        setActiveTab: handleSelectTab,
+        startWords: () => handleStartReview(true),
+        startReflex: () => setReflexChallengeOpen(true),
+        openGrammarLesson: openGrammarLessonTab,
+      });
+    } finally {
+      flowRunRef.current = false;
+    }
+  };
+
   return (
-    // h-full, not h-screen: with the interface scale (zoom on <html>) 100vh is taller than the window
+    <DayFlowProvider
+      vocabLeft={todayWork.reviews + todayWork.newToday}
+      activeTab={activeTab}
+      onRun={runFlowTask}
+      onFinish={() => handleSelectTab("today")}
+    >
+    {/* h-full, not h-screen: with the interface scale (zoom on <html>) 100vh is taller than the window */}
     <div className="flex h-full w-full overflow-hidden bg-slate-50 dark:bg-zinc-950 text-slate-900 dark:text-zinc-100 font-sans selection:bg-cyan-500 selection:text-white relative">
       {/* GLOBAL NOTIFICATION INTERACTIVE TOAST */}
       {globalToast && (
@@ -1405,24 +1430,7 @@ export default function MainDashboard({
         )}
 
         {/* The day's flow: where the learner is in it, and one button to the next thing (every tab) */}
-        {!sessionOnScreen && (
-          <DayFlowBar
-            onRun={(id) => {
-              flowRunRef.current = true;
-              try {
-                runTodayTask(id, {
-                  setActiveTab: handleSelectTab,
-                  startWords: () => handleStartReview(true),
-                  startReflex: () => setReflexChallengeOpen(true),
-                  openGrammarLesson: openGrammarLessonTab,
-                });
-              } finally {
-                flowRunRef.current = false;
-              }
-            }}
-            onFinish={() => handleSelectTab("today")}
-          />
-        )}
+        {!sessionOnScreen && <DayFlowBar />}
 
         {/* TODAY: the opening screen, one main action */}
         {activeTab === "today" && (
@@ -1940,5 +1948,6 @@ export default function MainDashboard({
         </div>
       )}
     </div>
+    </DayFlowProvider>
   );
 }

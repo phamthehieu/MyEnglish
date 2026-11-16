@@ -15,6 +15,7 @@ import GrammarTipCard from "@/components/grammar/GrammarTipCard";
 import PatternRunner from "@/components/patterns/PatternRunner";
 import TranslateRound from "@/components/patterns/TranslateRound";
 import Conversation from "@/components/talk/Conversation";
+import { DayFlowNext, useDayFlow } from "@/components/dashboard/DayFlowContext";
 
 /** One screen of the day: a part of a task (a task with two steps is two screens) */
 type Screen =
@@ -44,6 +45,8 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
   const screen = screens[index];
   const finished = index >= screens.length;
   const next = () => setIndex((i) => i + 1);
+  // Opened by the day's flow: the end leads to the next thing of the day, the path itself becomes the quiet way out
+  const inFlow = useDayFlow().current === "speaking";
 
   // A step that cannot be done (the one before it did not pass) is skipped
   const blocked = screen?.kind === "step" && getPatternState(screen.patternId).step < screen.step - 1;
@@ -95,9 +98,16 @@ export default function DaySession({ stage, plan, onExit }: { stage: Stage; plan
             <p className="text-sm text-emerald-900 dark:text-emerald-100">Bấm Xong để xem phần tiếp theo của chặng. Các bước của một mẫu câu cách nhau một ngày để nhớ lâu hơn.</p>
           )}
         </div>
-        <button onClick={onExit} className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
-          Xong
-        </button>
+        <DayFlowNext task="speaking" />
+        {inFlow ? (
+          <button onClick={onExit} className="w-full min-h-11 text-sm font-semibold text-emerald-800 hover:underline dark:text-emerald-300">
+            Xem lộ trình nói
+          </button>
+        ) : (
+          <button onClick={onExit} className="w-full h-12 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold">
+            Xong
+          </button>
+        )}
       </div>
     );
   }

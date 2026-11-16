@@ -9,6 +9,7 @@ import { minutesFor } from "@/services/comeback";
 import { isSimpleMode } from "@/services/learnerProfile";
 import { dayCloseStatus, nextReviewText, type NextReview } from "@/services/dayClose";
 import { RankDelta } from "../dashboard/RankWidgets";
+import { DayFlowNext, useDayFlow } from "../dashboard/DayFlowContext";
 import { memoryLabel } from "@/utils/labels";
 
 interface SessionSummaryProps {
@@ -46,6 +47,7 @@ export default function SessionSummary({
   onRestartWithNext,
 }: SessionSummaryProps) {
   const simple = isSimpleMode();
+  const flowNext = useDayFlow().next;
   const [tomorrow, setTomorrow] = useState<number | null>(null);
   useEffect(() => {
     loadWorkloadForecast(2)
@@ -213,6 +215,9 @@ export default function SessionSummary({
           </p>
         </div>
       )}
+
+      {/* In the day's flow with something after the words: one tap to it (after the last thing, "Hoàn tất" already goes back to Today) */}
+      {flowNext && <DayFlowNext task="vocab" />}
 
       <div className="flex flex-col sm:flex-row gap-2.5 pt-1 w-full justify-center">
         {dueLeft > 0 && onRestartWithNext && (

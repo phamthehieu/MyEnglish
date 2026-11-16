@@ -40,6 +40,8 @@ import {
 } from "@/services/pronunciation";
 import { handleSpeak, SLOW_RATE, AUTO_SPEAK_DELAY_MS } from "../review/speech";
 import { PAGE_CONTAINER } from "./shared";
+import { PRONUNCIATION_AUTOSTART_KEY, takeAutostart } from "./runTask";
+import { DayFlowNext, useDayFlow } from "./DayFlowContext";
 import { buildPhonemeChallenge, type PhonemeChallengeSession } from "@/services/phonemeMatcher";
 import { getWordsLite } from "@/services/db";
 import { MicCheck } from "./PronunciationMicCheck";
@@ -626,9 +628,17 @@ function Quiz({
     advance(correct);
   };
 
+  // In the day's flow a passed lesson leads to the next thing of the day, not to the next pronunciation lesson
+  const flow = useDayFlow();
+  const flowOn = flow.current === "pronunciation" && !!result?.passed;
+  const mainButton = flowOn
+    ? "min-h-12 px-5 rounded-2xl border border-teal-700/30 bg-white text-teal-800 hover:bg-teal-50 dark:border-teal-400/40 dark:bg-transparent dark:text-teal-300 dark:hover:bg-teal-400/10 text-base font-semibold justify-center inline-flex items-center gap-1.5"
+    : "min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5";
+
   const primary = () => {
     if (!result) return;
-    if (result.next) onOpenNext(result.next.id);
+    if (flowOn) flow.go();
+    else if (result.next) onOpenNext(result.next.id);
     else if (result.passed) onBack();
     else restart();
   };
@@ -680,14 +690,15 @@ function Quiz({
             ))}
           </div>
         )}
+        <DayFlowNext task="pronunciation" />
         <div className="flex flex-wrap justify-center gap-2">
           {result.next ? (
-            <button onClick={primary} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5">
-              Bài tiếp: {result.next.title} <ArrowRight className="w-4 h-4" /> <Kbd>Enter</Kbd>
+            <button onClick={() => onOpenNext(result.next!.id)} className={mainButton}>
+              Bài tiếp: {result.next.title} <ArrowRight className="w-4 h-4" /> {!flowOn && <Kbd>Enter</Kbd>}
             </button>
           ) : result.passed ? (
-            <button onClick={onBack} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5">
-              Về danh sách bài <Kbd>Enter</Kbd>
+            <button onClick={onBack} className={mainButton}>
+              Về danh sách bài {!flowOn && <Kbd>Enter</Kbd>}
             </button>
           ) : (
             <button onClick={restart} className="min-h-12 px-5 rounded-2xl bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 text-white text-base font-semibold shadow-sm justify-center inline-flex items-center gap-1.5">
@@ -1087,6 +1098,13 @@ export default function PronunciationTab({ resetKey }: { resetKey?: number }) {
     (id: string, step: Step, session = false, intro = false) => setOpen((o) => ({ id, step, session, intro, n: (o?.n ?? 0) + 1 })),
     []
   );
+  // Opened from Today's "1 bài phát âm ngắn": straight into the next lesson (its listening quiz when already started)
+  useEffect(() => {
+    if (lessons.length === 0 || !takeAutostart(PRONUNCIATION_AUTOSTART_KEY)) return;
+    const saved = getPronunciationProgress();
+    const lesson = nextPronunciationLesson(lessons, saved);
+    if (lesson) openLesson(lesson.id, saved[lesson.id] ? "quiz" : "learn");
+  }, [lessons, resetKey, openLesson]);
   // A lesson belongs to one of two series (the 44 sounds, the topics): "next" and the numbering stay inside it
   const seriesOf = useCallback((id: string) => (phonemes.some((p) => p.id === id) ? phonemes : lessons), [phonemes, lessons]);
   const nextLesson = useCallback(

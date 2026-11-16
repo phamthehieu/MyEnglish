@@ -25,6 +25,7 @@ import GrammarExerciseImportModal from "./GrammarExerciseImportModal";
 import GrammarPlayer from "./GrammarPlayer";
 import SpeakingGrammar from "./SpeakingGrammar";
 import { PAGE_CONTAINER } from "../dashboard/shared";
+import { GRAMMAR_AUTOSTART_KEY, takeAutostart } from "../dashboard/runTask";
 import { useBackHandler } from "@/lib/backNavigation";
 
 interface GrammarHubProps {
@@ -135,6 +136,16 @@ export default function GrammarHub({ initialLessonId = null, resetKey }: Grammar
         initialHandled.current = true;
         const ch = chs.find((c) => (c.lessons ?? []).some((l) => l.id === initialLessonId));
         if (ch) setActiveLesson({ chapterId: ch.chapterId, lessonId: initialLessonId, tab: "handbook" });
+      }
+
+      // Opened from Today's "1 bài ngữ pháp": straight into it (the reviews due, else the lesson to redo or to learn)
+      if (!initialLessonId && takeAutostart(GRAMMAR_AUTOSTART_KEY)) {
+        const due = getGrammarSummaryStats().dueCount;
+        const entries = due > 0 ? await buildReviewSession().catch(() => []) : [];
+        const lesson = nextPlan.relearn ?? (nextPlan.newLessonDoneToday ? null : nextPlan.nextLesson);
+        const ch = lesson ? chs.find((c) => (c.lessons ?? []).some((l) => l.id === lesson.id)) : undefined;
+        if (entries.length > 0) setPlayer({ entries, mode: "review", title: "Ôn tập ngữ pháp", subtitle: `${due} bài đến hạn` });
+        else if (lesson && ch) setActiveLesson({ chapterId: ch.chapterId, lessonId: lesson.id, tab: "handbook" });
       }
     } catch (err) {
       console.warn("Failed to load the grammar hub:", err);
