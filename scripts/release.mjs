@@ -23,7 +23,7 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = join(root, "..", "MyEnglish-android");
 // The certificate every release is signed with (SHA-256): an APK signed with another key cannot update the app
-const RELEASE_CERT = "e2ff54d576a0ce2eaf59a5f28e74b1b14920f22d156a1e9aa9c24cf9bdb340e8";
+const RELEASE_CERT = "49c9c66ab3bab902dc323e3de8a82518c9da2cbfd4cbfc8f02687515e1f80062";
 
 const args = process.argv.slice(2);
 const opt = (name) => (args.includes(name) ? args[args.indexOf(name) + 1] : undefined);
