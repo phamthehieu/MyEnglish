@@ -1,6 +1,6 @@
 {
-  "version": "0.5.3",
-  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.5.3/MyEnglish-v0.5.3.apk",
-  "notes": "Tinh gọn điều hướng: Gom gọn mục Từ vựng từ 6 tab xuống 4 tab cốt lõi (Bộ từ, Ôn tập, Sổ từ, Đọc). Gộp các danh sách vào Sổ từ với bộ lọc nhanh.\nTái cấu trúc Màn hình Hôm nay: Tích hợp Hero Overview Card hiện đại (chứa Lời chào, Cấp độ đang học, Vòng mục tiêu ngày và 3 chỉ số từ vựng), danh sách nhiệm vụ ưu tiên và lưới tiện ích 2 cột cân đối.\nTối ưu Lộ trình Bộ từ: Hỗ trợ thanh cấp độ A1–C1 cuộn ngang 1 dòng mượt mà trên mobile, cân đối khối thống kê trong Banner và tích hợp tiện ích Tìm/Lướt từ.\nNâng cấp Động lực học tập: Nổi bật nút \"⚡ Học nhanh 1 phút (Giữ chuỗi)\" và \"🎯 Tập trung\", thêm hiệu ứng pháo hoa chúc mừng (Confetti) khi hoàn thành/đánh dấu từ đã biết trong bộ.\nĐồng bộ bảng màu và phong cách thiết kế Mobile-First trên toàn bộ ứng dụng.",
-  "sha256": "54206a02a59f6634b9eb9b3f3749ef6d4153a9dc2abba1804a3ae0ae3b223a6a"
+  "version": "0.5.5",
+  "apkUrl": "https://github.com/phamthehieu/MyEnglish/releases/download/v0.5.5/MyEnglish-v0.5.5.apk",
+  "notes": "- Sắp xếp lại thứ tự từ vựng A1: bắt đầu bằng 30 từ giao tiếp gần gũi thay vì các hư từ ngữ pháp.\n- Bổ sung dịch tiếng Việt cho các bài Shadowing A1–A2 ngắn và ghim mục \"Bắt đầu cho người mới\".\n- Ưu tiên Phát âm nền tảng trong kế hoạch \"Hôm nay\" cho người học mất gốc (A0).\n- Trung lập hóa ví dụ bài Phát âm Chặng 1 & Viết ngắn, đồng bộ giao diện tông Teal và cải thiện Flashcard.",
+  "sha256": "219a1e7d990cbfcd24d93f5a892760fbc5ad4dc4f84189550c6971230b22f7cc"
 }
