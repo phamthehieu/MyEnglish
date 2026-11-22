@@ -1,0 +1,1 @@
+import{i as n}from"./data-situations-BSmJWydH.js";import"./vendor-engine-Cg6fxEXZ.js";import"./vendor-react-DA4L1PVB.js";async function e(o,i){await n("plugin:opener|open_url",{url:o,with:i})}export{e as openUrl};
