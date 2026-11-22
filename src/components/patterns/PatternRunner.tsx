@@ -3,7 +3,7 @@ import { Check, Eraser, Keyboard, Mic, Send, Volume2, X } from "lucide-react";
 import type { Pattern } from "@/types/pattern";
 import { fillPattern } from "@/types/pattern";
 import { handleSpeak } from "@/components/review/speech";
-import { asrAvailable } from "@/services/pronunciationCheck";
+import { asrAvailable, speechUnavailableText } from "@/services/pronunciationCheck";
 import { judgeSpoken, matchTyped, type Tile } from "@/services/talk/engine";
 import { lineOfSlot, patternSituation, tilesSpell } from "@/services/patterns/engine";
 import { applySession, type SessionKind, type Task, type TaskResult } from "@/services/patterns/session";
@@ -109,7 +109,7 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
         ))}
       </div>
 
-      {canSpeak && (
+      {canSpeak ? (
         <div className={CARD}>
           <p className="text-sm text-slate-700 dark:text-zinc-300">
             Thử nói: <span className="font-semibold">«{fillPattern(pattern, slot).en}»</span>
@@ -117,6 +117,10 @@ function LearnCard({ pattern, onNext }: { pattern: Pattern; onNext: (o: Outcome)
           <MicButton mic={mic} onStart={say} idleLabel="Bấm để nói thử" />
           {mic.problem && <p className="text-sm text-red-700 dark:text-red-300">{mic.problem}</p>}
           {heard && <p className="text-sm text-slate-700 dark:text-zinc-300">{heard}</p>}
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/80 dark:bg-zinc-900/60 px-3.5 py-2.5 text-xs leading-relaxed text-slate-600 dark:text-zinc-400">
+          💡 Tự đọc to câu <span className="font-semibold text-slate-800 dark:text-zinc-200">«{fillPattern(pattern, slot).en}»</span> theo loa mẫu nhé. {speechUnavailableText()}
         </div>
       )}
 

@@ -231,7 +231,7 @@ describe("placement and topic", () => {
       makeWord("d", { topic: "General Tech" }),
     ];
     expect(preferredTopic(words)).toBe("Database & Storage");
-    expect(preferredTopic([makeWord("x", { topic: "General Tech" })])).toContain("Software");
+    expect(preferredTopic([makeWord("x", { topic: "General Tech" })])).toBe("Everyday Communication & Workplace English");
   });
 });
 

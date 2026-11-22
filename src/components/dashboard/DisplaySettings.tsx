@@ -183,7 +183,7 @@ export default function DisplaySettings() {
             <span className="tabular-nums w-10">{tts.rate.toFixed(2)}</span>
           </label>
           <button
-            onClick={() => handleSpeak("Hello. I fixed the bug and pushed the code.")}
+            onClick={() => handleSpeak("Hello. Today is a great day to practice English.")}
             className="inline-flex items-center gap-1.5 min-h-11 px-4 py-2 rounded-2xl border border-teal-700/30 dark:border-teal-400/40 text-sm font-semibold text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-teal-400/10"
           >
             <Volume2 className="w-4 h-4" /> Nghe thử

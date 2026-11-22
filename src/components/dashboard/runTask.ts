@@ -1,8 +1,10 @@
-import { AUTOSTART_KEY } from "../patterns/PatternsTab";
 import { markGrammarReviewed, SHOW_TIP_EVENT, SHOW_TIP_KEY, weakGrammarStage } from "@/services/weakPoints";
 import { tipForStage } from "@/data/grammarTips";
 import { TASK_TAB, type TodayTaskId } from "./todayPlan";
 import type { DashboardTab } from "./shared";
+
+/** Set by the Today screen: open the speaking path's work of the day at once (kept here so PatternsTab stays lazy-loaded) */
+export const PATTERNS_AUTOSTART_KEY = "roadmap.autostart";
 
 /** The talk tab opens the review of missed sentences at once when this is set (sessionStorage) */
 export const TALK_REVIEW_AUTOSTART_KEY = "myenglish_talk_review_autostart";
@@ -56,7 +58,7 @@ export function weakGrammarTask(now: Date = new Date()): { stageId: string; titl
 export function runTodayTask(id: TodayTaskId, deps: RunDeps): void {
   if (id === "speaking") {
     // The day's work starts at once; without a goal the tab asks for it first, then starts
-    autostart(AUTOSTART_KEY);
+    autostart(PATTERNS_AUTOSTART_KEY);
     deps.setActiveTab("patterns");
   } else if (id === "talkReview") {
     autostart(TALK_REVIEW_AUTOSTART_KEY);

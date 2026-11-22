@@ -569,8 +569,8 @@ export function recognitionErrorText(error: string | undefined): string {
 /** Why there is no speaking check here, for the learner */
 export function speechUnavailableText(): string {
   return isWeb()
-    ? "Trình duyệt này chưa nghe được giọng nói. Mở bằng Chrome, Edge hoặc Safari, hoặc dùng app trên điện thoại Android."
-    : "Chấm giọng chỉ có trên điện thoại Android.";
+    ? "Trình duyệt này chưa hỗ trợ nghe giọng nói. Mở bằng Chrome, Edge, Safari hoặc dùng app trên điện thoại Android để máy chấm phát âm."
+    : "Chấm giọng bằng micro hiện có trên điện thoại Android hoặc bản web (Chrome, Edge, Safari). Trên máy tính bạn vẫn nghe mẫu và tự đọc theo bình thường.";
 }
 
 /** Play the learner's last recording */

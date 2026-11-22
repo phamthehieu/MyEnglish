@@ -62,6 +62,18 @@ describe("vocabulary deck (Oxford 5000, A1–C1)", () => {
     expect(blankable / total, misses.join("\n")).toBeGreaterThan(0.98);
   });
 
+  it("starts A1 with concrete, everyday words instead of pure function words", () => {
+    const first25A1 = words
+      .filter((w) => w.cefr === "A1")
+      .sort((a, b) => a.order - b.order)
+      .slice(0, 25)
+      .map((w) => w.id);
+    expect(first25A1).toEqual(expect.arrayContaining(["hello", "name", "water", "work", "time", "help"]));
+    for (const fnWord of ["the", "of", "to", "in", "by", "as", "that"]) {
+      expect(first25A1).not.toContain(fnWord);
+    }
+  });
+
   it("marks the IT words picked from the Oxford topics, learnt first within their level", () => {
     const it = words.filter((w) => w.it);
     expect(it.length).toBe(274);

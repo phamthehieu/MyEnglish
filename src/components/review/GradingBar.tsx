@@ -1,4 +1,4 @@
-import { SkipForward } from "lucide-react";
+import { ArrowRight, CheckCircle2, RotateCcw, SkipForward } from "lucide-react";
 import { Rating, type IntervalPreviews } from "@/services/srs";
 import type { ExerciseType } from "@/services/smartReview";
 import { isSimpleMode } from "@/services/learnerProfile";
@@ -52,7 +52,7 @@ export default function GradingBar({
   onlyAgain,
   allowEasy,
   pendingRating,
-  onContinue: _onContinue,
+  onContinue,
   introMode = false,
   onIntroDone,
   introLocked: _introLocked = false,
@@ -119,7 +119,23 @@ export default function GradingBar({
           <kbd className="px-2 py-0.5 rounded bg-white/20 text-[11px] font-mono">Enter ↵</kbd>
         </button>
       ) : pendingRating !== null ? (
-        <div className="w-full h-14" />
+        <button
+          type="button"
+          onClick={onContinue}
+          className={`w-full h-14 px-4 rounded-2xl border text-sm font-semibold flex items-center justify-between gap-2 transition-colors ${
+            pendingRating === Rating.Again
+              ? "border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-200"
+              : "border-teal-300 bg-teal-50 text-teal-900 hover:bg-teal-100 dark:border-teal-500/40 dark:bg-teal-500/10 dark:text-teal-200"
+          }`}
+        >
+          <span className="inline-flex items-center gap-2">
+            {pendingRating === Rating.Again ? <RotateCcw className="w-4 h-4 shrink-0" /> : <CheckCircle2 className="w-4 h-4 shrink-0" />}
+            <span>{pendingRating === Rating.Again ? "Từ này sẽ quay lại sau vài thẻ" : "Đã ghi nhận · đang sang thẻ tiếp…"}</span>
+          </span>
+          <span className="inline-flex items-center gap-1 text-xs font-bold opacity-80 shrink-0">
+            Tiếp <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </button>
       ) : ["multiple_choice", "sentence_builder", "context_match", "meaning_match", "listening", "reverse_cloze", "free_writing", "letter_tiles"].includes(
         effectiveExerciseType
       ) ? (

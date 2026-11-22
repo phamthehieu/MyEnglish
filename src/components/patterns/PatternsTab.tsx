@@ -10,6 +10,8 @@ import { GOAL_HINT, GOAL_LABEL, GOALS, type RoadmapGoal, type Stage } from "@/se
 import { isFinished, setFocus, setGoal, skipLevel, skipStage, unskipLevel, unskipStage } from "@/services/roadmap/state";
 import { addStageWords } from "@/services/roadmap/words";
 import { PAGE_CONTAINER } from "../dashboard/shared";
+import { PATTERNS_AUTOSTART_KEY } from "../dashboard/runTask";
+import { asrAvailable, speechUnavailableText } from "@/services/pronunciationCheck";
 import GrammarTipCard from "../grammar/GrammarTipCard";
 import Collapse from "../ui/Collapse";
 import { Button, Card, ProgressBar } from "../ui/kit";
@@ -20,7 +22,7 @@ import TranslateRound from "./TranslateRound";
 import { useBackHandler } from "@/lib/backNavigation";
 
 /** Set by the Today screen: open the day's work at once */
-export const AUTOSTART_KEY = "roadmap.autostart";
+export const AUTOSTART_KEY = PATTERNS_AUTOSTART_KEY;
 
 
 interface Session {
@@ -255,6 +257,7 @@ export default function PatternsTab({ resetKey, onOpenGrammarLesson }: { resetKe
           <p className="text-sm text-slate-500 dark:text-zinc-400">
             Mỗi chặng một chủ đề: học vài mẫu câu, thay chỗ trống, ghép câu, trả lời nhanh, rồi nói một hội thoại. Gặp lại cùng câu nhiều lần là nói được mà không cần nghĩ.
           </p>
+          {!asrAvailable() && <p className="mt-1 text-xs text-slate-500 dark:text-zinc-400">{speechUnavailableText()}</p>}
         </div>
 
         {PATTERNS.length === 0 && <p className="text-sm text-slate-500 dark:text-zinc-400">Chưa có mẫu câu nào.</p>}

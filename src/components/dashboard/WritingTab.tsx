@@ -29,8 +29,8 @@ import { useBackHandler } from "@/lib/backNavigation";
 const DRAFT_KEY = "myenglish_standup_draft_v1";
 const HAS_AI_CLI = features.aiCli();
 
-/** Beginnings of a standup sentence, for a learner who does not know how to start */
-const SENTENCE_FRAMES = ["Yesterday I ", "Today I will ", "I am working on ", "I need help with ", "Everything is going well."];
+/** Beginnings of a short daily journal / workplace sentence, for a learner who does not know how to start */
+const SENTENCE_FRAMES = ["Yesterday I ", "Today I will ", "I am working on ", "I want to ", "I need help with ", "Today is going well."];
 
 /** Without AI: the mistakes Vietnamese learners make most, to check one's own text against */
 const SELF_CHECK = [
@@ -203,7 +203,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           )}
         </div>
         <p className="text-sm text-slate-500 dark:text-zinc-400">
-          Hôm qua bạn làm gì, hôm nay dự định làm gì, có việc gì cần hỗ trợ? 2–4 câu ngắn là đủ.
+          Hôm qua bạn làm gì, hôm nay có kế hoạch gì, hay một chuyện nhỏ trong ngày? 2–4 câu ngắn là đủ.
         </p>
         {/* Sentence frames: a beginner who cannot start a sentence builds on one */}
         <div className="flex items-center gap-1.5 flex-wrap text-xs text-slate-500 dark:text-zinc-400">
@@ -249,7 +249,7 @@ export default function WritingTab({ onOpenGrammarLesson, resetKey }: WritingTab
           value={text}
           onChange={(e) => updateText(e.target.value)}
           rows={4}
-          placeholder="Yesterday I finished the monthly report. Today I am preparing for the client meeting. Everything is going well."
+          placeholder="Yesterday I went to work and finished my report. Today I will meet a friend for coffee. Today is going well."
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"

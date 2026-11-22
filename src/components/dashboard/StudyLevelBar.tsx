@@ -43,7 +43,7 @@ export default function StudyLevelBar({ variant = "card" }: { variant?: "card" |
         >
           <Layers className="h-3.5 w-3.5 text-teal-300" />
           <span>Cấp đang học: <b className="text-white">{rangeText(levels)}</b></span>
-          <span className="text-indigo-200/80">· Đổi cấp</span>
+          <span className="text-teal-100/80">· Đổi cấp</span>
           <ChevronDown className="h-3.5 w-3.5 text-teal-300" />
         </button>
       ) : (
@@ -77,7 +77,12 @@ export default function StudyLevelBar({ variant = "card" }: { variant?: "card" |
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">Bạn muốn học cấp nào?</h3>
                 <p className="text-xs text-slate-500 dark:text-zinc-400">Đổi lúc nào cũng được. Từ vựng mới và lộ trình nói đều theo cấp này.</p>
               </div>
-              <button onClick={() => setOpen(false)} aria-label="Đóng" className="p-1 -mr-1 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Đóng"
+                className="-mr-2 -mt-1 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-200"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>

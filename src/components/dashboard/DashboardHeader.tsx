@@ -291,10 +291,11 @@ export default function DashboardHeader({
       </div>
     )}
 
-    {/* The tabs of the current section (e.g. Ôn tập · Kho từ · Từ hay quên · Đã biết · Lộ trình) */}
+    {/* The tabs of the current section, integrated cleanly as a slim underline bar under the header */}
     {subTabs && (
-      <div className="shrink-0 border-b border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 px-4 md:px-6 py-2">
+      <div className="shrink-0 border-b border-slate-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/40 px-4 md:px-6">
         <SubTabs
+          variant="underline"
           label={section.label}
           value={canonicalSubTab(activeTab)}
           onChange={setActiveTab}

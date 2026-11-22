@@ -4,6 +4,8 @@ import { parseTerms, type WordDetail } from "@/types/database";
 import { getRetrievabilityInfo } from "@/services/smartReview";
 import { librarySchedule } from "@/services/librarySchedule";
 import { topicLabel, memoryLabel } from "@/utils/labels";
+import { isSimpleMode } from "@/services/learnerProfile";
+import { wordStatus, WORD_STATUS_LABELS } from "@/services/wordStatus";
 
 const EMPTY_TERMS: ReturnType<typeof parseTerms> = [];
 
@@ -36,6 +38,8 @@ const WordCard = memo(function WordCard({
   const synonyms = meta?.synonyms ?? EMPTY_TERMS;
   const rInfo = meta?.rInfo ?? getRetrievabilityInfo(item.srs);
   const leech = meta?.leech ?? false;
+  const simple = isSimpleMode();
+  const status = wordStatus(item);
 
   // The session's rules: a recall card waiting for the new-card budget, or one buried until tomorrow, is not due
   const schedule = librarySchedule(item);
@@ -53,7 +57,7 @@ const WordCard = memo(function WordCard({
   return (
     <div
       onClick={() => onSelect(item)}
-      className={`group relative flex min-w-0 cursor-pointer flex-col justify-between rounded-2xl border p-4 transition-colors ${
+      className={`group relative flex min-w-0 cursor-pointer flex-col justify-between rounded-2xl border p-4 transition-all md:hover:-translate-y-0.5 md:hover:shadow-md ${
         isSelected
           ? "border-teal-700 bg-teal-50/60 dark:border-teal-400 dark:bg-zinc-900"
           : "border-slate-200 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:border-slate-300 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
@@ -111,6 +115,30 @@ const WordCard = memo(function WordCard({
           </button>
         </div>
 
+        {simple ? (
+          <div className="flex items-center justify-between gap-2 flex-wrap pt-0.5">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span
+                className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                  status === "remembered_long"
+                    ? "bg-teal-50 text-teal-800 dark:bg-teal-400/10 dark:text-teal-300"
+                    : "bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-zinc-300"
+                }`}
+              >
+                {WORD_STATUS_LABELS[status]}
+              </span>
+              {leech && (
+                <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-500/10 dark:text-amber-300">
+                  Từ hay quên
+                </span>
+              )}
+            </div>
+            <span className="flex shrink-0 items-center gap-0.5 text-xs font-semibold text-teal-700 dark:text-teal-300">
+              Chi tiết <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </div>
+        ) : (
+        <>
         {/* Memory state: one plain line instead of several tiny badges */}
         <div className="flex items-center gap-x-3 gap-y-1 flex-wrap text-xs text-slate-700 dark:text-zinc-300">
           <span title="Thuật toán dự đoán bạn sẽ còn nhớ từ này trong khoảng thời gian này">{memoryText}</span>
@@ -180,9 +208,12 @@ const WordCard = memo(function WordCard({
             )}
           </div>
         )}
+        </>
+        )}
       </div>
 
-      {/* Footer tags */}
+      {/* Footer tags (full mode only; simple mode already shows a clean footer row above) */}
+      {!simple && (
       <div className="mt-3 pt-3 border-t border-slate-100 dark:border-zinc-800/60 flex items-center justify-between text-xs text-slate-600 dark:text-zinc-400">
         <div className="flex gap-1.5 flex-wrap max-w-[75%] overflow-hidden">
           {synonyms.slice(0, 2).map((s, idx) => (
@@ -204,6 +235,7 @@ const WordCard = memo(function WordCard({
           Chi tiết <ChevronRight className="w-3.5 h-3.5" />
         </span>
       </div>
+      )}
     </div>
   );
 });

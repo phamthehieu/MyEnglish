@@ -69,32 +69,32 @@
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    --background: 240 10% 3.9%;
+    --foreground: 240 5% 96%;
 
-    --card: 224 71% 7%;
-    --card-foreground: 213 31% 91%;
+    --card: 240 6% 10%;
+    --card-foreground: 240 5% 96%;
 
-    --popover: 224 71% 6%;
-    --popover-foreground: 213 31% 91%;
+    --popover: 240 6% 10%;
+    --popover-foreground: 240 5% 96%;
 
     --primary: 172 66% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 47% 16%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 240 5% 96%;
 
-    --muted: 223 47% 14%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
 
-    --accent: 217 33% 20%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 240 4% 18%;
+    --accent-foreground: 240 5% 96%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
     --ring: 172 66% 50%;
   }
 
@@ -155,16 +155,47 @@
    CLEAN NATIVE SCROLLBARS (LIGHT & DARK)
    ========================================================= */
 
-/* Scrollbars are hidden everywhere; scrolling itself still works */
-* {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Touch screens keep scrollbars hidden; desktop shows subtle 6px scrollbars so scrollable areas stay obvious */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
 }
 
-::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
+@media (hover: hover) and (pointer: fine) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 116, 139, 0.28) transparent;
+  }
+  html.dark * {
+    scrollbar-color: rgba(161, 161, 170, 0.26) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 116, 139, 0.28);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 116, 139, 0.48);
+  }
+  html.dark ::-webkit-scrollbar-thumb {
+    background-color: rgba(161, 161, 170, 0.26);
+  }
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(161, 161, 170, 0.46);
+  }
 }
 
 /* Utilities */
@@ -334,10 +365,24 @@ pre code {
   animation: bar-enter 0.2s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform, opacity;
 }
+@keyframes flip-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.flip-reveal {
+  animation: flip-reveal 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
 @media (prefers-reduced-motion: reduce) {
   .tab-enter,
   .sheet-enter,
-  .bar-enter {
+  .bar-enter,
+  .flip-reveal {
     animation: none;
   }
 }

@@ -134,7 +134,8 @@
     "group": "Chủ đề Giấc ngủ",
     "order": 9,
     "duration": 718,
-    "count": 34
+    "count": 34,
+    "hasVi": true
   },
   {
     "id": "2QsxCYPZ-6o",
@@ -167,7 +168,8 @@
     "group": "Phản xạ bài ngắn",
     "order": 12,
     "duration": 105,
-    "count": 12
+    "count": 12,
+    "hasVi": true
   },
   {
     "id": "VJyK8k2GJoY",
@@ -178,7 +180,8 @@
     "group": "Thói quen hàng ngày",
     "order": 13,
     "duration": 446,
-    "count": 59
+    "count": 59,
+    "hasVi": true
   },
   {
     "id": "erjMgola4fQ",
@@ -189,7 +192,8 @@
     "group": "Nghe nhại bài ngắn",
     "order": 14,
     "duration": 223,
-    "count": 19
+    "count": 19,
+    "hasVi": true
   },
   {
     "id": "wMwN94BSPWM",
@@ -387,7 +391,8 @@
     "group": "Thói quen hàng ngày",
     "order": 33,
     "duration": 416,
-    "count": 61
+    "count": 61,
+    "hasVi": true
   },
   {
     "id": "71lisL1R1a4",
@@ -541,7 +546,8 @@
     "group": "Kỹ thuật Imitation",
     "order": 47,
     "duration": 365,
-    "count": 29
+    "count": 29,
+    "hasVi": true
   },
   {
     "id": "T91p6pTPpSY",
@@ -849,7 +855,8 @@
     "group": "Chủ đề Du lịch",
     "order": 26,
     "duration": 212,
-    "count": 21
+    "count": 21,
+    "hasVi": true
   },
   {
     "id": "FtqbKDuS_ew",
@@ -871,7 +878,8 @@
     "group": "Chủ đề Thể thao",
     "order": 28,
     "duration": 356,
-    "count": 32
+    "count": 32,
+    "hasVi": true
   },
   {
     "id": "QGZPUt7MP1k",

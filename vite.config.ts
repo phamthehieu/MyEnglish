@@ -100,6 +100,26 @@ export default defineConfig(() => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          const normalized = id.replace(/\\/g, "/");
+          if (normalized.includes("/node_modules/")) {
+            if (normalized.includes("/react/") || normalized.includes("/react-dom/") || normalized.includes("/zustand/")) {
+              return "vendor-react";
+            }
+            if (normalized.includes("/@supabase/")) return "vendor-supabase";
+            if (normalized.includes("/lucide-react/")) return "vendor-ui";
+            if (normalized.includes("/ts-fsrs/") || normalized.includes("/sql.js/")) return "vendor-engine";
+          }
+          if (normalized.includes("/src/data/patterns/")) return "data-patterns";
+          if (normalized.includes("/src/data/situations/")) return "data-situations";
+          if (normalized.includes("/src/data/grammarTips/")) return "data-grammar-tips";
+        },
+      },
+    },
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //

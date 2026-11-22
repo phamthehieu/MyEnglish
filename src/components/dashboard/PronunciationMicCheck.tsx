@@ -241,7 +241,11 @@ export function MicCheck({
   }, [target, canUseMic]);
 
   if (!asrAvailable()) {
-    return compact ? null : <p className="w-full pt-3 text-xs text-center text-slate-600 dark:text-zinc-400">{speechUnavailableText()}</p>;
+    return (
+      <p className={`w-full text-xs text-center text-slate-600 dark:text-zinc-400 ${compact ? "pt-1" : "pt-3"}`}>
+        {speechUnavailableText()}
+      </p>
+    );
   }
   if (!canCheck(lesson, target)) return null;
 

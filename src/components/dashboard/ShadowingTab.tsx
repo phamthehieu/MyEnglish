@@ -80,6 +80,8 @@ interface ShadowingEntry {
   duration: number;
   /** Number of sentences */
   count: number;
+  /** True when the lesson includes Vietnamese translations for its sentences */
+  hasVi?: boolean;
 }
 
 /** The list (built with the lessons by scripts/build-shadowing.mjs) */
@@ -1070,15 +1072,33 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
     };
   }, [openId]);
 
-  // The lessons of the level, in the order of their topic: the topics as they first appear, "Bài khác" last
+  // Starter section for beginners: short lessons (≤ 12 min) that already have Vietnamese translations, shortest first
+  const starterGroup = useMemo(() => {
+    return entries
+      .filter((x) => x.level === level && x.hasVi && x.duration <= 720)
+      .sort((a, b) => a.duration - b.duration);
+  }, [level, entries]);
+
+  // The lessons of the level, in the order of their topic: the topics as they first appear, "Bài khác" last.
+  // Within each topic, lessons with Vietnamese subtitles and shorter duration appear first.
   const groups = useMemo(() => {
+    const starterIds = new Set(starterGroup.map((e) => e.id));
     const byGroup = new Map<string, ShadowingEntry[]>();
-    for (const e of entries.filter((x) => x.level === level)) {
+    for (const e of entries.filter((x) => x.level === level && !starterIds.has(x.id))) {
       const name = e.group || OTHER_GROUP;
       byGroup.set(name, [...(byGroup.get(name) ?? []), e]);
     }
-    return [...byGroup.entries()].sort(([a], [b]) => Number(a === OTHER_GROUP) - Number(b === OTHER_GROUP));
-  }, [level, entries]);
+    const list: Array<[string, ShadowingEntry[]]> = [...byGroup.entries()]
+      .sort(([a], [b]) => Number(a === OTHER_GROUP) - Number(b === OTHER_GROUP))
+      .map(([name, items]) => [
+        name,
+        [...items].sort((a, b) => Number(Boolean(b.hasVi)) - Number(Boolean(a.hasVi)) || a.duration - b.duration),
+      ]);
+    if (starterGroup.length > 0) {
+      list.unshift(["Bắt đầu cho người mới · Ngắn & có dịch Việt", starterGroup]);
+    }
+    return list;
+  }, [level, entries, starterGroup]);
 
   if (openId && lesson) return <Lesson key={lesson.id} lesson={lesson} onBack={() => setOpenId(null)} />;
 
@@ -1159,8 +1179,15 @@ export default function ShadowingTab({ resetKey }: { resetKey?: number }) {
                 />
                 <div className="min-w-0">
                   <div className="font-semibold text-slate-900 dark:text-zinc-100 line-clamp-2">{l.title}</div>
-                  <div className="text-xs text-slate-500 dark:text-zinc-400 mt-1">
-                    {l.level} · {Math.max(1, Math.round(l.duration / 60))} phút · {l.count} câu
+                  <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500 dark:text-zinc-400">
+                    <span>
+                      {l.level} · {Math.max(1, Math.round(l.duration / 60))} phút · {l.count} câu
+                    </span>
+                    {l.hasVi && (
+                      <span className="inline-flex items-center rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-semibold text-teal-800 dark:bg-teal-400/10 dark:text-teal-300">
+                        Có dịch Việt
+                      </span>
+                    )}
                   </div>
                 </div>
               </button>

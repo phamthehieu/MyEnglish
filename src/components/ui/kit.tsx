@@ -28,7 +28,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-2xl font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex items-center justify-center gap-2 rounded-2xl font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40 focus-visible:ring-offset-1 dark:focus-visible:ring-offset-zinc-950 disabled:cursor-not-allowed disabled:opacity-50",
         size === "lg" ? "min-h-14 px-6 text-[17px]" : size === "md" ? "min-h-12 px-5 text-base" : "min-h-10 px-3.5 text-sm",
         block && "w-full",
         BUTTON[variant],
@@ -63,8 +63,48 @@ export function Badge({ tone = "neutral", className, ...rest }: HTMLAttributes<H
   return <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold", look, className)} {...rest} />;
 }
 
-/** The sub-pages of a section, as a row of chips under its title (scrolls sideways on a phone) */
-export function SubTabs<T extends string>({ items, value, onChange, label }: { items: Array<{ id: T; label: string; badge?: ReactNode }>; value: T; onChange: (id: T) => void; label: string }) {
+/** The sub-pages of a section, as a row of chips or an integrated underline bar under the header */
+export function SubTabs<T extends string>({
+  items,
+  value,
+  onChange,
+  label,
+  variant = "pills",
+}: {
+  items: Array<{ id: T; label: string; badge?: ReactNode }>;
+  value: T;
+  onChange: (id: T) => void;
+  label: string;
+  variant?: "pills" | "underline";
+}) {
+  if (variant === "underline") {
+    return (
+      <div role="tablist" aria-label={label} className="-mx-4 flex gap-1 overflow-x-auto px-4 scrollbar-none md:mx-0 md:px-0">
+        {items.map((item) => {
+          const on = item.id === value;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              onClick={() => onChange(item.id)}
+              className={cn(
+                "relative inline-flex min-h-11 shrink-0 items-center gap-1.5 whitespace-nowrap px-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-teal-600/40",
+                on
+                  ? "text-teal-700 dark:text-teal-300"
+                  : "text-slate-600 hover:text-slate-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              )}
+            >
+              {item.label}
+              {item.badge}
+              {on && <span aria-hidden="true" className="absolute inset-x-2 bottom-0 h-0.5 rounded-full bg-teal-700 dark:bg-teal-400" />}
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
   return (
     <div role="tablist" aria-label={label} className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 scrollbar-none md:mx-0 md:px-0">
       {items.map((item) => {
@@ -77,7 +117,7 @@ export function SubTabs<T extends string>({ items, value, onChange, label }: { i
             aria-selected={on}
             onClick={() => onChange(item.id)}
             className={cn(
-              "inline-flex min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-4 text-sm font-semibold transition-colors",
+              "inline-flex min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600/40",
               on
                 ? "bg-teal-700 text-white dark:bg-teal-600"
                 : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
@@ -102,14 +142,30 @@ export function ProgressBar({ value, tone = "teal", className }: { value: number
 }
 
 /** A ring that fills with the day's goal; the children sit in its middle */
-export function ProgressRing({ value, size = 56, stroke = 6, done = false, children }: { value: number; size?: number; stroke?: number; done?: boolean; children?: ReactNode }) {
+export function ProgressRing({
+  value,
+  size = 56,
+  stroke = 6,
+  done = false,
+  trackClassName,
+  fillClassName,
+  children,
+}: {
+  value: number;
+  size?: number;
+  stroke?: number;
+  done?: boolean;
+  trackClassName?: string;
+  fillClassName?: string;
+  children?: ReactNode;
+}) {
   const r = (size - stroke) / 2;
   const length = 2 * Math.PI * r;
   const shown = Math.max(0, Math.min(100, value));
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-slate-100 dark:stroke-zinc-800" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className={cn("stroke-slate-100 dark:stroke-zinc-800", trackClassName)} />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -119,7 +175,11 @@ export function ProgressRing({ value, size = 56, stroke = 6, done = false, child
           strokeLinecap="round"
           strokeDasharray={length}
           strokeDashoffset={length * (1 - shown / 100)}
-          className={cn("transition-[stroke-dashoffset] duration-700 ease-out", done ? "stroke-green-600" : "stroke-teal-700 dark:stroke-teal-500")}
+          className={cn(
+            "transition-[stroke-dashoffset] duration-700 ease-out",
+            done ? "stroke-emerald-400 dark:stroke-emerald-400" : "stroke-teal-700 dark:stroke-teal-500",
+            fillClassName
+          )}
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">{children}</div>

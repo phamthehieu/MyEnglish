@@ -272,4 +272,15 @@ describe("today fits in the minutes chosen", () => {
     expect(buildTodayTasks({ ...input, speaking: offer }).some((t) => t.id === "grammar")).toBe(true);
     expect(buildTodayTasks({ ...input, speaking: { ...offer, onPath: true } }).some((t) => t.id === "grammar")).toBe(false);
   });
+
+  it("keeps pronunciation as a core task for A0 foundation learners even on a 5-minute plan", () => {
+    const tasks = buildTodayTasks({
+      ...base,
+      minutes: 5,
+      prioritizePronunciation: true,
+    });
+    const coreIds = tasks.filter((t) => !t.optional).map((t) => t.id);
+    expect(coreIds).toEqual(["vocab", "pronunciation"]);
+    expect(tasks.find((t) => t.id === "pronunciation")?.title).toBe("Phát âm nền tảng");
+  });
 });

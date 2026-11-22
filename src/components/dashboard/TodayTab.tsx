@@ -8,7 +8,8 @@ import { getUnmasteredWords, youngWordCap } from "@/services/smartReview";
 import { getLocalDateString, type StreakStats } from "@/services/streak";
 import { minutesFor, type ComebackStatus } from "@/services/comeback";
 import { loadCoverage, type Coverage } from "@/services/coverage";
-import { loadPronunciationLessons, nextPronunciationLesson, pronunciationPracticedToday } from "@/services/pronunciation";
+import { getPronunciationProgress, isLessonPassed, loadPronunciationLessons, nextPronunciationLesson, pronunciationPracticedToday } from "@/services/pronunciation";
+import { isFoundationMode } from "@/services/learnerProfile";
 import { isReflexPracticedToday } from "@/services/reflexChallenge";
 import { getAllGrammarProgress, getDueGrammarLessons, initGrammarStorage } from "@/services/grammarService";
 import { getTodayGrammarPlan } from "@/services/grammarPath";
@@ -119,6 +120,7 @@ export default function TodayTab({
   const showRank = useRankPanelVisible();
   const [coverage, setCoverage] = useState<Coverage | null>(null);
   const [pron, setPron] = useState<TodayTaskInput["pronunciation"]>(null);
+  const [pronFoundation, setPronFoundation] = useState(false);
   const [grammar, setGrammar] = useState<TodayTaskInput["grammar"]>(null);
   const [reflexDone, setReflexDone] = useState(() => isReflexPracticedToday(now));
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -146,11 +148,17 @@ export default function TodayTab({
       const at = fixedNow ?? new Date();
       loadPronunciationLessons()
         .then((lessons) => {
-          const next = nextPronunciationLesson(lessons);
+          const progress = getPronunciationProgress();
+          const next = nextPronunciationLesson(lessons, progress);
           const doneToday = pronunciationPracticedToday(at);
           setPron(next || doneToday ? { doneToday, lessonTitle: next?.title ?? null } : null);
+          const stage1Left = lessons.some((l) => l.stage === 1 && !isLessonPassed(progress[l.id]));
+          setPronFoundation(isFoundationMode() && (stage1Left || doneToday));
         })
-        .catch(() => setPron(null));
+        .catch(() => {
+          setPron(null);
+          setPronFoundation(false);
+        });
       initGrammarStorage()
         .then(() => getTodayGrammarPlan(at))
         .then((plan) => {
@@ -171,9 +179,11 @@ export default function TodayTab({
     load();
     window.addEventListener("myenglish-pronunciation-updated", load);
     window.addEventListener("myenglish-grammar-updated", load);
+    window.addEventListener("myenglish-profile-updated", load);
     return () => {
       window.removeEventListener("myenglish-pronunciation-updated", load);
       window.removeEventListener("myenglish-grammar-updated", load);
+      window.removeEventListener("myenglish-profile-updated", load);
     };
   }, [streakStats.todayCount, fixedNow]);
 
@@ -236,6 +246,7 @@ export default function TodayTab({
     },
     grammar,
     pronunciation: pron,
+    prioritizePronunciation: pronFoundation,
     reflex: onStartReflex ? { doneToday: reflexDone } : null,
   });
   const primary = primaryTask(tasks);
@@ -277,15 +288,15 @@ export default function TodayTab({
         {/* 1. Unified Hero Overview Card (Greeting + Level Selector + Daily Goal Ring + 3 Key Metrics) */}
         <section
           aria-label="Tổng quan hôm nay"
-          className="relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-gradient-to-br from-[#2B1B64] via-[#1E1B4B] to-[#0F172A] p-4 text-white shadow-lg sm:p-6"
+          className="relative overflow-hidden rounded-3xl border border-teal-500/25 bg-gradient-to-br from-[#0F4C5C] via-[#113D4A] to-[#0B1F2A] p-4 text-white shadow-lg sm:p-6"
         >
-          <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-purple-500/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-12 left-1/4 h-40 w-40 rounded-full bg-teal-500/15 blur-3xl" />
+          <div className="pointer-events-none absolute -right-12 -top-12 h-44 w-44 rounded-full bg-teal-400/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-12 left-1/4 h-40 w-40 rounded-full bg-emerald-400/15 blur-3xl" />
 
           <div className="relative space-y-4">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 space-y-1.5">
-                <p className="text-xs font-medium text-indigo-200/85 first-letter:uppercase">
+                <p className="text-xs font-medium text-teal-100/80 first-letter:uppercase">
                   {now.toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "long" })}
                 </p>
                 <h2 className="text-xl font-extrabold leading-tight tracking-tight text-white sm:text-2xl">
@@ -302,20 +313,27 @@ export default function TodayTab({
                 type="button"
                 onClick={() => setActiveTab("analytics")}
                 title="Mục tiêu hôm nay (bấm để xem tiến độ)"
-                className="flex shrink-0 items-center gap-2.5 rounded-2xl border border-white/15 bg-white/10 py-2 pl-2 pr-3.5 text-left backdrop-blur-md transition-colors hover:bg-white/15"
+                className="flex shrink-0 items-center gap-2.5 rounded-2xl border border-white/15 bg-white/10 py-2 pl-2 pr-3.5 text-left backdrop-blur-md transition-colors hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-300/60"
               >
-                <ProgressRing value={streakStats.goalPercentage} size={38} stroke={4} done={streakStats.goalReached}>
+                <ProgressRing
+                  value={streakStats.goalPercentage}
+                  size={38}
+                  stroke={4}
+                  done={streakStats.goalReached}
+                  trackClassName="stroke-white/20"
+                  fillClassName={streakStats.goalReached ? "stroke-emerald-300" : "stroke-teal-300"}
+                >
                   {streakStats.goalReached ? (
-                    <Check className="h-4 w-4 text-emerald-400" strokeWidth={3} />
+                    <Check className="h-4 w-4 text-emerald-300" strokeWidth={3} />
                   ) : (
-                    <span className="text-[10px] font-extrabold text-teal-300">{streakStats.goalPercentage}%</span>
+                    <span className="text-[10px] font-extrabold text-teal-200">{streakStats.goalPercentage}%</span>
                   )}
                 </ProgressRing>
                 <span className="leading-tight">
                   <span className="block text-sm font-extrabold text-white">
                     {streakStats.todayCount}/{streakStats.dailyGoal} câu
                   </span>
-                  <span className="block text-[11px] text-indigo-200">Mục tiêu ngày</span>
+                  <span className="block text-[11px] text-teal-100/80">Mục tiêu ngày</span>
                 </span>
               </button>
             </div>
@@ -327,8 +345,8 @@ export default function TodayTab({
                   onClick={() => setActiveTab("library")}
                   className="px-2 transition-opacity hover:opacity-85"
                 >
-                  <div className="font-mono text-lg font-extrabold text-teal-300 sm:text-xl">{status.rememberedLong}</div>
-                  <div className="text-[11px] text-indigo-100/85">từ {WORD_STATUS_LABELS.remembered_long.toLowerCase()}</div>
+                  <div className="font-mono text-lg font-extrabold text-teal-200 sm:text-xl">{status.rememberedLong}</div>
+                  <div className="text-[11px] text-teal-50/85">từ {WORD_STATUS_LABELS.remembered_long.toLowerCase()}</div>
                 </button>
                 <button
                   type="button"
@@ -336,7 +354,7 @@ export default function TodayTab({
                   className="px-2 transition-opacity hover:opacity-85"
                 >
                   <div className="font-mono text-lg font-extrabold text-white sm:text-xl">{status.learning}</div>
-                  <div className="text-[11px] text-indigo-100/85">từ {WORD_STATUS_LABELS.learning.toLowerCase()}</div>
+                  <div className="text-[11px] text-teal-50/85">từ {WORD_STATUS_LABELS.learning.toLowerCase()}</div>
                 </button>
                 <button
                   type="button"
@@ -347,7 +365,7 @@ export default function TodayTab({
                   <div className="font-mono text-lg font-extrabold text-amber-300 sm:text-xl">
                     {gain ? `${gain.from}%→${gain.to}%` : coverage ? `~${coverage.percent}%` : "…"}
                   </div>
-                  <div className="text-[11px] text-indigo-100/85">hiểu văn bản</div>
+                  <div className="text-[11px] text-teal-50/85">hiểu văn bản</div>
                 </button>
               </div>
             )}

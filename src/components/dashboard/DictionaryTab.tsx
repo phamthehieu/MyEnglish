@@ -364,7 +364,7 @@ export default function DictionaryTab({
                 placeholder={
                   mode === "vi-en"
                     ? "Nhập nghĩa tiếng Việt (VD: trì hoãn, triển khai, cơ sở dữ liệu)..."
-                    : "Nhập từ tiếng Anh, dạng chia (went, debugging) hoặc nghĩa tiếng Việt..."
+                    : "Nhập từ tiếng Anh, dạng chia (went, working) hoặc nghĩa tiếng Việt..."
                 }
                 className="w-full min-h-11 sm:min-h-12 pl-10 pr-10 py-2 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50/70 dark:bg-zinc-800/60 text-sm sm:text-base text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-teal-600/30 focus:border-teal-600"
               />

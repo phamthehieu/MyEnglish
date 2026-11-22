@@ -80,7 +80,12 @@ export default function AnalyticsView({
 }: AnalyticsViewProps) {
   const simple = isSimpleMode();
   const beginner = isBeginner();
-  const [tab, setTabState] = useState<ProgressTab>(readProgressTab);
+  const visibleTabs = useMemo(
+    () => (simple ? PROGRESS_TABS.filter((t) => t.id === "overview" || t.id === "vocab" || t.id === "badges") : PROGRESS_TABS),
+    [simple]
+  );
+  const [rawTab, setTabState] = useState<ProgressTab>(readProgressTab);
+  const tab: ProgressTab = visibleTabs.some((t) => t.id === rawTab) ? rawTab : "overview";
   const setTab = (next: ProgressTab) => {
     setTabState(next);
     try {
@@ -210,7 +215,7 @@ export default function AnalyticsView({
           label="Mục tiến độ"
           value={tab}
           onChange={setTab}
-          items={PROGRESS_TABS.map((t) => ({
+          items={visibleTabs.map((t) => ({
             id: t.id,
             label: t.label,
             badge:

@@ -60,6 +60,8 @@ export interface TodayTaskInput {
   } | null;
   /** null: nothing to offer (every lesson passed and none practised today) */
   pronunciation: { doneToday: boolean; lessonTitle: string | null } | null;
+  /** Foundation beginners (A0) still in Stage 1 pronunciation: keep pronunciation as a core daily task */
+  prioritizePronunciation?: boolean;
   /** null or undefined: reflex challenge not displayed as a task */
   reflex?: { doneToday: boolean } | null;
   /** The day's work on the speaking path ("Lộ trình nói"): the spine of the list, first on it; null or undefined: no path */
@@ -142,13 +144,23 @@ export function buildTodayTasks(input: TodayTaskInput): TodayTask[] {
   }
   const p = input.pronunciation;
   if (p) {
-    extras.push({
-      id: "pronunciation",
-      title: "1 bài phát âm ngắn",
-      detail: p.doneToday ? "Đã luyện hôm nay" : (p.lessonTitle ?? "Nghe và đọc to theo"),
-      minutes: input.minutes === 5 ? 3 : 5,
-      done: p.doneToday,
-    });
+    if (input.prioritizePronunciation) {
+      tasks.push({
+        id: "pronunciation",
+        title: "Phát âm nền tảng",
+        detail: p.doneToday ? "Đã luyện hôm nay" : (p.lessonTitle ?? "Nghe mẫu và tập đọc theo"),
+        minutes: 3,
+        done: p.doneToday,
+      });
+    } else {
+      extras.push({
+        id: "pronunciation",
+        title: "1 bài phát âm ngắn",
+        detail: p.doneToday ? "Đã luyện hôm nay" : (p.lessonTitle ?? "Nghe và đọc to theo"),
+        minutes: input.minutes === 5 ? 3 : 5,
+        done: p.doneToday,
+      });
+    }
   }
   const r = input.reflex;
   if (r) {
